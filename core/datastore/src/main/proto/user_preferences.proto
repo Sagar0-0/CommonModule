@@ -16,4 +16,5 @@ message UserPreferences {
   string referralCode = 10;
   double lat = 11;
   double long = 12;
+  string trackLanguage = 13;
 }

@@ -27,7 +27,8 @@ class PrefManager
             tone = it.tone,
             isFcmTokenUploaded = it.isFcmTokenUploaded,
             isReferralChecked = it.isReferralChecked,
-            referralCode = it.referralCode
+            referralCode = it.referralCode,
+            trackLanguage = it.trackLanguage
         )
     }
     val address: Flow<UserPreferencesDataAddress> = userPreferences.data.map {
@@ -36,6 +37,16 @@ class PrefManager
             lat = it.lat,
             long = it.long
         )
+    }
+
+    suspend fun setTrackLanguage(trackLanguage: String) {
+        try {
+            userPreferences.updateData {
+                it.copy { this.trackLanguage = trackLanguage }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
     }
 
     suspend fun setAddressValue(address: String, lat: Double, long: Double) {

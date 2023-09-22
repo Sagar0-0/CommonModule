@@ -10,7 +10,8 @@ data class UserPreferencesData(
     val tone: String = "hi",
     val isFcmTokenUploaded: Boolean = false,
     val isReferralChecked: Boolean = false,
-    val referralCode: String = ""
+    val referralCode: String = "",
+    val trackLanguage: String = ""
 )
 
 data class UserPreferencesDataAddress(
