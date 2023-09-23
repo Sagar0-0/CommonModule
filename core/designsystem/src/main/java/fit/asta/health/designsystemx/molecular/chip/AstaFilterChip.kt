@@ -5,8 +5,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.TrackChanges
-import androidx.compose.material3.AssistChip
-import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.FilterChip
+import androidx.compose.material3.FilterChipDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -29,41 +30,46 @@ private fun DefaultPreview1() {
     AstaThemeX {
         Surface {
             Column {
-                AstaAssistChip(
+                AstaFilterChip(
                     onClick = {},
                     textToShow = "Enabled",
                     leadingIcon = Icons.Default.Person,
-                    trailingIcon = Icons.Default.TrackChanges
+                    trailingIcon = Icons.Default.TrackChanges,
+                    selected = true
                 )
 
-                AstaAssistChip(
+                AstaFilterChip(
                     enabled = false,
                     onClick = {},
                     textToShow = "Disabled",
                     leadingIcon = Icons.Default.Person,
-                    trailingIcon = Icons.Default.TrackChanges
+                    trailingIcon = Icons.Default.TrackChanges,
+                    selected = false
                 )
             }
         }
     }
 }
 
-
-/** [AstaAssistChip] A composable function that creates an AssistChip, which is a custom chip
- * component for use in your Jetpack Compose UI.
+/**
+ * [AstaFilterChip] The purpose of this wrapper function might be to provide a more
+ * user-friendly or simplified interface to the FilterChip composable
  *
- *  @param modifier the [Modifier] to be applied to this chip
- *  @param onClick called when this chip is clicked
- *  @param textToShow text label for this chip
- *  @param enabled controls the enabled state of this chip.
- *  @param leadingIcon optional icon at the start of the chip, preceding the [textToShow] text
- *  @param leadingIconDes This is the description for the Leading Icon
- *  @param trailingIcon optional icon at the end of the chip
- *  @param trailingIconDes This is the description for the Trailing Icon
+ * @param modifier the [Modifier] to be applied to this chip
+ * @param selected whether this chip is selected or not
+ * @param onClick called when this chip is clicked
+ * @param textToShow text String for this chip
+ * @param enabled controls the enabled state of this chip.
+ * @param leadingIcon optional icon at the start of the chip, preceding the [textToShow] text.
+ * @param leadingIconDes This is the description for the leading Icon
+ * @param trailingIcon optional icon at the end of the chip
+ * @param trailingIconDes This is the description for the trailing icon
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AstaAssistChip(
+fun AstaFilterChip(
     modifier: Modifier = Modifier,
+    selected: Boolean,
     onClick: () -> Unit,
     textToShow: String,
     enabled: Boolean = true,
@@ -73,15 +79,6 @@ fun AstaAssistChip(
     trailingIconDes: String? = null
 ) {
 
-    val textLabelComposable: @Composable (() -> Unit) = {
-        if (enabled)
-            LabelTexts.Medium(text = textToShow)
-        else
-            LabelTexts.Medium(
-                text = textToShow,
-                color = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
-            )
-    }
     val leadingIconComposable: @Composable (() -> Unit) = {
         if (leadingIcon != null) {
             Icon(
@@ -100,7 +97,18 @@ fun AstaAssistChip(
         }
     }
 
-    AssistChip(
+    val textLabelComposable: @Composable (() -> Unit) = {
+        if (enabled)
+            LabelTexts.Medium(text = textToShow)
+        else
+            LabelTexts.Medium(
+                text = textToShow,
+                color = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+            )
+    }
+
+    FilterChip(
+        selected = selected,
         onClick = onClick,
         label = textLabelComposable,
         modifier = modifier,
@@ -108,8 +116,8 @@ fun AstaAssistChip(
         leadingIcon = if (leadingIcon != null) leadingIconComposable else null,
         trailingIcon = if (trailingIcon != null) trailingIconComposable else null,
         shape = AstaThemeX.shapeX.large,
-        colors = AssistChipDefaults.assistChipColors(),
-        elevation = AssistChipDefaults.assistChipElevation(),
-        border = AssistChipDefaults.assistChipBorder(),
+        colors = FilterChipDefaults.filterChipColors(),
+        elevation = FilterChipDefaults.filterChipElevation(),
+        border = FilterChipDefaults.filterChipBorder()
     )
 }

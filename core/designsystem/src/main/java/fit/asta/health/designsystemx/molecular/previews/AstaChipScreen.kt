@@ -19,6 +19,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.designsystemx.molecular.chip.AstaAssistChip
+import fit.asta.health.designsystemx.molecular.chip.AstaFilterChip
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 
@@ -57,7 +58,7 @@ fun AstaChipScreen() {
                 verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
             ) {
 
-                // Filled Button Section
+                // Assist Chip Section
                 TitleTexts.Large(text = "Assist Chips")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
@@ -66,7 +67,7 @@ fun AstaChipScreen() {
 
                     AstaAssistChip(
                         onClick = {},
-                        textToShow = "Assist Chip",
+                        textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person,
                         trailingIcon = Icons.Default.TrackChanges
                     )
@@ -74,9 +75,34 @@ fun AstaChipScreen() {
                     AstaAssistChip(
                         enabled = false,
                         onClick = {},
-                        textToShow = "Assist Chip",
+                        textToShow = "Disabled",
                         leadingIcon = Icons.Default.Person,
                         trailingIcon = Icons.Default.TrackChanges
+                    )
+                }
+
+
+                // Filter Chip Section
+                TitleTexts.Large(text = "Filter Chips")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaFilterChip(
+                        onClick = {},
+                        textToShow = "Enabled",
+                        leadingIcon = Icons.Default.Person,
+                        trailingIcon = Icons.Default.TrackChanges,
+                        selected = true
+                    )
+
+                    AstaFilterChip(
+                        enabled = false,
+                        onClick = {},
+                        textToShow = "Disabled",
+                        leadingIcon = Icons.Default.Person,
+                        trailingIcon = Icons.Default.TrackChanges,
+                        selected = false
                     )
                 }
             }
