@@ -3,12 +3,15 @@ package fit.asta.health.designsystemx.molecular.previews
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -72,12 +75,22 @@ fun AstaButtonScreen() {
 
                     // Filled Button with custom Composable function passed down to it
                     AstaFilledButton(onClick = { /*TODO*/ }) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
                         LabelTexts.Large(text = "Enabled Button")
                     }
                     AstaFilledButton(
                         onClick = { /*TODO*/ },
                         enabled = false
                     ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null
+                        )
+                        Spacer(modifier = Modifier.width(4.dp))
                         LabelTexts.Large(text = "Disabled Button")
                     }
 
@@ -85,7 +98,8 @@ fun AstaButtonScreen() {
                     // Filled button With Texts Passed down to it
                     AstaFilledButton(
                         onClick = { /*TODO*/ },
-                        textToShow = "Enabled Button"
+                        textToShow = "Enabled Button",
+                        leadingIcon = Icons.Default.Person
                     )
                     AstaFilledButton(
                         onClick = { /*TODO*/ },
