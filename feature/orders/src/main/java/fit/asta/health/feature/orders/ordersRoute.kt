@@ -1,9 +1,16 @@
 package fit.asta.health.feature.orders
 
+import android.widget.Toast
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -11,8 +18,11 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.orders.vm.OrdersViewModel
 
@@ -27,27 +37,46 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
         val ordersViewModel: OrdersViewModel = hiltViewModel()
         LaunchedEffect(Unit) { ordersViewModel.getOrders() }
         val ordersState by ordersViewModel.ordersState.collectAsStateWithLifecycle()
-        OrdersScreen(ordersState)
+        OrdersScreen(ordersState, onBack)
     }
 }
 
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrdersScreen(ordersState: UiState<List<OrderData>>) {
-    when (ordersState) {
-        is UiState.Loading -> {
-            LoadingAnimation()
+fun OrdersScreen(ordersState: UiState<List<OrderData>>, onBack: () -> Unit) {
+    val context = LocalContext.current
+    AppScaffold(
+        topBar = {
+            AppTopBar(
+                title = "Orders",
+                onBack = onBack
+            )
         }
-
-        is UiState.Success -> {
-            LazyColumn {
-
+    ) { padd ->
+        when (ordersState) {
+            is UiState.Loading -> {
+                LoadingAnimation(modifier = Modifier.padding(padd))
             }
-        }
 
-        is UiState.ErrorMessage -> {
-            AppErrorScreen()
-        }
+            is UiState.Success -> {
+                LazyColumn(modifier = Modifier.padding(padd)) {
+                    items(ordersState.data) {
+                        Text(text = it.orderId)
+                    }
+                }
+            }
 
-        else -> {}
+            is UiState.ErrorMessage -> {
+                Toast.makeText(context, ordersState.resId.toStringFromResId(), Toast.LENGTH_SHORT)
+                    .show()
+            }
+
+            is UiState.ErrorRetry -> {
+                AppErrorScreen()
+            }
+
+            else -> {}
+        }
     }
+
 }

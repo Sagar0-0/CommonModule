@@ -144,7 +144,7 @@ private fun MainNavHost(startDestination: String) {
                     navController.navigateToSubscription()
                 }
 
-                SettingsUiEvent.NavigateToSubscription -> {
+                SettingsUiEvent.NavigateToOrders -> {
                     navController.navigateToOrders()
                 }
 
