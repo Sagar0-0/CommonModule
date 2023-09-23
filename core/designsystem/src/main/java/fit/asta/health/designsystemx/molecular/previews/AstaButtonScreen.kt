@@ -85,31 +85,19 @@ fun AstaButtonScreen() {
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
                 ) {
-                    TitleTexts.Large(
-                        text = "Outlined Buttons (Can pass the composable " +
-                                "function or just a String directly)"
-                    )
-
-                    // Filled Button with custom Composable function passed down to it
-                    AstaOutlinedButton(onClick = { /*TODO*/ }) {
-                        LabelTexts.Large(text = "Enabled Button")
-                    }
-                    AstaOutlinedButton(
-                        onClick = { /*TODO*/ },
-                        enabled = false
-                    ) {
-                        LabelTexts.Large(text = "Disabled Button")
-                    }
+                    TitleTexts.Large(text = "Outlined Buttons")
 
                     // Filled button With Texts Passed down to it
                     AstaOutlinedButton(
                         onClick = { /*TODO*/ },
-                        textToShow = "Enabled Button"
+                        textToShow = "Enabled Button",
+                        leadingIcon = Icons.Default.Person
                     )
                     AstaOutlinedButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
-                        textToShow = "Disabled Button"
+                        textToShow = "Disabled Button",
+                        leadingIcon = Icons.Default.Person
                     )
                 }
 
