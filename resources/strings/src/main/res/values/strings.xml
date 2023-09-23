@@ -631,4 +631,5 @@
     <string name="linking_the_credentials_failed">Linking the credentials Failed</string>
     <string name="sign_out_failed">Sign out failed</string>
     <string name="delete_account_failed">Delete account Failed</string>
+    <string name="edit_address">Edit Address</string>
 </resources>

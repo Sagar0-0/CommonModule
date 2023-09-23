@@ -1,6 +1,8 @@
 package fit.asta.health.data.address.remote.modal
 
+import android.location.Address
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.getShortAddressName
 
 data class MyAddress(
     @SerializedName("cl")
@@ -34,3 +36,24 @@ data class MyAddress(
     val addressLine: String = "",
     val shortAddress: String = ""
 )
+
+fun Address.mapToMyAddress(): MyAddress {
+    val items = this.getAddressLine(0).split(", ")
+    return MyAddress(
+        selected = true,
+        area = this.adminArea,
+        block = items[1],
+        hn = items[0],
+        id = "",
+        lat = this.latitude,
+        loc = this.locality,
+        lon = this.longitude,
+        name = "",
+        nearby = "",
+        ph = "",
+        pin = this.postalCode,
+        sub = this.subLocality ?: this.locality,
+        addressLine = this.getAddressLine(0),
+        shortAddress = this.getShortAddressName()
+    )
+}

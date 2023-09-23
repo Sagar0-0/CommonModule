@@ -31,6 +31,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -62,7 +63,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun FillAddressSheet(
     modifier: Modifier = Modifier,
-    myAddressItem: MyAddress,
+    type: FillAddressSheetType,
     putAddressState: UiState<PutAddressResponse>,
     onUiEvent: (FillAddressUiEvent) -> Unit
 ) {
@@ -75,6 +76,17 @@ internal fun FillAddressSheet(
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
                 onUiEvent(FillAddressUiEvent.CloseSheet)
+            }
+        }
+    }
+    val myAddressItem = remember {
+        when (type) {
+            is FillAddressSheetType.SaveCurrentAddress -> {
+                type.address
+            }
+
+            is FillAddressSheetType.EnterNewAddress -> {
+                type.address
             }
         }
     }

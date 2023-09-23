@@ -54,6 +54,7 @@ import kotlinx.coroutines.launch
 @Composable
 internal fun SearchBottomSheet(
     modifier: Modifier = Modifier,
+    type: SearchSheetType,
     searchResponseState: UiState<SearchResponse>,
     onUiEvent: (SearchSheetUiEvent) -> Unit
 ) {
