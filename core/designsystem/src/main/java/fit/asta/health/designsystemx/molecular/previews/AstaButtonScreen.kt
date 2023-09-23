@@ -18,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.molecular.button.AstaCheckBoxButton
 import fit.asta.health.designsystemx.molecular.button.AstaElevatedButton
 import fit.asta.health.designsystemx.molecular.button.AstaFilledButton
 import fit.asta.health.designsystemx.molecular.button.AstaFloatingActionButton
@@ -32,13 +33,13 @@ import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 // Preview Function
 @Preview(
     "Light Button",
-    heightDp = 1000
+    heightDp = 1100
 )
 @Preview(
     name = "Dark Button",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
-    heightDp = 1000
+    heightDp = 1100
 )
 @Composable
 private fun DefaultPreview1() {
@@ -205,7 +206,7 @@ fun AstaButtonScreen() {
                     )
                 }
 
-                // Floating Action Buttons
+                // Radio Buttons
                 TitleTexts.Large(text = "Radio Buttons")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
@@ -224,7 +225,7 @@ fun AstaButtonScreen() {
                 }
 
 
-                // Floating Action Buttons
+                // Toggle Buttons
                 TitleTexts.Large(text = "Toggle Buttons")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
@@ -237,6 +238,25 @@ fun AstaButtonScreen() {
                     AstaToggleButton(
                         checked = false,
                         enabled = false
+                    )
+                }
+
+
+                // Check Box Buttons
+                TitleTexts.Large(text = "Check Box Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaCheckBoxButton(
+                        checked = true,
+                        onCheckedChange = {}
+                    )
+
+                    AstaCheckBoxButton(
+                        checked = true,
+                        enabled = false,
+                        onCheckedChange = {}
                     )
                 }
             }
