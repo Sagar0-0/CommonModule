@@ -92,6 +92,9 @@ fun AstaFloatingActionButton(
         contentColor = AstaThemeX.colorsX.onPrimary,
         onClick = onClick
     ) {
-        Icon(imageVector = imageVector, contentDescription = contentDescription)
+        Icon(
+            imageVector = imageVector,
+            contentDescription = contentDescription
+        )
     }
 }

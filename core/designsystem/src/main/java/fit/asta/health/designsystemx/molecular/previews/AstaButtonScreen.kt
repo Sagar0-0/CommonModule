@@ -3,12 +3,14 @@ package fit.asta.health.designsystemx.molecular.previews
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -21,7 +23,6 @@ import fit.asta.health.designsystemx.molecular.button.AstaFloatingActionButton
 import fit.asta.health.designsystemx.molecular.button.AstaIconButton
 import fit.asta.health.designsystemx.molecular.button.AstaOutlinedButton
 import fit.asta.health.designsystemx.molecular.button.AstaTextButton
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 // Preview Function
@@ -61,56 +62,52 @@ fun AstaButtonScreen() {
             ) {
 
                 // Filled Button Section
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                TitleTexts.Large(text = "Filled Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TitleTexts.Large(text = "Filled Buttons")
 
                     // Filled button With Texts Passed down to it
                     AstaFilledButton(
                         onClick = { /*TODO*/ },
-                        textToShow = "Enabled Button",
+                        textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
                     AstaFilledButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
-                        textToShow = "Disabled Button"
+                        textToShow = "Disabled"
                     )
                 }
 
                 // Outlined Button Section
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                TitleTexts.Large(text = "Outlined Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    TitleTexts.Large(text = "Outlined Buttons")
 
                     // Filled button With Texts Passed down to it
                     AstaOutlinedButton(
                         onClick = { /*TODO*/ },
-                        textToShow = "Enabled Button",
+                        textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
                     AstaOutlinedButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
-                        textToShow = "Disabled Button",
+                        textToShow = "Disabled",
                         leadingIcon = Icons.Default.Person
                     )
                 }
 
                 // Icon Button Section
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                TitleTexts.Large(text = "Icon Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-
-                    TitleTexts.Large(
-                        text = "Icon Buttons (Can pass the composable " +
-                                "function or just a String directly)"
-                    )
 
                     // Icon Button from Material Icons
                     AstaIconButton(
@@ -124,41 +121,47 @@ fun AstaButtonScreen() {
                 }
 
                 // Asta Text Buttons
-                Column(
-                    horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                TitleTexts.Large(text = "Text Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    TitleTexts.Large(
-                        text = "Text Buttons (Can pass the composable " +
-                                "function or just a String directly)"
-                    )
-
-                    // Filled Button with custom Composable function passed down to it
-                    AstaTextButton(onClick = { /*TODO*/ }) {
-                        LabelTexts.Large(text = "Enabled Button")
-                    }
+                    // Filled button With Texts Passed down to it
                     AstaTextButton(
                         onClick = { /*TODO*/ },
-                        enabled = false
-                    ) {
-                        LabelTexts.Large(text = "Disabled Button")
-                    }
-
-
-                    // Filled button With Texts Passed down to it
-                    AstaTextButton(onClick = { /*TODO*/ }, textToShow = "Enabled Button")
+                        textToShow = "Enabled",
+                        leadingIcon = Icons.Default.Person
+                    )
                     AstaTextButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
-                        textToShow = "Disabled Button"
+                        textToShow = "Disabled",
+                        leadingIcon = Icons.Default.Person
                     )
                 }
 
-                AstaFloatingActionButton(
-                    onClick = { /*TODO*/ },
-                    imageVector = Icons.Default.Person
-                )
+
+                // Floating Action Buttons
+                TitleTexts.Large(text = "Floating Action Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaFloatingActionButton(
+                        onClick = { /*TODO*/ }
+                    ) {
+                        Icon(
+                            imageVector = Icons.Default.Person,
+                            contentDescription = null
+                        )
+                    }
+
+                    AstaFloatingActionButton(
+                        onClick = { /*TODO*/ },
+                        imageVector = Icons.Default.Person
+                    )
+                }
             }
         }
     }

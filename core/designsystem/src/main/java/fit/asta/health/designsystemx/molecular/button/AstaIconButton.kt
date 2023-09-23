@@ -7,7 +7,6 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -68,9 +67,9 @@ fun AstaIconButton(
         enabled = enabled,
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
-            contentColor = LocalContentColor.current,
+            contentColor = AstaThemeX.colorsX.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = LocalContentColor.current.copy(alpha = .35f)
+            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
         )
     ) {
         Icon(
