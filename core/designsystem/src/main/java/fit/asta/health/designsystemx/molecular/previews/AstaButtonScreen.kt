@@ -18,23 +18,25 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.molecular.button.AstaElevatedButton
 import fit.asta.health.designsystemx.molecular.button.AstaFilledButton
 import fit.asta.health.designsystemx.molecular.button.AstaFloatingActionButton
 import fit.asta.health.designsystemx.molecular.button.AstaIconButton
 import fit.asta.health.designsystemx.molecular.button.AstaOutlinedButton
 import fit.asta.health.designsystemx.molecular.button.AstaTextButton
+import fit.asta.health.designsystemx.molecular.button.AstaTonalButton
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 // Preview Function
 @Preview(
     "Light Button",
-    heightDp = 2000
+    heightDp = 800
 )
 @Preview(
     name = "Dark Button",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
-    heightDp = 2000
+    heightDp = 800
 )
 @Composable
 private fun DefaultPreview1() {
@@ -78,6 +80,44 @@ fun AstaButtonScreen() {
                         onClick = { /*TODO*/ },
                         enabled = false,
                         textToShow = "Disabled"
+                    )
+                }
+
+                TitleTexts.Large(text = "Tonal Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaTonalButton(
+                        onClick = {},
+                        textToShow = "Enabled",
+                        leadingIcon = Icons.Default.Person
+                    )
+
+                    AstaTonalButton(
+                        enabled = false,
+                        onClick = {},
+                        textToShow = "Disabled",
+                        leadingIcon = Icons.Default.Person
+                    )
+                }
+
+                TitleTexts.Large(text = "Elevated Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaElevatedButton(
+                        onClick = {},
+                        textToShow = "Enabled",
+                        leadingIcon = Icons.Default.Person
+                    )
+
+                    AstaElevatedButton(
+                        enabled = false,
+                        onClick = {},
+                        textToShow = "Disabled",
+                        leadingIcon = Icons.Default.Person
                     )
                 }
 

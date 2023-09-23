@@ -10,6 +10,7 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 data class ElevationX(
+    val noElevation: Dp = 0.dp,
     val extraSmall: Dp = 2.dp,
     val smallMedium: Dp = 4.dp,
     val smallExtraMedium: Dp = 6.dp,
