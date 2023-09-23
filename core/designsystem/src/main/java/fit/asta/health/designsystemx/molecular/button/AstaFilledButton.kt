@@ -3,22 +3,15 @@ package fit.asta.health.designsystemx.molecular.button
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.RowScope
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
@@ -38,66 +31,19 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AstaFilledButton(
-                    onClick = {}
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Enabled Button")
-                }
+                    onClick = {},
+                    textToShow = "Enabled Button",
+                    leadingIcon = Icons.Default.Person
+                )
 
                 AstaFilledButton(
                     enabled = false,
-                    onClick = {}
-                ) {
-                    Icon(
-                        imageVector = Icons.Default.Person,
-                        contentDescription = null
-                    )
-                    Spacer(modifier = Modifier.width(4.dp))
-                    Text(text = "Disabled Button")
-                }
+                    onClick = {},
+                    textToShow = "Disabled Button",
+                    leadingIcon = Icons.Default.Person
+                )
             }
         }
-    }
-}
-
-
-/**
- * Asta filled button with generic content slot. Wraps Material 3 [Button].
- *
- * @param modifier Modifier to be applied to the button.
- * @param onClick Will be called when the user clicks the button.
- * @param enabled Controls the enabled state of the button. When `false`, this button will not be
- * clickable and will appear disabled to accessibility services.
- * @param content The button content.
- */
-@Composable
-fun AstaFilledButton(
-    modifier: Modifier = Modifier,
-    onClick: () -> Unit,
-    enabled: Boolean = true,
-    content: @Composable RowScope.() -> Unit
-) {
-    Button(
-        onClick = onClick,
-        modifier = modifier,
-        enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = AstaThemeX.colorsX.primary,
-            contentColor = AstaThemeX.colorsX.onPrimary,
-            disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(alpha = .15f),
-            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
-        ),
-        contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
-    ) {
-        Row(
-            modifier = Modifier.alpha(if (enabled) 1f else .35f),
-            content = content,
-            verticalAlignment = Alignment.CenterVertically
-        )
     }
 }
 
