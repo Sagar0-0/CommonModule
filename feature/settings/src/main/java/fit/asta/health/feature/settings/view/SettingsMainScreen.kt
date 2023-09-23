@@ -25,6 +25,7 @@ import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
 import androidx.compose.material.icons.filled.Share
+import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.*
@@ -129,6 +130,10 @@ fun SettingsScreenLayout(
                     title = R.string.subscribe.toStringFromResId(),
                     imageVector = Icons.Default.Subscriptions
                 ) { onClickEvent(SettingsUiEvent.NavigateToSubscription) }
+                PreferenceItem(
+                    title = R.string.orders.toStringFromResId(),
+                    imageVector = Icons.Default.ShoppingCart
+                ) { onClickEvent(SettingsUiEvent.NavigateToOrders) }
                 PreferenceItem(
                     title = R.string.refer_and_earn.toStringFromResId(),
                     imageVector = Icons.Default.MonetizationOn

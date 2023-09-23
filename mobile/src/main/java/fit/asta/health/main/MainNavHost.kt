@@ -14,7 +14,6 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
-import fit.asta.health.resources.strings.R
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
 import fit.asta.health.common.utils.UiState
@@ -49,6 +48,7 @@ import fit.asta.health.profile.feature.ProfileContent
 import fit.asta.health.profile.feature.create.CreateProfileLayout
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
+import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
@@ -142,6 +142,10 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.NavigateToSubscription -> {
                     navController.navigateToSubscription()
+                }
+
+                SettingsUiEvent.NavigateToSubscription -> {
+                    navController.navigateToOrders()
                 }
 
                 SettingsUiEvent.REFERRAL -> {
