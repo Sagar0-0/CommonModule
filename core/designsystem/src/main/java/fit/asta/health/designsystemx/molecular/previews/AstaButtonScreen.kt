@@ -23,20 +23,22 @@ import fit.asta.health.designsystemx.molecular.button.AstaFilledButton
 import fit.asta.health.designsystemx.molecular.button.AstaFloatingActionButton
 import fit.asta.health.designsystemx.molecular.button.AstaIconButton
 import fit.asta.health.designsystemx.molecular.button.AstaOutlinedButton
+import fit.asta.health.designsystemx.molecular.button.AstaRadioButton
 import fit.asta.health.designsystemx.molecular.button.AstaTextButton
+import fit.asta.health.designsystemx.molecular.button.AstaToggleButton
 import fit.asta.health.designsystemx.molecular.button.AstaTonalButton
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 // Preview Function
 @Preview(
     "Light Button",
-    heightDp = 800
+    heightDp = 1000
 )
 @Preview(
     name = "Dark Button",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true,
-    heightDp = 800
+    heightDp = 1000
 )
 @Composable
 private fun DefaultPreview1() {
@@ -200,6 +202,41 @@ fun AstaButtonScreen() {
                     AstaFloatingActionButton(
                         onClick = { /*TODO*/ },
                         imageVector = Icons.Default.Person
+                    )
+                }
+
+                // Floating Action Buttons
+                TitleTexts.Large(text = "Radio Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaRadioButton(
+                        selected = true,
+                        onClick = {}
+                    )
+
+                    AstaRadioButton(
+                        selected = true,
+                        enabled = false,
+                        onClick = {}
+                    )
+                }
+
+
+                // Floating Action Buttons
+                TitleTexts.Large(text = "Toggle Buttons")
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AstaToggleButton(
+                        checked = true,
+                    )
+
+                    AstaToggleButton(
+                        checked = false,
+                        enabled = false
                     )
                 }
             }
