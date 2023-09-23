@@ -35,7 +35,28 @@ data class MyAddress(
     val uid: String = "",
     val addressLine: String = "",
     val shortAddress: String = ""
-)
+) {
+    override fun equals(other: Any?): Boolean {
+        if (this === other) return true
+        if (other !is MyAddress) return false
+
+        if (selected != other.selected) return false
+        if (area != other.area) return false
+        if (block != other.block) return false
+        if (hn != other.hn) return false
+        if (id != other.id) return false
+        if (lat != other.lat) return false
+        if (loc != other.loc) return false
+        if (lon != other.lon) return false
+        if (name != other.name) return false
+        if (nearby != other.nearby) return false
+        if (ph != other.ph) return false
+        if (pin != other.pin) return false
+        if (sub != other.sub) return false
+
+        return true
+    }
+}
 
 fun Address.mapToMyAddress(): MyAddress {
     val items = this.getAddressLine(0).split(", ")

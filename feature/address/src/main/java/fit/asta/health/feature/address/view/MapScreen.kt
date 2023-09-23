@@ -1,6 +1,8 @@
 package fit.asta.health.feature.address.view
 
 import android.location.Address
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -15,6 +17,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
@@ -47,6 +50,7 @@ internal fun MapScreen(
     onUiEvent: (MapScreenUiEvent) -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val context = LocalContext.current
 
     val bottomCardHeight = remember { 140.dp }
     var searchSheetType by rememberSaveable { mutableStateOf<SearchSheetType?>(null) }
@@ -153,7 +157,13 @@ internal fun MapScreen(
                     }
 
                     is FillAddressUiEvent.SaveAddress -> {
-                        onUiEvent(MapScreenUiEvent.PutAddress(it.myAddress))
+                        Log.d("TAG", "MapScreen: ${it.myAddress}")
+                        Log.d("TAG", "MapScreen: $myAddressItem")
+                        if (it.myAddress == myAddressItem && type == 3) {
+                            Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+                        } else {
+                            onUiEvent(MapScreenUiEvent.PutAddress(it.myAddress))
+                        }
                     }
                 }
             }
