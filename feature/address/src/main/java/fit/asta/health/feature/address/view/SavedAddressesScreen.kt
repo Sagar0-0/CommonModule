@@ -2,6 +2,7 @@ package fit.asta.health.feature.address.view
 
 import android.content.Intent
 import android.location.Address
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.background
@@ -43,6 +44,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -55,6 +57,9 @@ import androidx.core.content.ContextCompat.startActivity
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.SearchResponse
+import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
@@ -67,8 +72,8 @@ import fit.asta.health.resources.strings.R
 @Composable
 internal fun SavedAddressesScreen(
     savedAddressListState: UiState<List<MyAddress>>,
-    searchSheetVisible: Boolean,
-    fillAddressSheetVisible: Boolean,
+    putAddressState: UiState<PutAddressResponse>,
+    searchResultState: UiState<SearchResponse>,
     deleteAddressState: UiState<Boolean>,
     selectAddressState: UiState<Unit>,
     currentAddressState: UiState<Address>,
@@ -77,6 +82,8 @@ internal fun SavedAddressesScreen(
     val context = LocalContext.current
 
     val scaffoldState = rememberBottomSheetScaffoldState()
+    var searchSheetType by rememberSaveable { mutableStateOf<SearchSheetType?>(null) }
+    var fillAddressSheetType by rememberSaveable { mutableStateOf<FillAddressSheetType?>(null) }
 
     LaunchedEffect(deleteAddressState) {
         if (deleteAddressState is UiState.Success) {
@@ -89,6 +96,13 @@ internal fun SavedAddressesScreen(
             onUiEvent(SavedAddressUiEvent.GetSavedAddress)
             onUiEvent(SavedAddressUiEvent.ResetSelect)
         }
+    }
+
+    val openFillAddressSheet: (FillAddressSheetType) -> Unit = {
+        fillAddressSheetType = it
+    }
+    val openSearchSheet: (SearchSheetType) -> Unit = {
+        searchSheetType = it
     }
 
     AppBottomSheetScaffold(
@@ -104,12 +118,60 @@ internal fun SavedAddressesScreen(
         sheetContent = {}
     ) { padding ->
 
+        if (searchSheetType != null) SearchBottomSheet(
+            type = searchSheetType!!,
+            searchResponseState = searchResultState,
+            onUiEvent = {
+                when (it) {
+                    SearchSheetUiEvent.Close -> {
+                        searchSheetType = null
+                    }
+
+                    SearchSheetUiEvent.ClearSearchResponse -> {
+                        onUiEvent(SavedAddressUiEvent.ClearSearch)
+                    }
+
+                    is SearchSheetUiEvent.OnResultClick -> {
+                        onUiEvent(SavedAddressUiEvent.NavigateToMaps(it.myAddress, 1))
+                    }
+
+                    is SearchSheetUiEvent.Search -> {
+                        onUiEvent(SavedAddressUiEvent.Search(it.query))
+                    }
+                }
+            }
+        )
+
+        if (fillAddressSheetType != null) FillAddressSheet(
+            type = fillAddressSheetType!!,
+            putAddressState = putAddressState,
+            onUiEvent = {
+                when (it) {
+                    FillAddressUiEvent.ResetPutState -> {
+                        onUiEvent(SavedAddressUiEvent.ResetPutState)
+                    }
+
+                    is FillAddressUiEvent.CloseSheet -> {
+                        fillAddressSheetType = null
+                    }
+
+                    is FillAddressUiEvent.OnPutSuccess -> {
+                        onUiEvent(SavedAddressUiEvent.GetSavedAddress)
+                    }
+
+                    is FillAddressUiEvent.SaveAddress -> {
+                        onUiEvent(SavedAddressUiEvent.PutAddress(it.myAddress))
+                    }
+                }
+            }
+        )
+
         Column(
             Modifier
                 .fillMaxSize()
                 .padding(padding)
         ) {
-            AnimatedVisibility(!searchSheetVisible) {
+            AnimatedVisibility(searchSheetType == null) {
                 OutlinedTextField(
                     maxLines = 1,
                     enabled = false,
@@ -118,7 +180,7 @@ internal fun SavedAddressesScreen(
                         .fillMaxWidth()
                         .padding(LocalSpacing.current.small)
                         .clickable {
-                            onUiEvent(SavedAddressUiEvent.ShowSearchSheet)
+                            openSearchSheet(SearchSheetType.FromSavedAddress)
                         },
                     value = "",
                     onValueChange = {},
@@ -149,7 +211,7 @@ internal fun SavedAddressesScreen(
 
             Spacer(modifier = Modifier.height(LocalSpacing.current.medium))
 
-            AnimatedVisibility(!fillAddressSheetVisible) {
+            AnimatedVisibility(fillAddressSheetType == null) {
                 OutlinedButton(
                     colors = ButtonDefaults
                         .buttonColors(
@@ -161,7 +223,11 @@ internal fun SavedAddressesScreen(
                         .padding(horizontal = LocalSpacing.current.small),
                     onClick = {
                         if (currentAddressState is UiState.Success) {
-                            onUiEvent(SavedAddressUiEvent.ShowFillAddressSheet)
+                            openFillAddressSheet(
+                                FillAddressSheetType.SaveCurrentAddress(
+                                    currentAddressState.data.mapToMyAddress()
+                                )
+                            )
                         } else if (currentAddressState is UiState.ErrorMessage) {
                             onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
                         }
@@ -235,16 +301,19 @@ internal fun SavedAddressesScreen(
                     .fillMaxWidth()
                     .padding(horizontal = LocalSpacing.current.small),
                 onClick = {
-                    onUiEvent(
-                        SavedAddressUiEvent.NavigateToMaps(
-                            MyAddress(
-                                lat = (currentAddressState as? UiState.Success)?.data?.latitude
-                                    ?: 0.0,
-                                lon = (currentAddressState as? UiState.Success)?.data?.longitude
-                                    ?: 0.0
+                    if (currentAddressState is UiState.Success) {
+                        onUiEvent(
+                            SavedAddressUiEvent.NavigateToMaps(
+                                MyAddress(
+                                    lat = currentAddressState.data.latitude,
+                                    lon = currentAddressState.data.longitude
+                                ),
+                                2
                             )
                         )
-                    )
+                    } else {
+                        Toast.makeText(context, "Fetching location...", Toast.LENGTH_SHORT).show()
+                    }
                 }) {
                 Icon(
                     modifier = Modifier
@@ -307,7 +376,12 @@ internal fun SavedAddressesScreen(
                                             }
 
                                             is AddressEvent.Edit -> {
-                                                onUiEvent(SavedAddressUiEvent.NavigateToMaps(item))
+                                                onUiEvent(
+                                                    SavedAddressUiEvent.NavigateToMaps(
+                                                        item,
+                                                        3
+                                                    )
+                                                )
                                             }
 
                                             is AddressEvent.Delete -> {

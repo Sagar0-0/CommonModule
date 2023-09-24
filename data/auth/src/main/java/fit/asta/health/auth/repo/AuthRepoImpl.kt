@@ -108,16 +108,19 @@ class AuthRepoImpl @Inject constructor(
 
     override fun linkWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>> =
         callbackFlow {
-            firebaseAuth.currentUser!!.linkWithCredential(authCredential)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val user: FirebaseUser? = it.result.user
-                        Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
-                        trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
-                    } else {
-                        trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
+            firebaseAuth.currentUser?.let { u ->
+                u.linkWithCredential(authCredential)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val user: FirebaseUser? = it.result.user
+                            Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
+                            trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
+                        } else {
+                            Log.e(TAG, "linkWithCredential: Not Successful")
+                            trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
+                        }
                     }
-                }
+            }
             awaitClose {
                 close()
             }
@@ -173,6 +176,7 @@ class AuthRepoImpl @Inject constructor(
                                 reAuthenticateUser(credential)
                                     .addOnCompleteListener { reAuthTask ->
                                         if (reAuthTask.isSuccessful) {
+                                            googleSignInClient.signOut()
                                             currentUser.delete()
                                                 .addOnCompleteListener { deleteTask ->
                                                     if (deleteTask.isSuccessful) {

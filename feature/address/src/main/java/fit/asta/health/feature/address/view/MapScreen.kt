@@ -1,6 +1,8 @@
 package fit.asta.health.feature.address.view
 
 import android.location.Address
+import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -11,9 +13,11 @@ import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import com.google.android.gms.maps.model.CameraPosition
@@ -23,6 +27,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getShortAddressName
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
+import fit.asta.health.data.address.remote.modal.PutAddressResponse
+import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTopBar
@@ -35,15 +41,27 @@ import java.util.*
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun MapScreen(
+    type: Int,
     myAddressItem: MyAddress,
-    searchSheetVisible: Boolean,
     markerAddressState: UiState<Address>,
+    searchResultState: UiState<SearchResponse>,
+    putAddressState: UiState<PutAddressResponse>,
     currentAddressState: UiState<Address>,
     onUiEvent: (MapScreenUiEvent) -> Unit
 ) {
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val context = LocalContext.current
 
     val bottomCardHeight = remember { 140.dp }
+    var searchSheetType by rememberSaveable { mutableStateOf<SearchSheetType?>(null) }
+    var fillAddressSheetType by rememberSaveable { mutableStateOf<FillAddressSheetType?>(null) }
+
+    val openFillAddressSheet: (FillAddressSheetType) -> Unit = {
+        fillAddressSheetType = it
+    }
+    val openSearchSheet: (SearchSheetType) -> Unit = {
+        searchSheetType = it
+    }
 
     val cameraPositionState = rememberCameraPositionState {
         position = CameraPosition.fromLatLngZoom(
@@ -91,6 +109,66 @@ internal fun MapScreen(
         sheetContent = {}
     ) { padding ->
 
+        if (searchSheetType != null) SearchBottomSheet(
+            type = searchSheetType!!,
+            searchResponseState = searchResultState,
+            onUiEvent = {
+                when (it) {
+                    SearchSheetUiEvent.Close -> {
+                        searchSheetType = null
+                    }
+
+                    SearchSheetUiEvent.ClearSearchResponse -> {
+                        onUiEvent(MapScreenUiEvent.ClearSearch)
+                    }
+
+                    is SearchSheetUiEvent.OnResultClick -> {
+                        cameraPositionState.position =
+                            CameraPosition.fromLatLngZoom(
+                                LatLng(
+                                    it.myAddress.lat,
+                                    it.myAddress.lon
+                                ), 18f
+                            )
+                    }
+
+                    is SearchSheetUiEvent.Search -> {
+                        onUiEvent(MapScreenUiEvent.Search(it.query))
+                    }
+                }
+            }
+        )
+
+        if (fillAddressSheetType != null) FillAddressSheet(
+            type = fillAddressSheetType!!,
+            putAddressState = putAddressState,
+            onUiEvent = {
+                when (it) {
+                    FillAddressUiEvent.ResetPutState -> {
+                        onUiEvent(MapScreenUiEvent.ResetPutState)
+                    }
+
+                    is FillAddressUiEvent.CloseSheet -> {
+                        fillAddressSheetType = null
+                    }
+
+                    is FillAddressUiEvent.OnPutSuccess -> {
+                        onUiEvent(MapScreenUiEvent.Back)
+                    }
+
+                    is FillAddressUiEvent.SaveAddress -> {
+                        Log.d("TAG", "MapScreen: ${it.myAddress}")
+                        Log.d("TAG", "MapScreen: $myAddressItem")
+                        if (it.myAddress == myAddressItem && type == 3) {
+                            Toast.makeText(context, "No changes found", Toast.LENGTH_SHORT).show()
+                        } else {
+                            onUiEvent(MapScreenUiEvent.PutAddress(it.myAddress))
+                        }
+                    }
+                }
+            }
+        )
+
         Box(
             modifier = Modifier
                 .fillMaxSize()
@@ -110,7 +188,7 @@ internal fun MapScreen(
                 )
             }
 
-            AnimatedVisibility(!searchSheetVisible) {
+            AnimatedVisibility(searchSheetType == null) {
                 OutlinedTextField(
                     maxLines = 1,
                     enabled = false,
@@ -119,7 +197,7 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .padding(spacing.small)
                         .clickable {
-                            onUiEvent(MapScreenUiEvent.ShowSearchSheet)
+                            openSearchSheet(SearchSheetType.FromMapScreen)
                         },
                     value = "",
                     onValueChange = {},
@@ -236,8 +314,8 @@ internal fun MapScreen(
                                         addressLine = data.getAddressLine(0),
                                         shortAddress = data.getShortAddressName()
                                     )
-                                    onUiEvent(
-                                        MapScreenUiEvent.ShowFillAddressSheet(
+                                    openFillAddressSheet(
+                                        FillAddressSheetType.EnterNewAddress(
                                             fillAddressSheetAddressItem
                                         )
                                     )
@@ -253,7 +331,11 @@ internal fun MapScreen(
                             ) {
                                 Text(
                                     maxLines = 1,
-                                    text = R.string.enter_complete_address.toStringFromResId(),
+                                    text = if (type == 3) {
+                                        R.string.edit_address
+                                    } else {
+                                        R.string.enter_complete_address
+                                    }.toStringFromResId(),
                                     overflow = TextOverflow.Ellipsis,
                                     style = MaterialTheme.typography.titleLarge
                                 )
