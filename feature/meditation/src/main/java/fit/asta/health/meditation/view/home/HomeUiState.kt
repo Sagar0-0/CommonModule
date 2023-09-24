@@ -1,4 +1,4 @@
-package fit.asta.health.tools.meditation.view.home
+package fit.asta.health.meditation.view.home
 
 data class HomeUiState(
     val targetAngle: Float=0f,

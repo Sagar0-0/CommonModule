@@ -1,4 +1,4 @@
-package fit.asta.health.tools.meditation.view.music
+package fit.asta.health.meditation.view.music
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -36,7 +36,6 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fit.asta.health.R
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
@@ -45,6 +44,7 @@ import fit.asta.health.player.audio.common.MusicState
 import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.AppIcons
 import fit.asta.health.player.domain.utils.asFormattedString
+import fit.asta.health.resources.strings.R
 
 
 @Composable

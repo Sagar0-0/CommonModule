@@ -1,4 +1,4 @@
-package fit.asta.health.tools.meditation.nav
+package fit.asta.health.meditation.nav
 
 
 sealed class MeditationScreen(val route: String) {

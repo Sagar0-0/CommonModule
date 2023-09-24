@@ -1,4 +1,4 @@
-package fit.asta.health.tools.meditation.viewmodel
+package fit.asta.health.meditation.viewmodel
 
 import android.content.Context
 import android.util.Log
@@ -22,6 +22,16 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
+import fit.asta.health.meditation.db.MeditationData
+import fit.asta.health.meditation.model.LocalRepo
+import fit.asta.health.meditation.model.MeditationRepo
+import fit.asta.health.meditation.model.domain.mapper.getMusicTool
+import fit.asta.health.meditation.model.network.PostRes
+import fit.asta.health.meditation.model.network.Prc
+import fit.asta.health.meditation.model.network.PutData
+import fit.asta.health.meditation.model.network.Value
+import fit.asta.health.meditation.view.home.HomeUiState
+import fit.asta.health.meditation.view.home.MEvent
 import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.audio.MusicServiceConnection
 import fit.asta.health.player.domain.mapper.asMediaItem
@@ -29,18 +39,6 @@ import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.MediaConstants
 import fit.asta.health.player.domain.utils.convertToPosition
 import fit.asta.health.player.presentation.screens.player.PlayerEvent
-import fit.asta.health.tools.meditation.db.MeditationData
-import fit.asta.health.tools.meditation.model.LocalRepo
-import fit.asta.health.tools.meditation.model.MeditationRepo
-import fit.asta.health.tools.meditation.model.domain.mapper.getMusicTool
-import fit.asta.health.tools.meditation.model.network.PostRes
-import fit.asta.health.tools.meditation.model.network.Prc
-import fit.asta.health.tools.meditation.model.network.PutData
-import fit.asta.health.tools.meditation.model.network.Value
-import fit.asta.health.tools.meditation.view.home.HomeUiState
-import fit.asta.health.tools.meditation.view.home.MEvent
-import fit.asta.health.tools.meditation.view.music.MusicEvents
-import fit.asta.health.tools.meditation.view.music.MusicViewState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -82,8 +80,8 @@ class MeditationViewModel @Inject constructor(
     val uiState: State<HomeUiState> = _uiState
 
     private val music = MutableStateFlow<Song?>(null)
-    private val _state = MutableStateFlow(MusicViewState())
-    private val list = mutableListOf<Song>()
+    private val list = mutableStateListOf<Song>()
+    val musicList = MutableStateFlow(list)
     private var rememberedState: Triple<String, Int, Long>? = null
     private val window: Timeline.Window = Timeline.Window()
     private val _trackList = mutableStateListOf("")
@@ -95,8 +93,6 @@ class MeditationViewModel @Inject constructor(
             started = SharingStarted.Eagerly,
             initialValue = "hi",
         )
-    val state: StateFlow<MusicViewState>
-        get() = _state
 
     private val listener = object : Player.Listener {
         override fun onTimelineChanged(timeline: Timeline, reason: Int) {
@@ -114,40 +110,6 @@ class MeditationViewModel @Inject constructor(
                 ?.also { rememberedState = null }
         }
     }
-    val listSong = listOf(
-        Song(
-            id = 1,
-            artist = "it.artist_name",
-            artworkUri = getImgUrl("/tags/Breathing+Tag.png").toUri(),
-            duration = duration(),
-            mediaUri = "https://storage.googleapis.com/downloads.webmproject.org/av1/exoplayer/bbb-av1-480p.mp4".toUri(),
-            title = "Day 1",
-        ),
-        Song(
-            id = 2,
-            artist = "it.artist_name",
-            artworkUri = getImgUrl("/tags/Water+Tag.png").toUri(),
-            duration = duration(),
-            mediaUri = "https://d28fbw0qer0joz.cloudfront.net/video/Multilanguage+Video.mp4".toUri(),
-            title = "Day 2",
-        ),
-        Song(
-            id = 3,
-            artist = "it.artist_name",
-            artworkUri = getImgUrl("/tags/Sleep+Tag.png").toUri(),
-            duration = duration(),
-            mediaUri = "https://d28fbw0qer0joz.cloudfront.net/video/Multilanguage+Video.mp4".toUri(),
-            title = "Day 3",
-        ),
-        Song(
-            id = 4,
-            artist = "it.artist_name",
-            artworkUri = getImgUrl("/tags/Walking+Tag.png").toUri(),
-            duration = duration(),
-            mediaUri = "https://d28fbw0qer0joz.cloudfront.net/video/Multilanguage+Video.mp4".toUri(),
-            title = "Day 2",
-        )
-    )
 
     init {
         player.apply {
@@ -155,7 +117,7 @@ class MeditationViewModel @Inject constructor(
         }
         loadData()
         loadLocalData()
-        loadMusicData()
+//        loadMusicData()
     }
 
 
@@ -396,11 +358,6 @@ class MeditationViewModel @Inject constructor(
 
     private fun loadMusicData() {
         viewModelScope.launch {
-            _state.value = _state.value.copy(
-                selectedAlbum = list,
-                isLoading = true,
-                errorMessage = null
-            )
             meditationRepo.getMusicTool(
                 uid = "6309a9379af54f142c65fbfe"
             ).collectLatest { result ->
@@ -419,12 +376,12 @@ class MeditationViewModel @Inject constructor(
                                 title = data.music.music_name,
                                 audioList = data.music.language
                             )
-                            list.clear()
+                            val listIterator = mutableListOf<Song>()
                             data.instructor.forEachIndexed { index, it ->
                                 val subUrl = it.music_url.split(".")
                                 val url = subUrl[0] + "_hi." + subUrl[1]
                                 Log.d("TAG", "loadMusicData: $url")
-                                list.add(
+                                listIterator.add(
                                     Song(
                                         id = index,
                                         artist = it.artist_name,
@@ -436,22 +393,15 @@ class MeditationViewModel @Inject constructor(
                                     )
                                 )
                             }
-                            list.reverse()
-                            _state.value = _state.value.copy(
-                                selectedAlbum = list,
-                                isLoading = false,
-                                errorMessage = null
-                            )
+                            listIterator.reverse()
+                            list.clear()
+                            list.addAll(listIterator)
+                            startPlayer(list)
                         }
                     }
 
                     is NetworkResult.Error -> {
                         Log.d("subhash", "music:ErrorMessage ${result.message}")
-                        _state.value = _state.value.copy(
-                            selectedAlbum = list,
-                            isLoading = false,
-                            errorMessage = result.message
-                        )
                     }
                 }
             }
@@ -459,51 +409,26 @@ class MeditationViewModel @Inject constructor(
         }
     }
 
-    fun onMusicEvent(event: MusicEvents) {
-        when (event) {
-            is MusicEvents.PlaySound -> {
-                playPauseList(
-                    isRunning = event.isRunning,
-                    playWhenReady = event.playWhenReady,
-                    startIndex = event.idx,
-                    list = state.value.selectedAlbum
 
-                )
-            }
-        }
-    }
-
-    private fun playPauseList(
+    private fun startPlayer(
         list: List<Song>,
         startIndex: Int = MediaConstants.DEFAULT_INDEX,
-        isRunning: Boolean = false,
-        playWhenReady: Boolean = false
     ) {
-        if (isRunning) {
-            if (!playWhenReady) {
-                musicServiceConnection.play()
-                backgroundPlayer?.play()
-            } else {
-                musicServiceConnection.pause()
-                backgroundPlayer?.pause()
+        musicServiceConnection.playSongs(
+            songs = list,
+            startIndex = startIndex
+        )
+        music.value?.let {
+            backgroundPlayer?.run {
+                setMediaItem(MediaItem.fromUri(it.mediaUri))
+                prepare()
+                volume = 0.3f
+                repeatMode = Player.REPEAT_MODE_ONE
+                play()
             }
-        } else {
-            musicServiceConnection.playSongs(
-                songs = list,
-                startIndex = startIndex
-            )
-            music.value?.let {
-                backgroundPlayer?.run {
-                    setMediaItem(MediaItem.fromUri(it.mediaUri))
-                    prepare()
-                    volume = 0.3f
-                    repeatMode = Player.REPEAT_MODE_ONE
-                    play()
-                }
-            }
-            _trackList.clear()
-            _trackList.addAll(list[startIndex].audioList)
         }
+        _trackList.clear()
+        _trackList.addAll(list[startIndex].audioList)
     }
 
 
@@ -522,6 +447,7 @@ class MeditationViewModel @Inject constructor(
 
     fun onAudioEvent(event: PlayerEvent) {
         when (event) {
+            is PlayerEvent.PlayIndex -> playIndex(event.index)
             is PlayerEvent.Play -> play()
             is PlayerEvent.Pause -> pause()
             is PlayerEvent.SkipNext -> skipNext()
@@ -556,6 +482,9 @@ class MeditationViewModel @Inject constructor(
         _trackList.addAll(list[player.previousMediaItemIndex].audioList)
     }
 
+    fun playIndex(index: Int) {
+        musicServiceConnection.playIndex(index)
+    }
 
     fun play() {
         musicServiceConnection.play()

@@ -1,4 +1,5 @@
-package fit.asta.health.tools.meditation.view.level
+package fit.asta.health.meditation.view.instructor
+
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -17,7 +18,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -28,27 +29,27 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 
+
 @Composable
-fun LevelScreen(
+fun InstructorScreen(
     onClick: (String) -> Unit,
     onBack: () -> Unit
 ) {
     val itemList = listOf(
-        "Beginner 1",
-        "Beginner 2",
-        "Intermediate ",
-        "Advanced",
-        "Expert"
+        "Darlene Robertson",
+        "Ronald Richards",
+        "Guy Hawkins",
+        "Robert Fox"
     )
 
     val itemSelection = remember {
-        mutableStateOf(-1)
+        mutableIntStateOf(-1)
     }
     AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             AppTopBarWithHelp(
-                title = "Level",
+                title = "Instructor",
                 onBack = onBack,
                 onHelp = { /*TODO*/ }
             )
@@ -58,7 +59,7 @@ fun LevelScreen(
             item {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "SSelect the Level based on experience",
+                    text = "Select the Instructor",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     style = MaterialTheme.typography.bodyLarge
@@ -72,11 +73,11 @@ fun LevelScreen(
                         .height(60.dp)
                         .clickable {
                             onClick(itemList[indexNumber])
-                            itemSelection.value =
-                                if (itemSelection.value != indexNumber) indexNumber
+                            itemSelection.intValue =
+                                if (itemSelection.intValue != indexNumber) indexNumber
                                 else -1
                         },
-                    color = if (itemSelection.value != indexNumber) {
+                    color = if (itemSelection.intValue != indexNumber) {
                         Color(0xFFE9D7F7)
                     } else {
                         Color(0xFF7415BD)
@@ -110,3 +111,6 @@ fun LevelScreen(
     }
 
 }
+
+
+

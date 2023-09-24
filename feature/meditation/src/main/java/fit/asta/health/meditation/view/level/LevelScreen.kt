@@ -1,5 +1,4 @@
-package fit.asta.health.tools.meditation.view.instructor
-
+package fit.asta.health.meditation.view.level
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -29,17 +28,17 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 
-
 @Composable
-fun InstructorScreen(
+fun LevelScreen(
     onClick: (String) -> Unit,
     onBack: () -> Unit
 ) {
     val itemList = listOf(
-        "Darlene Robertson",
-        "Ronald Richards",
-        "Guy Hawkins",
-        "Robert Fox"
+        "Beginner 1",
+        "Beginner 2",
+        "Intermediate ",
+        "Advanced",
+        "Expert"
     )
 
     val itemSelection = remember {
@@ -49,7 +48,7 @@ fun InstructorScreen(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             AppTopBarWithHelp(
-                title = "Instructor",
+                title = "Level",
                 onBack = onBack,
                 onHelp = { /*TODO*/ }
             )
@@ -59,7 +58,7 @@ fun InstructorScreen(
             item {
                 Text(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "Select the Instructor",
+                    text = "SSelect the Level based on experience",
                     fontWeight = FontWeight.Bold,
                     fontSize = 18.sp,
                     style = MaterialTheme.typography.bodyLarge
@@ -111,6 +110,3 @@ fun InstructorScreen(
     }
 
 }
-
-
-

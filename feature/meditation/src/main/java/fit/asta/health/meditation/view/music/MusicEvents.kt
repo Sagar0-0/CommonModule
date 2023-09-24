@@ -1,4 +1,4 @@
-package fit.asta.health.tools.meditation.view.music
+package fit.asta.health.meditation.view.music
 
 
 sealed class MusicEvents {

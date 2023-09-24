@@ -1,6 +1,7 @@
-package fit.asta.health.tools.meditation.view.home
+package fit.asta.health.meditation.view.home
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -15,19 +16,23 @@ import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
+import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.tools.walking.view.home.SunlightCard
+import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -247,6 +252,48 @@ fun MeditationBottomSheet(
                     Event(MEvent.End(context))
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun SunlightCard(modifier: Modifier) {
+    val checked = remember { mutableStateOf(true) }
+    Card(
+        modifier = modifier,
+        shape = RoundedCornerShape(8.dp),
+        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
+    ) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
+            horizontalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalAlignment = Alignment.Top
+        ) {
+            Image(
+                painter = painterResource(id = R.drawable.ic_ic24_notification),
+                contentDescription = null,
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Text(text = "Sunlight", fontSize = 12.sp, fontWeight = FontWeight.Bold)
+                Text(
+                    text = "There will be addition of 500 ml to 1 Litre of water to your daily intake based on the weather temperature.",
+                    fontSize = 12.sp
+                )
+            }
+            Column(
+                verticalArrangement = Arrangement.SpaceAround
+            ) {
+                Switch(
+                    checked = checked.value,
+                    onCheckedChange = { checked.value = it },
+                )
+            }
+
         }
     }
 }
