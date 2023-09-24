@@ -1,14 +1,14 @@
 package fit.asta.health.tools.breathing.model.domain.mapper
 
 
+import fit.asta.health.meditation.model.domain.model.MusicData
+import fit.asta.health.meditation.model.domain.model.MusicTool
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.NetPut
 import fit.asta.health.tools.breathing.model.network.request.Prc
 import fit.asta.health.tools.breathing.model.network.request.Value
-import fit.asta.health.tools.meditation.model.domain.model.MusicData
-import fit.asta.health.tools.meditation.model.domain.model.MusicTool
 
 
 fun NetGetStart.getMusicTool(): MusicTool {

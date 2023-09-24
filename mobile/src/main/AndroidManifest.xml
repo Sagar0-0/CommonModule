@@ -109,14 +109,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="o_mr1" />
         <activity
-            android:name=".player.audio.AudioPlayerActivity"
-            android:exported="true"
-            android:theme="@style/Theme.MusicPlayer">
-            <meta-data
-                android:name="android.app.lib_name"
-                android:value="" />
-        </activity>
-        <activity
             android:name=".tools.walking.view.WalkingActivity"
             android:exported="true">
             <intent-filter android:autoVerify="true">
@@ -184,10 +176,6 @@
                 <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".player.video.VideoActivity"
-            android:configChanges="colorMode|density|fontScale|keyboard|keyboardHidden|layoutDirection|locale|mcc|mnc|navigation|orientation|screenLayout|screenSize|smallestScreenSize|touchscreen|uiMode"
-            android:exported="true" />
 
         <service
             android:name=".player.audio.MusicService"
