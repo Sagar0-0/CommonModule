@@ -16,9 +16,7 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -29,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.molecular.background.AstaScreen
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackMeditationScreenControl
@@ -66,62 +64,57 @@ class TrackStatisticsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
-                Surface(
-                    modifier = Modifier.fillMaxSize(),
-                    color = MaterialTheme.colorScheme.background
-                ) {
+            AstaScreen {
 
-                    // Track View Model
-                    trackViewModel = hiltViewModel()
-                    val title = intent.extras?.getString("title") ?: ""
+                // Track View Model
+                trackViewModel = hiltViewModel()
+                val title = intent.extras?.getString("title") ?: ""
 
-                    // Selected Date Data is received from the previous Intent
-                    val date = intent.extras?.getInt("date")
-                    val month = intent.extras?.getInt("month")
-                    val year = intent.extras?.getInt("year")
+                // Selected Date Data is received from the previous Intent
+                val date = intent.extras?.getInt("date")
+                val month = intent.extras?.getInt("month")
+                val year = intent.extras?.getInt("year")
 
-                    // Setting the Date which was chosen in the Home Menu Screen
-                    if (date != null && month != null && year != null) {
-                        val localDate = LocalDate.of(year, month, date)
-                        trackViewModel.uiEventListener(TrackUiEvent.SetNewDate(localDate))
-                    }
+                // Setting the Date which was chosen in the Home Menu Screen
+                if (date != null && month != null && year != null) {
+                    val localDate = LocalDate.of(year, month, date)
+                    trackViewModel.uiEventListener(TrackUiEvent.SetNewDate(localDate))
+                }
 
-                    Scaffold(
-                        modifier = Modifier
-                            .fillMaxSize(),
+                Scaffold(
+                    modifier = Modifier
+                        .fillMaxSize(),
 
-                        topBar = {
-                            Row(
+                    topBar = {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                        ) {
+
+                            Icon(
+                                imageVector = Icons.Default.ArrowBackIos,
+                                contentDescription = null,
                                 modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-                                verticalAlignment = Alignment.CenterVertically,
-                                horizontalArrangement = Arrangement.spacedBy(spacing.medium)
-                            ) {
+                                    .size(18.dp)
+                                    .clickable {
+                                        finish()
+                                    }
+                            )
 
-                                Icon(
-                                    imageVector = Icons.Default.ArrowBackIos,
-                                    contentDescription = null,
-                                    modifier = Modifier
-                                        .size(18.dp)
-                                        .clickable {
-                                            finish()
-                                        }
-                                )
+                            Text(
+                                text = "${title[0].uppercase() + title.substring(1)} Statistics",
+                                fontSize = 18.sp,
+                                fontWeight = FontWeight.W500
+                            )
 
-                                Text(
-                                    text = "${title[0].uppercase() + title.substring(1)} Statistics",
-                                    fontSize = 18.sp,
-                                    fontWeight = FontWeight.W500
-                                )
-
-                            }
                         }
-                    ) {
-                        Box(modifier = Modifier.padding(it)) {
-                            ShowStatistics(title)
-                        }
+                    }
+                ) {
+                    Box(modifier = Modifier.padding(it)) {
+                        ShowStatistics(title)
                     }
                 }
             }

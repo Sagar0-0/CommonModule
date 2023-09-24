@@ -54,8 +54,9 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.molecular.background.AstaScreen
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
-import fit.asta.health.navigation.track.ui.components.TrackDatePicker
+import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
@@ -97,146 +98,148 @@ fun TrackMenuScreenControl() {
 
     val tabList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(
-                Color(
-                    ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
-                        0.08f
+    AstaScreen {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .background(
+                    Color(
+                        ColorUtils.blendARGB(
+                            MaterialTheme.colorScheme.surface.toArgb(),
+                            MaterialTheme.colorScheme.onSurface.toArgb(),
+                            0.08f
+                        )
                     )
                 )
-            )
-            .pointerInput(Unit) {
+                .pointerInput(Unit) {
 
-                // Detects all the drag gestures and processes the data accordingly
-                detectDragGestures(
+                    // Detects all the drag gestures and processes the data accordingly
+                    detectDragGestures(
 
-                    // This is called when the drag is started
-                    onDrag = { change, dragAmount ->
-                        change.consume()
+                        // This is called when the drag is started
+                        onDrag = { change, dragAmount ->
+                            change.consume()
 
-                        when {
+                            when {
 
-                            // Right Drag
-                            dragAmount.x > 0 -> {
-                                isRightDrag.value = true
-                                isLeftDrag.value = false
+                                // Right Drag
+                                dragAmount.x > 0 -> {
+                                    isRightDrag.value = true
+                                    isLeftDrag.value = false
+                                }
+
+                                // Left Drag
+                                dragAmount.x < 0 -> {
+                                    isLeftDrag.value = true
+                                    isRightDrag.value = false
+                                }
                             }
+                        },
 
-                            // Left Drag
-                            dragAmount.x < 0 -> {
-                                isLeftDrag.value = true
+                        // This is called when the drag is completed
+                        onDragEnd = {
+
+                            // If the drag is a right drag
+                            if (isRightDrag.value && selectedItem.intValue > 0 && homeMenuState !is UiState.Loading) {
+
+                                // Checking which tab option is selected by the User and showing the UI Accordingly
+                                selectedItem.intValue = selectedItem.intValue - 1
+                                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+
+                                // Resetting the drag flags
                                 isRightDrag.value = false
                             }
-                        }
-                    },
 
-                    // This is called when the drag is completed
-                    onDragEnd = {
+                            // If the drag is a left drag
+                            if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1 && homeMenuState !is UiState.Loading) {
 
-                        // If the drag is a right drag
-                        if (isRightDrag.value && selectedItem.intValue > 0 && homeMenuState !is UiState.Loading) {
+                                // Checking which tab option is selected by the User and showing the UI Accordingly
+                                selectedItem.intValue = selectedItem.intValue + 1
+                                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
 
-                            // Checking which tab option is selected by the User and showing the UI Accordingly
-                            selectedItem.intValue = selectedItem.intValue - 1
-                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                                // Resetting the drag flags
+                                isLeftDrag.value = false
+                            }
+                        },
 
-                            // Resetting the drag flags
+                        // This function is called when the drag is cancelled
+                        onDragCancel = {
+
+                            // Resetting all the drag flags
+                            isLeftDrag.value = false
                             isRightDrag.value = false
                         }
-
-                        // If the drag is a left drag
-                        if (isLeftDrag.value && selectedItem.intValue < tabList.size - 1 && homeMenuState !is UiState.Loading) {
-
-                            // Checking which tab option is selected by the User and showing the UI Accordingly
-                            selectedItem.intValue = selectedItem.intValue + 1
-                            setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-
-                            // Resetting the drag flags
-                            isLeftDrag.value = false
-                        }
-                    },
-
-                    // This function is called when the drag is cancelled
-                    onDragCancel = {
-
-                        // Resetting all the drag flags
-                        isLeftDrag.value = false
-                        isRightDrag.value = false
-                    }
-                )
-            },
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-
-        // This Function makes the Tab Layout UI
-        TrackTopTabBar(
-            tabList = tabList,
-            selectedItem = selectedItem.intValue
+                    )
+                },
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            if (selectedItem.intValue != it && homeMenuState !is UiState.Loading) {
+            // This Function makes the Tab Layout UI
+            TrackTopTabBar(
+                tabList = tabList,
+                selectedItem = selectedItem.intValue
+            ) {
 
-                // Checking which tab option is selected by the User and showing the UI Accordingly
-                selectedItem.intValue = it
-                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-            }
-        }
+                if (selectedItem.intValue != it && homeMenuState !is UiState.Loading) {
 
-        // Date Picker
-        TrackDatePicker(
-            localDate = localDate,
-            onPreviousButtonClick = {
-                setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
-                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-            },
-            onNextButtonClick = {
-                setUiEvent(TrackUiEvent.ClickedNextDateButton)
-                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-            },
-            onDateChanged = {
-                setUiEvent(TrackUiEvent.SetNewDate(it))
-                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-            }
-        )
-
-        // This conditional handles the State of the Api call and shows the UI according to the state
-        when (homeMenuState) {
-
-            // Initialized State
-            is UiState.Idle -> {
-                setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
-                setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                LoadingAnimation(modifier = Modifier.fillMaxSize())
-            }
-
-            // Success State
-            is UiState.Success -> {
-                TrackMenuSuccessScreen(
-                    homeMenuData = homeMenuState.data.homeMenuData,
-                    localDate = localDate
-                )
-            }
-
-            // failure State
-            is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    isInternetError = false,
-                    desc = homeMenuState.resId.toStringFromResId()
-                ) {
-                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                    // Checking which tab option is selected by the User and showing the UI Accordingly
+                    selectedItem.intValue = it
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }
             }
 
-            else -> {}
+            // Date Picker
+            AstaDatePicker(
+                localDate = localDate,
+                onPreviousButtonClick = {
+                    setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                },
+                onNextButtonClick = {
+                    setUiEvent(TrackUiEvent.ClickedNextDateButton)
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                },
+                onDateChanged = {
+                    setUiEvent(TrackUiEvent.SetNewDate(it))
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
+            )
+
+            // This conditional handles the State of the Api call and shows the UI according to the state
+            when (homeMenuState) {
+
+                // Initialized State
+                is UiState.Idle -> {
+                    setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                    setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                }
+
+                // Loading State
+                is UiState.Loading -> {
+                    LoadingAnimation(modifier = Modifier.fillMaxSize())
+                }
+
+                // Success State
+                is UiState.Success -> {
+                    TrackMenuSuccessScreen(
+                        homeMenuData = homeMenuState.data.homeMenuData,
+                        localDate = localDate
+                    )
+                }
+
+                // failure State
+                is UiState.ErrorMessage -> {
+                    AppErrorScreen(
+                        isInternetError = false,
+                        desc = homeMenuState.resId.toStringFromResId()
+                    ) {
+                        setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
+                        setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
+                    }
+                }
+
+                else -> {}
+            }
         }
     }
 }
