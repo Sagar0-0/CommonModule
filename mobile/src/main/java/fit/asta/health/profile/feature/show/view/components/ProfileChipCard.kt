@@ -20,12 +20,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.HealthProperties
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

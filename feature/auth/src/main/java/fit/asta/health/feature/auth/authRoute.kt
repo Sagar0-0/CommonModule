@@ -16,6 +16,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.feature.auth.screens.AuthEvent
 import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -84,11 +85,26 @@ fun NavGraphBuilder.authRoute(
 
 
         AuthScreen(
-            loginState = loginState,
-            navigateToWebView = navigateToWebView,
-            checkProfileAndNavigate = checkProfileAndNavigate,
-            signInWithCredentials = authViewModel::signInWithGoogleCredentials
-        )
+            loginState = loginState
+        ) {
+            when (it) {
+                AuthEvent.ResetLoginState -> {
+                    authViewModel.resetLoginState()
+                }
+
+                is AuthEvent.NavigateToWebView -> {
+                    navigateToWebView(it.url)
+                }
+
+                is AuthEvent.SignInWithCredentials -> {
+                    authViewModel.signInWithGoogleCredentials(it.authCredential)
+                }
+
+                is AuthEvent.CheckProfileAndNavigate -> {
+                    checkProfileAndNavigate(it.user)
+                }
+            }
+        }
     }
 }
 

@@ -21,7 +21,6 @@ import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
 import androidx.compose.ui.unit.sp
-import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
@@ -38,9 +37,7 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 internal fun AuthScreen(
     loginState: UiState<User>,
-    navigateToWebView: (String) -> Unit,
-    checkProfileAndNavigate: (User) -> Unit,
-    signInWithCredentials: (AuthCredential) -> Unit
+    onAuthEvent: (AuthEvent) -> Unit
 ) {
     val context = LocalContext.current
     Column(
@@ -61,7 +58,7 @@ internal fun AuthScreen(
 
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
-                    checkProfileAndNavigate(loginState.data)
+                    onAuthEvent(AuthEvent.CheckProfileAndNavigate(loginState.data))
                 }
             }
 
@@ -74,8 +71,17 @@ internal fun AuthScreen(
             modifier = Modifier.weight(1f)
         )
 
-        PhoneSignIn(signInWithCredentials)
-        GoogleSignIn(StringR.string.sign_in_with_google, signInWithCredentials)
+        PhoneSignIn(
+            failed = loginState is UiState.ErrorMessage,
+            resetFailedState = {
+                onAuthEvent(AuthEvent.ResetLoginState)
+            }
+        ) {
+            onAuthEvent(AuthEvent.SignInWithCredentials(it))
+        }
+        GoogleSignIn(StringR.string.sign_in_with_google) {
+            onAuthEvent(AuthEvent.SignInWithCredentials(it))
+        }
 
         val annotatedLinkString: AnnotatedString = buildAnnotatedString {
 
@@ -140,7 +146,7 @@ internal fun AuthScreen(
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navigateToWebView(url)
+                        onAuthEvent(AuthEvent.NavigateToWebView(url))
                     }
                 annotatedLinkString
                     .getStringAnnotations("privacy", it, it)
@@ -149,7 +155,7 @@ internal fun AuthScreen(
                             stringAnnotation.item,
                             StandardCharsets.UTF_8.toString()
                         )
-                        navigateToWebView(url)
+                        onAuthEvent(AuthEvent.NavigateToWebView(url))
                     }
             }
         )

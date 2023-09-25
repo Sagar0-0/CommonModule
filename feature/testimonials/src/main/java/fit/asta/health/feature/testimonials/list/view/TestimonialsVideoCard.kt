@@ -34,14 +34,14 @@ import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.theme.aspectRatio
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.feature.testimonials.components.ArtistCard
-import fit.asta.health.player.jetpack_video.media.Media
-import fit.asta.health.player.jetpack_video.media.ResizeMode
-import fit.asta.health.player.jetpack_video.media.rememberMediaState
-import fit.asta.health.player.jetpack_video.video.ControllerType
-import fit.asta.health.player.jetpack_video.video.component.PlayerControlViewController
-import fit.asta.health.player.jetpack_video.video.component.SimpleController
-import fit.asta.health.player.jetpack_video.video.component.VideoState
-import fit.asta.health.player.jetpack_video.video.component.rememberManagedExoPlayer
+import fit.asta.health.player.media.Media
+import fit.asta.health.player.media.ResizeMode
+import fit.asta.health.player.media.rememberMediaState
+import fit.asta.health.player.presentation.ControllerType
+import fit.asta.health.player.presentation.component.PlayerControlViewController
+import fit.asta.health.player.presentation.component.SimpleController
+import fit.asta.health.player.presentation.component.VideoState
+import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 
 @Composable
 fun TstViewVideoLayout(
@@ -144,11 +144,17 @@ fun VideoView(
             controller = when (uiState.controllerType) {
                 ControllerType.None -> null
                 ControllerType.Simple -> @Composable { state1 ->
-                    SimpleController(state1, Modifier.fillMaxSize())
+                    SimpleController(
+                        state1,
+                        Modifier.fillMaxSize()
+                    )
                 }
 
                 ControllerType.PlayerControlView -> @Composable { state1 ->
-                    PlayerControlViewController(state1, Modifier.fillMaxSize())
+                    PlayerControlViewController(
+                        state1,
+                        Modifier.fillMaxSize()
+                    )
                 }
             })
     }

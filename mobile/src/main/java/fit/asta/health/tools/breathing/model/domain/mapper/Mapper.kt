@@ -1,14 +1,14 @@
 package fit.asta.health.tools.breathing.model.domain.mapper
 
 
+import fit.asta.health.meditation.model.domain.model.MusicData
+import fit.asta.health.meditation.model.domain.model.MusicTool
 import fit.asta.health.tools.breathing.model.domain.model.BreathingTool
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
 import fit.asta.health.tools.breathing.model.network.request.NetPut
 import fit.asta.health.tools.breathing.model.network.request.Prc
 import fit.asta.health.tools.breathing.model.network.request.Value
-import fit.asta.health.tools.meditation.model.domain.model.MusicData
-import fit.asta.health.tools.meditation.model.domain.model.MusicTool
 
 
 fun NetGetStart.getMusicTool(): MusicTool {
@@ -18,7 +18,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
             artist_url = this.data.musicData.artist.url,
             duration = this.data.musicData.music.duration,
             imgUrl = this.data.musicData.music.imgUrl,
-            language = this.data.musicData.music.language,
+            language = listOf(this.data.musicData.music.language),
             music_name = this.data.musicData.music.name,
             music_url = this.data.musicData.music.url
         ),
@@ -28,7 +28,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
                 artist_url = "hoi",
                 duration = it.mda.instructorMda.duration,
                 imgUrl = "hidf",
-                language = it.mda.instructorMda.language,
+                language = listOf(it.mda.instructorMda.language),
                 music_name = it.mda.instructorMda.name,
                 music_url = it.mda.instructorMda.url
             )

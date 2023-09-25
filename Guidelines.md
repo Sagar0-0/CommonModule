@@ -15,6 +15,8 @@ Add this feature route in MainNavHost
 In Repo,
 - Expose ResponseState wrapper for suspend functions
 - use getResponseState{} fxn for wrapping any data calls
+- use ApiErrorHandler class to override the functions and add you own status code Handling(must
+  override super methods).
 - Expose Flow<*> for observables with non-suspend functions
 - Inject dispatcher and Use withContext(dispatcher) to have main safe suspend calls
 - for thr work that needs to be surely done even when user leaves the screen, then use externalScope.launch{ //work// }.join()

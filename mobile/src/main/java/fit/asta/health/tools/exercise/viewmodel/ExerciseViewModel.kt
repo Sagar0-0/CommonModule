@@ -14,9 +14,9 @@ import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
-import fit.asta.health.player.jetpack_audio.domain.data.Song
-import fit.asta.health.player.jetpack_audio.domain.utils.convertToProgress
-import fit.asta.health.player.jetpack_video.video.component.VideoState
+import fit.asta.health.player.domain.model.Song
+import fit.asta.health.player.domain.utils.convertToProgress
+import fit.asta.health.player.presentation.component.VideoState
 import fit.asta.health.tools.exercise.db.ExerciseData
 import fit.asta.health.tools.exercise.model.ExerciseLocalRepo
 import fit.asta.health.tools.exercise.model.ExerciseRepo
@@ -284,10 +284,7 @@ class ExerciseViewModel @Inject constructor(
                                     Song(
                                         id = 55,
                                         artist = data.music.artist_name,
-                                        artistId = 333,
                                         artworkUri = "https://img2.asta.fit${data.music.artist_url}".toUri(),
-                                        album = "",
-                                        albumId = 5566,
                                         duration = 4,
                                         mediaUri = "https://stream1.asta.fit/${data.music.music_url}".toUri(),
                                         title = data.music.music_name,

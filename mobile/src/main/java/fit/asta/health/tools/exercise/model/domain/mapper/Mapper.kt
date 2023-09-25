@@ -1,10 +1,10 @@
 package fit.asta.health.tools.exercise.model.domain.mapper
 
+import fit.asta.health.meditation.model.domain.model.MusicData
+import fit.asta.health.meditation.model.domain.model.MusicTool
 import fit.asta.health.tools.exercise.model.domain.model.ExerciseTool
 import fit.asta.health.tools.exercise.model.network.NetGetRes
 import fit.asta.health.tools.exercise.model.network.NetGetStart
-import fit.asta.health.tools.meditation.model.domain.model.MusicData
-import fit.asta.health.tools.meditation.model.domain.model.MusicTool
 
 fun NetGetRes.getExerciseTool():ExerciseTool{
     return when(this.data.toolData.code){
@@ -154,7 +154,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
             artist_url = this.data.musicData.artist.url,
             duration = this.data.musicData.music.dur,
             imgUrl = this.data.musicData.music.imgUrl,
-            language = this.data.musicData.music.lang,
+            language = listOf(this.data.musicData.music.lang),
             music_name = this.data.musicData.music.name,
             music_url = this.data.musicData.music.url
         ),
@@ -164,7 +164,7 @@ fun NetGetStart.getMusicTool(): MusicTool {
                 artist_url = it.artist.url,
                 duration = it.music.dur,
                 imgUrl = it.music.imgUrl,
-                language = it.music.lang,
+                language = listOf(it.music.lang),
                 music_name = it.music.name,
                 music_url = it.music.url
             )

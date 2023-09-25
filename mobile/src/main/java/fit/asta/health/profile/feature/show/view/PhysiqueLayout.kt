@@ -5,9 +5,9 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
+import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.Physique
 import fit.asta.health.profile.feature.show.view.components.GenderOptionsLayout
 
 @Composable

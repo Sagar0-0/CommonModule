@@ -1,13 +1,12 @@
 package fit.asta.health.feature.profile.ui
 
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
@@ -21,6 +20,7 @@ import androidx.compose.material3.Button
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
+import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,7 +45,6 @@ import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.theme.LocalBoxSize
-import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
@@ -57,10 +56,12 @@ import fit.asta.health.resources.strings.R as StringR
 fun BasicProfileScreen(
     user: User,
     checkReferralCodeState: UiState<CheckReferralDTO>,
+    linkAccountState: UiState<User>,
     createBasicProfileState: UiState<Boolean>,
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit
 ) {
+    Log.d("TAG", "BasicProfileScreen: $user")
     val context = LocalContext.current
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -68,7 +69,9 @@ fun BasicProfileScreen(
 
     val imagePickerLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            profileImageUri = uri
+            uri?.let {
+                profileImageUri = it
+            }
         }
 
     AppScaffold(
@@ -87,10 +90,10 @@ fun BasicProfileScreen(
                 mutableStateOf(user.name ?: "")
             }
             val email by rememberSaveable {
-                mutableStateOf(user.email ?: "")
+                mutableStateOf("")
             }
             val phone by rememberSaveable {
-                mutableStateOf(user.phoneNumber ?: "")
+                mutableStateOf("")
             }
             val gender by rememberSaveable {
                 mutableStateOf("1")
@@ -109,46 +112,53 @@ fun BasicProfileScreen(
                 }
             }
 
-            Box(
-                modifier = Modifier
-                    .padding(LocalSpacing.current.medium)
-                    .align(Alignment.CenterHorizontally)
-                    .size(LocalBoxSize.current.medium)
-                    .clip(CircleShape)
-                    .clickable {
+            if (profileImageUri == null && user.photoUrl == null) {
+                Surface(
+                    onClick = {
                         imagePickerLauncher.launch("image/*")
                     },
-                contentAlignment = Alignment.Center
-            ) {
-                if (profileImageUri == null && user.photoUrl.isNullOrEmpty()) {
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .align(Alignment.CenterHorizontally)
+                        .size(LocalBoxSize.current.medium)
+                ) {
                     Image(
-                        modifier = Modifier
-                            .clip(CircleShape),
                         painter = painterResource(id = DrawR.drawable.ic_person),
                         contentDescription = "Profile",
                         contentScale = ContentScale.Crop
                     )
-                } else {
-                    Image(
-                        modifier = Modifier
-                            .clip(CircleShape),
-                        painter = rememberAsyncImagePainter(
-                            model = if (profileImageUri != null) {
-                                profileImageUri
-                            } else {
-                                user.photoUrl
-                            }
-                        ),
-                        contentDescription = "Profile",
-                        contentScale = ContentScale.Crop
-                    )
+                }
+            } else {
+                Surface(
+                    onClick = {
+                        imagePickerLauncher.launch("image/*")
+                    },
+                    modifier = Modifier
+                        .clip(CircleShape)
+                        .align(Alignment.CenterHorizontally)
+                        .size(LocalBoxSize.current.medium)
+                ) {
+                    if (profileImageUri != null) {
+                        Image(
+                            painter = rememberAsyncImagePainter(profileImageUri),
+                            contentDescription = "Profile",
+                            contentScale = ContentScale.Crop
+                        )
+                    } else {
+                        Image(
+                            painter = rememberAsyncImagePainter(user.photoUrl),
+                            contentDescription = "Profile",
+                            contentScale = ContentScale.Crop
+                        )
+                    }
                 }
             }
 
 
+
             AstaValidatedTextField(
                 label = StringR.string.name,
-                value = name,
+                value = name.ifEmpty { user.name ?: "" },
                 onValueChange = { s -> name = s }
             )
             Crossfade(
@@ -163,7 +173,7 @@ fun BasicProfileScreen(
                     }
                 } else {
                     Row {
-                        Text(email)
+                        Text(user.email ?: email)
                         Icon(imageVector = Icons.Default.Verified, contentDescription = "")
                     }
                 }
@@ -171,12 +181,16 @@ fun BasicProfileScreen(
 
             Crossfade(targetState = user.phoneNumber, label = "") { ph ->
                 if (ph.isNullOrEmpty()) {
-                    PhoneSignIn { cred ->
+                    PhoneSignIn(
+                        failed = linkAccountState is UiState.ErrorMessage,
+                        resetFailedState = {
+                            onEvent(BasicProfileEvent.ResetLinkAccountState)
+                        }) { cred ->
                         onEvent(BasicProfileEvent.Link(cred))
                     }
                 } else {
                     Row {
-                        Text(phone)
+                        Text("Phone: " + (user.phoneNumber ?: phone))
                         Icon(imageVector = Icons.Default.Verified, contentDescription = "")
                     }
                 }

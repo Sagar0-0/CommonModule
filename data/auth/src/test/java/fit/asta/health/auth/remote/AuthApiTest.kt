@@ -11,6 +11,7 @@ import fit.asta.health.datastore.UserPreferencesData
 import io.mockk.every
 import io.mockk.mockk
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -57,7 +58,7 @@ class AuthApiTest {
     }
 
     @Test
-    fun `getAddresses, return Error`() = runTest {
+    fun `deleteAccount, return Error`() = runTest {
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)
@@ -66,7 +67,10 @@ class AuthApiTest {
         val firebaseAuth: FirebaseAuth = mockk()
         every { firebaseAuth.currentUser } returns mockk()
         every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AuthRepoImpl(mockk(), api, mockk(), firebaseAuth, pref)
+        val repo = AuthRepoImpl(
+            mockk(), api, mockk(), mockk(), firebaseAuth, pref,
+            UnconfinedTestDispatcher()
+        )
         val data = repo.deleteAccount()
         server.takeRequest()
         data.test {

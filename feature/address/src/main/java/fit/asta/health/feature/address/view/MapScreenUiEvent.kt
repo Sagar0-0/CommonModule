@@ -5,8 +5,10 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 
 internal sealed interface MapScreenUiEvent {
     data class GetMarkerAddress(val latLng: LatLng) : MapScreenUiEvent
+    data class Search(val query: String) : MapScreenUiEvent
+    data class PutAddress(val address: MyAddress) : MapScreenUiEvent
     data object Back : MapScreenUiEvent
+    data object ResetPutState : MapScreenUiEvent
+    data object ClearSearch : MapScreenUiEvent
     data object UseCurrentLocation : MapScreenUiEvent
-    data object ShowSearchSheet : MapScreenUiEvent
-    class ShowFillAddressSheet(val myAddress: MyAddress) : MapScreenUiEvent
 }

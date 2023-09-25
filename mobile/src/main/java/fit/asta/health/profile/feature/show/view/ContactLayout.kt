@@ -32,6 +32,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.data.profile.remote.model.Address
+import fit.asta.health.data.profile.remote.model.Contact
+import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDrawImg
@@ -41,9 +44,6 @@ import fit.asta.health.designsystem.theme.ProfileBorder2
 import fit.asta.health.designsystem.theme.ProfileBorder3
 import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.Address
-import fit.asta.health.profile.data.model.domain.Contact
-import fit.asta.health.profile.data.model.domain.ProfileMedia
 
 @Composable
 fun ContactLayout(

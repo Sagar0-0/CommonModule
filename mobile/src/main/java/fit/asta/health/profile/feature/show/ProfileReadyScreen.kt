@@ -31,9 +31,9 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.data.profile.remote.model.UserProfile
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.profile.data.model.domain.UserProfile
 import fit.asta.health.profile.feature.show.view.ContactLayout
 import fit.asta.health.profile.feature.show.view.DietLayout
 import fit.asta.health.profile.feature.show.view.HealthLayout

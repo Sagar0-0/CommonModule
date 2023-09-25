@@ -63,6 +63,8 @@ import kotlin.time.Duration.Companion.seconds
 
 @Composable
 fun PhoneSignIn(
+    failed: Boolean = false,
+    resetFailedState: () -> Unit,
     signInWithCredentials: (AuthCredential) -> Unit
 ) {
     var phoneNumber by rememberSaveable {
@@ -89,10 +91,26 @@ fun PhoneSignIn(
         mutableStateOf(false)
     }
 
+    val context = LocalContext.current
+
+    LaunchedEffect(failed) {
+        if (failed) {
+            loading = false
+            codeSent = false
+            otp = ""
+            resetFailedState()
+            Toast.makeText(
+                context,
+                "Please check if this number already linked with another account.",
+                Toast.LENGTH_SHORT
+            ).show()
+        }
+    }
+
     var ticks by rememberSaveable { mutableIntStateOf(10) }
     LaunchedEffect(codeSent) {
-        if(codeSent) {
-            while(ticks>0){
+        if (codeSent) {
+            while (ticks > 0) {
                 delay(1.seconds)
                 ticks--
             }
@@ -101,7 +119,6 @@ fun PhoneSignIn(
         }
     }
 
-    val context = LocalContext.current
 
     val mAuth: FirebaseAuth = Firebase.auth
     lateinit var callbacks: PhoneAuthProvider.OnVerificationStateChangedCallbacks
@@ -414,7 +431,7 @@ private fun startPhoneVerification(
 private fun startSMSRetrieverClient(context: Context) {
     val client: SmsRetrieverClient = SmsRetriever.getClient(context)
     val task = client.startSmsUserConsent(null)
-    task.addOnSuccessListener { aVoid ->
+    task.addOnSuccessListener {
         Log.d("Phone", "startSMSRetrieverClient addOnSuccessListener")
     }
     task.addOnFailureListener { e ->

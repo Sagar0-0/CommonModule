@@ -32,14 +32,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppChips
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDivider
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.ComposeIndex
-import fit.asta.health.profile.data.model.domain.HealthProperties
+import fit.asta.health.profile.feature.create.vm.ComposeIndex
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

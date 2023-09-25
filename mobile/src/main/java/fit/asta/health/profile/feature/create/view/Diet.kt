@@ -17,25 +17,24 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.R
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.ComposeIndex
-import fit.asta.health.profile.data.model.domain.HealthProperties
-import fit.asta.health.profile.data.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.create.MultiRadioBtnKeys
 import fit.asta.health.profile.feature.create.view.DietCreateBottomSheetType.*
 import fit.asta.health.profile.feature.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.feature.create.view.components.ItemSelectionLayout
+import fit.asta.health.profile.feature.create.vm.ComposeIndex
 import fit.asta.health.profile.feature.create.vm.HPropState
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
 import fit.asta.health.profile.feature.create.vm.ProfileSubmitState
+import fit.asta.health.profile.feature.create.vm.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.show.view.*
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
 @Composable

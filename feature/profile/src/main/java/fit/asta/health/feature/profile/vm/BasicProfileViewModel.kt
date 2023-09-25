@@ -99,4 +99,8 @@ class BasicProfileViewModel
             _linkAccountState.value = it.toUiState()
         }
     }
+
+    fun resetLinkAccountState() {
+        _linkAccountState.value = UiState.Idle
+    }
 }

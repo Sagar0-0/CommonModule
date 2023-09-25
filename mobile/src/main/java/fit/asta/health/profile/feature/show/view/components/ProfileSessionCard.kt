@@ -11,11 +11,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.data.profile.remote.model.Session
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.Session
-
 
 @Composable
 fun ProfileSessionCard(

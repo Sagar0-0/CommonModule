@@ -119,10 +119,10 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:common"))
     implementation(project(":core:network"))
+    implementation(project(":core:test"))
 
     implementation(project(":libs:chart"))
-    implementation(project(":libs:audio"))
-    implementation(project(":libs:video"))
+    implementation(project(":libs:media"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:payment"))
@@ -130,6 +130,7 @@ dependencies {
     implementation(project(":data:payment"))
     implementation(project(":data:scheduler"))
     implementation(project(":data:testimonials"))
+    implementation(project(":data:meditation"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))
@@ -146,7 +147,8 @@ dependencies {
     implementation(project(":feature:spotify"))
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
-    implementation(project(":core:test"))
+    implementation(project(":feature:meditation"))
+    implementation(project(mapOf("path" to ":data:profile")))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)

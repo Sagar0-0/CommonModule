@@ -2,6 +2,7 @@ package fit.asta.health.auth.repo
 
 import android.util.Log
 import com.google.android.gms.auth.api.signin.GoogleSignIn
+import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
@@ -31,6 +32,7 @@ class AuthRepoImpl @Inject constructor(
     private val tokenApi: TokenApi,
     private val authApi: AuthApi,
     private val dataMapper: AuthDataMapper,
+    private val googleSignInClient: GoogleSignInClient,
     private val firebaseAuth: FirebaseAuth,
     private val prefManager: PrefManager,
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -106,29 +108,42 @@ class AuthRepoImpl @Inject constructor(
 
     override fun linkWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>> =
         callbackFlow {
-            firebaseAuth.currentUser!!.linkWithCredential(authCredential)
-                .addOnCompleteListener {
-                    if (it.isSuccessful) {
-                        val user: FirebaseUser? = it.result.user
-                        Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
-                        trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
-                    } else {
-                        trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
+            firebaseAuth.currentUser?.let { u ->
+                u.linkWithCredential(authCredential)
+                    .addOnCompleteListener {
+                        if (it.isSuccessful) {
+                            val user: FirebaseUser? = it.result.user
+                            Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
+                            trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
+                        } else {
+                            Log.e(TAG, "linkWithCredential: Not Successful")
+                            trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
+                        }
                     }
-                }
+            }
             awaitClose {
                 close()
             }
         }
 
-    override fun signOut(): ResponseState<Boolean> {
-        return try {
-            firebaseAuth.signOut()
-            ResponseState.Success(true)
-        } catch (e: Exception) {
-            ResponseState.ErrorMessage(R.string.sign_out_failed)
+    override suspend fun signOut(): Flow<ResponseState<Boolean>> =
+        withContext(coroutineDispatcher) {
+            callbackFlow {
+                try {
+                    googleSignInClient.signOut().addOnCompleteListener { task ->
+                        if (task.isSuccessful) {
+                            firebaseAuth.signOut()
+                            trySend(ResponseState.Success(true))
+                        } else {
+                            trySend(ResponseState.ErrorMessage(R.string.sign_out_failed))
+                        }
+                    }
+                } catch (e: Exception) {
+                    trySend(ResponseState.ErrorMessage(R.string.sign_out_failed))
+                }
+                awaitClose { close() }
+            }
         }
-    }
 
 
     override suspend fun deleteAccount(): Flow<ResponseState<Boolean>> =
@@ -161,6 +176,7 @@ class AuthRepoImpl @Inject constructor(
                                 reAuthenticateUser(credential)
                                     .addOnCompleteListener { reAuthTask ->
                                         if (reAuthTask.isSuccessful) {
+                                            googleSignInClient.signOut()
                                             currentUser.delete()
                                                 .addOnCompleteListener { deleteTask ->
                                                     if (deleteTask.isSuccessful) {

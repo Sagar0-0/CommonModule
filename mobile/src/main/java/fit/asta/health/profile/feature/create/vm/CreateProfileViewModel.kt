@@ -4,8 +4,8 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.network.NetworkHelper
-import fit.asta.health.profile.data.repo.ProfileRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import javax.inject.Inject
 

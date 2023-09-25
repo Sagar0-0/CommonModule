@@ -1,7 +1,6 @@
 package fit.asta.health.profile.feature.show.vm
 
-import fit.asta.health.profile.data.model.domain.UserProfile
-
+import fit.asta.health.data.profile.remote.model.UserProfile
 
 sealed class ProfileGetState {
     object Loading : ProfileGetState()
@@ -11,7 +10,6 @@ sealed class ProfileGetState {
     class Error(val error: Throwable) : ProfileGetState()
 
 }
-
 
 sealed class ProfileCreateState {
     object Loading : ProfileCreateState()

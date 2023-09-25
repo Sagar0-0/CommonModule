@@ -40,8 +40,8 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.player.jetpack_audio.domain.utils.AppIcons
-import fit.asta.health.player.jetpack_audio.presentation.ui.theme.LocalSpacing
+import fit.asta.health.designsystem.theme.LocalSpacing
+import fit.asta.health.player.domain.utils.AppIcons
 import fit.asta.health.tools.exercise.model.domain.model.VideoItem
 
 @Composable
@@ -69,7 +69,7 @@ fun VideoPlayerScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.height(spacing.spaceSmall))
+            Spacer(Modifier.height(spacing.small))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -78,7 +78,7 @@ fun VideoPlayerScreen(
             ) {
 
                 item {
-                    Spacer(Modifier.height(spacing.spaceSmall))
+                    Spacer(Modifier.height(spacing.small))
                 }
 
                 itemsIndexed(state) { index: Int, item: VideoItem ->
@@ -118,7 +118,7 @@ fun VideoTrackItem(
             .fillMaxWidth()
             .clickable { onClick() }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall)
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
         Divider(
             modifier = Modifier
@@ -130,11 +130,11 @@ fun VideoTrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.spaceMedium)
+            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(spacing.spaceSmall),
+                verticalArrangement = Arrangement.spacedBy(spacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
@@ -169,7 +169,7 @@ fun VideoTrackItem(
                                 onClick()
                             }
                             .size(32.dp)
-                            .padding(spacing.spaceSmall)
+                            .padding(spacing.small)
                     )
                     Text(
                         text = song.duration,

@@ -68,7 +68,7 @@ internal class AuthViewModel
     fun isProfileAvailable(userId: String) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
-            val res = profileRepo.isProfileAvailable(userId)
+            val res = profileRepo.isUserProfileAvailable(userId)
             _isProfileAvailable.value = res.toUiState()
         }
     }
@@ -95,7 +95,11 @@ internal class AuthViewModel
 
     fun logout() {
         _logoutState.value = UiState.Loading
-        _logoutState.value = authRepo.signOut().toUiState()
+        viewModelScope.launch {
+            authRepo.signOut().collect {
+                _logoutState.value = it.toUiState()
+            }
+        }
     }
 
     fun resetLogoutState() {
@@ -121,5 +125,9 @@ internal class AuthViewModel
 
     fun navigateToHome() = viewModelScope.launch {
         authRepo.setBasicProfileDone()
+    }
+
+    fun resetLoginState() {
+        _loginState.value = UiState.Idle
     }
 }
