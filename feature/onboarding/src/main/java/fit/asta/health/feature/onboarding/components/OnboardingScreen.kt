@@ -18,13 +18,13 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
-import fit.asta.health.designsystem.atomic.LocalShape
 import fit.asta.health.designsystem.components.GifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
 import fit.asta.health.designsystem.theme.LocalSpacing
 import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import kotlinx.coroutines.launch
 
 
@@ -72,7 +72,7 @@ fun OnboardingScreen(
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
                             .padding(LocalSpacing.current.small)
-                            .clip(LocalShape.current.large)
+                            .clip(AstaThemeX.shapeX.large)
                     ) {
                         GifImage(
                             modifier = Modifier

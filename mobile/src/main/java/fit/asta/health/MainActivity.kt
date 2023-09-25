@@ -32,7 +32,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.*
-import fit.asta.health.designsystem.AstaTheme
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
@@ -208,7 +208,7 @@ class MainActivity : ComponentActivity(),
                         isSystemInDarkTheme()
                     }
                 }
-                AstaTheme(darkTheme = isDarkMode) {
+                AstaThemeX(darkTheme = isDarkMode) {
                     MainNavHost(isConnected.value, mainViewModel)
                 }
             }
