@@ -5,7 +5,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
@@ -54,8 +51,10 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.designsystemx.molecular.background.AstaScreen
+import fit.asta.health.designsystemx.molecular.cards.AstaElevatedCard
+import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
@@ -275,7 +274,7 @@ private fun TrackMenuSuccessScreen(
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
 
         // Time Spent Chart Card
@@ -446,88 +445,74 @@ private fun ToolsItemsCard(
 ) {
 
     // This function draws an elevated Card View
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent)
+    AstaElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp)
     ) {
 
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
         ) {
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            // Title of the Card
+            HeadlineTexts.Small(
+                text = title[0].uppercase() + title.substring(1),
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+
+                // Text Features
+                textAlign = TextAlign.Start
+            )
+
+            // Donut Chart
+            CircularDonutChartRow.TargetDonutChart(
+                circularData = CircularTargetDataBuilder(
+                    target = target,
+                    achieved = achieved,
+                    siUnit = unit,
+                    cgsUnit = unit,
+                    conversionRate = { it }
+                )
+            )
+
+
+            Row(
+                modifier = Modifier.padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
             ) {
 
-                // Title of the Card
-                Text(
-                    text = title[0].uppercase() + title.substring(1),
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W600,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                // Donut Chart
-                CircularDonutChartRow.TargetDonutChart(
-                    circularData = CircularTargetDataBuilder(
-                        target = target,
-                        achieved = achieved,
-                        siUnit = unit,
-                        cgsUnit = unit,
-                        conversionRate = { it }
-                    )
-                )
-
-
                 Row(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.weight(.8f),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spacing.medium)
                 ) {
 
-                    Row(
-                        modifier = Modifier.weight(.8f),
-                        horizontalArrangement = Arrangement.spacedBy(spacing.medium),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-
-                        // Leading Image of this row at the bottom of the Chart
-                        Image(
-                            painter = painterResource(id = R.drawable.track_image_info),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp),
-
-                            contentScale = ContentScale.FillBounds
-                        )
-
-                        // Description Text
-                        Text(text = bodyDescription)
-                    }
-
-                    // Trailing Image of this row at the bottom of the Chart
+                    // Leading Image of this row at the bottom of the Chart
                     Image(
-                        painter = painterResource(id = R.drawable.track_image_go),
+                        painter = painterResource(id = R.drawable.track_image_info),
                         contentDescription = null,
+                        modifier = Modifier.size(24.dp),
 
-                        modifier = Modifier
-                            .weight(.2f)
-                            .clickable { onOptionClick() }
+                        contentScale = ContentScale.FillBounds
                     )
+
+                    // Description Text
+                    Text(text = bodyDescription)
                 }
+
+                // Trailing Image of this row at the bottom of the Chart
+                Image(
+                    painter = painterResource(id = R.drawable.track_image_go),
+                    contentDescription = null,
+
+                    modifier = Modifier
+                        .weight(.2f)
+                        .clickable { onOptionClick() }
+                )
             }
         }
     }
