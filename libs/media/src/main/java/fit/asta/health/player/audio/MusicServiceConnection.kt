@@ -129,6 +129,10 @@ class MusicServiceConnection @Inject constructor(
         }
     }
 
+    fun playIndex(index: Int) {
+        mediaBrowser?.seekTo(index, DEFAULT_POSITION_MS)
+    }
+
     private inner class PlayerListener : Player.Listener {
         override fun onEvents(player: Player, events: Player.Events) {
             if (events.containsAny(

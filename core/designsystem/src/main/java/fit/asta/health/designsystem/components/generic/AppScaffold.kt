@@ -20,8 +20,10 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 
@@ -92,6 +94,8 @@ fun AppBottomSheetScaffold(
     sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
     sheetShape: Shape = MaterialTheme.shapes.large,
     sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
+    sheetContainerColor: Color = BottomSheetDefaults.ContainerColor,
+    sheetContentColor: Color = contentColorFor(sheetContainerColor),
     sheetSwipeEnabled: Boolean = true,
     sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     topBar: @Composable (() -> Unit)? = null,
@@ -107,6 +111,8 @@ fun AppBottomSheetScaffold(
         sheetDragHandle = sheetDragHandle,
         sheetSwipeEnabled = sheetSwipeEnabled,
         topBar = topBar,
-        content = content
+        content = content,
+        sheetContainerColor =sheetContainerColor ,
+        sheetContentColor =sheetContentColor
     )
 }

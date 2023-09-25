@@ -49,26 +49,34 @@ fun PlayerHeader(
 
         Row(
             modifier = Modifier.clip(RoundedCornerShape(10.dp)),
-            horizontalArrangement = Arrangement.SpaceAround,
+            horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppButtons.AppTextButton(
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
-                    containerColor = if (!audioVideo) Color.Green
-                    else MaterialTheme.colorScheme.onSecondaryContainer
+                    containerColor = if (!audioVideo) Color.LightGray
+                    else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                AppTexts.BodyMedium(text = "Audio")
+                AppTexts.BodyMedium(
+                    text = "Audio",
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
             AppButtons.AppTextButton(
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
-                    containerColor = if (audioVideo) Color.Green
-                    else MaterialTheme.colorScheme.onSecondaryContainer
+                    containerColor = if (audioVideo) Color.LightGray
+                    else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
+                    contentColor = MaterialTheme.colorScheme.primary
                 )
             ) {
-                AppTexts.BodyMedium(text = "Video")
+                AppTexts.BodyMedium(
+                    text = "Video",
+                    color = MaterialTheme.colorScheme.onPrimary
+                )
             }
         }
 

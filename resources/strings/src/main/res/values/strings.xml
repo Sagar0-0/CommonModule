@@ -634,4 +634,8 @@
     <string name="audio_language">Select audio track</string>
     <string name="edit_address">Edit Address</string>
     <string name="orders">Orders</string>
+    <string name="sure_you_want_to_leave">Sure you want to leave?</string>
+    <string name="meditation_benefits">Continue playing and you will \n soon notice the benefits of this \n meditation in your daily life</string>
+    <string name="resume_now">Resume Now</string>
+    <string name="meditate_later">Meditate Later</string>
 </resources>

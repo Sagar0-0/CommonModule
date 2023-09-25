@@ -115,7 +115,10 @@ class DominantColorState(
                 )
             }
             // Cache the resulting [DominantColors]
-            ?.also { result -> cache?.put(url, result) }
+            ?.also { result ->
+                if (imageArray == null) cache?.put(url, result)
+                else cacheArray?.put(imageArray, result)
+            }
     }
 
     /**

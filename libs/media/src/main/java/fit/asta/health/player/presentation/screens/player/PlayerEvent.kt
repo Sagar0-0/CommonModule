@@ -1,6 +1,7 @@
 package fit.asta.health.player.presentation.screens.player
 
 sealed class PlayerEvent {
+    data class PlayIndex(val index: Int) : PlayerEvent()
     data class SkipTo(val value: Float) : PlayerEvent()
     data object Play : PlayerEvent()
     data object Pause : PlayerEvent()
