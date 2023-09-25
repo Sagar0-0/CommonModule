@@ -1,8 +1,12 @@
 @file:OptIn(ExperimentalMaterial3Api::class)
 
-package fit.asta.health.designsystem.component
+package fit.asta.health.designsystemx.extras
 
+import android.R
 import androidx.annotation.StringRes
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.MoreVert
+import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.CenterAlignedTopAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
@@ -16,7 +20,6 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import com.google.samples.apps.nowinandroid.core.designsystem.icon.AstaIcons
 import fit.asta.health.designsystem.atomic.LocalColors
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,10 +94,10 @@ fun AstaTopAppBar(
 @Composable
 private fun AstaTopAppBarPreview() {
     AstaTopAppBar(
-        titleRes = android.R.string.untitled,
-        navigationIcon = AstaIcons.Search,
+        titleRes = R.string.untitled,
+        navigationIcon = Icons.Rounded.Search,
         navigationIconContentDescription = "Navigation icon",
-        actionIcon = AstaIcons.MoreVert,
+        actionIcon = Icons.Default.MoreVert,
         actionIconContentDescription = "Action icon",
     )
 }
