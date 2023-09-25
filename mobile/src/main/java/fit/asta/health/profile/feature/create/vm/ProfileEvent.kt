@@ -1,8 +1,7 @@
 package fit.asta.health.profile.feature.create.vm
 
 import android.net.Uri
-import fit.asta.health.profile.data.model.domain.ComposeIndex
-import fit.asta.health.profile.data.model.domain.HealthProperties
+import fit.asta.health.data.profile.remote.model.HealthProperties
 
 sealed class ProfileEvent {
     data class GetHealthProperties(val propertyType: String) : ProfileEvent()

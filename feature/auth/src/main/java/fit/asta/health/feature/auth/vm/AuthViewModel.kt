@@ -68,7 +68,7 @@ internal class AuthViewModel
     fun isProfileAvailable(userId: String) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
-            val res = profileRepo.isProfileAvailable(userId)
+            val res = profileRepo.isUserProfileAvailable(userId)
             _isProfileAvailable.value = res.toUiState()
         }
     }

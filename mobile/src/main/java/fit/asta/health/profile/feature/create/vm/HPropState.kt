@@ -1,6 +1,6 @@
 package fit.asta.health.profile.feature.create.vm
 
-import fit.asta.health.profile.data.model.domain.HealthProperties
+import fit.asta.health.data.profile.remote.model.HealthProperties
 
 
 sealed class HPropState {

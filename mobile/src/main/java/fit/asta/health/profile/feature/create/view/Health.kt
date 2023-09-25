@@ -42,14 +42,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.testimonials.model.InputWrapper
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.ComposeIndex
-import fit.asta.health.profile.data.model.domain.HealthProperties
-import fit.asta.health.profile.data.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.create.MultiRadioBtnKeys
 import fit.asta.health.profile.feature.create.view.HealthCreateBottomSheetTypes.ADDICTION
 import fit.asta.health.profile.feature.create.view.HealthCreateBottomSheetTypes.AILMENTS
@@ -60,8 +58,10 @@ import fit.asta.health.profile.feature.create.view.HealthCreateBottomSheetTypes.
 import fit.asta.health.profile.feature.create.view.HealthCreateBottomSheetTypes.MEDICATIONS
 import fit.asta.health.profile.feature.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.feature.create.view.components.ItemSelectionLayout
+import fit.asta.health.profile.feature.create.vm.ComposeIndex
 import fit.asta.health.profile.feature.create.vm.HPropState
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
+import fit.asta.health.profile.feature.create.vm.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.show.view.ButtonListTypes
 import fit.asta.health.profile.feature.show.view.SelectionCardCreateProfile
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel

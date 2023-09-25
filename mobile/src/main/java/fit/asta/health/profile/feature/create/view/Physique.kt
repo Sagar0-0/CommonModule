@@ -62,11 +62,11 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.spacing
-import fit.asta.health.profile.data.model.domain.ThreeRadioBtnSelections
-import fit.asta.health.profile.data.model.domain.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.create.MultiRadioBtnKeys
 import fit.asta.health.profile.feature.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
+import fit.asta.health.profile.feature.create.vm.ThreeRadioBtnSelections
+import fit.asta.health.profile.feature.create.vm.TwoRadioBtnSelections
 import fit.asta.health.profile.feature.show.view.ThreeTogglesGroups
 import fit.asta.health.profile.feature.show.view.TwoTogglesGroup
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
