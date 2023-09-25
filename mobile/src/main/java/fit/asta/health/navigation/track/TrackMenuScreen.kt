@@ -7,6 +7,7 @@ import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -58,7 +59,7 @@ import fit.asta.health.designsystemx.molecular.background.AstaScreen
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
@@ -272,13 +273,15 @@ private fun TrackMenuSuccessScreen(
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.TIME_SPENT) {
+                AstaTitleElevatedCard(title = TrackStringConstants.TIME_SPENT) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
@@ -312,7 +315,7 @@ private fun TrackMenuSuccessScreen(
         // Heart Health Details Card
         homeMenuData.healthDetail?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     TrackingDetailsCard(
                         imageList = listOf(R.drawable.heartrate, R.drawable.pulse_rate),
                         headerTextList = listOf(
@@ -336,7 +339,7 @@ private fun TrackMenuSuccessScreen(
             val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
             item {
-                TrackingChartCard {
+                AstaTitleElevatedCard {
                     Column {
                         BmiChart.BMIChart(
                             bmiData = BmiData(

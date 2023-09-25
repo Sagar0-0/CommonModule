@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -56,7 +57,7 @@ import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -235,14 +236,16 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
 
         // Daily Progress
         stepsTrackData.progress?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target.distance.dis,
@@ -260,7 +263,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Weekly Progress
         stepsTrackData.weekly?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -306,7 +309,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Vitamin D Details Card
         stepsTrackData.weather?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -332,7 +335,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps details Card
         stepsTrackData.stepsDetail?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.STEPS_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.STEPS_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_total_distance,
@@ -363,7 +366,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
             val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
             item {
-                TrackingChartCard {
+                AstaTitleElevatedCard {
                     Column {
                         BmiChart.BMIChart(
                             bmiData = BmiData(
@@ -404,7 +407,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Speed Card Composable
         stepsTrackData.speed?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SPEED_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SPEED_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_walking_intensity,
@@ -430,7 +433,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Heart Health Double Circular Chart
         stepsTrackData.health?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -470,7 +473,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.stepGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.STEPS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.STEPS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -485,7 +488,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.distanceGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.DISTANCE) {
+                AstaTitleElevatedCard(title = TrackStringConstants.DISTANCE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -500,7 +503,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.intensityGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.INTENSITY) {
+                AstaTitleElevatedCard(title = TrackStringConstants.INTENSITY) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -518,7 +521,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Mood Graph Line Chart
         stepsTrackData.moodGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -563,7 +566,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Blood Pressure Line Chart
         stepsTrackData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
+                AstaTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

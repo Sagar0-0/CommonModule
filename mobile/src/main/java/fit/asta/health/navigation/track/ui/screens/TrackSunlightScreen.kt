@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -50,7 +51,7 @@ import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -227,13 +228,15 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(spacing.small)
     ) {
 
         // Daily Progress
         sunlightData.progress?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -251,7 +254,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Weekly Progress
         sunlightData.weekly?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
@@ -297,7 +300,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Details Card
         sunlightData.weather?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -323,7 +326,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Graph
         sunlightData.vitaminGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.VITAMIN_D) {
+                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -338,7 +341,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Sunlight Duration Graph
         sunlightData.durationGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SUNLIGHT_DURATION) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SUNLIGHT_DURATION) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -353,7 +356,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Skin Exposure Graph
         sunlightData.exposureGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SKIN_EXPOSURE) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SKIN_EXPOSURE) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -371,7 +374,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Mood Graph Line Chart
         sunlightData.moodGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
