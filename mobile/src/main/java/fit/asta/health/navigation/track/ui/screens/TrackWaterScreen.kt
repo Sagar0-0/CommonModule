@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -83,8 +82,8 @@ fun TrackWaterScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -220,14 +219,14 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Daily Progress Circular Target Chart 
@@ -283,7 +282,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = AstaThemeX.colorsX.onSurface,
                                 )
                             }
                         }
