@@ -5,6 +5,7 @@ import android.location.Geocoder
 import app.cash.turbine.test
 import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResourcesProvider
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
@@ -220,7 +221,8 @@ class AddressRepoImplTest {
 
     @Test
     fun `getSavedAddress, returns Success`() = runTest {
-        coEvery { addressApi.getAddresses(any()) } returns mockk()
+        val response = Response<List<MyAddress>>(status = Response.Status(200), data = emptyList())
+        coEvery { addressApi.getAddresses(any()) } returns response
         val res = repo.getSavedAddresses("")
         coVerify { addressApi.getAddresses("") }
         assert(res is ResponseState.Success)

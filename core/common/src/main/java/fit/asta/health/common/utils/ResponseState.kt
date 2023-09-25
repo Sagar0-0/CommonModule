@@ -1,7 +1,6 @@
 package fit.asta.health.common.utils
 
 import android.os.Parcelable
-import android.util.Log
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.resources.strings.R
@@ -19,7 +18,7 @@ data class Response<T>(
     @Parcelize
     data class Status(
         @SerializedName("code")
-        val code: Int = 0,
+        val code: Int = SUCCESS_STATUS_CODE,
         @SerializedName("msg")
         val msg: String = ""
     ) : Parcelable
@@ -41,7 +40,6 @@ suspend fun <T> getApiResponseState(
     return try {
         val response = request()
         onSuccess()
-        Log.d(TAG, "getApiResponseState: ${response.status.code}: ${response.status.msg}")
         when (response.status.code) {
             SUCCESS_STATUS_CODE -> {
                 if (response.data != null) {
@@ -52,16 +50,14 @@ suspend fun <T> getApiResponseState(
             }
 
             else -> {//TODO: Define all cases for ErrorMessage and ErrorRetry
-                ResponseState.ErrorMessage(errorHandler.fetchStatusMessage(response.status.code))
+                errorHandler.fetchStatusMessage(response.status.code)
             }
         }
     } catch (e: NoInternetException) {
-        Log.e(TAG, "getApiResponseState Exception:  $e")
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        Log.e(TAG, "getApiResponseState Exception:  $e")
-        ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
+        errorHandler.fetchExceptionMessage(e.message ?: "")
     }
 }
 
@@ -79,8 +75,7 @@ suspend fun <T> getResponseState(
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        Log.e(TAG, "getResponseState: $e")
-        ResponseState.ErrorMessage(errorHandler.fetchExceptionMessage(e.message ?: ""))
+        errorHandler.fetchExceptionMessage(e.message ?: "")
     }
 }
 
