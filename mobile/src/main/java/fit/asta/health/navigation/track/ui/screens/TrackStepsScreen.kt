@@ -54,7 +54,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
-import fit.asta.health.navigation.track.ui.components.TrackDatePicker
+import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.navigation.track.ui.components.TrackingChartCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
@@ -174,7 +174,7 @@ fun TrackStepsScreenControl(
         }
 
         // Date Picker
-        TrackDatePicker(
+        AstaDatePicker(
             localDate = calendarData,
             onPreviousButtonClick = {
                 setUiEvent(TrackUiEvent.ClickedPreviousDateButton)

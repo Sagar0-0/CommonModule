@@ -49,20 +49,19 @@ private fun DefaultPreview1() {
  * @param modifier Modifier to be applied to the button.
  * @param imageVector This is the Icon vector for drawing the Icon
  * @param iconDesc This is the description of the Icon
- * @param onClick Will be called when the user clicks the button.
  * @param enabled Controls the enabled state of the button. When `false`, this button will not be
  * clickable and will appear disabled to accessibility services.
+ * @param onClick Will be called when the user clicks the button.
  */
 @Composable
 fun AstaIconButton(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     iconDesc: String? = null,
-    onClick: () -> Unit,
-    enabled: Boolean = true
+    enabled: Boolean = true,
+    onClick: () -> Unit
 ) {
     IconButton(
-        onClick = onClick,
         modifier = modifier,
         enabled = enabled,
         colors = IconButtonDefaults.iconButtonColors(
@@ -70,7 +69,8 @@ fun AstaIconButton(
             contentColor = AstaThemeX.colorsX.onSurface,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
-        )
+        ),
+        onClick = onClick
     ) {
         Icon(
             imageVector = imageVector,

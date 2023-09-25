@@ -20,14 +20,12 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
-        AstaBackground {}
-    }
+    AstaScreen {}
 }
 
 
 /**
- * The main background for the app.
+ * The main background for the app. This serves as a base composable function for all the screens
  * Uses [AstaThemeX.colorsX] surface color to set the color.
  * Tonal Elevation of the Surface is set to 2.dp
  *
@@ -35,17 +33,19 @@ private fun DefaultPreview() {
  * @param content The background content.
  */
 @Composable
-fun AstaBackground(
+fun AstaScreen(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    Surface(
-        modifier = modifier.fillMaxSize(),
-        color = AstaThemeX.colorsX.surface,
-        tonalElevation = 2.dp
-    ) {
-        CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
-            content()
+    AstaThemeX {
+        Surface(
+            modifier = modifier.fillMaxSize(),
+            color = AstaThemeX.colorsX.surface,
+            tonalElevation = 2.dp
+        ) {
+            CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
+                content()
+            }
         }
     }
 }

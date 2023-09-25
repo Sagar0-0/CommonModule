@@ -1,14 +1,11 @@
-package fit.asta.health.navigation.track.ui.components
+package fit.asta.health.designsystemx.organism.common
 
 import android.content.res.Configuration
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Text
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
@@ -19,12 +16,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.theme.spacing
 import android.app.DatePickerDialog
 import android.widget.DatePicker
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.molecular.button.AstaIconButton
+import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
 
@@ -39,8 +36,8 @@ import java.time.format.DateTimeFormatter
 )
 @Composable
 private fun DefaultPreview() {
-    AppTheme {
-        TrackDatePicker(
+    AstaThemeX {
+        AstaDatePicker(
             localDate = LocalDate.now(),
             onPreviousButtonClick = {},
             onNextButtonClick = {},
@@ -51,7 +48,7 @@ private fun DefaultPreview() {
 }
 
 /**
- * This function shows a date picker row of the track screens
+ * This function shows a date picker row
  *
  * @param localDate This variable contains the LocalDate which needs to be shown in the UI
  * @param onPreviousButtonClick This function is executed when the user hits the left Arrow button
@@ -59,7 +56,7 @@ private fun DefaultPreview() {
  * @param onDateChanged This function is executed when the user changes the date selected
  */
 @Composable
-fun TrackDatePicker(
+fun AstaDatePicker(
     localDate: LocalDate,
     onPreviousButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
@@ -83,46 +80,30 @@ fun TrackDatePicker(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(spacing.medium)
         ) {
-            Icon(
+            AstaIconButton(
+                modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.ArrowLeft,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(42.dp)
-                    .clickable {
-                        onPreviousButtonClick()
-                    }
+                onClick = onPreviousButtonClick
             )
 
-            Text(
-                text = textToShow,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.W600
-            )
+            TitleTexts.Medium(text = textToShow)
 
-            Icon(
+
+            AstaIconButton(
+                modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.ArrowRight,
-                contentDescription = null,
-                modifier = Modifier
-                    .size(42.dp)
-                    .clickable {
-                        onNextButtonClick()
-                    }
+                onClick = onNextButtonClick
             )
         }
 
-        Icon(
-            imageVector = Icons.Default.EditCalendar,
-            contentDescription = null,
-            modifier = Modifier
-                .size(24.dp)
-                .clickable {
-                    DatePickerDialog(
-                        context,
-                        { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
-                            onDateChanged(LocalDate.of(mYear, mMonth + 1, mDayOfMonth))
-                        }, localDate.year, localDate.monthValue - 1, localDate.dayOfMonth
-                    ).show()
-                }
-        )
+
+        AstaIconButton(imageVector = Icons.Default.EditCalendar) {
+            DatePickerDialog(
+                context,
+                { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->
+                    onDateChanged(LocalDate.of(mYear, mMonth + 1, mDayOfMonth))
+                }, localDate.year, localDate.monthValue - 1, localDate.dayOfMonth
+            ).show()
+        }
     }
 }
