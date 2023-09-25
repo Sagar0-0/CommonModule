@@ -6,7 +6,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.common.utils.IODispatcher
-import fit.asta.health.data.profile.remote.BasicProfileApi
+import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.data.profile.repo.ProfileRepoImpl
 import fit.asta.health.datastore.PrefManager
@@ -15,21 +15,19 @@ import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
-
 @Module
 @InstallIn(SingletonComponent::class)
 object ProfileModule {
 
     @Singleton
     @Provides
-    fun provideProfileApi(client: OkHttpClient): BasicProfileApi =
-        NetworkUtil.getRetrofit(client).create(BasicProfileApi::class.java)
-
+    fun provideProfileApi(client: OkHttpClient): ProfileApi =
+        NetworkUtil.getRetrofit(client).create(ProfileApi::class.java)
 
     @Singleton
     @Provides
     fun provideProfileRepo(
-        profileApi: BasicProfileApi,
+        profileApi: ProfileApi,
         prefManager: PrefManager,
         contentResolver: ContentResolver,
         @IODispatcher coroutineDispatcher: CoroutineDispatcher

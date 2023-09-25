@@ -6,7 +6,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.ProfileAvailableStatus
+import fit.asta.health.data.profile.remote.model.UserProfileAvailable
 import fit.asta.health.data.profile.repo.ProfileRepoImpl
 import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -22,7 +22,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class BasicProfileApiTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: BasicProfileApi
+    private lateinit var api: ProfileApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -32,7 +32,7 @@ class BasicProfileApiTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(BasicProfileApi::class.java)
+            .build().create(ProfileApi::class.java)
     }
 
     @AfterEach
@@ -69,7 +69,7 @@ class BasicProfileApiTest {
 
     @Test
     fun `isUserProfileAvailable, returns Success`() = runTest {
-        val dto = ProfileAvailableStatus()
+        val dto = UserProfileAvailable()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)

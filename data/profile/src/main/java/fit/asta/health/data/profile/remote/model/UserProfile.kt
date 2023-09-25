@@ -1,12 +1,9 @@
-package fit.asta.health.profile.data.model.domain
+package fit.asta.health.data.profile.remote.model
 
 import android.net.Uri
-import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.common.utils.UiString
-import kotlinx.parcelize.Parcelize
 
-@Parcelize
 data class UserProfile(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
@@ -15,10 +12,8 @@ data class UserProfile(
     @SerializedName("hlt") val health: Health = Health(),
     @SerializedName("ls") val lifeStyle: LifeStyle = LifeStyle(),
     @SerializedName("diet") val diet: Diet = Diet(),
-) : Parcelable
+)
 
-
-@Parcelize
 data class Contact(
     @SerializedName("adr") val address: Address = Address(),
     @SerializedName("dob") val dob: String = "",
@@ -27,28 +22,24 @@ data class Contact(
     @SerializedName("ph") val phone: String = "",
     @SerializedName("media") val url: ProfileMedia = ProfileMedia(),
     val localUrl: Uri? = null,
-) : Parcelable
+)
 
-@Parcelize
 data class ProfileMedia(
     val name: String = "",
     val title: String = "",
     @SerializedName("url") var url: String = "",
     var localUrl: Uri? = null,
     val error: UiString = UiString.Empty,
-) : Parcelable
+)
 
-@Parcelize
 data class Address(
     @SerializedName("adr1") val address: String = "",
     @SerializedName("cnt") val country: String = "",
     @SerializedName("cty") val city: String = "",
     @SerializedName("pin") val pin: String = "",
     @SerializedName("st") val street: String = "",
-) : Parcelable
+)
 
-
-@Parcelize
 data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE
     @SerializedName("bdt") val bodyType: Int = 0,
@@ -59,24 +50,21 @@ data class Physique(
     @SerializedName("prd") val onPeriod: Int = 0,
     @SerializedName("pw") val pregnancyWeek: Int? = 0,
     @SerializedName("wt") val weight: Float = 0f,
-) : Parcelable
+)
 
-
-@Parcelize
 data class Health(
     @SerializedName("hh") val healthHistory: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("ail") val ailments: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("med") val medications: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("bp") val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
+    @SerializedName("bp")
+    val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
     @SerializedName("htg") val healthTargets: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("add") val addiction: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("is") val injurySince: Int? = 0,
-) : Parcelable
-
+)
 
 //working env missing
-@Parcelize
 data class LifeStyle(
     @SerializedName("act") var physicalActivity: Int? = 0,
     @SerializedName("env") var workingEnv: Int? = 0,
@@ -88,33 +76,27 @@ data class LifeStyle(
 
     @SerializedName("wt") var workingTime: Session = Session(),
     @SerializedName("slp") var sleep: Session = Session(), // missing in UI
-) : Parcelable
+)
 
-
-@Parcelize
 data class Diet(
     @SerializedName("pref") var preference: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("nv") val nonVegDays: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("alg") val allergies: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("cns") val cuisines: ArrayList<HealthProperties>? = arrayListOf(),
     @SerializedName("frs") val foodRestrictions: ArrayList<HealthProperties>? = arrayListOf(),
-) : Parcelable
+)
 
-
-@Parcelize
 data class Session(
     @SerializedName("str") val from: Float = 0.0f,
     @SerializedName("end") val to: Float = 0.0f,
-) : Parcelable
+)
 
-
-@Parcelize
 data class Injury(
     @SerializedName("id") val id: String = "",
     @SerializedName("code") val code: String = "",
     @SerializedName("name") val name: String = "",
     @SerializedName("dur") val sinceWhen: Double = 0.0,
-) : Parcelable
+)
 
 /*
 data class UserProfile(

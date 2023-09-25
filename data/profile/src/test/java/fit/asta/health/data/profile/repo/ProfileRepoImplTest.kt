@@ -1,11 +1,11 @@
 package fit.asta.health.data.profile.repo
 
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.profile.remote.BasicProfileApi
+import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.ProfileAvailableStatus
+import fit.asta.health.data.profile.remote.model.UserProfileAvailable
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
@@ -25,7 +25,7 @@ class ProfileRepoImplTest {
     private lateinit var repo: ProfileRepoImpl
 
     @RelaxedMockK
-    lateinit var api: BasicProfileApi
+    lateinit var api: ProfileApi
 
     @RelaxedMockK
     lateinit var prefManager: PrefManager
@@ -53,8 +53,8 @@ class ProfileRepoImplTest {
 
     @Test
     fun `isProfileAvailable, returns Success`() = runTest {
-        coEvery { api.isUserProfileAvailable(any()) } returns ProfileAvailableStatus()
-        val response = repo.isProfileAvailable("")
+        coEvery { api.isUserProfileAvailable(any()) } returns UserProfileAvailable()
+        val response = repo.isUserProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
         assert(response is ResponseState.Success)
     }
@@ -62,7 +62,7 @@ class ProfileRepoImplTest {
     @Test
     fun `isProfileAvailable with random exception, return Error Response`() = runTest {
         coEvery { api.isUserProfileAvailable(any()) } throws Exception()
-        val response = repo.isProfileAvailable("")
+        val response = repo.isUserProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
         assert(response is ResponseState.ErrorMessage)
     }
