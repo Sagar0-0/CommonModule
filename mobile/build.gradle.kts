@@ -148,7 +148,6 @@ dependencies {
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
     implementation(project(":feature:meditation"))
-    implementation(project(mapOf("path" to ":data:profile")))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)

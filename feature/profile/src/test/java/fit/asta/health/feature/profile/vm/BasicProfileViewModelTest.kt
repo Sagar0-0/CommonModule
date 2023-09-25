@@ -9,6 +9,7 @@ import fit.asta.health.core.test.BaseTest
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.repo.ProfileRepo
+import fit.asta.health.feature.profile.basic.vm.BasicProfileViewModel
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
 import io.mockk.coEvery
