@@ -19,6 +19,7 @@ dependencies {
 
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
+    implementation(project(":core:network"))
     implementation(project(":core:test"))
     implementation(project(":core:datastore"))
 
@@ -49,4 +50,13 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+
+    implementation(libs.androidx.compose)
+    implementation(libs.androidx.material)
+    implementation(libs.androidx.compose.ui.tooling.preview)
+    implementation(libs.androidx.constraintlayout.compose)
+
+    implementation(libs.calendar)
+    implementation(libs.clock)
+    implementation(libs.accompanist.flowlayout)
 }

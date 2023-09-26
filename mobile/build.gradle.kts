@@ -148,7 +148,6 @@ dependencies {
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
     implementation(project(":feature:meditation"))
-    implementation(project(mapOf("path" to ":data:profile")))
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
@@ -309,7 +308,7 @@ dependencies {
     implementation(libs.checkout)
 
     //Calendar
-    implementation(libs.core)
+//    implementation(libs.core)
     implementation(libs.calendar)
 
     //Clock

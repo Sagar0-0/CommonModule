@@ -36,7 +36,9 @@ import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
 import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
+import fit.asta.health.feature.profile.ProfileContent
 import fit.asta.health.feature.profile.basicProfileRoute
+import fit.asta.health.feature.profile.create.CreateProfileLayout
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
@@ -45,8 +47,6 @@ import fit.asta.health.main.view.HOME_GRAPH_ROUTE
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.meditation.nav.meditationNavigation
 import fit.asta.health.payment.PaymentActivity
-import fit.asta.health.profile.feature.ProfileContent
-import fit.asta.health.profile.feature.create.CreateProfileLayout
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
 import fit.asta.health.resources.strings.R

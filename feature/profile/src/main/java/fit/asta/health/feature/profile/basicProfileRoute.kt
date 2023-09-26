@@ -13,9 +13,9 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
-import fit.asta.health.feature.profile.ui.BasicProfileEvent
-import fit.asta.health.feature.profile.ui.BasicProfileScreen
-import fit.asta.health.feature.profile.vm.BasicProfileViewModel
+import fit.asta.health.feature.profile.basic.ui.BasicProfileEvent
+import fit.asta.health.feature.profile.basic.ui.BasicProfileScreen
+import fit.asta.health.feature.profile.basic.vm.BasicProfileViewModel
 
 const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
 
@@ -89,10 +89,5 @@ fun NavGraphBuilder.basicProfileRoute() {
                 }
             }
         )
-
-
     }
 }
-
-
-
