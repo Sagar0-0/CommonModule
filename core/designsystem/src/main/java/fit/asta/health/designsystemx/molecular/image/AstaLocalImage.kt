@@ -10,7 +10,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.designsystem.theme.imageSize
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 /**
@@ -34,7 +34,7 @@ fun AstaLocalImage(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = tint,
-        modifier = modifier.size(imageSize.standard)
+        modifier = modifier.size(AstaThemeX.imageSize.standard)
     )
 }
 

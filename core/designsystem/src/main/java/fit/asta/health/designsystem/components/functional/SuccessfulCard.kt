@@ -27,7 +27,6 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.cardHeight
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -40,7 +39,7 @@ fun SuccessfulCard(
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
             .padding(top = AstaThemeX.spacingX.extraLarge)
-            .heightIn(min = cardHeight.large),
+            .heightIn(min = AstaThemeX.cardHeight.large),
             content = {
                 Column(
                     Modifier

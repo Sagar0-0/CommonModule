@@ -24,7 +24,6 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -64,7 +63,7 @@ private fun ProfileHeader(icon: Int, title: String) {
             AppDrawImg(
                 painter = painterResource(id = icon),
                 contentDescription = "Card Image",
-                modifier = Modifier.size(imageSize.largeMedium)
+                modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
             )
             Spacer(modifier = Modifier.width(AstaThemeX.spacingX.small))
             AppTexts.BodySmall(text = title)

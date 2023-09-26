@@ -39,9 +39,6 @@ import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.jetpack.dashedBorder
-import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.iconButtonSize
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -77,7 +74,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
         Box(
             modifier = Modifier.dashedBorder(
                 width = 1.dp,
-                radius = customSize.small,
+                radius = AstaThemeX.customSize.small,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
@@ -121,7 +118,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
-                                IconButton(modifier = Modifier.size(iconButtonSize.extraMedium),
+                                IconButton(modifier = Modifier.size(AstaThemeX.iconButtonSize.extraMedium),
                                     onClick = { uriList.remove(it) }) {
                                     Icon(
                                         imageVector = Icons.Default.Close, contentDescription = null
@@ -144,7 +141,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         imageVector = Icons.Rounded.CloudUpload,
                         contentDescription = "Upload File",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(imageSize.standard)
+                        modifier = Modifier.size(AstaThemeX.imageSize.standard)
                     )
                 }
             }

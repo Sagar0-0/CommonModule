@@ -45,7 +45,6 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -122,7 +121,7 @@ internal fun SearchBottomSheet(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(
                                     bounded = false,
-                                    radius = customSize.extraMedium
+                                    radius = AstaThemeX.customSize.extraMedium
                                 )
                             ) {
                                 searchQuery = ""

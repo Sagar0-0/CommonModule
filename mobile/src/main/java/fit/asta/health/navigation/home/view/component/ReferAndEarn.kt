@@ -20,7 +20,6 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.buttonSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -55,7 +54,7 @@ fun ReferAndEarn() {
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                     AppButtons.AppStandardButton(onClick = {},
-                        modifier = Modifier.height(buttonSize.large),
+                        modifier = Modifier.height(AstaThemeX.buttonSizeX.large),
                         contentPadding = PaddingValues(
                             vertical = AstaThemeX.spacingX.minSmall,
                             horizontal = AstaThemeX.spacingX.small

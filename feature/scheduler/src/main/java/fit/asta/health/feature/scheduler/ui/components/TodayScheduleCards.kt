@@ -41,7 +41,6 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -306,7 +305,7 @@ fun AppointmentCard(url: String = "") {
                         contentDescription = stringResource(StringR.string.doctor_pic),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(customSize.extraLarge4)
+                            .size(AstaThemeX.customSize.extraLarge4)
                             .clip(CircleShape)
                             .border(
                                 border = BorderStroke(

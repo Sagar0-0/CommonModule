@@ -54,7 +54,6 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
-import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -161,8 +160,8 @@ internal fun FillAddressSheet(
             modifier = Modifier
                 .clip(
                     RoundedCornerShape(
-                        topStart = customSize.medium,
-                        topEnd = customSize.medium
+                        topStart = AstaThemeX.customSize.medium,
+                        topEnd = AstaThemeX.customSize.medium
                     )
                 )
                 .background(MaterialTheme.colorScheme.background)

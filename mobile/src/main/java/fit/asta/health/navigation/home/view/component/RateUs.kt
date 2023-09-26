@@ -42,7 +42,6 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.buttonSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.home.viewmodel.RateUsEvent
 import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
@@ -146,7 +145,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             AppButtons.AppStandardButton(
                                 onClick = { viewModel.onEvent(RateUsEvent.InAppReviewRequested) },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(buttonSize.medium)
+                                shape = RoundedCornerShape(AstaThemeX.buttonSizeX.medium)
                             ) {
                                 AppTexts.LabelLarge(
                                     text = "Rate on Play Store",

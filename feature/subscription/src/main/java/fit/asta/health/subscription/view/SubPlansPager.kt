@@ -41,7 +41,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.carouselTransition
-import fit.asta.health.designsystem.theme.iconButtonSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
@@ -120,7 +119,7 @@ private fun SubPlanItem(
     }
     val closeButtonSize by transition.animateDp(label = "") {
         if (it) {
-            iconButtonSize.medium
+            AstaThemeX.iconButtonSize.medium
         } else {
             0.dp
         }

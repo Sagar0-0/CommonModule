@@ -33,7 +33,6 @@ import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.iconButtonSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import java.util.*
@@ -235,7 +234,7 @@ internal fun MapScreen(
                     modifier = Modifier
                         .padding(AstaThemeX.spacingX.medium)
                         .align(Alignment.End)
-                        .size(iconButtonSize.extraLarge2),
+                        .size(AstaThemeX.iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = MaterialTheme.colorScheme.primary
@@ -254,7 +253,7 @@ internal fun MapScreen(
                 ) {
                     Icon(
                         modifier = Modifier
-                            .size(iconButtonSize.large),
+                            .size(AstaThemeX.iconButtonSize.large),
                         imageVector = Icons.Default.MyLocation,
                         contentDescription = R.string.use_my_current_location.toStringFromResId()
                     )

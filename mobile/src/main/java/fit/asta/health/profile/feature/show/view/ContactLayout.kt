@@ -42,7 +42,6 @@ import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.ProfileBorder1
 import fit.asta.health.designsystem.theme.ProfileBorder2
 import fit.asta.health.designsystem.theme.ProfileBorder3
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -156,7 +155,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 contentDescription = "User Profile Pic",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(imageSize.picSize)
+                    .size(AstaThemeX.imageSize.picSize)
                     .border(
                         border = BorderStroke(
                             width = 2.dp, color = MaterialTheme.colorScheme.primary
@@ -200,7 +199,7 @@ fun UserAchievCard(
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Leaderboard",
-                modifier = Modifier.size(imageSize.largeMedium)
+                modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
             )
             Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             Column(
@@ -279,7 +278,7 @@ fun ProfileDetails(
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Details Images",
-                modifier = Modifier.size(imageSize.standard)
+                modifier = Modifier.size(AstaThemeX.imageSize.standard)
             )
             Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
             AppTexts.LabelMedium(text = profileType, textAlign = TextAlign.Center)

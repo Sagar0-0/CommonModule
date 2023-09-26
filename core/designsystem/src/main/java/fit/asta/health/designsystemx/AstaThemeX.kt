@@ -15,15 +15,27 @@ import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystemx.atomic.AspectRatioX
 import fit.asta.health.designsystemx.atomic.AstaTypographyX
 import fit.asta.health.designsystemx.atomic.BoxSizeX
+import fit.asta.health.designsystemx.atomic.ButtonSizeX
+import fit.asta.health.designsystemx.atomic.CardHeightX
+import fit.asta.health.designsystemx.atomic.CustomSizeX
 import fit.asta.health.designsystemx.atomic.DarkDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.ElevationX
+import fit.asta.health.designsystemx.atomic.IconButtonSizeX
 import fit.asta.health.designsystemx.atomic.IconSizeX
+import fit.asta.health.designsystemx.atomic.ImageHeightX
+import fit.asta.health.designsystemx.atomic.ImageSizeX
 import fit.asta.health.designsystemx.atomic.LightDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.LocalAspectRatioX
 import fit.asta.health.designsystemx.atomic.LocalBoxSizeX
+import fit.asta.health.designsystemx.atomic.LocalButtonSizeX
+import fit.asta.health.designsystemx.atomic.LocalCardHeightX
 import fit.asta.health.designsystemx.atomic.LocalColorsX
+import fit.asta.health.designsystemx.atomic.LocalCustomSizeX
 import fit.asta.health.designsystemx.atomic.LocalElevationX
+import fit.asta.health.designsystemx.atomic.LocalIconButtonSizeX
 import fit.asta.health.designsystemx.atomic.LocalIconSizeX
+import fit.asta.health.designsystemx.atomic.LocalImageHeightX
+import fit.asta.health.designsystemx.atomic.LocalImageSizeX
 import fit.asta.health.designsystemx.atomic.LocalShapeX
 import fit.asta.health.designsystemx.atomic.LocalSpacingX
 import fit.asta.health.designsystemx.atomic.LocalTintThemeX
@@ -158,6 +170,54 @@ object AstaThemeX {
         @Composable
         @ReadOnlyComposable
         get() = LocalBoxSizeX.current
+
+    /**
+     * Default Button sizes for the App
+     */
+    val buttonSizeX: ButtonSizeX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalButtonSizeX.current
+
+    /**
+     * Card Heights for the whole App
+     */
+    val cardHeight: CardHeightX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalCardHeightX.current
+
+    /**
+     * Icon Button Sizes for the whole App
+     */
+    val iconButtonSize: IconButtonSizeX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalIconButtonSizeX.current
+
+    /**
+     * Image Height for the whole Apps
+     */
+    val imageHeight: ImageHeightX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalImageHeightX.current
+
+    /**
+     * Default Image Sizes for the whole App
+     */
+    val imageSize: ImageSizeX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalImageSizeX.current
+
+    /**
+     * Default Custom Sizes for the Whole App
+     */
+    val customSize: CustomSizeX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalCustomSizeX.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)

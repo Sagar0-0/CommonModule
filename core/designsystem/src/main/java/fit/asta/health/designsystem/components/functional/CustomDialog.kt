@@ -30,7 +30,6 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.buttonSize
 import fit.asta.health.designsystemx.AstaThemeX
 import kotlinx.coroutines.delay
 
@@ -169,7 +168,7 @@ private fun NegativeButton(
     AppButtons.AppStandardButton(
         onClick = onNegativeClick,
         modifier = Modifier
-            .height(buttonSize.extraLarge)
+            .height(AstaThemeX.buttonSizeX.extraLarge)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.error,
@@ -189,7 +188,7 @@ private fun PositiveButton(
 ) {
     AppButtons.AppStandardButton(
         onClick = onPositiveClick, modifier = Modifier
-            .height(buttonSize.extraLarge)
+            .height(AstaThemeX.buttonSizeX.extraLarge)
             .fillMaxWidth()
     ) {
         AppTexts.LabelMedium(

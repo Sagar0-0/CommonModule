@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -38,7 +37,7 @@ fun GenderOptionsLayout(
                 AppDrawImg(
                     painter = painterResource(id = cardImg),
                     contentDescription = "Gender Images",
-                    modifier = Modifier.size(imageSize.largeMedium)
+                    modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
                 )
                 Column {
                     AppTexts.BodySmall(text = cardType)

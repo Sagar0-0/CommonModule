@@ -15,7 +15,6 @@ import androidx.compose.ui.res.painterResource
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
@@ -34,7 +33,7 @@ fun ProfileSingleSelectionCard(
             AppDrawImg(
                 painter = painterResource(id = icon),
                 contentDescription = "LifeStyle Icons",
-                modifier = Modifier.size(imageSize.largeMedium)
+                modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
             )
             Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             Column {

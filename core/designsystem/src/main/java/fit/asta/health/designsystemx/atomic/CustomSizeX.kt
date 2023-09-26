@@ -1,12 +1,10 @@
-package fit.asta.health.designsystem.theme
+package fit.asta.health.designsystemx.atomic
 
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class CustomSize(
+data class CustomSizeX(
 
     val minSmall: Dp = 2.dp,
     val extraSmall: Dp = 4.dp,
@@ -22,6 +20,4 @@ data class CustomSize(
     val extraLarge5: Dp = 160.dp,
 )
 
-val LocalCustomSize = compositionLocalOf { CustomSize() }
-val customSize: CustomSize
-    @Composable @ReadOnlyComposable get() = LocalCustomSize.current
+internal val LocalCustomSizeX = compositionLocalOf { CustomSizeX() }

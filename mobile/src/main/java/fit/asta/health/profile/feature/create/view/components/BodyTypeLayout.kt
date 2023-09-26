@@ -24,7 +24,6 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystemx.AstaThemeX
 
 
@@ -67,7 +66,7 @@ fun BodyTypeLayout() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = AstaThemeX.spacingX.small, vertical = AstaThemeX.spacingX.medium)
-                .height(customSize.extraLarge2),
+                .height(AstaThemeX.customSize.extraLarge2),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {

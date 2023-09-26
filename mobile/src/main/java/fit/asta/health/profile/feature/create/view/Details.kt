@@ -47,8 +47,6 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.imageSize
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
@@ -169,7 +167,7 @@ fun PrivacyAndUserConsent() {
             AppButtons.AppCheckBox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(imageSize.standard)
+                modifier = Modifier.size(AstaThemeX.imageSize.standard)
             )
             Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
@@ -195,7 +193,7 @@ fun UserCircleImage(
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(customSize.extraLarge5)
+                .size(AstaThemeX.customSize.extraLarge5)
                 .clip(CircleShape)
                 .border(
                     border = BorderStroke(
@@ -224,7 +222,7 @@ fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifi
             AppDefaultIcon(
                 imageVector = Icons.Filled.Delete,
                 contentDescription = "Delete Image",
-                modifier = Modifier.size(customSize.extraLarge),
+                modifier = Modifier.size(AstaThemeX.customSize.extraLarge),
                 tint = MaterialTheme.colorScheme.error
             )
         }
@@ -245,7 +243,7 @@ fun EditProfileImageButton(
             AppDefaultIcon(
                 imageVector = editIcon,
                 contentDescription = "Edit Profile Image",
-                modifier = Modifier.size(customSize.extraLarge),
+                modifier = Modifier.size(AstaThemeX.customSize.extraLarge),
                 tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
             )
         }
