@@ -39,7 +39,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -94,13 +94,13 @@ fun WalletScreenUi(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(spacing.medium)
+                                .padding(AstaThemeX.spacingX.medium)
                                 .height(1.dp)
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
                         )
                         Card(
                             modifier = Modifier
-                                .padding(spacing.medium),
+                                .padding(AstaThemeX.spacingX.medium),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer
                             ),
@@ -108,7 +108,7 @@ fun WalletScreenUi(
                         ) {
                             Text(
                                 modifier = Modifier
-                                    .padding(top = spacing.medium, start = spacing.medium),
+                                    .padding(top = AstaThemeX.spacingX.medium, start = AstaThemeX.spacingX.medium),
                                 text = "Your transaction history:",
                                 textAlign = TextAlign.Start
                             )
@@ -116,8 +116,8 @@ fun WalletScreenUi(
                             LazyColumn(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = spacing.medium),
-                                contentPadding = PaddingValues(spacing.medium)
+                                    .padding(top = AstaThemeX.spacingX.medium),
+                                contentPadding = PaddingValues(AstaThemeX.spacingX.medium)
                             ) {
                                 items(transactionHistory) { item ->
                                     TransactionHistoryItem(item)
@@ -128,7 +128,7 @@ fun WalletScreenUi(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(spacing.medium)
+                                .padding(AstaThemeX.spacingX.medium)
                                 .weight(1f),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,7 +137,7 @@ fun WalletScreenUi(
                                 painter = painterResource(id = DrawR.drawable.placeholder_tag),
                                 contentDescription = ""
                             )
-                            Spacer(modifier = Modifier.height(spacing.medium))
+                            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                             Text(
                                 textAlign = TextAlign.Center,
                                 text = stringResource(id = StringR.string.no_transactions_text)
@@ -158,11 +158,11 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = spacing.medium),
+            .padding(bottom = AstaThemeX.spacingX.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(end = spacing.small),
+            modifier = Modifier.padding(end = AstaThemeX.spacingX.small),
             imageVector = if (received) Icons.Default.MonetizationOn else Icons.Default.MoneyOff,
             contentDescription = ""
         )
@@ -197,7 +197,7 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
+            .padding(AstaThemeX.spacingX.medium)
             .height(1.dp)
             .background(MaterialTheme.colorScheme.onSecondaryContainer)
     )
@@ -208,7 +208,7 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium),
+            .padding(AstaThemeX.spacingX.medium),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -217,24 +217,24 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(spacing.small),
+                .padding(AstaThemeX.spacingX.small),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .padding(spacing.small)
+                    .padding(AstaThemeX.spacingX.small)
             ) {
                 Text(text = amount.toString(), style = MaterialTheme.typography.headlineLarge)
-                Spacer(modifier = Modifier.height(spacing.extraSmall))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
                 Text(text = "available balance")
             }
             Button(
-                modifier = Modifier.padding(spacing.small),
+                modifier = Modifier.padding(AstaThemeX.spacingX.small),
                 onClick = onButtonClick
             ) {
                 Text(
-                    modifier = Modifier.padding(spacing.small),
+                    modifier = Modifier.padding(AstaThemeX.spacingX.small),
                     text = "Redeem"
                 )
             }

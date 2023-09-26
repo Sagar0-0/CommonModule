@@ -50,7 +50,7 @@ import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -77,7 +77,7 @@ fun SettingsScreenLayout(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(spacing.medium),
+                        .padding(AstaThemeX.spacingX.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AppTexts.HeadlineMedium(
@@ -86,7 +86,7 @@ fun SettingsScreenLayout(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = spacing.medium),
+                            .padding(horizontal = AstaThemeX.spacingX.medium),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppButtons.AppTextButton(
@@ -213,12 +213,12 @@ fun PreferenceCategory(
         if (titleId != null) Text(
             text = stringResource(id = titleId),
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = spacing.medium, top = spacing.small)
+            modifier = Modifier.padding(start = AstaThemeX.spacingX.medium, top = AstaThemeX.spacingX.small)
         )
         Column(
             modifier = Modifier.padding(
-                vertical = spacing.small,
-                horizontal = spacing.small
+                vertical = AstaThemeX.spacingX.small,
+                horizontal = AstaThemeX.spacingX.small
             )
         ) {
             content()
@@ -238,12 +238,12 @@ fun PreferenceItem(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.extraSmall)
+            .padding(AstaThemeX.spacingX.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = null,
-            modifier = Modifier.padding(end = spacing.medium)
+            modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
         )
         Column {
             Text(text = title ?: stringResource(id = titleId))
@@ -272,12 +272,12 @@ fun ListPreference(
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.extraSmall)
+            .padding(AstaThemeX.spacingX.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = title,
-            modifier = Modifier.padding(end = spacing.medium)
+            modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
         )
 
         Text(

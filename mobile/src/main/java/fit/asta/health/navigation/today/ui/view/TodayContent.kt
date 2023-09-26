@@ -75,7 +75,7 @@ import fit.asta.health.designsystem.components.generic.GradientButton
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.Gradient1NoInternet
 import fit.asta.health.designsystem.theme.Gradient2NoInternet
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
@@ -131,7 +131,7 @@ fun TodayContent(
                 .padding(paddingValues)
                 .background(color = MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
         ) {
             item {
                 NameAndMoodHomeScreenHeader(userName = userName,
@@ -358,12 +358,12 @@ fun TodayItem(
     ) {
         Column(
             modifier = modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.minSmall),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.minSmall),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(space = AstaThemeX.spacingX.small),
                 modifier = modifier.fillMaxWidth()
             ) {
                 AsyncImage(
@@ -378,7 +378,7 @@ fun TodayItem(
                         .width(80.dp)
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Row(

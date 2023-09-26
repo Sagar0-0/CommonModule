@@ -44,7 +44,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -91,7 +91,7 @@ fun AllAlarms(
                 .fillMaxWidth()
                 .padding(paddingValues),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
         ) {
             items(list) { alarm ->
                 val time = AMPMHoursMin(
@@ -138,13 +138,13 @@ fun AlarmItem(
                 .padding(16.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = spacing.small)
+            verticalArrangement = Arrangement.spacedBy(space = AstaThemeX.spacingX.small)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(space = AstaThemeX.spacingX.small)
             ) {
                 AsyncImage(
                     model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
@@ -158,7 +158,7 @@ fun AlarmItem(
                         .width(80.dp)
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(spacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                     horizontalAlignment = Alignment.Start
                 ) {
                     AppTexts.TitleMedium(text = title)

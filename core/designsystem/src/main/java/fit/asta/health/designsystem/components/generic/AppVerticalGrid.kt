@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 /**The [AppVerticalGrid] composable is a custom composable function that provides
@@ -35,7 +35,7 @@ fun AppVerticalGrid(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(spacing.medium),
+            .padding(AstaThemeX.spacingX.medium),
         verticalArrangement = verticalArrangement,
         horizontalArrangement = horizontalArrangement
     )

@@ -18,7 +18,7 @@ import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -87,7 +87,7 @@ fun <T> AppBanner(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = spacing.medium)
+                    .padding(bottom = AstaThemeX.spacingX.medium)
             )
         }
     }

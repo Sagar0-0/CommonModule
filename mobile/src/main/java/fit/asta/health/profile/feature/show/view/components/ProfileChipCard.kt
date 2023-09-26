@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.imageSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -41,10 +41,10 @@ fun ProfileChipCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
         ) {
             ProfileHeader(icon, title)
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             ChipList(list)
         }
     }
@@ -66,7 +66,7 @@ private fun ProfileHeader(icon: Int, title: String) {
                 contentDescription = "Card Image",
                 modifier = Modifier.size(imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(spacing.small))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.small))
             AppTexts.BodySmall(text = title)
         }
     }
@@ -76,8 +76,8 @@ private fun ProfileHeader(icon: Int, title: String) {
 @Composable
 private fun ChipList(list: List<HealthProperties>) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(spacing.small),
-        verticalArrangement = Arrangement.spacedBy(spacing.minSmall)
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.minSmall)
     ) {
         list.forEach { healthProperty ->
             DisabledChipForList(textOnChip = healthProperty.name)

@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun SleepCardItems(
@@ -39,7 +39,7 @@ fun SleepCardItems(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(spacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             verticalAlignment = Alignment.CenterVertically
         ) {
 

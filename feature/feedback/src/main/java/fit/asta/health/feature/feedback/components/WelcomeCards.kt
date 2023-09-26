@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.drawables.R
 
 
@@ -27,15 +27,15 @@ fun WelcomeCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = spacing.medium),
-        shape = RoundedCornerShape(spacing.small),
-        elevation = CardDefaults.cardElevation(spacing.extraSmall),
+            .padding(horizontal = AstaThemeX.spacingX.medium),
+        shape = RoundedCornerShape(AstaThemeX.spacingX.small),
+        elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.feedback1),
@@ -44,7 +44,7 @@ fun WelcomeCard() {
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(spacing.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
 
             Column {
                 Text(
@@ -54,7 +54,7 @@ fun WelcomeCard() {
                     textAlign = TextAlign.Left
                 )
 
-                Spacer(modifier = Modifier.height(spacing.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
 
                 Text(
                     text = "Your feedback is important to us. We read every feedback we get and take it seriously.",

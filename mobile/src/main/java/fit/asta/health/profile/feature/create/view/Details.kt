@@ -49,7 +49,7 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.theme.customSize
 import fit.asta.health.designsystem.theme.imageSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.create.vm.ProfileEvent
 import fit.asta.health.profile.feature.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -77,11 +77,11 @@ fun DetailsCreateScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.medium)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             UserCircleImage(url = getOneUrl(
                 localUrl = userImage.localUrl, remoteUrl = userImage.url
             ), onUserProfileSelection = {
@@ -89,7 +89,7 @@ fun DetailsCreateScreen(
             }, onProfilePicClear = {
                 viewModel.onEvent(ProfileEvent.OnProfilePicClear)
             })
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             AppTextFieldValidate(
                 value = nameState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnNameChange(name = it)) },
@@ -100,7 +100,7 @@ fun DetailsCreateScreen(
                 imeAction = ImeAction.Next,
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
             )
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             AppTextFieldValidate(
                 value = emailState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnEmailChange(email = it)) },
@@ -112,14 +112,14 @@ fun DetailsCreateScreen(
                 modifier = Modifier.focusRequester(focusRequester = focusRequester),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             PrivacyAndUserConsent()
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             AppButtons.AppStandardButton(
                 onClick = eventNext,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.large),
+                    .padding(horizontal = AstaThemeX.spacingX.large),
                 enabled = true,
                 shape = CircleShape
             ) {
@@ -128,7 +128,7 @@ fun DetailsCreateScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
 }
@@ -151,16 +151,16 @@ fun PrivacyAndUserConsent() {
                 contentDescription = "App Privacy",
                 tint = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.width(spacing.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             Column {
                 AppTexts.TitleLarge(text = stringResource(R.string.privacy_statement_title))
-                Spacer(modifier = Modifier.height(spacing.extraSmall))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
                 AppTexts.BodySmall(
                     text = stringResource(R.string.privacy_statement)
                 )
             }
         }
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -171,7 +171,7 @@ fun PrivacyAndUserConsent() {
                 onCheckedChange = { checkedState.value = it },
                 modifier = Modifier.size(imageSize.standard)
             )
-            Spacer(modifier = Modifier.width(spacing.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
         }
     }
@@ -188,7 +188,7 @@ fun UserCircleImage(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(horizontal = spacing.extraSmall1)
+        modifier = Modifier.padding(horizontal = AstaThemeX.spacingX.extraSmall1)
     ) {
         AppDefServerImg(
             model = url,

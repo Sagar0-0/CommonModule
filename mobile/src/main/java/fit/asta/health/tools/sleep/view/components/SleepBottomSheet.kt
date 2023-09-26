@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.tools.sleep.model.db.SleepData
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -89,13 +89,13 @@ private fun SleepBottomSheetOptionUI(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
             columns = GridCells.Fixed(2)
         ) {
 
@@ -183,7 +183,7 @@ private fun SleepDisturbanceRowUI(
             .fillMaxWidth()
             .padding(top = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Checking if the selected Disturbance is empty or not
@@ -231,7 +231,7 @@ private fun SleepBottomSheetButtonRow(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
         ButtonWithColor(
             modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"

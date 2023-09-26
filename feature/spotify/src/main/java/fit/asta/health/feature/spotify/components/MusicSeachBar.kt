@@ -23,7 +23,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 /**
  * This composable function creates a Outlined Search Bar UI in the Screen
@@ -95,7 +95,7 @@ fun SearchBar(
             Row(
                 modifier = Modifier
                     .padding(horizontal = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
             ) {
 
                 if (userInput.isNotEmpty()) {

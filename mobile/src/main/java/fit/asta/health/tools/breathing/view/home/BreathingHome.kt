@@ -32,7 +32,7 @@ import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 
@@ -111,7 +111,7 @@ fun BreathingHomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
         ) {
             Surface(
                 modifier = Modifier
@@ -122,7 +122,7 @@ fun BreathingHomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -139,7 +139,7 @@ fun BreathingHomeScreen(
                             event(UiEvent.SetTargetAngle(it))
                         }
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
                         ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.recommended.toFloat(),
@@ -199,13 +199,13 @@ fun BreathingBottomSheet(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
 
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -227,12 +227,12 @@ fun BreathingBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
             ) {
 
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -277,7 +277,7 @@ fun BreathingBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(spacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { onSchedule() }
@@ -324,12 +324,12 @@ fun Test() {
                     .fillMaxWidth()
                     .fillMaxHeight()
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-                verticalArrangement = Arrangement.spacedBy(spacing.small)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
             ) {
                 Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     columns = GridCells.Fixed(2)
                 ) {
                     item {
@@ -351,12 +351,12 @@ fun Test() {
                 AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue==SheetValue.Expanded) {
                     Column(
                         modifier = Modifier.fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+                        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
                     ) {
 
                         LazyVerticalGrid(
-                            horizontalArrangement = Arrangement.spacedBy(spacing.small),
-                            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                             columns = GridCells.Fixed(2)
                         ) {
 

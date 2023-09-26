@@ -44,7 +44,7 @@ import androidx.compose.ui.window.Dialog
 import fit.asta.health.designsystem.theme.Gradient1NoInternet
 import fit.asta.health.designsystem.theme.Gradient2NoInternet
 import fit.asta.health.designsystem.theme.imageHeight
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.drawables.R
 
 @Preview
@@ -250,13 +250,13 @@ fun GradientButton(
 fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
     AppCard(
         modifier = Modifier
-            .padding(spacing.medium)
+            .padding(AstaThemeX.spacingX.medium)
             .fillMaxWidth()
             .wrapContentHeight(), content = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(spacing.small),
+                    .padding(AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {

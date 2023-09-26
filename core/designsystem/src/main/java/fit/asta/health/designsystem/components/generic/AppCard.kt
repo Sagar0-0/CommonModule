@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import fit.asta.health.designsystem.theme.cardElevation
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 /** [AppCard] is default clickable card for the app.This Card handles click events,
@@ -33,7 +33,7 @@ fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = cardElevation.smallMedium),
+    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.elevationX.smallMedium),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -61,7 +61,7 @@ fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = cardElevation.smallMedium),
+    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.elevationX.smallMedium),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(

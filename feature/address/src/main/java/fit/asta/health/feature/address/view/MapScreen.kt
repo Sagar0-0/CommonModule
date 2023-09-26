@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.theme.iconButtonSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import java.util.*
 
@@ -195,7 +195,7 @@ internal fun MapScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(spacing.small)
+                        .padding(AstaThemeX.spacingX.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -233,7 +233,7 @@ internal fun MapScreen(
             ) {
                 AppButtons.AppIconButton(
                     modifier = Modifier
-                        .padding(spacing.medium)
+                        .padding(AstaThemeX.spacingX.medium)
                         .align(Alignment.End)
                         .size(iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
@@ -265,12 +265,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = spacing.medium,
-                                topEnd = spacing.medium
+                                topStart = AstaThemeX.spacingX.medium,
+                                topEnd = AstaThemeX.spacingX.medium
                             )
                         )
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = spacing.medium),
+                        .padding(horizontal = AstaThemeX.spacingX.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -321,7 +321,7 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = spacing.medium)
+                                    .padding(bottom = AstaThemeX.spacingX.medium)
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium),
                                 colors = ButtonDefaults.buttonColors(

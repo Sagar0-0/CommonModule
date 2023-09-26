@@ -7,7 +7,7 @@ import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.designsystem.components.generic.AppVerticalGrid
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.show.view.components.GenderOptionsLayout
 
 @Composable
@@ -27,8 +27,8 @@ fun PhysiqueLayout(
                 )
             }
         },
-        verticalArrangement = Arrangement.spacedBy(spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     )
 }
 

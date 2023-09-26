@@ -55,7 +55,7 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -167,9 +167,9 @@ internal fun FillAddressSheet(
                 )
                 .background(MaterialTheme.colorScheme.background)
                 .padding(
-                    top = spacing.medium,
-                    start = spacing.medium,
-                    end = spacing.medium
+                    top = AstaThemeX.spacingX.medium,
+                    start = AstaThemeX.spacingX.medium,
+                    end = AstaThemeX.spacingX.medium
                 ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -193,7 +193,7 @@ internal fun FillAddressSheet(
 
             Text(
                 text = R.string.save_address_as.toStringFromResId(),
-                Modifier.padding(bottom = spacing.small)
+                Modifier.padding(bottom = AstaThemeX.spacingX.small)
             )
             Row(Modifier.fillMaxWidth()) {
                 Text(modifier = Modifier
@@ -216,7 +216,7 @@ internal fun FillAddressSheet(
                     .padding(8.dp), text = R.string.other.toStringFromResId())
             }
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
                 AstaValidatedTextField(
@@ -240,7 +240,7 @@ internal fun FillAddressSheet(
                     },
                     label = R.string.location_name
                 )
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             }
 
             AstaValidatedTextField(
@@ -263,7 +263,7 @@ internal fun FillAddressSheet(
                 label = R.string.house_number,
             )
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             AstaValidatedTextField(
                 modifier = Modifier
@@ -285,7 +285,7 @@ internal fun FillAddressSheet(
                 label = R.string.block_street_road,
             )
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             AstaValidatedTextField(
                 type = AstaValidatedTextFieldType.Default(0),
@@ -309,7 +309,7 @@ internal fun FillAddressSheet(
                 label = R.string.nearby_landmark
             )
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             AstaValidatedTextField(
                 modifier = Modifier
@@ -345,7 +345,7 @@ internal fun FillAddressSheet(
                         OutlinedButton(
                             onClick = onSaveAddressClick,
                             modifier = Modifier
-                                .padding(spacing.medium)
+                                .padding(AstaThemeX.spacingX.medium)
                                 .fillMaxWidth()
                                 .clip(MaterialTheme.shapes.large),
                             colors = ButtonDefaults.buttonColors(

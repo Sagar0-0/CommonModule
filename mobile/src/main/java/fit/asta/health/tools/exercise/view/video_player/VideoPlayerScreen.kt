@@ -40,7 +40,7 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystem.theme.LocalSpacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.player.domain.utils.AppIcons
 import fit.asta.health.tools.exercise.model.domain.model.VideoItem
 
@@ -53,7 +53,7 @@ fun VideoPlayerScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = LocalSpacing.current
+    val spacing = AstaThemeX.spacingX
 
     val lazyListState = rememberLazyListState()
 
@@ -107,7 +107,7 @@ fun VideoTrackItem(
     song: VideoItem,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = LocalSpacing.current
+    val spacing = AstaThemeX.spacingX
     val context = LocalContext.current
 
     val textColor = MaterialTheme.colorScheme.onSurface

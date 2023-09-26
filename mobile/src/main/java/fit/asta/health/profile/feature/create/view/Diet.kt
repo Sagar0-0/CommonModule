@@ -21,7 +21,7 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.create.MultiRadioBtnKeys
 import fit.asta.health.profile.feature.create.view.DietCreateBottomSheetType.*
 import fit.asta.health.profile.feature.create.view.components.CreateProfileTwoButtonLayout
@@ -169,13 +169,13 @@ fun DietContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.medium)
                 .verticalScroll(rememberScrollState())
                 .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -185,7 +185,7 @@ fun DietContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             }
 
             SelectionCardCreateProfile(
@@ -201,7 +201,7 @@ fun DietContent(
                 listName = "Diet"
             )
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             CreateProfileTwoButtonLayout(
                 eventPrevious = eventPrevious, eventNext = {
@@ -230,7 +230,7 @@ fun DietContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
 }

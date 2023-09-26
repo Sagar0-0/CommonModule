@@ -21,7 +21,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -76,7 +76,7 @@ fun SleepDisturbanceScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 24.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 

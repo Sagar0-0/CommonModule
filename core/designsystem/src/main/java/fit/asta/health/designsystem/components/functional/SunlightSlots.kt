@@ -37,8 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.google.android.material.R
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.theme.iconSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, temperature: String) {
@@ -139,7 +138,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(spacing.small), horizontalArrangement = Arrangement.End
+            .padding(AstaThemeX.spacingX.small), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -153,8 +152,8 @@ fun ScheduleIconLayout(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(iconSize.regularSize)
-            .clip(RoundedCornerShape(spacing.small))
+            .size(AstaThemeX.iconSizeX.regularSize)
+            .clip(RoundedCornerShape(AstaThemeX.spacingX.small))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

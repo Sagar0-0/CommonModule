@@ -16,7 +16,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun TextSelection(
@@ -36,7 +36,7 @@ fun TextSelection(
     ) {
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -56,7 +56,7 @@ fun TextSelection(
 
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SelectableText(arrowTitle,btnEnabled,onNavigateAction)

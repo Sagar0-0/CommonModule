@@ -24,9 +24,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystem.theme.Shapes
-import fit.asta.health.designsystem.theme.iconSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun EndScreenPopup(
@@ -41,10 +39,10 @@ fun EndScreenPopup(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium),
-            shape = RoundedCornerShape(spacing.small),
+                .padding(horizontal = AstaThemeX.spacingX.medium),
+            shape = RoundedCornerShape(AstaThemeX.spacingX.small),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-            elevation = CardDefaults.cardElevation(spacing.extraSmall)
+            elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -53,7 +51,7 @@ fun EndScreenPopup(
                     tint = Color.Green,
                     imageVector = Icons.Default.Done,
                     contentDescription = null,
-                    modifier = Modifier.size(iconSize.medium)
+                    modifier = Modifier.size(AstaThemeX.iconSizeX.medium)
                 )
 
                 Text(
@@ -62,7 +60,7 @@ fun EndScreenPopup(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
                 Text(
                     text = desc,
@@ -73,10 +71,10 @@ fun EndScreenPopup(
 
                 Button(
                     onClick = onContinueClick,
-                    shape = Shapes.medium,
+                    shape = AstaThemeX.shapeX.medium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(spacing.medium),
+                        .padding(AstaThemeX.spacingX.medium),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )

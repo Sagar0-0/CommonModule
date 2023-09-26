@@ -49,7 +49,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.profile.feature.create.MultiRadioBtnKeys
 import fit.asta.health.profile.feature.create.view.LifeStyleCreateBottomSheetType.CURRENTACTIVITIES
 import fit.asta.health.profile.feature.create.view.LifeStyleCreateBottomSheetType.LIFESTYLETARGETS
@@ -216,12 +216,12 @@ fun LifeStyleContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.medium)
                 .verticalScroll(rememberScrollState())
                 .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             timePickers.forEach { timePicker ->
                 LifeStyleTimePicker(
                     title = timePicker.title,
@@ -256,7 +256,7 @@ fun LifeStyleContent(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             }
             LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.PHYACTIVE.getListName(),
                 options = listOf("Less", "Moderate", "Very"),
@@ -264,28 +264,28 @@ fun LifeStyleContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.PHYACTIVE.key, state)
                 })
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGENV.getListName(),
                 options = listOf("Standing", "Sitting"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGENV.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGENV.key, state)
                 })
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGSTYLE.getListName(),
                 options = listOf("Indoor", "Outdoor"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGSTYLE.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGSTYLE.key, state)
                 })
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGHRS.getListName(),
                 options = listOf("Morning", "Afternoon", "Night"),
                 selectedOption = radioButtonSelections[MultiRadioBtnKeys.WORKINGHRS.key] as ThreeRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.WORKINGHRS.key, state)
                 })
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -295,10 +295,10 @@ fun LifeStyleContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             }
             CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
 }
@@ -346,21 +346,21 @@ private fun LifeStyleTimePicker(
     secButtonType: String,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(vertical = spacing.medium)) {
+        Column(modifier = Modifier.padding(vertical = AstaThemeX.spacingX.medium)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = spacing.medium, end = spacing.small),
+                    .padding(start = AstaThemeX.spacingX.medium, end = AstaThemeX.spacingX.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AppTexts.TitleMedium(text = title)
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.medium),
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                    .padding(horizontal = AstaThemeX.spacingX.medium),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppButtons.AppStandardButton(onClick = firstEvent, modifier = Modifier.weight(1f)) {
@@ -372,13 +372,13 @@ private fun LifeStyleTimePicker(
                     AppTexts.LabelMedium(text = secButtonType, textAlign = TextAlign.Center)
                 }
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
                 UserSleepCycles(columnType = firstColType, columnValue = firstColValue)
-                Spacer(modifier = Modifier.width(spacing.large))
+                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.large))
                 UserSleepCycles(columnType = secondColType, columnValue = secColValue)
             }
         }

@@ -52,7 +52,6 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
@@ -268,7 +267,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

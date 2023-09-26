@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.components.functional.ScheduleIconLayout
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import fit.asta.health.resources.strings.R as StringR
@@ -37,11 +37,14 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(spacing.small)
+            .padding(AstaThemeX.spacingX.small)
     ) {
         Column(
-            modifier = Modifier.padding(horizontal = spacing.medium, vertical = spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.small)
+            modifier = Modifier.padding(
+                horizontal = AstaThemeX.spacingX.medium,
+                vertical = AstaThemeX.spacingX.small
+            ),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
         ) {
             Row(
                 Modifier.fillMaxWidth(),
@@ -49,11 +52,11 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppTexts.BodyLarge(text = weatherData.title)
-                Spacer(modifier = Modifier.width(spacing.small))
+                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.small))
                 ScheduleIconLayout(onButtonClick = onSchedule)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Event,
@@ -63,7 +66,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Thermostat,
@@ -72,7 +75,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 AppTexts.BodySmall(text = weatherData.temperature)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Waves,
@@ -81,7 +84,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 AppTexts.BodySmall(text = weatherData.uvDetails)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.AccessTime,

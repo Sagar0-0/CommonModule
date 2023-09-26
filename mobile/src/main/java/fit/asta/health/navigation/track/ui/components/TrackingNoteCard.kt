@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystemx.AstaThemeX
 
 // Preview Composable Function
 @Preview("Light")
@@ -36,7 +36,7 @@ import fit.asta.health.designsystem.AppTheme
 )
 @Composable
 private fun DefaultPreview() {
-    AppTheme {
+    AstaThemeX {
         Surface {
             TrackingNoteCard(
                 labelIcon = R.drawable.image_note,

@@ -43,7 +43,7 @@ import fit.asta.health.designsystem.theme.ProfileBorder1
 import fit.asta.health.designsystem.theme.ProfileBorder2
 import fit.asta.health.designsystem.theme.ProfileBorder3
 import fit.asta.health.designsystem.theme.imageSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun ContactLayout(
@@ -64,19 +64,19 @@ fun ContactLayout(
 private fun UserProfileSection(basicDetails: Contact) {
     Column(
         modifier = Modifier
-            .padding(top = spacing.medium)
+            .padding(top = AstaThemeX.spacingX.medium)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         UserProfileImg(userProfilePic = basicDetails.url)
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         UserDetails(
             basicDetails.name,
             basicDetails.phone,
             basicDetails.email,
             basicDetails.address,
         )
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
     }
 }
 
@@ -85,8 +85,8 @@ private fun UserAchievementsSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            .padding(AstaThemeX.spacingX.medium),
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
         UserAchievCard(
             scoreBoard = "24/346",
@@ -108,8 +108,8 @@ private fun UserProfileDetailsSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(spacing.small),
+            .padding(AstaThemeX.spacingX.medium),
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileDetails(
@@ -147,7 +147,8 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
     }
 
     Box(
-        contentAlignment = Alignment.Center, modifier = Modifier.padding(horizontal = spacing.small)
+        contentAlignment = Alignment.Center,
+        modifier = Modifier.padding(horizontal = AstaThemeX.spacingX.small)
     ) {
         ProfileImageBorder(size = 188.dp, color = MaterialTheme.colorScheme.primary) {
             AppDefServerImg(
@@ -194,17 +195,17 @@ fun UserAchievCard(
     AppCard(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(spacing.medium)
+            modifier = Modifier.padding(AstaThemeX.spacingX.medium)
         ) {
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Leaderboard",
                 modifier = Modifier.size(imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(spacing.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
             Column(
                 modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(spacing.minSmall)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.minSmall)
             ) {
                 AppTexts.BodyLarge(text = scoreBoard)
                 AppTexts.LabelSmall(text = cardType)
@@ -231,9 +232,9 @@ private fun UserDetails(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = spacing.large),
+            .padding(horizontal = AstaThemeX.spacingX.large),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
         AppTexts.BodyLarge(text = name)
         if (phoneNumber.isNotEmpty()) {
@@ -268,7 +269,10 @@ fun ProfileDetails(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium, vertical = spacing.small),
+                .padding(
+                    horizontal = AstaThemeX.spacingX.medium,
+                    vertical = AstaThemeX.spacingX.small
+                ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
@@ -277,7 +281,7 @@ fun ProfileDetails(
                 contentDescription = "Details Images",
                 modifier = Modifier.size(imageSize.standard)
             )
-            Spacer(modifier = Modifier.height(spacing.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
             AppTexts.LabelMedium(text = profileType, textAlign = TextAlign.Center)
         }
     }

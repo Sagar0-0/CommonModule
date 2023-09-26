@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
 import fit.asta.health.data.spotify.model.common.Artist
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 /**
@@ -57,7 +57,7 @@ fun MusicLargeImageColumn(
             .clickable {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(spacing.extraSmall)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.extraSmall)
     ) {
 
         // Showing the Loader or the Image accordingly

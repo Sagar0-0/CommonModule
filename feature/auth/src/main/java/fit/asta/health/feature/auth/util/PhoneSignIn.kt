@@ -55,7 +55,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = spacing.medium,
-                        bottom = spacing.medium,
-                        start = spacing.medium,
-                        end = spacing.small
+                        top = AstaThemeX.spacingX.medium,
+                        bottom = AstaThemeX.spacingX.medium,
+                        start = AstaThemeX.spacingX.medium,
+                        end = AstaThemeX.spacingX.small
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -282,7 +282,11 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length <= 10) phoneNumber = it },
                 placeholder = "Enter your phone number",
                 modifier = Modifier
-                    .padding(top = spacing.medium, bottom = spacing.medium, end = spacing.medium)
+                    .padding(
+                        top = AstaThemeX.spacingX.medium,
+                        bottom = AstaThemeX.spacingX.medium,
+                        end = AstaThemeX.spacingX.medium
+                    )
                     .weight(0.7f)
                     .onFocusChanged {
                         if (it.isFocused) {
@@ -296,7 +300,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -316,9 +320,9 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(spacing.medium)
+                    .padding(AstaThemeX.spacingX.medium)
             ) {
-                Text(text = "Generate OTP", modifier = Modifier.padding(spacing.small))
+                Text(text = "Generate OTP", modifier = Modifier.padding(AstaThemeX.spacingX.small))
             }
         }
 
@@ -349,7 +353,7 @@ fun PhoneSignIn(
                     supportingTextAlign = TextAlign.End
                 )
 
-                Spacer(modifier = Modifier.height(spacing.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
                 Button(
                     enabled = !loading,
@@ -358,20 +362,23 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(spacing.medium)
+                        .padding(AstaThemeX.spacingX.medium)
                 ) {
-                    Text(text = "Verify OTP", modifier = Modifier.padding(spacing.small))
+                    Text(
+                        text = "Verify OTP",
+                        modifier = Modifier.padding(AstaThemeX.spacingX.small)
+                    )
                 }
                 TextButton(
-                    enabled = !loading && ticks==0,
+                    enabled = !loading && ticks == 0,
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(spacing.medium)
+                        .padding(AstaThemeX.spacingX.medium)
                 ) {
-                    if(ticks>0){
+                    if (ticks > 0) {
                         Text(text = "Resend code in $ticks seconds")
-                    }else {
+                    } else {
                         Text(
                             text = "Still not received?",
                             color = MaterialTheme.colorScheme.onBackground

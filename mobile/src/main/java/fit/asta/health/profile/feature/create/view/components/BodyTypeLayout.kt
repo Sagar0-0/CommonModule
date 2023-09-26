@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 data class BodyTypes(
@@ -47,12 +47,12 @@ fun BodyTypeLayout() {
 
     Column(Modifier.fillMaxWidth()) {
 
-        Spacer(modifier = Modifier.height(spacing.small))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = spacing.medium),
+                .padding(start = AstaThemeX.spacingX.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -66,7 +66,7 @@ fun BodyTypeLayout() {
             columns = GridCells.Fixed(bodyTypeList.size),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.small, vertical = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.small, vertical = AstaThemeX.spacingX.medium)
                 .height(customSize.extraLarge2),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
@@ -101,7 +101,7 @@ fun BodyTypeListLayout(
                 alignment = Alignment.Center,
                 modifier = Modifier.size(40.dp)
             )
-            Spacer(modifier = Modifier.height(spacing.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
             Text(
                 text = listType,
                 style = MaterialTheme.typography.labelSmall,

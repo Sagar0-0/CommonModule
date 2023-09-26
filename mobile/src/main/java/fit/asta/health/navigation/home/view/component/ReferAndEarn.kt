@@ -20,14 +20,13 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.aspectRatio
 import fit.asta.health.designsystem.theme.buttonSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun ReferAndEarn() {
 
-    Box(modifier = Modifier.aspectRatio(aspectRatio.common), content = {
+    Box(modifier = Modifier.aspectRatio(AstaThemeX.aspectRatioX.common), content = {
 
         AppDrawImg(
             painterResource(id = R.drawable.background_image),
@@ -38,27 +37,28 @@ fun ReferAndEarn() {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(spacing.small)
+            modifier = Modifier.padding(AstaThemeX.spacingX.small)
         ) {
 
             AppDrawImg(
                 painterResource(id = R.drawable.refer_image),
                 contentDescription = "Refer/Earn Img",
-                modifier = Modifier.aspectRatio(aspectRatio.fullScreen),
+                modifier = Modifier.aspectRatio(AstaThemeX.aspectRatioX.fullScreen),
             )
 
-            Spacer(modifier = Modifier.width(spacing.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
                     AppTexts.TitleMedium(text = "Refer and Earn")
-                    Spacer(modifier = Modifier.height(spacing.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
-                    Spacer(modifier = Modifier.height(spacing.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                     AppButtons.AppStandardButton(onClick = {},
                         modifier = Modifier.height(buttonSize.large),
                         contentPadding = PaddingValues(
-                            vertical = spacing.minSmall, horizontal = spacing.small
+                            vertical = AstaThemeX.spacingX.minSmall,
+                            horizontal = AstaThemeX.spacingX.small
                         ),
                         content = {
                             AppTexts.LabelLarge(

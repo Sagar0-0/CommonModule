@@ -7,7 +7,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun UserSleepCycles(
@@ -18,7 +18,7 @@ fun UserSleepCycles(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppTexts.TitleSmall(text = columnType)
-        Spacer(modifier = Modifier.height(spacing.small))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
         AppTexts.TitleSmall(text = columnValue)
     }
 }

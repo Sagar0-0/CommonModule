@@ -21,8 +21,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 // Preview Composable Function
 @Preview(
@@ -36,7 +35,7 @@ import fit.asta.health.designsystem.theme.spacing
 )
 @Composable
 private fun DefaultPreview() {
-    AppTheme {
+    AstaThemeX {
         Surface {
             TrackingWeatherCard(
                 weatherType = "Sunny",
@@ -65,7 +64,7 @@ fun TrackingWeatherCard(
 
         Column(
             modifier = Modifier.padding(start = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.extraSmall)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.extraSmall)
         ) {
 
             // Weather type and the temperature

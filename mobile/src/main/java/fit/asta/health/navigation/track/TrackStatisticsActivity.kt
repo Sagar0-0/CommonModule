@@ -27,7 +27,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.designsystemx.molecular.background.AstaScreen
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
@@ -91,7 +91,7 @@ class TrackStatisticsActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
                         ) {
 
                             Icon(

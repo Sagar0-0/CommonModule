@@ -37,7 +37,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.dashedBorder
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R as DrawR
@@ -98,7 +98,7 @@ fun ShareReferralUi(
                                 ReferredUserItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(spacing.medium),
+                                        .padding(AstaThemeX.spacingX.medium),
                                     user = it
                                 )
                             }
@@ -112,7 +112,7 @@ fun ShareReferralUi(
                                     ReferredUserItem(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(spacing.medium),
+                                            .padding(AstaThemeX.spacingX.medium),
                                         user = user
                                     )
                                 }
@@ -133,13 +133,13 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
+            .padding(AstaThemeX.spacingX.medium)
             .background(MaterialTheme.colorScheme.surface),
         shape = MaterialTheme.shapes.extraLarge,
     ) {
         Text(
             modifier = Modifier
-                .padding(top = spacing.medium, start = spacing.medium),
+                .padding(top = AstaThemeX.spacingX.medium, start = AstaThemeX.spacingX.medium),
             text = title,
             textAlign = TextAlign.Start
         )
@@ -155,7 +155,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
                 .clickable {
                     shareReferralCode(code)
                 },
@@ -164,7 +164,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(spacing.large),
+                    .padding(AstaThemeX.spacingX.large),
                 text = stringResource(id = StringR.string.refer_and_earn),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium
@@ -172,7 +172,11 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(bottom = spacing.large, start = spacing.large, end = spacing.large),
+                    .padding(
+                        bottom = AstaThemeX.spacingX.large,
+                        start = AstaThemeX.spacingX.large,
+                        end = AstaThemeX.spacingX.large
+                    ),
                 text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.bodyMedium
@@ -180,7 +184,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .padding(spacing.medium)
+                    .padding(AstaThemeX.spacingX.medium)
                     .align(Alignment.CenterHorizontally),
                 imageVector = Icons.Default.Share,
                 contentDescription = "",
@@ -190,7 +194,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         }
         Box(
             modifier = Modifier
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
                 .align(Alignment.CenterHorizontally)
                 .dashedBorder(
                     width = 1.dp,
@@ -205,7 +209,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 }
         ) {
             Text(
-                modifier = Modifier.padding(spacing.medium),
+                modifier = Modifier.padding(AstaThemeX.spacingX.medium),
                 text = stringResource(id = StringR.string.code_side_text) + code,
                 style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center
@@ -230,7 +234,7 @@ private fun ReferredUserItem(
     ) {
         Image(
             modifier = Modifier
-                .padding(spacing.small)
+                .padding(AstaThemeX.spacingX.small)
                 .clip(CircleShape),
             painter = rememberAsyncImagePainter(
                 model = getImgUrl(url = user.pic),

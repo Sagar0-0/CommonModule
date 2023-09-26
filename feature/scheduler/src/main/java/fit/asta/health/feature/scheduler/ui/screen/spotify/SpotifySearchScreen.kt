@@ -29,7 +29,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -119,7 +119,7 @@ fun SpotifySearchScreen(
                             .padding(16.dp)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+                        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
                     ) {
                         items(trackList.size) {
                             val currentItem = trackList[it]

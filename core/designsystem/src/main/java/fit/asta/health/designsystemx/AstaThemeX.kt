@@ -14,11 +14,13 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystemx.atomic.AspectRatioX
 import fit.asta.health.designsystemx.atomic.AstaTypographyX
+import fit.asta.health.designsystemx.atomic.BoxSizeX
 import fit.asta.health.designsystemx.atomic.DarkDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.ElevationX
 import fit.asta.health.designsystemx.atomic.IconSizeX
 import fit.asta.health.designsystemx.atomic.LightDefaultColorSchemeX
 import fit.asta.health.designsystemx.atomic.LocalAspectRatioX
+import fit.asta.health.designsystemx.atomic.LocalBoxSizeX
 import fit.asta.health.designsystemx.atomic.LocalColorsX
 import fit.asta.health.designsystemx.atomic.LocalElevationX
 import fit.asta.health.designsystemx.atomic.LocalIconSizeX
@@ -69,7 +71,8 @@ fun AstaThemeX(
         LocalIconSizeX provides IconSizeX(),
         LocalShapeX provides ShapeX(),
         LocalSpacingX provides SpacingX(),
-        LocalTintThemeX provides tintThemeX
+        LocalTintThemeX provides tintThemeX,
+        LocalBoxSizeX provides BoxSizeX()
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -147,6 +150,14 @@ object AstaThemeX {
         @Composable
         @ReadOnlyComposable
         get() = LocalTintThemeX.current
+
+    /**
+     * Default Box Sizes for the App
+     */
+    val boxSizeX: BoxSizeX
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalBoxSizeX.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)

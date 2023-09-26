@@ -12,12 +12,12 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun TstBannerCard(testimonialsData: Testimonial) {
     AppCard(content = {
-        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = spacing.medium))
+        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = AstaThemeX.spacingX.medium))
     }, modifier = Modifier.fillMaxSize())
 }
 

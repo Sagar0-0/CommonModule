@@ -24,7 +24,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
@@ -72,10 +72,10 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     modifier = Modifier
                         .padding(it)
                         .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(spacing.extraLarge),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.extraLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(space = spacing.large)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(space = AstaThemeX.spacingX.large)) {
                         AppButtons.AppStandardButton(onClick = {
                             event(
                                 AlarmEvent.onSwipedLeft(

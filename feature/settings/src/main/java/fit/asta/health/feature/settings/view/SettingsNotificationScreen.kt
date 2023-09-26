@@ -20,7 +20,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -47,7 +47,7 @@ fun SettingsNotificationLayout(
             onBack = onBackPress
         )
 
-        LazyColumn(modifier = Modifier.padding(spacing.medium)) {
+        LazyColumn(modifier = Modifier.padding(AstaThemeX.spacingX.medium)) {
             item {
                 SwitchItem(
                     imageVector = Icons.Default.Notifications,
@@ -67,7 +67,10 @@ fun SettingsNotificationLayout(
                 Text(
                     text = stringResource(id = R.string.title_notifications),
                     style = MaterialTheme.typography.titleSmall,
-                    modifier = Modifier.padding(top = spacing.medium, bottom = spacing.small)
+                    modifier = Modifier.padding(
+                        top = AstaThemeX.spacingX.medium,
+                        bottom = AstaThemeX.spacingX.small
+                    )
                 )
 
                 SwitchItem(
@@ -213,7 +216,7 @@ fun SwitchItem(
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            modifier = Modifier.padding(spacing.extraSmall),
+            modifier = Modifier.padding(AstaThemeX.spacingX.extraSmall),
             imageVector = imageVector,
             contentDescription = ""
         )
@@ -221,7 +224,11 @@ fun SwitchItem(
         Column(
             Modifier
                 .weight(1f)
-                .padding(top = spacing.small, bottom = spacing.medium, start = spacing.extraSmall)
+                .padding(
+                    top = AstaThemeX.spacingX.small,
+                    bottom = AstaThemeX.spacingX.medium,
+                    start = AstaThemeX.spacingX.extraSmall
+                )
         ) {
             Text(
                 text = text,
@@ -238,7 +245,7 @@ fun SwitchItem(
         Switch(
             checked = isChecked,
             onCheckedChange = { onChange(it) },
-            modifier = Modifier.padding(bottom = spacing.small),
+            modifier = Modifier.padding(bottom = AstaThemeX.spacingX.small),
             enabled = isEnabled
         )
     }

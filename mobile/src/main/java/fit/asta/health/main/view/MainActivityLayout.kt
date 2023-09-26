@@ -56,8 +56,7 @@ import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.theme.elevation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
@@ -125,7 +124,7 @@ private fun BottomAppBarLayout(
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = elevation.high
+        tonalElevation = AstaThemeX.elevationX.small
     ) {
         items.forEach { item ->
             NavigationBarItem(
@@ -164,7 +163,7 @@ private fun NewMainTopBarActions(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.padding(start = spacing.small),
+                modifier = Modifier.padding(start = AstaThemeX.spacingX.small),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
                 tint = MaterialTheme.colorScheme.onBackground
@@ -196,7 +195,7 @@ private fun NewMainTopBarActions(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(spacing.minSmall),
+                    .padding(AstaThemeX.spacingX.minSmall),
                 color = MaterialTheme.colorScheme.onBackground,
                 overflow = TextOverflow.Ellipsis
             )

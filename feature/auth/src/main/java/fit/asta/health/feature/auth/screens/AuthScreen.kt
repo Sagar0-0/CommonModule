@@ -26,7 +26,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import java.net.URLEncoder
@@ -43,7 +43,7 @@ internal fun AuthScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(spacing.medium),
+            .padding(AstaThemeX.spacingX.medium),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -134,7 +134,7 @@ internal fun AuthScreen(
 
         ClickableText(
             modifier = Modifier
-                .padding(vertical = spacing.medium)
+                .padding(vertical = AstaThemeX.spacingX.medium)
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             text = annotatedLinkString,
