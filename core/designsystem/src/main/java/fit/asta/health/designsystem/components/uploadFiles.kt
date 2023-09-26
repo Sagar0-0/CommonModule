@@ -69,7 +69,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
 
             }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
         Box(
             modifier = Modifier.dashedBorder(
@@ -82,8 +82,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AstaThemeX.spacingX.medium,
-                        vertical = AstaThemeX.spacingX.small
+                        horizontal = AstaThemeX.appSpacing.medium,
+                        vertical = AstaThemeX.appSpacing.small
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -99,15 +99,15 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AstaThemeX.spacingX.extraSmall)
-                                    .clip(AstaThemeX.shapeX.extraLarge)
+                                    .padding(AstaThemeX.appSpacing.extraSmall)
+                                    .clip(AstaThemeX.appShape.extraLarge)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AstaThemeX.shapeX.extraLarge
+                                        shape = AstaThemeX.appShape.extraLarge
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AstaThemeX.spacingX.small),
+                                    .padding(AstaThemeX.appSpacing.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -147,7 +147,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
             }
         }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
         Text(
             text = "You can upload maximum 5 files*",

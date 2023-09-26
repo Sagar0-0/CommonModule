@@ -29,8 +29,8 @@ fun UploadTstMediaView(
 ) {
     Box(
         Modifier
-            .padding(AstaThemeX.spacingX.minSmall)
-            .aspectRatio(AstaThemeX.aspectRatioX.square)
+            .padding(AstaThemeX.appSpacing.minSmall)
+            .aspectRatio(AstaThemeX.appAspectRatio.square)
             .clickable { onUploadClick() }
             .clip(MaterialTheme.shapes.medium)
             .background(color = MaterialTheme.colorScheme.tertiaryContainer),
@@ -44,11 +44,11 @@ fun UploadTstMediaView(
                 contentDescription = "Upload Image",
                 tint = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             AppTexts.BodyMedium(
                 text = "Browse to Choose", color = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             title?.let {
                 AppTexts.HeadlineSmall(text = it, color = MaterialTheme.colorScheme.onSurface)
             }
@@ -67,14 +67,14 @@ fun SelectedImageView(
 
     Box(
         Modifier
-            .padding(AstaThemeX.spacingX.minSmall)
-            .aspectRatio(AstaThemeX.aspectRatioX.square)
+            .padding(AstaThemeX.appSpacing.minSmall)
+            .aspectRatio(AstaThemeX.appAspectRatio.square)
             .clickable { onImageClick() }, contentAlignment = Alignment.BottomCenter
     ) {
         AppDefServerImg(
             model = url,
             contentDescription = "Selected Tst Image",
-            modifier = Modifier.aspectRatio(AstaThemeX.aspectRatioX.square),
+            modifier = Modifier.aspectRatio(AstaThemeX.appAspectRatio.square),
             contentScale = ContentScale.Crop
         )
         AppTexts.TitleMedium(text = title, color = MaterialTheme.colorScheme.onSurface)

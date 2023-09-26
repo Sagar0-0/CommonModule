@@ -57,7 +57,7 @@ fun MusicLargeImageColumn(
             .clickable {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.extraSmall)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.extraSmall)
     ) {
 
         // Showing the Loader or the Image accordingly

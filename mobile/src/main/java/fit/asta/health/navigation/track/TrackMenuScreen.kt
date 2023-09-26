@@ -273,7 +273,7 @@ private fun TrackMenuSuccessScreen(
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
 
         // Time Spent Chart Card
@@ -449,7 +449,7 @@ private fun ToolsItemsCard(
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
         ) {
 
             // Title of the Card
@@ -479,12 +479,12 @@ private fun ToolsItemsCard(
             Row(
                 modifier = Modifier.padding(start = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
 
                 Row(
                     modifier = Modifier.weight(.8f),
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
 

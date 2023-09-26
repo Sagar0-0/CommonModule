@@ -124,7 +124,7 @@ private fun BottomAppBarLayout(
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = AstaThemeX.elevationX.small
+        tonalElevation = AstaThemeX.appElevation.small
     ) {
         items.forEach { item ->
             NavigationBarItem(
@@ -163,7 +163,7 @@ private fun NewMainTopBarActions(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.padding(start = AstaThemeX.spacingX.small),
+                modifier = Modifier.padding(start = AstaThemeX.appSpacing.small),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
                 tint = MaterialTheme.colorScheme.onBackground
@@ -195,7 +195,7 @@ private fun NewMainTopBarActions(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(AstaThemeX.spacingX.minSmall),
+                    .padding(AstaThemeX.appSpacing.minSmall),
                 color = MaterialTheme.colorScheme.onBackground,
                 overflow = TextOverflow.Ellipsis
             )

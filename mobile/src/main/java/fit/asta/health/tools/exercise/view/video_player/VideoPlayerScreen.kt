@@ -53,7 +53,7 @@ fun VideoPlayerScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = AstaThemeX.spacingX
+    val spacing = AstaThemeX.appSpacing
 
     val lazyListState = rememberLazyListState()
 
@@ -107,7 +107,7 @@ fun VideoTrackItem(
     song: VideoItem,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AstaThemeX.spacingX
+    val spacing = AstaThemeX.appSpacing
     val context = LocalContext.current
 
     val textColor = MaterialTheme.colorScheme.onSurface

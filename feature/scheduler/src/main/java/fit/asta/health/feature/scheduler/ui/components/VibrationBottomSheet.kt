@@ -76,7 +76,7 @@ fun VibrationBottomSheetLayout(
             }
         }
         FlowRow(
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {

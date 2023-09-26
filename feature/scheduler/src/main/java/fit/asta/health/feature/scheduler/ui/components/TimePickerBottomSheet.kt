@@ -92,7 +92,7 @@ fun TimePickerClock(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -167,7 +167,7 @@ fun TimePickerClock(
             }, dividersColor = dividersColor, textStyle = textStyle, range = (0..1)
             )
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
                 color = Color.Red,

@@ -39,10 +39,10 @@ fun EndScreenPopup(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.spacingX.medium),
-            shape = RoundedCornerShape(AstaThemeX.spacingX.small),
+                .padding(horizontal = AstaThemeX.appSpacing.medium),
+            shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-            elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall)
+            elevation = CardDefaults.cardElevation(AstaThemeX.appSpacing.extraSmall)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -51,7 +51,7 @@ fun EndScreenPopup(
                     tint = Color.Green,
                     imageVector = Icons.Default.Done,
                     contentDescription = null,
-                    modifier = Modifier.size(AstaThemeX.iconSizeX.medium)
+                    modifier = Modifier.size(AstaThemeX.appIconSize.medium)
                 )
 
                 Text(
@@ -60,7 +60,7 @@ fun EndScreenPopup(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
                 Text(
                     text = desc,
@@ -71,10 +71,10 @@ fun EndScreenPopup(
 
                 Button(
                     onClick = onContinueClick,
-                    shape = AstaThemeX.shapeX.medium,
+                    shape = AstaThemeX.appShape.medium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.medium),
+                        .padding(AstaThemeX.appSpacing.medium),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )

@@ -63,17 +63,17 @@ fun ItemSelectionLayout(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 AppDivider(lineWidth = 80.dp)
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         }
     }
 }
@@ -113,7 +113,7 @@ fun ChipRow(
         it.name.contains(searchQuery, ignoreCase = true)
     }
 
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
         filteredList.forEach { healthProperties ->
             val isSelected = cardList2?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {

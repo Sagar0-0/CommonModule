@@ -12,37 +12,37 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.designsystemx.atomic.AspectRatioX
-import fit.asta.health.designsystemx.atomic.AstaTypographyX
-import fit.asta.health.designsystemx.atomic.BoxSizeX
-import fit.asta.health.designsystemx.atomic.ButtonSizeX
-import fit.asta.health.designsystemx.atomic.CardHeightX
-import fit.asta.health.designsystemx.atomic.CustomSizeX
-import fit.asta.health.designsystemx.atomic.DarkDefaultColorSchemeX
-import fit.asta.health.designsystemx.atomic.ElevationX
-import fit.asta.health.designsystemx.atomic.IconButtonSizeX
-import fit.asta.health.designsystemx.atomic.IconSizeX
-import fit.asta.health.designsystemx.atomic.ImageHeightX
-import fit.asta.health.designsystemx.atomic.ImageSizeX
-import fit.asta.health.designsystemx.atomic.LightDefaultColorSchemeX
-import fit.asta.health.designsystemx.atomic.LocalAspectRatioX
-import fit.asta.health.designsystemx.atomic.LocalBoxSizeX
-import fit.asta.health.designsystemx.atomic.LocalButtonSizeX
-import fit.asta.health.designsystemx.atomic.LocalCardHeightX
-import fit.asta.health.designsystemx.atomic.LocalColorsX
-import fit.asta.health.designsystemx.atomic.LocalCustomSizeX
-import fit.asta.health.designsystemx.atomic.LocalElevationX
-import fit.asta.health.designsystemx.atomic.LocalIconButtonSizeX
-import fit.asta.health.designsystemx.atomic.LocalIconSizeX
-import fit.asta.health.designsystemx.atomic.LocalImageHeightX
-import fit.asta.health.designsystemx.atomic.LocalImageSizeX
-import fit.asta.health.designsystemx.atomic.LocalShapeX
-import fit.asta.health.designsystemx.atomic.LocalSpacingX
-import fit.asta.health.designsystemx.atomic.LocalTintThemeX
-import fit.asta.health.designsystemx.atomic.LocalTypographyX
-import fit.asta.health.designsystemx.atomic.ShapeX
-import fit.asta.health.designsystemx.atomic.SpacingX
-import fit.asta.health.designsystemx.atomic.TintThemeX
+import fit.asta.health.designsystemx.atomic.AppAspectRatio
+import fit.asta.health.designsystemx.atomic.AppTypography
+import fit.asta.health.designsystemx.atomic.AppBoxSize
+import fit.asta.health.designsystemx.atomic.AppButtonSize
+import fit.asta.health.designsystemx.atomic.AppCardHeight
+import fit.asta.health.designsystemx.atomic.AppCustomSize
+import fit.asta.health.designsystemx.atomic.DarkAppColors
+import fit.asta.health.designsystemx.atomic.AppElevation
+import fit.asta.health.designsystemx.atomic.AppIconButtonSize
+import fit.asta.health.designsystemx.atomic.AppIconSize
+import fit.asta.health.designsystemx.atomic.AppImageHeight
+import fit.asta.health.designsystemx.atomic.AppImageSize
+import fit.asta.health.designsystemx.atomic.LightAppColors
+import fit.asta.health.designsystemx.atomic.LocalAppAspectRatio
+import fit.asta.health.designsystemx.atomic.LocalAppBoxSize
+import fit.asta.health.designsystemx.atomic.LocalAppButtonSize
+import fit.asta.health.designsystemx.atomic.LocalAppCardHeight
+import fit.asta.health.designsystemx.atomic.LocalAppColors
+import fit.asta.health.designsystemx.atomic.LocalAppCustomSize
+import fit.asta.health.designsystemx.atomic.LocalAppElevation
+import fit.asta.health.designsystemx.atomic.LocalAppIconButtonSize
+import fit.asta.health.designsystemx.atomic.LocalAppIconSize
+import fit.asta.health.designsystemx.atomic.LocalAppImageHeight
+import fit.asta.health.designsystemx.atomic.LocalAppImageSize
+import fit.asta.health.designsystemx.atomic.LocalAppShape
+import fit.asta.health.designsystemx.atomic.LocalAppSpacing
+import fit.asta.health.designsystemx.atomic.LocalAppTintTheme
+import fit.asta.health.designsystemx.atomic.LocalAppTypography
+import fit.asta.health.designsystemx.atomic.AppShape
+import fit.asta.health.designsystemx.atomic.AppSpacing
+import fit.asta.health.designsystemx.atomic.AppTintTheme
 
 /**
  * This is the default theme of the App which would be used as a Wrapper Theme over the
@@ -66,29 +66,29 @@ fun AstaThemeX(
         }
 
         else -> if (darkTheme)
-            DarkDefaultColorSchemeX
+            DarkAppColors
         else
-            LightDefaultColorSchemeX
+            LightAppColors
     }
 
-    val tintThemeX = when {
-        !disableDynamicTheming && supportsDynamicTheming() -> TintThemeX(colorScheme.primary)
-        else -> TintThemeX()
+    val appTintTheme = when {
+        !disableDynamicTheming && supportsDynamicTheming() -> AppTintTheme(colorScheme.primary)
+        else -> AppTintTheme()
     }
     CompositionLocalProvider(
-        LocalAspectRatioX provides AspectRatioX(),
-        LocalColorsX provides colorScheme,
-        LocalTypographyX provides AstaTypographyX,
-        LocalElevationX provides ElevationX(),
-        LocalIconSizeX provides IconSizeX(),
-        LocalShapeX provides ShapeX(),
-        LocalSpacingX provides SpacingX(),
-        LocalTintThemeX provides tintThemeX,
-        LocalBoxSizeX provides BoxSizeX()
+        LocalAppAspectRatio provides AppAspectRatio(),
+        LocalAppColors provides colorScheme,
+        LocalAppTypography provides AppTypography,
+        LocalAppElevation provides AppElevation(),
+        LocalAppIconSize provides AppIconSize(),
+        LocalAppShape provides AppShape(),
+        LocalAppSpacing provides AppSpacing(),
+        LocalAppTintTheme provides appTintTheme,
+        LocalAppBoxSize provides AppBoxSize()
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
-            typography = AstaTypographyX,
+            typography = AppTypography,
             content = content
         )
     }
@@ -102,10 +102,10 @@ object AstaThemeX {
     /**
      * Aspect Ratio of the App
      */
-    val aspectRatioX: AspectRatioX
+    val appAspectRatio: AppAspectRatio
         @Composable
         @ReadOnlyComposable
-        get() = LocalAspectRatioX.current
+        get() = LocalAppAspectRatio.current
 
     /**
      * Colors of the app which are used by default
@@ -113,7 +113,7 @@ object AstaThemeX {
     val colorsX: ColorScheme
         @Composable
         @ReadOnlyComposable
-        get() = LocalColorsX.current
+        get() = LocalAppColors.current
 
     /**
      * Default Typography of the app
@@ -121,103 +121,103 @@ object AstaThemeX {
     val typographyX: Typography
         @Composable
         @ReadOnlyComposable
-        get() = LocalTypographyX.current
+        get() = LocalAppTypography.current
 
     /**
      * Default elevations of the app
      */
-    val elevationX: ElevationX
+    val appElevation: AppElevation
         @Composable
         @ReadOnlyComposable
-        get() = LocalElevationX.current
+        get() = LocalAppElevation.current
 
     /**
      * Default icon sizes of the App
      */
-    val iconSizeX: IconSizeX
+    val appIconSize: AppIconSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalIconSizeX.current
+        get() = LocalAppIconSize.current
 
     /**
      * Default Shapes of the App
      */
-    val shapeX: ShapeX
+    val appShape: AppShape
         @Composable
         @ReadOnlyComposable
-        get() = LocalShapeX.current
+        get() = LocalAppShape.current
 
     /**
      * Default Spacing for the App
      */
-    val spacingX: SpacingX
+    val appSpacing: AppSpacing
         @Composable
         @ReadOnlyComposable
-        get() = LocalSpacingX.current
+        get() = LocalAppSpacing.current
 
     /**
      * Default Tint Theme for the app
      */
-    val tintThemeX: TintThemeX
+    val appTintTheme: AppTintTheme
         @Composable
         @ReadOnlyComposable
-        get() = LocalTintThemeX.current
+        get() = LocalAppTintTheme.current
 
     /**
      * Default Box Sizes for the App
      */
-    val boxSizeX: BoxSizeX
+    val appBoxSize: AppBoxSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalBoxSizeX.current
+        get() = LocalAppBoxSize.current
 
     /**
      * Default Button sizes for the App
      */
-    val buttonSizeX: ButtonSizeX
+    val appButtonSize: AppButtonSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalButtonSizeX.current
+        get() = LocalAppButtonSize.current
 
     /**
      * Card Heights for the whole App
      */
-    val cardHeight: CardHeightX
+    val cardHeight: AppCardHeight
         @Composable
         @ReadOnlyComposable
-        get() = LocalCardHeightX.current
+        get() = LocalAppCardHeight.current
 
     /**
      * Icon Button Sizes for the whole App
      */
-    val iconButtonSize: IconButtonSizeX
+    val iconButtonSize: AppIconButtonSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalIconButtonSizeX.current
+        get() = LocalAppIconButtonSize.current
 
     /**
      * Image Height for the whole Apps
      */
-    val imageHeight: ImageHeightX
+    val imageHeight: AppImageHeight
         @Composable
         @ReadOnlyComposable
-        get() = LocalImageHeightX.current
+        get() = LocalAppImageHeight.current
 
     /**
      * Default Image Sizes for the whole App
      */
-    val imageSize: ImageSizeX
+    val imageSize: AppImageSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalImageSizeX.current
+        get() = LocalAppImageSize.current
 
     /**
      * Default Custom Sizes for the Whole App
      */
-    val customSize: CustomSizeX
+    val customSize: AppCustomSize
         @Composable
         @ReadOnlyComposable
-        get() = LocalCustomSizeX.current
+        get() = LocalAppCustomSize.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)

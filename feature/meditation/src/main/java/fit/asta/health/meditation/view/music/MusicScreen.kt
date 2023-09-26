@@ -58,7 +58,7 @@ fun MusicScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = AstaThemeX.spacingX
+    val spacing = AstaThemeX.appSpacing
 
     val lazyListState = rememberLazyListState()
 
@@ -134,7 +134,7 @@ fun TrackItem(
     playPauseTrack: (Boolean, Boolean) -> Unit,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AstaThemeX.spacingX
+    val spacing = AstaThemeX.appSpacing
     val context = LocalContext.current
     val isRunning = musicState.currentSong.id == song.id
 

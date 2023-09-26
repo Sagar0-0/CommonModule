@@ -28,7 +28,7 @@ fun ProgressBarInt(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -64,7 +64,7 @@ fun ProgressBarFloat(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

@@ -229,7 +229,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
 
         // Daily Progress
@@ -258,7 +258,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

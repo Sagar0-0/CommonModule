@@ -40,11 +40,11 @@ fun ToolsCardLayout(
                 AppDefServerImg(
                     model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
                     modifier = Modifier
-                        .aspectRatio(AstaThemeX.aspectRatioX.square)
+                        .aspectRatio(AstaThemeX.appAspectRatio.square)
                         .clip(
                             RoundedCornerShape(
-                                bottomStart = AstaThemeX.spacingX.small,
-                                bottomEnd = AstaThemeX.spacingX.small
+                                bottomStart = AstaThemeX.appSpacing.small,
+                                bottomEnd = AstaThemeX.appSpacing.small
                             )
                         ),
                     contentScale = ContentScale.Crop,
@@ -53,9 +53,9 @@ fun ToolsCardLayout(
             }
             AppTexts.TitleLarge(
                 text = cardTitle, modifier = Modifier.padding(
-                    start = AstaThemeX.spacingX.small,
-                    top = AstaThemeX.spacingX.small,
-                    bottom = AstaThemeX.spacingX.small
+                    start = AstaThemeX.appSpacing.small,
+                    top = AstaThemeX.appSpacing.small,
+                    bottom = AstaThemeX.appSpacing.small
                 )
             )
         }
@@ -70,7 +70,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.small), horizontalArrangement = Arrangement.End
+            .padding(AstaThemeX.appSpacing.small), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -84,8 +84,8 @@ fun ScheduleIconLayout(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(AstaThemeX.iconSizeX.regularSize)
-            .clip(RoundedCornerShape(AstaThemeX.spacingX.small))
+            .size(AstaThemeX.appIconSize.regularSize)
+            .clip(RoundedCornerShape(AstaThemeX.appSpacing.small))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

@@ -85,7 +85,7 @@ fun AstaFilledButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AstaThemeX.spacingX.extraSmall)
+                modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall)
             )
         }
 

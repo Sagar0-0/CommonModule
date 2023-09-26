@@ -45,15 +45,15 @@ fun CardItem(
 
         Row(
             modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
                 Icon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
             ) {
                 Text(
                     text = name,

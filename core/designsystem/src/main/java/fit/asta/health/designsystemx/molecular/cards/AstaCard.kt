@@ -62,7 +62,7 @@ fun AstaCard(
         Card(
             modifier = modifier,
             enabled = enabled,
-            shape = AstaThemeX.shapeX.large,
+            shape = AstaThemeX.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -72,7 +72,7 @@ fun AstaCard(
     else
         Card(
             modifier = modifier,
-            shape = AstaThemeX.shapeX.large,
+            shape = AstaThemeX.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,

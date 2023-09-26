@@ -107,7 +107,7 @@ fun AstaAssistChip(
         enabled = enabled,
         leadingIcon = if (leadingIcon != null) leadingIconComposable else null,
         trailingIcon = if (trailingIcon != null) trailingIconComposable else null,
-        shape = AstaThemeX.shapeX.large,
+        shape = AstaThemeX.appShape.large,
         colors = AssistChipDefaults.assistChipColors(),
         elevation = AssistChipDefaults.assistChipElevation(),
         border = AssistChipDefaults.assistChipBorder(),

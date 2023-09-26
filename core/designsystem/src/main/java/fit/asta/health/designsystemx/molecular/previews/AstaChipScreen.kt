@@ -55,13 +55,13 @@ fun AstaChipScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
 
                 // Assist Chip Section
                 TitleTexts.Large(text = "Assist Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -85,7 +85,7 @@ fun AstaChipScreen() {
                 // Filter Chip Section
                 TitleTexts.Large(text = "Filter Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaFilterChip(

@@ -97,13 +97,13 @@ fun SessionFeedback(
                         .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 ) {
 
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                     WelcomeCard()
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
                     qns.forEachIndexed { idx, qn ->
                         ansList.value[idx] = feedbackQuesItem(qn).value
-                        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                     }
 
                     SubmitButton(text = "Submit") {
@@ -111,7 +111,7 @@ fun SessionFeedback(
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
                 }
             }
 
@@ -139,7 +139,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
         val uriList = uploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.spacingX.medium)
+                .padding(horizontal = AstaThemeX.appSpacing.medium)
         )
         val medias = uriList.map {
             Media(

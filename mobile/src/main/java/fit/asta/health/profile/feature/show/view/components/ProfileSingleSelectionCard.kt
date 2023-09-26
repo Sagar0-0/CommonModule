@@ -27,7 +27,7 @@ fun ProfileSingleSelectionCard(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.medium),
+                .padding(AstaThemeX.appSpacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppDrawImg(
@@ -35,10 +35,10 @@ fun ProfileSingleSelectionCard(
                 contentDescription = "LifeStyle Icons",
                 modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
             Column {
                 AppTexts.BodySmall(text = title)
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.minSmall))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.minSmall))
                 AppTexts.BodyLarge(text = value)
             }
         }

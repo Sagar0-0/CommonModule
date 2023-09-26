@@ -231,7 +231,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
 
 
@@ -261,7 +261,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

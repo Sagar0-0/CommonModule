@@ -25,13 +25,13 @@ fun rating(): MutableState<Int> {
     Card(
         Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        shape = RoundedCornerShape(AstaThemeX.spacingX.small),
+        shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.small),
+                .padding(AstaThemeX.appSpacing.small),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             RatingBar(
@@ -40,7 +40,7 @@ fun rating(): MutableState<Int> {
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
                     .inactiveColor(MaterialTheme.colorScheme.onBackground.copy(0.25f))
-                    .padding(AstaThemeX.spacingX.small)
+                    .padding(AstaThemeX.appSpacing.small)
             )
         }
     }

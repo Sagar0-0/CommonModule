@@ -61,7 +61,7 @@ fun AstaOutlinedCard(
             modifier = modifier,
             onClick = onClick,
             enabled = enabled,
-            shape = AstaThemeX.shapeX.large,
+            shape = AstaThemeX.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -70,7 +70,7 @@ fun AstaOutlinedCard(
     else
         OutlinedCard(
             modifier = modifier,
-            shape = AstaThemeX.shapeX.large,
+            shape = AstaThemeX.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,

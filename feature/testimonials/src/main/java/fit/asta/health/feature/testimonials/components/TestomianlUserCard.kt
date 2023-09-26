@@ -39,7 +39,7 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
                     contentScale = ContentScale.Crop
                 )
             }
-            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
             Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceBetween

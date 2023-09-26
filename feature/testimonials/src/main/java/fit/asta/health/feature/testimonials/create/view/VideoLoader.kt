@@ -48,11 +48,11 @@ fun GetVideo(
 ) {
     Column(modifier = modifier) {
         AppTexts.TitleMedium(text = "Upload Video", color = MaterialTheme.colorScheme.onSurface)
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         Box(
             modifier = Modifier
                 .dashedBorder(
-                    width = 1.dp, radius = AstaThemeX.spacingX.small, color = Color(0xff8694A9)
+                    width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)
                 )
                 .fillMaxWidth()
         ) {

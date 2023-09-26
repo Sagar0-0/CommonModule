@@ -62,20 +62,20 @@ fun OnboardingScreen(
                 HorizontalPager(
                     modifier = Modifier.weight(1f),
                     state = pagerState,
-                    contentPadding = PaddingValues(AstaThemeX.spacingX.small),
-                    pageSpacing = AstaThemeX.spacingX.medium,
+                    contentPadding = PaddingValues(AstaThemeX.appSpacing.small),
+                    pageSpacing = AstaThemeX.appSpacing.medium,
                 ) { page ->
                     Card(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
-                            .padding(AstaThemeX.spacingX.small)
-                            .clip(AstaThemeX.shapeX.large)
+                            .padding(AstaThemeX.appSpacing.small)
+                            .clip(AstaThemeX.appShape.large)
                     ) {
                         GifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = AstaThemeX.spacingX.medium),
+                                .padding(bottom = AstaThemeX.appSpacing.medium),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -90,7 +90,7 @@ fun OnboardingScreen(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                modifier = Modifier.padding(horizontal = AstaThemeX.spacingX.extraMedium),
+                                modifier = Modifier.padding(horizontal = AstaThemeX.appSpacing.extraMedium),
                                 textAlign = TextAlign.Center,
                                 text = items[page].desc,
                                 style = MaterialTheme.typography.titleSmall,

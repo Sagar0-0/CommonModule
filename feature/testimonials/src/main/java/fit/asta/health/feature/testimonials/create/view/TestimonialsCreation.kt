@@ -33,9 +33,9 @@ fun TestimonialsRadioButton(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AstaThemeX.spacingX.medium)
+                .padding(start = AstaThemeX.appSpacing.medium)
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             Row(Modifier.fillMaxWidth()) {
                 AppTexts.BodyMedium(text = selectionTypeText)
             }
@@ -47,7 +47,7 @@ fun TestimonialsRadioButton(
                     ) {
                         Box(
                             modifier = Modifier.padding(
-                                top = AstaThemeX.spacingX.small, bottom = AstaThemeX.spacingX.small
+                                top = AstaThemeX.appSpacing.small, bottom = AstaThemeX.appSpacing.small
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {

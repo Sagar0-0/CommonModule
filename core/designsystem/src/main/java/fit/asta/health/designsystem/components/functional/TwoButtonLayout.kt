@@ -23,7 +23,7 @@ fun TwoButtonLayout(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
     ) {
         AppButtons.AppOutlinedButton(
             onClick = onClickButton1,

@@ -38,7 +38,7 @@ fun AppDivider(
 ) {
     Divider(
         color = MaterialTheme.colorScheme.primary,
-        thickness = AstaThemeX.spacingX.extraSmall,
+        thickness = AstaThemeX.appSpacing.extraSmall,
         modifier = modifier
             .clip(MaterialTheme.shapes.extraSmall)
             .width(width = lineWidth)
@@ -84,9 +84,9 @@ fun AppHorizontalPagerIndicator(
         modifier = modifier,
         activeColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
         inactiveColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
-        indicatorWidth = AstaThemeX.spacingX.small,
-        indicatorHeight = AstaThemeX.spacingX.small,
-        spacing = AstaThemeX.spacingX.small,
+        indicatorWidth = AstaThemeX.appSpacing.small,
+        indicatorHeight = AstaThemeX.appSpacing.small,
+        spacing = AstaThemeX.appSpacing.small,
         indicatorShape = CircleShape
     )
 }

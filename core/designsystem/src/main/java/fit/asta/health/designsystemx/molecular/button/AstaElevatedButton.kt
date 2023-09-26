@@ -80,11 +80,11 @@ fun AstaElevatedButton(
             disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = AstaThemeX.elevationX.extraSmall,
-            pressedElevation = AstaThemeX.elevationX.extraSmall,
-            focusedElevation = AstaThemeX.elevationX.extraSmall,
-            hoveredElevation = AstaThemeX.elevationX.smallMedium,
-            disabledElevation = AstaThemeX.elevationX.noElevation
+            defaultElevation = AstaThemeX.appElevation.extraSmall,
+            pressedElevation = AstaThemeX.appElevation.extraSmall,
+            focusedElevation = AstaThemeX.appElevation.extraSmall,
+            hoveredElevation = AstaThemeX.appElevation.smallMedium,
+            disabledElevation = AstaThemeX.appElevation.noElevation
         ),
         contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
     ) {
@@ -93,7 +93,7 @@ fun AstaElevatedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AstaThemeX.spacingX.extraSmall)
+                modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall)
             )
         }
 

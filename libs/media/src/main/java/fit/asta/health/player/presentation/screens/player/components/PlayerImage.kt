@@ -21,7 +21,7 @@ fun PlayerImage(
     imageBitmap: ByteArray?,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = AstaThemeX.spacingX
+    val spacing = AstaThemeX.appSpacing
     Box(
         modifier = modifier.padding(horizontal = spacing.extraLarge)
     ) {

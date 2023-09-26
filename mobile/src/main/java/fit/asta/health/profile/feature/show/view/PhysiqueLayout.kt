@@ -27,8 +27,8 @@ fun PhysiqueLayout(
                 )
             }
         },
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     )
 }
 

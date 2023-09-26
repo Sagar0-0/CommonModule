@@ -54,7 +54,7 @@ fun AstaCardScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
 
                 // Filled Card Section

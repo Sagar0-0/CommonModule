@@ -36,9 +36,9 @@ fun DietLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = AstaThemeX.spacingX.medium)
-            .padding(AstaThemeX.spacingX.medium),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            .padding(top = AstaThemeX.appSpacing.medium)
+            .padding(AstaThemeX.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
         items(userPropertyList) { (property, type) ->
             property?.let {
@@ -50,6 +50,6 @@ fun DietLayout(
             }
         }
 
-        item { Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium)) }
+        item { Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium)) }
     }
 }

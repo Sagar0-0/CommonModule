@@ -58,7 +58,7 @@ fun GoogleSignIn(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(AstaThemeX.buttonSizeX.extraLarge),
+            .height(AstaThemeX.appButtonSize.extraLarge),
         onClick = {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(token)

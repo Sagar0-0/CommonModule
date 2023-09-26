@@ -8,11 +8,11 @@ import androidx.compose.ui.graphics.Color
  * A class to model background color and tonal elevation values for Asta.
  */
 @Immutable
-data class TintThemeX(
+data class AppTintTheme(
     val iconTint: Color? = null,
 )
 
 /**
- * A composition local for [TintThemeX].
+ * A composition local for [AppTintTheme].
  */
-internal val LocalTintThemeX = staticCompositionLocalOf { TintThemeX() }
+internal val LocalAppTintTheme = staticCompositionLocalOf { AppTintTheme() }

@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
  * This Model class contains all the Spacing default values to be used in the App
  */
 @Immutable
-data class SpacingX(
+data class AppSpacing(
     val minSmall: Dp = 2.dp,
     val extraSmall: Dp = 4.dp,
     val extraSmall1: Dp = 7.5.dp,
@@ -22,6 +22,4 @@ data class SpacingX(
     val extraLarge3: Dp = 86.dp,
 )
 
-internal val LocalSpacingX = compositionLocalOf { SpacingX() }
-
-
+internal val LocalAppSpacing = compositionLocalOf { AppSpacing() }

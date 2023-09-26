@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.atomic.AstaTypographyX
+import fit.asta.health.designsystemx.atomic.AppTypography
 
 
 /**
@@ -22,7 +22,7 @@ import fit.asta.health.designsystemx.atomic.AstaTypographyX
  * Composable functions for displaying text with different predefined styles. These Composable
  * functions can be used to display text of mainly type Label Texts.
  *
- * Check [AstaTypographyX] for getting the current typography values
+ * Check [AppTypography] for getting the current typography values
  *
  * @see [DisplayTexts]
  * @see [HeadlineTexts]

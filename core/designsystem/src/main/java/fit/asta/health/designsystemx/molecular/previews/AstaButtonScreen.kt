@@ -63,13 +63,13 @@ fun AstaButtonScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
 
                 // Filled Button Section
                 TitleTexts.Large(text = "Filled Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -88,7 +88,7 @@ fun AstaButtonScreen() {
 
                 TitleTexts.Large(text = "Tonal Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaTonalButton(
@@ -107,7 +107,7 @@ fun AstaButtonScreen() {
 
                 TitleTexts.Large(text = "Elevated Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaElevatedButton(
@@ -127,7 +127,7 @@ fun AstaButtonScreen() {
                 // Outlined Button Section
                 TitleTexts.Large(text = "Outlined Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -148,7 +148,7 @@ fun AstaButtonScreen() {
                 // Icon Button Section
                 TitleTexts.Large(text = "Icon Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -166,7 +166,7 @@ fun AstaButtonScreen() {
                 // Asta Text Buttons
                 TitleTexts.Large(text = "Text Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -188,7 +188,7 @@ fun AstaButtonScreen() {
                 // Floating Action Buttons
                 TitleTexts.Large(text = "Floating Action Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaFloatingActionButton(
@@ -209,7 +209,7 @@ fun AstaButtonScreen() {
                 // Radio Buttons
                 TitleTexts.Large(text = "Radio Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaRadioButton(
@@ -228,7 +228,7 @@ fun AstaButtonScreen() {
                 // Toggle Buttons
                 TitleTexts.Large(text = "Toggle Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaToggleButton(
@@ -245,7 +245,7 @@ fun AstaButtonScreen() {
                 // Check Box Buttons
                 TitleTexts.Large(text = "Check Box Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AstaCheckBoxButton(

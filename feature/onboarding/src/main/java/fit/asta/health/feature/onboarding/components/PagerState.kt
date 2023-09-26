@@ -38,11 +38,11 @@ fun rememberPagerState(
 fun PagerIndicator(size: Int, currentPage: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.padding(vertical = AstaThemeX.spacingX.extraLarge)
+        modifier = Modifier.padding(vertical = AstaThemeX.appSpacing.extraLarge)
     ) {
         repeat(size) {
             Indicator(isSelected = it == currentPage)
-            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.extraSmall))
+            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.extraSmall))
         }
     }
 }

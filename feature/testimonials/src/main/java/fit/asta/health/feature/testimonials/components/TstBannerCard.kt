@@ -17,7 +17,7 @@ import fit.asta.health.designsystemx.AstaThemeX
 @Composable
 fun TstBannerCard(testimonialsData: Testimonial) {
     AppCard(content = {
-        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = AstaThemeX.spacingX.medium))
+        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = AstaThemeX.appSpacing.medium))
     }, modifier = Modifier.fillMaxSize())
 }
 

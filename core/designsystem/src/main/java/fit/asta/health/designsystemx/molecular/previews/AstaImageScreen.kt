@@ -47,7 +47,7 @@ fun AstaImageScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
                 AstaLocalImage(
                     painter = painterResource(id = AstaConstImages.errorImg)

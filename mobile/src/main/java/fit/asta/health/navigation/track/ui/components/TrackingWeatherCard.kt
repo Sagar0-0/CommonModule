@@ -64,7 +64,7 @@ fun TrackingWeatherCard(
 
         Column(
             modifier = Modifier.padding(start = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.extraSmall)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.extraSmall)
         ) {
 
             // Weather type and the temperature

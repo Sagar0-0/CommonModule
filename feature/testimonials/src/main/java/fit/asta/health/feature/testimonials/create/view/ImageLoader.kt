@@ -47,15 +47,15 @@ fun ImageLayout(
 
     Column(modifier = modifier) {
         AppTexts.BodyMedium(text = "Upload Images")
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.minSmall),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.minSmall),
             modifier = Modifier.fillMaxWidth()
         ) {
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AstaThemeX.spacingX.small, color = Color(0xff8694A9)),
+                    .dashedBorder(width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)),
                 img = imgBefore,
                 launcher = beforeLauncher,
                 getViewModel = getViewModel,
@@ -64,7 +64,7 @@ fun ImageLayout(
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AstaThemeX.spacingX.small, color = Color(0xff8694A9)),
+                    .dashedBorder(width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)),
                 img = imgAfter,
                 launcher = afterLauncher,
                 getViewModel = getViewModel,

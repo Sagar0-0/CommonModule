@@ -29,14 +29,14 @@ fun UserBodyType(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(AstaThemeX.elevationX.smallExtraMedium),
-        shape = RoundedCornerShape(AstaThemeX.spacingX.small)
+        elevation = CardDefaults.cardElevation(AstaThemeX.appElevation.smallExtraMedium),
+        shape = RoundedCornerShape(AstaThemeX.appSpacing.small)
     ) {
-        Column(modifier = Modifier.padding(vertical = AstaThemeX.spacingX.medium)) {
+        Column(modifier = Modifier.padding(vertical = AstaThemeX.appSpacing.medium)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AstaThemeX.spacingX.medium, end = AstaThemeX.spacingX.small),
+                    .padding(start = AstaThemeX.appSpacing.medium, end = AstaThemeX.appSpacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -48,7 +48,7 @@ fun UserBodyType(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -60,11 +60,11 @@ fun UserBodyType(
                     modifier = Modifier.size(width = 70.dp, height = 109.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(end = AstaThemeX.spacingX.medium),
+                    .padding(end = AstaThemeX.appSpacing.medium),
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(

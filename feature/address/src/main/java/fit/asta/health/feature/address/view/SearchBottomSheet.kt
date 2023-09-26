@@ -97,7 +97,7 @@ internal fun SearchBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(textFieldFocus)
-                    .padding(AstaThemeX.spacingX.medium),
+                    .padding(AstaThemeX.appSpacing.medium),
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
@@ -150,7 +150,7 @@ internal fun SearchBottomSheet(
                         searchResponseState.data.results
                     if (results.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(AstaThemeX.spacingX.small),
+                            modifier = Modifier.padding(AstaThemeX.appSpacing.small),
                             text = R.string.no_result_for.toStringFromResId() + "\"$searchQuery\"",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -171,12 +171,12 @@ internal fun SearchBottomSheet(
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(AstaThemeX.spacingX.extraSmall)
+                                        .padding(AstaThemeX.appSpacing.extraSmall)
                                 ) {
                                     AppDefServerImg(
                                         model = it.icon,
                                         contentDescription = null,
-                                        modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
+                                        modifier = Modifier.padding(end = AstaThemeX.appSpacing.medium)
                                     )
                                     AppTexts.BodyLarge(text = it.name)
                                     Spacer(modifier = Modifier.weight(1f))
@@ -188,7 +188,7 @@ internal fun SearchBottomSheet(
 
                 UiState.Loading -> {
                     Box(
-                        modifier = Modifier.padding(top = AstaThemeX.spacingX.large),
+                        modifier = Modifier.padding(top = AstaThemeX.appSpacing.large),
                         contentAlignment = Alignment.Center
                     ) {
                         LoadingAnimation()

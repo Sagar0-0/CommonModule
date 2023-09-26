@@ -95,7 +95,7 @@ fun SearchBar(
             Row(
                 modifier = Modifier
                     .padding(horizontal = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
             ) {
 
                 if (userInput.isNotEmpty()) {

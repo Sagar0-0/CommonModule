@@ -9,7 +9,7 @@ import androidx.compose.ui.unit.dp
  * This model Class contains all the data values for the default values of the elevations
  */
 @Immutable
-data class ElevationX(
+data class AppElevation(
     val noElevation: Dp = 0.dp,
     val extraSmall: Dp = 2.dp,
     val smallMedium: Dp = 4.dp,
@@ -19,4 +19,4 @@ data class ElevationX(
     val large: Dp = 32.dp,
 )
 
-internal val LocalElevationX = compositionLocalOf { ElevationX() }
+internal val LocalAppElevation = compositionLocalOf { AppElevation() }

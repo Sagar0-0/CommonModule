@@ -77,7 +77,7 @@ fun AstaDatePicker(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
         ) {
             AstaIconButton(
                 modifier = Modifier.size(42.dp),

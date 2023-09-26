@@ -23,7 +23,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AstaThemeX.spacingX.medium),
+            .padding(bottom = AstaThemeX.appSpacing.medium),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = if (lastPage) Arrangement.End else Arrangement.SpaceBetween
     ) {
@@ -31,7 +31,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = R.string.proceed.toStringFromResId(),
                 modifier = Modifier
-                    .padding(end = AstaThemeX.spacingX.medium),
+                    .padding(end = AstaThemeX.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
@@ -43,7 +43,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = "Skip",
                 modifier = Modifier
-                    .padding(start = AstaThemeX.spacingX.medium),
+                    .padding(start = AstaThemeX.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent
                 ),
@@ -54,7 +54,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = "Next",
                 modifier = Modifier
-                    .padding(end = AstaThemeX.spacingX.medium),
+                    .padding(end = AstaThemeX.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),

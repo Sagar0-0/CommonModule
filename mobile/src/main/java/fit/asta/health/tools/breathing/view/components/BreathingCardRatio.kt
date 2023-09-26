@@ -58,7 +58,7 @@ fun CardBreathingRatio(
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
                 ) {
                     Text(
                         text = ratio, modifier = Modifier.clickable { onRatio() },
@@ -68,7 +68,7 @@ fun CardBreathingRatio(
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
                 ) {
                     Text(
                         text = duration,

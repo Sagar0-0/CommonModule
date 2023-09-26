@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = AstaThemeX.spacingX.medium,
-                        bottom = AstaThemeX.spacingX.medium,
-                        start = AstaThemeX.spacingX.medium,
-                        end = AstaThemeX.spacingX.small
+                        top = AstaThemeX.appSpacing.medium,
+                        bottom = AstaThemeX.appSpacing.medium,
+                        start = AstaThemeX.appSpacing.medium,
+                        end = AstaThemeX.appSpacing.small
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -283,9 +283,9 @@ fun PhoneSignIn(
                 placeholder = "Enter your phone number",
                 modifier = Modifier
                     .padding(
-                        top = AstaThemeX.spacingX.medium,
-                        bottom = AstaThemeX.spacingX.medium,
-                        end = AstaThemeX.spacingX.medium
+                        top = AstaThemeX.appSpacing.medium,
+                        bottom = AstaThemeX.appSpacing.medium,
+                        end = AstaThemeX.appSpacing.medium
                     )
                     .weight(0.7f)
                     .onFocusChanged {
@@ -300,7 +300,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -320,9 +320,9 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.spacingX.medium)
+                    .padding(AstaThemeX.appSpacing.medium)
             ) {
-                Text(text = "Generate OTP", modifier = Modifier.padding(AstaThemeX.spacingX.small))
+                Text(text = "Generate OTP", modifier = Modifier.padding(AstaThemeX.appSpacing.small))
             }
         }
 
@@ -353,7 +353,7 @@ fun PhoneSignIn(
                     supportingTextAlign = TextAlign.End
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
                 Button(
                     enabled = !loading,
@@ -362,11 +362,11 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.medium)
+                        .padding(AstaThemeX.appSpacing.medium)
                 ) {
                     Text(
                         text = "Verify OTP",
-                        modifier = Modifier.padding(AstaThemeX.spacingX.small)
+                        modifier = Modifier.padding(AstaThemeX.appSpacing.small)
                     )
                 }
                 TextButton(
@@ -374,7 +374,7 @@ fun PhoneSignIn(
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AstaThemeX.spacingX.medium)
+                        .padding(AstaThemeX.appSpacing.medium)
                 ) {
                     if (ticks > 0) {
                         Text(text = "Resend code in $ticks seconds")

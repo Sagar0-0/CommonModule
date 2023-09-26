@@ -171,7 +171,7 @@ fun BreathingProgress(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
         ) {
             Text(text = "$startCount", modifier = Modifier.clickable {
                 changeRadius = if (changeRadius == 300f) smallRadius

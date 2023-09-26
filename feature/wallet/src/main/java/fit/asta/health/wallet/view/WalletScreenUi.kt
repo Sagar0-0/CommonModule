@@ -94,13 +94,13 @@ fun WalletScreenUi(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AstaThemeX.spacingX.medium)
+                                .padding(AstaThemeX.appSpacing.medium)
                                 .height(1.dp)
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
                         )
                         Card(
                             modifier = Modifier
-                                .padding(AstaThemeX.spacingX.medium),
+                                .padding(AstaThemeX.appSpacing.medium),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer
                             ),
@@ -108,7 +108,7 @@ fun WalletScreenUi(
                         ) {
                             Text(
                                 modifier = Modifier
-                                    .padding(top = AstaThemeX.spacingX.medium, start = AstaThemeX.spacingX.medium),
+                                    .padding(top = AstaThemeX.appSpacing.medium, start = AstaThemeX.appSpacing.medium),
                                 text = "Your transaction history:",
                                 textAlign = TextAlign.Start
                             )
@@ -116,8 +116,8 @@ fun WalletScreenUi(
                             LazyColumn(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = AstaThemeX.spacingX.medium),
-                                contentPadding = PaddingValues(AstaThemeX.spacingX.medium)
+                                    .padding(top = AstaThemeX.appSpacing.medium),
+                                contentPadding = PaddingValues(AstaThemeX.appSpacing.medium)
                             ) {
                                 items(transactionHistory) { item ->
                                     TransactionHistoryItem(item)
@@ -128,7 +128,7 @@ fun WalletScreenUi(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AstaThemeX.spacingX.medium)
+                                .padding(AstaThemeX.appSpacing.medium)
                                 .weight(1f),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,7 +137,7 @@ fun WalletScreenUi(
                                 painter = painterResource(id = DrawR.drawable.placeholder_tag),
                                 contentDescription = ""
                             )
-                            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                             Text(
                                 textAlign = TextAlign.Center,
                                 text = stringResource(id = StringR.string.no_transactions_text)
@@ -158,11 +158,11 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AstaThemeX.spacingX.medium),
+            .padding(bottom = AstaThemeX.appSpacing.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(end = AstaThemeX.spacingX.small),
+            modifier = Modifier.padding(end = AstaThemeX.appSpacing.small),
             imageVector = if (received) Icons.Default.MonetizationOn else Icons.Default.MoneyOff,
             contentDescription = ""
         )
@@ -197,7 +197,7 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.appSpacing.medium)
             .height(1.dp)
             .background(MaterialTheme.colorScheme.onSecondaryContainer)
     )
@@ -208,7 +208,7 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.medium),
+            .padding(AstaThemeX.appSpacing.medium),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -217,24 +217,24 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.small),
+                .padding(AstaThemeX.appSpacing.small),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .padding(AstaThemeX.spacingX.small)
+                    .padding(AstaThemeX.appSpacing.small)
             ) {
                 Text(text = amount.toString(), style = MaterialTheme.typography.headlineLarge)
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.extraSmall))
                 Text(text = "available balance")
             }
             Button(
-                modifier = Modifier.padding(AstaThemeX.spacingX.small),
+                modifier = Modifier.padding(AstaThemeX.appSpacing.small),
                 onClick = onButtonClick
             ) {
                 Text(
-                    modifier = Modifier.padding(AstaThemeX.spacingX.small),
+                    modifier = Modifier.padding(AstaThemeX.appSpacing.small),
                     text = "Redeem"
                 )
             }

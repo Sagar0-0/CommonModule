@@ -177,7 +177,7 @@ internal fun SavedAddressesScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.small)
+                        .padding(AstaThemeX.appSpacing.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromSavedAddress)
                         },
@@ -208,7 +208,7 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             AnimatedVisibility(fillAddressSheetType == null) {
                 OutlinedButton(
@@ -219,7 +219,7 @@ internal fun SavedAddressesScreen(
                         ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AstaThemeX.spacingX.small),
+                        .padding(horizontal = AstaThemeX.appSpacing.small),
                     onClick = {
                         if (currentAddressState is UiState.Success) {
                             openFillAddressSheet(
@@ -234,8 +234,8 @@ internal fun SavedAddressesScreen(
                 ) {
                     Icon(
                         modifier = Modifier
-                            .padding(end = AstaThemeX.spacingX.extraSmall)
-                            .size(AstaThemeX.iconSizeX.mediumSmall),
+                            .padding(end = AstaThemeX.appSpacing.extraSmall)
+                            .size(AstaThemeX.appIconSize.mediumSmall),
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = ""
                     )
@@ -290,7 +290,7 @@ internal fun SavedAddressesScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
 
             OutlinedButton(colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -298,7 +298,7 @@ internal fun SavedAddressesScreen(
             ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.spacingX.small),
+                    .padding(horizontal = AstaThemeX.appSpacing.small),
                 onClick = {
                     if (currentAddressState is UiState.Success) {
                         onUiEvent(
@@ -316,8 +316,8 @@ internal fun SavedAddressesScreen(
                 }) {
                 Icon(
                     modifier = Modifier
-                        .padding(end = AstaThemeX.spacingX.extraSmall)
-                        .size(AstaThemeX.iconSizeX.mediumSmall),
+                        .padding(end = AstaThemeX.appSpacing.extraSmall)
+                        .size(AstaThemeX.appIconSize.mediumSmall),
                     imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
@@ -334,7 +334,7 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             Spacer(
                 modifier = Modifier
@@ -344,7 +344,7 @@ internal fun SavedAddressesScreen(
             )
 
             Text(
-                modifier = Modifier.padding(AstaThemeX.spacingX.small),
+                modifier = Modifier.padding(AstaThemeX.appSpacing.small),
                 text = R.string.saved_address.toStringFromResId(),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -353,7 +353,7 @@ internal fun SavedAddressesScreen(
                     val addresses = savedAddressListState.data
                     if (addresses.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(AstaThemeX.spacingX.small),
+                            modifier = Modifier.padding(AstaThemeX.appSpacing.small),
                             text = R.string.no_saved_address.toStringFromResId(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -470,10 +470,10 @@ private fun AddressItem(
                 )
             }
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.small)
+            .padding(AstaThemeX.appSpacing.small)
     ) {
         Icon(
-            modifier = Modifier.padding(end = AstaThemeX.spacingX.extraSmall),
+            modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall),
             imageVector = Icons.Default.Home,
             contentDescription = ""
         )
@@ -496,7 +496,7 @@ private fun AddressItem(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.extraSmall))
+                Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.extraSmall))
 
                 Crossfade(
                     targetState = loading, label = ""
@@ -517,7 +517,7 @@ private fun AddressItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.extraSmall))
+                Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.extraSmall))
 
                 OutlinedIconButton(onClick = { onClick(AddressEvent.Share) }) {
                     Icon(

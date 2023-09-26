@@ -56,13 +56,13 @@ internal fun SubPlansPager(
 
     val pagerState = rememberPagerState(pageCount = { subscriptionPlans.categories.size })
     val pageSpacing by transition.animateDp(label = "") {
-        if (!it) AstaThemeX.spacingX.small else 0.dp
+        if (!it) AstaThemeX.appSpacing.small else 0.dp
     }
     val contentPadding by transition.animateDp(label = "") {
         if (it) {
             0.dp
         } else {
-            AstaThemeX.spacingX.extraLarge
+            AstaThemeX.appSpacing.extraLarge
         }
     }
     HorizontalPager(
@@ -114,7 +114,7 @@ private fun SubPlanItem(
         if (it) {
             0.dp
         } else {
-            AstaThemeX.iconSizeX.medium / 2
+            AstaThemeX.appIconSize.medium / 2
         }
     }
     val closeButtonSize by transition.animateDp(label = "") {
@@ -195,7 +195,7 @@ private fun SubPlanItem(
                     item.durations.forEachIndexed { idx, duration ->
                         Card(
                             modifier = Modifier
-                                .padding(AstaThemeX.spacingX.small)
+                                .padding(AstaThemeX.appSpacing.small)
                                 .weight(1f)
                                 .clickable {
                                     selectedDurationIndex = idx
@@ -205,7 +205,7 @@ private fun SubPlanItem(
                             ),
                             shape = MaterialTheme.shapes.medium
                         ) {
-                            Column(modifier = Modifier.padding(AstaThemeX.spacingX.small)) {
+                            Column(modifier = Modifier.padding(AstaThemeX.appSpacing.small)) {
                                 Text(text = duration.ttl)
                                 Text(text = duration.price)
                             }
@@ -219,7 +219,7 @@ private fun SubPlanItem(
                 enabled = !fullScreen || selectedDurationIndex != -1,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.spacingX.medium),
+                    .padding(AstaThemeX.appSpacing.medium),
                 onClick = {
                     if (fullScreen) {
                         onPayClick(
@@ -245,7 +245,7 @@ private fun SubPlanItem(
             if (it) {
                 0.dp
             } else {
-                AstaThemeX.iconSizeX.medium
+                AstaThemeX.appIconSize.medium
             }
         }
         Icon(

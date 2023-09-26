@@ -46,7 +46,7 @@ fun HomeScreenLayout(
                     ToolsHmScreenTopBanner(
                         bannerDataPages = toolsHome.banners[page]
                     )
-                }, modifier = Modifier.aspectRatio(ratio = AstaThemeX.aspectRatioX.fullScreen))
+                }, modifier = Modifier.aspectRatio(ratio = AstaThemeX.appAspectRatio.fullScreen))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -117,7 +117,7 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -135,12 +135,12 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             }
 
         },
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
     )
 
 }

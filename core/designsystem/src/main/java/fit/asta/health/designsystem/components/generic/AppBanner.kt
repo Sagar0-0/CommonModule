@@ -87,7 +87,7 @@ fun <T> AppBanner(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = AstaThemeX.spacingX.medium)
+                    .padding(bottom = AstaThemeX.appSpacing.medium)
             )
         }
     }

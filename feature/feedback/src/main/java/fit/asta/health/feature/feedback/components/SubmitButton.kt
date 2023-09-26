@@ -31,8 +31,8 @@ fun SubmitButton(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.spacingX.medium),
-            shape = RoundedCornerShape(AstaThemeX.spacingX.small),
+                .padding(horizontal = AstaThemeX.appSpacing.medium),
+            shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(

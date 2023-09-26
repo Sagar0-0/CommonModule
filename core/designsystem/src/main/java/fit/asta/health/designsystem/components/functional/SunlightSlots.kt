@@ -138,7 +138,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.small), horizontalArrangement = Arrangement.End
+            .padding(AstaThemeX.appSpacing.small), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -152,8 +152,8 @@ fun ScheduleIconLayout(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(AstaThemeX.iconSizeX.regularSize)
-            .clip(RoundedCornerShape(AstaThemeX.spacingX.small))
+            .size(AstaThemeX.appIconSize.regularSize)
+            .clip(RoundedCornerShape(AstaThemeX.appSpacing.small))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

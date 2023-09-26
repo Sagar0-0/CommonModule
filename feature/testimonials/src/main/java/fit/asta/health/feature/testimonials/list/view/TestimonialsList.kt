@@ -39,7 +39,7 @@ fun TestimonialsList(
 
                 AppCard(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.spacingX.medium),
+                    .padding(AstaThemeX.appSpacing.medium),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
@@ -98,9 +98,9 @@ fun LoadingItem() {
     ) {
         AppProgressArc(
             modifier = Modifier
-                .size(AstaThemeX.boxSizeX.largeSmall)
-                .padding(AstaThemeX.spacingX.medium),
-            strokeWidth = AstaThemeX.spacingX.extraSmall
+                .size(AstaThemeX.appBoxSize.largeSmall)
+                .padding(AstaThemeX.appSpacing.medium),
+            strokeWidth = AstaThemeX.appSpacing.extraSmall
         )
     }
 }

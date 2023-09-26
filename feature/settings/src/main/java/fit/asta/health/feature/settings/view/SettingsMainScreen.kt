@@ -77,7 +77,7 @@ fun SettingsScreenLayout(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.medium),
+                        .padding(AstaThemeX.appSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AppTexts.HeadlineMedium(
@@ -86,7 +86,7 @@ fun SettingsScreenLayout(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AstaThemeX.spacingX.medium),
+                            .padding(horizontal = AstaThemeX.appSpacing.medium),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppButtons.AppTextButton(
@@ -213,12 +213,12 @@ fun PreferenceCategory(
         if (titleId != null) Text(
             text = stringResource(id = titleId),
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = AstaThemeX.spacingX.medium, top = AstaThemeX.spacingX.small)
+            modifier = Modifier.padding(start = AstaThemeX.appSpacing.medium, top = AstaThemeX.appSpacing.small)
         )
         Column(
             modifier = Modifier.padding(
-                vertical = AstaThemeX.spacingX.small,
-                horizontal = AstaThemeX.spacingX.small
+                vertical = AstaThemeX.appSpacing.small,
+                horizontal = AstaThemeX.appSpacing.small
             )
         ) {
             content()
@@ -238,12 +238,12 @@ fun PreferenceItem(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.extraSmall)
+            .padding(AstaThemeX.appSpacing.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = null,
-            modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
+            modifier = Modifier.padding(end = AstaThemeX.appSpacing.medium)
         )
         Column {
             Text(text = title ?: stringResource(id = titleId))
@@ -272,12 +272,12 @@ fun ListPreference(
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.extraSmall)
+            .padding(AstaThemeX.appSpacing.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = title,
-            modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
+            modifier = Modifier.padding(end = AstaThemeX.appSpacing.medium)
         )
 
         Text(

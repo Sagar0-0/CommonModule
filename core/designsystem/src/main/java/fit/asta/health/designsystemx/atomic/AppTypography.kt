@@ -12,7 +12,7 @@ import fit.asta.health.core.designsystem.R
 /**
  * This object is the default Typography of the App
  */
-internal val AstaTypographyX = Typography(
+internal val AppTypography = Typography(
 
     displayLarge = TextStyle(
         fontFamily = FontFamily(Font(R.font.roboto_regular)),
@@ -121,4 +121,4 @@ internal val AstaTypographyX = Typography(
         letterSpacing = 0.5.sp
     )
 )
-internal val LocalTypographyX = compositionLocalOf { AstaTypographyX }
+internal val LocalAppTypography = compositionLocalOf { AppTypography }

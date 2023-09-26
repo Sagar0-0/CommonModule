@@ -4,7 +4,7 @@ import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 
-data class CustomSizeX(
+data class AppCustomSize(
 
     val minSmall: Dp = 2.dp,
     val extraSmall: Dp = 4.dp,
@@ -20,4 +20,4 @@ data class CustomSizeX(
     val extraLarge5: Dp = 160.dp,
 )
 
-internal val LocalCustomSizeX = compositionLocalOf { CustomSizeX() }
+internal val LocalAppCustomSize = compositionLocalOf { AppCustomSize() }

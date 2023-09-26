@@ -64,7 +64,7 @@ fun SleepGoalsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 24.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 

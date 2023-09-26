@@ -71,11 +71,11 @@ fun CreateProfileLayout(
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.extraSmall))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AstaThemeX.spacingX.small),
+                    .padding(start = AstaThemeX.appSpacing.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppDefaultIcon(imageVector = Icons.Outlined.NavigateBefore,
@@ -83,7 +83,7 @@ fun CreateProfileLayout(
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     })
-                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.small))
+                Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.small))
                 AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
             }
             Row(Modifier.fillMaxWidth()) {
@@ -99,7 +99,7 @@ fun CreateProfileLayout(
                         onStepClick = { currentStep = step.step })
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         }
     }, content = { innerPadding ->
         Box(

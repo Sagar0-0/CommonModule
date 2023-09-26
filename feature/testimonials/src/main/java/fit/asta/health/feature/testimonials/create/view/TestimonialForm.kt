@@ -76,12 +76,12 @@ fun TestimonialForm(
             .fillMaxWidth()
             .padding(
                 top = paddingValues.calculateTopPadding(),
-                start = AstaThemeX.spacingX.medium,
-                end = AstaThemeX.spacingX.medium
+                start = AstaThemeX.appSpacing.medium,
+                end = AstaThemeX.appSpacing.medium
             )
     ) {
         Column {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
                 radioButtonList = radioButtonList,
@@ -90,7 +90,7 @@ fun TestimonialForm(
                     getViewModel.onEvent(OnTypeChange(it))
                 })
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             Column(
                 modifier = Modifier
@@ -109,7 +109,7 @@ fun TestimonialForm(
                     errorMessage = title.error,
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
                 if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
                     AppTextFieldValidate(
@@ -127,7 +127,7 @@ fun TestimonialForm(
                         },
                         errorMessage = testimonial.error,
                         isError = testimonial.error !is UiString.Empty,
-                        modifier = Modifier.height(AstaThemeX.boxSizeX.extraMedium),
+                        modifier = Modifier.height(AstaThemeX.appBoxSize.extraMedium),
                         imeAction = if (testimonial.value.length > ValidateTxtLength.defLength) {
                             ImeAction.Next
                         } else {
@@ -135,7 +135,7 @@ fun TestimonialForm(
                         },
                         showLenErrorMsg = true
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                 }
 
                 AppTextFieldValidate(
@@ -149,7 +149,7 @@ fun TestimonialForm(
                     })
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
                 AppTextFieldValidate(
                     value = role.value,
@@ -163,12 +163,12 @@ fun TestimonialForm(
                 )
 
                 if (selectedOption == radioButtonList[1]) {
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                     ImageLayout(
                         getViewModel = getViewModel,
                     )
                 } else if (selectedOption == radioButtonList[2]) {
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                     TstGetVideo()
                 }
 
@@ -179,7 +179,7 @@ fun TestimonialForm(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.medium),
+                        .padding(AstaThemeX.appSpacing.medium),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary

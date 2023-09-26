@@ -47,31 +47,31 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AstaThemeX.spacingX.medium),
-        shape = RoundedCornerShape(AstaThemeX.spacingX.small),
+            .padding(horizontal = AstaThemeX.appSpacing.medium),
+        shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall)
+        elevation = CardDefaults.cardElevation(AstaThemeX.appSpacing.extraSmall)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
         ) {
 
             Text(
                 text = qn.qn,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             when (qn.type) {
                 2 -> {
                     opts.value = listOf(rating().value.toString())
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                 }
 
                 3, 5 -> {
                     opts.value = qn.opts?.let { listOf(mcqCard(it).value) }
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                 }
             }
 
@@ -82,7 +82,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(AstaThemeX.boxSizeX.medium),
+                    .height(AstaThemeX.appBoxSize.medium),
                 placeholder = R.string.write_your_answer_here,
             )
             Text(

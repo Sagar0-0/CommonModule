@@ -169,13 +169,13 @@ fun DietContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.spacingX.medium)
+                .padding(horizontal = AstaThemeX.appSpacing.medium)
                 .verticalScroll(rememberScrollState())
                 .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -185,7 +185,7 @@ fun DietContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
             }
 
             SelectionCardCreateProfile(
@@ -201,7 +201,7 @@ fun DietContent(
                 listName = "Diet"
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
             CreateProfileTwoButtonLayout(
                 eventPrevious = eventPrevious, eventNext = {
@@ -230,7 +230,7 @@ fun DietContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         }
     }
 }

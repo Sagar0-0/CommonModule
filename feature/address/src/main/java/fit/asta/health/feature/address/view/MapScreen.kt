@@ -194,7 +194,7 @@ internal fun MapScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.spacingX.small)
+                        .padding(AstaThemeX.appSpacing.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -232,7 +232,7 @@ internal fun MapScreen(
             ) {
                 AppButtons.AppIconButton(
                     modifier = Modifier
-                        .padding(AstaThemeX.spacingX.medium)
+                        .padding(AstaThemeX.appSpacing.medium)
                         .align(Alignment.End)
                         .size(AstaThemeX.iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
@@ -264,12 +264,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = AstaThemeX.spacingX.medium,
-                                topEnd = AstaThemeX.spacingX.medium
+                                topStart = AstaThemeX.appSpacing.medium,
+                                topEnd = AstaThemeX.appSpacing.medium
                             )
                         )
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = AstaThemeX.spacingX.medium),
+                        .padding(horizontal = AstaThemeX.appSpacing.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -320,7 +320,7 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = AstaThemeX.spacingX.medium)
+                                    .padding(bottom = AstaThemeX.appSpacing.medium)
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium),
                                 colors = ButtonDefaults.buttonColors(

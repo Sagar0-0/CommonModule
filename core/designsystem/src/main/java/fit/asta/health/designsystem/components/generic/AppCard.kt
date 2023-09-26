@@ -33,7 +33,7 @@ fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.elevationX.smallMedium),
+    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.appElevation.smallMedium),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(
@@ -61,7 +61,7 @@ fun AppCard(
     modifier: Modifier = Modifier,
     shape: Shape = MaterialTheme.shapes.medium,
     colors: CardColors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface),
-    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.elevationX.smallMedium),
+    elevation: CardElevation = CardDefaults.cardElevation(defaultElevation = AstaThemeX.appElevation.smallMedium),
     content: @Composable ColumnScope.() -> Unit,
 ) {
     Card(

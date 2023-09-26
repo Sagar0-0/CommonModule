@@ -45,11 +45,11 @@ fun TwoTogglesGroup(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.spacingX.medium)
+                    .padding(horizontal = AstaThemeX.appSpacing.medium)
             ) {
                 AppTexts.TitleSmall(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -89,11 +89,11 @@ fun ThreeTogglesGroups(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.spacingX.medium)
+                    .padding(horizontal = AstaThemeX.appSpacing.medium)
             ) {
                 AppTexts.TitleLarge(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -143,11 +143,11 @@ fun SelectionCardCreateProfile(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AstaThemeX.spacingX.medium),
+                        .padding(horizontal = AstaThemeX.appSpacing.medium),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = CenterVertically
                 ) {
@@ -168,15 +168,15 @@ fun SelectionCardCreateProfile(
                 )
                 if (selectedOption == TwoRadioBtnSelections.First) {
                     FlowRow(
-                        mainAxisSpacing = AstaThemeX.spacingX.minSmall,
-                        modifier = Modifier.padding(start = AstaThemeX.spacingX.medium),
+                        mainAxisSpacing = AstaThemeX.appSpacing.minSmall,
+                        modifier = Modifier.padding(start = AstaThemeX.appSpacing.medium),
                     ) {
                         cardList?.forEach {
                             DisabledChipForList(textOnChip = it.name)
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             }
         }
         if (cardList != null) {
@@ -202,11 +202,11 @@ fun OnlyChipSelectionCard(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.spacingX.medium),
+                    .padding(horizontal = AstaThemeX.appSpacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = CenterVertically
             ) {
@@ -217,16 +217,16 @@ fun OnlyChipSelectionCard(
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
             FlowRow(
-                mainAxisSpacing = AstaThemeX.spacingX.minSmall,
-                modifier = Modifier.padding(start = AstaThemeX.spacingX.medium),
+                mainAxisSpacing = AstaThemeX.appSpacing.minSmall,
+                modifier = Modifier.padding(start = AstaThemeX.appSpacing.medium),
             ) {
                 cardList?.forEach {
                     DisabledChipForList(textOnChip = it.name)
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
         }
     }
 }

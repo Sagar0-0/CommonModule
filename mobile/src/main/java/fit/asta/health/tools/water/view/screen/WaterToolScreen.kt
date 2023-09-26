@@ -113,7 +113,7 @@ fun WaterToolScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState, enabled = isScrollEnabled)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
         ) {
             Surface(
                 modifier = Modifier
@@ -135,7 +135,7 @@ fun WaterToolScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
+                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -152,7 +152,7 @@ fun WaterToolScreen(
                         }
                     )
 
-                    Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
                         ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.recommend.toFloat(),
@@ -176,7 +176,7 @@ fun WaterToolScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+                        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
                     ) {
                         Text(
                             text = "Recommendation ",
@@ -230,13 +230,13 @@ fun WaterBottomSheet(
             .heightIn(min = 200.dp, max = 320.dp)
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
     ) {
 
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
                 Text(
                     "BEVERAGES",
@@ -244,7 +244,7 @@ fun WaterBottomSheet(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
                     beverageList.forEach {
                         item {
                             BeveragesItem(
@@ -262,7 +262,7 @@ fun WaterBottomSheet(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
                     containerList.forEachIndexed { index, value ->
                         item {
                             QuantityContainerComponent(
@@ -278,7 +278,7 @@ fun WaterBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue != SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
                 Text(
                     "QUANTITY-${beverageName(selectedBeverage)}",
@@ -286,7 +286,7 @@ fun WaterBottomSheet(
                     fontWeight = FontWeight.Bold,
                     color = MaterialTheme.colorScheme.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
                     containerList.forEachIndexed { index, value ->
                         item {
                             QuantityContainerComponent(
@@ -299,7 +299,7 @@ fun WaterBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { Event(WTEvent.Schedule) }
@@ -364,7 +364,7 @@ fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
         ) {
             Text(
                 text = "Today Activity",
@@ -395,7 +395,7 @@ fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
             ) {
                 items(todayActivityData) {
                     ActivityItem(
@@ -456,7 +456,7 @@ fun RecommendBeverage() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
         ) {
             item {
                 Text(
@@ -476,7 +476,7 @@ fun RecommendBeverage() {
 fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, progress: Int) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -529,15 +529,15 @@ fun GridItem(
 
         Row(
             modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
                 Icon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
             ) {
                 Text(
                     text = name,
@@ -617,7 +617,7 @@ fun BeveragesItem(title: String, icon_code: String, index: String, onClick: () -
     Column(
         modifier = Modifier.clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
         Icon(
             painter = painterResource(id = beverageIcons(icon_code)),

@@ -45,7 +45,7 @@ fun AstaTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
-    shape: Shape = AstaThemeX.shapeX.small.copy(
+    shape: Shape = AstaThemeX.appShape.small.copy(
         bottomEnd = ZeroCornerSize,
         bottomStart = ZeroCornerSize
     ),
@@ -112,7 +112,7 @@ fun AstaOutlinedTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
-    shape: Shape = AstaThemeX.shapeX.small.copy(
+    shape: Shape = AstaThemeX.appShape.small.copy(
         bottomEnd = ZeroCornerSize,
         bottomStart = ZeroCornerSize
     ),
@@ -269,7 +269,7 @@ fun AstaValidatedTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.spacingX.small),
+                    .padding(horizontal = AstaThemeX.appSpacing.small),
                 horizontalArrangement =
                 if (isError) {
                     Arrangement.SpaceBetween

@@ -18,10 +18,10 @@ fun HealthLayout(health: Health) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.appSpacing.medium)
     ) {
         item {
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         }
 
         val healthItems = listOf(
@@ -40,7 +40,7 @@ fun HealthLayout(health: Health) {
                     ProfileChipCard(
                         icon = propertyType.icon, title = propertyType.getTitle(), list = list
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                 }
             }
         }

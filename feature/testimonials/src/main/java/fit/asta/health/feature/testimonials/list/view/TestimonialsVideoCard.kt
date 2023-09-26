@@ -49,10 +49,10 @@ fun TstViewVideoLayout(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.appSpacing.medium)
     ) {
         PlayVideoLayout(tstVideoMedia.media)
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         ArtistCard(tstVideoMedia)
     }
 }
@@ -114,7 +114,7 @@ fun VideoView(
             state,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(AstaThemeX.aspectRatioX.wideScreen)
+                .aspectRatio(AstaThemeX.appAspectRatio.wideScreen)
                 .background(Color.Black),
             surfaceType = uiState.surfaceType,
             resizeMode = uiState.resizeMode,

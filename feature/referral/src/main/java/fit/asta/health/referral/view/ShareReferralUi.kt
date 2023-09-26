@@ -98,7 +98,7 @@ fun ShareReferralUi(
                                 ReferredUserItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(AstaThemeX.spacingX.medium),
+                                        .padding(AstaThemeX.appSpacing.medium),
                                     user = it
                                 )
                             }
@@ -112,7 +112,7 @@ fun ShareReferralUi(
                                     ReferredUserItem(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(AstaThemeX.spacingX.medium),
+                                            .padding(AstaThemeX.appSpacing.medium),
                                         user = user
                                     )
                                 }
@@ -133,13 +133,13 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.appSpacing.medium)
             .background(MaterialTheme.colorScheme.surface),
         shape = MaterialTheme.shapes.extraLarge,
     ) {
         Text(
             modifier = Modifier
-                .padding(top = AstaThemeX.spacingX.medium, start = AstaThemeX.spacingX.medium),
+                .padding(top = AstaThemeX.appSpacing.medium, start = AstaThemeX.appSpacing.medium),
             text = title,
             textAlign = TextAlign.Start
         )
@@ -155,7 +155,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
                 .clickable {
                     shareReferralCode(code)
                 },
@@ -164,7 +164,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(AstaThemeX.spacingX.large),
+                    .padding(AstaThemeX.appSpacing.large),
                 text = stringResource(id = StringR.string.refer_and_earn),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium
@@ -173,9 +173,9 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(
-                        bottom = AstaThemeX.spacingX.large,
-                        start = AstaThemeX.spacingX.large,
-                        end = AstaThemeX.spacingX.large
+                        bottom = AstaThemeX.appSpacing.large,
+                        start = AstaThemeX.appSpacing.large,
+                        end = AstaThemeX.appSpacing.large
                     ),
                 text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
@@ -184,7 +184,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .padding(AstaThemeX.spacingX.medium)
+                    .padding(AstaThemeX.appSpacing.medium)
                     .align(Alignment.CenterHorizontally),
                 imageVector = Icons.Default.Share,
                 contentDescription = "",
@@ -194,7 +194,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         }
         Box(
             modifier = Modifier
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
                 .align(Alignment.CenterHorizontally)
                 .dashedBorder(
                     width = 1.dp,
@@ -209,7 +209,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 }
         ) {
             Text(
-                modifier = Modifier.padding(AstaThemeX.spacingX.medium),
+                modifier = Modifier.padding(AstaThemeX.appSpacing.medium),
                 text = stringResource(id = StringR.string.code_side_text) + code,
                 style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center
@@ -234,7 +234,7 @@ private fun ReferredUserItem(
     ) {
         Image(
             modifier = Modifier
-                .padding(AstaThemeX.spacingX.small)
+                .padding(AstaThemeX.appSpacing.small)
                 .clip(CircleShape),
             painter = rememberAsyncImagePainter(
                 model = getImgUrl(url = user.pic),

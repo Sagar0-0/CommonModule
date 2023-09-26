@@ -120,7 +120,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AstaThemeX.boxSizeX.medium)
+                        .size(AstaThemeX.appBoxSize.medium)
                 ) {
                     Image(
                         painter = painterResource(id = DrawR.drawable.ic_person),
@@ -136,7 +136,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AstaThemeX.boxSizeX.medium)
+                        .size(AstaThemeX.appBoxSize.medium)
                 ) {
                     if (profileImageUri != null) {
                         Image(

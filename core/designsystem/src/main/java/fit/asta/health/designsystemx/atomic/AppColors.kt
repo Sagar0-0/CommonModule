@@ -61,7 +61,7 @@ import fit.asta.health.designsystemx.atomic.token.DefaultColorTokens.md_theme_li
 /**
  * This is the object containing hte Light Default Colors of The app
  */
-internal val LightDefaultColorSchemeX = lightColorScheme(
+internal val LightAppColors = lightColorScheme(
     primary = md_theme_light_primary,
     onPrimary = md_theme_light_onPrimary,
     primaryContainer = md_theme_light_primaryContainer,
@@ -94,7 +94,7 @@ internal val LightDefaultColorSchemeX = lightColorScheme(
 /**
  * This object contains the default colors of the Dark theme
  */
-internal val DarkDefaultColorSchemeX = darkColorScheme(
+internal val DarkAppColors = darkColorScheme(
     primary = md_theme_dark_primary,
     onPrimary = md_theme_dark_onPrimary,
     primaryContainer = md_theme_dark_primaryContainer,
@@ -124,4 +124,4 @@ internal val DarkDefaultColorSchemeX = darkColorScheme(
     surfaceTint = md_theme_dark_surfaceTint,
 )
 
-internal val LocalColorsX = compositionLocalOf { LightDefaultColorSchemeX }
+internal val LocalAppColors = compositionLocalOf { LightAppColors }

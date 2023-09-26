@@ -27,12 +27,12 @@ fun GenderOptionsLayout(
     AppCard(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
                 .fillMaxWidth() // Occupy the maximum available width
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
             ) {
                 AppDrawImg(
                     painter = painterResource(id = cardImg),
@@ -41,7 +41,7 @@ fun GenderOptionsLayout(
                 )
                 Column {
                     AppTexts.BodySmall(text = cardType)
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
                     AppTexts.BodyLarge(text = cardValue)
                 }
             }

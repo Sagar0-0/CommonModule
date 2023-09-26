@@ -18,7 +18,7 @@ fun UserSleepCycles(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         AppTexts.TitleSmall(text = columnType)
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
         AppTexts.TitleSmall(text = columnValue)
     }
 }

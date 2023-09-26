@@ -47,7 +47,7 @@ fun SettingsNotificationLayout(
             onBack = onBackPress
         )
 
-        LazyColumn(modifier = Modifier.padding(AstaThemeX.spacingX.medium)) {
+        LazyColumn(modifier = Modifier.padding(AstaThemeX.appSpacing.medium)) {
             item {
                 SwitchItem(
                     imageVector = Icons.Default.Notifications,
@@ -68,8 +68,8 @@ fun SettingsNotificationLayout(
                     text = stringResource(id = R.string.title_notifications),
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.padding(
-                        top = AstaThemeX.spacingX.medium,
-                        bottom = AstaThemeX.spacingX.small
+                        top = AstaThemeX.appSpacing.medium,
+                        bottom = AstaThemeX.appSpacing.small
                     )
                 )
 
@@ -216,7 +216,7 @@ fun SwitchItem(
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            modifier = Modifier.padding(AstaThemeX.spacingX.extraSmall),
+            modifier = Modifier.padding(AstaThemeX.appSpacing.extraSmall),
             imageVector = imageVector,
             contentDescription = ""
         )
@@ -225,9 +225,9 @@ fun SwitchItem(
             Modifier
                 .weight(1f)
                 .padding(
-                    top = AstaThemeX.spacingX.small,
-                    bottom = AstaThemeX.spacingX.medium,
-                    start = AstaThemeX.spacingX.extraSmall
+                    top = AstaThemeX.appSpacing.small,
+                    bottom = AstaThemeX.appSpacing.medium,
+                    start = AstaThemeX.appSpacing.extraSmall
                 )
         ) {
             Text(
@@ -245,7 +245,7 @@ fun SwitchItem(
         Switch(
             checked = isChecked,
             onCheckedChange = { onChange(it) },
-            modifier = Modifier.padding(bottom = AstaThemeX.spacingX.small),
+            modifier = Modifier.padding(bottom = AstaThemeX.appSpacing.small),
             enabled = isEnabled
         )
     }

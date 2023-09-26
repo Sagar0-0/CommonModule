@@ -53,7 +53,7 @@ fun AstaElevatedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.elevatedCardColors(),
-    shape: Shape = AstaThemeX.shapeX.large,
+    shape: Shape = AstaThemeX.appShape.large,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
@@ -72,7 +72,7 @@ fun AstaElevatedCard(
     else
         ElevatedCard(
             modifier = modifier,
-            shape = AstaThemeX.shapeX.large,
+            shape = AstaThemeX.appShape.large,
             colors = colors,
             elevation = elevation,
             content = content

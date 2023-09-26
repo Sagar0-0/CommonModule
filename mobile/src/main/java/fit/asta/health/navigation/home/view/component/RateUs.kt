@@ -88,7 +88,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AstaThemeX.spacingX.large),
+                            .padding(horizontal = AstaThemeX.appSpacing.large),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         AppDrawImg(
@@ -96,20 +96,20 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             contentDescription = "Tagline",
                             modifier = Modifier
                                 .fillMaxSize()
-                                .aspectRatio(AstaThemeX.aspectRatioX.common)
+                                .aspectRatio(AstaThemeX.appAspectRatio.common)
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
                     AppTexts.BodyLarge(
                         text = "Your feedback will help us to make improvements",
-                        modifier = Modifier.padding(horizontal = AstaThemeX.spacingX.large),
+                        modifier = Modifier.padding(horizontal = AstaThemeX.appSpacing.large),
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(AstaThemeX.spacingX.small),
+                            .padding(AstaThemeX.appSpacing.small),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         AppRatingBar(
@@ -121,7 +121,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             space = 8.dp,
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -145,7 +145,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             AppButtons.AppStandardButton(
                                 onClick = { viewModel.onEvent(RateUsEvent.InAppReviewRequested) },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(AstaThemeX.buttonSizeX.medium)
+                                shape = RoundedCornerShape(AstaThemeX.appButtonSize.medium)
                             ) {
                                 AppTexts.LabelLarge(
                                     text = "Rate on Play Store",
@@ -154,7 +154,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
                 }
 
             }

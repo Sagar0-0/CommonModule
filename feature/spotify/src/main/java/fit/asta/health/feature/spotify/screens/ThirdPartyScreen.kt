@@ -101,7 +101,7 @@ fun ThirdPartyScreen(
             )
 
             // Search and Profile Icon
-            Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
 
                 // Search Icon
                 Icon(

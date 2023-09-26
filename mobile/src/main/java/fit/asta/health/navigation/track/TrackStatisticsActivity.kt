@@ -91,7 +91,7 @@ class TrackStatisticsActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
                         ) {
 
                             Icon(

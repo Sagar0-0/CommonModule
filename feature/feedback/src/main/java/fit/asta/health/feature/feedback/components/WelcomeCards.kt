@@ -27,15 +27,15 @@ fun WelcomeCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AstaThemeX.spacingX.medium),
-        shape = RoundedCornerShape(AstaThemeX.spacingX.small),
-        elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall),
+            .padding(horizontal = AstaThemeX.appSpacing.medium),
+        shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
+        elevation = CardDefaults.cardElevation(AstaThemeX.appSpacing.extraSmall),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.spacingX.medium)
+                .padding(AstaThemeX.appSpacing.medium)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.feedback1),
@@ -44,7 +44,7 @@ fun WelcomeCard() {
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
 
             Column {
                 Text(
@@ -54,7 +54,7 @@ fun WelcomeCard() {
                     textAlign = TextAlign.Left
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
 
                 Text(
                     text = "Your feedback is important to us. We read every feedback we get and take it seriously.",

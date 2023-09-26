@@ -288,12 +288,12 @@ private fun HealthContentLayout(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AstaThemeX.spacingX.medium)
+            .padding(horizontal = AstaThemeX.appSpacing.medium)
             .verticalScroll(rememberScrollState())
             .background(color = MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
 
         cardTypes.indices.forEach { index ->
             val (composeIndex, selectedOption) = selections[index]
@@ -313,10 +313,10 @@ private fun HealthContentLayout(
                 listName = cardType.getListName()
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
         }
         CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
     }
 }
 

@@ -42,9 +42,9 @@ fun LifeStyleLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AstaThemeX.spacingX.medium),
-        contentPadding = PaddingValues(vertical = AstaThemeX.spacingX.medium),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.appSpacing.medium),
+        contentPadding = PaddingValues(vertical = AstaThemeX.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
     ) {
         item {
             ProfileSessionCard(
