@@ -12,7 +12,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.Diet
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.profile.create.vm.UserPropertyType
 import fit.asta.health.feature.profile.show.view.components.ProfileChipCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -36,9 +36,9 @@ fun DietLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = spacing.medium)
-            .padding(spacing.medium),
-        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            .padding(top = AstaThemeX.spacingX.medium)
+            .padding(AstaThemeX.spacingX.medium),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
         items(userPropertyList) { (property, type) ->
             property?.let {
@@ -50,6 +50,6 @@ fun DietLayout(
             }
         }
 
-        item { Spacer(modifier = Modifier.height(spacing.medium)) }
+        item { Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium)) }
     }
 }

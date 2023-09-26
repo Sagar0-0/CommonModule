@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmEvent
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmScreen
 import fit.asta.health.feature.scheduler.ui.viewmodel.AlarmScreenViewModel
@@ -30,7 +30,7 @@ class AlarmScreenActivity : AppCompatActivity() {
         Constants.setShowWhenLocked(window, this)
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
+            AstaThemeX {
                 val alarmScreenViewModel = hiltViewModel<AlarmScreenViewModel>()
                 val uiState by alarmScreenViewModel.alarmUiState.collectAsStateWithLifecycle()
                 AlarmScreen(uiState = uiState, event = { uiEvent ->

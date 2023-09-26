@@ -28,7 +28,7 @@ import fit.asta.health.designsystem.components.functional.ShowCustomConfirmation
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
@@ -72,11 +72,11 @@ fun CreateProfileLayout(
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(spacing.extraSmall))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = spacing.small),
+                    .padding(start = AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppDefaultIcon(imageVector = Outlined.NavigateBefore,
@@ -84,7 +84,7 @@ fun CreateProfileLayout(
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     })
-                Spacer(modifier = Modifier.width(spacing.small))
+                Spacer(modifier = Modifier.width(AstaThemeX.spacingX.small))
                 AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
             }
             Row(Modifier.fillMaxWidth()) {
@@ -100,7 +100,7 @@ fun CreateProfileLayout(
                         onStepClick = { currentStep = step.step })
                 }
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }, content = { innerPadding ->
         Box(

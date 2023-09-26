@@ -5,8 +5,8 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -16,9 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -53,12 +50,14 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.designsystemx.molecular.background.AstaScreen
+import fit.asta.health.designsystemx.molecular.cards.AstaElevatedCard
+import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
@@ -105,8 +104,8 @@ fun TrackMenuScreenControl() {
                 .background(
                     Color(
                         ColorUtils.blendARGB(
-                            MaterialTheme.colorScheme.surface.toArgb(),
-                            MaterialTheme.colorScheme.onSurface.toArgb(),
+                            AstaThemeX.colorsX.surface.toArgb(),
+                            AstaThemeX.colorsX.onSurface.toArgb(),
                             0.08f
                         )
                     )
@@ -267,18 +266,20 @@ private fun TrackMenuSuccessScreen(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.TIME_SPENT) {
+                AstaTitleElevatedCard(title = TrackStringConstants.TIME_SPENT) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
@@ -312,7 +313,7 @@ private fun TrackMenuSuccessScreen(
         // Heart Health Details Card
         homeMenuData.healthDetail?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     TrackingDetailsCard(
                         imageList = listOf(R.drawable.heartrate, R.drawable.pulse_rate),
                         headerTextList = listOf(
@@ -336,7 +337,7 @@ private fun TrackMenuSuccessScreen(
             val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
             item {
-                TrackingChartCard {
+                AstaTitleElevatedCard {
                     Column {
                         BmiChart.BMIChart(
                             bmiData = BmiData(
@@ -392,8 +393,6 @@ private fun TrackMenuSuccessScreen(
                         localDate = localDate
                     )
                 }
-
-                Spacer(modifier = Modifier.height(8.dp))
             }
         }
 
@@ -443,88 +442,74 @@ private fun ToolsItemsCard(
 ) {
 
     // This function draws an elevated Card View
-    ElevatedCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(top = 8.dp, start = 16.dp, end = 16.dp),
-        shape = RoundedCornerShape(8.dp),
-        elevation = CardDefaults.cardElevation(defaultElevation = 4.dp),
-        colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent)
+    AstaElevatedCard(
+        modifier = Modifier.fillMaxWidth(),
+        shape = RoundedCornerShape(8.dp)
     ) {
 
-        Box(
-            modifier = Modifier
-                .background(MaterialTheme.colorScheme.surface)
-                .fillMaxWidth()
+        Column(
+            modifier = Modifier.fillMaxWidth(),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
         ) {
 
-            Column(
-                modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(spacing.medium)
+            // Title of the Card
+            HeadlineTexts.Small(
+                text = title[0].uppercase() + title.substring(1),
+
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+
+                // Text Features
+                textAlign = TextAlign.Start
+            )
+
+            // Donut Chart
+            CircularDonutChartRow.TargetDonutChart(
+                circularData = CircularTargetDataBuilder(
+                    target = target,
+                    achieved = achieved,
+                    siUnit = unit,
+                    cgsUnit = unit,
+                    conversionRate = { it }
+                )
+            )
+
+
+            Row(
+                modifier = Modifier.padding(start = 16.dp),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
             ) {
 
-                // Title of the Card
-                Text(
-                    text = title[0].uppercase() + title.substring(1),
-
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(top = 16.dp, start = 16.dp, end = 16.dp),
-
-                    // Text Features
-                    textAlign = TextAlign.Start,
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.W600,
-                    color = MaterialTheme.colorScheme.onSurface,
-                )
-
-                // Donut Chart
-                CircularDonutChartRow.TargetDonutChart(
-                    circularData = CircularTargetDataBuilder(
-                        target = target,
-                        achieved = achieved,
-                        siUnit = unit,
-                        cgsUnit = unit,
-                        conversionRate = { it }
-                    )
-                )
-
-
                 Row(
-                    modifier = Modifier.padding(start = 16.dp),
+                    modifier = Modifier.weight(.8f),
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(spacing.medium)
                 ) {
 
-                    Row(
-                        modifier = Modifier.weight(.8f),
-                        horizontalArrangement = Arrangement.spacedBy(spacing.medium),
-                        verticalAlignment = Alignment.CenterVertically,
-                    ) {
-
-                        // Leading Image of this row at the bottom of the Chart
-                        Image(
-                            painter = painterResource(id = R.drawable.track_image_info),
-                            contentDescription = null,
-                            modifier = Modifier.size(24.dp),
-
-                            contentScale = ContentScale.FillBounds
-                        )
-
-                        // Description Text
-                        Text(text = bodyDescription)
-                    }
-
-                    // Trailing Image of this row at the bottom of the Chart
+                    // Leading Image of this row at the bottom of the Chart
                     Image(
-                        painter = painterResource(id = R.drawable.track_image_go),
+                        painter = painterResource(id = R.drawable.track_image_info),
                         contentDescription = null,
+                        modifier = Modifier.size(24.dp),
 
-                        modifier = Modifier
-                            .weight(.2f)
-                            .clickable { onOptionClick() }
+                        contentScale = ContentScale.FillBounds
                     )
+
+                    // Description Text
+                    Text(text = bodyDescription)
                 }
+
+                // Trailing Image of this row at the bottom of the Chart
+                Image(
+                    painter = painterResource(id = R.drawable.track_image_go),
+                    contentDescription = null,
+
+                    modifier = Modifier
+                        .weight(.2f)
+                        .clickable { onOptionClick() }
+                )
             }
         }
     }

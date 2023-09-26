@@ -15,8 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.theme.iconSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -24,14 +23,14 @@ internal fun CurrentLocationUi(name: String, area: String) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(spacing.small),
+            .padding(AstaThemeX.spacingX.small),
         horizontalAlignment = Alignment.Start
     ) {
         Row {
             Icon(
                 modifier = Modifier
-                    .padding(end = spacing.extraSmall1)
-                    .size(iconSize.mediumSmall),
+                    .padding(end = AstaThemeX.spacingX.extraSmall1)
+                    .size(AstaThemeX.iconSizeX.mediumSmall),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = R.string.location.toStringFromResId(),
                 tint = MaterialTheme.colorScheme.primary
@@ -44,7 +43,7 @@ internal fun CurrentLocationUi(name: String, area: String) {
             )
         }
         Text(
-            modifier = Modifier.padding(spacing.minSmall),
+            modifier = Modifier.padding(AstaThemeX.spacingX.minSmall),
             text = area,
             style = MaterialTheme.typography.titleMedium
         )

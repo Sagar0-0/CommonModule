@@ -45,8 +45,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -98,7 +97,7 @@ internal fun SearchBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(textFieldFocus)
-                    .padding(spacing.medium),
+                    .padding(AstaThemeX.spacingX.medium),
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
@@ -122,7 +121,7 @@ internal fun SearchBottomSheet(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(
                                     bounded = false,
-                                    radius = customSize.extraMedium
+                                    radius = AstaThemeX.customSize.extraMedium
                                 )
                             ) {
                                 searchQuery = ""
@@ -151,7 +150,7 @@ internal fun SearchBottomSheet(
                         searchResponseState.data.results
                     if (results.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(spacing.small),
+                            modifier = Modifier.padding(AstaThemeX.spacingX.small),
                             text = R.string.no_result_for.toStringFromResId() + "\"$searchQuery\"",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -172,12 +171,12 @@ internal fun SearchBottomSheet(
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(spacing.extraSmall)
+                                        .padding(AstaThemeX.spacingX.extraSmall)
                                 ) {
                                     AppDefServerImg(
                                         model = it.icon,
                                         contentDescription = null,
-                                        modifier = Modifier.padding(end = spacing.medium)
+                                        modifier = Modifier.padding(end = AstaThemeX.spacingX.medium)
                                     )
                                     AppTexts.BodyLarge(text = it.name)
                                     Spacer(modifier = Modifier.weight(1f))
@@ -189,7 +188,7 @@ internal fun SearchBottomSheet(
 
                 UiState.Loading -> {
                     Box(
-                        modifier = Modifier.padding(top = spacing.large),
+                        modifier = Modifier.padding(top = AstaThemeX.spacingX.large),
                         contentAlignment = Alignment.Center
                     ) {
                         LoadingAnimation()

@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,11 +49,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -86,8 +86,8 @@ fun TrackBreathingScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -226,18 +226,20 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Daily Progress
         breathingData.progress?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -255,12 +257,12 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Weekly Progress
         breathingData.weekly?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -288,7 +290,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = AstaThemeX.colorsX.onSurface,
                                 )
                             }
                         }
@@ -301,7 +303,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Progress Bar Chart
         breathingData.progressGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -316,7 +318,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Vitamin D Details Card
         breathingData.weather?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -342,7 +344,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Air Purity Single Circle Chart
         breathingData.air?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.AIR_PURITY) {
+                AstaTitleElevatedCard(title = TrackStringConstants.AIR_PURITY) {
                     CircularRingChart.SingleRingChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.meta.max,
@@ -365,7 +367,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Heart Health Double Circular Chart
         breathingData.health?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.HEART_HEALTH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -407,7 +409,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Breathing Details Card
         breathingData.breathDetail?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.BREATHING_DETAILS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.BREATHING_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_inhaled_quantity,
@@ -433,7 +435,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Air Purity Line Chart
         breathingData.airGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.AIR_PURITY) {
+                AstaTitleElevatedCard(title = TrackStringConstants.AIR_PURITY) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -455,7 +457,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Mood Graph Line Chart
         breathingData.moodGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -500,7 +502,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Heart Rate Line Chart
         breathingData.heartRateGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.HEART_RATE) {
+                AstaTitleElevatedCard(title = TrackStringConstants.HEART_RATE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -515,7 +517,7 @@ private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
         // Blood Pressure Line Chart
         breathingData.bloodPressureGraph?.let { graphData ->
             item {
-                TrackingChartCard(title = TrackStringConstants.BLOOD_PRESSURE) {
+                AstaTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

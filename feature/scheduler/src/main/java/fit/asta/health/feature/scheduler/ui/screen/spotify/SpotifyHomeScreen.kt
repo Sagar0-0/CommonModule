@@ -23,7 +23,7 @@ import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -55,7 +55,7 @@ fun SpotifyHomeScreen(
             .padding(16.dp)
             .width(LocalConfiguration.current.screenWidthDp.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Search Option And Spotify Title

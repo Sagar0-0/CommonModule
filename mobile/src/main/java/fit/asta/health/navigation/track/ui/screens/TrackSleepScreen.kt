@@ -5,6 +5,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +14,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -49,11 +49,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.time.LocalDate
@@ -84,8 +84,8 @@ fun TrackSleepScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -224,19 +224,21 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
 
         // Daily Progress
         sleepData.progress?.let {
             item {
-                TrackingChartCard(title = "Daily Progress") {
+                AstaTitleElevatedCard(title = "Daily Progress") {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -254,12 +256,12 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Weekly Progress
         sleepData.weekly?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -287,7 +289,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = AstaThemeX.colorsX.onSurface,
                                 )
                             }
                         }
@@ -300,7 +302,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Duration Line Chart
         sleepData.sleepDurationGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SLEEP_DURATION) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SLEEP_DURATION) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -315,7 +317,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Regularity
         sleepData.sleepRegularityGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SLEEP_REGULARITY) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SLEEP_REGULARITY) {
                     LinearChart.GradientChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -348,7 +350,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Sleep Ratio Circular Graph
         sleepData.sleepRatio?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.SLEEP_RATIO) {
+                AstaTitleElevatedCard(title = TrackStringConstants.SLEEP_RATIO) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
@@ -373,7 +375,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Mood Line Graph Card
         sleepData.moodGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -418,7 +420,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
         // Goals Graph
         sleepData.goalGraph?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.GOALS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.GOALS) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),

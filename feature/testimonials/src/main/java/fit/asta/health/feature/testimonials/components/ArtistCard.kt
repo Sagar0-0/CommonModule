@@ -16,7 +16,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun ArtistCard(testimonialsDataPages: Testimonial) {
@@ -33,7 +33,7 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
             contentDescription = "Tst Profile Pic",
             modifier = Modifier.size(80.dp)
         )
-        Spacer(modifier = Modifier.width(spacing.medium))
+        Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
         Column(
             horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.SpaceBetween
         ) {

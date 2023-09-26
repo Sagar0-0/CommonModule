@@ -13,7 +13,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fit.asta.health.designsystem.theme.imageSize
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.drawables.R
 
 /**[AppConstImg] is an object in the Android application that contains constants for drawable
@@ -45,7 +45,7 @@ fun AppDefaultIcon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = tint,
-        modifier = modifier.size(imageSize.standard)
+        modifier = modifier.size(AstaThemeX.imageSize.standard)
     )
 }
 

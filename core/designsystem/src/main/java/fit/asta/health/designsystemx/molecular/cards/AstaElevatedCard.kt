@@ -10,6 +10,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
@@ -41,6 +42,7 @@ private fun DefaultPreview1() {
  * @param modifier the [Modifier] to be applied to this card
  * @param enabled This determines if the Card is enabled or not
  * @param colors [CardColors] that will be used to resolve the color(s) used for this card.
+ * @param shape This function is used to provide a custom shape to the Card
  * @param elevation [CardElevation] used to resolve the elevation for this card.
  * @param onClick called when this card is clicked
  * @param content components inside the card
@@ -51,6 +53,7 @@ fun AstaElevatedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.elevatedCardColors(),
+    shape: Shape = AstaThemeX.shapeX.large,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
@@ -59,11 +62,11 @@ fun AstaElevatedCard(
     if (onClick != null)
         ElevatedCard(
             modifier = modifier,
-            onClick = onClick,
             enabled = enabled,
-            shape = AstaThemeX.shapeX.large,
             colors = colors,
+            shape = shape,
             elevation = elevation,
+            onClick = onClick,
             content = content
         )
     else

@@ -25,8 +25,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
-import fit.asta.health.designsystem.atomic.LocalShape
-import fit.asta.health.designsystem.atomic.LocalSpacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun AstaTextField(
@@ -46,7 +45,7 @@ fun AstaTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
-    shape: Shape = LocalShape.current.small.copy(
+    shape: Shape = AstaThemeX.shapeX.small.copy(
         bottomEnd = ZeroCornerSize,
         bottomStart = ZeroCornerSize
     ),
@@ -113,7 +112,7 @@ fun AstaOutlinedTextField(
     singleLine: Boolean = false,
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
-    shape: Shape = LocalShape.current.small.copy(
+    shape: Shape = AstaThemeX.shapeX.small.copy(
         bottomEnd = ZeroCornerSize,
         bottomStart = ZeroCornerSize
     ),
@@ -270,7 +269,7 @@ fun AstaValidatedTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = LocalSpacing.current.small),
+                    .padding(horizontal = AstaThemeX.spacingX.small),
                 horizontalArrangement =
                 if (isError) {
                     Arrangement.SpaceBetween

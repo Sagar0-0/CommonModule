@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.validation.widget.textfield
+package fit.asta.health.designsystemx.extras.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.material3.MaterialTheme

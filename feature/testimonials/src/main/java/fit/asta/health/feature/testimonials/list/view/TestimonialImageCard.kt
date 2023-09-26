@@ -19,8 +19,7 @@ import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.aspectRatio
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
@@ -28,10 +27,10 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(spacing.medium)
+            .padding(AstaThemeX.spacingX.medium)
     ) {
         BeforeAndCardLayout(tstImageMedia.media)
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         TstTxtLayout(tstImageMedia)
     }
 }
@@ -40,20 +39,20 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
 fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
 
     if (tstImageMedia.isNotEmpty()) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
             tstImageMedia.forEach {
                 Box(
                     modifier = Modifier
                         .border(
                             width = 1.dp, color = MaterialTheme.colorScheme.surface
                         )
-                        .aspectRatio(aspectRatio.square)
+                        .aspectRatio(AstaThemeX.aspectRatioX.square)
                         .weight(1f)
                 ) {
                     AppDefServerImg(
                         model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
-                        modifier = Modifier.aspectRatio(aspectRatio.square)
+                        modifier = Modifier.aspectRatio(AstaThemeX.aspectRatioX.square)
                     )
                 }
             }

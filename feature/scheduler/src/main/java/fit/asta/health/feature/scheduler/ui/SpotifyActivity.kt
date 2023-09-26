@@ -24,9 +24,9 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.feature.scheduler.ui.viewmodel.SpotifyViewModel
 import fit.asta.health.feature.scheduler.util.Constants
@@ -49,7 +49,7 @@ class SpotifyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
+            AstaThemeX {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()

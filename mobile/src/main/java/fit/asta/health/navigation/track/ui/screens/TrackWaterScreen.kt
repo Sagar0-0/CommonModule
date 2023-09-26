@@ -4,6 +4,7 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,7 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -44,11 +44,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
 import fit.asta.health.designsystemx.organism.common.AstaDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.navigation.track.ui.components.TrackingChartCard
+import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -81,8 +81,8 @@ fun TrackWaterScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -218,18 +218,20 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        MaterialTheme.colorScheme.surface.toArgb(),
-                        MaterialTheme.colorScheme.onSurface.toArgb(),
+                        AstaThemeX.colorsX.surface.toArgb(),
+                        AstaThemeX.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
-            )
+            ),
+        contentPadding = PaddingValues(horizontal = 16.dp),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
     ) {
 
         // Daily Progress Circular Target Chart 
         waterTrackData.dailyProgress?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -247,12 +249,12 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Weekly Progress Target Charts
         waterTrackData.weekly?.let { weeklyData ->
             item {
-                TrackingChartCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         weeklyData.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -279,7 +281,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = MaterialTheme.colorScheme.onSurface,
+                                    color = AstaThemeX.colorsX.onSurface,
                                 )
                             }
                         }
@@ -292,7 +294,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Amount Consumed Composable Card
         waterTrackData.amountConsumed?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.AMOUNT_CONSUMED) {
+                AstaTitleElevatedCard(title = TrackStringConstants.AMOUNT_CONSUMED) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.track_water_glass,
@@ -315,7 +317,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Daily Progress , Monthly Progress , Yearly Progress Line Charts
         waterTrackData.progress?.let { graphData ->
             item {
-                TrackingChartCard(title = TrackStringConstants.PROGRESS) {
+                AstaTitleElevatedCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(graphData.yData)),
@@ -330,7 +332,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Ratio Donut Chart is drawn
         waterTrackData.ratio?.let {
             item {
-                TrackingChartCard(title = TrackStringConstants.RATIO) {
+                AstaTitleElevatedCard(title = TrackStringConstants.RATIO) {
                     CircularDonutChartRow.DonutChartRow(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
@@ -351,7 +353,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
         // Double Line Chart is drawn here
         waterTrackData.beverageData?.let { graphData ->
             item {
-                TrackingChartCard(title = TrackStringConstants.BEVERAGES) {
+                AstaTitleElevatedCard(title = TrackStringConstants.BEVERAGES) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

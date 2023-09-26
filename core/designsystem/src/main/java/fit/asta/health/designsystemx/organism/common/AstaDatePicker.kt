@@ -16,7 +16,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.theme.spacing
 import android.app.DatePickerDialog
 import android.widget.DatePicker
 import fit.asta.health.designsystemx.AstaThemeX
@@ -78,7 +77,7 @@ fun AstaDatePicker(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
         ) {
             AstaIconButton(
                 modifier = Modifier.size(42.dp),

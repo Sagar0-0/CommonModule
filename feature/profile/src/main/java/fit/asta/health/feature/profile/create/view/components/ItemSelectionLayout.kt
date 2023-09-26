@@ -38,7 +38,7 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDivider
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -63,17 +63,17 @@ fun ItemSelectionLayout(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
         ) {
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 AppDivider(lineWidth = 80.dp)
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
-            Spacer(modifier = Modifier.height(spacing.small))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
             ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
 }
@@ -113,7 +113,7 @@ fun ChipRow(
         it.name.contains(searchQuery, ignoreCase = true)
     }
 
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(spacing.small)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)) {
         filteredList.forEach { healthProperties ->
             val isSelected = cardList2?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {

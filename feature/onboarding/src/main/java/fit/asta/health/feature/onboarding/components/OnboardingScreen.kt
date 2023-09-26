@@ -18,13 +18,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
-import fit.asta.health.designsystem.atomic.LocalShape
 import fit.asta.health.designsystem.components.GifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
-import fit.asta.health.designsystem.theme.LocalSpacing
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import kotlinx.coroutines.launch
 
 
@@ -64,20 +62,20 @@ fun OnboardingScreen(
                 HorizontalPager(
                     modifier = Modifier.weight(1f),
                     state = pagerState,
-                    contentPadding = PaddingValues(LocalSpacing.current.small),
-                    pageSpacing = LocalSpacing.current.medium,
+                    contentPadding = PaddingValues(AstaThemeX.spacingX.small),
+                    pageSpacing = AstaThemeX.spacingX.medium,
                 ) { page ->
                     Card(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
-                            .padding(LocalSpacing.current.small)
-                            .clip(LocalShape.current.large)
+                            .padding(AstaThemeX.spacingX.small)
+                            .clip(AstaThemeX.shapeX.large)
                     ) {
                         GifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = spacing.medium),
+                                .padding(bottom = AstaThemeX.spacingX.medium),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -92,7 +90,7 @@ fun OnboardingScreen(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                modifier = Modifier.padding(horizontal = spacing.extraMedium),
+                                modifier = Modifier.padding(horizontal = AstaThemeX.spacingX.extraMedium),
                                 textAlign = TextAlign.Center,
                                 text = items[page].desc,
                                 style = MaterialTheme.typography.titleSmall,

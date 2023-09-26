@@ -15,8 +15,7 @@ import androidx.compose.ui.res.painterResource
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.imageSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun GenderOptionsLayout(
@@ -28,21 +27,21 @@ fun GenderOptionsLayout(
     AppCard(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
                 .fillMaxWidth() // Occupy the maximum available width
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
             ) {
                 AppDrawImg(
                     painter = painterResource(id = cardImg),
                     contentDescription = "Gender Images",
-                    modifier = Modifier.size(imageSize.largeMedium)
+                    modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
                 )
                 Column {
                     AppTexts.BodySmall(text = cardType)
-                    Spacer(modifier = Modifier.height(spacing.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
                     AppTexts.BodyLarge(text = cardValue)
                 }
             }

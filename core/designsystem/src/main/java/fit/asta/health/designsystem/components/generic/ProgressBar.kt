@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 @Composable
@@ -28,7 +28,7 @@ fun ProgressBarInt(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -64,7 +64,7 @@ fun ProgressBarFloat(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(

@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 
 /**
@@ -54,7 +54,7 @@ fun MusicArtistsUI(
 
             // Redirecting the User to Spotify App
             .clickable { onClick() },
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
     ) {
 
         // Showing the Loader or the Image accordingly

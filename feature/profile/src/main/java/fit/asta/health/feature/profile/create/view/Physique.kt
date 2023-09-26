@@ -60,7 +60,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
@@ -112,15 +112,15 @@ fun PhysiqueCreateScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.medium)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             AgeSection(userAge, userDOB, calendarState)
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             MeasurementSection(userWeight, focusManager, viewModel, userHeight)
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             GenderSection(
                 selectedGenderOptionDemo,
                 viewModel,
@@ -129,11 +129,11 @@ fun PhysiqueCreateScreen(
                 pregnancyWeek,
                 focusManager
             )
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
             CreateProfileTwoButtonLayout(eventPrevious, eventNext)
 
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
     CalendarSection(calendarState, viewModel, calendarInstance)
@@ -197,7 +197,7 @@ private fun GenderSection(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = spacing.medium),
+                                .padding(start = AstaThemeX.spacingX.medium),
                             horizontalArrangement = Arrangement.Start
                         ) {
                             Text(
@@ -206,11 +206,11 @@ private fun GenderSection(
                                 style = MaterialTheme.typography.titleSmall
                             )
                         }
-                        Spacer(modifier = Modifier.height(spacing.medium))
+                        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = spacing.medium)
+                                .padding(horizontal = AstaThemeX.spacingX.medium)
                         ) {
                             AppTextFieldValidate(
                                 value = pregnancyWeek.value,
@@ -230,7 +230,7 @@ private fun GenderSection(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         }
     }
 }
@@ -244,7 +244,7 @@ private fun MeasurementSection(
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
-            Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -263,7 +263,7 @@ private fun MeasurementSection(
                         selectedColor = MaterialTheme.colorScheme.primary
                     )
                 }
-                Spacer(modifier = Modifier.height(spacing.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
                 AppTextField(
                     value = userWeight.value,
                     keyboardActions = KeyboardActions(onNext = {
@@ -283,7 +283,7 @@ private fun MeasurementSection(
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = MaterialTheme.colorScheme.onSurface)
                 )
                 if (userWeight.error !is UiString.Empty) {
-                    Spacer(modifier = Modifier.height(spacing.minSmall))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.minSmall))
                     AppTexts.BodyLarge(
                         text = userWeight.error.asString(), color = MaterialTheme.colorScheme.error
                     )
@@ -306,7 +306,7 @@ private fun MeasurementSection(
                         selectedColor = MaterialTheme.colorScheme.primary
                     )
                 }
-                Spacer(modifier = Modifier.height(spacing.small))
+                Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
                 AppTextField(
                     value = userHeight.value,
                     onValueChange = {
@@ -322,7 +322,7 @@ private fun MeasurementSection(
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = MaterialTheme.colorScheme.onSurface)
                 )
                 if (userHeight.error !is UiString.Empty) {
-                    Spacer(modifier = Modifier.height(spacing.minSmall))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.minSmall))
                     AppTexts.BodyLarge(
                         text = userHeight.error.asString(), color = MaterialTheme.colorScheme.error
                     )
@@ -360,7 +360,7 @@ private fun AgeSection(
         }
     }
 
-    Spacer(modifier = Modifier.height(spacing.small))
+    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
 
     AppButtons.AppOutlinedButton(
         onClick = { calendarState.show() }, border = BorderStroke(
@@ -383,14 +383,14 @@ private fun AgeSection(
             )
             AppTexts.BodyMedium(
                 text = userDOB.value.ifEmpty { stringResource(R.string.date_of_birth) },
-                modifier = Modifier.padding(spacing.small),
+                modifier = Modifier.padding(AstaThemeX.spacingX.small),
                 color = ageColorSelection
             )
         }
     }
 
     if (userAge.error !is UiString.Empty) {
-        Spacer(modifier = Modifier.height(spacing.minSmall))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.minSmall))
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,

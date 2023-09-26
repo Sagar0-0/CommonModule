@@ -22,8 +22,7 @@ import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.component.AstaValidatedTextField
-import fit.asta.health.designsystem.theme.boxSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -48,31 +47,31 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = spacing.medium),
-        shape = RoundedCornerShape(spacing.small),
+            .padding(horizontal = AstaThemeX.spacingX.medium),
+        shape = RoundedCornerShape(AstaThemeX.spacingX.small),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(spacing.extraSmall)
+        elevation = CardDefaults.cardElevation(AstaThemeX.spacingX.extraSmall)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(spacing.medium)
+                .padding(AstaThemeX.spacingX.medium)
         ) {
 
             Text(
                 text = qn.qn,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(spacing.medium))
+            Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
             when (qn.type) {
                 2 -> {
                     opts.value = listOf(rating().value.toString())
-                    Spacer(modifier = Modifier.height(spacing.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                 }
 
                 3, 5 -> {
                     opts.value = qn.opts?.let { listOf(mcqCard(it).value) }
-                    Spacer(modifier = Modifier.height(spacing.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                 }
             }
 
@@ -83,7 +82,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(boxSize.medium),
+                    .height(AstaThemeX.boxSizeX.medium),
                 placeholder = R.string.write_your_answer_here,
             )
             Text(

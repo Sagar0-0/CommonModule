@@ -12,7 +12,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @Composable
 fun SubmitButton(
@@ -31,8 +31,8 @@ fun SubmitButton(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium),
-            shape = RoundedCornerShape(spacing.small),
+                .padding(horizontal = AstaThemeX.spacingX.medium),
+            shape = RoundedCornerShape(AstaThemeX.spacingX.small),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(

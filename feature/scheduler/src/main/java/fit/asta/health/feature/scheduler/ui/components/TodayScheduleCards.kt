@@ -41,9 +41,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.aspectRatio
-import fit.asta.health.designsystem.theme.customSize
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -58,8 +56,8 @@ fun TodayCardType1(
 ) {
     AppCard(
         modifier = Modifier
-            .padding(horizontal = spacing.medium)
-            .aspectRatio(aspectRatio.wideScreen)
+            .padding(horizontal = AstaThemeX.spacingX.medium)
+            .aspectRatio(AstaThemeX.aspectRatioX.wideScreen)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             CardImage(cardImgId)
@@ -114,7 +112,7 @@ private fun CardContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = spacing.medium, vertical = spacing.small),
+            .padding(horizontal = AstaThemeX.spacingX.medium, vertical = AstaThemeX.spacingX.small),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CardTitleAndButton(cardTitle)
@@ -164,8 +162,8 @@ fun TodayCardType2(
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = spacing.medium)
-            .aspectRatio(aspectRatio.fullScreen), content = {
+            .padding(horizontal = AstaThemeX.spacingX.medium)
+            .aspectRatio(AstaThemeX.aspectRatioX.fullScreen), content = {
             Box(
                 modifier = Modifier.fillMaxSize()
             ) {
@@ -178,7 +176,7 @@ fun TodayCardType2(
                 Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = spacing.medium, vertical = spacing.small),
+                    .padding(horizontal = AstaThemeX.spacingX.medium, vertical = AstaThemeX.spacingX.small),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 CardTopLayout(
@@ -201,7 +199,7 @@ fun TodayCardType2(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(spacing.medium),
+                    .padding(AstaThemeX.spacingX.medium),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 DisabledAssistChip(progressValue = progressValue)
@@ -216,7 +214,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
             AppTexts.BodySmall(text = cardTime, color = Color.White)
         }
-        Spacer(modifier = Modifier.height(spacing.extraSmall))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.extraSmall))
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth(),
@@ -228,7 +226,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )
-            Spacer(modifier = Modifier.width(spacing.extraSmall))
+            Spacer(modifier = Modifier.width(AstaThemeX.spacingX.extraSmall))
             AppTexts.BodySmall(text = remainingTime, color = Color.White)
         }
     }
@@ -245,7 +243,7 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
             AppTexts.TitleLarge(text = cardTitle, color = Color.White)
             ScheduleIconLayout(onButtonClick = onButtonClick)
         }
-        Spacer(modifier = Modifier.height(spacing.minSmall))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.minSmall))
         Row(Modifier.fillMaxWidth(), Arrangement.Start) {
             AppTexts.BodySmall(text = secondaryTitle, color = Color.White)
         }
@@ -263,7 +261,7 @@ private fun DisabledAssistChip(progressValue: String) {
         AppTexts.BodySmall(
             text = progressValue,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.padding(spacing.extraSmall)
+            modifier = Modifier.padding(AstaThemeX.spacingX.extraSmall)
         )
     }
 }
@@ -277,9 +275,9 @@ fun CardDemo() {
             .verticalScroll(rememberScrollState())
     ) {
         TodayCardType1()
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         TodayCardType2()
-        Spacer(modifier = Modifier.height(spacing.medium))
+        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
         AppointmentCard()
     }
 }
@@ -289,15 +287,15 @@ fun AppointmentCard(url: String = "") {
 
     AppCard(
         modifier = Modifier
-            .padding(horizontal = spacing.medium)
-            .aspectRatio(aspectRatio.wideScreen)
+            .padding(horizontal = AstaThemeX.spacingX.medium)
+            .aspectRatio(AstaThemeX.aspectRatioX.wideScreen)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
             CardImage(cardImgId = DrawR.drawable.weatherimage)
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = spacing.medium, vertical = spacing.small),
+                    .padding(horizontal = AstaThemeX.spacingX.medium, vertical = AstaThemeX.spacingX.small),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 CardTitleAndButton(cardTitle = stringResource(StringR.string.appointment))
@@ -307,7 +305,7 @@ fun AppointmentCard(url: String = "") {
                         contentDescription = stringResource(StringR.string.doctor_pic),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(customSize.extraLarge4)
+                            .size(AstaThemeX.customSize.extraLarge4)
                             .clip(CircleShape)
                             .border(
                                 border = BorderStroke(
@@ -315,7 +313,7 @@ fun AppointmentCard(url: String = "") {
                                 ), shape = CircleShape
                             ),
                     )
-                    Spacer(modifier = Modifier.width(spacing.medium))
+                    Spacer(modifier = Modifier.width(AstaThemeX.spacingX.medium))
                     DoctorLayout()
                 }
                 Row(
@@ -328,7 +326,7 @@ fun AppointmentCard(url: String = "") {
                         contentDescription = stringResource(StringR.string.scheduled),
                         tint = Color.White
                     )
-                    Spacer(modifier = Modifier.width(spacing.extraSmall))
+                    Spacer(modifier = Modifier.width(AstaThemeX.spacingX.extraSmall))
                     AppTexts.BodyLarge(text = "30th Feb 7 GM", color = Color.White)
                 }
             }

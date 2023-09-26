@@ -19,7 +19,7 @@ import androidx.navigation.NavController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -67,7 +67,7 @@ fun StepsItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             Icon(
@@ -91,8 +91,8 @@ fun StepsItem(
         )
 
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(spacing.small),
-            verticalArrangement = Arrangement.spacedBy(spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium),
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(
                 horizontal = 16.dp
@@ -131,7 +131,7 @@ fun StepsItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
         ) {
             ButtonWithColor(
                 modifier = Modifier
@@ -166,7 +166,7 @@ fun SessionCard(
         Column(
             modifier = Modifier
                 .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(spacing.small),
+            verticalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small),
             horizontalAlignment = Alignment.Start
         ) {
             Text(

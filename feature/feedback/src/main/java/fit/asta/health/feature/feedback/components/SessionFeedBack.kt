@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.uploadFiles
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,13 +97,13 @@ fun SessionFeedback(
                         .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 ) {
 
-                    Spacer(modifier = Modifier.height(spacing.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                     WelcomeCard()
-                    Spacer(modifier = Modifier.height(spacing.medium))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
 
                     qns.forEachIndexed { idx, qn ->
                         ansList.value[idx] = feedbackQuesItem(qn).value
-                        Spacer(modifier = Modifier.height(spacing.medium))
+                        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
                     }
 
                     SubmitButton(text = "Submit") {
@@ -111,7 +111,7 @@ fun SessionFeedback(
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(spacing.small))
+                    Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
                 }
             }
 
@@ -139,7 +139,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
         val uriList = uploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = spacing.medium)
+                .padding(horizontal = AstaThemeX.spacingX.medium)
         )
         val medias = uriList.map {
             Media(

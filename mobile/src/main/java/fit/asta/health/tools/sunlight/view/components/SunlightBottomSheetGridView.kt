@@ -25,7 +25,7 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystem.theme.spacing
+import fit.asta.health.designsystemx.AstaThemeX
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
@@ -110,7 +110,7 @@ fun SunlightBottomSheetGridView(
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.medium)
                 ) {
                     ButtonWithColor(
                         modifier = Modifier.weight(0.5f),
