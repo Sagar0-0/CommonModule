@@ -46,12 +46,12 @@ fun BodyTypeLayout() {
 
     Column(Modifier.fillMaxWidth()) {
 
-        Spacer(modifier = Modifier.height(AstaThemeX.spacingX.small))
+        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AstaThemeX.spacingX.medium),
+                .padding(start = AstaThemeX.appSpacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -65,7 +65,10 @@ fun BodyTypeLayout() {
             columns = GridCells.Fixed(bodyTypeList.size),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.appSpacing.small, vertical = AstaThemeX.appSpacing.medium)
+                .padding(
+                    horizontal = AstaThemeX.appSpacing.small,
+                    vertical = AstaThemeX.appSpacing.medium
+                )
                 .height(AstaThemeX.customSize.extraLarge2),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
