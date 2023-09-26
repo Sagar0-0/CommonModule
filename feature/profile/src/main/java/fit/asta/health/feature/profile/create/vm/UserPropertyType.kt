@@ -30,49 +30,49 @@ sealed class UserPropertyType(
 
 
     //Health Section
-    object SignificantHealthHis : UserPropertyType(
+    data object SignificantHealthHis : UserPropertyType(
         name = "significanthealthhis",
         type = ChipsCard,
         title = R.string.significant_health_history,
         icon = RDraw.drawable.ailements
     )
 
-    object Injuries : UserPropertyType(
+    data object Injuries : UserPropertyType(
         name = "injuries",
         type = ChipsCard,
         title = R.string.injuries,
         icon = RDraw.drawable.targets
     )
 
-    object BodyParts : UserPropertyType(
+    data object BodyParts : UserPropertyType(
         name = "bodyParts",
         type = ChipsCard,
         title = (R.string.body_parts),
         icon = RDraw.drawable.targets
     )
 
-    object Ailments : UserPropertyType(
+    data object Ailments : UserPropertyType(
         name = "ailments",
         type = ChipsCard,
         title = (R.string.ailments),
         icon = RDraw.drawable.ailements
     )
 
-    object Medications : UserPropertyType(
+    data object Medications : UserPropertyType(
         name = "medications",
         type = ChipsCard,
         title = (R.string.medications),
         icon = RDraw.drawable.medications
     )
 
-    object HealthTargets : UserPropertyType(
+    data object HealthTargets : UserPropertyType(
         name = "health-lifeStyleTargets",
         type = ChipsCard,
         title = (R.string.health_targets),
         icon = RDraw.drawable.targets
     )
 
-    object Addictions : UserPropertyType(
+    data object Addictions : UserPropertyType(
         name = "addictions",
         type = ChipsCard,
         title = (R.string.addictions),
@@ -80,63 +80,63 @@ sealed class UserPropertyType(
     )
 
     //LifeStyle Section
-    object SleepSchedule : UserPropertyType(
+    data object SleepSchedule : UserPropertyType(
         name = "sleep-schedule",
         type = SessionCard,
         title = (R.string.sleep_schedule),
         icon = RDraw.drawable.ic_sunny
     )
 
-    object WorkSchedule : UserPropertyType(
+    data object WorkSchedule : UserPropertyType(
         name = "work-schedule",
         type = SessionCard,
         title = (R.string.work_schedule),
         icon = RDraw.drawable.ic_sunny
     )
 
-    object PhysActive : UserPropertyType(
+    data object PhysActive : UserPropertyType(
         name = "physically-active",
         type = ChipsCard,
         title = (R.string.physically_active),
         icon = RDraw.drawable.indoorwork
     )
 
-    object WorkingEnv : UserPropertyType(
+    data object WorkingEnv : UserPropertyType(
         name = "working-env",
         type = ChipsCard,
         title = (R.string.working_environment),
         icon = RDraw.drawable.indoorwork
     )
 
-    object WorkStyle : UserPropertyType(
+    data object WorkStyle : UserPropertyType(
         name = "work-style",
         type = PlainCard,
         title = (R.string.work_style),
         icon = RDraw.drawable.indoorwork
     )
 
-    object WorkingHours : UserPropertyType(
+    data object WorkingHours : UserPropertyType(
         name = "work-hours",
         type = PlainCard,
         title = (R.string.working_hours),
         icon = RDraw.drawable.indoorwork
     )
 
-    object CurActivities : UserPropertyType(
+    data object CurActivities : UserPropertyType(
         name = "current-activities",
         type = ChipsCard,
         title = (R.string.current_activities),
         icon = RDraw.drawable.currentactivities
     )
 
-    object PrefActivities : UserPropertyType(
+    data object PrefActivities : UserPropertyType(
         name = "preferred-activities",
         type = ChipsCard,
         title = (R.string.preferred_activities),
         icon = RDraw.drawable.preferredactivities
     )
 
-    object LifeStyleTargets : UserPropertyType(
+    data object LifeStyleTargets : UserPropertyType(
         name = "lifestyle-lifeStyleTargets",
         type = ChipsCard,
         title = (R.string.lifestyle_targets),
@@ -144,42 +144,42 @@ sealed class UserPropertyType(
     )
 
     //Diet Section
-    object DietPref : UserPropertyType(
+    data object DietPref : UserPropertyType(
         name = "dietary-preferences",
         type = PlainCard,
         title = (R.string.dietary_preferences),
         icon = RDraw.drawable.age
     )
 
-    object NvDays : UserPropertyType(
+    data object NvDays : UserPropertyType(
         name = "nv-days",
         type = ChipsCard,
         title = (R.string.days_you_consume_non_veg),
         icon = RDraw.drawable.nonveg
     )
 
-    object FoodAllergies : UserPropertyType(
+    data object FoodAllergies : UserPropertyType(
         name = "food-allergies",
         type = ChipsCard,
         title = (R.string.food_allergies),
         icon = RDraw.drawable.foodrestrictions
     )
 
-    object Cuisines : UserPropertyType(
+    data object Cuisines : UserPropertyType(
         name = "cuisines",
         type = ChipsCard,
         title = (R.string.cuisines),
         icon = RDraw.drawable.cuisine
     )
 
-    object FoodRestrictions : UserPropertyType(
+    data object FoodRestrictions : UserPropertyType(
         name = "food-restrictions",
         type = ChipsCard,
         title = (R.string.food_restrictions),
         icon = RDraw.drawable.foodrestrictions
     )
 
-    object NONE : UserPropertyType(
+    data object NONE : UserPropertyType(
         name = "", type = PlainCard, title = null, icon = 0
     )
 

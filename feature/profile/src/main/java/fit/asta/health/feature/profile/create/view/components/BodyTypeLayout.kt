@@ -1,4 +1,4 @@
-package fit.asta.health.profile.feature.create.view.components
+package fit.asta.health.feature.profile.create.view.components
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -23,8 +23,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.resources.drawables.R
 import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.resources.drawables.R
 
 
 data class BodyTypes(
@@ -65,7 +65,9 @@ fun BodyTypeLayout() {
             columns = GridCells.Fixed(bodyTypeList.size),
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.spacingX.small, vertical = AstaThemeX.spacingX.medium)
+                .padding(
+                    horizontal = AstaThemeX.spacingX.small, vertical = AstaThemeX.spacingX.medium
+                )
                 .height(AstaThemeX.customSize.extraLarge2),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly

@@ -16,7 +16,6 @@ import androidx.compose.material3.SheetValue.Hidden
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-// TODO Basic BottomSheet (Not Available -> Go Ahead with
 
 /** [AppModalBottomSheet] is a composable function in Jetpack Compose that creates a modal
  * bottom sheet, which is a type of dialog that slides up from the bottom of the screen to

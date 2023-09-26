@@ -52,6 +52,7 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.calendar.CalendarDialog
 import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
+import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
@@ -163,7 +164,7 @@ private fun GenderSection(
     viewModel: ProfileViewModel,
     selectedIsOnPeriodOptionDemo: TwoRadioBtnSelections?,
     selectedIsPregOptionDemo: TwoRadioBtnSelections?,
-    pregnancyWeek: fit.asta.health.data.testimonials.model.InputWrapper,
+    pregnancyWeek: InputWrapper,
     focusManager: FocusManager,
 ) {
     Row(Modifier.fillMaxWidth()) {
@@ -244,7 +245,8 @@ private fun MeasurementSection(
 ) {
     Column(Modifier.fillMaxWidth()) {
         Row(
-            Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.spacingX.small)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(

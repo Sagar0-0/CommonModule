@@ -308,7 +308,7 @@ dependencies {
     implementation(libs.checkout)
 
     //Calendar
-    implementation(libs.core)
+//    implementation(libs.core)
     implementation(libs.calendar)
 
     //Clock

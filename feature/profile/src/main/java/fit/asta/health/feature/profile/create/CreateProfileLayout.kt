@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
+import androidx.compose.material.icons.automirrored.outlined.NavigateBefore
 import androidx.compose.material.icons.filled.Emergency
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -79,7 +79,7 @@ fun CreateProfileLayout(
                     .padding(start = AstaThemeX.spacingX.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                AppDefaultIcon(imageVector = Outlined.NavigateBefore,
+                AppDefaultIcon(imageVector = Icons.AutoMirrored.Outlined.NavigateBefore,
                     contentDescription = "NavigateBefore",
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult

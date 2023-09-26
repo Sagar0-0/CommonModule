@@ -5,8 +5,7 @@ package fit.asta.health.feature.profile.create.view
 import android.util.Log
 import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -36,7 +35,10 @@ import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
-@OptIn(ExperimentalMaterialApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(
+    ExperimentalCoroutinesApi::class,
+    ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class
+)
 @Composable
 fun DietCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -162,7 +164,7 @@ fun DietContent(
                 .fillMaxWidth()
                 .padding(horizontal = AstaThemeX.spacingX.medium)
                 .verticalScroll(rememberScrollState())
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = AstaThemeX.colorsX.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -255,9 +257,9 @@ fun DietCreateBottomSheetLayout(
 }
 
 sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
-    object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
-    object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
-    object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
-    object CUISINES : DietCreateBottomSheetType(3, "cu")
-    object FOODRES : DietCreateBottomSheetType(4, "food")
+    data object DIETARYPREF : DietCreateBottomSheetType(0, "dp")
+    data object NONVEGDAYS : DietCreateBottomSheetType(1, "dp")
+    data object FOODALLERGIES : DietCreateBottomSheetType(2, "food")
+    data object CUISINES : DietCreateBottomSheetType(3, "cu")
+    data object FOODRES : DietCreateBottomSheetType(4, "food")
 }

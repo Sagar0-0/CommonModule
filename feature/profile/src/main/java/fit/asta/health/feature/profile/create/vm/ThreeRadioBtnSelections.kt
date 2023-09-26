@@ -2,18 +2,18 @@ package fit.asta.health.feature.profile.create.vm
 
 
 sealed class ThreeRadioBtnSelections {
-    object First : ThreeRadioBtnSelections()
-    object Second : ThreeRadioBtnSelections()
-    object Third : ThreeRadioBtnSelections()
+    data object First : ThreeRadioBtnSelections()
+    data object Second : ThreeRadioBtnSelections()
+    data object Third : ThreeRadioBtnSelections()
 }
 
 sealed class TwoRadioBtnSelections {
-    object First : TwoRadioBtnSelections()
-    object Second : TwoRadioBtnSelections()
+    data object First : TwoRadioBtnSelections()
+    data object Second : TwoRadioBtnSelections()
 }
 
 sealed class ComposeIndex {
-    object First : ComposeIndex()
-    object Second : ComposeIndex()
-    object Third : ComposeIndex()
+    data object First : ComposeIndex()
+    data object Second : ComposeIndex()
+    data object Third : ComposeIndex()
 }

@@ -40,6 +40,7 @@ import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
+import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
@@ -62,8 +63,10 @@ import fit.asta.health.feature.profile.create.vm.HPropState
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
+import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
 import fit.asta.health.feature.profile.show.view.ThreeTogglesGroups
 import fit.asta.health.feature.profile.show.view.TwoTogglesGroup
+import fit.asta.health.feature.profile.show.view.components.UserSleepCycles
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -265,7 +268,7 @@ fun LifeStyleContent(
                     viewModel.updateRadioButtonSelection(PHYACTIVE.key, state)
                 })
             Spacer(modifier = Modifier.height(AstaThemeX.spacingX.medium))
-            LifeStyleToggleSelectionCard(selectionTypeText = MultiRadioBtnKeys.WORKINGENV.getListName(),
+            LifeStyleToggleSelectionCard(selectionTypeText = WORKINGENV.getListName(),
                 options = listOf("Standing", "Sitting"),
                 selectedOption = radioButtonSelections[WORKINGENV.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
@@ -487,7 +490,7 @@ data class TimePickerData(
 )
 
 sealed class LifeStyleCreateBottomSheetType(val cardIndex: Int) {
-    object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
-    object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
-    object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
+    data object CURRENTACTIVITIES : LifeStyleCreateBottomSheetType(0)
+    data object PREFERREDACTIVITIES : LifeStyleCreateBottomSheetType(1)
+    data object LIFESTYLETARGETS : LifeStyleCreateBottomSheetType(2)
 }

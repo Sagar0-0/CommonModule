@@ -9,6 +9,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.Diet
@@ -53,6 +54,7 @@ import fit.asta.health.feature.profile.show.vm.ProfileGetState.NoInternet
 import fit.asta.health.feature.profile.show.vm.ProfileGetState.Success
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.data.ApiResponse
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -87,8 +89,7 @@ class ProfileViewModel
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
     val email = savedState.getStateFlow(
-        EMAIL,
-        InputWrapper()
+        EMAIL, InputWrapper()
     )
 
     val userImg = savedState.getStateFlow(
@@ -101,44 +102,35 @@ class ProfileViewModel
     val dob = savedState.getStateFlow(DOB, InputWrapper())
     val age = savedState.getStateFlow(AGE, InputWrapper())
     val weight = savedState.getStateFlow(
-        WEIGHT,
-        InputWrapper()
+        WEIGHT, InputWrapper()
     )
     val height = savedState.getStateFlow(
-        HEIGHT,
-        InputWrapper()
+        HEIGHT, InputWrapper()
     )
     val pregnancyWeek = savedState.getStateFlow(
-        PREGNANCY_WEEK,
-        InputWrapper()
+        PREGNANCY_WEEK, InputWrapper()
     )
     private val bodyType = savedState.getStateFlow(
-        BODY_TYPE,
-        InputIntWrapper()
+        BODY_TYPE, InputWrapper()
     )
 
     //Health
     val injuriesSince = savedState.getStateFlow(
-        INJURIES_SINCE,
-        InputWrapper()
+        INJURIES_SINCE, InputWrapper()
     )
 
     //LifeStyle
     val wakeUpTime = savedState.getStateFlow(
-        WAKEUPTIME,
-        InputWrapper()
+        WAKEUPTIME, InputWrapper()
     )
     val bedTime = savedState.getStateFlow(
-        BEDTIME,
-        InputWrapper()
+        BEDTIME, InputWrapper()
     )
     val jStartTime = savedState.getStateFlow(
-        JSTARTTIME,
-        InputWrapper()
+        JSTARTTIME, InputWrapper()
     )
     val jEndTime = savedState.getStateFlow(
-        JENDTIME,
-        InputWrapper()
+        JENDTIME, InputWrapper()
     )
 
     // multiple radio buttons selection handling
@@ -316,12 +308,9 @@ class ProfileViewModel
     }
 
     private fun handleContactData(contact: Contact, id: String) {
-        savedState[NAME] =
-            InputWrapper(value = contact.name)
-        savedState[EMAIL] =
-            InputWrapper(value = contact.email)
-        savedState[PHONE] =
-            InputWrapper(value = contact.phone)
+        savedState[NAME] = InputWrapper(value = contact.name)
+        savedState[EMAIL] = InputWrapper(value = contact.email)
+        savedState[PHONE] = InputWrapper(value = contact.phone)
         savedState[USER_IMG] = contact.url
         savedState[ADDRESS] = contact.address
         savedState[ID] = id
@@ -330,16 +319,13 @@ class ProfileViewModel
 
     private fun handlePhysiqueData(
         physique: Physique,
-        dob: InputWrapper
+        dob: InputWrapper,
     ) {
         // Handle physique data
-        savedState[AGE] =
-            InputWrapper(value = physique.age.toString())
+        savedState[AGE] = InputWrapper(value = physique.age.toString())
         savedState[DOB] = dob
-        savedState[WEIGHT] =
-            InputWrapper(value = physique.weight.toString())
-        savedState[HEIGHT] =
-            InputWrapper(value = physique.height.toString())
+        savedState[WEIGHT] = InputWrapper(value = physique.weight.toString())
+        savedState[HEIGHT] = InputWrapper(value = physique.height.toString())
         loadThreeRadioBtnSelection(physique.gender, GENDER.key)
         loadTwoRadioBtnSelection(
             result = physique.isPregnant, radioBtnName = ISPREG.key
@@ -347,8 +333,7 @@ class ProfileViewModel
         loadTwoRadioBtnSelection(
             result = physique.onPeriod, radioBtnName = ISONPERIOD.key
         )
-        savedState[PREGNANCY_WEEK] =
-            InputWrapper(value = physique.pregnancyWeek.toString())
+        savedState[PREGNANCY_WEEK] = InputWrapper(value = physique.pregnancyWeek.toString())
     }
 
     private fun handleHealthData(health: Health) {
@@ -383,27 +368,30 @@ class ProfileViewModel
             checkTwoRadioBtnSelections(health.addiction.isNullOrEmpty())
         )
 
-        savedState[INJURIES_SINCE] =
-            InputWrapper(value = health.injurySince.toString())
+        savedState[INJURIES_SINCE] = InputWrapper(value = health.injurySince.toString())
 
         _propertiesData.value = _propertiesData.value.toMutableMap().apply {
 
-            modifyPropertiesData(0, health.healthHistory?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(1, health.injuries?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(2, health.bodyPart?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(3, health.ailments?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(4, health.medications?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(5, health.healthTargets?: emptyList(), ComposeIndex.First, add = true)
-            modifyPropertiesData(6, health.addiction?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(
+                0, health.healthHistory ?: emptyList(), ComposeIndex.First, add = true
+            )
+            modifyPropertiesData(1, health.injuries ?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(2, health.bodyPart ?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(3, health.ailments ?: emptyList(), ComposeIndex.First, add = true)
+            modifyPropertiesData(
+                4, health.medications ?: emptyList(), ComposeIndex.First, add = true
+            )
+            modifyPropertiesData(
+                5, health.healthTargets ?: emptyList(), ComposeIndex.First, add = true
+            )
+            modifyPropertiesData(6, health.addiction ?: emptyList(), ComposeIndex.First, add = true)
         }
     }
 
     private fun handleLifeStyleData(lifeStyle: LifeStyle) {
         // Handle lifestyle data
-        savedState[WAKEUPTIME] =
-            InputWrapper(value = lifeStyle.sleep.from.toString())
-        savedState[BEDTIME] =
-            InputWrapper(value = lifeStyle.sleep.to.toString())
+        savedState[WAKEUPTIME] = InputWrapper(value = lifeStyle.sleep.from.toString())
+        savedState[BEDTIME] = InputWrapper(value = lifeStyle.sleep.to.toString())
 
         loadThreeRadioBtnSelection(
             lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE.key
@@ -540,7 +528,7 @@ class ProfileViewModel
             age = safeToInt(age.value.value),
             height = height.value.value.toFloat(),
             pregnancyWeek = safeToInt(pregnancyWeek.value.value),
-            bodyType = bodyType.value.value,
+            bodyType = bodyType.value.value.toInt(),
             gender = uploadThreeRadioBtnSelection(
                 value = getSelectedValueForRadioButton(
                     GENDER.key
@@ -744,15 +732,13 @@ class ProfileViewModel
 
     private fun handleEmailChange(email: String) {
         savedState[EMAIL] = InputWrapper(
-            value = email,
-            error = onValidateDetailsEmail(email)
+            value = email, error = onValidateDetailsEmail(email)
         )
     }
 
     private fun handleNameChange(name: String) {
         savedState[NAME] = InputWrapper(
-            value = name,
-            error = onValidateDetailsText(name, 1, 20)
+            value = name, error = onValidateDetailsText(name, 1, 20)
         )
     }
 

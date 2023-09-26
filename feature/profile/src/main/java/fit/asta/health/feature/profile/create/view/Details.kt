@@ -38,8 +38,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.jetpack.getOneUrl
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.common.utils.getOneUrl
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.generic.AppButtons

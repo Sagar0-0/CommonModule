@@ -34,7 +34,6 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.data.profile.remote.model.UserProfile
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.feature.profile.show.view.ContactLayout
 import fit.asta.health.feature.profile.show.view.DietLayout
 import fit.asta.health.feature.profile.show.view.HealthLayout
 import fit.asta.health.feature.profile.show.view.LifeStyleLayout
@@ -135,7 +134,7 @@ fun ProfileReadyScreen(
         Box(modifier = Modifier.padding(padding)) {
             when (content) {
                 1 -> {
-                    ContactLayout(basicDetails = userProfile.contact)
+//                    ContactLayout(basicDetails = userProfile.contact)
                 }
 
                 2 -> {

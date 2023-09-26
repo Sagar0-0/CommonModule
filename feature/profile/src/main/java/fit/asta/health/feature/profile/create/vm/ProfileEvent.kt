@@ -31,6 +31,6 @@ sealed class ProfileEvent {
     data class OnUserAGEChange(val age: String) : ProfileEvent()
     data class OnUserPregWeekChange(val week: String) : ProfileEvent()
     data class OnUserInjuryTimeChange(val time: String) : ProfileEvent()
-    object OnProfilePicClear : ProfileEvent()
-    object OnSubmit : ProfileEvent()
+    data object OnProfilePicClear : ProfileEvent()
+    data object OnSubmit : ProfileEvent()
 }

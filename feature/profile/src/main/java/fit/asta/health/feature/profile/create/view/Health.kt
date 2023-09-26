@@ -14,20 +14,14 @@
 
 package fit.asta.health.feature.profile.create.view
 
-import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
-import androidx.compose.foundation.background
+import androidx.compose.foundation.*
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
-import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.*
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -42,6 +36,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
@@ -66,6 +61,7 @@ import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
+
 
 @ExperimentalMaterialApi
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -321,11 +317,11 @@ private fun HealthContentLayout(
 
 
 sealed class HealthCreateBottomSheetTypes(val cardIndex: Int) {
-    object HEALTHHISTORY : HealthCreateBottomSheetTypes(0)
-    object INJURIES : HealthCreateBottomSheetTypes(1)
-    object BODYPARTS : HealthCreateBottomSheetTypes(2)
-    object AILMENTS : HealthCreateBottomSheetTypes(3)
-    object MEDICATIONS : HealthCreateBottomSheetTypes(4)
-    object HEALTHTARGETS : HealthCreateBottomSheetTypes(5)
-    object ADDICTION : HealthCreateBottomSheetTypes(6)
+    data object HEALTHHISTORY : HealthCreateBottomSheetTypes(0)
+    data object INJURIES : HealthCreateBottomSheetTypes(1)
+    data object BODYPARTS : HealthCreateBottomSheetTypes(2)
+    data object AILMENTS : HealthCreateBottomSheetTypes(3)
+    data object MEDICATIONS : HealthCreateBottomSheetTypes(4)
+    data object HEALTHTARGETS : HealthCreateBottomSheetTypes(5)
+    data object ADDICTION : HealthCreateBottomSheetTypes(6)
 }
