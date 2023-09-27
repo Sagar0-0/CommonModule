@@ -14,6 +14,7 @@ import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystemx.atomic.AppAspectRatio
 import fit.asta.health.designsystemx.atomic.AppTypography
+import fit.asta.health.designsystemx.atomic.AppCustomTypography
 import fit.asta.health.designsystemx.atomic.AppBoxSize
 import fit.asta.health.designsystemx.atomic.AppButtonSize
 import fit.asta.health.designsystemx.atomic.AppCardHeight
@@ -43,8 +44,7 @@ import fit.asta.health.designsystemx.atomic.LocalAppTypography
 import fit.asta.health.designsystemx.atomic.AppShape
 import fit.asta.health.designsystemx.atomic.AppSpacing
 import fit.asta.health.designsystemx.atomic.AppTintTheme
-import fit.asta.health.designsystemx.atomic.LocalCustomAppTypo
-import fit.asta.health.designsystemx.atomic.Typo
+import fit.asta.health.designsystemx.atomic.LocalCustomAppTypography
 
 /**
  * This is the default theme of the App which would be used as a Wrapper Theme over the
@@ -81,7 +81,7 @@ fun AppTheme(
         LocalAppAspectRatio provides AppAspectRatio(),
         LocalAppColors provides colorScheme,
         LocalAppTypography provides AppTypography,
-        LocalCustomAppTypo provides Typo(),
+        LocalCustomAppTypography provides AppCustomTypography(),
         LocalAppElevation provides AppElevation(),
         LocalAppIconSize provides AppIconSize(),
         LocalAppShape provides AppShape(),
@@ -125,6 +125,14 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppTypography.current
+
+    /**
+     * Custom Typography of the App
+     */
+    val customTypography: AppCustomTypography
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalCustomAppTypography.current
 
     /**
      * Default elevations of the app
