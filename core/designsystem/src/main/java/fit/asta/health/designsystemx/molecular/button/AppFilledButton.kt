@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 // Preview Function
 @Preview("Light Button")
@@ -89,7 +89,7 @@ fun AppFilledButton(
             )
         }
 
-        LabelTexts.Large(
+        CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
                 AppTheme.colorsX.onPrimary

@@ -22,6 +22,12 @@ import fit.asta.health.designsystemx.atomic.AppTypography
  * functions can be used to display text of mainly type Title Texts.
  *
  * Check [AppTypography] for getting the current typography values
+ *
+ * @see [BodyTexts]
+ * @see [CaptionTexts]
+ * @see [HeadingTexts]
+ * @see [LargeTexts]
+ * @see [TitleTexts]
  */
 object TitleTexts {
 

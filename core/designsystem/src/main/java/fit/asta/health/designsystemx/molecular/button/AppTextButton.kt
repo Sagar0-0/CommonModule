@@ -15,7 +15,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 
 // Preview Function
@@ -88,7 +88,7 @@ fun AppTextButton(
             )
         }
 
-        LabelTexts.Large(
+        CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
                 AppTheme.colorsX.onSurface

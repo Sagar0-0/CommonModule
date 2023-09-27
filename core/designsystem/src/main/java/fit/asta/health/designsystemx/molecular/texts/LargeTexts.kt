@@ -23,6 +23,11 @@ import fit.asta.health.designsystemx.atomic.AppCustomTypography
  *
  * Check [AppCustomTypography] for getting the current typography values
  *
+ * @see [BodyTexts]
+ * @see [CaptionTexts]
+ * @see [HeadingTexts]
+ * @see [LargeTexts]
+ * @see [TitleTexts]
  */
 object LargeTexts {
 

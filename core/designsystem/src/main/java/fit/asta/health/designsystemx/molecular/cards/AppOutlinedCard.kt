@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 // Preview Function
 @Preview("Light Button")
@@ -27,7 +27,7 @@ private fun DefaultPreview1() {
     AppTheme {
         Surface {
             AppOutlinedCard {
-                LabelTexts.Large(text = "Card Testing")
+                CaptionTexts.Level1(text = "Card Testing")
             }
         }
     }

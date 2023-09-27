@@ -7,7 +7,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 
 // Preview Function
@@ -24,7 +24,7 @@ private fun DefaultPreview1() {
             AppDialog(
                 onDismissRequest = {},
                 content = {
-                    LabelTexts.Large(text = "Error Found here for Testing")
+                    CaptionTexts.Level1(text = "Error Found here for Testing")
                 }
             )
         }

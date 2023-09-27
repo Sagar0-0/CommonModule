@@ -14,7 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 
 // Preview Function
@@ -75,9 +75,9 @@ fun AppAssistChip(
 
     val textLabelComposable: @Composable (() -> Unit) = {
         if (enabled)
-            LabelTexts.Medium(text = textToShow)
+            CaptionTexts.Level2(text = textToShow)
         else
-            LabelTexts.Medium(
+            CaptionTexts.Level2(
                 text = textToShow,
                 color = AppTheme.colorsX.onSurface.copy(alpha = .35f)
             )

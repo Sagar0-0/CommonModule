@@ -19,7 +19,7 @@ import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.cards.AppCard
 import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystemx.molecular.cards.AppOutlinedCard
-import fit.asta.health.designsystemx.molecular.texts.LabelTexts
+import fit.asta.health.designsystemx.molecular.texts.CaptionTexts
 
 
 // Preview Function
@@ -65,7 +65,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Filled Enabled Card")
+                    CaptionTexts.Level1(text = "Filled Enabled Card")
                 }
 
                 AppCard(
@@ -75,7 +75,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Filled Disabled Card")
+                    CaptionTexts.Level1(text = "Filled Disabled Card")
                 }
 
 
@@ -87,7 +87,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Elevated Enabled Card")
+                    CaptionTexts.Level1(text = "Elevated Enabled Card")
                 }
 
                 AppElevatedCard(
@@ -97,7 +97,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Elevated Disabled Card")
+                    CaptionTexts.Level1(text = "Elevated Disabled Card")
                 }
 
 
@@ -109,7 +109,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Outlined Enabled Card")
+                    CaptionTexts.Level1(text = "Outlined Enabled Card")
                 }
 
                 AppOutlinedCard(
@@ -119,7 +119,7 @@ fun AppCardScreen() {
                         .fillMaxWidth()
                         .height(200.dp)
                 ) {
-                    LabelTexts.Large(text = "Outlined Disabled Card")
+                    CaptionTexts.Level1(text = "Outlined Disabled Card")
                 }
             }
         }

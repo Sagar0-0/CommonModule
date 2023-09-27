@@ -9,7 +9,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
-import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
+import fit.asta.health.designsystemx.molecular.texts.HeadingTexts
 
 /**
  * This function is the Card view Template used
@@ -34,7 +34,7 @@ fun AppTitleElevatedCard(
         Column(modifier = Modifier.padding(8.dp)) {
             if (!title.isNullOrEmpty()) {
 
-                HeadlineTexts.Small(
+                HeadingTexts.Level3(
                     text = title,
 
                     modifier = Modifier

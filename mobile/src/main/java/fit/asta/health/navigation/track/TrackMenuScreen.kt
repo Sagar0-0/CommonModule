@@ -53,7 +53,7 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.background.AppScreen
 import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
-import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
+import fit.asta.health.designsystemx.molecular.texts.HeadingTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.designsystemx.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
@@ -453,7 +453,7 @@ private fun ToolsItemsCard(
         ) {
 
             // Title of the Card
-            HeadlineTexts.Small(
+            HeadingTexts.Level3(
                 text = title[0].uppercase() + title.substring(1),
 
                 modifier = Modifier
