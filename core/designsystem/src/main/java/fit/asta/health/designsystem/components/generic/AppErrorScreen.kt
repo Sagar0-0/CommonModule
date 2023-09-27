@@ -43,7 +43,7 @@ import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
 import fit.asta.health.designsystem.theme.Gradient1NoInternet
 import fit.asta.health.designsystem.theme.Gradient2NoInternet
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.drawables.R
 
 @Preview
@@ -249,13 +249,13 @@ fun GradientButton(
 fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
     AppCard(
         modifier = Modifier
-            .padding(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium)
             .fillMaxWidth()
             .wrapContentHeight(), content = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.appSpacing.small),
+                    .padding(AppTheme.appSpacing.small),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -263,7 +263,7 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
                     imageVector = imageVector,
                     contentDescription = "ErrorMessage Occurred while fetching Tst List",
                     tint = MaterialTheme.colorScheme.surface,
-                    modifier = Modifier.size(AstaThemeX.imageHeight.small)
+                    modifier = Modifier.size(AppTheme.imageHeight.small)
                 )
                 AppTexts.HeadlineSmall(text = message, color = MaterialTheme.colorScheme.onError)
             }

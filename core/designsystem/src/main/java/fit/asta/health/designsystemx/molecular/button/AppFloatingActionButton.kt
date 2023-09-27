@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 // Preview Function
 @Preview("Light Button")
@@ -24,10 +24,10 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaFloatingActionButton(onClick = { /*TODO*/ }) {
+                AppFloatingActionButton(onClick = { /*TODO*/ }) {
                     Icon(imageVector = Icons.Default.Person, contentDescription = null)
                 }
             }
@@ -37,7 +37,7 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AstaFloatingActionButton] function is a custom composable function used to create a
+ * [AppFloatingActionButton] function is a custom composable function used to create a
  * floating action button (FAB).
  *
  *
@@ -47,7 +47,7 @@ private fun DefaultPreview1() {
  * @param content the content of this FAB, typically an [Icon]
  * */
 @Composable
-fun AstaFloatingActionButton(
+fun AppFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
@@ -57,8 +57,8 @@ fun AstaFloatingActionButton(
     FloatingActionButton(
         modifier = modifier,
         shape = shape,
-        containerColor = AstaThemeX.colorsX.primary,
-        contentColor = AstaThemeX.colorsX.onPrimary,
+        containerColor = AppTheme.colorsX.primary,
+        contentColor = AppTheme.colorsX.onPrimary,
         onClick = onClick,
         content = content
     )
@@ -66,7 +66,7 @@ fun AstaFloatingActionButton(
 
 
 /**
- * [AstaFloatingActionButton] function is a custom composable function used to create a
+ * [AppFloatingActionButton] function is a custom composable function used to create a
  * floating action button (FAB).
  *
  *
@@ -77,7 +77,7 @@ fun AstaFloatingActionButton(
  * @param contentDescription This is the content description for the Icon
  * */
 @Composable
-fun AstaFloatingActionButton(
+fun AppFloatingActionButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
@@ -88,8 +88,8 @@ fun AstaFloatingActionButton(
     FloatingActionButton(
         modifier = modifier,
         shape = shape,
-        containerColor = AstaThemeX.colorsX.primary,
-        contentColor = AstaThemeX.colorsX.onPrimary,
+        containerColor = AppTheme.colorsX.primary,
+        contentColor = AppTheme.colorsX.onPrimary,
         onClick = onClick
     ) {
         Icon(

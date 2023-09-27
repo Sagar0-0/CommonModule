@@ -26,7 +26,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 
@@ -70,7 +70,7 @@ fun SleepJetLagTipsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 item {
@@ -105,7 +105,7 @@ fun SleepJetLagTipsScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
                         ) {
 
                             Image(
@@ -116,7 +116,7 @@ fun SleepJetLagTipsScreen(
                                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
                             )
 
-                            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+                            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
 
                                 // Subject / Title
                                 Text(

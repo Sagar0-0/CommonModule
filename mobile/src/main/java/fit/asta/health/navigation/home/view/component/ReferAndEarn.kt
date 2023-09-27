@@ -20,12 +20,12 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun ReferAndEarn() {
 
-    Box(modifier = Modifier.aspectRatio(AstaThemeX.appAspectRatio.common), content = {
+    Box(modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.common), content = {
 
         AppDrawImg(
             painterResource(id = R.drawable.background_image),
@@ -36,28 +36,28 @@ fun ReferAndEarn() {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(AstaThemeX.appSpacing.small)
+            modifier = Modifier.padding(AppTheme.appSpacing.small)
         ) {
 
             AppDrawImg(
                 painterResource(id = R.drawable.refer_image),
                 contentDescription = "Refer/Earn Img",
-                modifier = Modifier.aspectRatio(AstaThemeX.appAspectRatio.fullScreen),
+                modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.fullScreen),
             )
 
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
                     AppTexts.TitleMedium(text = "Refer and Earn")
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     AppButtons.AppStandardButton(onClick = {},
-                        modifier = Modifier.height(AstaThemeX.appButtonSize.large),
+                        modifier = Modifier.height(AppTheme.appButtonSize.large),
                         contentPadding = PaddingValues(
-                            vertical = AstaThemeX.appSpacing.minSmall,
-                            horizontal = AstaThemeX.appSpacing.small
+                            vertical = AppTheme.appSpacing.minSmall,
+                            horizontal = AppTheme.appSpacing.small
                         ),
                         content = {
                             AppTexts.LabelLarge(

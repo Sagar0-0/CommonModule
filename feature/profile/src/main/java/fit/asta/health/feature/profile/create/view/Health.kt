@@ -41,7 +41,7 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.ADDICTION
 import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.AILMENTS
@@ -283,12 +283,12 @@ private fun HealthContentLayout(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AstaThemeX.appSpacing.medium)
+            .padding(horizontal = AppTheme.appSpacing.medium)
             .verticalScroll(rememberScrollState())
             .background(color = MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
         cardTypes.indices.forEach { index ->
             val (composeIndex, selectedOption) = selections[index]
@@ -308,10 +308,10 @@ private fun HealthContentLayout(
                 listName = cardType.getListName()
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
         CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
     }
 }
 

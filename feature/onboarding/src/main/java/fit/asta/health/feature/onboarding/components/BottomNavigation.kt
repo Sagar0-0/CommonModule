@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -23,7 +23,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AstaThemeX.appSpacing.medium),
+            .padding(bottom = AppTheme.appSpacing.medium),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = if (lastPage) Arrangement.End else Arrangement.SpaceBetween
     ) {
@@ -31,7 +31,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = R.string.proceed.toStringFromResId(),
                 modifier = Modifier
-                    .padding(end = AstaThemeX.appSpacing.medium),
+                    .padding(end = AppTheme.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),
@@ -43,7 +43,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = "Skip",
                 modifier = Modifier
-                    .padding(start = AstaThemeX.appSpacing.medium),
+                    .padding(start = AppTheme.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = Color.Transparent
                 ),
@@ -54,7 +54,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = "Next",
                 modifier = Modifier
-                    .padding(end = AstaThemeX.appSpacing.medium),
+                    .padding(end = AppTheme.appSpacing.medium),
                 colors = ButtonDefaults.buttonColors(
                     containerColor = MaterialTheme.colorScheme.primary
                 ),

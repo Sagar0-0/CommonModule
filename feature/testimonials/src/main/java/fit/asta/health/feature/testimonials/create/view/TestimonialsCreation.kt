@@ -19,7 +19,7 @@ import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -33,9 +33,9 @@ fun TestimonialsRadioButton(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AstaThemeX.appSpacing.medium)
+                .padding(start = AppTheme.appSpacing.medium)
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             Row(Modifier.fillMaxWidth()) {
                 AppTexts.BodyMedium(text = selectionTypeText)
             }
@@ -47,7 +47,7 @@ fun TestimonialsRadioButton(
                     ) {
                         Box(
                             modifier = Modifier.padding(
-                                top = AstaThemeX.appSpacing.small, bottom = AstaThemeX.appSpacing.small
+                                top = AppTheme.appSpacing.small, bottom = AppTheme.appSpacing.small
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {

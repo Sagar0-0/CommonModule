@@ -46,7 +46,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import fit.asta.health.resources.strings.R
@@ -75,11 +75,11 @@ fun DetailsCreateScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.appSpacing.medium)
+                .padding(horizontal = AppTheme.appSpacing.medium)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             UserCircleImage(url = getOneUrl(
                 localUrl = userImage.localUrl, remoteUrl = userImage.url
             ), onUserProfileSelection = {
@@ -87,7 +87,7 @@ fun DetailsCreateScreen(
             }, onProfilePicClear = {
                 viewModel.onEvent(ProfileEvent.OnProfilePicClear)
             })
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             AppTextFieldValidate(
                 value = nameState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnNameChange(name = it)) },
@@ -98,7 +98,7 @@ fun DetailsCreateScreen(
                 imeAction = ImeAction.Next,
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             AppTextFieldValidate(
                 value = emailState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnEmailChange(email = it)) },
@@ -110,14 +110,14 @@ fun DetailsCreateScreen(
                 modifier = Modifier.focusRequester(focusRequester = focusRequester),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             PrivacyAndUserConsent()
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             AppButtons.AppStandardButton(
                 onClick = eventNext,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.appSpacing.large),
+                    .padding(horizontal = AppTheme.appSpacing.large),
                 enabled = true,
                 shape = CircleShape
             ) {
@@ -126,7 +126,7 @@ fun DetailsCreateScreen(
                     color = MaterialTheme.colorScheme.onPrimary
                 )
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
     }
 }
@@ -149,16 +149,16 @@ fun PrivacyAndUserConsent() {
                 contentDescription = "App Privacy",
                 tint = MaterialTheme.colorScheme.primary
             )
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
             Column {
                 AppTexts.TitleLarge(text = stringResource(R.string.privacy_statement_title))
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.extraSmall))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraSmall))
                 AppTexts.BodySmall(
                     text = stringResource(R.string.privacy_statement)
                 )
             }
         }
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -167,9 +167,9 @@ fun PrivacyAndUserConsent() {
             AppButtons.AppCheckBox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(AstaThemeX.imageSize.standard)
+                modifier = Modifier.size(AppTheme.imageSize.standard)
             )
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
             AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
         }
     }
@@ -186,14 +186,14 @@ fun UserCircleImage(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(horizontal = AstaThemeX.appSpacing.extraSmall1)
+        modifier = Modifier.padding(horizontal = AppTheme.appSpacing.extraSmall1)
     ) {
         AppDefServerImg(
             model = url,
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(AstaThemeX.customSize.extraLarge5)
+                .size(AppTheme.customSize.extraLarge5)
                 .clip(CircleShape)
                 .border(
                     border = BorderStroke(
@@ -222,7 +222,7 @@ fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifi
             AppDefaultIcon(
                 imageVector = Icons.Filled.Delete,
                 contentDescription = "Delete Image",
-                modifier = Modifier.size(AstaThemeX.customSize.extraLarge),
+                modifier = Modifier.size(AppTheme.customSize.extraLarge),
                 tint = MaterialTheme.colorScheme.error
             )
         }
@@ -243,7 +243,7 @@ fun EditProfileImageButton(
             AppDefaultIcon(
                 imageVector = editIcon,
                 contentDescription = "Edit Profile Image",
-                modifier = Modifier.size(AstaThemeX.customSize.extraLarge),
+                modifier = Modifier.size(AppTheme.customSize.extraLarge),
                 tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
             )
         }

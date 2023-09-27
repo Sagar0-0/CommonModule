@@ -17,9 +17,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.chip.AstaAssistChip
-import fit.asta.health.designsystemx.molecular.chip.AstaFilterChip
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.chip.AppAssistChip
+import fit.asta.health.designsystemx.molecular.chip.AppFilterChip
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 
@@ -36,16 +36,16 @@ import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaChipScreen()
+            AppChipScreen()
         }
     }
 }
 
 @Composable
-fun AstaChipScreen() {
-    AstaThemeX {
+fun AppChipScreen() {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -55,24 +55,24 @@ fun AstaChipScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 // Assist Chip Section
                 TitleTexts.Large(text = "Assist Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
-                    AstaAssistChip(
+                    AppAssistChip(
                         onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person,
                         trailingIcon = Icons.Default.TrackChanges
                     )
 
-                    AstaAssistChip(
+                    AppAssistChip(
                         enabled = false,
                         onClick = {},
                         textToShow = "Disabled",
@@ -85,10 +85,10 @@ fun AstaChipScreen() {
                 // Filter Chip Section
                 TitleTexts.Large(text = "Filter Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaFilterChip(
+                    AppFilterChip(
                         onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person,
@@ -96,7 +96,7 @@ fun AstaChipScreen() {
                         selected = true
                     )
 
-                    AstaFilterChip(
+                    AppFilterChip(
                         enabled = false,
                         onClick = {},
                         textToShow = "Disabled",

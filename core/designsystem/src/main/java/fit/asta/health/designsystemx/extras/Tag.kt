@@ -8,7 +8,7 @@ import androidx.compose.material3.TextButton
 import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun AstaTopicTag(
@@ -20,9 +20,9 @@ fun AstaTopicTag(
 ) {
     Box(modifier = modifier) {
         val containerColor = if (followed) {
-            AstaThemeX.colorsX.primaryContainer
+            AppTheme.colorsX.primaryContainer
         } else {
-            AstaThemeX.colorsX.surfaceVariant.copy(
+            AppTheme.colorsX.surfaceVariant.copy(
                 alpha = AstaTagDefaults.UnfollowedTopicTagContainerAlpha,
             )
         }
@@ -32,7 +32,7 @@ fun AstaTopicTag(
             colors = ButtonDefaults.textButtonColors(
                 containerColor = containerColor,
                 contentColor = contentColorFor(backgroundColor = containerColor),
-                disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(
+                disabledContainerColor = AppTheme.colorsX.onSurface.copy(
                     alpha = AstaTagDefaults.DisabledTopicTagContainerAlpha,
                 ),
             ),

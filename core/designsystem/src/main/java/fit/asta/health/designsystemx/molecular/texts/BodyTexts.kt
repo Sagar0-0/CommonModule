@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.atomic.AppTypography
 
 
@@ -42,12 +42,12 @@ object BodyTexts {
     fun Large(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.bodyLarge,
+            style = AppTheme.typographyX.bodyLarge,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -58,12 +58,12 @@ object BodyTexts {
     fun Medium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.bodyMedium,
+            style = AppTheme.typographyX.bodyMedium,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -74,12 +74,12 @@ object BodyTexts {
     fun Small(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.bodySmall,
+            style = AppTheme.typographyX.bodySmall,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -96,7 +96,7 @@ object BodyTexts {
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {

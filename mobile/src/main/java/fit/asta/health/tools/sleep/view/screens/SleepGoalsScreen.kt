@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -64,7 +64,7 @@ fun SleepGoalsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(top = 24.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 

@@ -10,7 +10,7 @@ import coil.request.ImageRequest
 
 
 /**
- * The [AstaNetworkImage] is a custom Composable function in Jetpack Compose, used to display
+ * The [AppNetworkImage] is a custom Composable function in Jetpack Compose, used to display
  * images asynchronously.
  *
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content.
@@ -24,13 +24,13 @@ import coil.request.ImageRequest
  * @param placeholder A [Painter] that is displayed while the image is loading.
  */
 @Composable
-fun AstaNetworkImage(
+fun AppNetworkImage(
     modifier: Modifier = Modifier,
     model: Any? = null,
     alpha: Float = 1f,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit,
-    placeholder: Painter? = painterResource(id = AstaConstImages.placeHolderImg)
+    placeholder: Painter? = painterResource(id = AppConstImages.placeHolderImg)
 ) {
     AsyncImage(
         model = model,
@@ -39,6 +39,6 @@ fun AstaNetworkImage(
         contentScale = contentScale,
         placeholder = placeholder,
         alpha = alpha,
-        error = painterResource(id = AstaConstImages.errorImg),
+        error = painterResource(id = AppConstImages.errorImg),
     )
 }

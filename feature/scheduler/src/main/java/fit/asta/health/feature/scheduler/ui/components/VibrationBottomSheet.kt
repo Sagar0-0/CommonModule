@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.scheduler.util.VibrationPattern
 import fit.asta.health.resources.strings.R as StringR
 
@@ -76,7 +76,7 @@ fun VibrationBottomSheetLayout(
             }
         }
         FlowRow(
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {

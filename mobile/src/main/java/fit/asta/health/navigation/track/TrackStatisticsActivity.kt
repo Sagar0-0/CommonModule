@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.background.AstaScreen
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.background.AppScreen
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackMeditationScreenControl
@@ -64,7 +64,7 @@ class TrackStatisticsActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AstaScreen {
+            AppScreen {
 
                 // Track View Model
                 trackViewModel = hiltViewModel()
@@ -91,7 +91,7 @@ class TrackStatisticsActivity : ComponentActivity() {
                                 .fillMaxWidth()
                                 .padding(top = 16.dp, start = 16.dp, end = 16.dp),
                             verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
                         ) {
 
                             Icon(

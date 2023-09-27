@@ -20,7 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun UploadTstMediaView(
@@ -29,8 +29,8 @@ fun UploadTstMediaView(
 ) {
     Box(
         Modifier
-            .padding(AstaThemeX.appSpacing.minSmall)
-            .aspectRatio(AstaThemeX.appAspectRatio.square)
+            .padding(AppTheme.appSpacing.minSmall)
+            .aspectRatio(AppTheme.appAspectRatio.square)
             .clickable { onUploadClick() }
             .clip(MaterialTheme.shapes.medium)
             .background(color = MaterialTheme.colorScheme.tertiaryContainer),
@@ -44,11 +44,11 @@ fun UploadTstMediaView(
                 contentDescription = "Upload Image",
                 tint = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             AppTexts.BodyMedium(
                 text = "Browse to Choose", color = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             title?.let {
                 AppTexts.HeadlineSmall(text = it, color = MaterialTheme.colorScheme.onSurface)
             }
@@ -67,14 +67,14 @@ fun SelectedImageView(
 
     Box(
         Modifier
-            .padding(AstaThemeX.appSpacing.minSmall)
-            .aspectRatio(AstaThemeX.appAspectRatio.square)
+            .padding(AppTheme.appSpacing.minSmall)
+            .aspectRatio(AppTheme.appAspectRatio.square)
             .clickable { onImageClick() }, contentAlignment = Alignment.BottomCenter
     ) {
         AppDefServerImg(
             model = url,
             contentDescription = "Selected Tst Image",
-            modifier = Modifier.aspectRatio(AstaThemeX.appAspectRatio.square),
+            modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.square),
             contentScale = ContentScale.Crop
         )
         AppTexts.TitleMedium(text = title, color = MaterialTheme.colorScheme.onSurface)

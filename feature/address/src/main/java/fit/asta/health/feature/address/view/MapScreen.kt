@@ -33,7 +33,7 @@ import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.strings.R
 import java.util.*
 
@@ -194,7 +194,7 @@ internal fun MapScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.appSpacing.small)
+                        .padding(AppTheme.appSpacing.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -232,9 +232,9 @@ internal fun MapScreen(
             ) {
                 AppButtons.AppIconButton(
                     modifier = Modifier
-                        .padding(AstaThemeX.appSpacing.medium)
+                        .padding(AppTheme.appSpacing.medium)
                         .align(Alignment.End)
-                        .size(AstaThemeX.iconButtonSize.extraLarge2),
+                        .size(AppTheme.iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
                         containerColor = MaterialTheme.colorScheme.surface,
                         contentColor = MaterialTheme.colorScheme.primary
@@ -253,7 +253,7 @@ internal fun MapScreen(
                 ) {
                     Icon(
                         modifier = Modifier
-                            .size(AstaThemeX.iconButtonSize.large),
+                            .size(AppTheme.iconButtonSize.large),
                         imageVector = Icons.Default.MyLocation,
                         contentDescription = R.string.use_my_current_location.toStringFromResId()
                     )
@@ -264,12 +264,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = AstaThemeX.appSpacing.medium,
-                                topEnd = AstaThemeX.appSpacing.medium
+                                topStart = AppTheme.appSpacing.medium,
+                                topEnd = AppTheme.appSpacing.medium
                             )
                         )
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = AstaThemeX.appSpacing.medium),
+                        .padding(horizontal = AppTheme.appSpacing.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -320,7 +320,7 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = AstaThemeX.appSpacing.medium)
+                                    .padding(bottom = AppTheme.appSpacing.medium)
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium),
                                 colors = ButtonDefaults.buttonColors(

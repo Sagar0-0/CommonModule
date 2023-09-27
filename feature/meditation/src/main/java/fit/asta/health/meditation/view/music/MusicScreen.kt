@@ -39,7 +39,7 @@ import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.player.audio.common.MusicState
 import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.AppIcons
@@ -58,7 +58,7 @@ fun MusicScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = AstaThemeX.appSpacing
+    val spacing = AppTheme.appSpacing
 
     val lazyListState = rememberLazyListState()
 
@@ -134,7 +134,7 @@ fun TrackItem(
     playPauseTrack: (Boolean, Boolean) -> Unit,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AstaThemeX.appSpacing
+    val spacing = AppTheme.appSpacing
     val context = LocalContext.current
     val isRunning = musicState.currentSong.id == song.id
 

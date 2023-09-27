@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun ToolsCardLayout(
@@ -40,11 +40,11 @@ fun ToolsCardLayout(
                 AppDefServerImg(
                     model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
                     modifier = Modifier
-                        .aspectRatio(AstaThemeX.appAspectRatio.square)
+                        .aspectRatio(AppTheme.appAspectRatio.square)
                         .clip(
                             RoundedCornerShape(
-                                bottomStart = AstaThemeX.appSpacing.small,
-                                bottomEnd = AstaThemeX.appSpacing.small
+                                bottomStart = AppTheme.appSpacing.small,
+                                bottomEnd = AppTheme.appSpacing.small
                             )
                         ),
                     contentScale = ContentScale.Crop,
@@ -53,9 +53,9 @@ fun ToolsCardLayout(
             }
             AppTexts.TitleLarge(
                 text = cardTitle, modifier = Modifier.padding(
-                    start = AstaThemeX.appSpacing.small,
-                    top = AstaThemeX.appSpacing.small,
-                    bottom = AstaThemeX.appSpacing.small
+                    start = AppTheme.appSpacing.small,
+                    top = AppTheme.appSpacing.small,
+                    bottom = AppTheme.appSpacing.small
                 )
             )
         }
@@ -70,7 +70,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.appSpacing.small), horizontalArrangement = Arrangement.End
+            .padding(AppTheme.appSpacing.small), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -84,8 +84,8 @@ fun ScheduleIconLayout(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(AstaThemeX.appIconSize.regularSize)
-            .clip(RoundedCornerShape(AstaThemeX.appSpacing.small))
+            .size(AppTheme.appIconSize.regularSize)
+            .clip(RoundedCornerShape(AppTheme.appSpacing.small))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

@@ -23,7 +23,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.drawables.R
 
 
@@ -46,12 +46,12 @@ fun BodyTypeLayout() {
 
     Column(Modifier.fillMaxWidth()) {
 
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AstaThemeX.appSpacing.medium),
+                .padding(start = AppTheme.appSpacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -66,10 +66,10 @@ fun BodyTypeLayout() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AstaThemeX.appSpacing.small,
-                    vertical = AstaThemeX.appSpacing.medium
+                    horizontal = AppTheme.appSpacing.small,
+                    vertical = AppTheme.appSpacing.medium
                 )
-                .height(AstaThemeX.customSize.extraLarge2),
+                .height(AppTheme.customSize.extraLarge2),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
@@ -103,7 +103,7 @@ fun BodyTypeListLayout(
                 alignment = Alignment.Center,
                 modifier = Modifier.size(40.dp)
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             Text(
                 text = listType,
                 style = MaterialTheme.typography.labelSmall,

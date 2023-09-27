@@ -2,21 +2,19 @@ package fit.asta.health.designsystemx.molecular.button
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.FilledTonalButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 
@@ -29,16 +27,16 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaTonalButton(
+                AppTextButton(
                     onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person
                 )
 
-                AstaTonalButton(
+                AppTextButton(
                     enabled = false,
                     onClick = {},
                     textToShow = "Disabled Button",
@@ -51,53 +49,51 @@ private fun DefaultPreview1() {
 
 
 /**
- * Asta Tonal button with generic content slot. Wraps Material 3 [Button].
+ * Asta text button with generic content slot. Wraps Material 3 [TextButton].
  *
- * @param modifier Modifier to be applied to the button.
  * @param onClick Will be called when the user clicks the button.
+ * @param modifier Modifier to be applied to the button.
  * @param enabled Controls the enabled state of the button. When `false`, this button will not be
  * clickable and will appear disabled to accessibility services.
- * @param textToShow The button text content to be shown content.
+ * @param textToShow The button Text to be shown to the UI.
  * @param leadingIcon This is the leading Icon of the Button which is optional
  * @param iconDes This is the description of the Icon which is provided and it is also optional
  */
 @Composable
-fun AstaTonalButton(
-    modifier: Modifier = Modifier,
+fun AppTextButton(
     onClick: () -> Unit,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
     iconDes: String? = null
 ) {
 
-    FilledTonalButton(
+    TextButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = AstaThemeX.colorsX.secondary,
-            contentColor = AstaThemeX.colorsX.onSecondary,
-            disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(alpha = .15f),
-            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
-        ),
-        contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
+        colors = ButtonDefaults.textButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colorsX.onSurface,
+            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+        )
     ) {
 
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall)
             )
         }
 
         LabelTexts.Large(
             text = textToShow,
             color = if (enabled)
-                AstaThemeX.colorsX.onSecondary
+                AppTheme.colorsX.onSurface
             else
-                AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colorsX.onSurface.copy(alpha = .35f)
         )
     }
 }

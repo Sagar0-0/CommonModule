@@ -44,7 +44,7 @@ import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
@@ -120,7 +120,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AstaThemeX.appBoxSize.medium)
+                        .size(AppTheme.appBoxSize.medium)
                 ) {
                     Image(
                         painter = painterResource(id = DrawR.drawable.ic_person),
@@ -136,7 +136,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AstaThemeX.appBoxSize.medium)
+                        .size(AppTheme.appBoxSize.medium)
                 ) {
                     if (profileImageUri != null) {
                         Image(

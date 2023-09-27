@@ -1,18 +1,18 @@
 package fit.asta.health.designsystemx.molecular.cards
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 
@@ -25,9 +25,9 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaElevatedCard {
+            AppCard {
                 LabelTexts.Large(text = "Card Testing")
             }
         }
@@ -36,45 +36,46 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AstaElevatedCard] is default clickable Elevated card for the app.This Card handles click events,
+ * [AppCard] is default filled clickable card for the app.This Card handles click events,
  * calling its [onClick] lambda.
  *
  * @param modifier the [Modifier] to be applied to this card
  * @param enabled This determines if the Card is enabled or not
  * @param colors [CardColors] that will be used to resolve the color(s) used for this card.
- * @param shape This function is used to provide a custom shape to the Card
  * @param elevation [CardElevation] used to resolve the elevation for this card.
+ * @param border This is to give the card any custom Border we want
  * @param onClick called when this card is clicked
  * @param content components inside the card
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AstaElevatedCard(
+fun AppCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
-    shape: Shape = AstaThemeX.appShape.large,
-    elevation: CardElevation = CardDefaults.elevatedCardElevation(),
+    colors: CardColors = CardDefaults.cardColors(),
+    elevation: CardElevation = CardDefaults.cardElevation(),
+    border: BorderStroke? = null,
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
-
     if (onClick != null)
-        ElevatedCard(
+        Card(
             modifier = modifier,
             enabled = enabled,
+            shape = AppTheme.appShape.large,
             colors = colors,
-            shape = shape,
             elevation = elevation,
+            border = border,
             onClick = onClick,
             content = content
         )
     else
-        ElevatedCard(
+        Card(
             modifier = modifier,
-            shape = AstaThemeX.appShape.large,
+            shape = AppTheme.appShape.large,
             colors = colors,
             elevation = elevation,
+            border = border,
             content = content
         )
 }

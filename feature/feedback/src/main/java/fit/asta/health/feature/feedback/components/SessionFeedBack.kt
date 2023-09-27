@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.uploadFiles
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -97,13 +97,13 @@ fun SessionFeedback(
                         .background(color = MaterialTheme.colorScheme.secondaryContainer)
                 ) {
 
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     WelcomeCard()
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
                     qns.forEachIndexed { idx, qn ->
                         ansList.value[idx] = feedbackQuesItem(qn).value
-                        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     }
 
                     SubmitButton(text = "Submit") {
@@ -111,7 +111,7 @@ fun SessionFeedback(
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                 }
             }
 
@@ -139,7 +139,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
         val uriList = uploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.appSpacing.medium)
+                .padding(horizontal = AppTheme.appSpacing.medium)
         )
         val medias = uriList.map {
             Media(

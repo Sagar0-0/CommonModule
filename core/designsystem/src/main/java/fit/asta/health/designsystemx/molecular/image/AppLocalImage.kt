@@ -10,11 +10,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 /**
- * The [AstaLocalImage] function is a composable function that creates and displays an icon.
+ * The [AppLocalImage] function is a composable function that creates and displays an icon.
  *
  * @param modifier the [Modifier] to be applied to this icon
  * @param imageVector [ImageVector] to draw inside this icon
@@ -24,7 +24,7 @@ import fit.asta.health.designsystemx.AstaThemeX
  * is applied.
  */
 @Composable
-fun AstaLocalImage(
+fun AppLocalImage(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     contentDescription: String?,
@@ -34,13 +34,13 @@ fun AstaLocalImage(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = tint,
-        modifier = modifier.size(AstaThemeX.imageSize.standard)
+        modifier = modifier.size(AppTheme.imageSize.standard)
     )
 }
 
 
 /**
- * [AstaLocalImage] is a Composable function in a Jetpack Compose application that displays an image.
+ * [AppLocalImage] is a Composable function in a Jetpack Compose application that displays an image.
  *
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content
  * @param painter to draw
@@ -50,7 +50,7 @@ fun AstaLocalImage(
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be used.
  */
 @Composable
-fun AstaLocalImage(
+fun AppLocalImage(
     modifier: Modifier = Modifier,
     painter: Painter,
     contentDescription: String? = null,

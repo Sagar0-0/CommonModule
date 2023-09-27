@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorMsgCard
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppProgressArc
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 
 @Composable
@@ -39,7 +39,7 @@ fun TestimonialsList(
 
                 AppCard(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.appSpacing.medium),
+                    .padding(AppTheme.appSpacing.medium),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
@@ -98,9 +98,9 @@ fun LoadingItem() {
     ) {
         AppProgressArc(
             modifier = Modifier
-                .size(AstaThemeX.appBoxSize.largeSmall)
-                .padding(AstaThemeX.appSpacing.medium),
-            strokeWidth = AstaThemeX.appSpacing.extraSmall
+                .size(AppTheme.appBoxSize.largeSmall)
+                .padding(AppTheme.appSpacing.medium),
+            strokeWidth = AppTheme.appSpacing.extraSmall
         )
     }
 }

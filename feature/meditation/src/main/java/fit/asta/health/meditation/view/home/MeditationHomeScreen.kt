@@ -31,7 +31,7 @@ import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -89,7 +89,7 @@ fun MeditationHomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Surface(
@@ -102,7 +102,7 @@ fun MeditationHomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     CircularSliderInt(
@@ -118,7 +118,7 @@ fun MeditationHomeScreen(
                             Event(MEvent.SetTargetAngle(it))
                         }
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
                         ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.recommended.toFloat(),
@@ -175,13 +175,13 @@ fun MeditationBottomSheet(
             .heightIn(min = 250.dp, max = 525.dp)
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -204,12 +204,12 @@ fun MeditationBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -236,7 +236,7 @@ fun MeditationBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { }
@@ -268,7 +268,7 @@ fun SunlightCard(modifier: Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             verticalAlignment = Alignment.Top
         ) {
             Image(
@@ -276,7 +276,7 @@ fun SunlightCard(modifier: Modifier) {
                 contentDescription = null,
             )
             Column(
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(text = "Sunlight", fontSize = 12.sp, fontWeight = FontWeight.Bold)

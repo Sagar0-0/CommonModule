@@ -28,7 +28,7 @@ import fit.asta.health.designsystem.components.functional.ShowCustomConfirmation
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
@@ -72,11 +72,11 @@ fun CreateProfileLayout(
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.extraSmall))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraSmall))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AstaThemeX.appSpacing.small),
+                    .padding(start = AppTheme.appSpacing.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppDefaultIcon(imageVector = Icons.AutoMirrored.Outlined.NavigateBefore,
@@ -84,7 +84,7 @@ fun CreateProfileLayout(
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     })
-                Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.small))
+                Spacer(modifier = Modifier.width(AppTheme.appSpacing.small))
                 AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
             }
             Row(Modifier.fillMaxWidth()) {
@@ -100,7 +100,7 @@ fun CreateProfileLayout(
                         onStepClick = { currentStep = step.step })
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
     }, content = { innerPadding ->
         Box(

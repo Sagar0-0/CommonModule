@@ -31,7 +31,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.ArtistCard
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
@@ -49,10 +49,10 @@ fun TstViewVideoLayout(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium)
     ) {
         PlayVideoLayout(tstVideoMedia.media)
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         ArtistCard(tstVideoMedia)
     }
 }
@@ -114,7 +114,7 @@ fun VideoView(
             state,
             modifier = Modifier
                 .fillMaxWidth()
-                .aspectRatio(AstaThemeX.appAspectRatio.wideScreen)
+                .aspectRatio(AppTheme.appAspectRatio.wideScreen)
                 .background(Color.Black),
             surfaceType = uiState.surfaceType,
             resizeMode = uiState.resizeMode,

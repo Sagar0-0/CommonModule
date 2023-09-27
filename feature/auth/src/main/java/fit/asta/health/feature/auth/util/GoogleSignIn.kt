@@ -27,7 +27,7 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
@@ -58,7 +58,7 @@ fun GoogleSignIn(
         ),
         modifier = Modifier
             .fillMaxWidth()
-            .height(AstaThemeX.appButtonSize.extraLarge),
+            .height(AppTheme.appButtonSize.extraLarge),
         onClick = {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(token)

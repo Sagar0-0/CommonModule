@@ -27,7 +27,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 @Composable
@@ -39,18 +39,18 @@ fun SuccessfulCard(
 
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
-            .padding(top = AstaThemeX.appSpacing.extraLarge)
-            .heightIn(min = AstaThemeX.cardHeight.large),
+            .padding(top = AppTheme.appSpacing.extraLarge)
+            .heightIn(min = AppTheme.cardHeight.large),
             content = {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = AstaThemeX.appSpacing.extraLarge3)
+                        .padding(top = AppTheme.appSpacing.extraLarge3)
                 ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AstaThemeX.appSpacing.medium),
+                            .padding(horizontal = AppTheme.appSpacing.medium),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -59,11 +59,11 @@ fun SuccessfulCard(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AstaThemeX.appSpacing.medium),
+                            .padding(horizontal = AppTheme.appSpacing.medium),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -77,18 +77,18 @@ fun SuccessfulCard(
                             textAlign = TextAlign.Center
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.large))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.large))
                     if (underReview) {
                         LoadingAnimation()
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                 }
             })
 
         Box(
             modifier = Modifier
                 .clip(shape = CircleShape)
-                .defaultMinSize(minWidth = AstaThemeX.appBoxSize.medium, minHeight = AstaThemeX.appBoxSize.medium)
+                .defaultMinSize(minWidth = AppTheme.appBoxSize.medium, minHeight = AppTheme.appBoxSize.medium)
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
             AppDefaultIcon(
@@ -99,7 +99,7 @@ fun SuccessfulCard(
                 },
                 contentDescription = "Successful Tst Upload",
                 tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(AstaThemeX.appIconSize.medium)
+                modifier = Modifier.size(AppTheme.appIconSize.medium)
             )
         }
     }

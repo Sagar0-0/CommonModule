@@ -8,7 +8,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 // Preview Function
@@ -20,15 +20,15 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaCheckBoxButton(
+                AppCheckBoxButton(
                     checked = true,
                     onCheckedChange = {}
                 )
 
-                AstaCheckBoxButton(
+                AppCheckBoxButton(
                     checked = true,
                     enabled = false,
                     onCheckedChange = {}
@@ -39,7 +39,7 @@ private fun DefaultPreview1() {
 }
 
 
-/** [AstaCheckBoxButton] allow users to select one or more items from a set. Checkboxes can
+/** [AppCheckBoxButton] allow users to select one or more items from a set. Checkboxes can
  * turn an option on or off.
  *
  * @param modifier the [Modifier] to be applied to this checkbox
@@ -48,7 +48,7 @@ private fun DefaultPreview1() {
  * @param enabled controls the enabled state of this checkbox.
  * */
 @Composable
-fun AstaCheckBoxButton(
+fun AppCheckBoxButton(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -60,12 +60,12 @@ fun AstaCheckBoxButton(
         modifier = modifier,
         enabled = enabled,
         colors = CheckboxDefaults.colors(
-            checkedColor = AstaThemeX.colorsX.primary,
-            uncheckedColor = AstaThemeX.colorsX.onSurfaceVariant,
-            checkmarkColor = AstaThemeX.colorsX.onPrimary,
-            disabledCheckedColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f),
-            disabledUncheckedColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f),
-            disabledIndeterminateColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+            checkedColor = AppTheme.colorsX.primary,
+            uncheckedColor = AppTheme.colorsX.onSurfaceVariant,
+            checkmarkColor = AppTheme.colorsX.onPrimary,
+            disabledCheckedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f),
+            disabledUncheckedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f),
+            disabledIndeterminateColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
         )
     )
 }

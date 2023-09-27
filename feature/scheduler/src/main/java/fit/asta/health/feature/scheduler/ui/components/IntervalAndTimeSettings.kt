@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
 import kotlin.math.abs
@@ -61,7 +61,7 @@ fun SettingsLayout(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextSelection(
@@ -127,7 +127,7 @@ fun MinutesPicker(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -153,7 +153,7 @@ fun MinutesPicker(
             )
 
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
                 color = Color.Red,
@@ -177,7 +177,7 @@ fun CustomFloatingButton(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
         if (endAlarm.hours > 0 || endAlarm.minutes > 0) {
             val postAlarm = stringResource(id = StringR.string.end_alarm)

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.atomic.AppTypography
 
 
@@ -42,12 +42,12 @@ object DisplayTexts {
     fun Large(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.displayLarge,
+            style = AppTheme.typographyX.displayLarge,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -58,12 +58,12 @@ object DisplayTexts {
     fun Medium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.displayMedium,
+            style = AppTheme.typographyX.displayMedium,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -74,12 +74,12 @@ object DisplayTexts {
     fun Small(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.displaySmall,
+            style = AppTheme.typographyX.displaySmall,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -96,7 +96,7 @@ object DisplayTexts {
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {

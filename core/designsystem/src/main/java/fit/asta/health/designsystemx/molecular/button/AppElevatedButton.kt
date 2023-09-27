@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 // Preview Function
@@ -28,16 +28,16 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaElevatedButton(
+                AppElevatedButton(
                     onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person
                 )
 
-                AstaElevatedButton(
+                AppElevatedButton(
                     enabled = false,
                     onClick = {},
                     textToShow = "Disabled Button",
@@ -61,7 +61,7 @@ private fun DefaultPreview1() {
  * @param iconDes This is the description of the Icon which is provided and it is also optional
  */
 @Composable
-fun AstaElevatedButton(
+fun AppElevatedButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
@@ -74,17 +74,17 @@ fun AstaElevatedButton(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = AstaThemeX.colorsX.primary,
-            contentColor = AstaThemeX.colorsX.onPrimary,
-            disabledContainerColor = AstaThemeX.colorsX.onSurface.copy(alpha = .15f),
-            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+            containerColor = AppTheme.colorsX.primary,
+            contentColor = AppTheme.colorsX.onPrimary,
+            disabledContainerColor = AppTheme.colorsX.onSurface.copy(alpha = .15f),
+            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = AstaThemeX.appElevation.extraSmall,
-            pressedElevation = AstaThemeX.appElevation.extraSmall,
-            focusedElevation = AstaThemeX.appElevation.extraSmall,
-            hoveredElevation = AstaThemeX.appElevation.smallMedium,
-            disabledElevation = AstaThemeX.appElevation.noElevation
+            defaultElevation = AppTheme.appElevation.extraSmall,
+            pressedElevation = AppTheme.appElevation.extraSmall,
+            focusedElevation = AppTheme.appElevation.extraSmall,
+            hoveredElevation = AppTheme.appElevation.smallMedium,
+            disabledElevation = AppTheme.appElevation.noElevation
         ),
         contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
     ) {
@@ -93,16 +93,16 @@ fun AstaElevatedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall)
             )
         }
 
         LabelTexts.Large(
             text = textToShow,
             color = if (enabled)
-                AstaThemeX.colorsX.onPrimary
+                AppTheme.colorsX.onPrimary
             else
-                AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colorsX.onSurface.copy(alpha = .35f)
         )
     }
 }

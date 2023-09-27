@@ -34,7 +34,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.tools.breathing.model.domain.model.Exercise
 import fit.asta.health.tools.breathing.model.domain.model.Ratio
@@ -101,7 +101,7 @@ fun ExerciseScreen(
             modifier = Modifier
                 .padding(it)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
         ) {
             item {
                 Text(
@@ -206,7 +206,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -214,8 +214,8 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 maxItemsInEachRow = 4,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
                 StandardRatio(ratio = ratioList[0],
                     index = 0, code = index, onClick = { index = it })
@@ -237,7 +237,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
                     Text(text = "inhale")
                     NumberPicker(value = inhaleValue,
                         range = 0..10,
@@ -248,7 +248,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
                     Text(text = "hold")
                     NumberPicker(value = inhaleHoldValue,
                         range = 0..10,
@@ -259,7 +259,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
                     Text(text = "exhale")
                     NumberPicker(value = exhaleValue,
                         range = 0..10,
@@ -270,7 +270,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
                     Text(text = "hold")
                     NumberPicker(value = exhaleHoldValue,
                         range = 0..10,
@@ -281,7 +281,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Red, text = "CANCEL"
                 ) { onCancel() }
@@ -308,7 +308,7 @@ fun DurationPicker() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
         Column {
             Text(text = "Minutes")

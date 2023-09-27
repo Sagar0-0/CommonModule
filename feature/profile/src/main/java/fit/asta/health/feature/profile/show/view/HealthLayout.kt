@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.Health
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.vm.UserPropertyType
 import fit.asta.health.feature.profile.show.view.components.ProfileChipCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -18,10 +18,10 @@ fun HealthLayout(health: Health) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium)
     ) {
         item {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
 
         val healthItems = listOf(
@@ -40,7 +40,7 @@ fun HealthLayout(health: Health) {
                     ProfileChipCard(
                         icon = propertyType.icon, title = propertyType.getTitle(), list = list
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                 }
             }
         }

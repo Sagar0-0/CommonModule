@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.components.generic.AppBanner
 import fit.asta.health.designsystem.components.generic.AppVerticalGrid
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
@@ -46,7 +46,7 @@ fun HomeScreenLayout(
                     ToolsHmScreenTopBanner(
                         bannerDataPages = toolsHome.banners[page]
                     )
-                }, modifier = Modifier.aspectRatio(ratio = AstaThemeX.appAspectRatio.fullScreen))
+                }, modifier = Modifier.aspectRatio(ratio = AppTheme.appAspectRatio.fullScreen))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -117,7 +117,7 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -135,12 +135,12 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             }
 
         },
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
     )
 
 }

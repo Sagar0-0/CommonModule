@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
 import fit.asta.health.payment.vm.PaymentsViewModel
@@ -57,7 +57,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         val data = intent.getParcelableExtra(DATA_KEY, OrderRequest::class.java)!!
         paymentsViewModel.createOrder(data)
         setContent {
-            AstaThemeX {
+            AppTheme {
                 val orderResponse by paymentsViewModel.orderResponseState.collectAsStateWithLifecycle()
                 val paymentResponse by paymentsViewModel.paymentResponseState.collectAsStateWithLifecycle()
                 ShowPaymentScreen(orderResponse, paymentResponse)

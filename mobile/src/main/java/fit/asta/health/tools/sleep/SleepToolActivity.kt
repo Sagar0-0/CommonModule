@@ -29,7 +29,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 import fit.asta.health.tools.sleep.view.components.SleepBottomSheet
@@ -57,7 +57,7 @@ class SleepToolActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         setContent {
-            AstaThemeX {
+            AppTheme {
                 Surface(
                     modifier = Modifier
                         .fillMaxSize()

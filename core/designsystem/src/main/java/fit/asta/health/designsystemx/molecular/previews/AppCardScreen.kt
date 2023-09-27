@@ -15,10 +15,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.cards.AstaCard
-import fit.asta.health.designsystemx.molecular.cards.AstaElevatedCard
-import fit.asta.health.designsystemx.molecular.cards.AstaOutlinedCard
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.cards.AppCard
+import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
+import fit.asta.health.designsystemx.molecular.cards.AppOutlinedCard
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 
@@ -35,16 +35,16 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaCardScreen()
+            AppCardScreen()
         }
     }
 }
 
 @Composable
-fun AstaCardScreen() {
-    AstaThemeX {
+fun AppCardScreen() {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -54,11 +54,11 @@ fun AstaCardScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 // Filled Card Section
-                AstaCard(
+                AppCard(
                     enabled = true,
                     onClick = {},
                     modifier = Modifier
@@ -68,7 +68,7 @@ fun AstaCardScreen() {
                     LabelTexts.Large(text = "Filled Enabled Card")
                 }
 
-                AstaCard(
+                AppCard(
                     enabled = false,
                     onClick = {},
                     modifier = Modifier
@@ -80,7 +80,7 @@ fun AstaCardScreen() {
 
 
                 // Elevated Cards
-                AstaElevatedCard(
+                AppElevatedCard(
                     enabled = true,
                     onClick = {},
                     modifier = Modifier
@@ -90,7 +90,7 @@ fun AstaCardScreen() {
                     LabelTexts.Large(text = "Elevated Enabled Card")
                 }
 
-                AstaElevatedCard(
+                AppElevatedCard(
                     enabled = false,
                     onClick = {},
                     modifier = Modifier
@@ -102,7 +102,7 @@ fun AstaCardScreen() {
 
 
                 // outlined Cards
-                AstaOutlinedCard(
+                AppOutlinedCard(
                     enabled = true,
                     onClick = {},
                     modifier = Modifier
@@ -112,7 +112,7 @@ fun AstaCardScreen() {
                     LabelTexts.Large(text = "Outlined Enabled Card")
                 }
 
-                AstaOutlinedCard(
+                AppOutlinedCard(
                     enabled = false,
                     onClick = {},
                     modifier = Modifier

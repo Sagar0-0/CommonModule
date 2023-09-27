@@ -40,7 +40,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.theme.TSelected
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import java.util.Calendar
 
 @Composable
@@ -61,7 +61,7 @@ fun OnlyToggleButton(
     ) {
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -80,7 +80,7 @@ fun OnlyToggleButton(
         }
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SelectableText(
@@ -159,7 +159,7 @@ fun RepeatAlarm(
             Box {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(

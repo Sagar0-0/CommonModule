@@ -32,7 +32,7 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
@@ -118,7 +118,7 @@ fun HomeLayout(
             .padding(16.dp)
             .fillMaxSize()
             .verticalScroll(scrollState, enabled = isScrollEnabled),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -177,11 +177,11 @@ fun WalkingBottomSheetView(
             .fillMaxHeight(.5f)
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -206,11 +206,11 @@ fun WalkingBottomSheetView(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -231,7 +231,7 @@ fun WalkingBottomSheetView(
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
         ) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
@@ -293,7 +293,7 @@ fun MainCircularSlider(
     ) {
         Column(
             modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularSlider(
@@ -323,7 +323,7 @@ fun MainCircularSlider(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
                 ProgressBarItem(
                     isDuration = isDuration,
@@ -450,7 +450,7 @@ fun DetailsItem(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -477,7 +477,7 @@ fun ProgressBarItem(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -531,7 +531,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()
@@ -552,7 +552,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
 fun RowItem(name: String, value: String) {
     Column(
         modifier = Modifier,
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = name, fontSize = 12.sp)
@@ -573,7 +573,7 @@ fun SunlightCard(modifier: Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             verticalAlignment = Alignment.Top
         ) {
             Image(
@@ -581,7 +581,7 @@ fun SunlightCard(modifier: Modifier) {
                 contentDescription = null,
             )
             Column(
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(text = "Sunlight", fontSize = 12.sp, fontWeight = FontWeight.Bold)

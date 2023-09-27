@@ -28,7 +28,7 @@ import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.jetpack.HandleBackPress
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialSubmitState
@@ -76,12 +76,12 @@ fun TestimonialForm(
             .fillMaxWidth()
             .padding(
                 top = paddingValues.calculateTopPadding(),
-                start = AstaThemeX.appSpacing.medium,
-                end = AstaThemeX.appSpacing.medium
+                start = AppTheme.appSpacing.medium,
+                end = AppTheme.appSpacing.medium
             )
     ) {
         Column {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
                 radioButtonList = radioButtonList,
@@ -90,7 +90,7 @@ fun TestimonialForm(
                     getViewModel.onEvent(OnTypeChange(it))
                 })
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             Column(
                 modifier = Modifier
@@ -109,7 +109,7 @@ fun TestimonialForm(
                     errorMessage = title.error,
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
                 if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
                     AppTextFieldValidate(
@@ -127,7 +127,7 @@ fun TestimonialForm(
                         },
                         errorMessage = testimonial.error,
                         isError = testimonial.error !is UiString.Empty,
-                        modifier = Modifier.height(AstaThemeX.appBoxSize.extraMedium),
+                        modifier = Modifier.height(AppTheme.appBoxSize.extraMedium),
                         imeAction = if (testimonial.value.length > ValidateTxtLength.defLength) {
                             ImeAction.Next
                         } else {
@@ -135,7 +135,7 @@ fun TestimonialForm(
                         },
                         showLenErrorMsg = true
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                 }
 
                 AppTextFieldValidate(
@@ -149,7 +149,7 @@ fun TestimonialForm(
                     })
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
                 AppTextFieldValidate(
                     value = role.value,
@@ -163,12 +163,12 @@ fun TestimonialForm(
                 )
 
                 if (selectedOption == radioButtonList[1]) {
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     ImageLayout(
                         getViewModel = getViewModel,
                     )
                 } else if (selectedOption == radioButtonList[2]) {
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     TstGetVideo()
                 }
 
@@ -179,7 +179,7 @@ fun TestimonialForm(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.appSpacing.medium),
+                        .padding(AppTheme.appSpacing.medium),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary

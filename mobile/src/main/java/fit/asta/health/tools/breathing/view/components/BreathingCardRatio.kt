@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 @Composable
@@ -58,7 +58,7 @@ fun CardBreathingRatio(
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
                 ) {
                     Text(
                         text = ratio, modifier = Modifier.clickable { onRatio() },
@@ -68,7 +68,7 @@ fun CardBreathingRatio(
                 }
                 Column(
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
                 ) {
                     Text(
                         text = duration,

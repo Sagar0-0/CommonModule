@@ -22,7 +22,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 // Preview Composable Function
 @Preview(
@@ -36,7 +36,7 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             TrackingYourMoodCard(
                 moodImage = R.drawable.image_happy_face,

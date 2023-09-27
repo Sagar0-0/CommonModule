@@ -42,7 +42,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.navigation.home.viewmodel.RateUsEvent
 import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -88,7 +88,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AstaThemeX.appSpacing.large),
+                            .padding(horizontal = AppTheme.appSpacing.large),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         AppDrawImg(
@@ -96,20 +96,20 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             contentDescription = "Tagline",
                             modifier = Modifier
                                 .fillMaxSize()
-                                .aspectRatio(AstaThemeX.appAspectRatio.common)
+                                .aspectRatio(AppTheme.appAspectRatio.common)
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                     AppTexts.BodyLarge(
                         text = "Your feedback will help us to make improvements",
-                        modifier = Modifier.padding(horizontal = AstaThemeX.appSpacing.large),
+                        modifier = Modifier.padding(horizontal = AppTheme.appSpacing.large),
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(AstaThemeX.appSpacing.small),
+                            .padding(AppTheme.appSpacing.small),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         AppRatingBar(
@@ -121,7 +121,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             space = 8.dp,
                         )
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -145,7 +145,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             AppButtons.AppStandardButton(
                                 onClick = { viewModel.onEvent(RateUsEvent.InAppReviewRequested) },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(AstaThemeX.appButtonSize.medium)
+                                shape = RoundedCornerShape(AppTheme.appButtonSize.medium)
                             ) {
                                 AppTexts.LabelLarge(
                                     text = "Rate on Play Store",
@@ -154,7 +154,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
                 }
 
             }

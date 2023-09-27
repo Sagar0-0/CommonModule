@@ -18,7 +18,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import coil.compose.AsyncImage
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
@@ -35,11 +35,11 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
                     contentDescription = null,
                     modifier = Modifier
                         .clip(shape = CircleShape)
-                        .size(AstaThemeX.imageHeight.medium),
+                        .size(AppTheme.imageHeight.medium),
                     contentScale = ContentScale.Crop
                 )
             }
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
             Column(
                 horizontalAlignment = Alignment.Start,
                 verticalArrangement = Arrangement.SpaceBetween

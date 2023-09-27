@@ -50,14 +50,14 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.background.AstaScreen
-import fit.asta.health.designsystemx.molecular.cards.AstaElevatedCard
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.background.AppScreen
+import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
-import fit.asta.health.designsystemx.organism.common.AstaDatePicker
+import fit.asta.health.designsystemx.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
+import fit.asta.health.designsystemx.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
@@ -97,15 +97,15 @@ fun TrackMenuScreenControl() {
 
     val tabList = listOf("DAY", "WEEK", "MONTH", "YEAR")
 
-    AstaScreen {
+    AppScreen {
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .background(
                     Color(
                         ColorUtils.blendARGB(
-                            AstaThemeX.colorsX.surface.toArgb(),
-                            AstaThemeX.colorsX.onSurface.toArgb(),
+                            AppTheme.colorsX.surface.toArgb(),
+                            AppTheme.colorsX.onSurface.toArgb(),
                             0.08f
                         )
                     )
@@ -188,7 +188,7 @@ fun TrackMenuScreenControl() {
             }
 
             // Date Picker
-            AstaDatePicker(
+            AppDatePicker(
                 localDate = localDate,
                 onPreviousButtonClick = {
                     setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
@@ -266,20 +266,20 @@ private fun TrackMenuSuccessScreen(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
         // Time Spent Chart Card
         homeMenuData.timeSpent?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.TIME_SPENT) {
+                AppTitleElevatedCard(title = TrackStringConstants.TIME_SPENT) {
                     CircularDonutChartColumn.DonutChartColumn(
                         circularData = CircularDonutListData(
                             itemsList = listOf(
@@ -313,7 +313,7 @@ private fun TrackMenuSuccessScreen(
         // Heart Health Details Card
         homeMenuData.healthDetail?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
+                AppTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     TrackingDetailsCard(
                         imageList = listOf(R.drawable.heartrate, R.drawable.pulse_rate),
                         headerTextList = listOf(
@@ -337,7 +337,7 @@ private fun TrackMenuSuccessScreen(
             val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
             item {
-                AstaTitleElevatedCard {
+                AppTitleElevatedCard {
                     Column {
                         BmiChart.BMIChart(
                             bmiData = BmiData(
@@ -442,14 +442,14 @@ private fun ToolsItemsCard(
 ) {
 
     // This function draws an elevated Card View
-    AstaElevatedCard(
+    AppElevatedCard(
         modifier = Modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp)
     ) {
 
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
         ) {
 
             // Title of the Card
@@ -479,12 +479,12 @@ private fun ToolsItemsCard(
             Row(
                 modifier = Modifier.padding(start = 16.dp),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 Row(
                     modifier = Modifier.weight(.8f),
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
 

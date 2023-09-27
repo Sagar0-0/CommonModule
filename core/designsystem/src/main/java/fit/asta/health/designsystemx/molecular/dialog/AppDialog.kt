@@ -6,7 +6,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 
@@ -19,9 +19,9 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaDialog(
+            AppDialog(
                 onDismissRequest = {},
                 content = {
                     LabelTexts.Large(text = "Error Found here for Testing")
@@ -33,12 +33,12 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AstaDialog] This function creates a custom dialog that can be used to display various types of
+ * [AppDialog] This function creates a custom dialog that can be used to display various types of
  * content within an app.
  * @param onDismissRequest Executes when the user tries to dismiss the dialog.
  * @param content The content to be displayed inside the dialog.*/
 @Composable
-fun AstaDialog(
+fun AppDialog(
     onDismissRequest: () -> Unit,
     properties: DialogProperties = DialogProperties(dismissOnClickOutside = false),
     content: @Composable () -> Unit,

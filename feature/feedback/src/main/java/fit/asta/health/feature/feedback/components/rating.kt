@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun rating(): MutableState<Int> {
@@ -25,13 +25,13 @@ fun rating(): MutableState<Int> {
     Card(
         Modifier.fillMaxWidth(),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-        shape = RoundedCornerShape(AstaThemeX.appSpacing.small),
+        shape = RoundedCornerShape(AppTheme.appSpacing.small),
         elevation = CardDefaults.cardElevation(0.dp)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.appSpacing.small),
+                .padding(AppTheme.appSpacing.small),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             RatingBar(
@@ -40,7 +40,7 @@ fun rating(): MutableState<Int> {
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
                     .inactiveColor(MaterialTheme.colorScheme.onBackground.copy(0.25f))
-                    .padding(AstaThemeX.appSpacing.small)
+                    .padding(AppTheme.appSpacing.small)
             )
         }
     }

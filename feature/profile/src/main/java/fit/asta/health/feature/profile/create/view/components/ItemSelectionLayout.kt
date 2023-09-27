@@ -38,7 +38,7 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDivider
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -63,17 +63,17 @@ fun ItemSelectionLayout(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.appSpacing.medium)
+                .padding(AppTheme.appSpacing.medium)
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 AppDivider(lineWidth = 80.dp)
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
     }
 }
@@ -113,7 +113,7 @@ fun ChipRow(
         it.name.contains(searchQuery, ignoreCase = true)
     }
 
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
         filteredList.forEach { healthProperties ->
             val isSelected = cardList2?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {

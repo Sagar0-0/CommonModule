@@ -10,7 +10,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.LifeStyle
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.vm.UserPropertyType
 import fit.asta.health.feature.profile.create.vm.UserPropertyType.PhysActive
 import fit.asta.health.feature.profile.create.vm.UserPropertyType.SleepSchedule
@@ -48,9 +48,9 @@ fun LifeStyleLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AstaThemeX.appSpacing.medium),
-        contentPadding = PaddingValues(vertical = AstaThemeX.appSpacing.medium),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium),
+        contentPadding = PaddingValues(vertical = AppTheme.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
         item {
             ProfileSessionCard(

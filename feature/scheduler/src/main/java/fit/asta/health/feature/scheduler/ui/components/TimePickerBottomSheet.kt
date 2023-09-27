@@ -27,7 +27,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.scheduler.util.Constants.Companion.getTimeDifference
 import kotlin.math.abs
 import fit.asta.health.resources.strings.R as StringR
@@ -92,7 +92,7 @@ fun TimePickerClock(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -167,7 +167,7 @@ fun TimePickerClock(
             }, dividersColor = dividersColor, textStyle = textStyle, range = (0..1)
             )
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
                 color = Color.Red,

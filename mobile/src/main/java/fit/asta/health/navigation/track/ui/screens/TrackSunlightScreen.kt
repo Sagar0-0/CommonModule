@@ -46,11 +46,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
-import fit.asta.health.designsystemx.organism.common.AstaDatePicker
+import fit.asta.health.designsystemx.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
+import fit.asta.health.designsystemx.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -82,8 +82,8 @@ fun TrackSunlightScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -166,7 +166,7 @@ fun TrackSunlightScreenControl(
         }
 
         // Date Picker
-        AstaDatePicker(
+        AppDatePicker(
             localDate = calendarData,
             onPreviousButtonClick = {
                 setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
@@ -222,20 +222,20 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
         // Daily Progress
         sunlightData.progress?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -253,12 +253,12 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Weekly Progress
         sunlightData.weekly?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -286,7 +286,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = AstaThemeX.colorsX.onSurface,
+                                    color = AppTheme.colorsX.onSurface,
                                 )
                             }
                         }
@@ -299,7 +299,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Details Card
         sunlightData.weather?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AppTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -325,7 +325,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Vitamin D Graph
         sunlightData.vitaminGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D) {
+                AppTitleElevatedCard(title = TrackStringConstants.VITAMIN_D) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -340,7 +340,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Sunlight Duration Graph
         sunlightData.durationGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.SUNLIGHT_DURATION) {
+                AppTitleElevatedCard(title = TrackStringConstants.SUNLIGHT_DURATION) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -355,7 +355,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Skin Exposure Graph
         sunlightData.exposureGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.SKIN_EXPOSURE) {
+                AppTitleElevatedCard(title = TrackStringConstants.SKIN_EXPOSURE) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -373,7 +373,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
         // Mood Graph Line Chart
         sunlightData.moodGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AppTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),

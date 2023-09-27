@@ -17,7 +17,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 // Preview Function
 @Preview("Light")
@@ -28,7 +28,7 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         TrackTopTabBar(
             tabList = listOf(
                 "DAY",

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.atomic.AppTypography
 
 
@@ -42,12 +42,12 @@ object HeadlineTexts {
     fun Large(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.headlineLarge,
+            style = AppTheme.typographyX.headlineLarge,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -59,12 +59,12 @@ object HeadlineTexts {
     fun Medium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.headlineMedium,
+            style = AppTheme.typographyX.headlineMedium,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -75,12 +75,12 @@ object HeadlineTexts {
     fun Small(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.headlineSmall,
+            style = AppTheme.typographyX.headlineSmall,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -97,7 +97,7 @@ object HeadlineTexts {
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {

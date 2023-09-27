@@ -12,7 +12,7 @@ import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.SelectedImageView
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
 import fit.asta.health.feature.testimonials.create.vm.MediaType
@@ -47,15 +47,15 @@ fun ImageLayout(
 
     Column(modifier = modifier) {
         AppTexts.BodyMedium(text = "Upload Images")
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.minSmall),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.minSmall),
             modifier = Modifier.fillMaxWidth()
         ) {
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)),
+                    .dashedBorder(width = 1.dp, radius = AppTheme.appSpacing.small, color = Color(0xff8694A9)),
                 img = imgBefore,
                 launcher = beforeLauncher,
                 getViewModel = getViewModel,
@@ -64,7 +64,7 @@ fun ImageLayout(
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)),
+                    .dashedBorder(width = 1.dp, radius = AppTheme.appSpacing.small, color = Color(0xff8694A9)),
                 img = imgAfter,
                 launcher = afterLauncher,
                 getViewModel = getViewModel,

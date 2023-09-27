@@ -23,7 +23,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
@@ -45,11 +45,11 @@ fun TwoTogglesGroup(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.appSpacing.medium)
+                    .padding(horizontal = AppTheme.appSpacing.medium)
             ) {
                 AppTexts.TitleSmall(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -89,11 +89,11 @@ fun ThreeTogglesGroups(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.appSpacing.medium)
+                    .padding(horizontal = AppTheme.appSpacing.medium)
             ) {
                 AppTexts.TitleLarge(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -143,11 +143,11 @@ fun SelectionCardCreateProfile(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AstaThemeX.appSpacing.medium),
+                        .padding(horizontal = AppTheme.appSpacing.medium),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = CenterVertically
                 ) {
@@ -168,15 +168,15 @@ fun SelectionCardCreateProfile(
                 )
                 if (selectedOption == TwoRadioBtnSelections.First) {
                     FlowRow(
-                        mainAxisSpacing = AstaThemeX.appSpacing.minSmall,
-                        modifier = Modifier.padding(start = AstaThemeX.appSpacing.medium),
+                        mainAxisSpacing = AppTheme.appSpacing.minSmall,
+                        modifier = Modifier.padding(start = AppTheme.appSpacing.medium),
                     ) {
                         cardList?.forEach {
                             DisabledChipForList(textOnChip = it.name)
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             }
         }
         if (cardList != null) {
@@ -202,11 +202,11 @@ fun OnlyChipSelectionCard(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AstaThemeX.appSpacing.medium),
+                    .padding(horizontal = AppTheme.appSpacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = CenterVertically
             ) {
@@ -217,16 +217,16 @@ fun OnlyChipSelectionCard(
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
             FlowRow(
-                mainAxisSpacing = AstaThemeX.appSpacing.minSmall,
-                modifier = Modifier.padding(start = AstaThemeX.appSpacing.medium),
+                mainAxisSpacing = AppTheme.appSpacing.minSmall,
+                modifier = Modifier.padding(start = AppTheme.appSpacing.medium),
             ) {
                 cardList?.forEach {
                     DisabledChipForList(textOnChip = it.name)
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
         }
     }
 }

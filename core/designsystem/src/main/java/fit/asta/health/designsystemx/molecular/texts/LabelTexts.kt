@@ -13,7 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.atomic.AppTypography
 
 
@@ -43,14 +43,14 @@ object LabelTexts {
     fun Large(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
         overflow: TextOverflow = TextOverflow.Clip,
         maxLines: Int = Int.MAX_VALUE,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.labelLarge,
+            style = AppTheme.typographyX.labelLarge,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -63,12 +63,12 @@ object LabelTexts {
     fun Medium(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.labelMedium,
+            style = AppTheme.typographyX.labelMedium,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -79,12 +79,12 @@ object LabelTexts {
     fun Small(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AstaThemeX.colorsX.onSurface,
+        color: Color = AppTheme.colorsX.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
-            style = AstaThemeX.typographyX.labelSmall,
+            style = AppTheme.typographyX.labelSmall,
             modifier = modifier,
             color = color,
             textAlign = textAlign
@@ -101,7 +101,7 @@ object LabelTexts {
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {

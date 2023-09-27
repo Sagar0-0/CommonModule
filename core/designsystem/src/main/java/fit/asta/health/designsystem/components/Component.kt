@@ -27,7 +27,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun CardItem(
@@ -45,15 +45,15 @@ fun CardItem(
 
         Row(
             modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
                 Icon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             ) {
                 Text(
                     text = name,

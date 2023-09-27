@@ -20,7 +20,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun UserBodyType(
@@ -29,14 +29,14 @@ fun UserBodyType(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(AstaThemeX.appElevation.smallExtraMedium),
-        shape = RoundedCornerShape(AstaThemeX.appSpacing.small)
+        elevation = CardDefaults.cardElevation(AppTheme.appElevation.smallExtraMedium),
+        shape = RoundedCornerShape(AppTheme.appSpacing.small)
     ) {
-        Column(modifier = Modifier.padding(vertical = AstaThemeX.appSpacing.medium)) {
+        Column(modifier = Modifier.padding(vertical = AppTheme.appSpacing.medium)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AstaThemeX.appSpacing.medium, end = AstaThemeX.appSpacing.small),
+                    .padding(start = AppTheme.appSpacing.medium, end = AppTheme.appSpacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -48,7 +48,7 @@ fun UserBodyType(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -60,11 +60,11 @@ fun UserBodyType(
                     modifier = Modifier.size(width = 70.dp, height = 109.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(end = AstaThemeX.appSpacing.medium),
+                    .padding(end = AppTheme.appSpacing.medium),
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(

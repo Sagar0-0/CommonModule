@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.compositeOver
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 // Preview Function
@@ -22,14 +22,14 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaToggleButton(
+                AppToggleButton(
                     checked = true,
                 )
 
-                AstaToggleButton(
+                AppToggleButton(
                     checked = false,
                     enabled = false
                 )
@@ -40,7 +40,7 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AstaToggleButton] composable is a custom implementation of a toggle button.
+ * [AppToggleButton] composable is a custom implementation of a toggle button.
  *
  * @param modifier the [Modifier] to be applied to this switch
  * @param checked whether or not this switch is checked
@@ -53,7 +53,7 @@ private fun DefaultPreview1() {
  * different states. See [SwitchDefaults.colors].
  * */
 @Composable
-fun AstaToggleButton(
+fun AppToggleButton(
     modifier: Modifier = Modifier,
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
@@ -67,36 +67,36 @@ fun AstaToggleButton(
         thumbContent = thumbContent,
         enabled = enabled,
         colors = SwitchDefaults.colors(
-            checkedThumbColor = AstaThemeX.colorsX.onPrimary,
-            checkedTrackColor = AstaThemeX.colorsX.primary,
+            checkedThumbColor = AppTheme.colorsX.onPrimary,
+            checkedTrackColor = AppTheme.colorsX.primary,
             checkedBorderColor = Color.Transparent,
-            checkedIconColor = AstaThemeX.colorsX.onPrimaryContainer,
-            uncheckedThumbColor = AstaThemeX.colorsX.outline,
-            uncheckedTrackColor = AstaThemeX.colorsX.surfaceVariant,
-            uncheckedBorderColor = AstaThemeX.colorsX.outline,
-            uncheckedIconColor = AstaThemeX.colorsX.surfaceVariant,
-            disabledCheckedThumbColor = AstaThemeX.colorsX.surface
+            checkedIconColor = AppTheme.colorsX.onPrimaryContainer,
+            uncheckedThumbColor = AppTheme.colorsX.outline,
+            uncheckedTrackColor = AppTheme.colorsX.surfaceVariant,
+            uncheckedBorderColor = AppTheme.colorsX.outline,
+            uncheckedIconColor = AppTheme.colorsX.surfaceVariant,
+            disabledCheckedThumbColor = AppTheme.colorsX.surface
                 .copy(alpha = 1f)
-                .compositeOver(AstaThemeX.colorsX.surface),
-            disabledCheckedTrackColor = AstaThemeX.colorsX.onSurface
+                .compositeOver(AppTheme.colorsX.surface),
+            disabledCheckedTrackColor = AppTheme.colorsX.onSurface
                 .copy(alpha = .15f)
-                .compositeOver(AstaThemeX.colorsX.surface),
+                .compositeOver(AppTheme.colorsX.surface),
             disabledCheckedBorderColor = Color.Transparent,
-            disabledCheckedIconColor = AstaThemeX.colorsX.onSurface
+            disabledCheckedIconColor = AppTheme.colorsX.onSurface
                 .copy(alpha = .35f)
-                .compositeOver(AstaThemeX.colorsX.surface),
-            disabledUncheckedThumbColor = AstaThemeX.colorsX.onSurface
+                .compositeOver(AppTheme.colorsX.surface),
+            disabledUncheckedThumbColor = AppTheme.colorsX.onSurface
                 .copy(alpha = .35f)
-                .compositeOver(AstaThemeX.colorsX.surface),
-            disabledUncheckedTrackColor = AstaThemeX.colorsX.surfaceVariant
+                .compositeOver(AppTheme.colorsX.surface),
+            disabledUncheckedTrackColor = AppTheme.colorsX.surfaceVariant
                 .copy(alpha = .15f)
-                .compositeOver(AstaThemeX.colorsX.surface),
-            disabledUncheckedBorderColor = AstaThemeX.colorsX.onSurface
+                .compositeOver(AppTheme.colorsX.surface),
+            disabledUncheckedBorderColor = AppTheme.colorsX.onSurface
                 .copy(alpha = .15f)
-                .compositeOver(AstaThemeX.colorsX.surface),
-            disabledUncheckedIconColor = AstaThemeX.colorsX.surfaceVariant
+                .compositeOver(AppTheme.colorsX.surface),
+            disabledUncheckedIconColor = AppTheme.colorsX.surfaceVariant
                 .copy(alpha = .35f)
-                .compositeOver(AstaThemeX.colorsX.surface),
+                .compositeOver(AppTheme.colorsX.surface),
 
             )
     )

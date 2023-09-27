@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.jetpack.dashedBorder
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
@@ -69,12 +69,12 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
 
             }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
         Box(
             modifier = Modifier.dashedBorder(
                 width = 1.dp,
-                radius = AstaThemeX.customSize.small,
+                radius = AppTheme.customSize.small,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
@@ -82,8 +82,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AstaThemeX.appSpacing.medium,
-                        vertical = AstaThemeX.appSpacing.small
+                        horizontal = AppTheme.appSpacing.medium,
+                        vertical = AppTheme.appSpacing.small
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -99,15 +99,15 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AstaThemeX.appSpacing.extraSmall)
-                                    .clip(AstaThemeX.appShape.extraLarge)
+                                    .padding(AppTheme.appSpacing.extraSmall)
+                                    .clip(AppTheme.appShape.extraLarge)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AstaThemeX.appShape.extraLarge
+                                        shape = AppTheme.appShape.extraLarge
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AstaThemeX.appSpacing.small),
+                                    .padding(AppTheme.appSpacing.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -118,7 +118,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
-                                IconButton(modifier = Modifier.size(AstaThemeX.iconButtonSize.extraMedium),
+                                IconButton(modifier = Modifier.size(AppTheme.iconButtonSize.extraMedium),
                                     onClick = { uriList.remove(it) }) {
                                     Icon(
                                         imageVector = Icons.Default.Close, contentDescription = null
@@ -141,13 +141,13 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         imageVector = Icons.Rounded.CloudUpload,
                         contentDescription = "Upload File",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(AstaThemeX.imageSize.standard)
+                        modifier = Modifier.size(AppTheme.imageSize.standard)
                     )
                 }
             }
         }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
         Text(
             text = "You can upload maximum 5 files*",

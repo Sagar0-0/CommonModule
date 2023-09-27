@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +105,7 @@ fun ExerciseHomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
         ) {
             Surface(
                 modifier = Modifier
@@ -116,7 +116,7 @@ fun ExerciseHomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -133,7 +133,7 @@ fun ExerciseHomeScreen(
                             event(HomeEvent.SetTargetAngle(it))
                         }
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
                         ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.recommended.toFloat(),
@@ -196,13 +196,13 @@ fun DanceBottomSheet(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
 
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -225,12 +225,12 @@ fun DanceBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -284,7 +284,7 @@ fun DanceBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { onSchedule() }

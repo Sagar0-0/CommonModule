@@ -22,7 +22,7 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.sleep.model.db.SleepData
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -89,13 +89,13 @@ private fun SleepBottomSheetOptionUI(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
             columns = GridCells.Fixed(2)
         ) {
 
@@ -183,7 +183,7 @@ private fun SleepDisturbanceRowUI(
             .fillMaxWidth()
             .padding(top = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
         // Checking if the selected Disturbance is empty or not
@@ -231,7 +231,7 @@ private fun SleepBottomSheetButtonRow(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
         ButtonWithColor(
             modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"

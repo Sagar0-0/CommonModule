@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay
 import java.time.LocalTime
@@ -60,7 +60,7 @@ fun SleepHomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -98,7 +98,7 @@ fun SleepHomeScreen(
 
         Card {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

@@ -13,7 +13,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
@@ -38,11 +38,11 @@ fun rememberPagerState(
 fun PagerIndicator(size: Int, currentPage: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.padding(vertical = AstaThemeX.appSpacing.extraLarge)
+        modifier = Modifier.padding(vertical = AppTheme.appSpacing.extraLarge)
     ) {
         repeat(size) {
             Indicator(isSelected = it == currentPage)
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.extraSmall))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.extraSmall))
         }
     }
 }

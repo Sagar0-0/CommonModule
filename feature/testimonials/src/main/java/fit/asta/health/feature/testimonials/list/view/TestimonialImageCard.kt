@@ -19,7 +19,7 @@ import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
@@ -27,10 +27,10 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium)
     ) {
         BeforeAndCardLayout(tstImageMedia.media)
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         TstTxtLayout(tstImageMedia)
     }
 }
@@ -39,20 +39,20 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
 fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
 
     if (tstImageMedia.isNotEmpty()) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
             tstImageMedia.forEach {
                 Box(
                     modifier = Modifier
                         .border(
                             width = 1.dp, color = MaterialTheme.colorScheme.surface
                         )
-                        .aspectRatio(AstaThemeX.appAspectRatio.square)
+                        .aspectRatio(AppTheme.appAspectRatio.square)
                         .weight(1f)
                 ) {
                     AppDefServerImg(
                         model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
-                        modifier = Modifier.aspectRatio(AstaThemeX.appAspectRatio.square)
+                        modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.square)
                     )
                 }
             }

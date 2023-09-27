@@ -14,7 +14,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.jetpack.dashedBorder
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
 import fit.asta.health.feature.testimonials.create.vm.MediaType.Video
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
@@ -48,11 +48,11 @@ fun GetVideo(
 ) {
     Column(modifier = modifier) {
         AppTexts.TitleMedium(text = "Upload Video", color = MaterialTheme.colorScheme.onSurface)
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         Box(
             modifier = Modifier
                 .dashedBorder(
-                    width = 1.dp, radius = AstaThemeX.appSpacing.small, color = Color(0xff8694A9)
+                    width = 1.dp, radius = AppTheme.appSpacing.small, color = Color(0xff8694A9)
                 )
                 .fillMaxWidth()
         ) {

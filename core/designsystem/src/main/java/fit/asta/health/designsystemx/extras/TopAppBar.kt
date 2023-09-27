@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -42,7 +42,7 @@ fun AstaTopAppBar(
                 Icon(
                     imageVector = navigationIcon,
                     contentDescription = navigationIconContentDescription,
-                    tint = AstaThemeX.colorsX.onSurface,
+                    tint = AppTheme.colorsX.onSurface,
                 )
             }
         },
@@ -51,7 +51,7 @@ fun AstaTopAppBar(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = actionIconContentDescription,
-                    tint = AstaThemeX.colorsX.onSurface,
+                    tint = AppTheme.colorsX.onSurface,
                 )
             }
         },
@@ -80,7 +80,7 @@ fun AstaTopAppBar(
                 Icon(
                     imageVector = actionIcon,
                     contentDescription = actionIconContentDescription,
-                    tint = AstaThemeX.colorsX.onSurface,
+                    tint = AppTheme.colorsX.onSurface,
                 )
             }
         },

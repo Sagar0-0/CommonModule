@@ -31,7 +31,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import kotlin.math.*
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -332,7 +332,7 @@ fun CircularSlider(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
         ) {
             Text(
                 modifier = Modifier.clickable { onChangeType() },

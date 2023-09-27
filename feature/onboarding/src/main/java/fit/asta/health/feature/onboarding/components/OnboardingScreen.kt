@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.components.GifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import kotlinx.coroutines.launch
 
 
@@ -62,20 +62,20 @@ fun OnboardingScreen(
                 HorizontalPager(
                     modifier = Modifier.weight(1f),
                     state = pagerState,
-                    contentPadding = PaddingValues(AstaThemeX.appSpacing.small),
-                    pageSpacing = AstaThemeX.appSpacing.medium,
+                    contentPadding = PaddingValues(AppTheme.appSpacing.small),
+                    pageSpacing = AppTheme.appSpacing.medium,
                 ) { page ->
                     Card(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
-                            .padding(AstaThemeX.appSpacing.small)
-                            .clip(AstaThemeX.appShape.large)
+                            .padding(AppTheme.appSpacing.small)
+                            .clip(AppTheme.appShape.large)
                     ) {
                         GifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = AstaThemeX.appSpacing.medium),
+                                .padding(bottom = AppTheme.appSpacing.medium),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -90,7 +90,7 @@ fun OnboardingScreen(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                modifier = Modifier.padding(horizontal = AstaThemeX.appSpacing.extraMedium),
+                                modifier = Modifier.padding(horizontal = AppTheme.appSpacing.extraMedium),
                                 textAlign = TextAlign.Center,
                                 text = items[page].desc,
                                 style = MaterialTheme.typography.titleSmall,

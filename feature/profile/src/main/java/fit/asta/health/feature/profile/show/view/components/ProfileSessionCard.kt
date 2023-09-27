@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.data.profile.remote.model.Session
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun ProfileSessionCard(
@@ -24,11 +24,11 @@ fun ProfileSessionCard(
     AppCard {
         Column(
             modifier = Modifier
-                .padding(AstaThemeX.appSpacing.medium)
+                .padding(AppTheme.appSpacing.medium)
                 .fillMaxWidth()
         ) {
             AppTexts.BodySmall(text = title)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {

@@ -46,7 +46,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.IntSize
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import kotlin.math.min
 
 @Composable
@@ -171,7 +171,7 @@ fun BreathingProgress(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
         ) {
             Text(text = "$startCount", modifier = Modifier.clickable {
                 changeRadius = if (changeRadius == 300f) smallRadius

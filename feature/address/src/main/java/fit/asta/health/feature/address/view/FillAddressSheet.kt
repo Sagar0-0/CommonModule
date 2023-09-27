@@ -54,7 +54,7 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.component.AstaValidatedTextField
 import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -160,15 +160,15 @@ internal fun FillAddressSheet(
             modifier = Modifier
                 .clip(
                     RoundedCornerShape(
-                        topStart = AstaThemeX.customSize.medium,
-                        topEnd = AstaThemeX.customSize.medium
+                        topStart = AppTheme.customSize.medium,
+                        topEnd = AppTheme.customSize.medium
                     )
                 )
                 .background(MaterialTheme.colorScheme.background)
                 .padding(
-                    top = AstaThemeX.appSpacing.medium,
-                    start = AstaThemeX.appSpacing.medium,
-                    end = AstaThemeX.appSpacing.medium
+                    top = AppTheme.appSpacing.medium,
+                    start = AppTheme.appSpacing.medium,
+                    end = AppTheme.appSpacing.medium
                 ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -192,7 +192,7 @@ internal fun FillAddressSheet(
 
             Text(
                 text = R.string.save_address_as.toStringFromResId(),
-                Modifier.padding(bottom = AstaThemeX.appSpacing.small)
+                Modifier.padding(bottom = AppTheme.appSpacing.small)
             )
             Row(Modifier.fillMaxWidth()) {
                 Text(modifier = Modifier
@@ -215,7 +215,7 @@ internal fun FillAddressSheet(
                     .padding(8.dp), text = R.string.other.toStringFromResId())
             }
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
                 AstaValidatedTextField(
@@ -239,7 +239,7 @@ internal fun FillAddressSheet(
                     },
                     label = R.string.location_name
                 )
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             }
 
             AstaValidatedTextField(
@@ -262,7 +262,7 @@ internal fun FillAddressSheet(
                 label = R.string.house_number,
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             AstaValidatedTextField(
                 modifier = Modifier
@@ -284,7 +284,7 @@ internal fun FillAddressSheet(
                 label = R.string.block_street_road,
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             AstaValidatedTextField(
                 type = AstaValidatedTextFieldType.Default(0),
@@ -308,7 +308,7 @@ internal fun FillAddressSheet(
                 label = R.string.nearby_landmark
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             AstaValidatedTextField(
                 modifier = Modifier
@@ -344,7 +344,7 @@ internal fun FillAddressSheet(
                         OutlinedButton(
                             onClick = onSaveAddressClick,
                             modifier = Modifier
-                                .padding(AstaThemeX.appSpacing.medium)
+                                .padding(AppTheme.appSpacing.medium)
                                 .fillMaxWidth()
                                 .clip(MaterialTheme.shapes.large),
                             colors = ButtonDefaults.buttonColors(

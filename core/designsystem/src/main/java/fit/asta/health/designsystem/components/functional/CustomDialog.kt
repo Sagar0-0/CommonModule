@@ -30,7 +30,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import kotlinx.coroutines.delay
 
 data class DialogData(
@@ -89,19 +89,19 @@ fun DialogContent(
         Column(
             modifier = modifier
                 .background(Color.White)
-                .padding(AstaThemeX.appSpacing.medium),
+                .padding(AppTheme.appSpacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DialogHeader(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             DialogDescription(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             DialogButtons(
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onPositiveClick,
                 dialogData = dialogData
             )
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
     })
 }
@@ -113,12 +113,12 @@ private fun DialogHeader(dialogData: DialogData) {
         imageVector = Icons.Filled.NotificationImportant,
         contentDescription = "Alert Message",
         tint = MaterialTheme.colorScheme.error,
-        modifier = Modifier.size(AstaThemeX.appIconSize.medium)
+        modifier = Modifier.size(AppTheme.appIconSize.medium)
     )
-    Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
     AppTexts.LabelLarge(
         text = dialogData.dialogTitle,
-        modifier = Modifier.padding(top = AstaThemeX.appSpacing.extraSmall),
+        modifier = Modifier.padding(top = AppTheme.appSpacing.extraSmall),
         maxLines = 2,
         overflow = TextOverflow.Ellipsis
     )
@@ -129,7 +129,7 @@ private fun DialogHeader(dialogData: DialogData) {
 private fun DialogDescription(dialogData: DialogData) {
     AppTexts.BodyMedium(
         text = dialogData.dialogDesc,
-        modifier = Modifier.padding(top = AstaThemeX.appSpacing.extraSmall),
+        modifier = Modifier.padding(top = AppTheme.appSpacing.extraSmall),
         textAlign = TextAlign.Center
     )
 }
@@ -143,7 +143,7 @@ private fun DialogButtons(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
     ) {
         Box(
             modifier = Modifier.weight(1f)
@@ -168,7 +168,7 @@ private fun NegativeButton(
     AppButtons.AppStandardButton(
         onClick = onNegativeClick,
         modifier = Modifier
-            .height(AstaThemeX.appButtonSize.extraLarge)
+            .height(AppTheme.appButtonSize.extraLarge)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.error,
@@ -188,7 +188,7 @@ private fun PositiveButton(
 ) {
     AppButtons.AppStandardButton(
         onClick = onPositiveClick, modifier = Modifier
-            .height(AstaThemeX.appButtonSize.extraLarge)
+            .height(AppTheme.appButtonSize.extraLarge)
             .fillMaxWidth()
     ) {
         AppTexts.LabelMedium(

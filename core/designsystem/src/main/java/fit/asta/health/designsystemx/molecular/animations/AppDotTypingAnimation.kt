@@ -24,7 +24,7 @@ import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import kotlinx.coroutines.delay
 
 
@@ -37,9 +37,9 @@ import kotlinx.coroutines.delay
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaDotTypingAnimation()
+            AppDotTypingAnimation()
         }
     }
 }
@@ -56,7 +56,7 @@ private fun DefaultPreview1() {
  * @param contentAlignment This is the Alignment of the whole loading Animation
  */
 @Composable
-fun AstaDotTypingAnimation(
+fun AppDotTypingAnimation(
     modifier: Modifier = Modifier,
     circleSize: Dp = 25.dp,
     spaceBetween: Dp = 10.dp,
@@ -97,7 +97,7 @@ fun AstaDotTypingAnimation(
                         translationY = -value * distance
                     }
                     .background(
-                        color = AstaThemeX.colorsX.primary,
+                        color = AppTheme.colorsX.primary,
                         shape = CircleShape
                     )
                 )

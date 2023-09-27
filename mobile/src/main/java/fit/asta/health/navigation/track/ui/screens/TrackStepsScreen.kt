@@ -52,11 +52,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
-import fit.asta.health.designsystemx.organism.common.AstaDatePicker
+import fit.asta.health.designsystemx.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
+import fit.asta.health.designsystemx.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -90,8 +90,8 @@ fun TrackStepsScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -174,7 +174,7 @@ fun TrackStepsScreenControl(
         }
 
         // Date Picker
-        AstaDatePicker(
+        AppDatePicker(
             localDate = calendarData,
             onPreviousButtonClick = {
                 setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
@@ -230,21 +230,21 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
 
         // Daily Progress
         stepsTrackData.progress?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target.distance.dis,
@@ -262,12 +262,12 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Weekly Progress
         stepsTrackData.weekly?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -295,7 +295,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = AstaThemeX.colorsX.onSurface,
+                                    color = AppTheme.colorsX.onSurface,
                                 )
                             }
                         }
@@ -308,7 +308,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Vitamin D Details Card
         stepsTrackData.weather?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AppTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -334,7 +334,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps details Card
         stepsTrackData.stepsDetail?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.STEPS_DETAILS) {
+                AppTitleElevatedCard(title = TrackStringConstants.STEPS_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_total_distance,
@@ -365,7 +365,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
             val difference = DecimalFormat("#.##").format(abs(it.weight - it.idealWgt))
 
             item {
-                AstaTitleElevatedCard {
+                AppTitleElevatedCard {
                     Column {
                         BmiChart.BMIChart(
                             bmiData = BmiData(
@@ -406,7 +406,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Speed Card Composable
         stepsTrackData.speed?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.SPEED_DETAILS) {
+                AppTitleElevatedCard(title = TrackStringConstants.SPEED_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_walking_intensity,
@@ -432,7 +432,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Heart Health Double Circular Chart
         stepsTrackData.health?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
+                AppTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -472,7 +472,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.stepGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.STEPS) {
+                AppTitleElevatedCard(title = TrackStringConstants.STEPS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -487,7 +487,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.distanceGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.DISTANCE) {
+                AppTitleElevatedCard(title = TrackStringConstants.DISTANCE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -502,7 +502,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Steps Line Chart
         stepsTrackData.intensityGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.INTENSITY) {
+                AppTitleElevatedCard(title = TrackStringConstants.INTENSITY) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -520,7 +520,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Mood Graph Line Chart
         stepsTrackData.moodGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AppTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -565,7 +565,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
         // Blood Pressure Line Chart
         stepsTrackData.bloodPressureGraph?.let { graphData ->
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
+                AppTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

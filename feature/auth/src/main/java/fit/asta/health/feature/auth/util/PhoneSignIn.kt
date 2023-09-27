@@ -55,7 +55,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = AstaThemeX.appSpacing.medium,
-                        bottom = AstaThemeX.appSpacing.medium,
-                        start = AstaThemeX.appSpacing.medium,
-                        end = AstaThemeX.appSpacing.small
+                        top = AppTheme.appSpacing.medium,
+                        bottom = AppTheme.appSpacing.medium,
+                        start = AppTheme.appSpacing.medium,
+                        end = AppTheme.appSpacing.small
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -283,9 +283,9 @@ fun PhoneSignIn(
                 placeholder = "Enter your phone number",
                 modifier = Modifier
                     .padding(
-                        top = AstaThemeX.appSpacing.medium,
-                        bottom = AstaThemeX.appSpacing.medium,
-                        end = AstaThemeX.appSpacing.medium
+                        top = AppTheme.appSpacing.medium,
+                        bottom = AppTheme.appSpacing.medium,
+                        end = AppTheme.appSpacing.medium
                     )
                     .weight(0.7f)
                     .onFocusChanged {
@@ -300,7 +300,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -320,9 +320,9 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AstaThemeX.appSpacing.medium)
+                    .padding(AppTheme.appSpacing.medium)
             ) {
-                Text(text = "Generate OTP", modifier = Modifier.padding(AstaThemeX.appSpacing.small))
+                Text(text = "Generate OTP", modifier = Modifier.padding(AppTheme.appSpacing.small))
             }
         }
 
@@ -353,7 +353,7 @@ fun PhoneSignIn(
                     supportingTextAlign = TextAlign.End
                 )
 
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
                 Button(
                     enabled = !loading,
@@ -362,11 +362,11 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AstaThemeX.appSpacing.medium)
+                        .padding(AppTheme.appSpacing.medium)
                 ) {
                     Text(
                         text = "Verify OTP",
-                        modifier = Modifier.padding(AstaThemeX.appSpacing.small)
+                        modifier = Modifier.padding(AppTheme.appSpacing.small)
                     )
                 }
                 TextButton(
@@ -374,7 +374,7 @@ fun PhoneSignIn(
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AstaThemeX.appSpacing.medium)
+                        .padding(AppTheme.appSpacing.medium)
                 ) {
                     if (ticks > 0) {
                         Text(text = "Resend code in $ticks seconds")

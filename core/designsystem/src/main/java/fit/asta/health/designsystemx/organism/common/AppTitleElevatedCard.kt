@@ -1,16 +1,14 @@
 package fit.asta.health.designsystemx.organism.common
 
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.molecular.cards.AstaElevatedCard
+import fit.asta.health.designsystemx.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
 
 /**
@@ -21,14 +19,14 @@ import fit.asta.health.designsystemx.molecular.texts.HeadlineTexts
  * @param body The UI which will be drawn inside this card
  */
 @Composable
-fun AstaTitleElevatedCard(
+fun AppTitleElevatedCard(
     modifier: Modifier = Modifier,
     title: String? = null,
     body: @Composable () -> Unit
 ) {
 
     // This function draws an elevated Card View
-    AstaElevatedCard(
+    AppElevatedCard(
         modifier = modifier.fillMaxWidth(),
         shape = RoundedCornerShape(8.dp)
     ) {

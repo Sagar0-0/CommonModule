@@ -9,7 +9,7 @@ import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 // Preview Function
 @Preview("Light")
@@ -20,27 +20,27 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview() {
-    AstaScreen {}
+    AppScreen {}
 }
 
 
 /**
  * The main background for the app. This serves as a base composable function for all the screens
- * Uses [AstaThemeX.colorsX] surface color to set the color.
+ * Uses [AppTheme.colorsX] surface color to set the color.
  * Tonal Elevation of the Surface is set to 2.dp
  *
  * @param modifier Modifier to be applied to the background.
  * @param content The background content.
  */
 @Composable
-fun AstaScreen(
+fun AppScreen(
     modifier: Modifier = Modifier,
     content: @Composable () -> Unit
 ) {
-    AstaThemeX {
+    AppTheme {
         Surface(
             modifier = modifier.fillMaxSize(),
-            color = AstaThemeX.colorsX.surface,
+            color = AppTheme.colorsX.surface,
             tonalElevation = 2.dp
         ) {
             CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {

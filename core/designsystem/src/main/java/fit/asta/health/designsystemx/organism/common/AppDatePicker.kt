@@ -18,8 +18,8 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.app.DatePickerDialog
 import android.widget.DatePicker
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.button.AstaIconButton
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.button.AppIconButton
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -35,8 +35,8 @@ import java.time.format.DateTimeFormatter
 )
 @Composable
 private fun DefaultPreview() {
-    AstaThemeX {
-        AstaDatePicker(
+    AppTheme {
+        AppDatePicker(
             localDate = LocalDate.now(),
             onPreviousButtonClick = {},
             onNextButtonClick = {},
@@ -55,7 +55,7 @@ private fun DefaultPreview() {
  * @param onDateChanged This function is executed when the user changes the date selected
  */
 @Composable
-fun AstaDatePicker(
+fun AppDatePicker(
     localDate: LocalDate,
     onPreviousButtonClick: () -> Unit,
     onNextButtonClick: () -> Unit,
@@ -77,9 +77,9 @@ fun AstaDatePicker(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
         ) {
-            AstaIconButton(
+            AppIconButton(
                 modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.ArrowLeft,
                 onClick = onPreviousButtonClick
@@ -88,7 +88,7 @@ fun AstaDatePicker(
             TitleTexts.Medium(text = textToShow)
 
 
-            AstaIconButton(
+            AppIconButton(
                 modifier = Modifier.size(42.dp),
                 imageVector = Icons.Default.ArrowRight,
                 onClick = onNextButtonClick
@@ -96,7 +96,7 @@ fun AstaDatePicker(
         }
 
 
-        AstaIconButton(imageVector = Icons.Default.EditCalendar) {
+        AppIconButton(imageVector = Icons.Default.EditCalendar) {
             DatePickerDialog(
                 context,
                 { _: DatePicker, mYear: Int, mMonth: Int, mDayOfMonth: Int ->

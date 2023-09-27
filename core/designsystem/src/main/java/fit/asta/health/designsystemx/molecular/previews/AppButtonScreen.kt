@@ -17,17 +17,17 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
-import fit.asta.health.designsystemx.molecular.button.AstaCheckBoxButton
-import fit.asta.health.designsystemx.molecular.button.AstaElevatedButton
-import fit.asta.health.designsystemx.molecular.button.AstaFilledButton
-import fit.asta.health.designsystemx.molecular.button.AstaFloatingActionButton
-import fit.asta.health.designsystemx.molecular.button.AstaIconButton
-import fit.asta.health.designsystemx.molecular.button.AstaOutlinedButton
-import fit.asta.health.designsystemx.molecular.button.AstaRadioButton
-import fit.asta.health.designsystemx.molecular.button.AstaTextButton
-import fit.asta.health.designsystemx.molecular.button.AstaToggleButton
-import fit.asta.health.designsystemx.molecular.button.AstaTonalButton
+import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystemx.molecular.button.AppCheckBoxButton
+import fit.asta.health.designsystemx.molecular.button.AppElevatedButton
+import fit.asta.health.designsystemx.molecular.button.AppFilledButton
+import fit.asta.health.designsystemx.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystemx.molecular.button.AppIconButton
+import fit.asta.health.designsystemx.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystemx.molecular.button.AppRadioButton
+import fit.asta.health.designsystemx.molecular.button.AppTextButton
+import fit.asta.health.designsystemx.molecular.button.AppToggleButton
+import fit.asta.health.designsystemx.molecular.button.AppTonalButton
 import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 
 // Preview Function
@@ -43,17 +43,17 @@ import fit.asta.health.designsystemx.molecular.texts.TitleTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaButtonScreen()
+            AppButtonScreen()
         }
     }
 }
 
 
 @Composable
-fun AstaButtonScreen() {
-    AstaThemeX {
+fun AppButtonScreen() {
+    AppTheme {
         Surface(
             modifier = Modifier.fillMaxSize()
         ) {
@@ -63,23 +63,23 @@ fun AstaButtonScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
             ) {
 
                 // Filled Button Section
                 TitleTexts.Large(text = "Filled Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     // Filled button With Texts Passed down to it
-                    AstaFilledButton(
+                    AppFilledButton(
                         onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
-                    AstaFilledButton(
+                    AppFilledButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
                         textToShow = "Disabled"
@@ -88,16 +88,16 @@ fun AstaButtonScreen() {
 
                 TitleTexts.Large(text = "Tonal Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaTonalButton(
+                    AppTonalButton(
                         onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
 
-                    AstaTonalButton(
+                    AppTonalButton(
                         enabled = false,
                         onClick = {},
                         textToShow = "Disabled",
@@ -107,16 +107,16 @@ fun AstaButtonScreen() {
 
                 TitleTexts.Large(text = "Elevated Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaElevatedButton(
+                    AppElevatedButton(
                         onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
 
-                    AstaElevatedButton(
+                    AppElevatedButton(
                         enabled = false,
                         onClick = {},
                         textToShow = "Disabled",
@@ -127,17 +127,17 @@ fun AstaButtonScreen() {
                 // Outlined Button Section
                 TitleTexts.Large(text = "Outlined Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     // Filled button With Texts Passed down to it
-                    AstaOutlinedButton(
+                    AppOutlinedButton(
                         onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
-                    AstaOutlinedButton(
+                    AppOutlinedButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
                         textToShow = "Disabled",
@@ -148,15 +148,15 @@ fun AstaButtonScreen() {
                 // Icon Button Section
                 TitleTexts.Large(text = "Icon Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     // Icon Button from Material Icons
-                    AstaIconButton(
+                    AppIconButton(
                         imageVector = Icons.Default.Person, onClick = { /*TODO*/ }
                     )
-                    AstaIconButton(
+                    AppIconButton(
                         imageVector = Icons.Default.Person,
                         onClick = { /*TODO*/ },
                         enabled = false
@@ -166,17 +166,17 @@ fun AstaButtonScreen() {
                 // Asta Text Buttons
                 TitleTexts.Large(text = "Text Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
                     // Filled button With Texts Passed down to it
-                    AstaTextButton(
+                    AppTextButton(
                         onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
                     )
-                    AstaTextButton(
+                    AppTextButton(
                         onClick = { /*TODO*/ },
                         enabled = false,
                         textToShow = "Disabled",
@@ -188,10 +188,10 @@ fun AstaButtonScreen() {
                 // Floating Action Buttons
                 TitleTexts.Large(text = "Floating Action Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaFloatingActionButton(
+                    AppFloatingActionButton(
                         onClick = { /*TODO*/ }
                     ) {
                         Icon(
@@ -200,7 +200,7 @@ fun AstaButtonScreen() {
                         )
                     }
 
-                    AstaFloatingActionButton(
+                    AppFloatingActionButton(
                         onClick = { /*TODO*/ },
                         imageVector = Icons.Default.Person
                     )
@@ -209,15 +209,15 @@ fun AstaButtonScreen() {
                 // Radio Buttons
                 TitleTexts.Large(text = "Radio Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaRadioButton(
+                    AppRadioButton(
                         selected = true,
                         onClick = {}
                     )
 
-                    AstaRadioButton(
+                    AppRadioButton(
                         selected = true,
                         enabled = false,
                         onClick = {}
@@ -228,14 +228,14 @@ fun AstaButtonScreen() {
                 // Toggle Buttons
                 TitleTexts.Large(text = "Toggle Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaToggleButton(
+                    AppToggleButton(
                         checked = true,
                     )
 
-                    AstaToggleButton(
+                    AppToggleButton(
                         checked = false,
                         enabled = false
                     )
@@ -245,15 +245,15 @@ fun AstaButtonScreen() {
                 // Check Box Buttons
                 TitleTexts.Large(text = "Check Box Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AstaCheckBoxButton(
+                    AppCheckBoxButton(
                         checked = true,
                         onCheckedChange = {}
                     )
 
-                    AstaCheckBoxButton(
+                    AppCheckBoxButton(
                         checked = true,
                         enabled = false,
                         onCheckedChange = {}

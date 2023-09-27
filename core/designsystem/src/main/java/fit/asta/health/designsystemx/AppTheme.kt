@@ -49,7 +49,7 @@ import fit.asta.health.designsystemx.atomic.AppTintTheme
  * [MaterialTheme] theme
  */
 @Composable
-fun AstaThemeX(
+fun AppTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     disableDynamicTheming: Boolean = true,
     content: @Composable () -> Unit
@@ -97,7 +97,7 @@ fun AstaThemeX(
 /**
  * The Wrapper Theme objects can be accessed using this object class from anywhere in the App
  */
-object AstaThemeX {
+object AppTheme {
 
     /**
      * Aspect Ratio of the App

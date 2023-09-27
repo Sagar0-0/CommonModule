@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 // Preview Function
 @Preview("Light Button")
@@ -24,15 +24,15 @@ import fit.asta.health.designsystemx.AstaThemeX
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaIconButton(
+                AppIconButton(
                     onClick = {},
                     imageVector = Icons.Default.ArrowBackIos
                 )
 
-                AstaIconButton(
+                AppIconButton(
                     enabled = false,
                     onClick = {},
                     imageVector = Icons.Default.ArrowBackIos
@@ -54,7 +54,7 @@ private fun DefaultPreview1() {
  * @param onClick Will be called when the user clicks the button.
  */
 @Composable
-fun AstaIconButton(
+fun AppIconButton(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     iconDesc: String? = null,
@@ -66,9 +66,9 @@ fun AstaIconButton(
         enabled = enabled,
         colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AstaThemeX.colorsX.onSurface,
+            contentColor = AppTheme.colorsX.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
         ),
         onClick = onClick
     ) {

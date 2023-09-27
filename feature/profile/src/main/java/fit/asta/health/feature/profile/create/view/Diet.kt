@@ -19,7 +19,7 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.*
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
@@ -162,13 +162,13 @@ fun DietContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AstaThemeX.appSpacing.medium)
+                .padding(horizontal = AppTheme.appSpacing.medium)
                 .verticalScroll(rememberScrollState())
-                .background(color = AstaThemeX.colorsX.background),
+                .background(color = AppTheme.colorsX.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -178,7 +178,7 @@ fun DietContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             }
 
             SelectionCardCreateProfile(
@@ -194,7 +194,7 @@ fun DietContent(
                 listName = "Diet"
             )
 
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
 
             CreateProfileTwoButtonLayout(
                 eventPrevious = eventPrevious, eventNext = {
@@ -223,7 +223,7 @@ fun DietContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
         }
     }
 }

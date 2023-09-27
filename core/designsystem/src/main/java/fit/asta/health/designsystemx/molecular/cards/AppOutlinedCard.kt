@@ -12,7 +12,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 // Preview Function
@@ -24,9 +24,9 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
-            AstaOutlinedCard {
+            AppOutlinedCard {
                 LabelTexts.Large(text = "Card Testing")
             }
         }
@@ -34,7 +34,7 @@ private fun DefaultPreview1() {
 }
 
 /**
- * [AstaOutlinedCard] is default clickable Outlined card for the app.This Card handles click events,
+ * [AppOutlinedCard] is default clickable Outlined card for the app.This Card handles click events,
  * calling its [onClick] lambda.
  *
  * @param modifier the [Modifier] to be applied to this card
@@ -47,7 +47,7 @@ private fun DefaultPreview1() {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AstaOutlinedCard(
+fun AppOutlinedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.outlinedCardColors(),
@@ -61,7 +61,7 @@ fun AstaOutlinedCard(
             modifier = modifier,
             onClick = onClick,
             enabled = enabled,
-            shape = AstaThemeX.appShape.large,
+            shape = AppTheme.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -70,7 +70,7 @@ fun AstaOutlinedCard(
     else
         OutlinedCard(
             modifier = modifier,
-            shape = AstaThemeX.appShape.large,
+            shape = AppTheme.appShape.large,
             colors = colors,
             elevation = elevation,
             border = border,

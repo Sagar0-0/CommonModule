@@ -8,7 +8,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
@@ -16,7 +16,7 @@ fun TstViewTxtLayout(tstTxtMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AstaThemeX.appSpacing.medium)
+            .padding(AppTheme.appSpacing.medium)
     ) {
         AppTexts.TitleMedium(
             text = tstTxtMedia.title, color = MaterialTheme.colorScheme.onPrimaryContainer

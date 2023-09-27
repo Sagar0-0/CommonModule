@@ -12,7 +12,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 
 @Composable
@@ -21,7 +21,7 @@ fun PlayerImage(
     imageBitmap: ByteArray?,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = AstaThemeX.appSpacing
+    val spacing = AppTheme.appSpacing
     Box(
         modifier = modifier.padding(horizontal = spacing.extraLarge)
     ) {

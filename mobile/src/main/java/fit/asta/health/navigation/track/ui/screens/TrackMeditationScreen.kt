@@ -49,11 +49,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
-import fit.asta.health.designsystemx.organism.common.AstaDatePicker
+import fit.asta.health.designsystemx.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.designsystemx.organism.common.AstaTitleElevatedCard
+import fit.asta.health.designsystemx.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -86,8 +86,8 @@ fun TrackMeditationScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -170,7 +170,7 @@ fun TrackMeditationScreenControl(
         }
 
         // Date Picker
-        AstaDatePicker(
+        AppDatePicker(
             localDate = calendarData,
             onPreviousButtonClick = {
                 setUiEvent(TrackUiEvent.ClickedPreviousDateButton)
@@ -226,20 +226,20 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AstaThemeX.colorsX.surface.toArgb(),
-                        AstaThemeX.colorsX.onSurface.toArgb(),
+                        AppTheme.colorsX.surface.toArgb(),
+                        AppTheme.colorsX.onSurface.toArgb(),
                         0.08f
                     )
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
     ) {
 
         // Daily Progress
         meditationData.progress?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.DAILY_PROGRESS) {
                     CircularDonutChartRow.TargetDonutChart(
                         circularData = CircularTargetDataBuilder(
                             target = it.target,
@@ -257,12 +257,12 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Weekly Progress
         meditationData.weekly?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.WEEKLY_PROGRESS) {
                     Row {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 
@@ -290,7 +290,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = AstaThemeX.colorsX.onSurface,
+                                    color = AppTheme.colorsX.onSurface,
                                 )
                             }
                         }
@@ -303,7 +303,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Progress Bar Chart
         meditationData.progressGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.PROGRESS) {
+                AppTitleElevatedCard(title = TrackStringConstants.PROGRESS) {
                     LinearChart.BarChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -318,7 +318,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Vitamin D Details Card
         meditationData.weatherDetail?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
+                AppTitleElevatedCard(title = TrackStringConstants.VITAMIN_D_DETAILS) {
                     TrackingDetailsCard(
                         imageList = listOf(
                             R.drawable.image_sun,
@@ -344,7 +344,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Heart Health Double Circular Chart
         meditationData.healthDetail?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
+                AppTitleElevatedCard(title = TrackStringConstants.HEART_HEALTH) {
                     CircularRingChart.MultipleRingChart(
                         circularData = listOf(
                             CircularTargetDataBuilder(
@@ -387,7 +387,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Mood Graph Line Chart
         meditationData.moodGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
+                AppTitleElevatedCard(title = TrackStringConstants.MOOD_GRAPH) {
                     LinearChart.EmojiLineChart(
                         linearData = LinearEmojiData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -432,7 +432,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Heart Rate Line Chart
         meditationData.heartRateGraph?.let {
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.HEART_RATE) {
+                AppTitleElevatedCard(title = TrackStringConstants.HEART_RATE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = listOf(ChartPoint.pointDataBuilder(it.yData)),
@@ -447,7 +447,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
         // Blood Pressure Line Chart
         meditationData.bloodPressureGraph?.let { graphData ->
             item {
-                AstaTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
+                AppTitleElevatedCard(title = TrackStringConstants.BLOOD_PRESSURE) {
                     LinearChart.LineChart(
                         linearData = LinearStringData(
                             yAxisReadings = graphData.multiGraphDataList.map {

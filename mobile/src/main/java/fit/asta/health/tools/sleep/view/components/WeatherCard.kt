@@ -23,7 +23,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 
 @Composable
 fun WeatherCard() {
@@ -37,7 +37,7 @@ fun WeatherCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
             verticalAlignment = Alignment.Top
         ) {
             Image(
@@ -49,7 +49,7 @@ fun WeatherCard() {
             Column(
                 modifier = Modifier
                     .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(

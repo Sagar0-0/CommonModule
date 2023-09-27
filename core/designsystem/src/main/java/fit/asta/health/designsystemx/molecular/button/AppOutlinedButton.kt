@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 
 // Preview Function
@@ -28,16 +28,16 @@ import fit.asta.health.designsystemx.molecular.texts.LabelTexts
 )
 @Composable
 private fun DefaultPreview1() {
-    AstaThemeX {
+    AppTheme {
         Surface {
             Column {
-                AstaOutlinedButton(
+                AppOutlinedButton(
                     onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person
                 )
 
-                AstaOutlinedButton(
+                AppOutlinedButton(
                     enabled = false,
                     onClick = {},
                     textToShow = "Disabled Button",
@@ -61,7 +61,7 @@ private fun DefaultPreview1() {
  * @param iconDes This is the description of the Icon which is provided and it is also optional
  */
 @Composable
-fun AstaOutlinedButton(
+fun AppOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -76,9 +76,9 @@ fun AstaOutlinedButton(
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AstaThemeX.colorsX.onSurface,
+            contentColor = AppTheme.colorsX.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
         ),
         contentPadding = PaddingValues(
             start = 24.dp,
@@ -91,16 +91,16 @@ fun AstaOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AstaThemeX.appSpacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall)
             )
         }
 
         LabelTexts.Large(
             text = textToShow,
             color = if (enabled)
-                AstaThemeX.colorsX.onSurface
+                AppTheme.colorsX.onSurface
             else
-                AstaThemeX.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colorsX.onSurface.copy(alpha = .35f)
         )
     }
 }

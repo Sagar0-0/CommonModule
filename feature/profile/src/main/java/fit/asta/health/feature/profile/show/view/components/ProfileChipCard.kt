@@ -24,7 +24,7 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AstaThemeX
+import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -40,10 +40,10 @@ fun ProfileChipCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AstaThemeX.appSpacing.medium)
+                .padding(AppTheme.appSpacing.medium)
         ) {
             ProfileHeader(icon, title)
-            Spacer(modifier = Modifier.height(AstaThemeX.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
             ChipList(list)
         }
     }
@@ -63,9 +63,9 @@ private fun ProfileHeader(icon: Int, title: String) {
             AppDrawImg(
                 painter = painterResource(id = icon),
                 contentDescription = "Card Image",
-                modifier = Modifier.size(AstaThemeX.imageSize.largeMedium)
+                modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(AstaThemeX.appSpacing.small))
+            Spacer(modifier = Modifier.width(AppTheme.appSpacing.small))
             AppTexts.BodySmall(text = title)
         }
     }
@@ -75,8 +75,8 @@ private fun ProfileHeader(icon: Int, title: String) {
 @Composable
 private fun ChipList(list: List<HealthProperties>) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.small),
-        verticalArrangement = Arrangement.spacedBy(AstaThemeX.appSpacing.minSmall)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.minSmall)
     ) {
         list.forEach { healthProperty ->
             DisabledChipForList(textOnChip = healthProperty.name)
