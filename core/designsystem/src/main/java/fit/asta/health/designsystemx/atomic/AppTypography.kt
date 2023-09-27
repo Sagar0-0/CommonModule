@@ -8,6 +8,7 @@ import androidx.compose.ui.text.font.FontFamily
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fit.asta.health.core.designsystem.R
+import fit.asta.health.designsystemx.atomic.token.DefaultTypographyTokens
 
 
 data class Typo(
@@ -17,94 +18,37 @@ data class Typo(
     val caption: Caption = Caption()
 ) {
     data class Large(
-        val level1: TextStyle = TextStyle(
-            fontSize = 72.sp,
-            fontWeight = FontWeight.Normal
-        ),
-        val level2: TextStyle = TextStyle(
-            fontSize = 48.sp,
-            fontWeight = FontWeight.SemiBold
-        ),
-        val level3: TextStyle = TextStyle(
-            fontSize = 32.sp,
-            fontWeight = FontWeight.Bold
-        )
+        val level1: TextStyle = DefaultTypographyTokens.largeLevel1,
+        val level2: TextStyle = DefaultTypographyTokens.largeLevel2,
+        val level3: TextStyle = DefaultTypographyTokens.largeLevel3
     )
 
     data class Heading(
-        val level1: TextStyle = TextStyle(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.SemiBold
-        ),
-        val level2: TextStyle = TextStyle(
-            fontSize = 24.sp,
-            fontWeight = FontWeight.Medium
-        ),
-        val level3: TextStyle = TextStyle(
-            fontSize = 20.sp,
-            fontWeight = FontWeight.SemiBold
-        ),
-        val level4: TextStyle = TextStyle(
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Medium
-        )
+        val level1: TextStyle = DefaultTypographyTokens.headingLevel1,
+        val level2: TextStyle = DefaultTypographyTokens.headingLevel2,
+        val level3: TextStyle = DefaultTypographyTokens.headingLevel3,
+        val level4: TextStyle = DefaultTypographyTokens.headingLevel4
     )
 
     data class Title(
-        val level1: TextStyle = TextStyle(
-            fontSize = 20.sp,
-            fontWeight = FontWeight.Normal
-        ),
-        val level2: TextStyle = TextStyle(
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Bold
-        ),
-        val level3: TextStyle = TextStyle(
-            fontSize = 18.sp,
-            fontWeight = FontWeight.Medium
-        ),
-        val level4: TextStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Bold
-        )
+        val level1: TextStyle = DefaultTypographyTokens.TitleLevel1,
+        val level2: TextStyle = DefaultTypographyTokens.TitleLevel2,
+        val level3: TextStyle = DefaultTypographyTokens.TitleLevel3,
+        val level4: TextStyle = DefaultTypographyTokens.TitleLevel4
     )
 
     data class Body(
-        val level1: TextStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Medium
-        ),
-        val level2: TextStyle = TextStyle(
-            fontSize = 16.sp,
-            fontWeight = FontWeight.Normal
-        ),
-        val level3: TextStyle = TextStyle(
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold
-        )
+        val level1: TextStyle = DefaultTypographyTokens.bodyLevel1,
+        val level2: TextStyle = DefaultTypographyTokens.bodyLevel2,
+        val level3: TextStyle = DefaultTypographyTokens.bodyLevel3
     )
 
     data class Caption(
-        val level1: TextStyle = TextStyle(
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Medium
-        ),
-        val level2: TextStyle = TextStyle(
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Normal
-        ),
-        val level3: TextStyle = TextStyle(
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Medium
-        ),
-        val level4: TextStyle = TextStyle(
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal
-        ),
-        val level5: TextStyle = TextStyle(
-            fontSize = 10.sp,
-            fontWeight = FontWeight.Bold
-        )
+        val level1: TextStyle = DefaultTypographyTokens.captionLevel1,
+        val level2: TextStyle = DefaultTypographyTokens.captionLevel2,
+        val level3: TextStyle = DefaultTypographyTokens.captionLevel3,
+        val level4: TextStyle = DefaultTypographyTokens.captionLevel4,
+        val level5: TextStyle = DefaultTypographyTokens.captionLevel5
     )
 }
 
