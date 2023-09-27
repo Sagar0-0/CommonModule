@@ -13,25 +13,21 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.atomic.AppTypography
+import fit.asta.health.designsystemx.atomic.AppCustomTypography
 
 
 /**
- * [DisplayTexts] is a utility class in a Compose-based Android application that provides a set of
+ * [LargeTexts] is a utility class in a Compose-based Android application that provides a set of
  * Composable functions for displaying text with different predefined styles. These Composable
- * functions can be used to display text of mainly type Display Texts.
+ * functions can be used to display text of mainly type Body Texts.
  *
- * Check [AppTypography] for getting the current typography values
+ * Check [AppCustomTypography] for getting the current typography values
  *
- * @see [BodyTexts]
- * @see [HeadlineTexts]
- * @see [LabelTexts]
- * @see [TitleTexts]
  */
-object DisplayTexts {
+object LargeTexts {
 
 
-    /** List of all available methods inside [DisplayTexts] -> [Large] , [Medium] and [Small]
+    /** List of all available methods inside [LargeTexts] -> [Level1] , [Level2] and [Level3]
      *
      * @param text the text to be displayed
      * @param modifier the [Modifier] to be applied to this layout node
@@ -39,58 +35,59 @@ object DisplayTexts {
      * @param textAlign the alignment of the text within the lines of the paragraph.
      */
     @Composable
-    fun Large(
+    fun Level1(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
-        textAlign: TextAlign? = null,
+        textAlign: TextAlign? = null
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.displayLarge,
+            style = AppTheme.customTypography.large.level1,
             modifier = modifier,
             color = color,
-            textAlign = textAlign
+            textAlign = textAlign,
         )
     }
 
     @Composable
-    fun Medium(
+    fun Level2(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
-        textAlign: TextAlign? = null,
+        textAlign: TextAlign? = null
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.displayMedium,
+            style = AppTheme.customTypography.large.level2,
             modifier = modifier,
             color = color,
-            textAlign = textAlign
+            textAlign = textAlign,
         )
     }
 
     @Composable
-    fun Small(
+    fun Level3(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
-        textAlign: TextAlign? = null,
+        textAlign: TextAlign? = null
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.displaySmall,
+            style = AppTheme.customTypography.large.level3,
             modifier = modifier,
             color = color,
-            textAlign = textAlign
+            textAlign = textAlign,
         )
     }
+
 }
 
 // Preview Function
-@Preview("Display Text Light")
+@Preview("Body Texts Light")
 @Preview(
-    name = "Display Text Dark",
+    name = "Body Texts Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )
@@ -104,9 +101,9 @@ private fun DefaultPreview() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                DisplayTexts.Small(text = "Small Display Texts")
-                DisplayTexts.Medium(text = "Medium Display Texts")
-                DisplayTexts.Large(text = "Large Display Texts")
+                LargeTexts.Level1(text = "Level 1 Texts")
+                LargeTexts.Level2(text = "Level 2 Texts")
+                LargeTexts.Level3(text = "Level 3 Texts")
             }
         }
     }

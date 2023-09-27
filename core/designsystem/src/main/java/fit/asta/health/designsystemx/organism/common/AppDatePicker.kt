@@ -85,7 +85,7 @@ fun AppDatePicker(
                 onClick = onPreviousButtonClick
             )
 
-            TitleTexts.Medium(text = textToShow)
+            TitleTexts.Level2(text = textToShow)
 
 
             AppIconButton(

@@ -9,7 +9,8 @@ import fit.asta.health.designsystemx.atomic.token.DefaultTypographyTokens
 data class AppCustomTypography(
     val large: Large = Large(),
     val heading: Heading = Heading(),
-    val titleBody: Title = Title(),
+    val title: Title = Title(),
+    val body: Body = Body(),
     val caption: Caption = Caption()
 ) {
     data class Large(

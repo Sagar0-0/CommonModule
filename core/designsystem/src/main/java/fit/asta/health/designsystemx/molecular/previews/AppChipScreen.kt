@@ -59,7 +59,7 @@ fun AppChipScreen() {
             ) {
 
                 // Assist Chip Section
-                TitleTexts.Large(text = "Assist Chips")
+                TitleTexts.Level1(text = "Assist Chips")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically
@@ -83,7 +83,7 @@ fun AppChipScreen() {
 
 
                 // Filter Chip Section
-                TitleTexts.Large(text = "Filter Chips")
+                TitleTexts.Level1(text = "Filter Chips")
                 Row(
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
                     verticalAlignment = Alignment.CenterVertically

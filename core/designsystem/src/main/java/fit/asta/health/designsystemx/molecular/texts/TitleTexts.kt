@@ -22,16 +22,12 @@ import fit.asta.health.designsystemx.atomic.AppTypography
  * functions can be used to display text of mainly type Title Texts.
  *
  * Check [AppTypography] for getting the current typography values
- *
- * @see [DisplayTexts]
- * @see [HeadlineTexts]
- * @see [LabelTexts]
- * @see [BodyTexts]
  */
 object TitleTexts {
 
 
-    /** List of all available methods inside [TitleTexts] -> [Large] , [Medium] and [Small]
+    /** List of all available methods inside [TitleTexts] -> [Level1] , [Level2] , [Level3] and
+     * [Level4]
      *
      * @param text the text to be displayed
      * @param modifier the [Modifier] to be applied to this layout node
@@ -39,7 +35,7 @@ object TitleTexts {
      * @param textAlign the alignment of the text within the lines of the paragraph.
      */
     @Composable
-    fun Large(
+    fun Level1(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
@@ -47,7 +43,7 @@ object TitleTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.bodyLarge,
+            style = AppTheme.customTypography.title.level1,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -55,7 +51,7 @@ object TitleTexts {
     }
 
     @Composable
-    fun Medium(
+    fun Level2(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
@@ -63,7 +59,7 @@ object TitleTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.bodyLarge,
+            style = AppTheme.customTypography.title.level2,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -71,7 +67,7 @@ object TitleTexts {
     }
 
     @Composable
-    fun Small(
+    fun Level3(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colorsX.onSurface,
@@ -79,7 +75,23 @@ object TitleTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.typographyX.bodyLarge,
+            style = AppTheme.customTypography.title.level3,
+            modifier = modifier,
+            color = color,
+            textAlign = textAlign,
+        )
+    }
+
+    @Composable
+    fun Level4(
+        text: String,
+        modifier: Modifier = Modifier,
+        color: Color = AppTheme.colorsX.onSurface,
+        textAlign: TextAlign? = null,
+    ) {
+        Text(
+            text = text,
+            style = AppTheme.customTypography.title.level4,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -104,9 +116,10 @@ private fun DefaultPreview() {
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TitleTexts.Small(text = "Small Title Texts")
-                TitleTexts.Medium(text = "Medium Title Texts")
-                TitleTexts.Large(text = "Large Title Texts")
+                TitleTexts.Level1(text = "Title Level 1")
+                TitleTexts.Level2(text = "Title Level 2")
+                TitleTexts.Level3(text = "Title Level 3")
+                TitleTexts.Level4(text = "Title Level 4")
             }
         }
     }
