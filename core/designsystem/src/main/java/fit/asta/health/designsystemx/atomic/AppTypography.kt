@@ -9,6 +9,107 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import fit.asta.health.core.designsystem.R
 
+
+data class Typo(
+    val large: Large = Large(),
+    val heading: Heading = Heading(),
+    val titleBody: Title = Title(),
+    val caption: Caption = Caption()
+) {
+    data class Large(
+        val level1: TextStyle = TextStyle(
+            fontSize = 72.sp,
+            fontWeight = FontWeight.Normal
+        ),
+        val level2: TextStyle = TextStyle(
+            fontSize = 48.sp,
+            fontWeight = FontWeight.SemiBold
+        ),
+        val level3: TextStyle = TextStyle(
+            fontSize = 32.sp,
+            fontWeight = FontWeight.Bold
+        )
+    )
+
+    data class Heading(
+        val level1: TextStyle = TextStyle(
+            fontSize = 24.sp,
+            fontWeight = FontWeight.SemiBold
+        ),
+        val level2: TextStyle = TextStyle(
+            fontSize = 24.sp,
+            fontWeight = FontWeight.Medium
+        ),
+        val level3: TextStyle = TextStyle(
+            fontSize = 20.sp,
+            fontWeight = FontWeight.SemiBold
+        ),
+        val level4: TextStyle = TextStyle(
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Medium
+        )
+    )
+
+    data class Title(
+        val level1: TextStyle = TextStyle(
+            fontSize = 20.sp,
+            fontWeight = FontWeight.Normal
+        ),
+        val level2: TextStyle = TextStyle(
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Bold
+        ),
+        val level3: TextStyle = TextStyle(
+            fontSize = 18.sp,
+            fontWeight = FontWeight.Medium
+        ),
+        val level4: TextStyle = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Bold
+        )
+    )
+
+    data class Body(
+        val level1: TextStyle = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Medium
+        ),
+        val level2: TextStyle = TextStyle(
+            fontSize = 16.sp,
+            fontWeight = FontWeight.Normal
+        ),
+        val level3: TextStyle = TextStyle(
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Bold
+        )
+    )
+
+    data class Caption(
+        val level1: TextStyle = TextStyle(
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Medium
+        ),
+        val level2: TextStyle = TextStyle(
+            fontSize = 14.sp,
+            fontWeight = FontWeight.Normal
+        ),
+        val level3: TextStyle = TextStyle(
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Medium
+        ),
+        val level4: TextStyle = TextStyle(
+            fontSize = 12.sp,
+            fontWeight = FontWeight.Normal
+        ),
+        val level5: TextStyle = TextStyle(
+            fontSize = 10.sp,
+            fontWeight = FontWeight.Bold
+        )
+    )
+}
+
+internal val LocalCustomAppTypo = compositionLocalOf { Typo() }
+
 /**
  * This object is the default Typography of the App
  */

@@ -43,6 +43,8 @@ import fit.asta.health.designsystemx.atomic.LocalAppTypography
 import fit.asta.health.designsystemx.atomic.AppShape
 import fit.asta.health.designsystemx.atomic.AppSpacing
 import fit.asta.health.designsystemx.atomic.AppTintTheme
+import fit.asta.health.designsystemx.atomic.LocalCustomAppTypo
+import fit.asta.health.designsystemx.atomic.Typo
 
 /**
  * This is the default theme of the App which would be used as a Wrapper Theme over the
@@ -79,6 +81,7 @@ fun AppTheme(
         LocalAppAspectRatio provides AppAspectRatio(),
         LocalAppColors provides colorScheme,
         LocalAppTypography provides AppTypography,
+        LocalCustomAppTypo provides Typo(),
         LocalAppElevation provides AppElevation(),
         LocalAppIconSize provides AppIconSize(),
         LocalAppShape provides AppShape(),
