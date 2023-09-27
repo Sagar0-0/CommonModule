@@ -1,7 +1,7 @@
-package fit.asta.health.navigation.home.model
+package fit.asta.health.navigation.tools.data.model
 
-import fit.asta.health.navigation.home.model.api.ToolsApi
-import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.model.api.ToolsApi
+import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

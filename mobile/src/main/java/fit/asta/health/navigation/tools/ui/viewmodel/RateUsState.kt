@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.viewmodel
+package fit.asta.health.navigation.tools.ui.viewmodel
 
 import com.google.android.play.core.review.ReviewInfo
 

@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.model.domain
+package fit.asta.health.navigation.tools.data.model.domain
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.data.testimonials.model.Testimonial

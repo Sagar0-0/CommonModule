@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.navigation.tools.ui.view.component
 
 import android.app.Activity
 import androidx.compose.animation.AnimatedVisibility
@@ -43,8 +43,8 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.navigation.home.viewmodel.RateUsEvent
-import fit.asta.health.navigation.home.viewmodel.RateUsViewModel
+import fit.asta.health.navigation.tools.ui.viewmodel.RateUsEvent
+import fit.asta.health.navigation.tools.ui.viewmodel.RateUsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

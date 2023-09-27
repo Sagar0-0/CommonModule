@@ -1,6 +1,6 @@
-package fit.asta.health.navigation.home.model.api
+package fit.asta.health.navigation.tools.data.model.api
 
-import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
 import retrofit2.http.*
 
 //Tools Endpoints

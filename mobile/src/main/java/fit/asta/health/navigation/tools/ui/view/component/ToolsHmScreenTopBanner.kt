@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view.component
+package fit.asta.health.navigation.tools.ui.view.component
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,7 +13,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
 
 @Composable
 fun ToolsHmScreenTopBanner(

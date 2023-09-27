@@ -13,7 +13,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
-import androidx.compose.material.icons.filled.Home
+import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsOff
@@ -21,7 +21,7 @@ import androidx.compose.material.icons.filled.Settings
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
-import androidx.compose.material.icons.outlined.Home
+import androidx.compose.material.icons.outlined.Handyman
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -57,10 +57,10 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.navigation.home.view.HomeContent
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
+import fit.asta.health.navigation.tools.ui.view.HomeContent
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -109,7 +109,6 @@ fun MainActivityLayout(
     })
 }
 
-
 @Composable
 private fun BottomAppBarLayout(
     items: List<BottomNavItem>,
@@ -142,7 +141,6 @@ private fun BottomAppBarLayout(
         }
     }
 }
-
 
 @Composable
 private fun NewMainTopBarActions(
@@ -238,26 +236,27 @@ private fun NewMainTopBarActions(
     }
 }
 
-
 @Composable
 private fun MainBottomAppBar(
     navController: NavHostController,
     currentDestination: NavDestination?,
 ) {
 
-    val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Home.route
+    val currentRoute = navController.currentDestination?.route ?: BottomBarDestination.Today.route
 
     BottomAppBarLayout(items = listOf(
         BottomNavItem(
-            BottomBarDestination.Home.route,
-            Icons.Filled.Home, Icons.Outlined.Home,
-            "Home"
-        ), BottomNavItem(
             BottomBarDestination.Today.route,
             Icons.Filled.Celebration,
             Icons.Outlined.Celebration,
             "Today"
-        ), BottomNavItem(
+        ),
+        BottomNavItem(
+            BottomBarDestination.Tools.route,
+            Icons.Filled.Handyman, Icons.Outlined.Handyman,
+            "Tools"
+        ),
+        BottomNavItem(
             BottomBarDestination.Track.route,
             Icons.Filled.BarChart,
             Icons.Outlined.BarChart,
@@ -266,9 +265,7 @@ private fun MainBottomAppBar(
     ),
         currentRoute = currentRoute,
         onNavigate = { route -> onNavigate(navController, route, currentDestination) })
-
 }
-
 
 private fun onNavigate(
     navController: NavController,
@@ -296,7 +293,6 @@ private fun onNavigate(
     }
 }
 
-
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 private fun MainNavHost(
@@ -310,10 +306,10 @@ private fun MainNavHost(
     NavHost(
         route = HOME_GRAPH_ROUTE,
         navController = navController,
-        startDestination = BottomBarDestination.Home.route,
+        startDestination = BottomBarDestination.Today.route,
         modifier = modifier.padding(innerPadding)
     ) {
-        composable(BottomBarDestination.Home.route) {
+        composable(BottomBarDestination.Tools.route) {
             HomeContent(onNav = onNav)
         }
 
@@ -374,7 +370,6 @@ private fun MainNavHost(
         }
     }
 }
-
 
 data class BottomNavItem(
     val route: String,

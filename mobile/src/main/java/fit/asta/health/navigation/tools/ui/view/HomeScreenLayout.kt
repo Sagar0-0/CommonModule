@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.home.view
+package fit.asta.health.navigation.tools.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Spacer
@@ -14,13 +14,13 @@ import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
-import fit.asta.health.navigation.home.view.component.RateAppCard
-import fit.asta.health.navigation.home.view.component.ReferAndEarn
-import fit.asta.health.navigation.home.view.component.ToolsCardLayout
-import fit.asta.health.navigation.home.view.component.ToolsHmScreenTopBanner
-import fit.asta.health.navigation.home.view.component.TstSliderExt
-import fit.asta.health.navigation.home.view.component.ViewAllLayout
+import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
+import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
+import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
+import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
+import fit.asta.health.navigation.tools.ui.view.component.TstSliderExt
+import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.tools.sleep.SleepToolActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi

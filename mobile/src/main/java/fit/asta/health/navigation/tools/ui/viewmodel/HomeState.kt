@@ -1,6 +1,6 @@
-package fit.asta.health.navigation.home.viewmodel
+package fit.asta.health.navigation.tools.ui.viewmodel
 
-import fit.asta.health.navigation.home.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
 import java.io.IOException
 
 
