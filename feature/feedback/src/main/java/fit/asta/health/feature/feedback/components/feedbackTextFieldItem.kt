@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
-import fit.asta.health.designsystem.extras.textfield.AstaValidatedTextField
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 

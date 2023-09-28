@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.extras.textfield
+package fit.asta.health.designsystem.molecular.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
