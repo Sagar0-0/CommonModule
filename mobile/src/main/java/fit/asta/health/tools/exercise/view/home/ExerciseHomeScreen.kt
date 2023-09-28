@@ -25,7 +25,9 @@ import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.components.CardItem
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)

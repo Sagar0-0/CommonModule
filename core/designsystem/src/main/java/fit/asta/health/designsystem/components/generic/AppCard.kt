@@ -12,7 +12,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 
 /** [AppCard] is default clickable card for the app.This Card handles click events,

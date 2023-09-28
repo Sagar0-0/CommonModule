@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.components.GifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import kotlinx.coroutines.launch
 
 

@@ -16,7 +16,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 @Composable
 fun ArtistCard(testimonialsDataPages: Testimonial) {

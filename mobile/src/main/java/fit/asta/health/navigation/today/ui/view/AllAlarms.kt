@@ -44,7 +44,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)

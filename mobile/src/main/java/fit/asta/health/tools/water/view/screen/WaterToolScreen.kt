@@ -54,7 +54,8 @@ import fit.asta.health.designsystem.components.functional.CircularSliderFloat
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarFloat
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.ButtonWithColor
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 

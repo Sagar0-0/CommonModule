@@ -25,7 +25,7 @@ import androidx.compose.ui.unit.TextUnitType
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import fit.asta.health.R
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 // Preview Composable Function
 @Preview("Light")

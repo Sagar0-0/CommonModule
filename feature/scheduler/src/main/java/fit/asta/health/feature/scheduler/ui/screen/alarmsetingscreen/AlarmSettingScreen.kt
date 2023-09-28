@@ -37,7 +37,8 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.CustomModelBottomSheet
 import fit.asta.health.feature.scheduler.ui.SpotifyActivity
 import fit.asta.health.feature.scheduler.ui.components.CustomLabelBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.DigitalDemo

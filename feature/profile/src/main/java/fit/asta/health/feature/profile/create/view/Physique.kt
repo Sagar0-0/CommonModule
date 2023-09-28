@@ -61,7 +61,7 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.vm.ProfileEvent

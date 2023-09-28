@@ -23,7 +23,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections

@@ -32,7 +32,9 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.components.CardItem
 import fit.asta.health.tools.walking.model.domain.WalkingTool
 import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*

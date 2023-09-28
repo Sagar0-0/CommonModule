@@ -19,7 +19,7 @@ import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable

@@ -40,11 +40,11 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextField
-import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.extras.textfield.AstaValidatedTextField
+import fit.asta.health.designsystem.extras.textfield.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH

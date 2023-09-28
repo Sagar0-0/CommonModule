@@ -41,9 +41,9 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.compose.ui.window.Dialog
-import fit.asta.health.designsystemx.extras.theme.Gradient1NoInternet
-import fit.asta.health.designsystemx.extras.theme.Gradient2NoInternet
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.extras.theme.Gradient1NoInternet
+import fit.asta.health.designsystem.extras.theme.Gradient2NoInternet
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.drawables.R
 
 @Preview

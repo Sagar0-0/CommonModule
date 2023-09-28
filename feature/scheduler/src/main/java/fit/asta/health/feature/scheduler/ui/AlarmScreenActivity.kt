@@ -8,7 +8,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmEvent
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmScreen
 import fit.asta.health.feature.scheduler.ui.viewmodel.AlarmScreenViewModel

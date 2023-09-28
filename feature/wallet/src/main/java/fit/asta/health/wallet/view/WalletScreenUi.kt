@@ -39,7 +39,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR

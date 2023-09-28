@@ -49,11 +49,11 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
-import fit.asta.health.designsystemx.organism.common.AppDatePicker
+import fit.asta.health.designsystem.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
-import fit.asta.health.designsystemx.organism.common.AppTitleElevatedCard
+import fit.asta.health.designsystem.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent

@@ -27,8 +27,8 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystemx.AppTheme
-import fit.asta.health.designsystemx.molecular.background.AppScreen
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackMeditationScreenControl

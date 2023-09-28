@@ -24,7 +24,7 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

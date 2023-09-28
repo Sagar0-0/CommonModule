@@ -52,9 +52,9 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
-import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextField
-import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextFieldType
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.extras.textfield.AstaValidatedTextField
+import fit.asta.health.designsystem.extras.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 

@@ -28,7 +28,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay
 import java.time.LocalTime

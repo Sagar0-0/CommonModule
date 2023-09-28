@@ -55,7 +55,7 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit

@@ -34,7 +34,9 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.components.CustomModelBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.tools.breathing.model.domain.model.Exercise
 import fit.asta.health.tools.breathing.model.domain.model.Ratio

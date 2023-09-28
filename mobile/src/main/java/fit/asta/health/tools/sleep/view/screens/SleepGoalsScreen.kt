@@ -16,7 +16,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.goals.SleepGoalResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall

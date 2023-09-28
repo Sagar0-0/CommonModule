@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
 import kotlin.math.abs

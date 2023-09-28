@@ -46,7 +46,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import fit.asta.health.resources.strings.R

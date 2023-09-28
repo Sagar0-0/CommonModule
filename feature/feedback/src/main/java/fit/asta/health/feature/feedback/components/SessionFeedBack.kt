@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.uploadFiles
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

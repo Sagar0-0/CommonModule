@@ -48,7 +48,7 @@ import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.PHYACTIVE
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGENV
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGHRS

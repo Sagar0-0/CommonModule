@@ -19,7 +19,8 @@ import androidx.navigation.NavController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.ButtonWithColor
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

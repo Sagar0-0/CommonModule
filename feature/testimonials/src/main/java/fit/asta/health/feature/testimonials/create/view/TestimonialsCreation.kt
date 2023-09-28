@@ -19,7 +19,7 @@ import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable

@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.components.generic.AppBanner
 import fit.asta.health.designsystem.components.generic.AppVerticalGrid
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes

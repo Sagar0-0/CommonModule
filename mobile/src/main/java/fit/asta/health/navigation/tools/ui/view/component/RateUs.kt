@@ -42,7 +42,7 @@ import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.navigation.tools.ui.viewmodel.RateUsEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.RateUsViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi

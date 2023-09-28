@@ -50,7 +50,7 @@ import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)

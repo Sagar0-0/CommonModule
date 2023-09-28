@@ -14,7 +14,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.data.profile.remote.model.Session
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 @Composable
 fun ProfileSessionCard(

@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.view.home.HomeUIState

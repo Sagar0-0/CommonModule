@@ -28,7 +28,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.navigation.TopTabNavigation
 import fit.asta.health.feature.spotify.utils.SpotifyConstants
 import fit.asta.health.feature.spotify.viewmodel.SpotifyViewModelX

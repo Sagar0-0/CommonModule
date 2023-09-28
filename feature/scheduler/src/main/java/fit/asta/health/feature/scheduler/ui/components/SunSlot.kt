@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.components.functional.ScheduleIconLayout
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import fit.asta.health.resources.strings.R as StringR

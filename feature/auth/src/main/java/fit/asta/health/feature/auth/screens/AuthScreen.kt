@@ -26,7 +26,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import java.net.URLEncoder

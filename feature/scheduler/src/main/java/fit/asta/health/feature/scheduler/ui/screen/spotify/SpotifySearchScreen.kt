@@ -29,7 +29,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState

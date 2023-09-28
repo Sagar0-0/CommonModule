@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.Health
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.vm.UserPropertyType
 import fit.asta.health.feature.profile.show.view.components.ProfileChipCard
 import kotlinx.coroutines.ExperimentalCoroutinesApi

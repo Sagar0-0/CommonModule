@@ -37,7 +37,7 @@ import androidx.compose.ui.unit.sp
 import com.google.android.material.R
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 @Composable
 fun SunlightSlotsCardLayout(modifier: Modifier = Modifier, time: String, temperature: String) {

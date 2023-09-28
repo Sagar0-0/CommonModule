@@ -38,8 +38,8 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystemx.extras.jetpack.dashedBorder
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.extras.jetpack.dashedBorder
+import fit.asta.health.designsystem.AppTheme
 
 @Composable
 fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {

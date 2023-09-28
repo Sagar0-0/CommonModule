@@ -17,7 +17,7 @@ import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 
 /** [AppDivider] is a compose method, which creates a horizontal divider line.
  * [AppDividerLineWidth] define an object containing custom divider widths.

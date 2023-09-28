@@ -23,7 +23,7 @@ import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystemx.AppTheme
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState

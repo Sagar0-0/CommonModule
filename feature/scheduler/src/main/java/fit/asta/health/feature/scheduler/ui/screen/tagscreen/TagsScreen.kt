@@ -34,6 +34,7 @@ import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.CustomModelBottomSheet
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.feature.scheduler.ui.components.AlertDialogPopUp
 import fit.asta.health.feature.scheduler.ui.components.CustomTagBottomSheetLayout
