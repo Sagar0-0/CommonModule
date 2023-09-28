@@ -40,11 +40,11 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
@@ -54,12 +54,12 @@ import fit.asta.health.resources.strings.R as StringR
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicProfileScreen(
-    user: User,
+    user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
     linkAccountState: UiState<User>,
     createBasicProfileState: UiState<Boolean>,
     autoFetchedReferralCode: String,
-    onEvent: (BasicProfileEvent) -> Unit
+    onEvent: (BasicProfileEvent) -> Unit,
 ) {
     Log.d("TAG", "BasicProfileScreen: $user")
     val context = LocalContext.current
