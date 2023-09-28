@@ -18,6 +18,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import android.app.DatePickerDialog
 import android.widget.DatePicker
+import androidx.compose.material.Surface
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -36,13 +37,15 @@ import java.time.format.DateTimeFormatter
 @Composable
 private fun DefaultPreview() {
     AppTheme {
-        AppDatePicker(
-            localDate = LocalDate.now(),
-            onPreviousButtonClick = {},
-            onNextButtonClick = {},
-            onDateChanged = { _ ->
-            }
-        )
+        Surface {
+            AppDatePicker(
+                localDate = LocalDate.now(),
+                onPreviousButtonClick = {},
+                onNextButtonClick = {},
+                onDateChanged = { _ ->
+                }
+            )
+        }
     }
 }
 
