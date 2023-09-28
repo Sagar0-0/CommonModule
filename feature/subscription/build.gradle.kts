@@ -18,8 +18,8 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
 
-    implementation(project(":data:subscription"))
-    implementation(project(":data:payment"))
+    implementation(project(":data:payments:subscription"))
+    implementation(project(":data:payments:payment"))
     implementation(project(":data:auth"))
 
     implementation(libs.androidx.navigation.compose)

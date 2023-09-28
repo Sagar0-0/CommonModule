@@ -125,9 +125,8 @@ dependencies {
     implementation(project(":libs:media"))
 
     implementation(project(":data:auth"))
-    implementation(project(":data:payment"))
+    implementation(project(":data:payments:payment"))
     implementation(project(":data:address"))
-    implementation(project(":data:payment"))
     implementation(project(":data:scheduler"))
     implementation(project(":data:testimonials"))
     implementation(project(":data:meditation"))

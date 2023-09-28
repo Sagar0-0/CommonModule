@@ -21,7 +21,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
 
-    implementation(project(":data:referral"))
+    implementation(project(":data:payments:referral"))
     implementation(project(":data:auth"))
 
     implementation(libs.androidx.navigation.compose)
