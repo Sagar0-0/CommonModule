@@ -5,12 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystem.extras.theme.ts
 import fit.asta.health.designsystem.atomic.AppSpacing
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 @Composable
 fun UserTst(
@@ -24,25 +23,17 @@ fun UserTst(
     ) {
         Column {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
-                Text(
-                    text = "❝", style = ts.quoteBold, color = MaterialTheme.colorScheme.primary
-                )
+                HeadingTexts.Level3(text = "❝")
             }
             Row(
                 Modifier
                     .fillMaxWidth()
                     .padding(horizontal = spacing.medium)
             ) {
-                Text(
-                    text = testimonial.testimonial,
-                    style = ts.quote,
-                    color = MaterialTheme.colorScheme.onSurface
-                )
+                BodyTexts.Level2(text = testimonial.testimonial)
             }
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-                Text(
-                    text = "❞", style = ts.quoteBold, color = MaterialTheme.colorScheme.primary
-                )
+                HeadingTexts.Level3(text = "❞")
             }
             UserCard(
                 user = testimonial.user.name,

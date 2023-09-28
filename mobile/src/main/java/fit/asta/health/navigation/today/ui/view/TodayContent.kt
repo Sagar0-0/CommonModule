@@ -73,9 +73,8 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.GradientButton
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.extras.theme.Gradient1NoInternet
-import fit.asta.health.designsystem.extras.theme.Gradient2NoInternet
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
@@ -157,7 +156,10 @@ fun TodayContent(
                                 .padding(16.dp)
                         ) {
                             val cornerRadius = 16.dp
-                            val gradientColor = listOf(Gradient1NoInternet, Gradient2NoInternet)
+                            val gradientColor = listOf(
+                                DefaultColorTokens.Gradient1NoInternet,
+                                DefaultColorTokens.Gradient2NoInternet
+                            )
                             GradientButton(
                                 gradientColors = gradientColor,
                                 cornerRadius = cornerRadius,

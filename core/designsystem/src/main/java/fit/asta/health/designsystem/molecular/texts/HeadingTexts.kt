@@ -106,9 +106,9 @@ object HeadingTexts {
 }
 
 // Preview Function
-@Preview("Body Texts Light")
+@Preview("Heading Texts Light")
 @Preview(
-    name = "Body Texts Dark",
+    name = "Heading Texts Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )

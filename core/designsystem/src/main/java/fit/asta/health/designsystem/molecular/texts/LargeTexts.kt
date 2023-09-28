@@ -90,9 +90,9 @@ object LargeTexts {
 }
 
 // Preview Function
-@Preview("Body Texts Light")
+@Preview("Large Texts Light")
 @Preview(
-    name = "Body Texts Dark",
+    name = "Large Texts Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )

@@ -39,8 +39,8 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.extras.theme.TSelected
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import java.util.Calendar
 
 @Composable
@@ -198,7 +198,11 @@ fun DaysCircleButton(
     onDaySelect: () -> Unit = {}
 ) {
 
-    val colorState: Color = if (!isSelected) TSelected else MaterialTheme.colorScheme.primary
+    val colorState: Color =
+        if (!isSelected)
+            DefaultColorTokens.TSelected
+        else
+            AppTheme.colorsX.primary
 
     val colorState2: Color = if (isSelected) Color.White else Color.Black
 

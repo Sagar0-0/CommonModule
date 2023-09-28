@@ -27,7 +27,7 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.extras.theme.ColorPlatinum
+import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.designsystem.extras.validation.state.ValidationState
 import fit.asta.health.designsystem.extras.validation.util.TextFieldType
 import fit.asta.health.resources.drawables.R
@@ -78,7 +78,7 @@ fun CustomTextField(
                 Text(text = stringResource(id = hint), style = hintTextStyle, softWrap = true)
             },
             colors = TextFieldDefaults.colors(
-                cursorColor = ColorPlatinum,
+                cursorColor = DefaultColorTokens.ColorPlatinum,
                 unfocusedIndicatorColor = Color.Transparent,
                 disabledIndicatorColor = Color.Transparent,
                 focusedIndicatorColor = Color.Transparent
@@ -97,7 +97,7 @@ fun CustomTextField(
                         },
                         painter = painterResource(id = trailingId),
                         contentDescription = "password",
-                        tint = ColorPlatinum
+                        tint = DefaultColorTokens.ColorPlatinum
                     )
                 }
             })

@@ -13,7 +13,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.extras.jetpack.dashedBorder
+import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
 import fit.asta.health.feature.testimonials.create.vm.MediaType.Video

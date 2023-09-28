@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.extras.jetpack
+package fit.asta.health.designsystem.molecular.other
 
 import androidx.activity.OnBackPressedCallback
 import androidx.activity.compose.LocalOnBackPressedDispatcherOwner

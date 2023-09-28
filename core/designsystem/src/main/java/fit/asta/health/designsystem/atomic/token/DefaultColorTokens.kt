@@ -125,4 +125,18 @@ object DefaultColorTokens {
     val md_theme_dark_inverseOnSurface = Color(0xFF1A1C1E)
     val md_theme_dark_inverseSurface = Color(0xFFE3E2E6)
     val md_theme_dark_inversePrimary = Color(0xFF0061A6)
+
+
+    /**
+     * Random Colors used in the App
+     */
+    val ColorPlatinum = Color(0xFFE1E6E3)
+    val ColorAmericanPurple = Color(0xFF565565)
+    val TSelected = Color(0xffD6D6D6)
+    val ProfileBorder1 = Color(0xff70BCFF)
+    val ProfileBorder2 = Color(0xff99CFFF)
+    val ProfileBorder3 = Color(0xffE5F3FF)
+    val Gradient1NoInternet = Color(0xFFff669f)
+    val Gradient2NoInternet = Color(0xFFff8961)
+    val ScheduleBackground = Color(0xffCCEDFF)
 }

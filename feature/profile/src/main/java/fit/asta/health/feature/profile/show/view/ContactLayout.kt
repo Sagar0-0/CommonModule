@@ -38,10 +38,8 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.extras.theme.ProfileBorder1
-import fit.asta.health.designsystem.extras.theme.ProfileBorder2
-import fit.asta.health.designsystem.extras.theme.ProfileBorder3
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.drawables.R as RDraw
 
@@ -165,9 +163,9 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 contentScale = ContentScale.Crop
             )
         }
-        ProfileImageBorder(size = 218.dp, color = ProfileBorder1)
-        ProfileImageBorder(size = 248.dp, color = ProfileBorder2)
-        ProfileImageBorder(size = 278.dp, color = ProfileBorder3)
+        ProfileImageBorder(size = 218.dp, color = DefaultColorTokens.ProfileBorder1)
+        ProfileImageBorder(size = 248.dp, color = DefaultColorTokens.ProfileBorder2)
+        ProfileImageBorder(size = 278.dp, color = DefaultColorTokens.ProfileBorder3)
     }
 }
 

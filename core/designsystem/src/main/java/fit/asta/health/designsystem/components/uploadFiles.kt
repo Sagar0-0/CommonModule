@@ -38,7 +38,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.extras.jetpack.dashedBorder
+import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.AppTheme
 
 @Composable

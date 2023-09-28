@@ -122,9 +122,9 @@ object CaptionTexts {
 }
 
 // Preview Function
-@Preview("Body Texts Light")
+@Preview("Caption Texts Light")
 @Preview(
-    name = "Body Texts Dark",
+    name = "Caption Texts Dark",
     uiMode = Configuration.UI_MODE_NIGHT_YES,
     showBackground = true
 )

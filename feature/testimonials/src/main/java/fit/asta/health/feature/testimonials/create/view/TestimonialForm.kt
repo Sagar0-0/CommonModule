@@ -27,7 +27,7 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.extras.jetpack.HandleBackPress
+import fit.asta.health.designsystem.molecular.other.HandleBackPress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
