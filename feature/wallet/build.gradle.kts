@@ -21,7 +21,7 @@ dependencies {
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
 
-    implementation(project(":data:wallet"))
+    implementation(project(":data:payments:wallet"))
     implementation(project(":data:auth"))
 
 
