@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.component
+package fit.asta.health.designsystemx.extras.textfield
 
 import androidx.annotation.StringRes
 import androidx.compose.foundation.layout.Arrangement
@@ -166,7 +166,8 @@ fun AstaOutlinedTextField(
 sealed interface AstaValidatedTextFieldType {
     data object Phone : AstaValidatedTextFieldType
     data object Mail : AstaValidatedTextFieldType
-    data class Default(val minLength: Int = 1, val maxLength: Int = 256) : AstaValidatedTextFieldType
+    data class Default(val minLength: Int = 1, val maxLength: Int = 256) :
+        AstaValidatedTextFieldType
 }
 
 @Composable

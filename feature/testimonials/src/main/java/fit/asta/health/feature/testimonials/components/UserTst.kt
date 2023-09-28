@@ -9,7 +9,7 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystem.theme.ts
+import fit.asta.health.designsystemx.extras.theme.ts
 import fit.asta.health.designsystemx.atomic.AppSpacing
 
 @Composable

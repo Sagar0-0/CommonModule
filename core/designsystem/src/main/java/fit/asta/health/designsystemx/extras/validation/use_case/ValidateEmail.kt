@@ -1,8 +1,8 @@
-package fit.asta.health.designsystem.validation.use_case
+package fit.asta.health.designsystemx.extras.validation.use_case
 
 import android.util.Patterns
-import fit.asta.health.designsystem.validation.inerfaces.Validate
-import fit.asta.health.designsystem.validation.state.ValidationResultState
+import fit.asta.health.designsystemx.extras.validation.inerfaces.Validate
+import fit.asta.health.designsystemx.extras.validation.state.ValidationResultState
 import fit.asta.health.resources.strings.R
 
 class ValidateEmail : Validate<String> {

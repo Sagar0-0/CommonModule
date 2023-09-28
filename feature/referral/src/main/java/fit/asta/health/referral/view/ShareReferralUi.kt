@@ -36,7 +36,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.jetpack.dashedBorder
+import fit.asta.health.designsystemx.extras.jetpack.dashedBorder
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails

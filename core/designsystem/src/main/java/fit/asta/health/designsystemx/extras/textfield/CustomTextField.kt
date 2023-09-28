@@ -27,9 +27,9 @@ import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.theme.ColorPlatinum
-import fit.asta.health.designsystem.validation.state.ValidationState
-import fit.asta.health.designsystem.validation.util.TextFieldType
+import fit.asta.health.designsystemx.extras.theme.ColorPlatinum
+import fit.asta.health.designsystemx.extras.validation.state.ValidationState
+import fit.asta.health.designsystemx.extras.validation.util.TextFieldType
 import fit.asta.health.resources.drawables.R
 
 //import fit.asta.health.designsystem.theme.ColorPlatinum

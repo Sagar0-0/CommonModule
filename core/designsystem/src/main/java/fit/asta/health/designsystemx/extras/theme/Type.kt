@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.theme
+package fit.asta.health.designsystemx.extras.theme
 
 import androidx.compose.material3.Typography
 import androidx.compose.runtime.Composable

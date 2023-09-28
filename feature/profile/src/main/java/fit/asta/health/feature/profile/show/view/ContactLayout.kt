@@ -38,9 +38,9 @@ import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.theme.ProfileBorder1
-import fit.asta.health.designsystem.theme.ProfileBorder2
-import fit.asta.health.designsystem.theme.ProfileBorder3
+import fit.asta.health.designsystemx.extras.theme.ProfileBorder1
+import fit.asta.health.designsystemx.extras.theme.ProfileBorder2
+import fit.asta.health.designsystemx.extras.theme.ProfileBorder3
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.drawables.R as RDraw

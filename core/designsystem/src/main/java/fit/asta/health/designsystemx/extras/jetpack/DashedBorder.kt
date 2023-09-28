@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.jetpack
+package fit.asta.health.designsystemx.extras.jetpack
 
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind

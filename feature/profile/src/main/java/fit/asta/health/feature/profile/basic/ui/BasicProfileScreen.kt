@@ -40,8 +40,8 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.designsystem.component.AstaValidatedTextField
-import fit.asta.health.designsystem.component.AstaValidatedTextFieldType
+import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextField
+import fit.asta.health.designsystemx.extras.textfield.AstaValidatedTextFieldType
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystemx.AppTheme

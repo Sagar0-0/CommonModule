@@ -5,9 +5,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.theme.ColorAmericanPurple
-import fit.asta.health.designsystem.validation.state.ValidationState
-import fit.asta.health.designsystem.validation.util.TextFieldType
+import fit.asta.health.designsystemx.extras.theme.ColorAmericanPurple
+import fit.asta.health.designsystemx.extras.validation.state.ValidationState
+import fit.asta.health.designsystemx.extras.validation.util.TextFieldType
 
 @Composable
 fun AuthenticationTextField(

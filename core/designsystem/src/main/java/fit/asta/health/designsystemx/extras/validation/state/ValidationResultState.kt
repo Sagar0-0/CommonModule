@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.validation.state
+package fit.asta.health.designsystemx.extras.validation.state
 
 import androidx.annotation.StringRes
 

@@ -1,8 +1,8 @@
-package fit.asta.health.designsystem.validation.state
+package fit.asta.health.designsystemx.extras.validation.state
 
 import androidx.annotation.StringRes
-import fit.asta.health.designsystem.validation.inerfaces.TextFieldId
-import fit.asta.health.designsystem.validation.util.TextFieldType
+import fit.asta.health.designsystemx.extras.validation.inerfaces.TextFieldId
+import fit.asta.health.designsystemx.extras.validation.util.TextFieldType
 
 data class ValidationState(
     var text: String = "",

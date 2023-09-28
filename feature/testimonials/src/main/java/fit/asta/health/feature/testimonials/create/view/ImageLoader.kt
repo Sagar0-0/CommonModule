@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.jetpack.dashedBorder
+import fit.asta.health.designsystemx.extras.jetpack.dashedBorder
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.testimonials.components.SelectedImageView
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView

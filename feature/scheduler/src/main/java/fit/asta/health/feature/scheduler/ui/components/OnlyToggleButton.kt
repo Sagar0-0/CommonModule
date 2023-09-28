@@ -39,7 +39,7 @@ import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.theme.TSelected
+import fit.asta.health.designsystemx.extras.theme.TSelected
 import fit.asta.health.designsystemx.AppTheme
 import java.util.Calendar
 

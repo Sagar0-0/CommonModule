@@ -73,8 +73,8 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.GradientButton
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.theme.Gradient1NoInternet
-import fit.asta.health.designsystem.theme.Gradient2NoInternet
+import fit.asta.health.designsystemx.extras.theme.Gradient1NoInternet
+import fit.asta.health.designsystemx.extras.theme.Gradient2NoInternet
 import fit.asta.health.designsystemx.AppTheme
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
