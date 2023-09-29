@@ -104,8 +104,8 @@ fun TrackMenuScreenControl() {
                 .background(
                     Color(
                         ColorUtils.blendARGB(
-                            AppTheme.colorsX.surface.toArgb(),
-                            AppTheme.colorsX.onSurface.toArgb(),
+                            AppTheme.colors.surface.toArgb(),
+                            AppTheme.colors.onSurface.toArgb(),
                             0.08f
                         )
                     )
@@ -266,8 +266,8 @@ private fun TrackMenuSuccessScreen(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AppTheme.colorsX.surface.toArgb(),
-                        AppTheme.colorsX.onSurface.toArgb(),
+                        AppTheme.colors.surface.toArgb(),
+                        AppTheme.colors.onSurface.toArgb(),
                         0.08f
                     )
                 )

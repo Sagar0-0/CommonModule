@@ -79,7 +79,7 @@ fun AppAssistChip(
         else
             CaptionTexts.Level2(
                 text = textToShow,
-                color = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+                color = AppTheme.colors.onSurface.copy(alpha = .35f)
             )
     }
     val leadingIconComposable: @Composable (() -> Unit) = {

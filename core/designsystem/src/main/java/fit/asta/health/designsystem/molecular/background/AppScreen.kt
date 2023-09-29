@@ -26,7 +26,7 @@ private fun DefaultPreview() {
 
 /**
  * The main background for the app. This serves as a base composable function for all the screens
- * Uses [AppTheme.colorsX] surface color to set the color.
+ * Uses [AppTheme.colors] surface color to set the color.
  * Tonal Elevation of the Surface is set to 2.dp
  *
  * @param modifier Modifier to be applied to the background.
@@ -40,7 +40,7 @@ fun AppScreen(
     AppTheme {
         Surface(
             modifier = modifier.fillMaxSize(),
-            color = AppTheme.colorsX.surface,
+            color = AppTheme.colors.surface,
             tonalElevation = 2.dp
         ) {
             CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {

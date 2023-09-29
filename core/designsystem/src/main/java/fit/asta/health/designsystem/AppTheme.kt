@@ -66,10 +66,7 @@ fun AppTheme(
                 dynamicLightColorScheme(context)
         }
 
-        else -> if (darkTheme)
-            DarkAppColors
-        else
-            LightAppColors
+        else -> if (darkTheme) DarkAppColors else LightAppColors
     }
 
     val appTintTheme = when {
@@ -112,7 +109,7 @@ object AppTheme {
     /**
      * Colors of the app which are used by default
      */
-    val colorsX: ColorScheme
+    val colors: ColorScheme
         @Composable
         @ReadOnlyComposable
         get() = LocalAppColors.current

@@ -61,9 +61,9 @@ fun AppIconButton(
     IconButton(
         modifier = modifier, enabled = enabled, colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AppTheme.colorsX.onSurface,
+            contentColor = AppTheme.colors.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ), onClick = onClick
     ) {
         Icon(

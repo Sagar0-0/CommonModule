@@ -57,8 +57,8 @@ fun AppFloatingActionButton(
     FloatingActionButton(
         modifier = modifier,
         shape = shape,
-        containerColor = AppTheme.colorsX.primary,
-        contentColor = AppTheme.colorsX.onPrimary,
+        containerColor = AppTheme.colors.primary,
+        contentColor = AppTheme.colors.onPrimary,
         onClick = onClick,
         content = content
     )
@@ -88,8 +88,8 @@ fun AppFloatingActionButton(
     FloatingActionButton(
         modifier = modifier,
         shape = shape,
-        containerColor = AppTheme.colorsX.primary,
-        contentColor = AppTheme.colorsX.onPrimary,
+        containerColor = AppTheme.colors.primary,
+        contentColor = AppTheme.colors.onPrimary,
         onClick = onClick
     ) {
         Icon(

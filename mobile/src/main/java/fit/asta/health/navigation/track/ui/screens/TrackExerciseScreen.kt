@@ -79,8 +79,8 @@ fun TrackExerciseScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AppTheme.colorsX.surface.toArgb(),
-                        AppTheme.colorsX.onSurface.toArgb(),
+                        AppTheme.colors.surface.toArgb(),
+                        AppTheme.colors.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -216,8 +216,8 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AppTheme.colorsX.surface.toArgb(),
-                        AppTheme.colorsX.onSurface.toArgb(),
+                        AppTheme.colors.surface.toArgb(),
+                        AppTheme.colors.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -280,7 +280,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = AppTheme.colorsX.onSurface,
+                                    color = AppTheme.colors.onSurface,
                                 )
                             }
                         }

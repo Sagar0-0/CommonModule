@@ -73,10 +73,10 @@ fun AppFilledButton(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppTheme.colorsX.primary,
-            contentColor = AppTheme.colorsX.onPrimary,
-            disabledContainerColor = AppTheme.colorsX.onSurface.copy(alpha = .15f),
-            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            containerColor = AppTheme.colors.primary,
+            contentColor = AppTheme.colors.onPrimary,
+            disabledContainerColor = AppTheme.colors.onSurface.copy(alpha = .15f),
+            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ),
         contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
     ) {
@@ -92,9 +92,9 @@ fun AppFilledButton(
         CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
-                AppTheme.colorsX.onPrimary
+                AppTheme.colors.onPrimary
             else
-                AppTheme.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     }
 }

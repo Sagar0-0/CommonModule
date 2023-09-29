@@ -202,7 +202,7 @@ fun DaysCircleButton(
         if (!isSelected)
             DefaultColorTokens.TSelected
         else
-            AppTheme.colorsX.primary
+            AppTheme.colors.primary
 
     val colorState2: Color = if (isSelected) Color.White else Color.Black
 

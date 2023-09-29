@@ -76,10 +76,10 @@ fun AppTonalButton(
         modifier = modifier,
         enabled = enabled,
         colors = ButtonDefaults.buttonColors(
-            containerColor = AppTheme.colorsX.secondary,
-            contentColor = AppTheme.colorsX.onSecondary,
-            disabledContainerColor = AppTheme.colorsX.onSurface.copy(alpha = .15f),
-            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            containerColor = AppTheme.colors.secondary,
+            contentColor = AppTheme.colors.onSecondary,
+            disabledContainerColor = AppTheme.colors.onSurface.copy(alpha = .15f),
+            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ),
         contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
     ) {
@@ -95,9 +95,9 @@ fun AppTonalButton(
         CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
-                AppTheme.colorsX.onSecondary
+                AppTheme.colors.onSecondary
             else
-                AppTheme.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     }
 }

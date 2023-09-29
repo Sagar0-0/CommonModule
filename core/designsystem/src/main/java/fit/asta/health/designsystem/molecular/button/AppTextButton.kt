@@ -75,8 +75,8 @@ fun AppTextButton(
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AppTheme.colorsX.onSurface,
-            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            contentColor = AppTheme.colors.onSurface,
+            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     ) {
 
@@ -91,9 +91,9 @@ fun AppTextButton(
         CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
-                AppTheme.colorsX.onSurface
+                AppTheme.colors.onSurface
             else
-                AppTheme.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     }
 }

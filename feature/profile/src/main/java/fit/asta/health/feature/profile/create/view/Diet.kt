@@ -164,7 +164,7 @@ fun DietContent(
                 .fillMaxWidth()
                 .padding(horizontal = AppTheme.appSpacing.medium)
                 .verticalScroll(rememberScrollState())
-                .background(color = AppTheme.colorsX.background),
+                .background(color = AppTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

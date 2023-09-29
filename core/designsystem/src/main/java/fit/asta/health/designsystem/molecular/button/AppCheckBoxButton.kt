@@ -60,12 +60,12 @@ fun AppCheckBoxButton(
         modifier = modifier,
         enabled = enabled,
         colors = CheckboxDefaults.colors(
-            checkedColor = AppTheme.colorsX.primary,
-            uncheckedColor = AppTheme.colorsX.onSurfaceVariant,
-            checkmarkColor = AppTheme.colorsX.onPrimary,
-            disabledCheckedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f),
-            disabledUncheckedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f),
-            disabledIndeterminateColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            checkedColor = AppTheme.colors.primary,
+            uncheckedColor = AppTheme.colors.onSurfaceVariant,
+            checkmarkColor = AppTheme.colors.onPrimary,
+            disabledCheckedColor = AppTheme.colors.onSurface.copy(alpha = .35f),
+            disabledUncheckedColor = AppTheme.colors.onSurface.copy(alpha = .35f),
+            disabledIndeterminateColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     )
 }

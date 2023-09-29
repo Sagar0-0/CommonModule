@@ -44,7 +44,7 @@ object HeadingTexts {
     fun Level1(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AppTheme.colorsX.onSurface,
+        color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null
     ) {
         Text(
@@ -60,7 +60,7 @@ object HeadingTexts {
     fun Level2(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AppTheme.colorsX.onSurface,
+        color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null
     ) {
         Text(
@@ -76,7 +76,7 @@ object HeadingTexts {
     fun Level3(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AppTheme.colorsX.onSurface,
+        color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null
     ) {
         Text(
@@ -92,7 +92,7 @@ object HeadingTexts {
     fun Level4(
         text: String,
         modifier: Modifier = Modifier,
-        color: Color = AppTheme.colorsX.onSurface,
+        color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null
     ) {
         Text(

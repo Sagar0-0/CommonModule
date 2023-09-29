@@ -86,8 +86,8 @@ fun TrackMeditationScreenControl(
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AppTheme.colorsX.surface.toArgb(),
-                        AppTheme.colorsX.onSurface.toArgb(),
+                        AppTheme.colors.surface.toArgb(),
+                        AppTheme.colors.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -226,8 +226,8 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
             .background(
                 Color(
                     ColorUtils.blendARGB(
-                        AppTheme.colorsX.surface.toArgb(),
-                        AppTheme.colorsX.onSurface.toArgb(),
+                        AppTheme.colors.surface.toArgb(),
+                        AppTheme.colors.onSurface.toArgb(),
                         0.08f
                     )
                 )
@@ -290,7 +290,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
                                     textAlign = TextAlign.Start,
                                     fontSize = 14.sp,
                                     fontWeight = FontWeight.W700,
-                                    color = AppTheme.colorsX.onSurface,
+                                    color = AppTheme.colors.onSurface,
                                 )
                             }
                         }

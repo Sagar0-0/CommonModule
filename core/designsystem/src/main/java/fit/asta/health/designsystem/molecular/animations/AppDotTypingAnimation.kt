@@ -97,7 +97,7 @@ fun AppDotTypingAnimation(
                         translationY = -value * distance
                     }
                     .background(
-                        color = AppTheme.colorsX.primary,
+                        color = AppTheme.colors.primary,
                         shape = CircleShape
                     )
                 )

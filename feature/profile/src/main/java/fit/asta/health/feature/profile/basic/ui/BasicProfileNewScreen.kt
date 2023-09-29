@@ -96,7 +96,7 @@ fun BasicProfileNewScreen() {
                         Box(contentAlignment = Alignment.BottomEnd) {
                             AppIconButton(
                                 imageVector = Icons.Filled.CameraEnhance,
-                                iconTint = AppTheme.colorsX.onPrimaryContainer
+                                iconTint = AppTheme.colors.onPrimaryContainer
                             ) {
                                 imagePickerLauncher.launch("image/*")
                             }

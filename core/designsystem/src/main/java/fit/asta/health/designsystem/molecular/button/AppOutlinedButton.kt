@@ -76,9 +76,9 @@ fun AppOutlinedButton(
         enabled = enabled,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AppTheme.colorsX.onSurface,
+            contentColor = AppTheme.colors.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ),
         contentPadding = PaddingValues(
             start = 24.dp,
@@ -98,9 +98,9 @@ fun AppOutlinedButton(
         CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
-                AppTheme.colorsX.onSurface
+                AppTheme.colors.onSurface
             else
-                AppTheme.colorsX.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     }
 }

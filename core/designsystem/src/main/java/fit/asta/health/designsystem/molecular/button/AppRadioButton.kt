@@ -57,10 +57,10 @@ fun AppRadioButton(
         selected = selected,
         enabled = enabled,
         colors = RadioButtonDefaults.colors(
-            selectedColor = AppTheme.colorsX.primary,
-            unselectedColor = AppTheme.colorsX.onSurfaceVariant,
-            disabledSelectedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f),
-            disabledUnselectedColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
+            selectedColor = AppTheme.colors.primary,
+            unselectedColor = AppTheme.colors.onSurfaceVariant,
+            disabledSelectedColor = AppTheme.colors.onSurface.copy(alpha = .35f),
+            disabledUnselectedColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ),
         onClick = onClick,
     )
