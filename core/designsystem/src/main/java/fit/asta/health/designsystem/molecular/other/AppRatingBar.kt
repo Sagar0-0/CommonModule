@@ -1,9 +1,10 @@
-package fit.asta.health.designsystem.components.functional
+package fit.asta.health.designsystem.molecular.other
 
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.ratingbar.RatingBar
@@ -11,6 +12,9 @@ import com.smarttoolfactory.ratingbar.model.GestureStrategy
 import com.smarttoolfactory.ratingbar.model.RateChangeStrategy
 import com.smarttoolfactory.ratingbar.model.RatingInterval
 import com.smarttoolfactory.ratingbar.model.ShimmerEffect
+import fit.asta.health.core.designsystem.R
+import fit.asta.health.designsystem.AppTheme
+
 
 /** [AppRatingBar] that can be used for setting rating by passing a fixed value or using gestures
  * to change current [rating]
@@ -35,25 +39,24 @@ import com.smarttoolfactory.ratingbar.model.ShimmerEffect
  * for getting change after tap or drag gesture
  *
  */
-
 @Composable
 fun AppRatingBar(
     rating: Float,
     modifier: Modifier = Modifier,
-    painterEmpty: Painter,
-    painterFilled: Painter,
-    tintEmpty: Color? = null,
-    tintFilled: Color? = null,
+    painterEmpty: Painter = painterResource(R.drawable.star_background),
+    painterFilled: Painter = painterResource(R.drawable.star_foreground),
+    tintEmpty: Color = AppTheme.colorsX.primary,
+    tintFilled: Color = AppTheme.colorsX.primary,
     itemSize: Dp = Dp.Unspecified,
     rateChangeStrategy: RateChangeStrategy = RateChangeStrategy.AnimatedChange(),
     gestureStrategy: GestureStrategy = GestureStrategy.DragAndPress,
     shimmerEffect: ShimmerEffect? = null,
     itemCount: Int = 5,
-    space: Dp = 0.dp,
-    ratingInterval: RatingInterval = RatingInterval.Unconstrained,
+    space: Dp = 8.dp,
+    ratingInterval: RatingInterval = RatingInterval.Full,
     allowZeroRating: Boolean = true,
     onRatingChangeFinished: ((Float) -> Unit)? = null,
-    onRatingChange: (Float) -> Unit,
+    onRatingChange: (Float) -> Unit
 ) {
     RatingBar(
         rating = rating,

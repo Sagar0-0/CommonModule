@@ -35,9 +35,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import com.smarttoolfactory.ratingbar.model.RatingInterval
 import fit.asta.health.R
-import fit.asta.health.designsystem.components.functional.AppRatingBar
+import fit.asta.health.designsystem.molecular.other.AppRatingBar
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDrawImg
@@ -67,8 +66,6 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
         mutableIntStateOf(5)
     }
     val ratingState = rememberUpdatedState(newValue = rating)
-    val imageBackground = painterResource(id = R.drawable.star_background)
-    val imageForeground = painterResource(id = R.drawable.star_foreground)
 
     AnimatedVisibility(visible = isVisible, exit = fadeOut()) {
         Box(
@@ -114,11 +111,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     ) {
                         AppRatingBar(
                             rating = ratingState.value.toFloat(),
-                            painterEmpty = imageBackground,
-                            painterFilled = imageForeground,
-                            onRatingChange = {},
-                            ratingInterval = RatingInterval.Full,
-                            space = 8.dp,
+                            onRatingChange = {}
                         )
                     }
                     Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
