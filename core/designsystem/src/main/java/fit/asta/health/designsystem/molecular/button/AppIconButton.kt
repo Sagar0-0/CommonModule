@@ -7,6 +7,7 @@ import androidx.compose.material.icons.filled.ArrowBackIos
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.IconButtonDefaults
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -18,9 +19,7 @@ import fit.asta.health.designsystem.AppTheme
 // Preview Function
 @Preview("Light Button")
 @Preview(
-    name = "Dark Button",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
 @Composable
 private fun DefaultPreview1() {
@@ -28,14 +27,11 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppIconButton(
-                    onClick = {},
-                    imageVector = Icons.Default.ArrowBackIos
+                    onClick = {}, imageVector = Icons.Default.ArrowBackIos
                 )
 
                 AppIconButton(
-                    enabled = false,
-                    onClick = {},
-                    imageVector = Icons.Default.ArrowBackIos
+                    enabled = false, onClick = {}, imageVector = Icons.Default.ArrowBackIos
                 )
             }
         }
@@ -59,22 +55,19 @@ fun AppIconButton(
     imageVector: ImageVector,
     iconDesc: String? = null,
     enabled: Boolean = true,
-    onClick: () -> Unit
+    iconTint: Color = LocalContentColor.current,
+    onClick: () -> Unit,
 ) {
     IconButton(
-        modifier = modifier,
-        enabled = enabled,
-        colors = IconButtonDefaults.iconButtonColors(
+        modifier = modifier, enabled = enabled, colors = IconButtonDefaults.iconButtonColors(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colorsX.onSurface,
             disabledContainerColor = Color.Transparent,
             disabledContentColor = AppTheme.colorsX.onSurface.copy(alpha = .35f)
-        ),
-        onClick = onClick
+        ), onClick = onClick
     ) {
         Icon(
-            imageVector = imageVector,
-            contentDescription = iconDesc
+            imageVector = imageVector, contentDescription = iconDesc, tint = iconTint
         )
     }
 }
