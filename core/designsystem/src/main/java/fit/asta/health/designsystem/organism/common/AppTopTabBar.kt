@@ -1,10 +1,14 @@
-package fit.asta.health.navigation.track.ui.components
+package fit.asta.health.designsystem.organism.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.layout.*
-import androidx.compose.material3.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -12,12 +16,10 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 // Preview Function
 @Preview("Light")
@@ -29,7 +31,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 private fun DefaultPreview() {
     AppTheme {
-        TrackTopTabBar(
+        AppTopTabBar(
             tabList = listOf(
                 "DAY",
                 "WEEK",
@@ -37,8 +39,8 @@ private fun DefaultPreview() {
                 "YEAR"
             ),
             selectedItem = 0,
-            selectedColor = Color.Blue,
-            unselectedColor = Color.Gray
+            selectedColor = AppTheme.colors.primary,
+            unselectedColor = AppTheme.colors.onSurface.copy(alpha = .4f)
         ) { }
     }
 }
@@ -55,31 +57,28 @@ private fun DefaultPreview() {
  * @param onNewTabClicked This changes the Tab
  */
 @Composable
-fun TrackTopTabBar(
+fun AppTopTabBar(
     modifier: Modifier = Modifier,
-    tabList: List<String> = listOf("DAY", "WEEK", "MONTH", "YEAR"),
+    tabList: List<String>,
     selectedItem: Int,
     strokeWidth: Float = 10f,
-    selectedColor: Color = Color.Blue,
-    unselectedColor: Color = Color.Gray,
+    selectedColor: Color = AppTheme.colors.primary,
+    unselectedColor: Color = AppTheme.colors.onSurface.copy(alpha = .4f),
     onNewTabClicked: (Int) -> Unit
 ) {
 
     // Card Layout Which is elevated
+    // TODO :- Removing the Elevated card and using AppElevatedCard is changing shape
     ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(
-            defaultElevation = 8.dp
-        ),
-        colors = CardDefaults.elevatedCardColors(
-            containerColor = Color.Transparent
-        ),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
+        colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent),
         shape = RectangleShape
     ) {
 
         // Contains all the Text Options
         Row(
             modifier = modifier
-                .background(MaterialTheme.colorScheme.surface)
+                .background(AppTheme.colors.surface)
                 .fillMaxWidth()
         ) {
 
@@ -111,14 +110,9 @@ fun TrackTopTabBar(
                 ) {
 
                     // Text of the Option to be showed
-                    Text(
+                    TitleTexts.Level4(
                         text = option,
-
-                        // Text and Font Properties
-                        color = if (selectedItem == index) selectedColor else unselectedColor,
-                        fontFamily = FontFamily.Monospace,
-                        fontWeight = FontWeight.W800,
-                        fontSize = 16.sp
+                        color = if (selectedItem == index) selectedColor else unselectedColor
                     )
                 }
             }

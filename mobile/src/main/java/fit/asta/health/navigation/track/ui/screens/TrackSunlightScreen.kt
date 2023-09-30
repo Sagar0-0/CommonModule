@@ -49,7 +49,7 @@ import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
 import fit.asta.health.designsystem.organism.common.AppDatePicker
-import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
+import fit.asta.health.designsystem.organism.common.AppTopTabBar
 import fit.asta.health.designsystem.organism.common.AppTitleElevatedCard
 import fit.asta.health.designsystem.organism.track.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
@@ -152,7 +152,7 @@ fun TrackSunlightScreenControl(
     ) {
 
         // This Function makes the Tab Layout UI
-        TrackTopTabBar(
+        AppTopTabBar(
             tabList = tabList,
             selectedItem = selectedItem.intValue
         ) {
