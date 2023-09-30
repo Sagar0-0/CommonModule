@@ -53,7 +53,7 @@ fun VideoPlayerScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
 
     val lazyListState = rememberLazyListState()
 
@@ -107,7 +107,7 @@ fun VideoTrackItem(
     song: VideoItem,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
     val context = LocalContext.current
 
     val textColor = MaterialTheme.colorScheme.onSurface

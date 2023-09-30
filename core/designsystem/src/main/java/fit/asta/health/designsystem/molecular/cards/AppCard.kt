@@ -62,7 +62,7 @@ fun AppCard(
         Card(
             modifier = modifier,
             enabled = enabled,
-            shape = AppTheme.appShape.large,
+            shape = AppTheme.shape.large,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -72,7 +72,7 @@ fun AppCard(
     else
         Card(
             modifier = modifier,
-            shape = AppTheme.appShape.large,
+            shape = AppTheme.shape.large,
             colors = colors,
             elevation = elevation,
             border = border,

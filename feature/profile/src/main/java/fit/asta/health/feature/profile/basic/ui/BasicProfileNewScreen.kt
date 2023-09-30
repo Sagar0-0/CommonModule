@@ -82,12 +82,12 @@ fun BasicProfileNewScreen() {
                         .verticalScroll(state = rememberScrollState())
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally,
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
                 ) {
                     Surface(
                         modifier = Modifier
                             .clip(CircleShape)
-                            .size(AppTheme.appBoxSize.medium)
+                            .size(AppTheme.boxSize.medium)
                     ) {
                         AppLocalImage(
                             painter = painterResource(id = R.drawable.ic_person),
@@ -106,7 +106,7 @@ fun BasicProfileNewScreen() {
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.appSpacing.medium),
+                            .padding(horizontal = AppTheme.spacing.medium),
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
@@ -119,10 +119,10 @@ fun BasicProfileNewScreen() {
                                 imageVector = Icons.Default.Person,
                                 contentDescription = "User Name Icon"
                             )
-                            Spacer(modifier = Modifier.width(AppTheme.appSpacing.extraMedium))
+                            Spacer(modifier = Modifier.width(AppTheme.spacing.extraMedium))
                             Column {
                                 CaptionTexts.Level4(text = "Name")
-                                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraSmall))
+                                Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
                                 TitleTexts.Level1(text = "Name")
                             }
                         }

@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 fun ReferAndEarn() {
 
-    Box(modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.common), content = {
+    Box(modifier = Modifier.aspectRatio(AppTheme.aspectRatio.common), content = {
 
         AppDrawImg(
             painterResource(id = R.drawable.background_image),
@@ -36,28 +36,28 @@ fun ReferAndEarn() {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(AppTheme.appSpacing.small)
+            modifier = Modifier.padding(AppTheme.spacing.small)
         ) {
 
             AppDrawImg(
                 painterResource(id = R.drawable.refer_image),
                 contentDescription = "Refer/Earn Img",
-                modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.fullScreen),
+                modifier = Modifier.aspectRatio(AppTheme.aspectRatio.fullScreen),
             )
 
-            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
                     AppTexts.TitleMedium(text = "Refer and Earn")
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                     AppButtons.AppStandardButton(onClick = {},
-                        modifier = Modifier.height(AppTheme.appButtonSize.large),
+                        modifier = Modifier.height(AppTheme.buttonSize.large),
                         contentPadding = PaddingValues(
-                            vertical = AppTheme.appSpacing.minSmall,
-                            horizontal = AppTheme.appSpacing.small
+                            vertical = AppTheme.spacing.minSmall,
+                            horizontal = AppTheme.spacing.small
                         ),
                         content = {
                             AppTexts.LabelLarge(

@@ -23,14 +23,14 @@ internal fun CurrentLocationUi(name: String, area: String) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.small),
+            .padding(AppTheme.spacing.small),
         horizontalAlignment = Alignment.Start
     ) {
         Row {
             Icon(
                 modifier = Modifier
-                    .padding(end = AppTheme.appSpacing.extraSmall1)
-                    .size(AppTheme.appIconSize.mediumSmall),
+                    .padding(end = AppTheme.spacing.extraSmall1)
+                    .size(AppTheme.iconSize.mediumSmall),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = R.string.location.toStringFromResId(),
                 tint = MaterialTheme.colorScheme.primary
@@ -43,7 +43,7 @@ internal fun CurrentLocationUi(name: String, area: String) {
             )
         }
         Text(
-            modifier = Modifier.padding(AppTheme.appSpacing.minSmall),
+            modifier = Modifier.padding(AppTheme.spacing.minSmall),
             text = area,
             style = MaterialTheme.typography.titleMedium
         )

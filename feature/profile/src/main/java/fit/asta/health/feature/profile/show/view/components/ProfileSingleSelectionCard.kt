@@ -27,7 +27,7 @@ fun ProfileSingleSelectionCard(
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.appSpacing.medium),
+                .padding(AppTheme.spacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppDrawImg(
@@ -35,10 +35,10 @@ fun ProfileSingleSelectionCard(
                 contentDescription = "LifeStyle Icons",
                 modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             Column {
                 AppTexts.BodySmall(text = title)
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.minSmall))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
                 AppTexts.BodyLarge(text = value)
             }
         }

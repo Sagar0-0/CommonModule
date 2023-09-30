@@ -89,19 +89,19 @@ fun DialogContent(
         Column(
             modifier = modifier
                 .background(Color.White)
-                .padding(AppTheme.appSpacing.medium),
+                .padding(AppTheme.spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DialogHeader(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             DialogDescription(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             DialogButtons(
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onPositiveClick,
                 dialogData = dialogData
             )
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         }
     })
 }
@@ -113,12 +113,12 @@ private fun DialogHeader(dialogData: DialogData) {
         imageVector = Icons.Filled.NotificationImportant,
         contentDescription = "Alert Message",
         tint = MaterialTheme.colorScheme.error,
-        modifier = Modifier.size(AppTheme.appIconSize.medium)
+        modifier = Modifier.size(AppTheme.iconSize.medium)
     )
-    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
     AppTexts.LabelLarge(
         text = dialogData.dialogTitle,
-        modifier = Modifier.padding(top = AppTheme.appSpacing.extraSmall),
+        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall),
         maxLines = 2,
         overflow = TextOverflow.Ellipsis
     )
@@ -129,7 +129,7 @@ private fun DialogHeader(dialogData: DialogData) {
 private fun DialogDescription(dialogData: DialogData) {
     AppTexts.BodyMedium(
         text = dialogData.dialogDesc,
-        modifier = Modifier.padding(top = AppTheme.appSpacing.extraSmall),
+        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall),
         textAlign = TextAlign.Center
     )
 }
@@ -143,7 +143,7 @@ private fun DialogButtons(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         Box(
             modifier = Modifier.weight(1f)
@@ -168,7 +168,7 @@ private fun NegativeButton(
     AppButtons.AppStandardButton(
         onClick = onNegativeClick,
         modifier = Modifier
-            .height(AppTheme.appButtonSize.extraLarge)
+            .height(AppTheme.buttonSize.extraLarge)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = MaterialTheme.colorScheme.error,
@@ -188,7 +188,7 @@ private fun PositiveButton(
 ) {
     AppButtons.AppStandardButton(
         onClick = onPositiveClick, modifier = Modifier
-            .height(AppTheme.appButtonSize.extraLarge)
+            .height(AppTheme.buttonSize.extraLarge)
             .fillMaxWidth()
     ) {
         AppTexts.LabelMedium(

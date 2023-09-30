@@ -72,10 +72,10 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     modifier = Modifier
                         .padding(it)
                         .fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.extraLarge),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.extraLarge),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Row(horizontalArrangement = Arrangement.spacedBy(space = AppTheme.appSpacing.large)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.large)) {
                         AppButtons.AppStandardButton(onClick = {
                             event(
                                 AlarmEvent.onSwipedLeft(

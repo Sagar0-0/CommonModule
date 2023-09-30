@@ -40,11 +40,11 @@ fun ToolsCardLayout(
                 AppDefServerImg(
                     model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
                     modifier = Modifier
-                        .aspectRatio(AppTheme.appAspectRatio.square)
+                        .aspectRatio(AppTheme.aspectRatio.square)
                         .clip(
                             RoundedCornerShape(
-                                bottomStart = AppTheme.appSpacing.small,
-                                bottomEnd = AppTheme.appSpacing.small
+                                bottomStart = AppTheme.spacing.small,
+                                bottomEnd = AppTheme.spacing.small
                             )
                         ),
                     contentScale = ContentScale.Crop,
@@ -53,9 +53,9 @@ fun ToolsCardLayout(
             }
             AppTexts.TitleLarge(
                 text = cardTitle, modifier = Modifier.padding(
-                    start = AppTheme.appSpacing.small,
-                    top = AppTheme.appSpacing.small,
-                    bottom = AppTheme.appSpacing.small
+                    start = AppTheme.spacing.small,
+                    top = AppTheme.spacing.small,
+                    bottom = AppTheme.spacing.small
                 )
             )
         }
@@ -70,7 +70,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.small), horizontalArrangement = Arrangement.End
+            .padding(AppTheme.spacing.small), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -84,8 +84,8 @@ fun ScheduleIconLayout(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .size(AppTheme.appIconSize.regularSize)
-            .clip(RoundedCornerShape(AppTheme.appSpacing.small))
+            .size(AppTheme.iconSize.regularSize)
+            .clip(RoundedCornerShape(AppTheme.spacing.small))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

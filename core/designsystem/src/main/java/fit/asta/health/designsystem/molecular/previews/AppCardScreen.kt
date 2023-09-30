@@ -54,7 +54,7 @@ fun AppCardScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
 
                 // Filled Card Section

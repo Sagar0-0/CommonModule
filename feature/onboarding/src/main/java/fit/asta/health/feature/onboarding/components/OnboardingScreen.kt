@@ -62,20 +62,20 @@ fun OnboardingScreen(
                 HorizontalPager(
                     modifier = Modifier.weight(1f),
                     state = pagerState,
-                    contentPadding = PaddingValues(AppTheme.appSpacing.small),
-                    pageSpacing = AppTheme.appSpacing.medium,
+                    contentPadding = PaddingValues(AppTheme.spacing.small),
+                    pageSpacing = AppTheme.spacing.medium,
                 ) { page ->
                     Card(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
-                            .padding(AppTheme.appSpacing.small)
-                            .clip(AppTheme.appShape.large)
+                            .padding(AppTheme.spacing.small)
+                            .clip(AppTheme.shape.large)
                     ) {
                         GifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = AppTheme.appSpacing.medium),
+                                .padding(bottom = AppTheme.spacing.medium),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -90,7 +90,7 @@ fun OnboardingScreen(
                                 color = MaterialTheme.colorScheme.primary
                             )
                             Text(
-                                modifier = Modifier.padding(horizontal = AppTheme.appSpacing.extraMedium),
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.extraMedium),
                                 textAlign = TextAlign.Center,
                                 text = items[page].desc,
                                 style = MaterialTheme.typography.titleSmall,

@@ -91,7 +91,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
             )
         }
 

@@ -27,15 +27,15 @@ fun WelcomeCard() {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.appSpacing.medium),
-        shape = RoundedCornerShape(AppTheme.appSpacing.small),
-        elevation = CardDefaults.cardElevation(AppTheme.appSpacing.extraSmall),
+            .padding(horizontal = AppTheme.spacing.medium),
+        shape = RoundedCornerShape(AppTheme.spacing.small),
+        elevation = CardDefaults.cardElevation(AppTheme.spacing.extraSmall),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.appSpacing.medium)
+                .padding(AppTheme.spacing.medium)
         ) {
             Image(
                 painter = painterResource(id = R.drawable.feedback1),
@@ -44,7 +44,7 @@ fun WelcomeCard() {
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
 
             Column {
                 Text(
@@ -54,7 +54,7 @@ fun WelcomeCard() {
                     textAlign = TextAlign.Left
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
 
                 Text(
                     text = "Your feedback is important to us. We read every feedback we get and take it seriously.",

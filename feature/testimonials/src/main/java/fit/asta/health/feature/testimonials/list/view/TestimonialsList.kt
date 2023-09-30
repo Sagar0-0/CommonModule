@@ -39,7 +39,7 @@ fun TestimonialsList(
 
                 AppCard(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.appSpacing.medium),
+                    .padding(AppTheme.spacing.medium),
                     colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
@@ -98,9 +98,9 @@ fun LoadingItem() {
     ) {
         AppCircularProgressIndicator(
             modifier = Modifier
-                .size(AppTheme.appBoxSize.largeSmall)
-                .padding(AppTheme.appSpacing.medium),
-            strokeWidth = AppTheme.appSpacing.extraSmall
+                .size(AppTheme.boxSize.largeSmall)
+                .padding(AppTheme.spacing.medium),
+            strokeWidth = AppTheme.spacing.extraSmall
         )
     }
 }

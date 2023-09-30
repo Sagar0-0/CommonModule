@@ -27,10 +27,10 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.medium)
+            .padding(AppTheme.spacing.medium)
     ) {
         BeforeAndCardLayout(tstImageMedia.media)
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         TstTxtLayout(tstImageMedia)
     }
 }
@@ -39,20 +39,20 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
 fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
 
     if (tstImageMedia.isNotEmpty()) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
             tstImageMedia.forEach {
                 Box(
                     modifier = Modifier
                         .border(
                             width = 1.dp, color = MaterialTheme.colorScheme.surface
                         )
-                        .aspectRatio(AppTheme.appAspectRatio.square)
+                        .aspectRatio(AppTheme.aspectRatio.square)
                         .weight(1f)
                 ) {
                     AppDefServerImg(
                         model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
-                        modifier = Modifier.aspectRatio(AppTheme.appAspectRatio.square)
+                        modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square)
                     )
                 }
             }

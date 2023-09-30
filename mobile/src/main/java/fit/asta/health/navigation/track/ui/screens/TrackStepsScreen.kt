@@ -237,7 +237,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
     ) {
 
 
@@ -267,7 +267,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

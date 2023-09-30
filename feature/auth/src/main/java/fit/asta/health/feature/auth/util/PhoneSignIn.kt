@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.appSpacing.medium,
-                        bottom = AppTheme.appSpacing.medium,
-                        start = AppTheme.appSpacing.medium,
-                        end = AppTheme.appSpacing.small
+                        top = AppTheme.spacing.medium,
+                        bottom = AppTheme.spacing.medium,
+                        start = AppTheme.spacing.medium,
+                        end = AppTheme.spacing.small
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -283,9 +283,9 @@ fun PhoneSignIn(
                 placeholder = "Enter your phone number",
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.appSpacing.medium,
-                        bottom = AppTheme.appSpacing.medium,
-                        end = AppTheme.appSpacing.medium
+                        top = AppTheme.spacing.medium,
+                        bottom = AppTheme.spacing.medium,
+                        end = AppTheme.spacing.medium
                     )
                     .weight(0.7f)
                     .onFocusChanged {
@@ -300,7 +300,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -320,9 +320,9 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.appSpacing.medium)
+                    .padding(AppTheme.spacing.medium)
             ) {
-                Text(text = "Generate OTP", modifier = Modifier.padding(AppTheme.appSpacing.small))
+                Text(text = "Generate OTP", modifier = Modifier.padding(AppTheme.spacing.small))
             }
         }
 
@@ -353,7 +353,7 @@ fun PhoneSignIn(
                     supportingTextAlign = TextAlign.End
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
                 Button(
                     enabled = !loading,
@@ -362,11 +362,11 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.appSpacing.medium)
+                        .padding(AppTheme.spacing.medium)
                 ) {
                     Text(
                         text = "Verify OTP",
-                        modifier = Modifier.padding(AppTheme.appSpacing.small)
+                        modifier = Modifier.padding(AppTheme.spacing.small)
                     )
                 }
                 TextButton(
@@ -374,7 +374,7 @@ fun PhoneSignIn(
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AppTheme.appSpacing.medium)
+                        .padding(AppTheme.spacing.medium)
                 ) {
                     if (ticks > 0) {
                         Text(text = "Resend code in $ticks seconds")

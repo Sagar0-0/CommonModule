@@ -69,7 +69,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
 
             }
 
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
         Box(
             modifier = Modifier.dashedBorder(
@@ -82,8 +82,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AppTheme.appSpacing.medium,
-                        vertical = AppTheme.appSpacing.small
+                        horizontal = AppTheme.spacing.medium,
+                        vertical = AppTheme.spacing.small
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -99,15 +99,15 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AppTheme.appSpacing.extraSmall)
-                                    .clip(AppTheme.appShape.extraLarge)
+                                    .padding(AppTheme.spacing.extraSmall)
+                                    .clip(AppTheme.shape.extraLarge)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AppTheme.appShape.extraLarge
+                                        shape = AppTheme.shape.extraLarge
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AppTheme.appSpacing.small),
+                                    .padding(AppTheme.spacing.small),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -147,7 +147,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
             }
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
         Text(
             text = "You can upload maximum 5 files*",

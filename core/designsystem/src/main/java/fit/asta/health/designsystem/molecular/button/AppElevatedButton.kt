@@ -80,11 +80,11 @@ fun AppElevatedButton(
             disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = AppTheme.appElevation.extraSmall,
-            pressedElevation = AppTheme.appElevation.extraSmall,
-            focusedElevation = AppTheme.appElevation.extraSmall,
-            hoveredElevation = AppTheme.appElevation.smallMedium,
-            disabledElevation = AppTheme.appElevation.noElevation
+            defaultElevation = AppTheme.elevation.extraSmall,
+            pressedElevation = AppTheme.elevation.extraSmall,
+            focusedElevation = AppTheme.elevation.extraSmall,
+            hoveredElevation = AppTheme.elevation.smallMedium,
+            disabledElevation = AppTheme.elevation.noElevation
         ),
         contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
     ) {
@@ -93,7 +93,7 @@ fun AppElevatedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
             )
         }
 

@@ -35,7 +35,7 @@ fun AppVerticalGrid(
         modifier = modifier
             .background(MaterialTheme.colorScheme.background)
             .fillMaxSize()
-            .padding(AppTheme.appSpacing.medium),
+            .padding(AppTheme.spacing.medium),
         verticalArrangement = verticalArrangement,
         horizontalArrangement = horizontalArrangement
     )

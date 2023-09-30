@@ -162,13 +162,13 @@ fun DietContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.appSpacing.medium)
+                .padding(horizontal = AppTheme.spacing.medium)
                 .verticalScroll(rememberScrollState())
                 .background(color = AppTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -178,7 +178,7 @@ fun DietContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             }
 
             SelectionCardCreateProfile(
@@ -194,7 +194,7 @@ fun DietContent(
                 listName = "Diet"
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             CreateProfileTwoButtonLayout(
                 eventPrevious = eventPrevious, eventNext = {
@@ -223,7 +223,7 @@ fun DietContent(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         }
     }
 }

@@ -46,7 +46,7 @@ fun HomeScreenLayout(
                     ToolsHmScreenTopBanner(
                         bannerDataPages = toolsHome.banners[page]
                     )
-                }, modifier = Modifier.aspectRatio(ratio = AppTheme.appAspectRatio.fullScreen))
+                }, modifier = Modifier.aspectRatio(ratio = AppTheme.aspectRatio.fullScreen))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -117,7 +117,7 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             }
 
             item(span = { GridItemSpan(columns) }) {
@@ -135,12 +135,12 @@ fun HomeScreenLayout(
             }
 
             item {
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             }
 
         },
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
     )
 
 }

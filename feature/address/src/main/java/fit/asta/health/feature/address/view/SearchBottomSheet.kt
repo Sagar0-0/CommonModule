@@ -97,7 +97,7 @@ internal fun SearchBottomSheet(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(textFieldFocus)
-                    .padding(AppTheme.appSpacing.medium),
+                    .padding(AppTheme.spacing.medium),
                 value = searchQuery,
                 onValueChange = {
                     searchQuery = it
@@ -150,7 +150,7 @@ internal fun SearchBottomSheet(
                         searchResponseState.data.results
                     if (results.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(AppTheme.appSpacing.small),
+                            modifier = Modifier.padding(AppTheme.spacing.small),
                             text = R.string.no_result_for.toStringFromResId() + "\"$searchQuery\"",
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -171,12 +171,12 @@ internal fun SearchBottomSheet(
                                     },
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(AppTheme.appSpacing.extraSmall)
+                                        .padding(AppTheme.spacing.extraSmall)
                                 ) {
                                     AppDefServerImg(
                                         model = it.icon,
                                         contentDescription = null,
-                                        modifier = Modifier.padding(end = AppTheme.appSpacing.medium)
+                                        modifier = Modifier.padding(end = AppTheme.spacing.medium)
                                     )
                                     AppTexts.BodyLarge(text = it.name)
                                     Spacer(modifier = Modifier.weight(1f))
@@ -188,7 +188,7 @@ internal fun SearchBottomSheet(
 
                 UiState.Loading -> {
                     Box(
-                        modifier = Modifier.padding(top = AppTheme.appSpacing.large),
+                        modifier = Modifier.padding(top = AppTheme.spacing.large),
                         contentAlignment = Alignment.Center
                     ) {
                         LoadingAnimation()

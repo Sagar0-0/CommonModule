@@ -283,12 +283,12 @@ private fun HealthContentLayout(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.appSpacing.medium)
+            .padding(horizontal = AppTheme.spacing.medium)
             .verticalScroll(rememberScrollState())
             .background(color = MaterialTheme.colorScheme.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
         cardTypes.indices.forEach { index ->
             val (composeIndex, selectedOption) = selections[index]
@@ -308,10 +308,10 @@ private fun HealthContentLayout(
                 listName = cardType.getListName()
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         }
         CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
     }
 }
 

@@ -47,7 +47,7 @@ fun AppImageScreen() {
                     .padding(16.dp)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
                 AppLocalImage(
                     painter = painterResource(id = AppConstImages.errorImg)

@@ -72,11 +72,11 @@ fun CreateProfileLayout(
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraSmall))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AppTheme.appSpacing.small),
+                    .padding(start = AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
                 AppDefaultIcon(imageVector = Icons.AutoMirrored.Outlined.NavigateBefore,
@@ -84,7 +84,7 @@ fun CreateProfileLayout(
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult
                     })
-                Spacer(modifier = Modifier.width(AppTheme.appSpacing.small))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.small))
                 AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
             }
             Row(Modifier.fillMaxWidth()) {
@@ -100,7 +100,7 @@ fun CreateProfileLayout(
                         onStepClick = { currentStep = step.step })
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         }
     }, content = { innerPadding ->
         Box(

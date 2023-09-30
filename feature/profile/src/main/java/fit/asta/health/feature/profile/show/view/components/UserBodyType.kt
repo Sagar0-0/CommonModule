@@ -29,14 +29,14 @@ fun UserBodyType(
 ) {
     Card(
         modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(AppTheme.appElevation.smallExtraMedium),
-        shape = RoundedCornerShape(AppTheme.appSpacing.small)
+        elevation = CardDefaults.cardElevation(AppTheme.elevation.smallExtraMedium),
+        shape = RoundedCornerShape(AppTheme.spacing.small)
     ) {
-        Column(modifier = Modifier.padding(vertical = AppTheme.appSpacing.medium)) {
+        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.medium)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AppTheme.appSpacing.medium, end = AppTheme.appSpacing.small),
+                    .padding(start = AppTheme.spacing.medium, end = AppTheme.spacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Text(
@@ -48,7 +48,7 @@ fun UserBodyType(
                     color = MaterialTheme.colorScheme.onBackground
                 )
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -60,11 +60,11 @@ fun UserBodyType(
                     modifier = Modifier.size(width = 70.dp, height = 109.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(end = AppTheme.appSpacing.medium),
+                    .padding(end = AppTheme.spacing.medium),
                 horizontalArrangement = Arrangement.End
             ) {
                 Text(

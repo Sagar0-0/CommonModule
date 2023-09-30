@@ -225,7 +225,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
     ) {
 
         // Daily Progress Circular Target Chart 
@@ -254,7 +254,7 @@ private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
                         weeklyData.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

@@ -39,10 +39,10 @@ fun EndScreenPopup(
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.appSpacing.medium),
-            shape = RoundedCornerShape(AppTheme.appSpacing.small),
+                .padding(horizontal = AppTheme.spacing.medium),
+            shape = RoundedCornerShape(AppTheme.spacing.small),
             colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background),
-            elevation = CardDefaults.cardElevation(AppTheme.appSpacing.extraSmall)
+            elevation = CardDefaults.cardElevation(AppTheme.spacing.extraSmall)
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -51,7 +51,7 @@ fun EndScreenPopup(
                     tint = Color.Green,
                     imageVector = Icons.Default.Done,
                     contentDescription = null,
-                    modifier = Modifier.size(AppTheme.appIconSize.medium)
+                    modifier = Modifier.size(AppTheme.iconSize.medium)
                 )
 
                 Text(
@@ -60,7 +60,7 @@ fun EndScreenPopup(
                     textAlign = TextAlign.Center
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
                 Text(
                     text = desc,
@@ -71,10 +71,10 @@ fun EndScreenPopup(
 
                 Button(
                     onClick = onContinueClick,
-                    shape = AppTheme.appShape.medium,
+                    shape = AppTheme.shape.medium,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.appSpacing.medium),
+                        .padding(AppTheme.spacing.medium),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary
                     )

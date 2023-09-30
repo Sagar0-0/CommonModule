@@ -177,7 +177,7 @@ internal fun SavedAddressesScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.appSpacing.small)
+                        .padding(AppTheme.spacing.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromSavedAddress)
                         },
@@ -208,7 +208,7 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             AnimatedVisibility(fillAddressSheetType == null) {
                 OutlinedButton(
@@ -219,7 +219,7 @@ internal fun SavedAddressesScreen(
                         ),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.appSpacing.small),
+                        .padding(horizontal = AppTheme.spacing.small),
                     onClick = {
                         if (currentAddressState is UiState.Success) {
                             openFillAddressSheet(
@@ -234,8 +234,8 @@ internal fun SavedAddressesScreen(
                 ) {
                     Icon(
                         modifier = Modifier
-                            .padding(end = AppTheme.appSpacing.extraSmall)
-                            .size(AppTheme.appIconSize.mediumSmall),
+                            .padding(end = AppTheme.spacing.extraSmall)
+                            .size(AppTheme.iconSize.mediumSmall),
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = ""
                     )
@@ -290,7 +290,7 @@ internal fun SavedAddressesScreen(
                 }
             }
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
 
             OutlinedButton(colors = ButtonDefaults.buttonColors(
                 containerColor = MaterialTheme.colorScheme.surfaceVariant,
@@ -298,7 +298,7 @@ internal fun SavedAddressesScreen(
             ),
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.appSpacing.small),
+                    .padding(horizontal = AppTheme.spacing.small),
                 onClick = {
                     if (currentAddressState is UiState.Success) {
                         onUiEvent(
@@ -316,8 +316,8 @@ internal fun SavedAddressesScreen(
                 }) {
                 Icon(
                     modifier = Modifier
-                        .padding(end = AppTheme.appSpacing.extraSmall)
-                        .size(AppTheme.appIconSize.mediumSmall),
+                        .padding(end = AppTheme.spacing.extraSmall)
+                        .size(AppTheme.iconSize.mediumSmall),
                     imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
@@ -334,7 +334,7 @@ internal fun SavedAddressesScreen(
                 )
             }
 
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             Spacer(
                 modifier = Modifier
@@ -344,7 +344,7 @@ internal fun SavedAddressesScreen(
             )
 
             Text(
-                modifier = Modifier.padding(AppTheme.appSpacing.small),
+                modifier = Modifier.padding(AppTheme.spacing.small),
                 text = R.string.saved_address.toStringFromResId(),
                 style = MaterialTheme.typography.titleLarge
             )
@@ -353,7 +353,7 @@ internal fun SavedAddressesScreen(
                     val addresses = savedAddressListState.data
                     if (addresses.isEmpty()) {
                         Text(
-                            modifier = Modifier.padding(AppTheme.appSpacing.small),
+                            modifier = Modifier.padding(AppTheme.spacing.small),
                             text = R.string.no_saved_address.toStringFromResId(),
                             textAlign = TextAlign.Center,
                             style = MaterialTheme.typography.titleMedium
@@ -470,10 +470,10 @@ private fun AddressItem(
                 )
             }
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.small)
+            .padding(AppTheme.spacing.small)
     ) {
         Icon(
-            modifier = Modifier.padding(end = AppTheme.appSpacing.extraSmall),
+            modifier = Modifier.padding(end = AppTheme.spacing.extraSmall),
             imageVector = Icons.Default.Home,
             contentDescription = ""
         )
@@ -496,7 +496,7 @@ private fun AddressItem(
                     )
                 }
 
-                Spacer(modifier = Modifier.width(AppTheme.appSpacing.extraSmall))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
 
                 Crossfade(
                     targetState = loading, label = ""
@@ -517,7 +517,7 @@ private fun AddressItem(
                     }
                 }
 
-                Spacer(modifier = Modifier.width(AppTheme.appSpacing.extraSmall))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
 
                 OutlinedIconButton(onClick = { onClick(AddressEvent.Share) }) {
                     Icon(

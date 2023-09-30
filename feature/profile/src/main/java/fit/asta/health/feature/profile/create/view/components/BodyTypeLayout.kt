@@ -46,12 +46,12 @@ fun BodyTypeLayout() {
 
     Column(Modifier.fillMaxWidth()) {
 
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.small))
 
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AppTheme.appSpacing.medium),
+                .padding(start = AppTheme.spacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
             Text(
@@ -66,8 +66,8 @@ fun BodyTypeLayout() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AppTheme.appSpacing.small,
-                    vertical = AppTheme.appSpacing.medium
+                    horizontal = AppTheme.spacing.small,
+                    vertical = AppTheme.spacing.medium
                 )
                 .height(AppTheme.customSize.extraLarge2),
             userScrollEnabled = false,
@@ -103,7 +103,7 @@ fun BodyTypeListLayout(
                 alignment = Alignment.Center,
                 modifier = Modifier.size(40.dp)
             )
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             Text(
                 text = listType,
                 style = MaterialTheme.typography.labelSmall,

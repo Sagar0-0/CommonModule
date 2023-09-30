@@ -268,7 +268,7 @@ private fun MediaContentView(
         // Will reset to SCREEN_ORIENTATION_USER later
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
     }
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
     if (trackDialog) {
         AlertDialogTrack(
             selectedTrack = selectedTrack,
@@ -306,7 +306,7 @@ private fun MediaContentView(
                     },
                     onAudioVideo = onVisibility, more = { trackDialog = true }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
             }
         }
         AnimatedContent(targetState = visibility, label = "player") { targetState ->
@@ -400,7 +400,7 @@ private fun MediaContentView(
         }
         AnimatedVisibility(visible = !isLandscape) {
             Column {
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
                 Text(
                     text = musicState.currentSong.title,
                     style = MaterialTheme.typography.titleLarge,
@@ -409,9 +409,9 @@ private fun MediaContentView(
                     maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.appSpacing.small)
+                        .padding(horizontal = AppTheme.spacing.small)
                 )
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                 LaunchedEffect(Unit) {
                     while (true) {
                         delay(1000)
@@ -437,13 +437,13 @@ private fun MediaContentView(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.appSpacing.medium)
+                        .padding(horizontal = AppTheme.spacing.medium)
                 ) {
                     Text(text = controllerState.positionMs.asFormattedString())
                     Spacer(modifier = Modifier.weight(1f))
                     Text(musicState.duration.asFormattedString())
                 }
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.large))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.large))
                 PlayerButtons(
                     modifier = Modifier.fillMaxWidth(),
                     playWhenReady = musicState.playWhenReady,
@@ -454,7 +454,7 @@ private fun MediaContentView(
                     next = { onAudioEvent(PlayerEvent.SkipNext) },
                     previous = { onAudioEvent(PlayerEvent.SkipPrevious) }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
             }
         }
     }
@@ -561,13 +561,13 @@ fun BackAlertDialog(
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
                 AppTexts.HeadlineMedium(text = stringResource(id = R.string.sure_you_want_to_leave))
                 AppTexts.TitleLarge(text = stringResource(id = R.string.meditation_benefits))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
                 ) {
                     AppButtons.AppOutlinedButton(
                         onClick = onDismiss,
@@ -601,7 +601,7 @@ fun TrackItem(
     song: Song,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
     val context = LocalContext.current
     val isRunning = musicState.currentSong.id == song.id
 
@@ -614,7 +614,7 @@ fun TrackItem(
             .fillMaxWidth()
             .clickable { onClick(isRunning) }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         Divider(
             modifier = Modifier
@@ -626,11 +626,11 @@ fun TrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(

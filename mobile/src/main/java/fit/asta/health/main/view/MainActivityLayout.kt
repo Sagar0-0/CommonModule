@@ -123,7 +123,7 @@ private fun BottomAppBarLayout(
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = AppTheme.appElevation.small
+        tonalElevation = AppTheme.elevation.small
     ) {
         items.forEach { item ->
             NavigationBarItem(
@@ -161,7 +161,7 @@ private fun NewMainTopBarActions(
             verticalAlignment = Alignment.CenterVertically
         ) {
             Icon(
-                modifier = Modifier.padding(start = AppTheme.appSpacing.small),
+                modifier = Modifier.padding(start = AppTheme.spacing.small),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = "Location",
                 tint = MaterialTheme.colorScheme.onBackground
@@ -193,7 +193,7 @@ private fun NewMainTopBarActions(
                 textAlign = TextAlign.Center,
                 modifier = Modifier
                     .weight(1f)
-                    .padding(AppTheme.appSpacing.minSmall),
+                    .padding(AppTheme.spacing.minSmall),
                 color = MaterialTheme.colorScheme.onBackground,
                 overflow = TextOverflow.Ellipsis
             )

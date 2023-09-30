@@ -38,18 +38,18 @@ fun SuccessfulCard(
 
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
-            .padding(top = AppTheme.appSpacing.extraLarge)
+            .padding(top = AppTheme.spacing.extraLarge)
             .heightIn(min = AppTheme.cardHeight.large),
             content = {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = AppTheme.appSpacing.extraLarge3)
+                        .padding(top = AppTheme.spacing.extraLarge3)
                 ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.appSpacing.medium),
+                            .padding(horizontal = AppTheme.spacing.medium),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -58,11 +58,11 @@ fun SuccessfulCard(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.appSpacing.medium),
+                            .padding(horizontal = AppTheme.spacing.medium),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -76,18 +76,18 @@ fun SuccessfulCard(
                             textAlign = TextAlign.Center
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.large))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.large))
                     if (underReview) {
                         LoadingAnimation()
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                 }
             })
 
         Box(
             modifier = Modifier
                 .clip(shape = CircleShape)
-                .defaultMinSize(minWidth = AppTheme.appBoxSize.medium, minHeight = AppTheme.appBoxSize.medium)
+                .defaultMinSize(minWidth = AppTheme.boxSize.medium, minHeight = AppTheme.boxSize.medium)
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
             AppDefaultIcon(
@@ -98,7 +98,7 @@ fun SuccessfulCard(
                 },
                 contentDescription = "Successful Tst Upload",
                 tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(AppTheme.appIconSize.medium)
+                modifier = Modifier.size(AppTheme.iconSize.medium)
             )
         }
     }

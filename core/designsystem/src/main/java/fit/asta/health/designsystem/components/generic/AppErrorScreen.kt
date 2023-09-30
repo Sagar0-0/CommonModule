@@ -251,13 +251,13 @@ fun GradientButton(
 fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
     AppCard(
         modifier = Modifier
-            .padding(AppTheme.appSpacing.medium)
+            .padding(AppTheme.spacing.medium)
             .fillMaxWidth()
             .wrapContentHeight(), content = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.appSpacing.small),
+                    .padding(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {

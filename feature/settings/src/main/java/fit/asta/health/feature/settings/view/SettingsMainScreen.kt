@@ -77,7 +77,7 @@ fun SettingsScreenLayout(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.appSpacing.medium),
+                        .padding(AppTheme.spacing.medium),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AppTexts.HeadlineMedium(
@@ -86,7 +86,7 @@ fun SettingsScreenLayout(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.appSpacing.medium),
+                            .padding(horizontal = AppTheme.spacing.medium),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppButtons.AppTextButton(
@@ -213,12 +213,12 @@ fun PreferenceCategory(
         if (titleId != null) Text(
             text = stringResource(id = titleId),
             style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = AppTheme.appSpacing.medium, top = AppTheme.appSpacing.small)
+            modifier = Modifier.padding(start = AppTheme.spacing.medium, top = AppTheme.spacing.small)
         )
         Column(
             modifier = Modifier.padding(
-                vertical = AppTheme.appSpacing.small,
-                horizontal = AppTheme.appSpacing.small
+                vertical = AppTheme.spacing.small,
+                horizontal = AppTheme.spacing.small
             )
         ) {
             content()
@@ -238,12 +238,12 @@ fun PreferenceItem(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.extraSmall)
+            .padding(AppTheme.spacing.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = null,
-            modifier = Modifier.padding(end = AppTheme.appSpacing.medium)
+            modifier = Modifier.padding(end = AppTheme.spacing.medium)
         )
         Column {
             Text(text = title ?: stringResource(id = titleId))
@@ -272,12 +272,12 @@ fun ListPreference(
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.extraSmall)
+            .padding(AppTheme.spacing.extraSmall)
     ) {
         Icon(
             imageVector = imageVector,
             contentDescription = title,
-            modifier = Modifier.padding(end = AppTheme.appSpacing.medium)
+            modifier = Modifier.padding(end = AppTheme.spacing.medium)
         )
 
         Text(

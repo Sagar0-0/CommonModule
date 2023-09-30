@@ -80,7 +80,7 @@ fun AppDatePicker(
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
         ) {
             AppIconButton(
                 modifier = Modifier.size(42.dp),

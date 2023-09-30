@@ -194,7 +194,7 @@ internal fun MapScreen(
                     shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.appSpacing.small)
+                        .padding(AppTheme.spacing.small)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -232,7 +232,7 @@ internal fun MapScreen(
             ) {
                 AppButtons.AppIconButton(
                     modifier = Modifier
-                        .padding(AppTheme.appSpacing.medium)
+                        .padding(AppTheme.spacing.medium)
                         .align(Alignment.End)
                         .size(AppTheme.iconButtonSize.extraLarge2),
                     colors = IconButtonDefaults.iconButtonColors(
@@ -264,12 +264,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = AppTheme.appSpacing.medium,
-                                topEnd = AppTheme.appSpacing.medium
+                                topStart = AppTheme.spacing.medium,
+                                topEnd = AppTheme.spacing.medium
                             )
                         )
                         .background(MaterialTheme.colorScheme.surface)
-                        .padding(horizontal = AppTheme.appSpacing.medium),
+                        .padding(horizontal = AppTheme.spacing.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -320,7 +320,7 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = AppTheme.appSpacing.medium)
+                                    .padding(bottom = AppTheme.spacing.medium)
                                     .fillMaxWidth()
                                     .clip(MaterialTheme.shapes.medium),
                                 colors = ButtonDefaults.buttonColors(

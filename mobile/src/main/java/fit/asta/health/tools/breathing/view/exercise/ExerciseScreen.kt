@@ -103,7 +103,7 @@ fun ExerciseScreen(
             modifier = Modifier
                 .padding(it)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
         ) {
             item {
                 Text(
@@ -208,7 +208,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -216,8 +216,8 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 maxItemsInEachRow = 4,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
                 StandardRatio(ratio = ratioList[0],
                     index = 0, code = index, onClick = { index = it })
@@ -239,7 +239,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
                     Text(text = "inhale")
                     NumberPicker(value = inhaleValue,
                         range = 0..10,
@@ -250,7 +250,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
                     Text(text = "hold")
                     NumberPicker(value = inhaleHoldValue,
                         range = 0..10,
@@ -261,7 +261,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
                     Text(text = "exhale")
                     NumberPicker(value = exhaleValue,
                         range = 0..10,
@@ -272,7 +272,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
                     Text(text = "hold")
                     NumberPicker(value = exhaleHoldValue,
                         range = 0..10,
@@ -283,7 +283,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Red, text = "CANCEL"
                 ) { onCancel() }
@@ -310,7 +310,7 @@ fun DurationPicker() {
     Row(
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         Column {
             Text(text = "Minutes")

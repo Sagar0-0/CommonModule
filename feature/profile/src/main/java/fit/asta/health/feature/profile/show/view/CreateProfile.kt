@@ -45,11 +45,11 @@ fun TwoTogglesGroup(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.appSpacing.medium)
+                    .padding(horizontal = AppTheme.spacing.medium)
             ) {
                 AppTexts.TitleSmall(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -89,11 +89,11 @@ fun ThreeTogglesGroups(
 ) {
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.appSpacing.medium)
+                    .padding(horizontal = AppTheme.spacing.medium)
             ) {
                 AppTexts.TitleLarge(
                     text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
@@ -143,11 +143,11 @@ fun SelectionCardCreateProfile(
             Column(
                 modifier = Modifier.fillMaxWidth()
             ) {
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.appSpacing.medium),
+                        .padding(horizontal = AppTheme.spacing.medium),
                     horizontalArrangement = Arrangement.SpaceBetween,
                     verticalAlignment = CenterVertically
                 ) {
@@ -168,15 +168,15 @@ fun SelectionCardCreateProfile(
                 )
                 if (selectedOption == TwoRadioBtnSelections.First) {
                     FlowRow(
-                        mainAxisSpacing = AppTheme.appSpacing.minSmall,
-                        modifier = Modifier.padding(start = AppTheme.appSpacing.medium),
+                        mainAxisSpacing = AppTheme.spacing.minSmall,
+                        modifier = Modifier.padding(start = AppTheme.spacing.medium),
                     ) {
                         cardList?.forEach {
                             DisabledChipForList(textOnChip = it.name)
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             }
         }
         if (cardList != null) {
@@ -202,11 +202,11 @@ fun OnlyChipSelectionCard(
         Column(
             modifier = Modifier.fillMaxWidth()
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.appSpacing.medium),
+                    .padding(horizontal = AppTheme.spacing.medium),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = CenterVertically
             ) {
@@ -217,16 +217,16 @@ fun OnlyChipSelectionCard(
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             FlowRow(
-                mainAxisSpacing = AppTheme.appSpacing.minSmall,
-                modifier = Modifier.padding(start = AppTheme.appSpacing.medium),
+                mainAxisSpacing = AppTheme.spacing.minSmall,
+                modifier = Modifier.padding(start = AppTheme.spacing.medium),
             ) {
                 cardList?.forEach {
                     DisabledChipForList(textOnChip = it.name)
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
         }
     }
 }

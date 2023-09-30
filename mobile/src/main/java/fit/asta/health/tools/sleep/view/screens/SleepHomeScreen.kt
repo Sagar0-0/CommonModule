@@ -60,7 +60,7 @@ fun SleepHomeScreen(
         modifier = Modifier
             .fillMaxSize()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
@@ -98,7 +98,7 @@ fun SleepHomeScreen(
 
         Card {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)

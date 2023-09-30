@@ -24,11 +24,11 @@ fun ProfileSessionCard(
     AppCard {
         Column(
             modifier = Modifier
-                .padding(AppTheme.appSpacing.medium)
+                .padding(AppTheme.spacing.medium)
                 .fillMaxWidth()
         ) {
             AppTexts.BodySmall(text = title)
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {

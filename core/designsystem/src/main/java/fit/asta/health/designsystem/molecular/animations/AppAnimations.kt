@@ -33,9 +33,9 @@ fun AppDivider(
 ) {
     Divider(
         color = AppTheme.colors.primary,
-        thickness = AppTheme.appSpacing.extraSmall,
+        thickness = AppTheme.spacing.extraSmall,
         modifier = modifier
-            .clip(AppTheme.appShape.small)
+            .clip(AppTheme.shape.small)
             .width(width = lineWidth)
     )
 }
@@ -77,9 +77,9 @@ fun AppHorizontalPagerIndicator(
         modifier = modifier,
         activeColor = AppTheme.colors.onSurface,
         inactiveColor = AppTheme.colors.onSurface.copy(alpha = .5f),
-        indicatorWidth = AppTheme.appSpacing.small,
-        indicatorHeight = AppTheme.appSpacing.small,
-        spacing = AppTheme.appSpacing.small,
+        indicatorWidth = AppTheme.spacing.small,
+        indicatorHeight = AppTheme.spacing.small,
+        spacing = AppTheme.spacing.small,
         indicatorShape = CircleShape
     )
 }

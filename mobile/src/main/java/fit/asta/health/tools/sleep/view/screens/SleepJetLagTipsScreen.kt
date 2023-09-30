@@ -70,7 +70,7 @@ fun SleepJetLagTipsScreen(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(16.dp),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
 
                 item {
@@ -105,7 +105,7 @@ fun SleepJetLagTipsScreen(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth(),
-                            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
                         ) {
 
                             Image(
@@ -116,7 +116,7 @@ fun SleepJetLagTipsScreen(
                                 colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
                             )
 
-                            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)) {
+                            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
 
                                 // Subject / Title
                                 Text(

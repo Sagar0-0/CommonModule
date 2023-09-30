@@ -47,7 +47,7 @@ fun SettingsNotificationLayout(
             onBack = onBackPress
         )
 
-        LazyColumn(modifier = Modifier.padding(AppTheme.appSpacing.medium)) {
+        LazyColumn(modifier = Modifier.padding(AppTheme.spacing.medium)) {
             item {
                 SwitchItem(
                     imageVector = Icons.Default.Notifications,
@@ -68,8 +68,8 @@ fun SettingsNotificationLayout(
                     text = stringResource(id = R.string.title_notifications),
                     style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.padding(
-                        top = AppTheme.appSpacing.medium,
-                        bottom = AppTheme.appSpacing.small
+                        top = AppTheme.spacing.medium,
+                        bottom = AppTheme.spacing.small
                     )
                 )
 
@@ -216,7 +216,7 @@ fun SwitchItem(
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         Icon(
-            modifier = Modifier.padding(AppTheme.appSpacing.extraSmall),
+            modifier = Modifier.padding(AppTheme.spacing.extraSmall),
             imageVector = imageVector,
             contentDescription = ""
         )
@@ -225,9 +225,9 @@ fun SwitchItem(
             Modifier
                 .weight(1f)
                 .padding(
-                    top = AppTheme.appSpacing.small,
-                    bottom = AppTheme.appSpacing.medium,
-                    start = AppTheme.appSpacing.extraSmall
+                    top = AppTheme.spacing.small,
+                    bottom = AppTheme.spacing.medium,
+                    start = AppTheme.spacing.extraSmall
                 )
         ) {
             Text(
@@ -245,7 +245,7 @@ fun SwitchItem(
         Switch(
             checked = isChecked,
             onCheckedChange = { onChange(it) },
-            modifier = Modifier.padding(bottom = AppTheme.appSpacing.small),
+            modifier = Modifier.padding(bottom = AppTheme.spacing.small),
             enabled = isEnabled
         )
     }

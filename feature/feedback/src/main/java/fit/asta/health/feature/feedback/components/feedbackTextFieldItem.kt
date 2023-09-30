@@ -47,31 +47,31 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     Card(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.appSpacing.medium),
-        shape = RoundedCornerShape(AppTheme.appSpacing.small),
+            .padding(horizontal = AppTheme.spacing.medium),
+        shape = RoundedCornerShape(AppTheme.spacing.small),
         colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(AppTheme.appSpacing.extraSmall)
+        elevation = CardDefaults.cardElevation(AppTheme.spacing.extraSmall)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(AppTheme.appSpacing.medium)
+                .padding(AppTheme.spacing.medium)
         ) {
 
             Text(
                 text = qn.qn,
                 style = MaterialTheme.typography.titleMedium
             )
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             when (qn.type) {
                 2 -> {
                     opts.value = listOf(rating().value.toString())
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                 }
 
                 3, 5 -> {
                     opts.value = qn.opts?.let { listOf(mcqCard(it).value) }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                 }
             }
 
@@ -82,7 +82,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(AppTheme.appBoxSize.medium),
+                    .height(AppTheme.boxSize.medium),
                 placeholder = R.string.write_your_answer_here,
             )
             Text(

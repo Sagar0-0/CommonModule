@@ -27,12 +27,12 @@ fun GenderOptionsLayout(
     AppCard(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(AppTheme.appSpacing.medium)
+                .padding(AppTheme.spacing.medium)
                 .fillMaxWidth() // Occupy the maximum available width
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
                 AppDrawImg(
                     painter = painterResource(id = cardImg),
@@ -41,7 +41,7 @@ fun GenderOptionsLayout(
                 )
                 Column {
                     AppTexts.BodySmall(text = cardType)
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                     AppTexts.BodyLarge(text = cardValue)
                 }
             }

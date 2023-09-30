@@ -219,12 +219,12 @@ fun LifeStyleContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.appSpacing.medium)
+                .padding(horizontal = AppTheme.spacing.medium)
                 .verticalScroll(rememberScrollState())
                 .background(color = MaterialTheme.colorScheme.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             timePickers.forEach { timePicker ->
                 LifeStyleTimePicker(
                     title = timePicker.title,
@@ -259,7 +259,7 @@ fun LifeStyleContent(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             }
             LifeStyleToggleSelectionCard(selectionTypeText = PHYACTIVE.getListName(),
                 options = listOf("Less", "Moderate", "Very"),
@@ -267,28 +267,28 @@ fun LifeStyleContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(PHYACTIVE.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGENV.getListName(),
                 options = listOf("Standing", "Sitting"),
                 selectedOption = radioButtonSelections[WORKINGENV.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGENV.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGSTYLE.getListName(),
                 options = listOf("Indoor", "Outdoor"),
                 selectedOption = radioButtonSelections[WORKINGSTYLE.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGSTYLE.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGHRS.getListName(),
                 options = listOf("Morning", "Afternoon", "Night"),
                 selectedOption = radioButtonSelections[WORKINGHRS.key] as ThreeRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGHRS.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -298,10 +298,10 @@ fun LifeStyleContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             }
             CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         }
     }
 }
@@ -349,21 +349,21 @@ private fun LifeStyleTimePicker(
     secButtonType: String,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(vertical = AppTheme.appSpacing.medium)) {
+        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.medium)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AppTheme.appSpacing.medium, end = AppTheme.appSpacing.small),
+                    .padding(start = AppTheme.spacing.medium, end = AppTheme.spacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 AppTexts.TitleMedium(text = title)
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.appSpacing.medium),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                    .padding(horizontal = AppTheme.spacing.medium),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppButtons.AppStandardButton(onClick = firstEvent, modifier = Modifier.weight(1f)) {
@@ -375,13 +375,13 @@ private fun LifeStyleTimePicker(
                     AppTexts.LabelMedium(text = secButtonType, textAlign = TextAlign.Center)
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
                 UserSleepCycles(columnType = firstColType, columnValue = firstColValue)
-                Spacer(modifier = Modifier.width(AppTheme.appSpacing.large))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.large))
                 UserSleepCycles(columnType = secondColType, columnValue = secColValue)
             }
         }

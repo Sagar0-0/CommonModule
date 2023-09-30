@@ -62,19 +62,19 @@ fun ContactLayout(
 private fun UserProfileSection(basicDetails: Contact) {
     Column(
         modifier = Modifier
-            .padding(top = AppTheme.appSpacing.medium)
+            .padding(top = AppTheme.spacing.medium)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         UserProfileImg(userProfilePic = basicDetails.url)
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
         UserDetails(
             basicDetails.name,
             basicDetails.phone,
             basicDetails.email,
             basicDetails.address,
         )
-        Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
     }
 }
 
@@ -83,8 +83,8 @@ private fun UserAchievementsSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+            .padding(AppTheme.spacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         UserAchievCard(
             scoreBoard = "24/346",
@@ -106,8 +106,8 @@ private fun UserProfileDetailsSection() {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.medium),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            .padding(AppTheme.spacing.medium),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
         verticalAlignment = Alignment.CenterVertically
     ) {
         ProfileDetails(
@@ -146,7 +146,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(horizontal = AppTheme.appSpacing.small)
+        modifier = Modifier.padding(horizontal = AppTheme.spacing.small)
     ) {
         ProfileImageBorder(size = 188.dp, color = MaterialTheme.colorScheme.primary) {
             AppDefServerImg(
@@ -193,17 +193,17 @@ fun UserAchievCard(
     AppCard(modifier = modifier) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(AppTheme.appSpacing.medium)
+            modifier = Modifier.padding(AppTheme.spacing.medium)
         ) {
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Leaderboard",
                 modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             Column(
                 modifier = Modifier.fillMaxHeight(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.minSmall)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.minSmall)
             ) {
                 AppTexts.BodyLarge(text = scoreBoard)
                 AppTexts.LabelSmall(text = cardType)
@@ -230,9 +230,9 @@ private fun UserDetails(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.appSpacing.large),
+            .padding(horizontal = AppTheme.spacing.large),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         AppTexts.BodyLarge(text = name)
         if (phoneNumber.isNotEmpty()) {
@@ -268,8 +268,8 @@ fun ProfileDetails(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AppTheme.appSpacing.medium,
-                    vertical = AppTheme.appSpacing.small
+                    horizontal = AppTheme.spacing.medium,
+                    vertical = AppTheme.spacing.small
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
@@ -279,7 +279,7 @@ fun ProfileDetails(
                 contentDescription = "Details Images",
                 modifier = Modifier.size(AppTheme.imageSize.standard)
             )
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             AppTexts.LabelMedium(text = profileType, textAlign = TextAlign.Center)
         }
     }

@@ -85,7 +85,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.appSpacing.large),
+                            .padding(horizontal = AppTheme.spacing.large),
                         horizontalArrangement = Arrangement.Center
                     ) {
                         AppDrawImg(
@@ -93,20 +93,20 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             contentDescription = "Tagline",
                             modifier = Modifier
                                 .fillMaxSize()
-                                .aspectRatio(AppTheme.appAspectRatio.common)
+                                .aspectRatio(AppTheme.aspectRatio.common)
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                     AppTexts.BodyLarge(
                         text = "Your feedback will help us to make improvements",
-                        modifier = Modifier.padding(horizontal = AppTheme.appSpacing.large),
+                        modifier = Modifier.padding(horizontal = AppTheme.spacing.large),
                         textAlign = TextAlign.Center
                     )
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(AppTheme.appSpacing.small),
+                            .padding(AppTheme.spacing.small),
                         horizontalArrangement = Arrangement.SpaceEvenly
                     ) {
                         AppRatingBar(
@@ -114,7 +114,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             onRatingChange = {}
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
                     Row(
                         Modifier
                             .fillMaxWidth()
@@ -138,7 +138,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             AppButtons.AppStandardButton(
                                 onClick = { viewModel.onEvent(RateUsEvent.InAppReviewRequested) },
                                 modifier = Modifier.fillMaxWidth(),
-                                shape = RoundedCornerShape(AppTheme.appButtonSize.medium)
+                                shape = RoundedCornerShape(AppTheme.buttonSize.medium)
                             ) {
                                 AppTexts.LabelLarge(
                                     text = "Rate on Play Store",
@@ -147,7 +147,7 @@ fun RateAppCard(viewModel: RateUsViewModel = hiltViewModel()) {
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                 }
 
             }

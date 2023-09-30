@@ -40,10 +40,10 @@ fun ProfileChipCard(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.appSpacing.medium)
+                .padding(AppTheme.spacing.medium)
         ) {
             ProfileHeader(icon, title)
-            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             ChipList(list)
         }
     }
@@ -65,7 +65,7 @@ private fun ProfileHeader(icon: Int, title: String) {
                 contentDescription = "Card Image",
                 modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
-            Spacer(modifier = Modifier.width(AppTheme.appSpacing.small))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.small))
             AppTexts.BodySmall(text = title)
         }
     }
@@ -75,8 +75,8 @@ private fun ProfileHeader(icon: Int, title: String) {
 @Composable
 private fun ChipList(list: List<HealthProperties>) {
     FlowRow(
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.minSmall)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.minSmall)
     ) {
         list.forEach { healthProperty ->
             DisabledChipForList(textOnChip = healthProperty.name)

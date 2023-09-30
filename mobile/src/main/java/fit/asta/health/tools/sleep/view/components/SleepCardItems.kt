@@ -39,7 +39,7 @@ fun SleepCardItems(
             modifier = modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
             verticalAlignment = Alignment.CenterVertically
         ) {
 

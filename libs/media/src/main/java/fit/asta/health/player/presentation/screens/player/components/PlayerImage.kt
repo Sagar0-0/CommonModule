@@ -21,7 +21,7 @@ fun PlayerImage(
     imageBitmap: ByteArray?,
     modifier: Modifier = Modifier,
 ) {
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
     Box(
         modifier = modifier.padding(horizontal = spacing.extraLarge)
     ) {

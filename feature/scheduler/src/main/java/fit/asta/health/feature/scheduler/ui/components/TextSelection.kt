@@ -36,7 +36,7 @@ fun TextSelection(
     ) {
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -56,7 +56,7 @@ fun TextSelection(
 
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SelectableText(arrowTitle,btnEnabled,onNavigateAction)

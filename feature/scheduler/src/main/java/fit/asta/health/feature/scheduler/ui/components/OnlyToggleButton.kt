@@ -61,7 +61,7 @@ fun OnlyToggleButton(
     ) {
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.Center) {
@@ -80,7 +80,7 @@ fun OnlyToggleButton(
         }
         Box {
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 SelectableText(
@@ -159,7 +159,7 @@ fun RepeatAlarm(
             Box {
                 Row(
                     verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
                 ) {
                     Box(contentAlignment = Alignment.Center) {
                         Icon(

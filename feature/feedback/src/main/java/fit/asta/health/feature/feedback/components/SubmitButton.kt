@@ -31,8 +31,8 @@ fun SubmitButton(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.appSpacing.medium),
-            shape = RoundedCornerShape(AppTheme.appSpacing.small),
+                .padding(horizontal = AppTheme.spacing.medium),
+            shape = RoundedCornerShape(AppTheme.spacing.small),
             colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary)
         ) {
             Text(

@@ -94,13 +94,13 @@ fun WalletScreenUi(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AppTheme.appSpacing.medium)
+                                .padding(AppTheme.spacing.medium)
                                 .height(1.dp)
                                 .background(MaterialTheme.colorScheme.surfaceVariant)
                         )
                         Card(
                             modifier = Modifier
-                                .padding(AppTheme.appSpacing.medium),
+                                .padding(AppTheme.spacing.medium),
                             colors = CardDefaults.cardColors(
                                 containerColor = MaterialTheme.colorScheme.secondaryContainer
                             ),
@@ -108,7 +108,7 @@ fun WalletScreenUi(
                         ) {
                             Text(
                                 modifier = Modifier
-                                    .padding(top = AppTheme.appSpacing.medium, start = AppTheme.appSpacing.medium),
+                                    .padding(top = AppTheme.spacing.medium, start = AppTheme.spacing.medium),
                                 text = "Your transaction history:",
                                 textAlign = TextAlign.Start
                             )
@@ -116,8 +116,8 @@ fun WalletScreenUi(
                             LazyColumn(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = AppTheme.appSpacing.medium),
-                                contentPadding = PaddingValues(AppTheme.appSpacing.medium)
+                                    .padding(top = AppTheme.spacing.medium),
+                                contentPadding = PaddingValues(AppTheme.spacing.medium)
                             ) {
                                 items(transactionHistory) { item ->
                                     TransactionHistoryItem(item)
@@ -128,7 +128,7 @@ fun WalletScreenUi(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AppTheme.appSpacing.medium)
+                                .padding(AppTheme.spacing.medium)
                                 .weight(1f),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -137,7 +137,7 @@ fun WalletScreenUi(
                                 painter = painterResource(id = DrawR.drawable.placeholder_tag),
                                 contentDescription = ""
                             )
-                            Spacer(modifier = Modifier.height(AppTheme.appSpacing.medium))
+                            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                             Text(
                                 textAlign = TextAlign.Center,
                                 text = stringResource(id = StringR.string.no_transactions_text)
@@ -158,11 +158,11 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AppTheme.appSpacing.medium),
+            .padding(bottom = AppTheme.spacing.medium),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(end = AppTheme.appSpacing.small),
+            modifier = Modifier.padding(end = AppTheme.spacing.small),
             imageVector = if (received) Icons.Default.MonetizationOn else Icons.Default.MoneyOff,
             contentDescription = ""
         )
@@ -197,7 +197,7 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.medium)
+            .padding(AppTheme.spacing.medium)
             .height(1.dp)
             .background(MaterialTheme.colorScheme.onSecondaryContainer)
     )
@@ -208,7 +208,7 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.appSpacing.medium),
+            .padding(AppTheme.spacing.medium),
         colors = CardDefaults.cardColors(
             containerColor = MaterialTheme.colorScheme.primaryContainer
         ),
@@ -217,24 +217,24 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.appSpacing.small),
+                .padding(AppTheme.spacing.small),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .padding(AppTheme.appSpacing.small)
+                    .padding(AppTheme.spacing.small)
             ) {
                 Text(text = amount.toString(), style = MaterialTheme.typography.headlineLarge)
-                Spacer(modifier = Modifier.height(AppTheme.appSpacing.extraSmall))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
                 Text(text = "available balance")
             }
             Button(
-                modifier = Modifier.padding(AppTheme.appSpacing.small),
+                modifier = Modifier.padding(AppTheme.spacing.small),
                 onClick = onButtonClick
             ) {
                 Text(
-                    modifier = Modifier.padding(AppTheme.appSpacing.small),
+                    modifier = Modifier.padding(AppTheme.spacing.small),
                     text = "Redeem"
                 )
             }

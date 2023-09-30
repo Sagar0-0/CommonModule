@@ -48,9 +48,9 @@ fun LifeStyleLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AppTheme.appSpacing.medium),
-        contentPadding = PaddingValues(vertical = AppTheme.appSpacing.medium),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.medium)
+            .padding(AppTheme.spacing.medium),
+        contentPadding = PaddingValues(vertical = AppTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
     ) {
         item {
             ProfileSessionCard(

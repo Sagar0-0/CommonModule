@@ -130,7 +130,7 @@ fun TodayContent(
                 .padding(paddingValues)
                 .background(color = MaterialTheme.colorScheme.background),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
         ) {
             item {
                 NameAndMoodHomeScreenHeader(userName = userName,
@@ -360,12 +360,12 @@ fun TodayItem(
     ) {
         Column(
             modifier = modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.minSmall),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.minSmall),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.appSpacing.small),
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.small),
                 modifier = modifier.fillMaxWidth()
             ) {
                 AsyncImage(
@@ -380,7 +380,7 @@ fun TodayItem(
                         .width(80.dp)
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Row(

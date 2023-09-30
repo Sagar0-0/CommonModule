@@ -58,7 +58,7 @@ fun MusicScreen(
     onBack: () -> Unit,
 ) {
 
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
 
     val lazyListState = rememberLazyListState()
 
@@ -134,7 +134,7 @@ fun TrackItem(
     playPauseTrack: (Boolean, Boolean) -> Unit,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AppTheme.appSpacing
+    val spacing = AppTheme.spacing
     val context = LocalContext.current
     val isRunning = musicState.currentSong.id == song.id
 

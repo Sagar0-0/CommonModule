@@ -23,7 +23,7 @@ fun TwoButtonLayout(
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.appSpacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
     ) {
         AppButtons.AppOutlinedButton(
             onClick = onClickButton1,

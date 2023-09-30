@@ -101,7 +101,7 @@ object AppTheme {
     /**
      * Aspect Ratio of the App
      */
-    val appAspectRatio: AppAspectRatio
+    val aspectRatio: AppAspectRatio
         @Composable
         @ReadOnlyComposable
         get() = LocalAppAspectRatio.current
@@ -125,7 +125,7 @@ object AppTheme {
     /**
      * Default elevations of the app
      */
-    val appElevation: AppElevation
+    val elevation: AppElevation
         @Composable
         @ReadOnlyComposable
         get() = LocalAppElevation.current
@@ -133,7 +133,7 @@ object AppTheme {
     /**
      * Default icon sizes of the App
      */
-    val appIconSize: AppIconSize
+    val iconSize: AppIconSize
         @Composable
         @ReadOnlyComposable
         get() = LocalAppIconSize.current
@@ -141,7 +141,7 @@ object AppTheme {
     /**
      * Default Shapes of the App
      */
-    val appShape: AppShape
+    val shape: AppShape
         @Composable
         @ReadOnlyComposable
         get() = LocalAppShape.current
@@ -149,7 +149,7 @@ object AppTheme {
     /**
      * Default Spacing for the App
      */
-    val appSpacing: AppSpacing
+    val spacing: AppSpacing
         @Composable
         @ReadOnlyComposable
         get() = LocalAppSpacing.current
@@ -157,7 +157,7 @@ object AppTheme {
     /**
      * Default Tint Theme for the app
      */
-    val appTintTheme: AppTintTheme
+    val tintTheme: AppTintTheme
         @Composable
         @ReadOnlyComposable
         get() = LocalAppTintTheme.current
@@ -165,7 +165,7 @@ object AppTheme {
     /**
      * Default Box Sizes for the App
      */
-    val appBoxSize: AppBoxSize
+    val boxSize: AppBoxSize
         @Composable
         @ReadOnlyComposable
         get() = LocalAppBoxSize.current
@@ -173,7 +173,7 @@ object AppTheme {
     /**
      * Default Button sizes for the App
      */
-    val appButtonSize: AppButtonSize
+    val buttonSize: AppButtonSize
         @Composable
         @ReadOnlyComposable
         get() = LocalAppButtonSize.current
