@@ -9,7 +9,7 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.designsystem.components.generic.AppBanner
+import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
 import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.components.TstBannerCard
@@ -42,7 +42,7 @@ fun HomeScreenLayout(
         content = {
 
             item(span = { GridItemSpan(columns) }) {
-                AppBanner(bannerList = toolsHome.banners, content = { page ->
+                AppHorizontalPager(bannerList = toolsHome.banners, content = { page ->
                     ToolsHmScreenTopBanner(
                         bannerDataPages = toolsHome.banners[page]
                     )
@@ -121,7 +121,7 @@ fun HomeScreenLayout(
             }
 
             item(span = { GridItemSpan(columns) }) {
-                AppBanner(bannerList = toolsHome.testimonials, content = { page ->
+                AppHorizontalPager(bannerList = toolsHome.testimonials, content = { page ->
                     TstBannerCard(testimonialsData = toolsHome.testimonials[page])
                 })
             }

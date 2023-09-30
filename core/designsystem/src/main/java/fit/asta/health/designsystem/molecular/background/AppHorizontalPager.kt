@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalPagerApi::class)
 
-package fit.asta.health.designsystem.components.generic
+package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -19,11 +19,12 @@ import com.google.accompanist.pager.HorizontalPager
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppHorizontalPagerIndicator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
 
-/**The [AppBanner] composable function is a custom component in Jetpack Compose, a declarative UI
+/**The [AppHorizontalPager] composable function is a custom component in Jetpack Compose, a declarative UI
  *  framework for Android. This component provides a horizontally scrollable banner or carousel
  *  with animation and dot indicators. It takes a list of items (bannerList) and displays them
  *  one by one, allowing users to swipe horizontally to view different items.
@@ -38,7 +39,7 @@ import kotlin.math.absoluteValue
 
 @OptIn(ExperimentalPagerApi::class)
 @Composable
-fun <T> AppBanner(
+fun <T> AppHorizontalPager(
     bannerList: List<T>,
     modifier: Modifier = Modifier,
     content: @Composable BoxScope.(page: Int) -> Unit,
@@ -47,7 +48,6 @@ fun <T> AppBanner(
     val pagerState = rememberPagerState(pageCount = bannerList.size)
     val scope = rememberCoroutineScope()
 
-    val bannerListSize = bannerList.size
     val animationDelay = 2500L
     val minScale = 0.85f
     val maxScale = 1f
@@ -55,8 +55,7 @@ fun <T> AppBanner(
     LaunchedEffect(pagerState.currentPage) {
         scope.launch {
             delay(animationDelay)
-            var newPosition = pagerState.currentPage + 1
-            if (newPosition > (bannerListSize - 1)) newPosition = 0
+            val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
             pagerState.animateScrollToPage(newPosition)
         }
     }
@@ -67,19 +66,21 @@ fun <T> AppBanner(
             verticalAlignment = Alignment.Top,
             horizontalAlignment = Alignment.CenterHorizontally
         ) { page ->
-            Box(modifier = modifier
-                .graphicsLayer {
-                    val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
-                    lerp(
-                        start = minScale,
-                        stop = maxScale,
-                        fraction = 1f - pageOffset.coerceIn(0f, 1f)
-                    ).also { scale ->
-                        scaleX = scale
-                        scaleY = scale
+            Box(
+                modifier = modifier
+                    .graphicsLayer {
+                        val pageOffset = calculateCurrentOffsetForPage(page).absoluteValue
+                        lerp(
+                            start = minScale,
+                            stop = maxScale,
+                            fraction = 1f - pageOffset.coerceIn(0f, 1f)
+                        ).also { scale ->
+                            scaleX = scale
+                            scaleY = scale
+                        }
                     }
-                }
-                .fillMaxWidth()) {
+                    .fillMaxWidth()
+            ) {
                 content(page)
             }
             //Horizontal dot indicator

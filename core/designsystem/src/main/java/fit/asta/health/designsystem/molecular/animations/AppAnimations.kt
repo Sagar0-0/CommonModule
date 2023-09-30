@@ -1,13 +1,9 @@
-package fit.asta.health.designsystem.components.generic
+package fit.asta.health.designsystem.molecular.animations
 
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material.ContentAlpha
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,51 +15,49 @@ import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import fit.asta.health.designsystem.AppTheme
 
+
 /** [AppDivider] is a compose method, which creates a horizontal divider line.
  * [AppDividerLineWidth] define an object containing custom divider widths.
  */
-
-
 object AppDividerLineWidth {
     val TstDividerWidth = 71.dp
 }
 
+
 /** @param modifier (optional) - A set of modifiers to customize the layout and behavior of the [AppDivider].
  * @param lineWidth (required): The width of the divider line. */
-
 @Composable
 fun AppDivider(
-    lineWidth: Dp,
     modifier: Modifier = Modifier,
+    lineWidth: Dp
 ) {
     Divider(
-        color = MaterialTheme.colorScheme.primary,
+        color = AppTheme.colors.primary,
         thickness = AppTheme.appSpacing.extraSmall,
         modifier = modifier
-            .clip(MaterialTheme.shapes.extraSmall)
+            .clip(AppTheme.appShape.small)
             .width(width = lineWidth)
     )
 }
 
-/**[AppProgressArc] is a custom composable function in Jetpack Compose, which provides a circular
+
+/**[AppCircularProgressIndicator] is a custom composable function in Jetpack Compose, which provides a circular
  * progress indicator for the app.
  * @param modifier (optional) - A set of modifiers to customize the layout and behavior of the AppProgressArc.
  * @param strokeWidth (optional) - The width of the circular progress indicator stroke.
  * */
-
 @Composable
-fun AppProgressArc(
+fun AppCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth
 ) {
     CircularProgressIndicator(
         modifier = modifier,
-        color = MaterialTheme.colorScheme.primary,
-        strokeWidth = strokeWidth,
-        trackColor = ProgressIndicatorDefaults.circularTrackColor,
-        strokeCap = ProgressIndicatorDefaults.CircularIndeterminateStrokeCap
+        color = AppTheme.colors.primary,
+        strokeWidth = strokeWidth
     )
 }
+
 
 /**[AppHorizontalPagerIndicator] function is a Composable function that displays a horizontal pager
  * indicator.
@@ -72,7 +66,6 @@ fun AppProgressArc(
  * @param pagerState A required parameter that represents the state of the pager. It holds
  * information about the current page, the number of items, and allows controlling the pager's behavior.
  * */
-
 @OptIn(ExperimentalPagerApi::class)
 @Composable
 fun AppHorizontalPagerIndicator(
@@ -82,8 +75,8 @@ fun AppHorizontalPagerIndicator(
     HorizontalPagerIndicator(
         pagerState = pagerState,
         modifier = modifier,
-        activeColor = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
-        inactiveColor = LocalContentColor.current.copy(alpha = ContentAlpha.disabled),
+        activeColor = AppTheme.colors.onSurface,
+        inactiveColor = AppTheme.colors.onSurface.copy(alpha = .5f),
         indicatorWidth = AppTheme.appSpacing.small,
         indicatorHeight = AppTheme.appSpacing.small,
         spacing = AppTheme.appSpacing.small,

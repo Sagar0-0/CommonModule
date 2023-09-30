@@ -20,7 +20,7 @@ import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppErrorMsgCard
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.AppProgressArc
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
@@ -96,7 +96,7 @@ fun LoadingItem() {
             .fillMaxWidth()
             .wrapContentHeight(), contentAlignment = Alignment.Center
     ) {
-        AppProgressArc(
+        AppCircularProgressIndicator(
             modifier = Modifier
                 .size(AppTheme.appBoxSize.largeSmall)
                 .padding(AppTheme.appSpacing.medium),

@@ -1,10 +1,14 @@
 package fit.asta.health.designsystem.molecular.other
 
+import android.content.res.Configuration
+import androidx.compose.foundation.layout.Column
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.ratingbar.RatingBar
@@ -14,6 +18,28 @@ import com.smarttoolfactory.ratingbar.model.RatingInterval
 import com.smarttoolfactory.ratingbar.model.ShimmerEffect
 import fit.asta.health.core.designsystem.R
 import fit.asta.health.designsystem.AppTheme
+
+
+// Preview Function
+@Preview("Light Rating")
+@Preview(
+    name = "Dark Rating",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun DefaultPreview1() {
+    AppTheme {
+        Surface {
+            Column {
+                AppRatingBar(
+                    rating = 5f,
+                    onRatingChange = {}
+                )
+            }
+        }
+    }
+}
 
 
 /** [AppRatingBar] that can be used for setting rating by passing a fixed value or using gestures
