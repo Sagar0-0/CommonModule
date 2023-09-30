@@ -57,7 +57,7 @@ import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.designsystem.organism.common.AppDatePicker
 import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
 import fit.asta.health.designsystem.organism.common.AppTitleElevatedCard
-import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.designsystem.organism.track.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import java.text.DecimalFormat
