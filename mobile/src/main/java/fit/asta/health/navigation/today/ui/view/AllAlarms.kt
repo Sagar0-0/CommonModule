@@ -20,6 +20,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -39,12 +40,12 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.AppTheme
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -174,7 +175,15 @@ fun AlarmItem(
                 AppButtons.AppToggleButton(
                     modifier = Modifier.weight(.5f),
                     checked = state,
-                    onCheckedChange = onStateChange
+                    onCheckedChange = onStateChange,
+                    colors = SwitchDefaults.colors(
+                        checkedThumbColor = MaterialTheme.colorScheme.primary,
+                        uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
+                        checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                        uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                        checkedBorderColor = MaterialTheme.colorScheme.primary,
+                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                    )
                 )
             }
         }

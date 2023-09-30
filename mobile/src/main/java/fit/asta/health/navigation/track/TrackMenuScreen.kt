@@ -56,9 +56,9 @@ import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.designsystem.organism.common.AppDatePicker
-import fit.asta.health.navigation.track.ui.components.TrackTopTabBar
+import fit.asta.health.designsystem.organism.common.AppTopTabBar
 import fit.asta.health.designsystem.organism.common.AppTitleElevatedCard
-import fit.asta.health.navigation.track.ui.components.TrackingDetailsCard
+import fit.asta.health.designsystem.organism.track.TrackingDetailsCard
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -174,7 +174,7 @@ fun TrackMenuScreenControl() {
         ) {
 
             // This Function makes the Tab Layout UI
-            TrackTopTabBar(
+            AppTopTabBar(
                 tabList = tabList,
                 selectedItem = selectedItem.intValue
             ) {
