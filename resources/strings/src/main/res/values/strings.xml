@@ -638,4 +638,5 @@
     <string name="meditation_benefits">Continue playing and you will \n soon notice the benefits of this \n meditation in your daily life</string>
     <string name="resume_now">Resume Now</string>
     <string name="meditate_later">Meditate Later</string>
+    <string name="dnd_mode">DND mode</string>
 </resources>

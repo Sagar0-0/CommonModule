@@ -58,7 +58,8 @@ fun NavGraphBuilder.meditationNavigation(
                 onClickLanguage = { navController.navigate(route = MeditationScreen.Language.route) },
                 onClickLevel = { navController.navigate(route = MeditationScreen.Level.route) },
                 onClickInstructor = { navController.navigate(route = MeditationScreen.Instructor.route) },
-                onBack = onBack
+                onBack = onBack,
+                onDNDPermission = viewModel::checkDNDStatus
             )
         }
 //        composable(MeditationScreen.Music.route) {
