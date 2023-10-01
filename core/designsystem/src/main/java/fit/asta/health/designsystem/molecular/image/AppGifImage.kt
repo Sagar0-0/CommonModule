@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components
+package fit.asta.health.designsystem.molecular.image
 
 import android.os.Build.VERSION.SDK_INT
 import androidx.appcompat.content.res.AppCompatResources
@@ -17,7 +17,7 @@ import coil.size.Size
 import fit.asta.health.resources.drawables.R
 
 @Composable
-fun GifImage(
+fun AppGifImage(
     modifier: Modifier = Modifier,
     contentScale: ContentScale,
     url: String,

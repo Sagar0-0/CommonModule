@@ -18,7 +18,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
-import fit.asta.health.designsystem.components.GifImage
+import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
@@ -72,7 +72,7 @@ fun OnboardingScreen(
                             .padding(AppTheme.spacing.small)
                             .clip(AppTheme.shape.large)
                     ) {
-                        GifImage(
+                        AppGifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(bottom = AppTheme.spacing.medium),
