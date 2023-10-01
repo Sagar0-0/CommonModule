@@ -33,14 +33,16 @@ private fun DefaultPreview1() {
                 AppTextButton(
                     onClick = {},
                     textToShow = "Enabled Button",
-                    leadingIcon = Icons.Default.Person
+                    leadingIcon = Icons.Default.Person,
+                    trailingIcon = Icons.Default.Person
                 )
 
                 AppTextButton(
                     enabled = false,
                     onClick = {},
                     textToShow = "Disabled Button",
-                    leadingIcon = Icons.Default.Person
+                    leadingIcon = Icons.Default.Person,
+                    trailingIcon = Icons.Default.Person
                 )
             }
         }
@@ -51,22 +53,26 @@ private fun DefaultPreview1() {
 /**
  * Asta text button with generic content slot. Wraps Material 3 [TextButton].
  *
- * @param onClick Will be called when the user clicks the button.
  * @param modifier Modifier to be applied to the button.
  * @param enabled Controls the enabled state of the button. When `false`, this button will not be
  * clickable and will appear disabled to accessibility services.
  * @param textToShow The button Text to be shown to the UI.
  * @param leadingIcon This is the leading Icon of the Button which is optional
- * @param iconDes This is the description of the Icon which is provided and it is also optional
+ * @param leadingIconDes This is the description of the Icon which is provided and it is also optional
+ * @param trailingIcon This is the trailing Icon of the Button which is optional
+ * @param trailingIconDes This is the description of the Icon which is provided and it is also optional
+ * @param onClick Will be called when the user clicks the button.
  */
 @Composable
 fun AppTextButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
-    iconDes: String? = null
+    leadingIconDes: String? = null,
+    trailingIcon: ImageVector? = null,
+    trailingIconDes: String? = null,
+    onClick: () -> Unit
 ) {
 
     TextButton(
@@ -75,7 +81,7 @@ fun AppTextButton(
         enabled = enabled,
         colors = ButtonDefaults.textButtonColors(
             containerColor = Color.Transparent,
-            contentColor = AppTheme.colors.onSurface,
+            contentColor = AppTheme.colors.primary,
             disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
         )
     ) {
@@ -83,7 +89,7 @@ fun AppTextButton(
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
-                contentDescription = iconDes,
+                contentDescription = leadingIconDes,
                 modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
             )
         }
@@ -91,9 +97,17 @@ fun AppTextButton(
         CaptionTexts.Level1(
             text = textToShow,
             color = if (enabled)
-                AppTheme.colors.onSurface
+                AppTheme.colors.primary
             else
                 AppTheme.colors.onSurface.copy(alpha = .35f)
         )
+
+        if (trailingIcon != null) {
+            Icon(
+                imageVector = trailingIcon,
+                contentDescription = trailingIconDes,
+                modifier = Modifier.padding(start = AppTheme.spacing.extraSmall)
+            )
+        }
     }
 }

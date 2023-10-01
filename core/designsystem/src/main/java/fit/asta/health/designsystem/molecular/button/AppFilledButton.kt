@@ -52,21 +52,21 @@ private fun DefaultPreview1() {
  * Asta filled button with generic content slot. Wraps Material 3 [Button].
  *
  * @param modifier Modifier to be applied to the button.
- * @param onClick Will be called when the user clicks the button.
  * @param enabled Controls the enabled state of the button. When `false`, this button will not be
  * clickable and will appear disabled to accessibility services.
  * @param textToShow The button text content to be shown content.
  * @param leadingIcon This is the leading Icon of the Button which is optional
  * @param iconDes This is the description of the Icon which is provided and it is also optional
+ * @param onClick Will be called when the user clicks the button.
  */
 @Composable
 fun AppFilledButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
-    iconDes: String? = null
+    iconDes: String? = null,
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,

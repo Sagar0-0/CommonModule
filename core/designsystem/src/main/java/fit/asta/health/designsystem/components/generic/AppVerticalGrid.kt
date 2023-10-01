@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.AppTheme
@@ -25,15 +24,15 @@ import fit.asta.health.designsystem.AppTheme
 fun AppVerticalGrid(
     count: Int,
     modifier: Modifier = Modifier,
-    content: LazyGridScope.() -> Unit,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
+    content: LazyGridScope.() -> Unit
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = count),
         content = content,
         modifier = modifier
-            .background(MaterialTheme.colorScheme.background)
+            .background(AppTheme.colors.background)
             .fillMaxSize()
             .padding(AppTheme.spacing.medium),
         verticalArrangement = verticalArrangement,

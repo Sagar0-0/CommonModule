@@ -3,7 +3,6 @@ package fit.asta.health.navigation.tools.ui.view.component
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -16,85 +15,74 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun ToolsCardLayout(
     cardTitle: String,
     type: String,
     imgUrl: String,
-    onClick: (type: String) -> Unit,
+    onClick: (type: String) -> Unit
 ) {
     AppCard(onClick = { onClick(type) }) {
-        Column(modifier = Modifier.background(Color.Transparent)) {
-            Box {
-                AppDefServerImg(
-                    model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
-                    modifier = Modifier
-                        .aspectRatio(AppTheme.aspectRatio.square)
-                        .clip(
-                            RoundedCornerShape(
-                                bottomStart = AppTheme.spacing.small,
-                                bottomEnd = AppTheme.spacing.small
-                            )
-                        ),
-                    contentScale = ContentScale.Crop,
-                )
-                ScheduleButtonIcon(onButtonClick = { /*TODO Schedule Button Click*/ })
-            }
-            AppTexts.TitleLarge(
-                text = cardTitle, modifier = Modifier.padding(
-                    start = AppTheme.spacing.small,
-                    top = AppTheme.spacing.small,
-                    bottom = AppTheme.spacing.small
-                )
+        Box {
+
+            // Tools Card Images
+            AppNetworkImage(
+                modifier = Modifier
+                    .aspectRatio(AppTheme.aspectRatio.square)
+                    .clip(
+                        RoundedCornerShape(
+                            bottomStart = AppTheme.spacing.small,
+                            bottomEnd = AppTheme.spacing.small
+                        )
+                    ),
+                model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
+                contentScale = ContentScale.Crop,
             )
+
+            // Tools Card Right Top Button
+            ScheduleButtonIcon {
+                /*TODO Schedule Button Click*/
+            }
         }
+
+        // Tools Card Texts
+        BodyTexts.Level1(
+            text = cardTitle,
+            modifier = Modifier.padding(AppTheme.spacing.small)
+        )
     }
 }
 
 @Composable
 fun ScheduleButtonIcon(
-    onButtonClick: () -> Unit,
     imageVector: ImageVector = Icons.Filled.Schedule,
+    onButtonClick: () -> Unit,
 ) {
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.small), horizontalArrangement = Arrangement.End
+            .padding(AppTheme.spacing.small),
+        horizontalArrangement = Arrangement.End
     ) {
-        ScheduleIconLayout(onButtonClick, imageVector)
-    }
-}
-
-@Composable
-fun ScheduleIconLayout(
-    onButtonClick: () -> Unit,
-    imageVector: ImageVector = Icons.Filled.Schedule,
-) {
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = Modifier
-            .size(AppTheme.iconSize.regularSize)
-            .clip(RoundedCornerShape(AppTheme.spacing.small))
-            .background(color = Color.White)
-    ) {
-        AppButtons.AppIconButton(
-            onClick = onButtonClick,
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier
+                .size(AppTheme.iconSize.regularSize)
+                .clip(RoundedCornerShape(AppTheme.spacing.small))
+                .background(AppTheme.colors.surface)
         ) {
-            AppDefaultIcon(
+            AppIconButton(
                 imageVector = imageVector,
-                contentDescription = "Schedule Icon",
-                tint = Color.DarkGray
+                onClick = onButtonClick
             )
         }
     }

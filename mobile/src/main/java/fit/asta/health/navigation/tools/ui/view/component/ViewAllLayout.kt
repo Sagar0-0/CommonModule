@@ -3,29 +3,31 @@ package fit.asta.health.navigation.tools.ui.view.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.MaterialTheme
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 @Composable
 fun ViewAllLayout(
-    title: String = "",
+    title: String,
     clickString: String = "",
     onClick: (() -> Unit)? = null,
 ) {
     Row(
-        horizontalArrangement = Arrangement.SpaceBetween,
         modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AppTexts.TitleLarge(text = title)
+        HeadingTexts.Level1(text = title)
         onClick?.let { onClick ->
-            AppButtons.AppTextButton(onClick = onClick) {
-                AppTexts.LabelLarge(text = clickString, color = MaterialTheme.colorScheme.primary)
-            }
+            AppTextButton(
+                textToShow = clickString,
+                trailingIcon = Icons.Filled.KeyboardArrowRight
+            ) { onClick() }
         }
     }
 }
