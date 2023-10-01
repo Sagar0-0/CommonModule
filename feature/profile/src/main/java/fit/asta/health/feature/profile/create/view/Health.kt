@@ -6,9 +6,7 @@
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
     ExperimentalCoroutinesApi::class,
-    ExperimentalMaterialApi::class,
     ExperimentalFoundationApi::class,
-    ExperimentalMaterialApi::class,
     ExperimentalCoroutinesApi::class
 )
 
@@ -38,10 +36,10 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.ADDICTION
 import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.AILMENTS
@@ -63,8 +61,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 
 
-@ExperimentalMaterialApi
-@OptIn(ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HealthCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
@@ -79,12 +76,15 @@ fun HealthCreateScreen(
     val searchQuery = remember { mutableStateOf("") }
 
     val scope = rememberCoroutineScope()
+
     var currentBottomSheet: HealthCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
+
     var modalBottomSheetValue by remember {
         mutableStateOf(ModalBottomSheetValue.Hidden)
     }
+
     val modalBottomSheetState = rememberModalBottomSheetState(initialValue = modalBottomSheetValue)
 
     val openSheet = {

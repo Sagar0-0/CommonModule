@@ -15,8 +15,10 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
+import androidx.compose.material3.SwitchDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.CornerRadius
@@ -24,10 +26,15 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.resources.strings.R
 
 @Composable
 fun CardItem(
@@ -117,3 +124,29 @@ fun BottomSheetDragHandle(
         .height(height))
 }
 
+@Composable
+fun DNDCard(modifier: Modifier, mCheckedState: Boolean, onCheckClicked: (Boolean) -> Unit) {
+    AppCard(modifier = modifier) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceBetween
+        ) {
+            AppTexts.HeadlineSmall(text = stringResource(R.string.dnd_mode))
+            AppButtons.AppToggleButton(
+                checked = mCheckedState,
+                onCheckedChange = onCheckClicked,
+                colors = SwitchDefaults.colors(
+                    checkedThumbColor = MaterialTheme.colorScheme.primary,
+                    uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
+                    checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
+                    uncheckedTrackColor = MaterialTheme.colorScheme.background,
+                    checkedBorderColor = MaterialTheme.colorScheme.primary,
+                    uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                )
+            )
+        }
+    }
+}

@@ -1,5 +1,6 @@
 package fit.asta.health.meditation.viewmodel
 
+import android.app.NotificationManager
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
@@ -59,7 +60,8 @@ class MeditationViewModel @Inject constructor(
     private val localRepo: LocalRepo,
     private val player: Player,
     private val prefManager: PrefManager,
-    @UID private val uId: String
+    @UID private val uId: String,
+    private val notificationManager: NotificationManager
 ) : ViewModel() {
     fun getPlayer() = player
     private var backgroundPlayer: Player? = null
@@ -153,21 +155,39 @@ class MeditationViewModel @Inject constructor(
                 _selectedInstructor.value = event.instructor
             }
 
+            is MEvent.SetDNDMode -> {
+                _uiState.value = _uiState.value.copy(dndMode = event.value)
+            }
+
             is MEvent.Start -> {
                 if (_uiState.value.targetValue < 1f) {
                     Toast.makeText(event.context, "select target", Toast.LENGTH_SHORT).show()
                 } else {
                     putMeditationData()
                     setBackgroundSound(context = event.context)
+                    if (_uiState.value.dndMode) {
+                        setDNDModeON()
+                    }
                 }
             }
 
             is MEvent.End -> {
                 postData()
+                if (_uiState.value.dndMode) {
+                    setDNDModeOff()
+                }
                 release(context = event.context)
             }
         }
     }
+
+    fun checkDNDStatus() = notificationManager.isNotificationPolicyAccessGranted
+    private fun setDNDModeON() =
+        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALARMS)
+
+    private fun setDNDModeOff() =
+        notificationManager.setInterruptionFilter(NotificationManager.INTERRUPTION_FILTER_ALL)
+
 
     private fun loadData() {
         viewModelScope.launch {

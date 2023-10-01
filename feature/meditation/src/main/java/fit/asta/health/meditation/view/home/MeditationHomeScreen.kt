@@ -1,5 +1,10 @@
 package fit.asta.health.meditation.view.home
 
+import android.content.Intent
+import android.provider.Settings
+import androidx.activity.ComponentActivity
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
@@ -26,14 +31,12 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystem.components.CardItem
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -49,9 +52,17 @@ fun MeditationHomeScreen(
     onClickLanguage: () -> Unit,
     onClickLevel: () -> Unit,
     onClickInstructor: () -> Unit,
+    onDNDPermission: () -> Boolean,
     onBack: () -> Unit,
 ) {
 
+    val requestPermissionLauncher = rememberLauncherForActivityResult(
+        ActivityResultContracts.StartActivityForResult()
+    ) { result ->
+        if (result.resultCode == ComponentActivity.RESULT_OK) {
+            Event(MEvent.SetDNDMode(true))
+        }
+    }
     val sheetState = rememberStandardBottomSheetState(
         initialValue = SheetValue.PartiallyExpanded,
         skipHiddenState = true
@@ -145,6 +156,15 @@ fun MeditationHomeScreen(
                     }
                 }
             }
+            DNDCard(modifier = Modifier.fillMaxWidth(), mCheckedState = uiState.dndMode,
+                onCheckClicked = {
+                    if (onDNDPermission()) {
+                        Event(MEvent.SetDNDMode(it))
+                    } else {
+                        val intent = Intent(Settings.ACTION_NOTIFICATION_POLICY_ACCESS_SETTINGS)
+                        requestPermissionLauncher.launch(intent)
+                    }
+                })
             AnimatedVisibility(modifier = Modifier.fillMaxWidth(), visible = uiState.start) {
                 ButtonWithColor(
                     modifier = Modifier.fillMaxWidth(),

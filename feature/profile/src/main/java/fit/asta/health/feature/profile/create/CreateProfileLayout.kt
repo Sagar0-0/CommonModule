@@ -7,12 +7,12 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
-import androidx.compose.material.icons.automirrored.outlined.NavigateBefore
 import androidx.compose.material.icons.filled.Emergency
 import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
+import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -22,13 +22,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
@@ -79,7 +79,7 @@ fun CreateProfileLayout(
                     .padding(start = AppTheme.spacing.small),
                 verticalAlignment = Alignment.CenterVertically,
             ) {
-                AppDefaultIcon(imageVector = Icons.AutoMirrored.Outlined.NavigateBefore,
+                AppDefaultIcon(imageVector = Outlined.NavigateBefore,
                     contentDescription = "NavigateBefore",
                     modifier = Modifier.clickable {
                         showCustomDialogWithResult = !showCustomDialogWithResult
