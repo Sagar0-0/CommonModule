@@ -36,8 +36,9 @@ class MainViewModel
         prefManager.setReferralChecked()
     }
 
-    fun setIsLocationEnabled() {
+    fun setIsLocationEnabled(): Boolean {
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
+        return addressRepo.isLocationEnabled()
     }
 
     fun isPermissionGranted() = addressRepo.isPermissionGranted()
@@ -128,16 +129,16 @@ class MainViewModel
                         }
                     }
 
-                    is LocationResponse.Error -> {
+                    LocationResponse.ServiceDisabled -> {
                         _currentAddressName.value =
                             UiState.ErrorMessage(R.string.error_fetching_location)
-                    }
-
-                    LocationResponse.ServiceDisabled -> {
                         _isLocationEnabled.value = false
                     }
 
-                    else -> {}
+                    else -> {
+                        _currentAddressName.value =
+                            UiState.ErrorMessage(R.string.error_fetching_location)
+                    }
                 }
             }
         }

@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CheckReferralDTO(
     @SerializedName("data")
-    val `data`: Data? = null,
+    val data: Data? = null,
     @SerializedName("status")
     val status: Status = Status()
 ) {

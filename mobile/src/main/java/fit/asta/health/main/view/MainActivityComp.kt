@@ -106,8 +106,7 @@ fun NavGraphBuilder.homeScreen(
                     if (activityResult.resultCode == AppCompatActivity.RESULT_OK)
                         mainViewModel.checkPermissionAndUpdateCurrentAddress()
                     else {
-                        mainViewModel.setIsLocationEnabled()
-                        if (!isLocationEnabled) {
+                        if (!mainViewModel.setIsLocationEnabled()) {
                             Toast.makeText(
                                 context,
                                 R.string.location_access_required.toStringFromResId(context),
@@ -119,15 +118,16 @@ fun NavGraphBuilder.homeScreen(
                 }
 
             fun enableLocationAndUpdateAddress() {
-                mainViewModel.setIsLocationEnabled()
-                if (mainViewModel.isPermissionGranted() && isLocationEnabled) {
+                if (mainViewModel.isPermissionGranted() && mainViewModel.setIsLocationEnabled()) {
                     mainViewModel.checkPermissionAndUpdateCurrentAddress()
                 } else {
                     if (!mainViewModel.isPermissionGranted()) {
                         if (locationPermissionRejectedCount >= 2) {
                             Toast.makeText(
                                 context,
-                                R.string.grant_locations_permission_to_continue.toStringFromResId(context),
+                                R.string.grant_locations_permission_to_continue.toStringFromResId(
+                                    context
+                                ),
                                 Toast.LENGTH_SHORT
                             )
                                 .show()
