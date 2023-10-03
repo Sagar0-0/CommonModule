@@ -15,7 +15,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
@@ -76,8 +75,8 @@ fun AppElevatedButton(
         colors = ButtonDefaults.buttonColors(
             containerColor = AppTheme.colors.primary,
             contentColor = AppTheme.colors.onPrimary,
-            disabledContainerColor = AppTheme.colors.onSurface.copy(alpha = .15f),
-            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
+            disabledContainerColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level1),
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
             defaultElevation = AppTheme.elevation.extraSmall,
@@ -86,7 +85,12 @@ fun AppElevatedButton(
             hoveredElevation = AppTheme.elevation.smallMedium,
             disabledElevation = AppTheme.elevation.noElevation
         ),
-        contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
+        contentPadding = PaddingValues(
+            start = AppTheme.spacing.extraMedium,
+            top = AppTheme.spacing.small,
+            end = AppTheme.spacing.extraMedium,
+            bottom = AppTheme.spacing.small
+        )
     ) {
 
         if (leadingIcon != null) {
@@ -102,7 +106,7 @@ fun AppElevatedButton(
             color = if (enabled)
                 AppTheme.colors.onPrimary
             else
-                AppTheme.colors.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     }
 }

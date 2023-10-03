@@ -50,7 +50,7 @@ fun AppRadioButton(
     modifier: Modifier = Modifier,
     selected: Boolean,
     enabled: Boolean = true,
-    onClick: (() -> Unit)? = null,
+    onClick: (() -> Unit)? = null
 ) {
     RadioButton(
         modifier = modifier,
@@ -59,9 +59,9 @@ fun AppRadioButton(
         colors = RadioButtonDefaults.colors(
             selectedColor = AppTheme.colors.primary,
             unselectedColor = AppTheme.colors.onSurfaceVariant,
-            disabledSelectedColor = AppTheme.colors.onSurface.copy(alpha = .35f),
-            disabledUnselectedColor = AppTheme.colors.onSurface.copy(alpha = .35f)
+            disabledSelectedColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2),
+            disabledUnselectedColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
-        onClick = onClick,
+        onClick = onClick
     )
 }

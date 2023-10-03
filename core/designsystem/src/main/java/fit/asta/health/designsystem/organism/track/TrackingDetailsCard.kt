@@ -39,16 +39,8 @@ private fun DefaultPreview() {
                 R.drawable.star_foreground,
                 R.drawable.star_foreground
             ),
-            headerTextList = listOf(
-                "Inhaled Quantity",
-                "Total Breathes",
-                "Calories"
-            ),
-            valueList = listOf(
-                "11,000 litres",
-                "6620",
-                "258 kcal"
-            )
+            headerTextList = listOf("Inhaled Quantity", "Total Breathes", "Calories"),
+            valueList = listOf("11,000 litres", "6620", "258 kcal")
         )
     }
 }
@@ -82,7 +74,7 @@ fun TrackingDetailsCard(
                 CaptionTexts.Level2(
                     text = headerTextList[index],
                     textAlign = TextAlign.Start,
-                    color = AppTheme.colors.onSurface.copy(alpha = .7f),
+                    color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level4),
                 )
 
                 BodyTexts.Level3(

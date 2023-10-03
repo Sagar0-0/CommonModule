@@ -82,7 +82,7 @@ fun AppTextButton(
         colors = ButtonDefaults.textButtonColors(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.primary,
-            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     ) {
 
@@ -99,7 +99,7 @@ fun AppTextButton(
             color = if (enabled)
                 AppTheme.colors.primary
             else
-                AppTheme.colors.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
 
         if (trailingIcon != null) {

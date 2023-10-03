@@ -103,7 +103,7 @@ fun AppFilterChip(
         else
             CaptionTexts.Level2(
                 text = textToShow,
-                color = AppTheme.colors.onSurface.copy(alpha = .35f)
+                color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
             )
     }
 

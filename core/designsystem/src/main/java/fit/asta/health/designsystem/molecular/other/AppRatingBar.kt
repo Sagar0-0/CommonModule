@@ -10,7 +10,6 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.ratingbar.RatingBar
 import com.smarttoolfactory.ratingbar.model.GestureStrategy
 import com.smarttoolfactory.ratingbar.model.RateChangeStrategy
@@ -78,7 +77,7 @@ fun AppRatingBar(
     gestureStrategy: GestureStrategy = GestureStrategy.DragAndPress,
     shimmerEffect: ShimmerEffect? = null,
     itemCount: Int = 5,
-    space: Dp = 12.dp,
+    space: Dp = AppTheme.spacing.small,
     ratingInterval: RatingInterval = RatingInterval.Full,
     allowZeroRating: Boolean = true,
     onRatingChangeFinished: ((Float) -> Unit)? = null,

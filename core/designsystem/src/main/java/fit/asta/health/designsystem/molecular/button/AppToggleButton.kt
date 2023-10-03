@@ -76,26 +76,26 @@ fun AppToggleButton(
             uncheckedBorderColor = AppTheme.colors.outline,
             uncheckedIconColor = AppTheme.colors.surfaceVariant,
             disabledCheckedThumbColor = AppTheme.colors.surface
-                .copy(alpha = 1f)
+                .copy(AppTheme.alphaValues.level5)
                 .compositeOver(AppTheme.colors.surface),
             disabledCheckedTrackColor = AppTheme.colors.onSurface
-                .copy(alpha = .15f)
+                .copy(AppTheme.alphaValues.level1)
                 .compositeOver(AppTheme.colors.surface),
             disabledCheckedBorderColor = Color.Transparent,
             disabledCheckedIconColor = AppTheme.colors.onSurface
-                .copy(alpha = .35f)
+                .copy(AppTheme.alphaValues.level2)
                 .compositeOver(AppTheme.colors.surface),
             disabledUncheckedThumbColor = AppTheme.colors.onSurface
-                .copy(alpha = .35f)
+                .copy(AppTheme.alphaValues.level2)
                 .compositeOver(AppTheme.colors.surface),
             disabledUncheckedTrackColor = AppTheme.colors.surfaceVariant
-                .copy(alpha = .15f)
+                .copy(AppTheme.alphaValues.level1)
                 .compositeOver(AppTheme.colors.surface),
             disabledUncheckedBorderColor = AppTheme.colors.onSurface
-                .copy(alpha = .15f)
+                .copy(AppTheme.alphaValues.level1)
                 .compositeOver(AppTheme.colors.surface),
             disabledUncheckedIconColor = AppTheme.colors.surfaceVariant
-                .copy(alpha = .35f)
+                .copy(AppTheme.alphaValues.level2)
                 .compositeOver(AppTheme.colors.surface),
 
             )

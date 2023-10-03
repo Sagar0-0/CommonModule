@@ -3,11 +3,10 @@ package fit.asta.health.designsystem.organism.common
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
@@ -28,10 +27,10 @@ fun AppTitleElevatedCard(
     // This function draws an elevated Card View
     AppElevatedCard(
         modifier = modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(8.dp)
+        shape = AppTheme.shape.medium
     ) {
 
-        Column(modifier = Modifier.padding(8.dp)) {
+        Column(modifier = Modifier.padding(AppTheme.spacing.small)) {
             if (!title.isNullOrEmpty()) {
 
                 HeadingTexts.Level3(
@@ -39,7 +38,11 @@ fun AppTitleElevatedCard(
 
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 16.dp, start = 16.dp, end = 16.dp),
+                        .padding(
+                            top = AppTheme.spacing.medium,
+                            start = AppTheme.spacing.medium,
+                            end = AppTheme.spacing.medium
+                        ),
 
                     // Text Features
                     textAlign = TextAlign.Start

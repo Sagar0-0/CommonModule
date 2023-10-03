@@ -76,7 +76,7 @@ fun AppHorizontalPagerIndicator(
         pagerState = pagerState,
         modifier = modifier,
         activeColor = AppTheme.colors.onSurface,
-        inactiveColor = AppTheme.colors.onSurface.copy(alpha = .5f),
+        inactiveColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3),
         indicatorWidth = AppTheme.spacing.small,
         indicatorHeight = AppTheme.spacing.small,
         spacing = AppTheme.spacing.small,

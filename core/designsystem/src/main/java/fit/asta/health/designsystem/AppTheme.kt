@@ -11,6 +11,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.ReadOnlyComposable
 import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.designsystem.atomic.AppAlphaValues
 import fit.asta.health.designsystem.atomic.AppAspectRatio
 import fit.asta.health.designsystem.atomic.AppTypography
 import fit.asta.health.designsystem.atomic.AppCustomTypography
@@ -43,6 +44,7 @@ import fit.asta.health.designsystem.atomic.LocalAppTypography
 import fit.asta.health.designsystem.atomic.AppShape
 import fit.asta.health.designsystem.atomic.AppSpacing
 import fit.asta.health.designsystem.atomic.AppTintTheme
+import fit.asta.health.designsystem.atomic.LocalAppAlphaValues
 import fit.asta.health.designsystem.atomic.LocalCustomAppTypography
 
 /**
@@ -83,7 +85,8 @@ fun AppTheme(
         LocalAppShape provides AppShape(),
         LocalAppSpacing provides AppSpacing(),
         LocalAppTintTheme provides appTintTheme,
-        LocalAppBoxSize provides AppBoxSize()
+        LocalAppBoxSize provides AppBoxSize(),
+        LocalAppAlphaValues provides AppAlphaValues()
     ) {
         MaterialTheme(
             colorScheme = colorScheme,
@@ -217,6 +220,14 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppCustomSize.current
+
+    /**
+     * Default Custom App Alpha Values
+     */
+    val alphaValues: AppAlphaValues
+        @Composable
+        @ReadOnlyComposable
+        get() = LocalAppAlphaValues.current
 }
 
 @ChecksSdkIntAtLeast(api = Build.VERSION_CODES.S)
