@@ -44,9 +44,10 @@ class StateManager @Inject constructor(
     private val alarmManager: AlarmManager,
     private val notificationManager: NotificationManager
 ) {
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
 
+    @Synchronized
     fun registerAlarm(
         context: Context,
         alarm: AlarmEntity,
@@ -88,7 +89,7 @@ class StateManager @Inject constructor(
         }
     }
 
-
+    @Synchronized
     fun handleIntent(context: Context, intent: Intent) {
         LogUtils.v("handle intent $intent")
         val id: Long = intent.getLongExtra("id", -1)
@@ -144,7 +145,7 @@ class StateManager @Inject constructor(
         }
     }
 
-
+    @Synchronized
     fun dismissAlarm(context: Context, id: Long) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("dismiss ${AlarmUtils.getFormattedTime(context, currentTime)}")
@@ -246,38 +247,7 @@ class StateManager @Inject constructor(
         }
     }
 
-    fun setCurrentAlarm(context: Context, instance: AlarmInstance) {
-        val currentTime: Calendar = Calendar.getInstance()
-        LogUtils.v("setCurrentAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
-        scope.launch {
-            alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
-                val time: Calendar
-                val state: Int
-                if (alarm.interval.statusEnd) {
-                    if (alarm.interval.advancedReminder.status) {
-                        time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PREEND)
-                        state = PRE_END_ALARM_STATE
-                    } else {
-                        time = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.END)
-                        state = END_ALARM_STATE
-                    }
-                    instance.alarmTime = time
-                    instance.mAlarmState = state
-                    alarmInstanceDao.insertAndUpdate(instance)
-                    scheduleInstanceStateChange(context, time, instance, state)
-                } else {
-                    if (!alarm.daysOfWeek.isRepeating) {
-                        cancelScheduledInstanceStateChange(context, instance)
-                        alarmInstanceDao.delete(instance)
-                        alarmDao.deleteAlarm(alarm)
-                        return@launch
-                    } else {
-                        registerAlarm(context, alarm)
-                    }
-                }
-            }
-        }
-    }
+
 
     private fun setPreNotificationAlarm(context: Context, instance: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
@@ -330,6 +300,7 @@ class StateManager @Inject constructor(
         }
     }
 
+    @Synchronized
     private fun scheduleInstanceStateChange(
         context: Context,
         time: Calendar,
@@ -354,6 +325,7 @@ class StateManager @Inject constructor(
         alarmManager.setAlarmClock(info, pendingIntent)
     }
 
+    @Synchronized
     fun cancelScheduledInstanceStateChange(context: Context, instance: AlarmInstance) {
         LogUtils.v("Canceling instance " + instance.mAlarmId + " timers")
 
@@ -372,6 +344,7 @@ class StateManager @Inject constructor(
         }
     }
 
+    @Synchronized
     fun startAlarmService(context: Context, id: Long) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("startService ${AlarmUtils.getFormattedTime(context, currentTime)}")

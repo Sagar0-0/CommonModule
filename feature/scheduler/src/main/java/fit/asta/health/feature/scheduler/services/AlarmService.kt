@@ -21,7 +21,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -37,6 +36,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
+import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
 import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.getImgUrl
@@ -112,7 +112,7 @@ class AlarmService : Service() {
                         message = "Alarm is skipped ",
                         alarmName = alarmEntity!!.info.name,
                         tag = alarmEntity!!.info.tag,
-                        nId = skipNotificationId
+                        nId = alarmEntity!!.hashCode()
                     )
                     stopService(Intent(applicationContext, AlarmScreenActivity::class.java))
                     stateManager.missedAlarm(applicationContext, alarmEntity!!)
@@ -161,9 +161,10 @@ class AlarmService : Service() {
                             message = "Alarm is missed ",
                             alarmName = alarmEntity!!.info.name,
                             tag = alarmEntity!!.info.tag,
-                            nId = missedNotificationId
+                            nId = alarmEntity!!.hashCode()
                         )
                         stateManager.dismissAlarm(applicationContext, alarm.alarmId)
+                        stopSelf()
                     } else {
                         alarmEntity = alarm
                         player.apply {
@@ -182,12 +183,13 @@ class AlarmService : Service() {
                                             message = "Alarm Notification ",
                                             alarmName = alarmEntity!!.info.name,
                                             tag = alarmEntity!!.info.tag,
-                                            nId = missedNotificationId
+                                            nId = alarmEntity!!.hashCode()
                                         )
                                         stateManager.dismissAlarm(
                                             applicationContext,
                                             alarm.alarmId
                                         )
+                                        stopSelf()
                                     }
                                 }
                         }
@@ -234,23 +236,30 @@ class AlarmService : Service() {
             getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
         }
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24).setSound(null)
+            .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
+            .setSound(null)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
-            .setCategory(NotificationCompat.CATEGORY_ALARM).setContentIntent(pendingIntent)
-            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC).setOngoing(true).setWhen(0)
+//            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
+            .setCategory(NotificationCompat.CATEGORY_ALARM)
+            .setContentIntent(pendingIntent)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setOngoing(true)
+            .setWhen(System.currentTimeMillis() + 2000)
             .setPriority(NotificationCompat.PRIORITY_MAX)
-            .addAction(0, "Snooze", pendingIntentSnooze).addAction(0, "Stop", pendingIntentStop)
-        val notificationLayout = RemoteViews(packageName, DrawR.layout.notification_small)
-        val notificationLayoutExpanded = RemoteViews(packageName, DrawR.layout.notification_large)
-        notificationLayout.apply {
-            setTextViewText(DrawR.id.title, alarmName)
-            setTextViewText(DrawR.id.tag, alarm.info.tag)
-        }
-        notificationLayoutExpanded.apply {
-            setTextViewText(DrawR.id.title, alarmName)
-            setTextViewText(DrawR.id.tag, alarm.info.tag)
-        }
+            .addAction(0, "Snooze", pendingIntentSnooze)
+            .addAction(0, "Stop", pendingIntentStop)
+            .setContentTitle(alarmName)
+            .setContentText(alarm.info.tag)
+//        val notificationLayout = RemoteViews(packageName, DrawR.layout.notification_small)
+//        val notificationLayoutExpanded = RemoteViews(packageName, DrawR.layout.notification_large)
+//        notificationLayout.apply {
+//            setTextViewText(DrawR.id.title, alarmName)
+//            setTextViewText(DrawR.id.tag, alarm.info.tag)
+//        }
+//        notificationLayoutExpanded.apply {
+//            setTextViewText(DrawR.id.title, alarmName)
+//            setTextViewText(DrawR.id.tag, alarm.info.tag)
+//        }
 
         Glide.with(this).asBitmap().load(
             if (isConnected) getImgUrl(url = alarm.info.url)
@@ -261,11 +270,14 @@ class AlarmService : Service() {
                 override fun onResourceReady(
                     resource: Bitmap, transition: Transition<in Bitmap?>?
                 ) {
-                    notificationLayout.setImageViewBitmap(DrawR.id.image, resource)
-                    notificationLayoutExpanded.setImageViewBitmap(DrawR.id.image, resource)
-
-                    builder.setCustomContentView(notificationLayout)
-                        .setCustomBigContentView(notificationLayoutExpanded)
+//                    notificationLayout.setImageViewBitmap(DrawR.id.image, resource)
+//                    notificationLayoutExpanded.setImageViewBitmap(DrawR.id.image, resource)
+//
+//                    builder.setCustomContentView(notificationLayout)
+//                        .setCustomBigContentView(notificationLayoutExpanded)
+                    val picStyleBig = NotificationCompat.BigPictureStyle()
+                        .bigPicture(resource)
+                    builder.setStyle(picStyleBig)
 
                     startForGroundService(
                         notification = builder.build(),
@@ -341,7 +353,8 @@ class AlarmService : Service() {
     private fun notification(message: String, alarmName: String, tag: String, nId: Int) {
         val bigTextStyle = NotificationCompat.BigTextStyle().bigText(message)
         val builder =
-            NotificationCompat.Builder(this, CHANNEL_ID).setContentTitle(alarmName)
+            NotificationCompat.Builder(this, CHANNEL_ID_OTHER)
+                .setContentTitle(alarmName)
                 .setContentText(tag)
                 .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -349,7 +362,6 @@ class AlarmService : Service() {
                 .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
                 .setStyle(bigTextStyle)
                 .setAutoCancel(true)
-                .setSound(null)
         notificationManager.notify(nId, builder.build())
     }
 }
