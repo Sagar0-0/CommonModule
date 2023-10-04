@@ -29,11 +29,12 @@ object AppDividerLineWidth {
 @Composable
 fun AppDivider(
     modifier: Modifier = Modifier,
-    lineWidth: Dp
+    lineWidth: Dp = 0.dp,
+    thickness: Dp = AppTheme.spacing.extraSmall,
 ) {
     Divider(
         color = AppTheme.colors.primary,
-        thickness = AppTheme.spacing.extraSmall,
+        thickness = thickness,
         modifier = modifier
             .clip(AppTheme.shape.small)
             .width(width = lineWidth)

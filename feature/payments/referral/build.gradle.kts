@@ -39,4 +39,5 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview.android)
 }

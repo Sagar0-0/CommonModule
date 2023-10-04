@@ -2,6 +2,7 @@ package fit.asta.health.designsystem.molecular.button
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -72,7 +73,8 @@ fun AppTextButton(
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
-    onClick: () -> Unit
+    contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    onClick: () -> Unit,
 ) {
 
     TextButton(
@@ -83,7 +85,7 @@ fun AppTextButton(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.primary,
             disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
-        )
+        ), contentPadding = contentPadding
     ) {
 
         if (leadingIcon != null) {

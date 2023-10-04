@@ -329,6 +329,7 @@ androidx-ui-unit-android = { group = "androidx.compose.ui", name = "ui-unit-andr
 androidx-documentfile = { group = "androidx.documentfile", name = "documentfile", version = "1.0.1" }
 androidx-navigation-common-ktx = { group = "androidx.navigation", name = "navigation-common-ktx", version = "2.7.0" }
 core-ktx = { group = "androidx.test", name = "core-ktx", version = "1.5.0" }
+androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version = "1.5.2" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }
