@@ -29,8 +29,9 @@ include(":resources:drawables")
 
 include(":core:common")
 include(":core:datastore")
-include(":core:designsystem")
 include(":core:network")
+include(":core:designsystem")
+include(":core:ui")
 include(":core:test")
 
 include(":data:address")

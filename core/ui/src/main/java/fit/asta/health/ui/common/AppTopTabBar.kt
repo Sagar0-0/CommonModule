@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.organism.common
+package fit.asta.health.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background

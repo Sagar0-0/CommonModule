@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.organism.track
+package fit.asta.health.ui.track
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
@@ -13,12 +13,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import fit.asta.health.core.designsystem.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.core.designsystem.R
 
 // Preview Composable Function
 @Preview(

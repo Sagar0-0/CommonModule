@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.organism.common
+package fit.asta.health.ui.common
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
