@@ -35,19 +35,21 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import com.google.android.libraries.places.api.Places
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
+import fit.asta.health.resources.drawables.R as DrawR
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -174,6 +176,7 @@ internal fun SearchBottomSheet(
                                         .padding(AppTheme.spacing.extraSmall)
                                 ) {
                                     AppDefServerImg(
+                                        placeholder = painterResource(DrawR.drawable.placeholder_tag),
                                         model = it.icon,
                                         contentDescription = null,
                                         modifier = Modifier.padding(end = AppTheme.spacing.medium)

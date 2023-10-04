@@ -53,9 +53,9 @@ import com.google.firebase.auth.PhoneAuthOptions
 import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.ValidatedNumberField
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
@@ -107,7 +107,7 @@ fun PhoneSignIn(
         }
     }
 
-    var ticks by rememberSaveable { mutableIntStateOf(10) }
+    var ticks by rememberSaveable { mutableIntStateOf(30) }
     LaunchedEffect(codeSent) {
         if (codeSent) {
             while (ticks > 0) {
@@ -115,7 +115,7 @@ fun PhoneSignIn(
                 ticks--
             }
         } else {
-            ticks = 10
+            ticks = 30
         }
     }
 

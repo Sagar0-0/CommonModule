@@ -7,6 +7,7 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.CircleShape
@@ -54,9 +55,9 @@ import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
@@ -82,31 +83,35 @@ fun MainActivityLayout(
 
     val currentDestination = navBackStackEntry?.destination
 
-    AppScaffold(bottomBar = {
-        MainBottomAppBar(
-            navController = navController, currentDestination = currentDestination
-        )
-    }, content = {
-        MainNavHost(
-            navController = navController,
-            onNav = onNav,
-            onSchedule = onSchedule,
-            onLocation = onLocation,
-            innerPadding = it
-        )
-    }, topBar = {
-        AppTopBar(
-            backIcon = null,
-            actions = {
-                NewMainTopBarActions(
-                    onClick = onClick,
-                    notificationState = notificationState,
-                    profileImageUri = profileImageUri,
-                    currentAddressState = currentAddressState
-                )
-            }
-        )
-    })
+    AppScaffold(
+        bottomBar = {
+            MainBottomAppBar(
+                navController = navController, currentDestination = currentDestination
+            )
+        },
+        content = {
+            MainNavHost(
+                navController = navController,
+                onNav = onNav,
+                onSchedule = onSchedule,
+                onLocation = onLocation,
+                innerPadding = it
+            )
+        },
+        topBar = {
+            AppTopBar(
+                backIcon = null,
+                actions = {
+                    NewMainTopBarActions(
+                        onClick = onClick,
+                        notificationState = notificationState,
+                        profileImageUri = profileImageUri,
+                        currentAddressState = currentAddressState
+                    )
+                }
+            )
+        }
+    )
 }
 
 @Composable
@@ -143,95 +148,91 @@ private fun BottomAppBarLayout(
 }
 
 @Composable
-private fun NewMainTopBarActions(
+private fun RowScope.NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     notificationState: Boolean,
     profileImageUri: String?,
     currentAddressState: UiState<String>,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .weight(1f)
+            .clickable { onClick(MainTopBarActions.Location) },
+        horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(
+        Icon(
+            modifier = Modifier.padding(start = AppTheme.spacing.small),
+            imageVector = Icons.Default.LocationOn,
+            contentDescription = "Location",
+            tint = MaterialTheme.colorScheme.onBackground
+        )
+
+        Text(
+            text =
+            when (currentAddressState) {
+                UiState.Idle -> {
+                    R.string.select_location.toStringFromResId()
+                }
+
+                UiState.Loading -> {
+                    R.string.fetching_location.toStringFromResId()
+                }
+
+                is UiState.Success -> {
+                    currentAddressState.data
+                }
+
+                is UiState.ErrorMessage -> {
+                    currentAddressState.resId.toStringFromResId()
+                }
+
+                else -> {
+                    ""
+                }
+            },
+            textAlign = TextAlign.Start,
             modifier = Modifier
                 .weight(1f)
-                .clickable { onClick(MainTopBarActions.Location) },
-            horizontalArrangement = Arrangement.Start,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
+                .padding(AppTheme.spacing.minSmall),
+            color = MaterialTheme.colorScheme.onBackground,
+            overflow = TextOverflow.Ellipsis,
+            maxLines = 1,
+        )
+    }
+
+    Row(horizontalArrangement = Arrangement.End) {
+        IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
             Icon(
-                modifier = Modifier.padding(start = AppTheme.spacing.small),
-                imageVector = Icons.Default.LocationOn,
-                contentDescription = "Location",
+                imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
+                contentDescription = "Notifications",
                 tint = MaterialTheme.colorScheme.onBackground
             )
-
-            Text(
-                text =
-                when (currentAddressState) {
-                    UiState.Idle -> {
-                        R.string.select_location.toStringFromResId()
-                    }
-
-                    UiState.Loading -> {
-                        R.string.fetching_location.toStringFromResId()
-                    }
-
-                    is UiState.Success -> {
-                        currentAddressState.data
-                    }
-
-                    is UiState.ErrorMessage -> {
-                        currentAddressState.resId.toStringFromResId()
-                    }
-
-                    else -> {
-                        ""
-                    }
-                },
-                textAlign = TextAlign.Center,
-                modifier = Modifier
-                    .weight(1f)
-                    .padding(AppTheme.spacing.minSmall),
-                color = MaterialTheme.colorScheme.onBackground,
-                overflow = TextOverflow.Ellipsis
+        }
+        IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
+            Icon(
+                imageVector = Icons.Default.Share,
+                contentDescription = "Share",
+                tint = MaterialTheme.colorScheme.onBackground
             )
         }
-
-        Row(horizontalArrangement = Arrangement.End) {
-            IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
-                Icon(
-                    imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
-                    contentDescription = "Notifications",
-                    tint = MaterialTheme.colorScheme.onBackground
+        if (profileImageUri != null) {
+            IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
+                Image(
+                    modifier = Modifier.clip(CircleShape),
+                    painter = rememberAsyncImagePainter(
+                        model = profileImageUri,
+                        placeholder = painterResource(id = R.drawable.ic_person)
+                    ), contentDescription = "Profile"
                 )
             }
-            IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
-                Icon(
-                    imageVector = Icons.Default.Share,
-                    contentDescription = "Share",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
-            if (profileImageUri != null) {
-                IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
-                    Image(
-                        modifier = Modifier.clip(CircleShape),
-                        painter = rememberAsyncImagePainter(
-                            model = profileImageUri,
-                            placeholder = painterResource(id = R.drawable.ic_person)
-                        ), contentDescription = "Profile"
-                    )
-                }
-            }
-            IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
-                Icon(
-                    imageVector = Icons.Default.Settings,
-                    contentDescription = "Settings",
-                    tint = MaterialTheme.colorScheme.onBackground
-                )
-            }
+        }
+        IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
+            Icon(
+                imageVector = Icons.Default.Settings,
+                contentDescription = "Settings",
+                tint = MaterialTheme.colorScheme.onBackground
+            )
         }
     }
 }

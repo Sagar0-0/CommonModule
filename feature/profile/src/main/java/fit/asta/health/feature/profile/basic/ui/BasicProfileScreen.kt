@@ -9,6 +9,7 @@ import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
@@ -206,7 +207,7 @@ fun BasicProfileScreen(
                                 Toast.LENGTH_SHORT
                             ).show()
                         }
-                        Row {
+                        Row(Modifier.fillMaxWidth()) {
                             Image(
                                 modifier = Modifier.clip(CircleShape),
                                 painter = rememberAsyncImagePainter(
