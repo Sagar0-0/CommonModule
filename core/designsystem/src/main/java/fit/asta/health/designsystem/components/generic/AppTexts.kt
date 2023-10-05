@@ -154,13 +154,17 @@ object AppTexts {
     fun TitleMedium(
         text: String,
         modifier: Modifier = Modifier,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Clip,
         color: Color = MaterialTheme.colorScheme.onSurface,
         textAlign: TextAlign? = null,
     ) {
         Text(
             text = text,
+            maxLines = maxLines,
             style = MaterialTheme.typography.titleMedium,
             modifier = modifier,
+            overflow = overflow,
             color = color,
             textAlign = textAlign,
         )

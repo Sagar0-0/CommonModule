@@ -22,10 +22,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -38,6 +34,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,11 +52,14 @@ import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.ValidatedNumberField
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
+import fit.asta.health.resources.strings.R as StringR
 
 @Composable
 fun PhoneSignIn(
@@ -313,7 +313,7 @@ fun PhoneSignIn(
                 animationSpec = tween(durationMillis = 500, delayMillis = 100)
             )
         ) {
-            Button(
+            AppButtons.AppTextButton(
                 enabled = !loading && !codeSent,
                 onClick = {
                     onSendOtp()
@@ -322,7 +322,10 @@ fun PhoneSignIn(
                     .fillMaxWidth()
                     .padding(AppTheme.spacing.medium)
             ) {
-                Text(text = "Generate OTP", modifier = Modifier.padding(AppTheme.spacing.small))
+                AppTexts.TitleMedium(
+                    text = stringResource(id = StringR.string.generate_otp),
+                    modifier = Modifier.padding(AppTheme.spacing.small)
+                )
             }
         }
 
@@ -355,7 +358,7 @@ fun PhoneSignIn(
 
                 Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
-                Button(
+                AppButtons.AppTextButton(
                     enabled = !loading,
                     onClick = {
                         onOtpSubmit()
@@ -364,12 +367,12 @@ fun PhoneSignIn(
                         .fillMaxWidth()
                         .padding(AppTheme.spacing.medium)
                 ) {
-                    Text(
-                        text = "Verify OTP",
+                    AppTexts.TitleMedium(
+                        text = stringResource(id = StringR.string.verify_otp),
                         modifier = Modifier.padding(AppTheme.spacing.small)
                     )
                 }
-                TextButton(
+                AppButtons.AppTextButton(
                     enabled = !loading && ticks == 0,
                     onClick = { codeSent = false },
                     modifier = Modifier
@@ -377,11 +380,11 @@ fun PhoneSignIn(
                         .padding(AppTheme.spacing.medium)
                 ) {
                     if (ticks > 0) {
-                        Text(text = "Resend code in $ticks seconds")
+                        AppTexts.TitleMedium(text = "Resend code in $ticks seconds")
                     } else {
-                        Text(
+                        AppTexts.TitleMedium(
                             text = "Still not received?",
-                            color = MaterialTheme.colorScheme.onBackground
+                            color = AppTheme.colors.onBackground
                         )
                     }
                 }

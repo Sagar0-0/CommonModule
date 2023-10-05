@@ -49,6 +49,7 @@ fun AppTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    maxLines: Int = Int.MAX_VALUE,
     label: String = "",
     isError: Boolean = false,
     singleLine: Boolean = true,
@@ -60,13 +61,18 @@ fun AppTextField(
     imeAction: ImeAction = ImeAction.Next,
     placeholder: @Composable (() -> Unit)? = null,
     leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
 ) {
     OutlinedTextField(
         value = value,
+        maxLines = maxLines,
         onValueChange = onValueChange,
         label = { Text(text = label, textAlign = TextAlign.Center) },
         isError = isError,
         trailingIcon = {
+            if (trailingIcon != null) {
+                trailingIcon()
+            }
             if (isError) Icon(
                 imageVector = Icons.Filled.Error, contentDescription = "Show ErrorMessage Icon"
             )

@@ -7,22 +7,19 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -44,13 +41,11 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
         mutableStateOf(qn.opts)
     }
     val maxChar = 300
-    Card(
+    AppCard(
         modifier = Modifier
             .fillMaxSize()
             .padding(horizontal = AppTheme.spacing.medium),
-        shape = RoundedCornerShape(AppTheme.spacing.small),
-        colors = CardDefaults.cardColors(containerColor = Color.White),
-        elevation = CardDefaults.cardElevation(AppTheme.spacing.extraSmall)
+        shape = RoundedCornerShape(AppTheme.spacing.small)
     ) {
         Column(
             modifier = Modifier
@@ -58,9 +53,8 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 .padding(AppTheme.spacing.medium)
         ) {
 
-            Text(
-                text = qn.qn,
-                style = MaterialTheme.typography.titleMedium
+            AppTexts.TitleMedium(
+                text = qn.qn
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             when (qn.type) {
@@ -85,10 +79,9 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                     .height(AppTheme.boxSize.medium),
                 placeholder = R.string.write_your_answer_here,
             )
-            Text(
+            AppTexts.TitleMedium(
                 text = "${text.value.length} / $maxChar",
                 textAlign = TextAlign.End,
-                style = MaterialTheme.typography.labelSmall,
                 modifier = Modifier.fillMaxWidth()
             )
 

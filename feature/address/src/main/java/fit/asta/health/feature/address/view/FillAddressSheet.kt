@@ -21,12 +21,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -52,9 +46,13 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -131,7 +129,7 @@ internal fun FillAddressSheet(
         }
     }
 
-    ModalBottomSheet(
+    AppModalBottomSheet(
         modifier = modifier,
         sheetState = bottomSheetState,
         dragHandle = null,
@@ -164,7 +162,7 @@ internal fun FillAddressSheet(
                         topEnd = AppTheme.customSize.medium
                     )
                 )
-                .background(MaterialTheme.colorScheme.background)
+                .background(AppTheme.colors.background)
                 .padding(
                     top = AppTheme.spacing.medium,
                     start = AppTheme.spacing.medium,
@@ -178,41 +176,43 @@ internal fun FillAddressSheet(
                     name = myAddressItem.addressLine,
                     area = myAddressItem.shortAddress
                 )
-                IconButton(
+                AppButtons.AppIconButton(
                     modifier = Modifier
                         .align(Alignment.CenterEnd),
                     onClick = { closeSheet() }
                 ) {
-                    Icon(
+                    AppDefaultIcon(
                         imageVector = Icons.Default.Close,
                         contentDescription = R.string.close.toStringFromResId()
                     )
                 }
             }
 
-            Text(
+            AppTexts.TitleMedium(
                 text = R.string.save_address_as.toStringFromResId(),
                 Modifier.padding(bottom = AppTheme.spacing.small)
             )
             Row(Modifier.fillMaxWidth()) {
-                Text(modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(if (name.value == R.string.home.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
-                    .clickable { name.value = R.string.home.toStringFromResId(context) }
-                    .padding(8.dp), text = R.string.home.toStringFromResId())
-                Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-                Text(
+                AppTexts.TitleMedium(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
-                        .background(if (name.value == R.string.work.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
+                        .background(if (name.value == R.string.home.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)
+                        .clickable { name.value = R.string.home.toStringFromResId(context) }
+                        .padding(8.dp), text = R.string.home.toStringFromResId())
+                Spacer(modifier = Modifier.padding(horizontal = 3.dp))
+                AppTexts.TitleMedium(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(if (name.value == R.string.work.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)
                         .clickable { name.value = R.string.work.toStringFromResId(context) }
                         .padding(8.dp), text = R.string.work.toStringFromResId())
                 Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-                Text(modifier = Modifier
-                    .clip(RoundedCornerShape(10.dp))
-                    .background(if (name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) MaterialTheme.colorScheme.primary else Color.Transparent)
-                    .clickable { name.value = "" }
-                    .padding(8.dp), text = R.string.other.toStringFromResId())
+                AppTexts.TitleMedium(
+                    modifier = Modifier
+                        .clip(RoundedCornerShape(10.dp))
+                        .background(if (name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)
+                        .clickable { name.value = "" }
+                        .padding(8.dp), text = R.string.other.toStringFromResId())
             }
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
@@ -341,21 +341,20 @@ internal fun FillAddressSheet(
                     }
 
                     else -> {
-                        OutlinedButton(
+                        AppButtons.AppOutlinedButton(
                             onClick = onSaveAddressClick,
                             modifier = Modifier
                                 .padding(AppTheme.spacing.medium)
                                 .fillMaxWidth()
-                                .clip(MaterialTheme.shapes.large),
+                                .clip(AppTheme.shape.large),
                             colors = ButtonDefaults.buttonColors(
-                                containerColor = MaterialTheme.colorScheme.primary,
-                                contentColor = MaterialTheme.colorScheme.onSurface
+                                containerColor = AppTheme.colors.primary,
+                                contentColor = AppTheme.colors.onSurface
                             ),
                             enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && phone.value.length == 10 && name.value.isNotEmpty()
                         ) {
-                            Text(
-                                text = R.string.save_address.toStringFromResId(),
-                                style = MaterialTheme.typography.titleLarge
+                            AppTexts.TitleMedium(
+                                text = R.string.save_address.toStringFromResId()
                             )
                         }
                     }

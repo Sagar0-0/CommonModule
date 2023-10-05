@@ -28,16 +28,8 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.OutlinedIconButton
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -60,11 +52,15 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -171,10 +167,9 @@ internal fun SavedAddressesScreen(
                 .padding(padding)
         ) {
             AnimatedVisibility(searchSheetType == null) {
-                OutlinedTextField(
+                AppTextField(
                     maxLines = 1,
                     enabled = false,
-                    shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(AppTheme.spacing.small)
@@ -184,39 +179,20 @@ internal fun SavedAddressesScreen(
                     value = "",
                     onValueChange = {},
                     placeholder = {
-                        Text(
+                        TitleTexts.Level2(
                             text = R.string.search_for_area_street.toStringFromResId(),
-                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        disabledLeadingIconColor = MaterialTheme.colorScheme.primary
-                    )
+                        AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
+                    }
                 )
             }
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
             AnimatedVisibility(fillAddressSheetType == null) {
-                OutlinedButton(
-                    colors = ButtonDefaults
-                        .buttonColors(
-                            containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                            contentColor = MaterialTheme.colorScheme.primary
-                        ),
+                AppButtons.AppOutlinedButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = AppTheme.spacing.small),
@@ -232,7 +208,7 @@ internal fun SavedAddressesScreen(
                         }
                     }
                 ) {
-                    Icon(
+                    AppDefaultIcon(
                         modifier = Modifier
                             .padding(end = AppTheme.spacing.extraSmall)
                             .size(AppTheme.iconSize.mediumSmall),
@@ -240,42 +216,38 @@ internal fun SavedAddressesScreen(
                         contentDescription = ""
                     )
                     Column(modifier = Modifier.weight(1f)) {
-                        Text(
+                        TitleTexts.Level2(
                             maxLines = 1,
                             overflow = TextOverflow.Ellipsis,
                             text = R.string.use_my_current_location.toStringFromResId(),
-                            style = MaterialTheme.typography.bodyMedium,
                             textAlign = TextAlign.Start
                         )
                         when (currentAddressState) {
                             UiState.Loading -> {
-                                Text(
+                                TitleTexts.Level2(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     text = R.string.fetching_location.toStringFromResId(),
-                                    style = MaterialTheme.typography.bodyMedium,
                                     textAlign = TextAlign.Start
                                 )
                             }
 
                             is UiState.Success -> {
-                                Text(
+                                TitleTexts.Level2(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     text = currentAddressState.data.getAddressLine(
                                         0
                                     ),
-                                    style = MaterialTheme.typography.bodyMedium,
                                     textAlign = TextAlign.Start
                                 )
                             }
 
                             is UiState.ErrorMessage -> {
-                                Text(
+                                TitleTexts.Level2(
                                     maxLines = 1,
                                     overflow = TextOverflow.Ellipsis,
                                     text = currentAddressState.resId.toStringFromResId(),
-                                    style = MaterialTheme.typography.bodyMedium,
                                     textAlign = TextAlign.Start
                                 )
                             }
@@ -284,7 +256,7 @@ internal fun SavedAddressesScreen(
                         }
                     }
 
-                    Icon(
+                    AppDefaultIcon(
                         imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                     )
                 }
@@ -292,10 +264,7 @@ internal fun SavedAddressesScreen(
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.small))
 
-            OutlinedButton(colors = ButtonDefaults.buttonColors(
-                containerColor = MaterialTheme.colorScheme.surfaceVariant,
-                contentColor = MaterialTheme.colorScheme.primary
-            ),
+            AppButtons.AppOutlinedButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.small),
@@ -314,22 +283,21 @@ internal fun SavedAddressesScreen(
                         Toast.makeText(context, "Fetching location...", Toast.LENGTH_SHORT).show()
                     }
                 }) {
-                Icon(
+                AppDefaultIcon(
                     modifier = Modifier
                         .padding(end = AppTheme.spacing.extraSmall)
                         .size(AppTheme.iconSize.mediumSmall),
                     imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )
-                Text(
+                TitleTexts.Level2(
                     modifier = Modifier.weight(1f),
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                     text = R.string.add_address.toStringFromResId(),
-                    style = MaterialTheme.typography.bodyMedium,
                     textAlign = TextAlign.Start
                 )
-                Icon(
+                AppDefaultIcon(
                     imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                 )
             }
@@ -343,20 +311,18 @@ internal fun SavedAddressesScreen(
                     .background(Color.LightGray)
             )
 
-            Text(
+            TitleTexts.Level2(
                 modifier = Modifier.padding(AppTheme.spacing.small),
                 text = R.string.saved_address.toStringFromResId(),
-                style = MaterialTheme.typography.titleLarge
             )
             when (savedAddressListState) {
                 is UiState.Success -> {
                     val addresses = savedAddressListState.data
                     if (addresses.isEmpty()) {
-                        Text(
+                        TitleTexts.Level2(
                             modifier = Modifier.padding(AppTheme.spacing.small),
                             text = R.string.no_saved_address.toStringFromResId(),
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium
+                            textAlign = TextAlign.Center
                         )
                     } else {
                         LazyColumn {
@@ -460,8 +426,8 @@ private fun AddressItem(
         Modifier
             .background(
                 color =
-                if (item.selected) MaterialTheme.colorScheme.primary.copy(0.5f)
-                else if (selectAddressState is UiState.Loading) MaterialTheme.colorScheme.background
+                if (item.selected) AppTheme.colors.primary.copy(0.5f)
+                else if (selectAddressState is UiState.Loading) AppTheme.colors.background
                 else Color.Transparent
             )
             .clickable {
@@ -472,26 +438,26 @@ private fun AddressItem(
             .fillMaxWidth()
             .padding(AppTheme.spacing.small)
     ) {
-        Icon(
+        AppDefaultIcon(
             modifier = Modifier.padding(end = AppTheme.spacing.extraSmall),
             imageVector = Icons.Default.Home,
             contentDescription = ""
         )
         Column(Modifier.fillMaxWidth()) {
-            Text(text = item.name, style = MaterialTheme.typography.titleLarge)
-            Text(
+            TitleTexts.Level2(
+                text = item.name
+            )
+            TitleTexts.Level2(
                 text = "${item.hn}, ${item.block}, ${item.sub}, ${item.loc}, ${item.area}",
-                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(vertical = 5.dp)
             )
-            Text(
+            TitleTexts.Level2(
                 text = R.string.phone_number.toStringFromResId() + ": ${item.ph}",
-                style = MaterialTheme.typography.bodySmall,
                 modifier = Modifier.padding(bottom = 5.dp)
             )
             Row(Modifier.fillMaxWidth()) {
-                OutlinedIconButton(onClick = { onClick(AddressEvent.Edit) }) {
-                    Icon(
+                AppButtons.AppIconButton(onClick = { onClick(AddressEvent.Edit) }) {
+                    AppDefaultIcon(
                         imageVector = Icons.Default.Edit, contentDescription = ""
                     )
                 }
@@ -502,15 +468,15 @@ private fun AddressItem(
                     targetState = loading, label = ""
                 ) {
                     if (it) {
-                        OutlinedIconButton(onClick = {}) {
+                        AppButtons.AppIconButton(onClick = {}) {
                             CircularProgressIndicator(modifier = Modifier.padding(2.dp))
                         }
                     } else {
-                        OutlinedIconButton(onClick = {
+                        AppButtons.AppIconButton(onClick = {
                             onClick(AddressEvent.Delete)
                             loading = true
                         }) {
-                            Icon(
+                            AppDefaultIcon(
                                 imageVector = Icons.Default.Delete, contentDescription = ""
                             )
                         }
@@ -519,8 +485,8 @@ private fun AddressItem(
 
                 Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
 
-                OutlinedIconButton(onClick = { onClick(AddressEvent.Share) }) {
-                    Icon(
+                AppButtons.AppIconButton(onClick = { onClick(AddressEvent.Share) }) {
+                    AppDefaultIcon(
                         imageVector = Icons.Default.Share, contentDescription = ""
                     )
                 }

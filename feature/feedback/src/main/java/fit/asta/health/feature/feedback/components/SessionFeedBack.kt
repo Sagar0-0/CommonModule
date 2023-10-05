@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
@@ -30,11 +28,12 @@ import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.uploadFiles
-import fit.asta.health.designsystem.AppTheme
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,7 +61,7 @@ fun SessionFeedback(
             }
 
             is UiState.ErrorMessage -> {
-                Text(text = feedbackQuesState.resId.toStringFromResId())
+                AppTexts.TitleMedium(text = feedbackQuesState.resId.toStringFromResId())
                 LaunchedEffect(feedbackQuesState) {
                     Toast.makeText(
                         context,
@@ -94,7 +93,7 @@ fun SessionFeedback(
                         .fillMaxWidth()
                         .padding(it)
                         .verticalScroll(rememberScrollState())
-                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                        .background(color = AppTheme.colors.secondaryContainer)
                 ) {
 
                     Spacer(modifier = Modifier.height(AppTheme.spacing.medium))

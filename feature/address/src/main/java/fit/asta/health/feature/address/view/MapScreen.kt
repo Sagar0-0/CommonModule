@@ -11,7 +11,8 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MyLocation
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -29,11 +30,15 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import java.util.*
 
@@ -188,10 +193,9 @@ internal fun MapScreen(
             }
 
             AnimatedVisibility(searchSheetType == null) {
-                OutlinedTextField(
-                    maxLines = 1,
+                AppTextField(
+                    singleLine = true,
                     enabled = false,
-                    shape = MaterialTheme.shapes.large,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(AppTheme.spacing.small)
@@ -201,27 +205,13 @@ internal fun MapScreen(
                     value = "",
                     onValueChange = {},
                     placeholder = {
-                        Text(
+                        AppTexts.TitleMedium(
                             text = R.string.search_for_area_street.toStringFromResId(),
-                            style = MaterialTheme.typography.bodyMedium
                         )
                     },
                     leadingIcon = {
-                        Icon(imageVector = Icons.Default.Search, contentDescription = "")
-                    },
-                    colors = TextFieldDefaults.colors(
-                        focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                        focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                        focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                        disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                        disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
-                        disabledLeadingIconColor = MaterialTheme.colorScheme.primary
-                    )
+                        AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
+                    }
                 )
             }
 
@@ -235,10 +225,6 @@ internal fun MapScreen(
                         .padding(AppTheme.spacing.medium)
                         .align(Alignment.End)
                         .size(AppTheme.iconButtonSize.extraLarge2),
-                    colors = IconButtonDefaults.iconButtonColors(
-                        containerColor = MaterialTheme.colorScheme.surface,
-                        contentColor = MaterialTheme.colorScheme.primary
-                    ),
                     onClick = {
                         onUiEvent(MapScreenUiEvent.UseCurrentLocation)
                         if (currentAddressState is UiState.Success) {
@@ -251,7 +237,7 @@ internal fun MapScreen(
                         }
                     }
                 ) {
-                    Icon(
+                    AppDefaultIcon(
                         modifier = Modifier
                             .size(AppTheme.iconButtonSize.large),
                         imageVector = Icons.Default.MyLocation,
@@ -268,7 +254,7 @@ internal fun MapScreen(
                                 topEnd = AppTheme.spacing.medium
                             )
                         )
-                        .background(MaterialTheme.colorScheme.surface)
+                        .background(AppTheme.colors.surface)
                         .padding(horizontal = AppTheme.spacing.medium),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
@@ -293,7 +279,7 @@ internal fun MapScreen(
                                 area = markerAddressState.data.getShortAddressName()
                             )
 
-                            OutlinedButton(
+                            AppButtons.AppOutlinedButton(
                                 onClick = {
                                     val data = markerAddressState.data
                                     val fillAddressSheetAddressItem = MyAddress(
@@ -322,21 +308,16 @@ internal fun MapScreen(
                                 modifier = Modifier
                                     .padding(bottom = AppTheme.spacing.medium)
                                     .fillMaxWidth()
-                                    .clip(MaterialTheme.shapes.medium),
-                                colors = ButtonDefaults.buttonColors(
-                                    containerColor = MaterialTheme.colorScheme.primary,
-                                    contentColor = MaterialTheme.colorScheme.onSurface
-                                )
+                                    .clip(AppTheme.shape.medium)
                             ) {
-                                Text(
+                                TitleTexts.Level2(
                                     maxLines = 1,
                                     text = if (type == 3) {
                                         R.string.edit_address
                                     } else {
                                         R.string.enter_complete_address
                                     }.toStringFromResId(),
-                                    overflow = TextOverflow.Ellipsis,
-                                    style = MaterialTheme.typography.titleLarge
+                                    overflow = TextOverflow.Ellipsis
                                 )
                             }
                         }
@@ -348,7 +329,7 @@ internal fun MapScreen(
                                     .height(bottomCardHeight),
                                 contentAlignment = Alignment.Center
                             ) {
-                                Text(text = R.string.something_went_wrong.toStringFromResId())
+                                TitleTexts.Level2(text = R.string.something_went_wrong.toStringFromResId())
                             }
                         }
                     }

@@ -14,6 +14,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -62,6 +63,7 @@ fun AppOutlinedButton(
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
+    leadingPainterIcon: Painter? = null,
     iconDes: String? = null,
     iconTint: Color = LocalContentColor.current,
     onClick: () -> Unit,
@@ -90,6 +92,13 @@ fun AppOutlinedButton(
                 contentDescription = iconDes,
                 modifier = Modifier.padding(end = AppTheme.spacing.extraSmall),
                 tint = iconTint
+            )
+        }
+        if (leadingPainterIcon != null) {
+            Icon(
+                painter = leadingPainterIcon,
+                contentDescription = iconDes,
+                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
             )
         }
 

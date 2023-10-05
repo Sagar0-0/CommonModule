@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.AppTypography
@@ -59,6 +60,8 @@ object TitleTexts {
     @Composable
     fun Level2(
         text: String,
+        maxLines: Int = Int.MAX_VALUE,
+        overflow: TextOverflow = TextOverflow.Clip,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
@@ -66,6 +69,8 @@ object TitleTexts {
         Text(
             text = text,
             style = AppTheme.customTypography.title.level2,
+            maxLines = maxLines,
+            overflow = overflow,
             modifier = modifier,
             color = color,
             textAlign = textAlign,

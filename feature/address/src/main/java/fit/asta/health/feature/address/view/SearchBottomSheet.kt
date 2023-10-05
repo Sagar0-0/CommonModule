@@ -15,12 +15,6 @@ import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.ModalBottomSheet
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -45,8 +39,12 @@ import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
+import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
@@ -81,7 +79,7 @@ internal fun SearchBottomSheet(
         Places.initialize(context.applicationContext, context.getString(R.string.MAPS_API_KEY))
     }
 
-    ModalBottomSheet(
+    AppModalBottomSheet(
         modifier = modifier,
         sheetState = bottomSheetState,
         dragHandle = null,
@@ -91,11 +89,9 @@ internal fun SearchBottomSheet(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            OutlinedTextField(
+            AppTextField(
                 maxLines = 1,
                 singleLine = true,
-                readOnly = false,
-                shape = MaterialTheme.shapes.large,
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(textFieldFocus)
@@ -106,17 +102,16 @@ internal fun SearchBottomSheet(
                     if (it.length > 2) onUiEvent(SearchSheetUiEvent.Search(it))
                 },
                 placeholder = {
-                    Text(
+                    TitleTexts.Level2(
                         text = R.string.search_for_area_street.toStringFromResId(),
-                        style = MaterialTheme.typography.bodyMedium
                     )
                 },
                 leadingIcon = {
-                    Icon(imageVector = Icons.Default.Search, contentDescription = "")
+                    AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
                 },
                 trailingIcon = {
                     if (searchQuery.length > 2) {
-                        Icon(
+                        AppDefaultIcon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Search Button",
                             modifier = Modifier.clickable(
@@ -130,20 +125,7 @@ internal fun SearchBottomSheet(
                             }
                         )
                     }
-                },
-                colors = TextFieldDefaults.colors(
-                    focusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    unfocusedContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    focusedIndicatorColor = MaterialTheme.colorScheme.primary,
-                    focusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    unfocusedPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    focusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    unfocusedLeadingIconColor = MaterialTheme.colorScheme.primary,
-                    focusedTrailingIconColor = MaterialTheme.colorScheme.primary,
-                    disabledContainerColor = MaterialTheme.colorScheme.surfaceVariant,
-                    disabledPlaceholderColor = MaterialTheme.colorScheme.primary,
-                    disabledLeadingIconColor = MaterialTheme.colorScheme.primary
-                )
+                }
             )
 
             when (searchResponseState) {
@@ -151,11 +133,10 @@ internal fun SearchBottomSheet(
                     var results =
                         searchResponseState.data.results
                     if (results.isEmpty()) {
-                        Text(
+                        TitleTexts.Level2(
                             modifier = Modifier.padding(AppTheme.spacing.small),
                             text = R.string.no_result_for.toStringFromResId() + "\"$searchQuery\"",
-                            textAlign = TextAlign.Center,
-                            style = MaterialTheme.typography.titleMedium
+                            textAlign = TextAlign.Center
                         )
                     } else {
                         LazyColumn {
@@ -199,11 +180,11 @@ internal fun SearchBottomSheet(
                 }
 
                 is UiState.ErrorMessage -> {
-                    Text(text = searchResponseState.resId.toStringFromResId())
+                    TitleTexts.Level2(text = searchResponseState.resId.toStringFromResId())
                 }
 
                 UiState.Idle -> {
-                    Text(text = R.string.your_search_results_will_appear_here.toStringFromResId())
+                    TitleTexts.Level2(text = R.string.your_search_results_will_appear_here.toStringFromResId())
                 }
 
                 else -> {}

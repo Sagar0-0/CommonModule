@@ -11,16 +11,20 @@ import androidx.compose.material.icons.filled.LocalOffer
 import androidx.compose.material.icons.filled.Message
 import androidx.compose.material.icons.filled.NewReleases
 import androidx.compose.material.icons.filled.Notifications
-import androidx.compose.material3.*
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Switch
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.*
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,9 +68,8 @@ fun SettingsNotificationLayout(
             }
 
             item {
-                Text(
+                AppTexts.TitleMedium(
                     text = stringResource(id = R.string.title_notifications),
-                    style = MaterialTheme.typography.titleSmall,
                     modifier = Modifier.padding(
                         top = AppTheme.spacing.medium,
                         bottom = AppTheme.spacing.small
@@ -215,7 +218,7 @@ fun SwitchItem(
     onChange: (newValue: Boolean) -> Unit
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        Icon(
+        AppDefaultIcon(
             modifier = Modifier.padding(AppTheme.spacing.extraSmall),
             imageVector = imageVector,
             contentDescription = ""
@@ -230,14 +233,12 @@ fun SwitchItem(
                     start = AppTheme.spacing.extraSmall
                 )
         ) {
-            Text(
-                text = text,
-                style = MaterialTheme.typography.labelMedium
+            AppTexts.TitleMedium(
+                text = text
             )
             if (subtitle != null) {
-                Text(
-                    text = subtitle,
-                    style = MaterialTheme.typography.labelSmall
+                AppTexts.TitleMedium(
+                    text = subtitle
                 )
             }
         }

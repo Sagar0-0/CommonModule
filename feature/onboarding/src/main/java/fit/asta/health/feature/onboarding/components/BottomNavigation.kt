@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -74,7 +74,12 @@ fun OnBoardingButton(
     text: String,
     onClick: () -> Unit
 ) {
-    Button(modifier = modifier, colors = colors, onClick = onClick, shape = shapes.extraLarge) {
+    AppButtons.AppTextButton(
+        modifier = modifier,
+        colors = colors,
+        onClick = onClick,
+        shape = shapes.extraLarge
+    ) {
         Text(text = text, color = textColor)
     }
 }

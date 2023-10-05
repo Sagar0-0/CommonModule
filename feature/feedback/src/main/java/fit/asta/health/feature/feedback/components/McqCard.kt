@@ -4,14 +4,14 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
 import androidx.compose.material3.RadioButtonDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
+import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.components.generic.AppTexts
 
 @Composable
 fun mcqCard(list: List<String>): MutableState<String> {
@@ -24,14 +24,14 @@ fun mcqCard(list: List<String>): MutableState<String> {
                 horizontalArrangement = Arrangement.SpaceEvenly,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                RadioButton(
+                AppButtons.AppRadioButton(
                     selected = text == ans.value,
                     onClick = {
                         ans.value = text
                     },
                     colors = RadioButtonDefaults.colors(MaterialTheme.colorScheme.primary)
                 )
-                Text(text = text)
+                AppTexts.TitleMedium(text = text)
             }
         }
     }

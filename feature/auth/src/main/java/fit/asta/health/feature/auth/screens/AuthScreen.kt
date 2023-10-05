@@ -7,8 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -20,13 +18,13 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import androidx.compose.ui.unit.sp
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import java.net.URLEncoder
@@ -53,7 +51,7 @@ internal fun AuthScreen(
             }
 
             is UiState.ErrorMessage -> {
-                Text(text = loginState.resId.toStringFromResId())
+                AppTexts.TitleMedium(text = loginState.resId.toStringFromResId())
             }
 
             is UiState.Success -> {
@@ -93,25 +91,23 @@ internal fun AuthScreen(
             append(str)
             addStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = AppTheme.colors.onBackground
                 ), start = 0, end = startTIndex - 1
             )
             addStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = AppTheme.colors.onBackground
                 ), start = endTIndex + 1, end = startPIndex - 1
             )
             addStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 16.sp,
+                    color = AppTheme.colors.primary,
                     textDecoration = TextDecoration.Underline
                 ), start = startTIndex, end = endTIndex
             )
             addStyle(
                 style = SpanStyle(
-                    color = MaterialTheme.colorScheme.primary,
-                    fontSize = 16.sp,
+                    color = AppTheme.colors.primary,
                     textDecoration = TextDecoration.Underline
                 ), start = startPIndex, end = endPIndex
             )

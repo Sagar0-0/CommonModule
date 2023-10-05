@@ -4,9 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
@@ -18,11 +15,13 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
-import fit.asta.health.designsystem.molecular.image.AppGifImage
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.components.generic.carouselTransition
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppGifImage
 import kotlinx.coroutines.launch
 
 
@@ -65,7 +64,7 @@ fun OnboardingScreen(
                     contentPadding = PaddingValues(AppTheme.spacing.small),
                     pageSpacing = AppTheme.spacing.medium,
                 ) { page ->
-                    Card(
+                    AppCard(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
@@ -84,17 +83,15 @@ fun OnboardingScreen(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            Text(
-                                text = items[page].title,
-                                style = MaterialTheme.typography.headlineMedium,
-                                color = MaterialTheme.colorScheme.primary
-                            )
-                            Text(
+                            AppTexts.TitleLarge(
                                 modifier = Modifier.padding(horizontal = AppTheme.spacing.extraMedium),
-                                textAlign = TextAlign.Center,
+                                text = items[page].title,
+                                textAlign = TextAlign.Center
+                            )
+                            AppTexts.TitleMedium(
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.extraMedium),
                                 text = items[page].desc,
-                                style = MaterialTheme.typography.titleSmall,
-                                color = MaterialTheme.colorScheme.primary
+                                textAlign = TextAlign.Center
                             )
                         }
                     }

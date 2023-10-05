@@ -28,7 +28,9 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.Subscriptions
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -43,14 +45,15 @@ import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -94,7 +97,7 @@ fun SettingsScreenLayout(
                                 showDeleteConfirmationDialog = false
                             }
                         ) {
-                            Text(text = R.string.cancel.toStringFromResId())
+                            AppTexts.TitleMedium(text = R.string.cancel.toStringFromResId())
                         }
                         AppButtons.AppTextButton(
                             onClick = {
@@ -102,7 +105,7 @@ fun SettingsScreenLayout(
                                 onClickEvent(SettingsUiEvent.DELETE)
                             }
                         ) {
-                            Text(text = R.string.yes.toStringFromResId())
+                            AppTexts.TitleMedium(text = R.string.yes.toStringFromResId())
                         }
                     }
                 }
@@ -210,10 +213,12 @@ fun PreferenceCategory(
     content: @Composable () -> Unit
 ) {
     Column {
-        if (titleId != null) Text(
+        if (titleId != null) AppTexts.TitleMedium(
             text = stringResource(id = titleId),
-            style = MaterialTheme.typography.titleSmall,
-            modifier = Modifier.padding(start = AppTheme.spacing.medium, top = AppTheme.spacing.small)
+            modifier = Modifier.padding(
+                start = AppTheme.spacing.medium,
+                top = AppTheme.spacing.small
+            )
         )
         Column(
             modifier = Modifier.padding(
@@ -234,26 +239,25 @@ fun PreferenceItem(
     imageVector: ImageVector,
     onClick: () -> Unit
 ) {
-    TextButton(
+    AppButtons.AppTextButton(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(AppTheme.spacing.extraSmall)
     ) {
-        Icon(
+        AppDefaultIcon(
             imageVector = imageVector,
             contentDescription = null,
             modifier = Modifier.padding(end = AppTheme.spacing.medium)
         )
         Column {
-            Text(text = title ?: stringResource(id = titleId))
-            if (secondary != null) Text(text = secondary)
+            AppTexts.TitleMedium(text = title ?: stringResource(id = titleId))
+            if (secondary != null) AppTexts.TitleMedium(text = secondary)
         }
         Spacer(modifier = Modifier.weight(1f))
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ListPreference(
     titleId: Int,
@@ -268,53 +272,49 @@ fun ListPreference(
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }
 
-    TextButton(
+    AppButtons.AppTextButton(
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
             .padding(AppTheme.spacing.extraSmall)
     ) {
-        Icon(
+        AppDefaultIcon(
             imageVector = imageVector,
             contentDescription = title,
             modifier = Modifier.padding(end = AppTheme.spacing.medium)
         )
 
-        Text(
-            text = title,
-            style = MaterialTheme.typography.titleMedium
+        AppTexts.TitleMedium(
+            text = title
         )
 
         Spacer(modifier = Modifier.weight(1f))
 
-        Text(
+        AppTexts.TitleMedium(
             text = entries[selectedIndex],
-            style = MaterialTheme.typography.titleSmall
         )
 
-        Icon(
+        AppDefaultIcon(
             imageVector = Icons.Filled.ArrowDropDown,
             contentDescription = null
         )
     }
 
     if (showDialog) {
-        AlertDialog(
+        AppDialog(
             onDismissRequest = { showDialog = false }
         ) {
             Surface(
                 modifier = Modifier
                     .wrapContentWidth()
-                    .wrapContentHeight(),
-                shape = MaterialTheme.shapes.large,
-                tonalElevation = AlertDialogDefaults.TonalElevation
+                    .wrapContentHeight()
             ) {
                 Column(
                     modifier = Modifier.fillMaxWidth()
                 ) {
                     entries.forEachIndexed { index, entry ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            RadioButton(
+                            AppButtons.AppRadioButton(
                                 selected = selectedIndex == index,
                                 onClick = {
                                     showDialog = false
@@ -322,7 +322,7 @@ fun ListPreference(
                                     onValueChange(values[selectedIndex])
                                 }
                             )
-                            Text(text = entry)
+                            AppTexts.TitleMedium(text = entry)
                         }
                     }
                 }

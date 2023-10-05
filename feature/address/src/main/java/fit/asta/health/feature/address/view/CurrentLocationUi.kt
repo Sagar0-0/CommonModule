@@ -7,15 +7,14 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.LocationOn
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -27,25 +26,22 @@ internal fun CurrentLocationUi(name: String, area: String) {
         horizontalAlignment = Alignment.Start
     ) {
         Row {
-            Icon(
+            AppDefaultIcon(
                 modifier = Modifier
                     .padding(end = AppTheme.spacing.extraSmall1)
                     .size(AppTheme.iconSize.mediumSmall),
                 imageVector = Icons.Default.LocationOn,
-                contentDescription = R.string.location.toStringFromResId(),
-                tint = MaterialTheme.colorScheme.primary
+                contentDescription = R.string.location.toStringFromResId()
             )
-            Text(
+            AppTexts.TitleMedium(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = name,
-                style = MaterialTheme.typography.headlineMedium
             )
         }
-        Text(
+        AppTexts.TitleMedium(
             modifier = Modifier.padding(AppTheme.spacing.minSmall),
-            text = area,
-            style = MaterialTheme.typography.titleMedium
+            text = area
         )
     }
 
