@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.organism.common
+package fit.asta.health.ui.common
 
 import android.content.res.Configuration
 import androidx.compose.foundation.background
@@ -17,7 +17,6 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -32,15 +31,8 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 private fun DefaultPreview() {
     AppTheme {
         AppTopTabBar(
-            tabList = listOf(
-                "DAY",
-                "WEEK",
-                "MONTH",
-                "YEAR"
-            ),
-            selectedItem = 0,
-            selectedColor = AppTheme.colors.primary,
-            unselectedColor = AppTheme.colors.onSurface.copy(alpha = .4f)
+            tabList = listOf("DAY", "WEEK", "MONTH", "YEAR"),
+            selectedItem = 0
         ) { }
     }
 }
@@ -63,14 +55,14 @@ fun AppTopTabBar(
     selectedItem: Int,
     strokeWidth: Float = 10f,
     selectedColor: Color = AppTheme.colors.primary,
-    unselectedColor: Color = AppTheme.colors.onSurface.copy(alpha = .4f),
+    unselectedColor: Color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3),
     onNewTabClicked: (Int) -> Unit
 ) {
 
     // Card Layout Which is elevated
     // TODO :- Removing the Elevated card and using AppElevatedCard is changing shape
     ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = 8.dp),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = AppTheme.elevation.small),
         colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent),
         shape = RectangleShape
     ) {
@@ -89,7 +81,7 @@ fun AppTopTabBar(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .size(54.dp)
+                        .size(AppTheme.boxSize.smallMedium)
                         .clickable {
 
                             // Changing the selected Item to the Item Index Clicked to move the State

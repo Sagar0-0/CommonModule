@@ -19,6 +19,7 @@ object Constants {
     const val HourMinAmPmKey = "hourMinAmPmKey"
     const val deepLinkUrl: String = "https://www.asta.com"
     const val CHANNEL_ID = "ALARM_SERVICE_CHANNEL"
+    const val CHANNEL_ID_OTHER = "MISSED_ALARM_SERVICE_CHANNEL"
     const val BREATHING_GRAPH_ROUTE = "graph_breathing_tool"
     const val MEDITATION_GRAPH_ROUTE = "graph_meditation_tool"
     const val SLEEP_GRAPH_ROUTE = "graph_sleep_tool"

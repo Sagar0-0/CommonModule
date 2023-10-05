@@ -13,6 +13,7 @@ data class AppIconSize(
     val small: Dp = 8.dp,
     val mediumSmall: Dp = 24.dp,
     val regularSize: Dp = 32.dp,
+    val regularLarge: Dp = 42.dp,
     val medium: Dp = 80.dp,
     val large: Dp = 150.dp,
 )

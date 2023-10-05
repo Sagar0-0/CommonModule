@@ -42,15 +42,15 @@ import fit.asta.chart.linear.data.LinearStringData
 import fit.asta.chart.util.ChartPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
-import fit.asta.health.designsystem.organism.common.AppDatePicker
-import fit.asta.health.designsystem.organism.common.AppTopTabBar
-import fit.asta.health.designsystem.organism.common.AppTitleElevatedCard
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
+import fit.asta.health.ui.common.AppDatePicker
+import fit.asta.health.ui.common.AppTitleElevatedCard
+import fit.asta.health.ui.common.AppTopTabBar
 import java.time.LocalDate
 
 @Composable

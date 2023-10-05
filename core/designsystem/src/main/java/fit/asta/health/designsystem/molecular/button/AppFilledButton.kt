@@ -3,6 +3,7 @@ package fit.asta.health.designsystem.molecular.button
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -11,19 +12,18 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 // Preview Function
 @Preview("Light Button")
 @Preview(
-    name = "Dark Button",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
 @Composable
 private fun DefaultPreview1() {
@@ -31,9 +31,7 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppFilledButton(
-                    onClick = {},
-                    textToShow = "Enabled Button",
-                    leadingIcon = Icons.Default.Person
+                    onClick = {}, textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
                 )
 
                 AppFilledButton(
@@ -66,35 +64,54 @@ fun AppFilledButton(
     textToShow: String,
     leadingIcon: ImageVector? = null,
     iconDes: String? = null,
-    onClick: () -> Unit
+    iconRightAlign: Boolean = true,
+    shape: Shape = ButtonDefaults.shape,
+    onClick: () -> Unit,
 ) {
     Button(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
+        shape = shape,
         colors = ButtonDefaults.buttonColors(
             containerColor = AppTheme.colors.primary,
             contentColor = AppTheme.colors.onPrimary,
-            disabledContainerColor = AppTheme.colors.onSurface.copy(alpha = .15f),
-            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
+            disabledContainerColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level1),
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
-        contentPadding = PaddingValues(start = 24.dp, top = 8.dp, end = 24.dp, bottom = 8.dp)
+        contentPadding = PaddingValues(
+            start = AppTheme.spacing.extraMedium,
+            top = AppTheme.spacing.small,
+            end = AppTheme.spacing.extraMedium,
+            bottom = AppTheme.spacing.small
+        )
     ) {
 
-        if (leadingIcon != null) {
-            Icon(
-                imageVector = leadingIcon,
-                contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            if (iconRightAlign && leadingIcon != null) {
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = iconDes,
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.extraSmall)
+                )
+            }
+
+            CaptionTexts.Level1(
+                text = textToShow,
+                color = if (enabled) AppTheme.colors.onPrimary
+                else AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
             )
+
+            if (!iconRightAlign && leadingIcon != null) {
+                Icon(
+                    imageVector = leadingIcon,
+                    contentDescription = iconDes,
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.extraSmall)
+                )
+            }
         }
 
-        CaptionTexts.Level1(
-            text = textToShow,
-            color = if (enabled)
-                AppTheme.colors.onPrimary
-            else
-                AppTheme.colors.onSurface.copy(alpha = .35f)
-        )
     }
 }

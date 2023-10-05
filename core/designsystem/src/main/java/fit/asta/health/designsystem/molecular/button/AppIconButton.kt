@@ -56,7 +56,7 @@ fun AppIconButton(
     iconDesc: String? = null,
     enabled: Boolean = true,
     iconTint: Color = AppTheme.colors.onSurface,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     IconButton(
         modifier = modifier,
@@ -65,11 +65,10 @@ fun AppIconButton(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
-        ), onClick = onClick
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        ),
+        onClick = onClick
     ) {
-        Icon(
-            imageVector = imageVector, contentDescription = iconDesc, tint = iconTint
-        )
+        Icon(imageVector = imageVector, contentDescription = iconDesc, tint = iconTint)
     }
 }

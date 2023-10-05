@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
@@ -78,13 +77,13 @@ fun AppOutlinedButton(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.onSurface,
             disabledContainerColor = Color.Transparent,
-            disabledContentColor = AppTheme.colors.onSurface.copy(alpha = .35f)
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
         contentPadding = PaddingValues(
-            start = 24.dp,
-            top = 8.dp,
-            end = 24.dp,
-            bottom = 8.dp
+            start = AppTheme.spacing.extraMedium,
+            top = AppTheme.spacing.small,
+            end = AppTheme.spacing.extraMedium,
+            bottom = AppTheme.spacing.small
         )
     ) {
         if (leadingIcon != null) {
@@ -100,7 +99,7 @@ fun AppOutlinedButton(
             color = if (enabled)
                 AppTheme.colors.onSurface
             else
-                AppTheme.colors.onSurface.copy(alpha = .35f)
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     }
 }

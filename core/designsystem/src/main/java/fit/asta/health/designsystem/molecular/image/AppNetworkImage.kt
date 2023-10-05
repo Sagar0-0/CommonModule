@@ -7,6 +7,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import coil.compose.AsyncImage
 import coil.request.ImageRequest
+import fit.asta.health.designsystem.AppTheme
 
 
 /**
@@ -27,7 +28,7 @@ import coil.request.ImageRequest
 fun AppNetworkImage(
     modifier: Modifier = Modifier,
     model: Any? = null,
-    alpha: Float = 1f,
+    alpha: Float = AppTheme.alphaValues.level5,
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.Fit,
     placeholder: Painter? = painterResource(id = AppConstImages.placeHolderImg)

@@ -23,7 +23,7 @@ import com.bumptech.glide.request.target.CustomTarget
 import com.bumptech.glide.request.transition.Transition
 import fit.asta.health.MainActivity
 import fit.asta.health.common.utils.getUriFromResourceId
-import fit.asta.health.notify.receiver.SnoozeReceiver
+import fit.asta.health.feature.scheduler.services.AlarmBroadcastReceiver
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -315,7 +315,7 @@ fun Context.sendNotification(
         PendingIntent.FLAG_UPDATE_CURRENT
     )
 
-    val intSnooze = Intent(this, SnoozeReceiver::class.java)
+    val intSnooze = Intent(this, AlarmBroadcastReceiver::class.java)
     val intSnoozePending = PendingIntent.getBroadcast(
         this,
         REQUEST_CODE, intSnooze,

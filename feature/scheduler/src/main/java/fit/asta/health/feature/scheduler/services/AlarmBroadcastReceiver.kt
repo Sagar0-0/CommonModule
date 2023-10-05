@@ -4,25 +4,20 @@ package fit.asta.health.feature.scheduler.services
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
-import android.os.Build
 import android.widget.Toast
+import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.feature.scheduler.util.Utils.CHANGE_STATE_ACTION
 import fit.asta.health.feature.scheduler.util.Utils.DISMISS_ACTION
 import fit.asta.health.feature.scheduler.util.Utils.SKIP_ALARM_ACTION
 import fit.asta.health.feature.scheduler.util.Utils.SNOOZE_ACTION
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.SupervisorJob
 import javax.inject.Inject
 
 @AndroidEntryPoint
 class AlarmBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var stateManager: StateManager
-
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
     override fun onReceive(context: Context, intent: Intent) {
         if (Intent.ACTION_BOOT_COMPLETED == intent.action || Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action
         ) {
@@ -64,10 +59,6 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
 
     private fun startRescheduleAlarmsService(context: Context) {
         val intentService = Intent(context, RescheduleAlarmService::class.java)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            context.startForegroundService(intentService)
-        } else {
-            context.startService(intentService)
-        }
+        ContextCompat.startForegroundService(context, intentService)
     }
 }

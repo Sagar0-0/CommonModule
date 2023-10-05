@@ -1,11 +1,14 @@
-package fit.asta.health.designsystem.organism.common
+package fit.asta.health.ui.common
 
+import android.app.DatePickerDialog
 import android.content.res.Configuration
+import android.widget.DatePicker
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.material.Surface
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowLeft
 import androidx.compose.material.icons.filled.ArrowRight
@@ -15,10 +18,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
-import android.app.DatePickerDialog
-import android.widget.DatePicker
-import androidx.compose.material.Surface
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -74,7 +73,7 @@ fun AppDatePicker(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(16.dp),
+            .padding(AppTheme.spacing.medium),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
@@ -83,7 +82,7 @@ fun AppDatePicker(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
         ) {
             AppIconButton(
-                modifier = Modifier.size(42.dp),
+                modifier = Modifier.size(AppTheme.iconSize.regularLarge),
                 imageVector = Icons.Default.ArrowLeft,
                 onClick = onPreviousButtonClick
             )
@@ -92,7 +91,7 @@ fun AppDatePicker(
 
 
             AppIconButton(
-                modifier = Modifier.size(42.dp),
+                modifier = Modifier.size(AppTheme.iconSize.regularLarge),
                 imageVector = Icons.Default.ArrowRight,
                 onClick = onNextButtonClick
             )
