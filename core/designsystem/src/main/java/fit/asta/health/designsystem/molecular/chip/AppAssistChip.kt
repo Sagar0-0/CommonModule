@@ -7,10 +7,13 @@ import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.TrackChanges
 import androidx.compose.material3.AssistChip
 import androidx.compose.material3.AssistChipDefaults
+import androidx.compose.material3.ChipColors
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -20,9 +23,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 // Preview Function
 @Preview("Light Button")
 @Preview(
-    name = "Dark Button",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
 @Composable
 private fun DefaultPreview1() {
@@ -70,23 +71,21 @@ fun AppAssistChip(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
-    trailingIconDes: String? = null
+    trailingIconTint: Color = LocalContentColor.current,
+    trailingIconDes: String? = null,
+    colors: ChipColors = AssistChipDefaults.assistChipColors(),
 ) {
 
     val textLabelComposable: @Composable (() -> Unit) = {
-        if (enabled)
-            CaptionTexts.Level2(text = textToShow)
-        else
-            CaptionTexts.Level2(
-                text = textToShow,
-                color = AppTheme.colors.onSurface.copy(alpha = .35f)
-            )
+        if (enabled) CaptionTexts.Level2(text = textToShow)
+        else CaptionTexts.Level2(
+            text = textToShow, color = AppTheme.colors.onSurface.copy(alpha = .35f)
+        )
     }
     val leadingIconComposable: @Composable (() -> Unit) = {
         if (leadingIcon != null) {
             Icon(
-                imageVector = leadingIcon,
-                contentDescription = leadingIconDes
+                imageVector = leadingIcon, contentDescription = leadingIconDes
             )
         }
     }
@@ -95,7 +94,8 @@ fun AppAssistChip(
         if (trailingIcon != null) {
             Icon(
                 imageVector = trailingIcon,
-                contentDescription = trailingIconDes
+                contentDescription = trailingIconDes,
+                tint = trailingIconTint
             )
         }
     }

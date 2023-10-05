@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -42,13 +41,13 @@ import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.PHYACTIVE
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGENV
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGHRS
@@ -221,7 +220,7 @@ fun LifeStyleContent(
                 .fillMaxWidth()
                 .padding(horizontal = AppTheme.spacing.medium)
                 .verticalScroll(rememberScrollState())
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = AppTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))

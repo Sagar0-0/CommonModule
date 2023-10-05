@@ -6,6 +6,7 @@ import androidx.compose.ui.unit.dp
 
 data class AppBoxSize(
     val small: Dp = 8.dp,
+    val smallMedium1: Dp = 30.dp,
     val largeSmall: Dp = 42.dp,
     val smallMedium: Dp = 54.dp,
     val medium: Dp = 100.dp,

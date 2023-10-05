@@ -29,7 +29,6 @@ import fit.asta.health.designsystem.components.functional.ShowCustomConfirmation
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
 import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
@@ -108,9 +107,9 @@ fun CreateProfileLayout(
         ) {
             when (currentStep) {
                 1 -> {
-                    DetailsCreateScreen(eventNext = {
-                        currentStep += 1
-                    })
+//                    DetailsCreateScreen(eventNext = {
+//                        currentStep += 1
+//                    })
                 }
 
                 2 -> {

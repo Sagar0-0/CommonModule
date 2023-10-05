@@ -8,25 +8,20 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.constraintlayout.compose.ConstraintLayout
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 @Composable
 fun Stepper(
@@ -67,15 +62,15 @@ fun Stepper(
     val transition = updateTransition(isCompete, label = "")
 
     val innerCircleColor by transition.animateColor(label = "innerCircleColor") {
-        if (it) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
+        if (it) selectedColor ?: AppTheme.colors.primary else unSelectedColor
     }
 
     val txtColor by transition.animateColor(label = "txtColor") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else unSelectedColor
+        if (it || isCurrent) selectedColor ?: AppTheme.colors.primary else unSelectedColor
     }
 
     val color by transition.animateColor(label = "color") {
-        if (it || isCurrent) selectedColor ?: MaterialTheme.colorScheme.primary else Color.Gray
+        if (it || isCurrent) selectedColor ?: AppTheme.colors.primary else Color.Gray
     }
 
     val borderStroke: BorderStroke = if (isRainbow) {
@@ -84,8 +79,6 @@ fun Stepper(
         BorderStroke(2.dp, color)
     }
 
-    val textSize by remember { mutableStateOf(12.sp) }
-
     ConstraintLayout(modifier = modifier) {
 
         val (circle, txt, line) = createRefs()
@@ -93,78 +86,60 @@ fun Stepper(
         Surface(shape = CircleShape,
             border = borderStroke,
             modifier = Modifier
-                .size(30.dp)
+                .size(AppTheme.boxSize.smallMedium1)
                 .constrainAs(circle) {
                     top.linkTo(parent.top)
                     end.linkTo(parent.end)
                     bottom.linkTo(parent.bottom)
                     start.linkTo(parent.start)
                 }) {
-
             Box(contentAlignment = Alignment.Center) {
-
-                IconButton(onClick = logic) {
-
-                    //after click
-
-                    if (isCompete) {
-                        Icon(
-                            imageVector = icons,
-                            contentDescription = "done",
-                            modifier = modifier.padding(4.dp),
-                            tint = when (step) {
-                                1 -> {
-                                    detailsColor
-                                }
-                                2 -> {
-                                    phyColor
-                                }
-                                3 -> {
-                                    healthColor
-                                }
-                                4 -> {
-                                    lifeStyleColor
-                                }
-                                else -> {
-                                    dietColor
-                                }
-                            }
-                        )
+                AppIconButton(
+                    imageVector = if (isCompete) {
+                        icons
                     } else {
+                        icons
+                    }, onClick = logic, iconTint = if (isCompete) {
+                        when (step) {
+                            1 -> {
+                                detailsColor
+                            }
 
-                        //before click
-//                        IconButton(onClick = logic) {
-                        Icon(
-                            imageVector = icons,
-                            contentDescription = "done",
-                            modifier = modifier.padding(4.dp),
-                            tint = Color.Black
-                        )
-//                        }
+                            2 -> {
+                                phyColor
+                            }
 
-                    }
-                }
+                            3 -> {
+                                healthColor
+                            }
+
+                            4 -> {
+                                lifeStyleColor
+                            }
+
+                            else -> {
+                                dietColor
+                            }
+                        }
+                    } else {
+                        AppTheme.colors.onSurface
+                    }, modifier = modifier.padding(AppTheme.spacing.extraSmall)
+                )
             }
         }
-
-        Text(
+        CaptionTexts.Level5(
+            text = stepDescription, color = txtColor,
             modifier = Modifier.constrainAs(txt) {
                 top.linkTo(circle.bottom, margin = 3.dp)
                 start.linkTo(circle.start)
                 end.linkTo(circle.end)
                 bottom.linkTo(parent.bottom)
             },
-            fontSize = textSize,
-            maxLines = 1,
-            overflow = TextOverflow.Ellipsis,
-            text = stepDescription,
-            color = txtColor,
         )
-
         if (!isComplete) {
             //Line
             if (isRainbow) {
-                Divider(
+                AppDivider(
                     modifier = Modifier
                         .constrainAs(line) {
                             top.linkTo(circle.top)
@@ -175,7 +150,7 @@ fun Stepper(
                     thickness = 1.dp,
                 )
             } else {
-                Divider(
+                AppDivider(
                     modifier = Modifier.constrainAs(line) {
                         top.linkTo(circle.top)
                         bottom.linkTo(circle.bottom)
@@ -187,5 +162,4 @@ fun Stepper(
             }
         }
     }
-
 }

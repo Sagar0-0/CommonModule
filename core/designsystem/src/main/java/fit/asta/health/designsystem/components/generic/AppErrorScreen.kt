@@ -1,11 +1,8 @@
 package fit.asta.health.designsystem.components.generic
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -15,37 +12,38 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Brush
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
-@Preview
+
+@Preview(
+    "Light Referral", heightDp = 1100
+)
+@Preview(
+    name = "Dark Referral",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    heightDp = 1100
+)
 @Composable
 fun AppErrorScreen(
     modifier: Modifier = Modifier,
@@ -56,22 +54,21 @@ fun AppErrorScreen(
     isInternetError: Boolean = true,
     onTryAgain: () -> Unit = {},
 ) {
-
     val openFullDialogCustom = remember { mutableStateOf(true) }
-
-    //...............................................................................
-    //Full screen Custom Dialog Sample\
-    NoInternetScreen(
-        modifier,
-        openFullDialogCustom,
-        onTryAgain,
-        primaryIssue,
-        desc,
-        btnTxt,
-        imgID,
-        isInternetError
-    )
-
+    AppTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            NoInternetScreen(
+                modifier,
+                openFullDialogCustom,
+                onTryAgain,
+                primaryIssue,
+                desc,
+                btnTxt,
+                imgID,
+                isInternetError
+            )
+        }
+    }
 }
 
 @Composable
@@ -85,13 +82,12 @@ private fun NoInternetScreen(
     imgID: Int,
     isInternetError: Boolean,
 ) {
-
     if (isInternetError) {
-        Dialog(onDismissRequest = {
+        AppDialog(onDismissRequest = {
             openFullDialogCustom.value = false
         }) {
             Surface(
-                color = MaterialTheme.colorScheme.primaryContainer, shape = RoundedCornerShape(8.dp)
+                color = AppTheme.colors.primaryContainer, shape = AppTheme.shape.medium
             ) {
                 ErrorScreen(
                     imgID = imgID,
@@ -103,12 +99,11 @@ private fun NoInternetScreen(
             }
         }
     } else {
-
-        Card(
+        AppCard(
             modifier = modifier.fillMaxSize(),
-            elevation = CardDefaults.cardElevation(defaultElevation = 8.dp),
-            colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.primaryContainer),
-            shape = RoundedCornerShape(8.dp)
+            elevation = CardDefaults.cardElevation(defaultElevation = AppTheme.elevation.small),
+            colors = CardDefaults.cardColors(containerColor = AppTheme.colors.primaryContainer),
+            shape = AppTheme.shape.medium
         ) {
             ErrorScreen(
                 imgID = imgID,
@@ -119,8 +114,6 @@ private fun NoInternetScreen(
                 modifier = Modifier.fillMaxSize()
             )
         }
-
-
     }
 
 }
@@ -135,63 +128,42 @@ fun ErrorScreen(
     onTryAgain: () -> Unit,
 ) {
 
-
     Column(
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally,
         modifier = modifier
     ) {
-
-        Image(
+        AppLocalImage(
             painter = painterResource(id = imgID),
             contentDescription = primaryIssue,
             contentScale = ContentScale.Fit,
             modifier = Modifier
                 .height(200.dp)
-                .fillMaxWidth(),
-
-            )
-
-        Spacer(modifier = Modifier.height(20.dp))
-        //.........................Text: title
-        Text(
-            text = primaryIssue,
-            textAlign = TextAlign.Center,
-            modifier = Modifier
-                .padding(top = 20.dp)
-                .fillMaxWidth(),
-            letterSpacing = 2.sp,
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleLarge,
-            color = MaterialTheme.colorScheme.primary,
+                .fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(8.dp))
-
-        //.........................Text : description
-        Text(
-            text = desc,
+        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        TitleTexts.Level1(
+            text = primaryIssue,
+            color = AppTheme.colors.primary,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(top = 10.dp, start = 8.dp, end = 8.dp)
-                .fillMaxWidth(),
-            letterSpacing = 1.sp,
-            style = MaterialTheme.typography.bodyLarge,
-            color = MaterialTheme.colorScheme.primary,
+                .padding(top = AppTheme.spacing.medium)
+                .fillMaxWidth()
+        )
+        Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+        BodyTexts.Level3(
+            text = desc, textAlign = TextAlign.Center, modifier = Modifier
+                .padding(
+                    top = AppTheme.spacing.small,
+                    start = AppTheme.spacing.small,
+                    end = AppTheme.spacing.small
+                )
+                .fillMaxWidth(), color = AppTheme.colors.primary
         )
         //.........................Spacer
-        Spacer(modifier = Modifier.height(24.dp))
-
-        val cornerRadius = 16.dp
-        val gradientColor = listOf(
-            DefaultColorTokens.Gradient1NoInternet,
-            DefaultColorTokens.Gradient2NoInternet
-        )
+        Spacer(modifier = Modifier.height(AppTheme.spacing.extraMedium))
         GradientButton(
-            gradientColors = gradientColor,
-            cornerRadius = cornerRadius,
-            nameButton = btnTxt,
-            roundedCornerShape = RoundedCornerShape(16.dp),
-            onClick = onTryAgain
+            nameButton = btnTxt, onClick = onTryAgain
         )
     }
 
@@ -201,43 +173,18 @@ fun ErrorScreen(
 //...........................................................................
 @Composable
 fun GradientButton(
-    gradientColors: List<Color>,
-    cornerRadius: Dp,
     nameButton: String,
-    roundedCornerShape: RoundedCornerShape,
     onClick: () -> Unit,
 ) {
-
-    Button(
-        modifier = Modifier
+    AppFilledButton(
+        textToShow = nameButton, modifier = Modifier
             .fillMaxWidth()
-            .padding(start = 32.dp, end = 32.dp, bottom = 32.dp),
-        onClick = onClick,
-        contentPadding = PaddingValues(),
-        colors = ButtonDefaults.buttonColors(
-            containerColor = Color.Transparent
-        ),
-        shape = RoundedCornerShape(cornerRadius)
-    ) {
-
-        Box(
-            modifier = Modifier
-                .fillMaxWidth()
-                .background(
-                    brush = Brush.horizontalGradient(colors = gradientColors),
-                    shape = roundedCornerShape
-                )
-                .clip(roundedCornerShape)
-                .padding(horizontal = 16.dp, vertical = 8.dp),
-            contentAlignment = Alignment.Center
-        ) {
-            Text(
-                text = nameButton, fontSize = 20.sp, color = Color.White
-            )
-        }
-
-
-    }
+            .padding(
+                start = AppTheme.spacing.large,
+                end = AppTheme.spacing.large,
+                bottom = AppTheme.spacing.large
+            ), onClick = onClick, shape = RoundedCornerShape(AppTheme.spacing.medium)
+    )
 }
 
 
@@ -253,7 +200,8 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
         modifier = Modifier
             .padding(AppTheme.spacing.medium)
             .fillMaxWidth()
-            .wrapContentHeight(), content = {
+            .wrapContentHeight(),
+        content = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -264,15 +212,12 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
                 AppDefaultIcon(
                     imageVector = imageVector,
                     contentDescription = "ErrorMessage Occurred while fetching Tst List",
-                    tint = MaterialTheme.colorScheme.surface,
+                    tint = AppTheme.colors.surface,
                     modifier = Modifier.size(AppTheme.imageHeight.small)
                 )
-                AppTexts.HeadlineSmall(text = message, color = MaterialTheme.colorScheme.onError)
+                HeadingTexts.Level4(text = message, color = AppTheme.colors.onError)
             }
-        }, colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.error)
+        },
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.error)
     )
 }
-
-
-
-

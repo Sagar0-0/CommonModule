@@ -6,12 +6,11 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppButtons
 
 @Composable
 fun TwoButtonLayout(
@@ -29,7 +28,7 @@ fun TwoButtonLayout(
             onClick = onClickButton1,
             modifier = Modifier.weight(1f),
             content = contentButton1,
-            border = BorderStroke(width = 2.dp, color = MaterialTheme.colorScheme.onSurface)
+            border = BorderStroke(width = 2.dp, color = AppTheme.colors.onSurface)
         )
         AppButtons.AppStandardButton(
             onClick = onClickButton2,

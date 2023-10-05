@@ -16,10 +16,10 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.*
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
@@ -37,7 +37,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(
     ExperimentalCoroutinesApi::class,
-    ExperimentalMaterial3Api::class, ExperimentalMaterialApi::class
+    ExperimentalMaterialApi::class
 )
 @Composable
 fun DietCreateScreen(

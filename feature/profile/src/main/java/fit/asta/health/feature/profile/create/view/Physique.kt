@@ -18,6 +18,7 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -29,9 +30,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EditCalendar
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
+import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -54,14 +54,15 @@ import com.maxkeppeler.sheets.calendar.models.CalendarConfig
 import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
@@ -75,12 +76,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
+
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun PhysiqueCreateScreen(
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: () -> Unit,
-    eventNext: () -> Unit,
+    eventPrevious: () -> Unit = {},
+    eventNext: () -> Unit = {},
 ) {
 
     //Calendar
@@ -107,36 +109,41 @@ fun PhysiqueCreateScreen(
 
     val focusManager = LocalFocusManager.current
 
-    CompositionLocalProvider(
-        LocalOverscrollConfiguration provides null
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.medium)
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-            AgeSection(userAge, userDOB, calendarState)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-            MeasurementSection(userWeight, focusManager, viewModel, userHeight)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-            GenderSection(
-                selectedGenderOptionDemo,
-                viewModel,
-                selectedIsOnPeriodOptionDemo,
-                selectedIsPregOptionDemo,
-                pregnancyWeek,
-                focusManager
-            )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+    AppTheme {
+        Surface(modifier = Modifier.fillMaxSize()) {
+            CompositionLocalProvider(
+                LocalOverscrollConfiguration provides null
+            ) {
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.medium)
+                        .verticalScroll(rememberScrollState()),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    AgeSection(userAge, userDOB, calendarState)
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    MeasurementSection(userWeight, focusManager, viewModel, userHeight)
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    GenderSection(
+                        selectedGenderOptionDemo,
+                        viewModel,
+                        selectedIsOnPeriodOptionDemo,
+                        selectedIsPregOptionDemo,
+                        pregnancyWeek,
+                        focusManager
+                    )
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
-            CreateProfileTwoButtonLayout(eventPrevious, eventNext)
+                    CreateProfileTwoButtonLayout(eventPrevious, eventNext)
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                }
+            }
         }
     }
+
     CalendarSection(calendarState, viewModel, calendarInstance)
 }
 
@@ -201,10 +208,9 @@ private fun GenderSection(
                                 .padding(start = AppTheme.spacing.medium),
                             horizontalArrangement = Arrangement.Start
                         ) {
-                            Text(
-                                stringResource(R.string.pregnancyWeekInput_profile_creation),
-                                color = MaterialTheme.colorScheme.onTertiaryContainer,
-                                style = MaterialTheme.typography.titleSmall
+                            TitleTexts.Level4(
+                                text = stringResource(id = R.string.pregnancyWeekInput_profile_creation),
+                                color = AppTheme.colors.onTertiaryContainer
                             )
                         }
                         Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
@@ -224,8 +230,7 @@ private fun GenderSection(
                                 errorMessage = pregnancyWeek.error,
                                 keyboardType = KeyboardType.Number,
                                 imeAction = ImeAction.Done,
-                                colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = MaterialTheme.colorScheme.onSurface)
-
+                                colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                             )
                         }
                     }
@@ -253,16 +258,16 @@ private fun MeasurementSection(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    AppTexts.TitleMedium(
+                    TitleTexts.Level3(
                         text = stringResource(id = R.string.weight),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
                         buttonCount = 2,
                         onButtonClick = { index -> println(index) },
                         buttonTexts = arrayOf("kg", "lb"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
-                        selectedColor = MaterialTheme.colorScheme.primary
+                        selectedColor = AppTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.small))
@@ -282,12 +287,12 @@ private fun MeasurementSection(
                     },
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next,
-                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = MaterialTheme.colorScheme.onSurface)
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )
                 if (userWeight.error !is UiString.Empty) {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
-                    AppTexts.BodyLarge(
-                        text = userWeight.error.asString(), color = MaterialTheme.colorScheme.error
+                    BodyTexts.Level1(
+                        text = userWeight.error.asString(), color = AppTheme.colors.error
                     )
                 }
             }
@@ -296,16 +301,16 @@ private fun MeasurementSection(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    AppTexts.TitleMedium(
+                    TitleTexts.Level3(
                         text = stringResource(id = R.string.height),
-                        color = MaterialTheme.colorScheme.onTertiaryContainer,
+                        color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
                         buttonCount = 2,
                         onButtonClick = { index -> println(index) },
                         buttonTexts = arrayOf("cm", "in"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
-                        selectedColor = MaterialTheme.colorScheme.primary
+                        selectedColor = AppTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.small))
@@ -321,12 +326,12 @@ private fun MeasurementSection(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done,
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = MaterialTheme.colorScheme.onSurface)
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )
                 if (userHeight.error !is UiString.Empty) {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
-                    AppTexts.BodyLarge(
-                        text = userHeight.error.asString(), color = MaterialTheme.colorScheme.error
+                    BodyTexts.Level1(
+                        text = userHeight.error.asString(), color = AppTheme.colors.error
                     )
                 }
             }
@@ -342,22 +347,21 @@ private fun AgeSection(
 ) {
 
     val ageColorSelection = if (userAge.error is UiString.Empty) {
-        MaterialTheme.colorScheme.onSurface
+        AppTheme.colors.onSurface
     } else {
-        MaterialTheme.colorScheme.error
+        AppTheme.colors.error
     }
 
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween
     ) {
-        AppTexts.TitleMedium(
-            text = stringResource(id = R.string.age),
-            color = MaterialTheme.colorScheme.onTertiaryContainer
+        TitleTexts.Level3(
+            text = stringResource(id = R.string.age), color = AppTheme.colors.onTertiaryContainer
         )
         if (userAge.value.isNotEmpty()) {
-            AppTexts.BodyLarge(
+            BodyTexts.Level1(
                 text = "${userAge.value} years old",
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = AppTheme.colors.onTertiaryContainer,
             )
         }
     }
@@ -378,12 +382,12 @@ private fun AgeSection(
                 imageVector = Icons.Rounded.EditCalendar,
                 contentDescription = "Calendar Icon",
                 tint = if (userAge.error is UiString.Empty) {
-                    MaterialTheme.colorScheme.onBackground
+                    AppTheme.colors.onBackground
                 } else {
-                    MaterialTheme.colorScheme.error
+                    AppTheme.colors.error
                 }
             )
-            AppTexts.BodyMedium(
+            BodyTexts.Level2(
                 text = userDOB.value.ifEmpty { stringResource(R.string.date_of_birth) },
                 modifier = Modifier.padding(AppTheme.spacing.small),
                 color = ageColorSelection
@@ -398,9 +402,7 @@ private fun AgeSection(
             horizontalArrangement = Arrangement.Start,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppTexts.BodyLarge(
-                text = userAge.error.asString(), color = MaterialTheme.colorScheme.error
-            )
+            BodyTexts.Level1(text = userAge.error.asString(), color = AppTheme.colors.error)
         }
     }
 }

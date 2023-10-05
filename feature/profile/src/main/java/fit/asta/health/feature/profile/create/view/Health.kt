@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -59,7 +58,6 @@ import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
-
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 @Composable
@@ -113,6 +111,7 @@ fun HealthCreateScreen(
         onBottomSheetItemClick(propertyType)
     }
 
+
     AppModalBottomSheetLayout(sheetContent = {
         Spacer(modifier = Modifier.height(1.dp))
         currentBottomSheet?.let {
@@ -138,6 +137,8 @@ fun HealthCreateScreen(
             composeFirstData = composeFirstData
         )
     })
+
+
 }
 
 
@@ -212,6 +213,7 @@ fun HealthContent(
         MultiRadioBtnKeys.ADDICTION
     )
 
+
     CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
         HealthContentLayout(
             viewModel = hiltViewModel(),
@@ -225,6 +227,7 @@ fun HealthContent(
             eventNext = eventNext
         )
     }
+
 }
 
 
@@ -285,7 +288,7 @@ private fun HealthContentLayout(
             .fillMaxWidth()
             .padding(horizontal = AppTheme.spacing.medium)
             .verticalScroll(rememberScrollState())
-            .background(color = MaterialTheme.colorScheme.background),
+            .background(color = AppTheme.colors.background),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(AppTheme.spacing.medium))

@@ -64,6 +64,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.WeatherCardImage
 import fit.asta.health.designsystem.components.generic.AppButtons
@@ -73,8 +74,6 @@ import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.GradientButton
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
@@ -102,8 +101,7 @@ fun TodayContent(
     val context = LocalContext.current
 
     if (deleteDialog) {
-        AlertDialogPopUp(
-            content = "Are you sure you want to delete this alarm?",
+        AlertDialogPopUp(content = "Are you sure you want to delete this alarm?",
             actionButton = stringResource(id = R.string.delete),
             onDismiss = { deleteDialog = false },
             onDone = {
@@ -112,8 +110,7 @@ fun TodayContent(
             })
     }
     if (skipDialog) {
-        AlertDialogPopUp(
-            content = "Are you sure you want to skip this alarm?",
+        AlertDialogPopUp(content = "Are you sure you want to skip this alarm?",
             actionButton = stringResource(id = R.string.skip),
             onDismiss = { skipDialog = false },
             onDone = {
@@ -133,15 +130,15 @@ fun TodayContent(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
         ) {
             item {
-                NameAndMoodHomeScreenHeader(userName = userName,
+                NameAndMoodHomeScreenHeader(
+                    userName = userName,
                     onAlarm = { onNav(ALL_ALARMS_ROUTE) })
             }
             when (state) {
                 is UiState.Loading -> {
                     item {
                         Box(
-                            modifier = Modifier.fillMaxWidth(),
-                            contentAlignment = Alignment.Center
+                            modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
                         ) {
                             LoadingAnimation()
                         }
@@ -155,18 +152,9 @@ fun TodayContent(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
-                            val cornerRadius = 16.dp
-                            val gradientColor = listOf(
-                                DefaultColorTokens.Gradient1NoInternet,
-                                DefaultColorTokens.Gradient2NoInternet
-                            )
                             GradientButton(
-                                gradientColors = gradientColor,
-                                cornerRadius = cornerRadius,
                                 nameButton = "Retry",
-                                roundedCornerShape = RoundedCornerShape(16.dp),
-                                onClick = { hSEvent(HomeEvent.Retry) }
-                            )
+                            ) { hSEvent(HomeEvent.Retry) }
                         }
                     }
                 }
@@ -184,20 +172,16 @@ fun TodayContent(
                             modifier = Modifier.fillMaxWidth()
                         ) {
                             items(items = state.data.slots) { slot ->
-                                WeatherCard(
-                                    weatherData = slot,
-                                    onSchedule = {
-                                        hSEvent(
-                                            HomeEvent.NavSchedule(
-                                                getHourMinAmPm(
-                                                    slot.time,
-                                                    slot.title
-                                                )
+                                WeatherCard(weatherData = slot, onSchedule = {
+                                    hSEvent(
+                                        HomeEvent.NavSchedule(
+                                            getHourMinAmPm(
+                                                slot.time, slot.title
                                             )
                                         )
-                                        onNav(Graph.Scheduler.route)
-                                    }
-                                )
+                                    )
+                                    onNav(Graph.Scheduler.route)
+                                })
                             }
                         }
                     }
@@ -310,18 +294,16 @@ fun TodayContent(
                     }
                 }
                 items(listNextDay) { data ->
-                    SwipeDemoToday(data = data, skipEnable = false,
-                        onSwipeRight = {
-                            evenType = Event.NextDay
-                            deleteDialog = true
-                            deletedItem = data
-                        }, onSwipeLeft = {},
-                        onDone = {
-                            onNav(goToTool(data.info.tag))
-                        }, onReschedule = {
-                            onNav(Graph.Scheduler.route)
-                            hSEvent(HomeEvent.EditAlarm(data))
-                        })
+                    SwipeDemoToday(data = data, skipEnable = false, onSwipeRight = {
+                        evenType = Event.NextDay
+                        deleteDialog = true
+                        deletedItem = data
+                    }, onSwipeLeft = {}, onDone = {
+                        onNav(goToTool(data.info.tag))
+                    }, onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    })
                 }
             }
         }
@@ -340,7 +322,7 @@ fun TodayItem(
     progress: String = "44%",
     time: String = "9:00am",
     onDone: () -> Unit = {},
-    onReschedule: () -> Unit = {}
+    onReschedule: () -> Unit = {},
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
@@ -436,8 +418,7 @@ fun TodayItem(
                 }
             }
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.fillMaxWidth()
+                verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
             ) {
                 Text(
                     modifier = Modifier.weight(.5f),
@@ -465,7 +446,7 @@ fun SwipeDemoToday(
     progress: String = "44%",
     data: AlarmEntity,
     onDone: () -> Unit = {},
-    onReschedule: () -> Unit = {}
+    onReschedule: () -> Unit = {},
 ) {
 
     val archive = SwipeAction(
@@ -514,7 +495,7 @@ fun TodayCard(
     progress: String,
     time: String,
     onDone: () -> Unit,
-    onReschedule: () -> Unit
+    onReschedule: () -> Unit,
 ) {
     TodayItem(
         image = image,
@@ -533,7 +514,7 @@ fun AlertDialogPopUp(
     content: String,
     actionButton: String,
     onDismiss: () -> Unit,
-    onDone: () -> Unit
+    onDone: () -> Unit,
 ) {
     AppDialog(
         onDismissRequest = onDismiss, properties = DialogProperties(
@@ -541,8 +522,7 @@ fun AlertDialogPopUp(
         )
     ) {
         AppCard(
-            shape = RoundedCornerShape(10.dp),
-            elevation = CardDefaults.cardElevation(8.dp)
+            shape = RoundedCornerShape(10.dp), elevation = CardDefaults.cardElevation(8.dp)
         ) {
 
             Column(

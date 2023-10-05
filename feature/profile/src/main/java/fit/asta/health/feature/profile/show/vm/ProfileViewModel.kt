@@ -34,7 +34,6 @@ import fit.asta.health.feature.profile.ProfileConstants.JSTARTTIME
 import fit.asta.health.feature.profile.ProfileConstants.NAME
 import fit.asta.health.feature.profile.ProfileConstants.PHONE
 import fit.asta.health.feature.profile.ProfileConstants.PREGNANCY_WEEK
-import fit.asta.health.feature.profile.ProfileConstants.PROFILE_DATA
 import fit.asta.health.feature.profile.ProfileConstants.USER_IMG
 import fit.asta.health.feature.profile.ProfileConstants.WAKEUPTIME
 import fit.asta.health.feature.profile.ProfileConstants.WEIGHT
@@ -290,7 +289,7 @@ class ProfileViewModel
     private fun handleSuccessResponse(data: UserProfile) {
 
         //Profile Data Replica
-        savedState[PROFILE_DATA] = data
+//        savedState[PROFILE_DATA] = data
 
         //Access Data
         handleContactData(data.contact, data.id)
@@ -311,8 +310,8 @@ class ProfileViewModel
         savedState[NAME] = InputWrapper(value = contact.name)
         savedState[EMAIL] = InputWrapper(value = contact.email)
         savedState[PHONE] = InputWrapper(value = contact.phone)
-        savedState[USER_IMG] = contact.url
-        savedState[ADDRESS] = contact.address
+        savedState[USER_IMG] = contact.url.toString()
+        savedState[ADDRESS] = contact.address.toString()
         savedState[ID] = id
         savedState[DOB] = InputWrapper(value = contact.dob)
     }
@@ -511,7 +510,7 @@ class ProfileViewModel
             dob = dob.value.value,
             email = email.value.value.trim(),
             name = name.value.value.trim(),
-            url = userImg.value,
+            url = ProfileMedia(url = userImg.value.toString()),
             localUrl = userImg.value.localUrl
         )
     }

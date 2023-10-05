@@ -1,6 +1,5 @@
 package fit.asta.health.designsystem.molecular.animations
 
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
@@ -8,6 +7,7 @@ import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
@@ -25,19 +25,15 @@ object AppDividerLineWidth {
 
 
 /** @param modifier (optional) - A set of modifiers to customize the layout and behavior of the [AppDivider].
- * @param lineWidth (required): The width of the divider line. */
+ */
 @Composable
 fun AppDivider(
     modifier: Modifier = Modifier,
-    lineWidth: Dp = 0.dp,
     thickness: Dp = AppTheme.spacing.extraSmall,
+    color: Color = AppTheme.colors.primary,
 ) {
     Divider(
-        color = AppTheme.colors.primary,
-        thickness = thickness,
-        modifier = modifier
-            .clip(AppTheme.shape.small)
-            .width(width = lineWidth)
+        color = color, thickness = thickness, modifier = modifier.clip(AppTheme.shape.small)
     )
 }
 
@@ -50,12 +46,10 @@ fun AppDivider(
 @Composable
 fun AppCircularProgressIndicator(
     modifier: Modifier = Modifier,
-    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth
+    strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
 ) {
     CircularProgressIndicator(
-        modifier = modifier,
-        color = AppTheme.colors.primary,
-        strokeWidth = strokeWidth
+        modifier = modifier, color = AppTheme.colors.primary, strokeWidth = strokeWidth
     )
 }
 
