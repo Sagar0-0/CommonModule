@@ -3,7 +3,6 @@ package fit.asta.health.feature.profile.show
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.filled.Edit
@@ -13,13 +12,9 @@ import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
 import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,10 +25,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.data.profile.remote.model.UserProfile
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.profile.show.view.DietLayout
 import fit.asta.health.feature.profile.show.view.HealthLayout
 import fit.asta.health.feature.profile.show.view.LifeStyleLayout
@@ -62,9 +60,7 @@ fun ProfileReadyScreen(
     )
 
     val navigationItemHealth = NavigationItem(
-        icon = Outlined.Favorite,
-        contentDescription = "Profile Screen 3",
-        label = stringResource(
+        icon = Outlined.Favorite, contentDescription = "Profile Screen 3", label = stringResource(
             R.string.health
         )
     )
@@ -86,22 +82,21 @@ fun ProfileReadyScreen(
     AppScaffold(topBar = {
         Column {
             AppTopBar(title = stringResource(R.string.profile_screen), onBack = onBack, actions = {
-                IconButton(onClick = onEdit) {
-                    Icon(
-                        imageVector = Icons.Filled.Edit,
-                        contentDescription = null,
-                        modifier = Modifier.size(24.dp),
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+                AppIconButton(
+                    imageVector = Icons.Filled.Edit,
+                    iconTint = AppTheme.colors.primary,
+                    iconDesc = "Profile Edit",
+                    onClick = onEdit
+                )
             })
 
             val colors = NavigationBarItemDefaults.colors(
-                selectedIconColor = MaterialTheme.colorScheme.primary
+                selectedIconColor = AppTheme.colors.primary
             )
 
             NavigationBar(
-                containerColor = Color.Transparent, tonalElevation = 0.dp
+                containerColor = Color.Transparent,
+                tonalElevation = 0.dp,
             ) {
                 val navigationItems = listOf(
                     navigationItemDetails,
@@ -116,15 +111,12 @@ fun ProfileReadyScreen(
                         selected = content == index + 1,
                         onClick = { content = index + 1 },
                         icon = {
-                            Icon(
-                                item.icon, contentDescription = item.contentDescription
+                            AppDefaultIcon(
+                                imageVector = item.icon,
+                                contentDescription = item.contentDescription
                             )
                         },
-                        label = {
-                            Text(
-                                text = item.label, fontSize = 11.sp, maxLines = 1
-                            )
-                        },
+                        label = { CaptionTexts.Level5(text = item.label) },
                         colors = colors
                     )
                 }

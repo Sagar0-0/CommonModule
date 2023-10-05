@@ -7,17 +7,18 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
-import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.animations.AppDividerLineWidth
+import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
@@ -132,7 +133,7 @@ fun HomeScreenLayout(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TitleTexts.Level1(text = "Why our customers love ASTA?")
-                AppDivider(lineWidth = AppDividerLineWidth.TstDividerWidth)
+                AppDivider(modifier = Modifier.width(AppDividerLineWidth.TstDividerWidth))
             }
         }
 

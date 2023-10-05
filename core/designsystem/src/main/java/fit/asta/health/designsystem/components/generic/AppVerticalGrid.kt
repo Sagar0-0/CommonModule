@@ -26,7 +26,8 @@ fun AppVerticalGrid(
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
-    content: LazyGridScope.() -> Unit
+    userScrollEnabled: Boolean = true,
+    content: LazyGridScope.() -> Unit,
 ) {
     LazyVerticalGrid(
         columns = GridCells.Fixed(count = count),
@@ -36,6 +37,7 @@ fun AppVerticalGrid(
             .fillMaxSize()
             .padding(AppTheme.spacing.medium),
         verticalArrangement = verticalArrangement,
-        horizontalArrangement = horizontalArrangement
+        horizontalArrangement = horizontalArrangement,
+        userScrollEnabled = userScrollEnabled
     )
 }

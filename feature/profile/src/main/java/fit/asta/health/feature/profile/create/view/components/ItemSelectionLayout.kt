@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
@@ -21,7 +22,6 @@ import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ChipColors
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -33,12 +33,12 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
-import fit.asta.health.designsystem.components.generic.AppChips
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.molecular.animations.AppDivider
-import fit.asta.health.designsystem.components.generic.AppTextField
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.chip.AppAssistChip
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -54,7 +54,6 @@ fun ItemSelectionLayout(
     composeIndex: ComposeIndex,
     searchQuery: MutableState<String>,
 ) {
-
     Box(
         Modifier
             .fillMaxSize()
@@ -67,7 +66,7 @@ fun ItemSelectionLayout(
         ) {
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                AppDivider(lineWidth = 80.dp)
+                AppDivider(modifier = Modifier.width(80.dp))
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
@@ -91,7 +90,7 @@ fun SearchBar(
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
         keyboardType = KeyboardType.Text,
         imeAction = ImeAction.Done,
-        placeholder = { AppTexts.LabelSmall(text = "Search") },
+        placeholder = { CaptionTexts.Level5(text = "Search") },
         leadingIcon = {
             AppDefaultIcon(imageVector = Icons.Rounded.Search, contentDescription = "Search Icon")
         },
@@ -142,19 +141,14 @@ fun AddChipOnCard(
     onClick: () -> Unit,
 ) {
 
-    val colors =
-        rememberAssistChipColors(containerColor = MaterialTheme.colorScheme.primaryContainer)
-    AppChips.AppAssistChip(onClick = onClick, label = {
-        AppTexts.LabelSmall(
-            text = textOnChip, color = MaterialTheme.colorScheme.onPrimaryContainer
-        )
-    }, trailingIcon = {
-        AppDefaultIcon(
-            imageVector = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
-            contentDescription = if (isSelected) "Remove Items" else "Add Items",
-            tint = if (isSelected) MaterialTheme.colorScheme.error else MaterialTheme.colorScheme.primary
-        )
-    }, colors = colors
+    val colors = rememberAssistChipColors(containerColor = AppTheme.colors.primaryContainer)
+
+    AppAssistChip(
+        onClick = onClick,
+        textToShow = textOnChip,
+        trailingIcon = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
+        colors = colors,
+        trailingIconTint = if (isSelected) AppTheme.colors.error else AppTheme.colors.primary
     )
 }
 
@@ -165,8 +159,7 @@ fun rememberAssistChipColors(
     disabledContainerColor: Color? = null,
 ): ChipColors {
     return AssistChipDefaults.assistChipColors(
-        containerColor = containerColor ?: MaterialTheme.colorScheme.primaryContainer,
-        disabledContainerColor = disabledContainerColor
-            ?: MaterialTheme.colorScheme.primaryContainer
+        containerColor = containerColor ?: AppTheme.colors.primaryContainer,
+        disabledContainerColor = disabledContainerColor ?: AppTheme.colors.primaryContainer
     )
 }

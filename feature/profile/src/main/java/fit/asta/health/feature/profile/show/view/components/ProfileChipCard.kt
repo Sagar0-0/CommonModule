@@ -21,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDrawImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -60,13 +60,13 @@ private fun ProfileHeader(icon: Int, title: String) {
             horizontalArrangement = Arrangement.Center,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppDrawImg(
+            AppLocalImage(
                 painter = painterResource(id = icon),
                 contentDescription = "Card Image",
                 modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.small))
-            AppTexts.BodySmall(text = title)
+            TitleTexts.Level3(text = title)
         }
     }
 }

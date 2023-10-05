@@ -1,6 +1,5 @@
 package fit.asta.health.feature.profile.show.view.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,29 +8,21 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun UserBodyType(
     bodyType: String,
     bodyImg: Int,
 ) {
-    Card(
-        modifier = Modifier.fillMaxWidth(),
-        elevation = CardDefaults.cardElevation(AppTheme.elevation.smallExtraMedium),
-        shape = RoundedCornerShape(AppTheme.spacing.small)
-    ) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(modifier = Modifier.padding(vertical = AppTheme.spacing.medium)) {
             Row(
                 Modifier
@@ -39,14 +30,7 @@ fun UserBodyType(
                     .padding(start = AppTheme.spacing.medium, end = AppTheme.spacing.small),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
-                    text = bodyType,
-                    fontSize = 10.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 1.5.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                BodyTexts.Level1(text = bodyType)
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
@@ -54,7 +38,7 @@ fun UserBodyType(
                     .fillMaxWidth()
                     .padding(start = 55.dp)
             ) {
-                Image(
+                AppLocalImage(
                     painter = painterResource(id = bodyImg),
                     contentDescription = null,
                     modifier = Modifier.size(width = 70.dp, height = 109.dp)
@@ -67,13 +51,7 @@ fun UserBodyType(
                     .padding(end = AppTheme.spacing.medium),
                 horizontalArrangement = Arrangement.End
             ) {
-                Text(
-                    text = "bodyStatus",
-                    fontSize = 14.sp,
-                    lineHeight = 16.sp,
-                    letterSpacing = 0.4.sp,
-                    color = MaterialTheme.colorScheme.onBackground
-                )
+                BodyTexts.Level2(text = "Body Status")
             }
         }
     }

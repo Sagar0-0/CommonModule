@@ -49,7 +49,6 @@ fun DietLayout(
                 )
             }
         }
-
         item { Spacer(modifier = Modifier.height(AppTheme.spacing.medium)) }
     }
 }

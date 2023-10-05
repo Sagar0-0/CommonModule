@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDrawImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun GenderOptionsLayout(
@@ -34,15 +34,15 @@ fun GenderOptionsLayout(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
             ) {
-                AppDrawImg(
+                AppLocalImage(
                     painter = painterResource(id = cardImg),
                     contentDescription = "Gender Images",
                     modifier = Modifier.size(AppTheme.imageSize.largeMedium)
                 )
                 Column {
-                    AppTexts.BodySmall(text = cardType)
+                    BodyTexts.Level3(text = cardType)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.small))
-                    AppTexts.BodyLarge(text = cardValue)
+                    BodyTexts.Level1(text = cardValue)
                 }
             }
         }

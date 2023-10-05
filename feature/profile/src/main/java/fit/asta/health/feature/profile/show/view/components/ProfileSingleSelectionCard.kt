@@ -12,10 +12,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDrawImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun ProfileSingleSelectionCard(
@@ -30,16 +30,16 @@ fun ProfileSingleSelectionCard(
                 .padding(AppTheme.spacing.medium),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppDrawImg(
+            AppLocalImage(
                 painter = painterResource(id = icon),
                 contentDescription = "LifeStyle Icons",
                 modifier = Modifier.size(AppTheme.imageSize.largeMedium)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             Column {
-                AppTexts.BodySmall(text = title)
+                BodyTexts.Level3(text = title)
                 Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
-                AppTexts.BodyLarge(text = value)
+                BodyTexts.Level1(text = value)
             }
         }
     }
