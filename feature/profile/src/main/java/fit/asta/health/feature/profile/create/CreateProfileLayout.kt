@@ -2,7 +2,6 @@
 
 package fit.asta.health.feature.profile.create
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
@@ -12,11 +11,9 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -26,9 +23,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
 import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
@@ -72,23 +68,12 @@ fun CreateProfileLayout(
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
             Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(start = AppTheme.spacing.small),
-                verticalAlignment = Alignment.CenterVertically,
-            ) {
-                AppDefaultIcon(imageVector = Outlined.NavigateBefore,
-                    contentDescription = "NavigateBefore",
-                    modifier = Modifier.clickable {
-                        showCustomDialogWithResult = !showCustomDialogWithResult
-                    })
-                Spacer(modifier = Modifier.width(AppTheme.spacing.small))
-                AppTexts.TitleSmall(text = stringResource(R.string.create_profile))
-            }
+            AppTopBar(title = stringResource(R.string.create_profile),
+                onBack = { showCustomDialogWithResult = !showCustomDialogWithResult })
             Row(Modifier.fillMaxWidth()) {
                 steps.forEach { step ->
-                    Step(modifier = Modifier.weight(1f),
+                    Step(
+                        modifier = Modifier.weight(1f),
                         step = step.step,
                         isCompete = step.step < currentStep,
                         isCurrent = step.step == currentStep,

@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -31,7 +30,6 @@ import androidx.compose.material.icons.rounded.EditCalendar
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.getValue
@@ -110,36 +108,34 @@ fun PhysiqueCreateScreen(
     val focusManager = LocalFocusManager.current
 
     AppTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            CompositionLocalProvider(
-                LocalOverscrollConfiguration provides null
+        CompositionLocalProvider(
+            LocalOverscrollConfiguration provides null
+        ) {
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.medium)
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.medium)
-                        .verticalScroll(rememberScrollState()),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-                    AgeSection(userAge, userDOB, calendarState)
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-                    MeasurementSection(userWeight, focusManager, viewModel, userHeight)
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-                    GenderSection(
-                        selectedGenderOptionDemo,
-                        viewModel,
-                        selectedIsOnPeriodOptionDemo,
-                        selectedIsPregOptionDemo,
-                        pregnancyWeek,
-                        focusManager
-                    )
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                AgeSection(userAge, userDOB, calendarState)
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                MeasurementSection(userWeight, focusManager, viewModel, userHeight)
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                GenderSection(
+                    selectedGenderOptionDemo,
+                    viewModel,
+                    selectedIsOnPeriodOptionDemo,
+                    selectedIsPregOptionDemo,
+                    pregnancyWeek,
+                    focusManager
+                )
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
 
-                    CreateProfileTwoButtonLayout(eventPrevious, eventNext)
+                CreateProfileTwoButtonLayout(eventPrevious, eventNext)
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             }
         }
     }

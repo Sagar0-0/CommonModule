@@ -8,6 +8,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
+import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -21,9 +22,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 // Preview Function
 @Preview("Light Button")
 @Preview(
-    name = "Dark Button",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
 @Composable
 private fun DefaultPreview1() {
@@ -31,9 +30,7 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppOutlinedButton(
-                    onClick = {},
-                    textToShow = "Enabled Button",
-                    leadingIcon = Icons.Default.Person
+                    onClick = {}, textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
                 )
 
                 AppOutlinedButton(
@@ -66,7 +63,8 @@ fun AppOutlinedButton(
     textToShow: String,
     leadingIcon: ImageVector? = null,
     iconDes: String? = null,
-    onClick: () -> Unit
+    iconTint: Color = LocalContentColor.current,
+    onClick: () -> Unit,
 ) {
 
     OutlinedButton(
@@ -90,16 +88,14 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall),
+                tint = iconTint
             )
         }
 
         CaptionTexts.Level1(
-            text = textToShow,
-            color = if (enabled)
-                AppTheme.colors.onSurface
-            else
-                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+            text = textToShow, color = if (enabled) AppTheme.colors.onSurface
+            else AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     }
 }

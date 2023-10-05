@@ -1,6 +1,5 @@
 package fit.asta.health.designsystem.components.functional
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -13,7 +12,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.NotificationImportant
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,15 +20,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDialog
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import kotlinx.coroutines.delay
 
 data class DialogData(
@@ -88,7 +85,6 @@ fun DialogContent(
     AppCard(content = {
         Column(
             modifier = modifier
-                .background(Color.White)
                 .padding(AppTheme.spacing.medium),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
@@ -106,34 +102,30 @@ fun DialogContent(
     })
 }
 
-
 @Composable
 private fun DialogHeader(dialogData: DialogData) {
     AppDefaultIcon(
         imageVector = Icons.Filled.NotificationImportant,
         contentDescription = "Alert Message",
-        tint = MaterialTheme.colorScheme.error,
+        tint = AppTheme.colors.error,
         modifier = Modifier.size(AppTheme.iconSize.medium)
     )
     Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
-    AppTexts.LabelLarge(
+    CaptionTexts.Level1(
         text = dialogData.dialogTitle,
-        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall),
-        maxLines = 2,
-        overflow = TextOverflow.Ellipsis
+        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall)
     )
 }
-
 
 @Composable
 private fun DialogDescription(dialogData: DialogData) {
-    AppTexts.BodyMedium(
+    BodyTexts.Level2(
         text = dialogData.dialogDesc,
         modifier = Modifier.padding(top = AppTheme.spacing.extraSmall),
-        textAlign = TextAlign.Center
+        textAlign = TextAlign.Center,
+        color = AppTheme.colors.onSurface
     )
 }
-
 
 @Composable
 private fun DialogButtons(
@@ -158,7 +150,6 @@ private fun DialogButtons(
     }
 }
 
-
 @Composable
 private fun NegativeButton(
     onNegativeClick: () -> Unit,
@@ -171,13 +162,10 @@ private fun NegativeButton(
             .height(AppTheme.buttonSize.extraLarge)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
-            containerColor = MaterialTheme.colorScheme.error,
+            containerColor = AppTheme.colors.error,
         )
     ) {
-        AppTexts.LabelMedium(
-            text = dialogData.negTitle,
-            color = MaterialTheme.colorScheme.onError,
-        )
+        CaptionTexts.Level3(text = dialogData.negTitle, color = AppTheme.colors.onError)
     }
 }
 
@@ -187,13 +175,11 @@ private fun PositiveButton(
     dialogData: DialogData,
 ) {
     AppButtons.AppStandardButton(
-        onClick = onPositiveClick, modifier = Modifier
+        onClick = onPositiveClick,
+        modifier = Modifier
             .height(AppTheme.buttonSize.extraLarge)
             .fillMaxWidth()
     ) {
-        AppTexts.LabelMedium(
-            text = dialogData.posTitle,
-            color = MaterialTheme.colorScheme.onPrimary,
-        )
+        CaptionTexts.Level3(text = dialogData.posTitle, color = AppTheme.colors.onPrimary)
     }
 }

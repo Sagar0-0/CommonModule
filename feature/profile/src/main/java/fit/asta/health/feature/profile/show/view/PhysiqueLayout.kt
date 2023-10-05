@@ -5,8 +5,8 @@ import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.data.profile.remote.model.Physique
-import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppVerticalGrid
 import fit.asta.health.feature.profile.show.view.components.GenderOptionsLayout
 import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.drawables.R as RDraw
@@ -16,7 +16,6 @@ fun PhysiqueLayout(
     physique: Physique,
 ) {
     val genderLayoutDataList = createGenderLayoutDataList(physique)
-
     AppVerticalGrid(
         count = 2,
         content = {

@@ -10,11 +10,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
 import fit.asta.health.data.profile.remote.model.Session
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun ProfileSessionCard(
@@ -27,13 +26,13 @@ fun ProfileSessionCard(
                 .padding(AppTheme.spacing.medium)
                 .fillMaxWidth()
         ) {
-            AppTexts.BodySmall(text = title)
+            BodyTexts.Level3(text = title)
             Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 UserSleepCycles(columnType = "BED TIME", columnValue = session.from.toString())
-                Spacer(modifier = Modifier.width(40.dp))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.largeMedium))
                 UserSleepCycles(columnType = "WAKE UP", columnValue = session.to.toString())
             }
         }

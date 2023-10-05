@@ -1,7 +1,6 @@
 package fit.asta.health.designsystem.components.functional
 
 import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -17,7 +16,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ButtonElevation
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -29,9 +27,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.ColorPainter
 import androidx.compose.ui.graphics.painter.Painter
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 @Composable
 fun ColumnToggleButtonGroup(
@@ -291,14 +291,14 @@ private fun IconContent(
     index: Int,
 ) {
     if (iconTintColor == Color.Transparent || iconTintColor == Color.Unspecified) {
-        Image(
-            modifier = modifier.size(24.dp),
+        AppLocalImage(
+            modifier = modifier.size(AppTheme.imageSize.standard),
             painter = buttonIcons[index],
             contentDescription = null,
         )
     } else {
-        Image(
-            modifier = modifier.size(24.dp),
+        AppLocalImage(
+            modifier = modifier.size(AppTheme.imageSize.standard),
             painter = buttonIcons[index],
             contentDescription = null,
             colorFilter = ColorFilter.tint(iconTintColor),
@@ -313,12 +313,10 @@ private fun TextContent(
     index: Int,
     contentColor: Color,
 ) {
-    Text(
-        modifier = modifier.padding(horizontal = 8.dp),
+    CaptionTexts.Level3(
         text = buttonTexts[index],
-        color = contentColor,
-        maxLines = 1,
-        overflow = TextOverflow.Ellipsis,
+        modifier = modifier.padding(horizontal = 8.dp),
+        color = contentColor
     )
 }
 

@@ -6,8 +6,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun UserSleepCycles(
@@ -17,8 +17,8 @@ fun UserSleepCycles(
     Column(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        AppTexts.TitleSmall(text = columnType)
+        TitleTexts.Level3(text = columnType)
         Spacer(modifier = Modifier.height(AppTheme.spacing.small))
-        AppTexts.TitleSmall(text = columnValue)
+        TitleTexts.Level3(text = columnValue)
     }
 }
