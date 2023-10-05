@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.offers"
+    namespace = "fit.asta.health.feature.offers"
 
     defaultConfig {
         consumerProguardFiles("consumer-rules.pro")
@@ -22,7 +22,6 @@ dependencies {
     implementation(project(":core:test"))
 
     implementation(project(":data:payments:offers"))
-    implementation(project(":data:auth"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
