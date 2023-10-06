@@ -98,7 +98,7 @@ fun NewReferralDesign() {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.medium),
+                        .padding(AppTheme.spacing.level3),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     AppCard {
@@ -108,7 +108,7 @@ fun NewReferralDesign() {
                         ) {
                             HeadingTexts.Level1(
                                 text = "QWE123",
-                                modifier = Modifier.padding(AppTheme.spacing.medium),
+                                modifier = Modifier.padding(AppTheme.spacing.level3),
                                 textAlign = TextAlign.Center,
                                 color = AppTheme.colors.primary
                             )
@@ -116,10 +116,10 @@ fun NewReferralDesign() {
                                 onClick = { /*TODO*/ },
                                 shape = RoundedCornerShape(12.dp),
                                 contentPadding = PaddingValues(
-                                    start = AppTheme.spacing.extraMedium,
-                                    top = AppTheme.spacing.small,
-                                    end = AppTheme.spacing.extraMedium,
-                                    bottom = AppTheme.spacing.small
+                                    start = AppTheme.spacing.level4,
+                                    top = AppTheme.spacing.level2,
+                                    end = AppTheme.spacing.level4,
+                                    bottom = AppTheme.spacing.level2
                                 )
                             ) {
                                 Row(
@@ -129,7 +129,7 @@ fun NewReferralDesign() {
                                     Icon(
                                         imageVector = Icons.Filled.ContentCopy,
                                         contentDescription = "Copy",
-                                        modifier = Modifier.padding(horizontal = AppTheme.spacing.extraSmall)
+                                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
                                     )
                                     CaptionTexts.Level1(
                                         text = "Copy", color = AppTheme.colors.onPrimary

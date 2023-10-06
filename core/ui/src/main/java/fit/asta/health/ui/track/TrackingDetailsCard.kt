@@ -60,8 +60,8 @@ fun TrackingDetailsCard(
         imageList.forEachIndexed { index, image ->
 
             Column(
-                modifier = Modifier.padding(vertical = AppTheme.spacing.small),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                modifier = Modifier.padding(vertical = AppTheme.spacing.level2),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 

@@ -29,7 +29,7 @@ object AppDividerLineWidth {
 @Composable
 fun AppDivider(
     modifier: Modifier = Modifier,
-    thickness: Dp = AppTheme.spacing.extraSmall,
+    thickness: Dp = AppTheme.spacing.level1,
     color: Color = AppTheme.colors.primary,
 ) {
     Divider(
@@ -72,9 +72,9 @@ fun AppHorizontalPagerIndicator(
         modifier = modifier,
         activeColor = AppTheme.colors.onSurface,
         inactiveColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3),
-        indicatorWidth = AppTheme.spacing.small,
-        indicatorHeight = AppTheme.spacing.small,
-        spacing = AppTheme.spacing.small,
+        indicatorWidth = AppTheme.spacing.level2,
+        indicatorHeight = AppTheme.spacing.level2,
+        spacing = AppTheme.spacing.level2,
         indicatorShape = CircleShape
     )
 }

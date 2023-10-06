@@ -114,15 +114,15 @@ fun PhysiqueCreateScreen(
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.medium)
+                    .padding(horizontal = AppTheme.spacing.level3)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 AgeSection(userAge, userDOB, calendarState)
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 MeasurementSection(userWeight, focusManager, viewModel, userHeight)
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 GenderSection(
                     selectedGenderOptionDemo,
                     viewModel,
@@ -131,11 +131,11 @@ fun PhysiqueCreateScreen(
                     pregnancyWeek,
                     focusManager
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
                 CreateProfileTwoButtonLayout(eventPrevious, eventNext)
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             }
         }
     }
@@ -201,7 +201,7 @@ private fun GenderSection(
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(start = AppTheme.spacing.medium),
+                                .padding(start = AppTheme.spacing.level3),
                             horizontalArrangement = Arrangement.Start
                         ) {
                             TitleTexts.Level4(
@@ -209,11 +209,11 @@ private fun GenderSection(
                                 color = AppTheme.colors.onTertiaryContainer
                             )
                         }
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                         Row(
                             Modifier
                                 .fillMaxWidth()
-                                .padding(horizontal = AppTheme.spacing.medium)
+                                .padding(horizontal = AppTheme.spacing.level3)
                         ) {
                             AppTextFieldValidate(
                                 value = pregnancyWeek.value,
@@ -232,7 +232,7 @@ private fun GenderSection(
                     }
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         }
     }
 }
@@ -247,7 +247,7 @@ private fun MeasurementSection(
     Column(Modifier.fillMaxWidth()) {
         Row(
             Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -266,7 +266,7 @@ private fun MeasurementSection(
                         selectedColor = AppTheme.colors.primary
                     )
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 AppTextField(
                     value = userWeight.value,
                     keyboardActions = KeyboardActions(onNext = {
@@ -286,7 +286,7 @@ private fun MeasurementSection(
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )
                 if (userWeight.error !is UiString.Empty) {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     BodyTexts.Level1(
                         text = userWeight.error.asString(), color = AppTheme.colors.error
                     )
@@ -309,7 +309,7 @@ private fun MeasurementSection(
                         selectedColor = AppTheme.colors.primary
                     )
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 AppTextField(
                     value = userHeight.value,
                     onValueChange = {
@@ -325,7 +325,7 @@ private fun MeasurementSection(
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )
                 if (userHeight.error !is UiString.Empty) {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     BodyTexts.Level1(
                         text = userHeight.error.asString(), color = AppTheme.colors.error
                     )
@@ -362,7 +362,7 @@ private fun AgeSection(
         }
     }
 
-    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
     AppButtons.AppOutlinedButton(
         onClick = { calendarState.show() }, border = BorderStroke(
@@ -385,14 +385,14 @@ private fun AgeSection(
             )
             BodyTexts.Level2(
                 text = userDOB.value.ifEmpty { stringResource(R.string.date_of_birth) },
-                modifier = Modifier.padding(AppTheme.spacing.small),
+                modifier = Modifier.padding(AppTheme.spacing.level2),
                 color = ageColorSelection
             )
         }
     }
 
     if (userAge.error !is UiString.Empty) {
-        Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         Row(
             Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.Start,

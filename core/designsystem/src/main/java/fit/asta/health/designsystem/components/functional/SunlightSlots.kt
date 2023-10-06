@@ -138,7 +138,7 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.small), horizontalArrangement = Arrangement.End
+            .padding(AppTheme.spacing.level2), horizontalArrangement = Arrangement.End
     ) {
         ScheduleIconLayout(onButtonClick, imageVector)
     }
@@ -153,7 +153,7 @@ fun ScheduleIconLayout(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .size(AppTheme.iconSize.level4)
-            .clip(RoundedCornerShape(AppTheme.spacing.small))
+            .clip(RoundedCornerShape(AppTheme.spacing.level2))
             .background(color = Color.White)
     ) {
         AppButtons.AppIconButton(

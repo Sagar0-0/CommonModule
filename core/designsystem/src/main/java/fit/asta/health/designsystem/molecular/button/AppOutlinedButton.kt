@@ -80,17 +80,17 @@ fun AppOutlinedButton(
             disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
         contentPadding = PaddingValues(
-            start = AppTheme.spacing.extraMedium,
-            top = AppTheme.spacing.small,
-            end = AppTheme.spacing.extraMedium,
-            bottom = AppTheme.spacing.small
+            start = AppTheme.spacing.level4,
+            top = AppTheme.spacing.level2,
+            end = AppTheme.spacing.level4,
+            bottom = AppTheme.spacing.level2
         )
     ) {
         if (leadingIcon != null) {
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall),
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
                 tint = iconTint
             )
         }
@@ -98,7 +98,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = leadingPainterIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.spacing.level1)
             )
         }
 

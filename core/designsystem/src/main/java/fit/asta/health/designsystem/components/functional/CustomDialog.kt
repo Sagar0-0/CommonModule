@@ -85,19 +85,19 @@ fun DialogContent(
     AppCard(content = {
         Column(
             modifier = modifier
-                .padding(AppTheme.spacing.medium),
+                .padding(AppTheme.spacing.level3),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DialogHeader(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             DialogDescription(dialogData = dialogData)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             DialogButtons(
                 onNegativeClick = onNegativeClick,
                 onPositiveClick = onPositiveClick,
                 dialogData = dialogData
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         }
     })
 }
@@ -110,10 +110,10 @@ private fun DialogHeader(dialogData: DialogData) {
         tint = AppTheme.colors.error,
         modifier = Modifier.size(AppTheme.iconSize.level6)
     )
-    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
     CaptionTexts.Level1(
         text = dialogData.dialogTitle,
-        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall)
+        modifier = Modifier.padding(top = AppTheme.spacing.level1)
     )
 }
 
@@ -121,7 +121,7 @@ private fun DialogHeader(dialogData: DialogData) {
 private fun DialogDescription(dialogData: DialogData) {
     BodyTexts.Level2(
         text = dialogData.dialogDesc,
-        modifier = Modifier.padding(top = AppTheme.spacing.extraSmall),
+        modifier = Modifier.padding(top = AppTheme.spacing.level1),
         textAlign = TextAlign.Center,
         color = AppTheme.colors.onSurface
     )
@@ -135,7 +135,7 @@ private fun DialogButtons(
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         Box(
             modifier = Modifier.weight(1f)

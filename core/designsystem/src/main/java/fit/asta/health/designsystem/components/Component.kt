@@ -52,15 +52,15 @@ fun CardItem(
 
         Row(
             modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 Icon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
                 Text(
                     text = name,

@@ -332,7 +332,7 @@ fun CircularSlider(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Text(
                 modifier = Modifier.clickable { onChangeType() },

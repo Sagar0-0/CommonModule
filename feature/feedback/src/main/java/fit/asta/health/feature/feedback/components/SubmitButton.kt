@@ -28,8 +28,8 @@ fun SubmitButton(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.medium),
-            shape = RoundedCornerShape(AppTheme.spacing.small),
+                .padding(horizontal = AppTheme.spacing.level3),
+            shape = RoundedCornerShape(AppTheme.spacing.level2),
         ) {
             AppTexts.TitleMedium(
                 text = text,

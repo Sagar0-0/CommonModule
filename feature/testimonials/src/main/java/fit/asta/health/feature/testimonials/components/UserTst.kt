@@ -19,7 +19,7 @@ fun UserTst(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = spacing.medium)
+            .padding(horizontal = spacing.level3)
     ) {
         Column {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Start) {
@@ -28,7 +28,7 @@ fun UserTst(
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = spacing.medium)
+                    .padding(horizontal = spacing.level3)
             ) {
                 BodyTexts.Level2(text = testimonial.testimonial)
             }

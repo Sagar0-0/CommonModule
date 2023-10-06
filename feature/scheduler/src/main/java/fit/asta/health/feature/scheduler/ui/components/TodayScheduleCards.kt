@@ -56,7 +56,7 @@ fun TodayCardType1(
 ) {
     AppCard(
         modifier = Modifier
-            .padding(horizontal = AppTheme.spacing.medium)
+            .padding(horizontal = AppTheme.spacing.level3)
             .aspectRatio(AppTheme.aspectRatio.wideScreen)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -112,7 +112,7 @@ private fun CardContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.medium, vertical = AppTheme.spacing.small),
+            .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CardTitleAndButton(cardTitle)
@@ -162,7 +162,7 @@ fun TodayCardType2(
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.medium)
+            .padding(horizontal = AppTheme.spacing.level3)
             .aspectRatio(AppTheme.aspectRatio.fullScreen), content = {
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -176,7 +176,7 @@ fun TodayCardType2(
                 Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(horizontal = AppTheme.spacing.medium, vertical = AppTheme.spacing.small),
+                    .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 CardTopLayout(
@@ -199,7 +199,7 @@ fun TodayCardType2(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.spacing.medium),
+                    .padding(AppTheme.spacing.level3),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 DisabledAssistChip(progressValue = progressValue)
@@ -214,7 +214,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
             AppTexts.BodySmall(text = cardTime, color = Color.White)
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth(),
@@ -226,7 +226,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
             AppTexts.BodySmall(text = remainingTime, color = Color.White)
         }
     }
@@ -243,7 +243,7 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
             AppTexts.TitleLarge(text = cardTitle, color = Color.White)
             ScheduleIconLayout(onButtonClick = onButtonClick)
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.minSmall))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         Row(Modifier.fillMaxWidth(), Arrangement.Start) {
             AppTexts.BodySmall(text = secondaryTitle, color = Color.White)
         }
@@ -261,7 +261,7 @@ private fun DisabledAssistChip(progressValue: String) {
         AppTexts.BodySmall(
             text = progressValue,
             color = MaterialTheme.colorScheme.onPrimaryContainer,
-            modifier = Modifier.padding(AppTheme.spacing.extraSmall)
+            modifier = Modifier.padding(AppTheme.spacing.level1)
         )
     }
 }
@@ -275,9 +275,9 @@ fun CardDemo() {
             .verticalScroll(rememberScrollState())
     ) {
         TodayCardType1()
-        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         TodayCardType2()
-        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         AppointmentCard()
     }
 }
@@ -287,7 +287,7 @@ fun AppointmentCard(url: String = "") {
 
     AppCard(
         modifier = Modifier
-            .padding(horizontal = AppTheme.spacing.medium)
+            .padding(horizontal = AppTheme.spacing.level3)
             .aspectRatio(AppTheme.aspectRatio.wideScreen)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -295,7 +295,7 @@ fun AppointmentCard(url: String = "") {
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = AppTheme.spacing.medium, vertical = AppTheme.spacing.small),
+                    .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 CardTitleAndButton(cardTitle = stringResource(StringR.string.appointment))
@@ -313,7 +313,7 @@ fun AppointmentCard(url: String = "") {
                                 ), shape = CircleShape
                             ),
                     )
-                    Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
                     DoctorLayout()
                 }
                 Row(
@@ -326,7 +326,7 @@ fun AppointmentCard(url: String = "") {
                         contentDescription = stringResource(StringR.string.scheduled),
                         tint = Color.White
                     )
-                    Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
                     AppTexts.BodyLarge(text = "30th Feb 7 GM", color = Color.White)
                 }
             }

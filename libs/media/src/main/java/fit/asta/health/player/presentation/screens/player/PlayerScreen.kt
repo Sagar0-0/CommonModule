@@ -306,7 +306,7 @@ private fun MediaContentView(
                     },
                     onAudioVideo = onVisibility, more = { trackDialog = true }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
             }
         }
         AnimatedContent(targetState = visibility, label = "player") { targetState ->
@@ -400,7 +400,7 @@ private fun MediaContentView(
         }
         AnimatedVisibility(visible = !isLandscape) {
             Column {
-                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
                 Text(
                     text = musicState.currentSong.title,
                     style = MaterialTheme.typography.titleLarge,
@@ -409,9 +409,9 @@ private fun MediaContentView(
                     maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.small)
+                        .padding(horizontal = AppTheme.spacing.level2)
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 LaunchedEffect(Unit) {
                     while (true) {
                         delay(1000)
@@ -437,13 +437,13 @@ private fun MediaContentView(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.medium)
+                        .padding(horizontal = AppTheme.spacing.level3)
                 ) {
                     Text(text = controllerState.positionMs.asFormattedString())
                     Spacer(modifier = Modifier.weight(1f))
                     Text(musicState.duration.asFormattedString())
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.large))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
                 PlayerButtons(
                     modifier = Modifier.fillMaxWidth(),
                     playWhenReady = musicState.playWhenReady,
@@ -454,7 +454,7 @@ private fun MediaContentView(
                     next = { onAudioEvent(PlayerEvent.SkipNext) },
                     previous = { onAudioEvent(PlayerEvent.SkipPrevious) }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.extraLarge))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
             }
         }
     }
@@ -561,13 +561,13 @@ fun BackAlertDialog(
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
                 AppTexts.HeadlineMedium(text = stringResource(id = R.string.sure_you_want_to_leave))
                 AppTexts.TitleLarge(text = stringResource(id = R.string.meditation_benefits))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
                 ) {
                     AppButtons.AppOutlinedButton(
                         onClick = onDismiss,
@@ -614,7 +614,7 @@ fun TrackItem(
             .fillMaxWidth()
             .clickable { onClick(isRunning) }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         Divider(
             modifier = Modifier
@@ -626,11 +626,11 @@ fun TrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(

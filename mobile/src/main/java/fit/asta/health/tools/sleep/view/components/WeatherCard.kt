@@ -37,7 +37,7 @@ fun WeatherCard() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.Top
         ) {
             Image(
@@ -49,7 +49,7 @@ fun WeatherCard() {
             Column(
                 modifier = Modifier
                     .padding(horizontal = 8.dp),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(

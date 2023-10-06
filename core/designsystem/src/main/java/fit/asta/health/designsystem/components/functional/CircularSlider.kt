@@ -246,7 +246,7 @@ fun CircularSliderInt(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Text(
                 text = "Total", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = bigTextColor
@@ -483,7 +483,7 @@ fun CircularSliderFloat(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Text(
                 text = "Total", fontSize = 14.sp, fontWeight = FontWeight.Bold, color = bigTextColor

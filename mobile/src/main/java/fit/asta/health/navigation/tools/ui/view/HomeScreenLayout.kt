@@ -45,8 +45,8 @@ fun HomeScreenLayout(
 
     AppVerticalGrid(
         count = columns,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
     ) {
 
         // Top Sliding Images
@@ -138,7 +138,7 @@ fun HomeScreenLayout(
         }
 
         item {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
 
         // Testimonials Banners in a Horizontal Pager
@@ -153,7 +153,7 @@ fun HomeScreenLayout(
         // rate my app Card
         item(span = { GridItemSpan(columns) }) {
             RateAppCard(
-                modifier = Modifier.padding(vertical = AppTheme.spacing.medium)
+                modifier = Modifier.padding(vertical = AppTheme.spacing.level3)
             )
         }
 

@@ -198,7 +198,7 @@ internal fun MapScreen(
                     enabled = false,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.small)
+                        .padding(AppTheme.spacing.level2)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -222,7 +222,7 @@ internal fun MapScreen(
             ) {
                 AppButtons.AppIconButton(
                     modifier = Modifier
-                        .padding(AppTheme.spacing.medium)
+                        .padding(AppTheme.spacing.level3)
                         .align(Alignment.End)
                         .size(AppTheme.buttonSize.level7),
                     onClick = {
@@ -250,12 +250,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = AppTheme.spacing.medium,
-                                topEnd = AppTheme.spacing.medium
+                                topStart = AppTheme.spacing.level3,
+                                topEnd = AppTheme.spacing.level3
                             )
                         )
                         .background(AppTheme.colors.surface)
-                        .padding(horizontal = AppTheme.spacing.medium),
+                        .padding(horizontal = AppTheme.spacing.level3),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -306,7 +306,7 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = AppTheme.spacing.medium)
+                                    .padding(bottom = AppTheme.spacing.level3)
                                     .fillMaxWidth()
                                     .clip(AppTheme.shape.level2)
                             ) {

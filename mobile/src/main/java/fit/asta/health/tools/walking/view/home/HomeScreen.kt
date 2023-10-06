@@ -120,7 +120,7 @@ fun HomeLayout(
             .padding(16.dp)
             .fillMaxSize()
             .verticalScroll(scrollState, enabled = isScrollEnabled),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier.height(8.dp))
@@ -179,11 +179,11 @@ fun WalkingBottomSheetView(
             .fillMaxHeight(.5f)
             .fillMaxWidth()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -208,11 +208,11 @@ fun WalkingBottomSheetView(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -233,7 +233,7 @@ fun WalkingBottomSheetView(
         }
 
         Row(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
         ) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
@@ -295,7 +295,7 @@ fun MainCircularSlider(
     ) {
         Column(
             modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             CircularSlider(
@@ -325,7 +325,7 @@ fun MainCircularSlider(
             )
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
                 ProgressBarItem(
                     isDuration = isDuration,
@@ -452,7 +452,7 @@ fun DetailsItem(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Image(
@@ -479,7 +479,7 @@ fun ProgressBarItem(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -533,7 +533,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
             Row(
                 horizontalArrangement = Arrangement.SpaceAround, modifier = Modifier.fillMaxWidth()
@@ -554,7 +554,7 @@ fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
 fun RowItem(name: String, value: String) {
     Column(
         modifier = Modifier,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(text = name, fontSize = 12.sp)
@@ -575,7 +575,7 @@ fun SunlightCard(modifier: Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(start = 16.dp, end = 22.dp, top = 16.dp, bottom = 16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.Top
         ) {
             Image(
@@ -583,7 +583,7 @@ fun SunlightCard(modifier: Modifier) {
                 contentDescription = null,
             )
             Column(
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(text = "Sunlight", fontSize = 12.sp, fontWeight = FontWeight.Bold)

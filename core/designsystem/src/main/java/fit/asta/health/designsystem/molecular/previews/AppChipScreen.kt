@@ -51,16 +51,16 @@ fun AppChipScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.spacing.medium)
+                    .padding(AppTheme.spacing.level3)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
 
                 // Assist Chip Section
                 TitleTexts.Level1(text = "Assist Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -84,7 +84,7 @@ fun AppChipScreen() {
                 // Filter Chip Section
                 TitleTexts.Level1(text = "Filter Chips")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppFilterChip(

@@ -171,7 +171,7 @@ fun BreathingProgress(
         }
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Text(text = "$startCount", modifier = Modifier.clickable {
                 changeRadius = if (changeRadius == 300f) smallRadius

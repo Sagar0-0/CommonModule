@@ -57,7 +57,7 @@ fun MusicLargeImageColumn(
             .clickable {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.extraSmall)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
 
         // Showing the Loader or the Image accordingly

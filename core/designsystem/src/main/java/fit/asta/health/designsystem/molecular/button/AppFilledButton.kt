@@ -80,10 +80,10 @@ fun AppFilledButton(
             disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
         contentPadding = PaddingValues(
-            start = AppTheme.spacing.extraMedium,
-            top = AppTheme.spacing.small,
-            end = AppTheme.spacing.extraMedium,
-            bottom = AppTheme.spacing.small
+            start = AppTheme.spacing.level4,
+            top = AppTheme.spacing.level2,
+            end = AppTheme.spacing.level4,
+            bottom = AppTheme.spacing.level2
         )
     ) {
 
@@ -94,7 +94,7 @@ fun AppFilledButton(
                 Icon(
                     imageVector = leadingIcon,
                     contentDescription = iconDes,
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.extraSmall)
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
                 )
             }
 
@@ -108,7 +108,7 @@ fun AppFilledButton(
                 Icon(
                     imageVector = leadingIcon,
                     contentDescription = iconDes,
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.extraSmall)
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
                 )
             }
         }

@@ -29,7 +29,7 @@ fun UploadTstMediaView(
 ) {
     Box(
         Modifier
-            .padding(AppTheme.spacing.minSmall)
+            .padding(AppTheme.spacing.level1)
             .aspectRatio(AppTheme.aspectRatio.square)
             .clickable { onUploadClick() }
             .clip(MaterialTheme.shapes.medium)
@@ -44,11 +44,11 @@ fun UploadTstMediaView(
                 contentDescription = "Upload Image",
                 tint = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppTexts.BodyMedium(
                 text = "Browse to Choose", color = MaterialTheme.colorScheme.onTertiaryContainer
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             title?.let {
                 AppTexts.HeadlineSmall(text = it, color = MaterialTheme.colorScheme.onSurface)
             }
@@ -67,7 +67,7 @@ fun SelectedImageView(
 
     Box(
         Modifier
-            .padding(AppTheme.spacing.minSmall)
+            .padding(AppTheme.spacing.level1)
             .aspectRatio(AppTheme.aspectRatio.square)
             .clickable { onImageClick() }, contentAlignment = Alignment.BottomCenter
     ) {

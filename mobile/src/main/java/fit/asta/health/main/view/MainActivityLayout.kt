@@ -162,7 +162,7 @@ private fun RowScope.NewMainTopBarActions(
         verticalAlignment = Alignment.CenterVertically
     ) {
         Icon(
-            modifier = Modifier.padding(start = AppTheme.spacing.small),
+            modifier = Modifier.padding(start = AppTheme.spacing.level2),
             imageVector = Icons.Default.LocationOn,
             contentDescription = "Location",
             tint = MaterialTheme.colorScheme.onBackground
@@ -194,7 +194,7 @@ private fun RowScope.NewMainTopBarActions(
             textAlign = TextAlign.Start,
             modifier = Modifier
                 .weight(1f)
-                .padding(AppTheme.spacing.minSmall),
+                .padding(AppTheme.spacing.level1),
             color = MaterialTheme.colorScheme.onBackground,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,

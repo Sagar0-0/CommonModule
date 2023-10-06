@@ -37,14 +37,14 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.small)
+            .padding(AppTheme.spacing.level2)
     ) {
         Column(
             modifier = Modifier.padding(
-                horizontal = AppTheme.spacing.medium,
-                vertical = AppTheme.spacing.small
+                horizontal = AppTheme.spacing.level3,
+                vertical = AppTheme.spacing.level2
             ),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Row(
                 Modifier.fillMaxWidth(),
@@ -52,11 +52,11 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppTexts.BodyLarge(text = weatherData.title)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.small))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                 ScheduleIconLayout(onButtonClick = onSchedule)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Event,
@@ -66,7 +66,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Thermostat,
@@ -75,7 +75,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 AppTexts.BodySmall(text = weatherData.temperature)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.Waves,
@@ -84,7 +84,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 AppTexts.BodySmall(text = weatherData.uvDetails)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
                 AppDefaultIcon(
                     imageVector = Icons.Default.AccessTime,

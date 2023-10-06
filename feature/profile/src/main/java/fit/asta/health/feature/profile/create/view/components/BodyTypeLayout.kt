@@ -42,11 +42,11 @@ val bodyTypeList = mutableListOf(
 fun BodyTypeLayout() {
 
     Column(Modifier.fillMaxWidth()) {
-        Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AppTheme.spacing.medium),
+                .padding(start = AppTheme.spacing.level3),
             verticalAlignment = Alignment.CenterVertically
         ) {
             TitleTexts.Level4(text = "Select the Body Type")
@@ -63,7 +63,7 @@ fun BodyTypeLayout() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AppTheme.spacing.small, vertical = AppTheme.spacing.medium
+                    horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level3
                 )
                 .height(AppTheme.customSize.level9),
             userScrollEnabled = false,
@@ -87,7 +87,7 @@ fun BodyTypeListLayout(
                 contentDescription = "BodyTypeImage",
                 modifier = Modifier.size(AppTheme.imageSize.level5)
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             CaptionTexts.Level3(text = listType, textAlign = TextAlign.Center)
         }
     }

@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.spacing.medium,
-                        bottom = AppTheme.spacing.medium,
-                        start = AppTheme.spacing.medium,
-                        end = AppTheme.spacing.small
+                        top = AppTheme.spacing.level3,
+                        bottom = AppTheme.spacing.level3,
+                        start = AppTheme.spacing.level3,
+                        end = AppTheme.spacing.level2
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -283,9 +283,9 @@ fun PhoneSignIn(
                 placeholder = "Enter your phone number",
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.spacing.medium,
-                        bottom = AppTheme.spacing.medium,
-                        end = AppTheme.spacing.medium
+                        top = AppTheme.spacing.level3,
+                        bottom = AppTheme.spacing.level3,
+                        end = AppTheme.spacing.level3
                     )
                     .weight(0.7f)
                     .onFocusChanged {
@@ -300,7 +300,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -320,11 +320,11 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.medium)
+                    .padding(AppTheme.spacing.level3)
             ) {
                 AppTexts.TitleMedium(
                     text = stringResource(id = StringR.string.generate_otp),
-                    modifier = Modifier.padding(AppTheme.spacing.small)
+                    modifier = Modifier.padding(AppTheme.spacing.level2)
                 )
             }
         }
@@ -356,7 +356,7 @@ fun PhoneSignIn(
                     supportingTextAlign = TextAlign.End
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
                 AppButtons.AppTextButton(
                     enabled = !loading,
@@ -365,11 +365,11 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.medium)
+                        .padding(AppTheme.spacing.level3)
                 ) {
                     AppTexts.TitleMedium(
                         text = stringResource(id = StringR.string.verify_otp),
-                        modifier = Modifier.padding(AppTheme.spacing.small)
+                        modifier = Modifier.padding(AppTheme.spacing.level2)
                     )
                 }
                 AppButtons.AppTextButton(
@@ -377,7 +377,7 @@ fun PhoneSignIn(
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AppTheme.spacing.medium)
+                        .padding(AppTheme.spacing.level3)
                 ) {
                     if (ticks > 0) {
                         AppTexts.TitleMedium(text = "Resend code in $ticks seconds")

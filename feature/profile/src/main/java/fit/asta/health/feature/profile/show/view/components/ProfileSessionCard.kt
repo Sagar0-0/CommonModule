@@ -23,16 +23,16 @@ fun ProfileSessionCard(
     AppCard {
         Column(
             modifier = Modifier
-                .padding(AppTheme.spacing.medium)
+                .padding(AppTheme.spacing.level3)
                 .fillMaxWidth()
         ) {
             BodyTexts.Level3(text = title)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             Row(
                 modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
             ) {
                 UserSleepCycles(columnType = "BED TIME", columnValue = session.from.toString())
-                Spacer(modifier = Modifier.width(AppTheme.spacing.largeMedium))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level6))
                 UserSleepCycles(columnType = "WAKE UP", columnValue = session.to.toString())
             }
         }

@@ -98,7 +98,7 @@ fun ShareReferralUi(
                                 ReferredUserItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(AppTheme.spacing.medium),
+                                        .padding(AppTheme.spacing.level3),
                                     user = it
                                 )
                             }
@@ -112,7 +112,7 @@ fun ShareReferralUi(
                                     ReferredUserItem(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(AppTheme.spacing.medium),
+                                            .padding(AppTheme.spacing.level3),
                                         user = user
                                     )
                                 }
@@ -133,13 +133,13 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     Card(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.medium)
+            .padding(AppTheme.spacing.level3)
             .background(MaterialTheme.colorScheme.surface),
         shape = MaterialTheme.shapes.extraLarge,
     ) {
         Text(
             modifier = Modifier
-                .padding(top = AppTheme.spacing.medium, start = AppTheme.spacing.medium),
+                .padding(top = AppTheme.spacing.level3, start = AppTheme.spacing.level3),
             text = title,
             textAlign = TextAlign.Start
         )
@@ -155,7 +155,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         Card(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.medium)
+                .padding(AppTheme.spacing.level3)
                 .clickable {
                     shareReferralCode(code)
                 },
@@ -164,7 +164,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Text(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(AppTheme.spacing.large),
+                    .padding(AppTheme.spacing.level5),
                 text = stringResource(id = StringR.string.refer_and_earn),
                 textAlign = TextAlign.Center,
                 style = MaterialTheme.typography.headlineMedium
@@ -173,9 +173,9 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(
-                        bottom = AppTheme.spacing.large,
-                        start = AppTheme.spacing.large,
-                        end = AppTheme.spacing.large
+                        bottom = AppTheme.spacing.level5,
+                        start = AppTheme.spacing.level5,
+                        end = AppTheme.spacing.level5
                     ),
                 text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
@@ -184,7 +184,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             Icon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .padding(AppTheme.spacing.medium)
+                    .padding(AppTheme.spacing.level3)
                     .align(Alignment.CenterHorizontally),
                 imageVector = Icons.Default.Share,
                 contentDescription = "",
@@ -194,7 +194,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         }
         Box(
             modifier = Modifier
-                .padding(AppTheme.spacing.medium)
+                .padding(AppTheme.spacing.level3)
                 .align(Alignment.CenterHorizontally)
                 .dashedBorder(
                     width = 1.dp,
@@ -209,7 +209,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 }
         ) {
             Text(
-                modifier = Modifier.padding(AppTheme.spacing.medium),
+                modifier = Modifier.padding(AppTheme.spacing.level3),
                 text = stringResource(id = StringR.string.code_side_text) + code,
                 style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center
@@ -234,7 +234,7 @@ private fun ReferredUserItem(
     ) {
         Image(
             modifier = Modifier
-                .padding(AppTheme.spacing.small)
+                .padding(AppTheme.spacing.level2)
                 .clip(CircleShape),
             painter = rememberAsyncImagePainter(
                 model = getImgUrl(url = user.pic),

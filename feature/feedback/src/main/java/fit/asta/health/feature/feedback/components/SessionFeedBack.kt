@@ -96,13 +96,13 @@ fun SessionFeedback(
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                     WelcomeCard()
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
                     qns.forEachIndexed { idx, qn ->
                         ansList.value[idx] = feedbackQuesItem(qn).value
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                     }
 
                     SubmitButton(text = "Submit") {
@@ -110,7 +110,7 @@ fun SessionFeedback(
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
             }
 
@@ -138,7 +138,7 @@ fun feedbackQuesItem(qn: Qn): MutableState<An> {
         val uriList = uploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.medium)
+                .padding(horizontal = AppTheme.spacing.level3)
         )
         val medias = uriList.map {
             Media(

@@ -40,8 +40,8 @@ fun ToolsCardLayout(
                     .aspectRatio(AppTheme.aspectRatio.square)
                     .clip(
                         RoundedCornerShape(
-                            bottomStart = AppTheme.spacing.small,
-                            bottomEnd = AppTheme.spacing.small
+                            bottomStart = AppTheme.spacing.level2,
+                            bottomEnd = AppTheme.spacing.level2
                         )
                     ),
                 model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
@@ -57,7 +57,7 @@ fun ToolsCardLayout(
         // Tools Card Texts
         BodyTexts.Level1(
             text = cardTitle,
-            modifier = Modifier.padding(AppTheme.spacing.small)
+            modifier = Modifier.padding(AppTheme.spacing.level2)
         )
     }
 }
@@ -70,14 +70,14 @@ fun ScheduleButtonIcon(
     Row(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.small),
+            .padding(AppTheme.spacing.level2),
         horizontalArrangement = Arrangement.End
     ) {
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(AppTheme.iconSize.level4)
-                .clip(RoundedCornerShape(AppTheme.spacing.small))
+                .clip(RoundedCornerShape(AppTheme.spacing.level2))
                 .background(AppTheme.colors.surface)
         ) {
             AppIconButton(

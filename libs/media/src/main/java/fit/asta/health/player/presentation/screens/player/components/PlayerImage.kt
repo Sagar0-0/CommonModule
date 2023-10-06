@@ -23,7 +23,7 @@ fun PlayerImage(
 ) {
     val spacing = AppTheme.spacing
     Box(
-        modifier = modifier.padding(horizontal = spacing.extraLarge)
+        modifier = modifier.padding(horizontal = spacing.level7)
     ) {
         val url = "https://dj9n1wsbrvg44.cloudfront.net/tags/Breathing+Tag.png"
         AsyncImage(

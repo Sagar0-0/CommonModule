@@ -92,7 +92,7 @@ fun AppTextButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.extraSmall)
+                modifier = Modifier.padding(end = AppTheme.spacing.level1)
             )
         }
 
@@ -108,7 +108,7 @@ fun AppTextButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.extraSmall)
+                modifier = Modifier.padding(start = AppTheme.spacing.level1)
             )
         }
     }

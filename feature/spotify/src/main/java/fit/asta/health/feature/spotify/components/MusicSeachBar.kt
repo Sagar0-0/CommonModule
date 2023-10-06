@@ -95,7 +95,7 @@ fun SearchBar(
             Row(
                 modifier = Modifier
                     .padding(horizontal = 12.dp),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
 
                 if (userInput.isNotEmpty()) {

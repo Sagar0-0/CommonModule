@@ -123,7 +123,7 @@ fun Stepper(
                         }
                     } else {
                         AppTheme.colors.onSurface
-                    }, modifier = modifier.padding(AppTheme.spacing.extraSmall)
+                    }, modifier = modifier.padding(AppTheme.spacing.level1)
                 )
             }
         }

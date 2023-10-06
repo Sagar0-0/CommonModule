@@ -67,7 +67,7 @@ fun RateAppCard(
         AppCard {
             Column(
                 Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
@@ -80,7 +80,7 @@ fun RateAppCard(
                 AppLocalImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = AppTheme.spacing.large)
+                        .padding(horizontal = AppTheme.spacing.level5)
                         .aspectRatio(AppTheme.aspectRatio.common),
                     painter = painterResource(id = R.drawable.splash_logo),
                     contentDescription = "Tagline"
@@ -90,7 +90,7 @@ fun RateAppCard(
                 TitleTexts.Level4(
                     text = "Your feedback will help us to make improvements",
                     modifier = Modifier
-                        .padding(horizontal = AppTheme.spacing.large)
+                        .padding(horizontal = AppTheme.spacing.level5)
                         .alpha(.7f),
                     textAlign = TextAlign.Center
                 )
@@ -105,7 +105,7 @@ fun RateAppCard(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.small),
+                        .padding(AppTheme.spacing.level2),
                     horizontalArrangement = Arrangement.SpaceEvenly
                 ) {
 

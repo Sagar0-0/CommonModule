@@ -270,7 +270,7 @@ fun AstaValidatedTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.small),
+                    .padding(horizontal = AppTheme.spacing.level2),
                 horizontalArrangement =
                 if (isError) {
                     Arrangement.SpaceBetween

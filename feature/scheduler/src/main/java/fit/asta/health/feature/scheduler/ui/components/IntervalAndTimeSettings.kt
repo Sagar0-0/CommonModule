@@ -61,7 +61,7 @@ fun SettingsLayout(
 
     Column(
         modifier = modifier.padding(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TextSelection(
@@ -127,7 +127,7 @@ fun MinutesPicker(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Text(
@@ -153,7 +153,7 @@ fun MinutesPicker(
             )
 
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
                 color = Color.Red,
@@ -177,7 +177,7 @@ fun CustomFloatingButton(
     Column(
         modifier = Modifier.fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         if (endAlarm.hours > 0 || endAlarm.minutes > 0) {
             val postAlarm = stringResource(id = StringR.string.end_alarm)

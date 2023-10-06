@@ -67,7 +67,7 @@ fun CreateProfileLayout(
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             AppTopBar(title = stringResource(R.string.create_profile),
                 onBack = { showCustomDialogWithResult = !showCustomDialogWithResult })
             Row(Modifier.fillMaxWidth()) {
@@ -84,7 +84,7 @@ fun CreateProfileLayout(
                         onStepClick = { currentStep = step.step })
                 }
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         }
     }, content = { innerPadding ->
         Box(

@@ -73,13 +73,13 @@ fun AppDatePicker(
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.medium),
+            .padding(AppTheme.spacing.level3),
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceBetween
     ) {
         Row(
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
             AppIconButton(
                 modifier = Modifier.size(AppTheme.iconSize.level5),

@@ -16,7 +16,7 @@ fun TstViewTxtLayout(tstTxtMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.medium)
+            .padding(AppTheme.spacing.level3)
     ) {
         AppTexts.TitleMedium(
             text = tstTxtMedia.title, color = MaterialTheme.colorScheme.onPrimaryContainer

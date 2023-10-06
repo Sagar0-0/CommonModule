@@ -231,7 +231,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
     ) {
 
 
@@ -261,7 +261,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

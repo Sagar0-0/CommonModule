@@ -33,9 +33,9 @@ fun TestimonialsRadioButton(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(start = AppTheme.spacing.medium)
+                .padding(start = AppTheme.spacing.level3)
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             Row(Modifier.fillMaxWidth()) {
                 AppTexts.BodyMedium(text = selectionTypeText)
             }
@@ -47,7 +47,7 @@ fun TestimonialsRadioButton(
                     ) {
                         Box(
                             modifier = Modifier.padding(
-                                top = AppTheme.spacing.small, bottom = AppTheme.spacing.small
+                                top = AppTheme.spacing.level2, bottom = AppTheme.spacing.level2
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {

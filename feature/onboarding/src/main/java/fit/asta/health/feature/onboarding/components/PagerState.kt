@@ -38,11 +38,11 @@ fun rememberPagerState(
 fun PagerIndicator(size: Int, currentPage: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.padding(vertical = AppTheme.spacing.extraLarge)
+        modifier = Modifier.padding(vertical = AppTheme.spacing.level7)
     ) {
         repeat(size) {
             Indicator(isSelected = it == currentPage)
-            Spacer(modifier = Modifier.width(AppTheme.spacing.extraSmall))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
         }
     }
 }

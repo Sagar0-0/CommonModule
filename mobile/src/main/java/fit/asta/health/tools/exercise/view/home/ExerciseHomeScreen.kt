@@ -107,7 +107,7 @@ fun ExerciseHomeScreen(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
             Surface(
                 modifier = Modifier
@@ -118,7 +118,7 @@ fun ExerciseHomeScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -135,7 +135,7 @@ fun ExerciseHomeScreen(
                             event(HomeEvent.SetTargetAngle(it))
                         }
                     )
-                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
                         ProgressBarInt(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.recommended.toFloat(),
@@ -198,13 +198,13 @@ fun DanceBottomSheet(
         modifier = Modifier
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
             columns = GridCells.Fixed(2)
         ) {
             item {
@@ -227,12 +227,12 @@ fun DanceBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
 
                 LazyVerticalGrid(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.small),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                     columns = GridCells.Fixed(2)
                 ) {
 
@@ -286,7 +286,7 @@ fun DanceBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { onSchedule() }

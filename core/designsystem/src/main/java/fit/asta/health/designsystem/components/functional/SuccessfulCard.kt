@@ -38,18 +38,18 @@ fun SuccessfulCard(
 
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
-            .padding(top = AppTheme.spacing.extraLarge)
+            .padding(top = AppTheme.spacing.level7)
             .heightIn(min = AppTheme.cardHeight.level3),
             content = {
                 Column(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = AppTheme.spacing.extraLarge3)
+                        .padding(top = AppTheme.spacing.level9)
                 ) {
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.medium),
+                            .padding(horizontal = AppTheme.spacing.level3),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -58,11 +58,11 @@ fun SuccessfulCard(
                             color = MaterialTheme.colorScheme.onPrimaryContainer,
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.small))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                     Row(
                         Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.medium),
+                            .padding(horizontal = AppTheme.spacing.level3),
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
@@ -76,11 +76,11 @@ fun SuccessfulCard(
                             textAlign = TextAlign.Center
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.large))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
                     if (underReview) {
                         LoadingAnimation()
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
             })
 

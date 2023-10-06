@@ -10,17 +10,15 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 data class AppSpacing(
-    val minSmall: Dp = 2.dp,
-    val extraSmall: Dp = 4.dp,
-    val extraSmall1: Dp = 7.5.dp,
-    val small: Dp = 8.dp,
-    val medium: Dp = 16.dp,
-    val extraMedium: Dp = 24.dp,
-    val large: Dp = 32.dp,
-    val largeMedium: Dp = 40.dp,
-    val extraLarge: Dp = 48.dp,
-    val extraLarge2: Dp = 64.dp,
-    val extraLarge3: Dp = 86.dp,
+    val level1: Dp = 4.dp,
+    val level2: Dp = 8.dp,
+    val level3: Dp = 16.dp,
+    val level4: Dp = 24.dp,
+    val level5: Dp = 32.dp,
+    val level6: Dp = 40.dp,
+    val level7: Dp = 48.dp,
+    val level8: Dp = 64.dp,
+    val level9: Dp = 86.dp
 )
 
 internal val LocalAppSpacing = compositionLocalOf { AppSpacing() }

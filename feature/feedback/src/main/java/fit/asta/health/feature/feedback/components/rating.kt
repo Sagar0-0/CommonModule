@@ -22,12 +22,12 @@ fun rating(): MutableState<Int> {
     val rating = remember { mutableIntStateOf(0) }
     AppCard(
         modifier = Modifier.fillMaxWidth(),
-        shape = RoundedCornerShape(AppTheme.spacing.small),
+        shape = RoundedCornerShape(AppTheme.spacing.level2),
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.small),
+                .padding(AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             RatingBar(
@@ -36,7 +36,7 @@ fun rating(): MutableState<Int> {
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
                     .inactiveColor(AppTheme.colors.onBackground.copy(0.25f))
-                    .padding(AppTheme.spacing.small)
+                    .padding(AppTheme.spacing.level2)
             )
         }
     }

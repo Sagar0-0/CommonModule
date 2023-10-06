@@ -44,28 +44,28 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
     AppCard(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.medium),
-        shape = RoundedCornerShape(AppTheme.spacing.small)
+            .padding(horizontal = AppTheme.spacing.level3),
+        shape = RoundedCornerShape(AppTheme.spacing.level2)
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(AppTheme.spacing.medium)
+                .padding(AppTheme.spacing.level3)
         ) {
 
             AppTexts.TitleMedium(
                 text = qn.qn
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             when (qn.type) {
                 2 -> {
                     opts.value = listOf(rating().value.toString())
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
 
                 3, 5 -> {
                     opts.value = qn.opts?.let { listOf(mcqCard(it).value) }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
             }
 

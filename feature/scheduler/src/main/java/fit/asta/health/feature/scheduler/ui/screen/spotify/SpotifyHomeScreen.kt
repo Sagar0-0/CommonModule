@@ -55,7 +55,7 @@ fun SpotifyHomeScreen(
             .padding(16.dp)
             .width(LocalConfiguration.current.screenWidthDp.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.medium)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
     ) {
 
         // Search Option And Spotify Title

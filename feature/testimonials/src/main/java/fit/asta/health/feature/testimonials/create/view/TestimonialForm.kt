@@ -76,12 +76,12 @@ fun TestimonialForm(
             .fillMaxWidth()
             .padding(
                 top = paddingValues.calculateTopPadding(),
-                start = AppTheme.spacing.medium,
-                end = AppTheme.spacing.medium
+                start = AppTheme.spacing.level3,
+                end = AppTheme.spacing.level3
             )
     ) {
         Column {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
             TestimonialsRadioButton(selectionTypeText = "Testimonial Type",
                 radioButtonList = radioButtonList,
@@ -90,7 +90,7 @@ fun TestimonialForm(
                     getViewModel.onEvent(OnTypeChange(it))
                 })
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
             Column(
                 modifier = Modifier
@@ -109,7 +109,7 @@ fun TestimonialForm(
                     errorMessage = title.error,
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
                 if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
                     AppTextFieldValidate(
@@ -135,7 +135,7 @@ fun TestimonialForm(
                         },
                         showLenErrorMsg = true
                     )
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
 
                 AppTextFieldValidate(
@@ -149,7 +149,7 @@ fun TestimonialForm(
                     })
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
                 AppTextFieldValidate(
                     value = role.value,
@@ -163,12 +163,12 @@ fun TestimonialForm(
                 )
 
                 if (selectedOption == radioButtonList[1]) {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                     ImageLayout(
                         getViewModel = getViewModel,
                     )
                 } else if (selectedOption == radioButtonList[2]) {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                     TstGetVideo()
                 }
 
@@ -179,7 +179,7 @@ fun TestimonialForm(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.medium),
+                        .padding(AppTheme.spacing.level3),
                     colors = ButtonDefaults.buttonColors(
                         containerColor = MaterialTheme.colorScheme.primary,
                         contentColor = MaterialTheme.colorScheme.onPrimary

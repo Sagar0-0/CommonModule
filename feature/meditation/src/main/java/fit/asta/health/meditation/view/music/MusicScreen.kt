@@ -77,7 +77,7 @@ fun MusicScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.height(spacing.small))
+            Spacer(Modifier.height(spacing.level2))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -86,7 +86,7 @@ fun MusicScreen(
             ) {
 
                 item {
-                    Spacer(Modifier.height(spacing.small))
+                    Spacer(Modifier.height(spacing.level2))
                 }
 
                 itemsIndexed(state.selectedAlbum) { index: Int, item: Song ->
@@ -147,7 +147,7 @@ fun TrackItem(
             .fillMaxWidth()
             .clickable { onClick(isRunning) }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(spacing.small)
+        verticalArrangement = Arrangement.spacedBy(spacing.level2)
     ) {
         Divider(
             modifier = Modifier
@@ -159,11 +159,11 @@ fun TrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.medium)
+            horizontalArrangement = Arrangement.spacedBy(spacing.level3)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(spacing.small),
+                verticalArrangement = Arrangement.spacedBy(spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
                 Text(
@@ -201,7 +201,7 @@ fun TrackItem(
                                 playPauseTrack(isRunning, musicState.playWhenReady)
                             }
                             .size(32.dp)
-                            .padding(spacing.small)
+                            .padding(spacing.level2)
                     )
                     Text(
                         text = if (isRunning)

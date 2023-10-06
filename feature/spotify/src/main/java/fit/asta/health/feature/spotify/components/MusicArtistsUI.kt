@@ -54,7 +54,7 @@ fun MusicArtistsUI(
 
             // Redirecting the User to Spotify App
             .clickable { onClick() },
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.small)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Showing the Loader or the Image accordingly

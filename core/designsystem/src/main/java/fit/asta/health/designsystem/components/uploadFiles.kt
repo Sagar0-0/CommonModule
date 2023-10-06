@@ -69,7 +69,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
 
             }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
         Box(
             modifier = Modifier.dashedBorder(
@@ -82,8 +82,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AppTheme.spacing.medium,
-                        vertical = AppTheme.spacing.small
+                        horizontal = AppTheme.spacing.level3,
+                        vertical = AppTheme.spacing.level2
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -99,7 +99,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AppTheme.spacing.extraSmall)
+                                    .padding(AppTheme.spacing.level1)
                                     .clip(AppTheme.shape.level4)
                                     .border(
                                         width = 0.4.dp,
@@ -107,7 +107,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                         shape = AppTheme.shape.level4
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AppTheme.spacing.small),
+                                    .padding(AppTheme.spacing.level2),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 Text(
@@ -147,7 +147,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
             }
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
         Text(
             text = "You can upload maximum 5 files*",

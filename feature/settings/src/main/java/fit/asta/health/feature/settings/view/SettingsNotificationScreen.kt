@@ -51,7 +51,7 @@ fun SettingsNotificationLayout(
             onBack = onBackPress
         )
 
-        LazyColumn(modifier = Modifier.padding(AppTheme.spacing.medium)) {
+        LazyColumn(modifier = Modifier.padding(AppTheme.spacing.level3)) {
             item {
                 SwitchItem(
                     imageVector = Icons.Default.Notifications,
@@ -71,8 +71,8 @@ fun SettingsNotificationLayout(
                 AppTexts.TitleMedium(
                     text = stringResource(id = R.string.title_notifications),
                     modifier = Modifier.padding(
-                        top = AppTheme.spacing.medium,
-                        bottom = AppTheme.spacing.small
+                        top = AppTheme.spacing.level3,
+                        bottom = AppTheme.spacing.level2
                     )
                 )
 
@@ -219,7 +219,7 @@ fun SwitchItem(
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AppDefaultIcon(
-            modifier = Modifier.padding(AppTheme.spacing.extraSmall),
+            modifier = Modifier.padding(AppTheme.spacing.level1),
             imageVector = imageVector,
             contentDescription = ""
         )
@@ -228,9 +228,9 @@ fun SwitchItem(
             Modifier
                 .weight(1f)
                 .padding(
-                    top = AppTheme.spacing.small,
-                    bottom = AppTheme.spacing.medium,
-                    start = AppTheme.spacing.extraSmall
+                    top = AppTheme.spacing.level2,
+                    bottom = AppTheme.spacing.level3,
+                    start = AppTheme.spacing.level1
                 )
         ) {
             AppTexts.TitleMedium(
@@ -246,7 +246,7 @@ fun SwitchItem(
         Switch(
             checked = isChecked,
             onCheckedChange = { onChange(it) },
-            modifier = Modifier.padding(bottom = AppTheme.spacing.small),
+            modifier = Modifier.padding(bottom = AppTheme.spacing.level2),
             enabled = isEnabled
         )
     }
