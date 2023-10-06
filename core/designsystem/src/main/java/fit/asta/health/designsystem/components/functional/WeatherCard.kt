@@ -23,6 +23,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
 @Composable
@@ -112,10 +113,10 @@ fun LocationAndDate(
             modifier = Modifier.size(24.dp),
             tint = MaterialTheme.colors.onPrimary
         )
-        AppTexts.TitleMedium(
+        TitleTexts.Level2(
             text = location,
             color = MaterialTheme.colors.onPrimary
         )
-        AppTexts.TitleMedium(text = date, color = MaterialTheme.colors.onPrimary)
+        TitleTexts.Level2(text = date, color = MaterialTheme.colors.onPrimary)
     }
 }

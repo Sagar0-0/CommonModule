@@ -1,6 +1,8 @@
 package fit.asta.health.designsystem.molecular.button
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
@@ -11,11 +13,14 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
@@ -111,6 +116,9 @@ fun AppOutlinedButton(
     leadingIcon: ImageVector? = null,
     iconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
+    shape: Shape = AppTheme.shape.level3,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     onClick: () -> Unit,
 ) {
 
@@ -118,6 +126,9 @@ fun AppOutlinedButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
+        shape = shape,
+        interactionSource = interactionSource,
+        border = border,
         colors = ButtonDefaults.outlinedButtonColors(
             containerColor = Color.Transparent,
             contentColor = AppTheme.colors.onSurface,
