@@ -22,17 +22,9 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -47,14 +39,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
@@ -65,15 +53,18 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.WeatherCardImage
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.GradientButton
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.button.AppTonalButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.LargeTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
@@ -101,7 +92,8 @@ fun TodayContent(
     val context = LocalContext.current
 
     if (deleteDialog) {
-        AlertDialogPopUp(content = "Are you sure you want to delete this alarm?",
+        AlertDialogPopUp(
+            content = stringResource(R.string.are_you_sure_you_want_to_delete_this_alarm),
             actionButton = stringResource(id = R.string.delete),
             onDismiss = { deleteDialog = false },
             onDone = {
@@ -110,7 +102,8 @@ fun TodayContent(
             })
     }
     if (skipDialog) {
-        AlertDialogPopUp(content = "Are you sure you want to skip this alarm?",
+        AlertDialogPopUp(
+            content = stringResource(R.string.are_you_sure_you_want_to_skip_this_alarm),
             actionButton = stringResource(id = R.string.skip),
             onDismiss = { skipDialog = false },
             onDone = {
@@ -125,7 +118,7 @@ fun TodayContent(
             Modifier
                 .fillMaxWidth()
                 .padding(paddingValues)
-                .background(color = MaterialTheme.colorScheme.background),
+                .background(color = AppTheme.colors.background),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
@@ -152,9 +145,10 @@ fun TodayContent(
                                 .fillMaxWidth()
                                 .padding(16.dp)
                         ) {
-                            GradientButton(
-                                nameButton = "Retry",
-                            ) { hSEvent(HomeEvent.Retry) }
+                            AppTonalButton(
+                                textToShow = stringResource(R.string.retry),
+                                onClick = { hSEvent(HomeEvent.Retry) }
+                            )
                         }
                     }
                 }
@@ -194,25 +188,15 @@ fun TodayContent(
             if (defaultScheduleVisibility) {
                 item {
                     AnimatedVisibility(visible = true) {
-                        AppButtons.AppOutlinedButton(onClick = {
-                            hSEvent(
-                                HomeEvent.SetDefaultSchedule(
-                                    context
-                                )
-                            )
-                        }) {
-                            AppTexts.TitleLarge(text = stringResource(R.string.default_schedule))
-                        }
+                        AppOutlinedButton(textToShow = stringResource(R.string.default_schedule),
+                            onClick = { hSEvent(HomeEvent.SetDefaultSchedule(context)) })
                     }
                 }
             }
             if (listMorning.isNotEmpty()) {
                 item {
                     AnimatedVisibility(visible = listMorning.isNotEmpty()) {
-                        Text(
-                            text = stringResource(R.string.morning_events),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        TitleTexts.Level2(text = stringResource(R.string.morning_events))
                     }
                 }
                 items(listMorning) { data ->
@@ -235,10 +219,7 @@ fun TodayContent(
             if (listAfternoon.isNotEmpty()) {
                 item {
                     AnimatedVisibility(visible = listAfternoon.isNotEmpty()) {
-                        Text(
-                            text = stringResource(R.string.afternoon_events),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        TitleTexts.Level2(text = stringResource(R.string.afternoon_events))
                     }
                 }
                 items(listAfternoon) { data ->
@@ -261,10 +242,7 @@ fun TodayContent(
             if (listEvening.isNotEmpty()) {
                 item {
                     AnimatedVisibility(visible = listEvening.isNotEmpty()) {
-                        Text(
-                            text = stringResource(R.string.evening_events),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        TitleTexts.Level2(text = stringResource(R.string.evening_events))
                     }
                 }
                 items(listEvening) { data ->
@@ -287,10 +265,7 @@ fun TodayContent(
             if (listNextDay.isNotEmpty()) {
                 item {
                     AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
-                        Text(
-                            text = stringResource(R.string.tomorrow_events),
-                            style = MaterialTheme.typography.titleMedium
-                        )
+                        TitleTexts.Level2(text = stringResource(R.string.tomorrow_events))
                     }
                 }
                 items(listNextDay) { data ->
@@ -312,8 +287,6 @@ fun TodayContent(
 
 
 @Composable
-@Preview
-@OptIn(ExperimentalMaterial3Api::class)
 fun TodayItem(
     modifier: Modifier = Modifier,
     image: String = "",
@@ -326,19 +299,10 @@ fun TodayItem(
 ) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
-    val color = if (!isPressed) MaterialTheme.colorScheme.primary else Color.Green
-    Card(
-        onClick = { /*TODO*/ },
+    val color = if (!isPressed) AppTheme.colors.primary else Color.Green
+    AppCard(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
-        interactionSource = interactionSource,
-        elevation = CardDefaults.cardElevation(
-            defaultElevation = 3.dp,
-            pressedElevation = 6.dp,
-            focusedElevation = 4.dp,
-            draggedElevation = 8.dp
-        ),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.surface)
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.surface)
     ) {
         Column(
             modifier = modifier.padding(16.dp),
@@ -350,14 +314,13 @@ fun TodayItem(
                 horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level2),
                 modifier = modifier.fillMaxWidth()
             ) {
-                AsyncImage(
+                AppNetworkImage(
                     model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
                         .crossfade(true).build(),
-                    placeholder = painterResource(R.drawable.placeholder_tag),
                     contentDescription = stringResource(R.string.description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(AppTheme.shape.level3)
                         .height(120.dp)
                         .width(80.dp)
                 )
@@ -369,70 +332,46 @@ fun TodayItem(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = modifier.fillMaxWidth()
                     ) {
-                        Text(
+                        TitleTexts.Level2(
                             modifier = Modifier.weight(.5f),
                             text = title,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.onBackground,
-                            fontWeight = FontWeight.Bold
+                            color = AppTheme.colors.onBackground,
                         )
-                        Text(
+                        TitleTexts.Level2(
                             modifier = Modifier
                                 .weight(.2f)
                                 .clip(RoundedCornerShape(15.dp))
                                 .background(
-                                    MaterialTheme.colorScheme.primary.copy(alpha = .3f)
+                                    AppTheme.colors.primary.copy(alpha = .3f)
                                 ),
                             text = progress,
-                            style = MaterialTheme.typography.titleMedium,
-                            color = MaterialTheme.colorScheme.primary,
+                            color = AppTheme.colors.primary,
                             textAlign = TextAlign.Center
                         )
                     }
-                    Text(
-                        text = description,
-                        style = MaterialTheme.typography.bodyMedium,
-                        maxLines = 1
-                    )
-                    OutlinedButton(
+                    BodyTexts.Level2(text = description)
+                    AppOutlinedButton(
                         onClick = onDone,
-                        border = BorderStroke(
-                            width = 2.dp, color = color
-                        ),
+                        border = BorderStroke(width = 2.dp, color = color),
                         interactionSource = interactionSource,
-                        shape = RoundedCornerShape(10.dp),
-                        colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.surface),
-                        contentPadding = PaddingValues(8.dp)
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Check,
-                            contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                        Text(
-                            text = "Done",
-                            style = MaterialTheme.typography.bodyMedium,
-                            color = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                        shape = AppTheme.shape.level3,
+                        leadingIcon = Icons.Default.Check,
+                        textToShow = "Done",
+                    )
                 }
             }
             Row(
                 verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()
             ) {
-                Text(
+                TitleTexts.Level2(
                     modifier = Modifier.weight(.5f),
                     text = time,
-                    style = MaterialTheme.typography.titleMedium
                 )
-                TextButton(modifier = Modifier.weight(.5f), onClick = onReschedule) {
-                    Text(
-                        text = "Reschedule",
-                        style = MaterialTheme.typography.bodyMedium,
-                        color = MaterialTheme.colorScheme.primary,
-                        textAlign = TextAlign.End
-                    )
-                }
+                AppTextButton(
+                    modifier = Modifier.weight(.5f),
+                    textToShow = stringResource(id = R.string.reschedule),
+                    onClick = onReschedule
+                )
             }
         }
     }
@@ -463,7 +402,7 @@ fun SwipeDemoToday(
         startActions = listOf(archive),
         endActions = if (skipEnable) listOf(skip) else emptyList(),
         swipeThreshold = 20.dp,
-        backgroundUntilSwipeThreshold = MaterialTheme.colorScheme.background,
+        backgroundUntilSwipeThreshold = AppTheme.colors.background,
     ) {
         val time = AMPMHoursMin(
             hours = if (data.time.hours > 12) {
@@ -522,37 +461,34 @@ fun AlertDialogPopUp(
         )
     ) {
         AppCard(
-            shape = RoundedCornerShape(10.dp), elevation = CardDefaults.cardElevation(8.dp)
+            modifier = Modifier.clip(AppTheme.shape.level3),
+            elevation = CardDefaults.cardElevation(8.dp)
         ) {
-
             Column(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(16.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.Center) {
-                    AppTexts.DisplaySmall(text = stringResource(id = R.string.alert))
+                    LargeTexts.Level3(text = stringResource(id = R.string.alert))
                 }
-                AppTexts.BodyLarge(text = content)
+                BodyTexts.Level1(text = content, maxLines = 3)
                 Row {
-                    AppButtons.AppOutlinedButton(
+                    AppOutlinedButton(
                         onClick = onDismiss,
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
+                        shape = AppTheme.shape.level4,
+                        modifier = Modifier
                             .weight(1F)
-                    ) {
-                        AppTexts.BodyLarge(text = stringResource(id = R.string.cancel))
-                    }
-                    AppButtons.AppStandardButton(
+                            .padding(end = 8.dp),
+                        textToShow = stringResource(id = R.string.cancel)
+                    )
+                    AppTonalButton(
                         onClick = onDone,
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(8.dp)
+                        modifier = Modifier
                             .weight(1F)
-                    ) {
-                        AppTexts.BodyLarge(text = actionButton)
-                    }
+                            .padding(end = 8.dp),
+                        textToShow = actionButton
+                    )
                 }
             }
         }

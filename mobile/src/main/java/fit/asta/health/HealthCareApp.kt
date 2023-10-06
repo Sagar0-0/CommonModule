@@ -46,7 +46,7 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             )
             val missedAlarmChannel = NotificationChannel(
                 CHANNEL_ID_OTHER,
-                getString(R.string.app_name) + "Service Channel",
+                getString(R.string.app_name) + " Channel",
                 NotificationManager.IMPORTANCE_HIGH
             )
             val manager = getSystemService(
