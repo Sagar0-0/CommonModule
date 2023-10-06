@@ -86,7 +86,7 @@ fun Stepper(
         Surface(shape = CircleShape,
             border = borderStroke,
             modifier = Modifier
-                .size(AppTheme.boxSize.smallMedium1)
+                .size(AppTheme.boxSize.level4)
                 .constrainAs(circle) {
                     top.linkTo(parent.top)
                     end.linkTo(parent.end)

@@ -33,7 +33,7 @@ fun ProfileSingleSelectionCard(
             AppLocalImage(
                 painter = painterResource(id = icon),
                 contentDescription = "LifeStyle Icons",
-                modifier = Modifier.size(AppTheme.imageSize.largeMedium)
+                modifier = Modifier.size(AppTheme.imageSize.level5)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             Column {

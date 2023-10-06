@@ -61,7 +61,7 @@ fun AppOutlinedCard(
             modifier = modifier,
             onClick = onClick,
             enabled = enabled,
-            shape = AppTheme.shape.large,
+            shape = AppTheme.shape.level3,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -70,7 +70,7 @@ fun AppOutlinedCard(
     else
         OutlinedCard(
             modifier = modifier,
-            shape = AppTheme.shape.large,
+            shape = AppTheme.shape.level3,
             colors = colors,
             elevation = elevation,
             border = border,

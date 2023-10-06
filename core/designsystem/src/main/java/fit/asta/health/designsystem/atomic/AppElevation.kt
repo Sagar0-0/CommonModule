@@ -10,13 +10,13 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 data class AppElevation(
-    val noElevation: Dp = 0.dp,
-    val extraSmall: Dp = 2.dp,
-    val smallMedium: Dp = 4.dp,
-    val smallExtraMedium: Dp = 6.dp,
-    val small: Dp = 8.dp,
-    val medium: Dp = 16.dp,
-    val large: Dp = 32.dp,
+    val level0: Dp = 0.dp,
+    val level1: Dp = 2.dp,
+    val level2: Dp = 4.dp,
+    val level3: Dp = 6.dp,
+    val level4: Dp = 8.dp,
+    val level5: Dp = 16.dp,
+    val level6: Dp = 32.dp
 )
 
 internal val LocalAppElevation = compositionLocalOf { AppElevation() }

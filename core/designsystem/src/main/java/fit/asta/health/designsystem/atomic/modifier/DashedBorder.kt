@@ -2,11 +2,9 @@ package fit.asta.health.designsystem.atomic.modifier
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -19,6 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.cards.AppCard
 
 // Preview Function
@@ -30,20 +29,18 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 )
 @Composable
 private fun DefaultPreview() {
-    AppTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
-            AppCard {
-                Box(
-                    modifier = Modifier
-                        .height(200.dp)
-                        .fillMaxWidth()
-                        .dashedBorder(
-                            width = 1.dp,
-                            radius = AppTheme.customSize.small,
-                            color = MaterialTheme.colorScheme.onSurfaceVariant
-                        )
-                )
-            }
+    AppScreen {
+        AppCard {
+            Box(
+                modifier = Modifier
+                    .height(200.dp)
+                    .fillMaxWidth()
+                    .dashedBorder(
+                        width = 1.dp,
+                        radius = AppTheme.customSize.level2,
+                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                    )
+            )
         }
     }
 }

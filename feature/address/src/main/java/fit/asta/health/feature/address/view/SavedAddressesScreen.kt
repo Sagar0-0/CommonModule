@@ -211,7 +211,7 @@ internal fun SavedAddressesScreen(
                     AppDefaultIcon(
                         modifier = Modifier
                             .padding(end = AppTheme.spacing.extraSmall)
-                            .size(AppTheme.iconSize.mediumSmall),
+                            .size(AppTheme.iconSize.level3),
                         imageVector = Icons.Default.LocationOn,
                         contentDescription = ""
                     )
@@ -286,7 +286,7 @@ internal fun SavedAddressesScreen(
                 AppDefaultIcon(
                     modifier = Modifier
                         .padding(end = AppTheme.spacing.extraSmall)
-                        .size(AppTheme.iconSize.mediumSmall),
+                        .size(AppTheme.iconSize.level3),
                     imageVector = Icons.Default.Add,
                     contentDescription = ""
                 )

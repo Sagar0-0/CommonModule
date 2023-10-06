@@ -154,7 +154,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 contentDescription = "User Profile Pic",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(AppTheme.imageSize.picSize)
+                    .size(AppTheme.imageSize.level8)
                     .border(
                         border = BorderStroke(
                             width = 2.dp, color = MaterialTheme.colorScheme.primary
@@ -198,7 +198,7 @@ fun UserAchievCard(
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Leaderboard",
-                modifier = Modifier.size(AppTheme.imageSize.largeMedium)
+                modifier = Modifier.size(AppTheme.imageSize.level5)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             Column(
@@ -277,7 +277,7 @@ fun ProfileDetails(
             AppDrawImg(
                 painter = painterResource(id = imageID),
                 contentDescription = "Details Images",
-                modifier = Modifier.size(AppTheme.imageSize.standard)
+                modifier = Modifier.size(AppTheme.imageSize.level3)
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             AppTexts.LabelMedium(text = profileType, textAlign = TextAlign.Center)

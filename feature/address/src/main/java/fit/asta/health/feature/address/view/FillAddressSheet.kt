@@ -158,8 +158,8 @@ internal fun FillAddressSheet(
             modifier = Modifier
                 .clip(
                     RoundedCornerShape(
-                        topStart = AppTheme.customSize.medium,
-                        topEnd = AppTheme.customSize.medium
+                        topStart = AppTheme.customSize.level3,
+                        topEnd = AppTheme.customSize.level3
                     )
                 )
                 .background(AppTheme.colors.background)
@@ -346,7 +346,7 @@ internal fun FillAddressSheet(
                             modifier = Modifier
                                 .padding(AppTheme.spacing.medium)
                                 .fillMaxWidth()
-                                .clip(AppTheme.shape.large),
+                                .clip(AppTheme.shape.level3),
                             colors = ButtonDefaults.buttonColors(
                                 containerColor = AppTheme.colors.primary,
                                 contentColor = AppTheme.colors.onSurface

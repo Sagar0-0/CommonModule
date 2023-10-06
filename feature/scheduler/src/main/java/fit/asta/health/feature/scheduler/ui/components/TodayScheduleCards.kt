@@ -305,7 +305,7 @@ fun AppointmentCard(url: String = "") {
                         contentDescription = stringResource(StringR.string.doctor_pic),
                         contentScale = ContentScale.Crop,
                         modifier = Modifier
-                            .size(AppTheme.customSize.extraLarge4)
+                            .size(AppTheme.customSize.level11)
                             .clip(CircleShape)
                             .border(
                                 border = BorderStroke(

@@ -44,7 +44,7 @@ fun GoogleSignIn(
     AppOutlinedButton(
         modifier = Modifier
             .fillMaxWidth()
-            .height(AppTheme.buttonSize.extraLarge),
+            .height(AppTheme.buttonSize.level7),
         onClick = {
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
                 .requestIdToken(token)

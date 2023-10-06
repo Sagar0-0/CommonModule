@@ -167,7 +167,7 @@ fun PrivacyAndUserConsent() {
             AppButtons.AppCheckBox(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(AppTheme.imageSize.standard)
+                modifier = Modifier.size(AppTheme.imageSize.level3)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.medium))
             AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
@@ -193,7 +193,7 @@ fun UserCircleImage(
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(AppTheme.customSize.extraLarge5)
+                .size(AppTheme.customSize.level12)
                 .clip(CircleShape)
                 .border(
                     border = BorderStroke(
@@ -222,7 +222,7 @@ fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifi
             AppDefaultIcon(
                 imageVector = Icons.Filled.Delete,
                 contentDescription = "Delete Image",
-                modifier = Modifier.size(AppTheme.customSize.extraLarge),
+                modifier = Modifier.size(AppTheme.customSize.level7),
                 tint = MaterialTheme.colorScheme.error
             )
         }
@@ -243,7 +243,7 @@ fun EditProfileImageButton(
             AppDefaultIcon(
                 imageVector = editIcon,
                 contentDescription = "Edit Profile Image",
-                modifier = Modifier.size(AppTheme.customSize.extraLarge),
+                modifier = Modifier.size(AppTheme.customSize.level7),
                 tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
             )
         }

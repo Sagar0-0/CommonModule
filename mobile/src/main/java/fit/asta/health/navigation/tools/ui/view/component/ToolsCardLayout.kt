@@ -76,7 +76,7 @@ fun ScheduleButtonIcon(
         Box(
             contentAlignment = Alignment.Center,
             modifier = Modifier
-                .size(AppTheme.iconSize.regularSize)
+                .size(AppTheme.iconSize.level4)
                 .clip(RoundedCornerShape(AppTheme.spacing.small))
                 .background(AppTheme.colors.surface)
         ) {

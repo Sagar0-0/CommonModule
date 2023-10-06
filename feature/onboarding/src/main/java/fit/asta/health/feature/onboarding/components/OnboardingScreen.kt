@@ -69,7 +69,7 @@ fun OnboardingScreen(
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
                             .padding(AppTheme.spacing.small)
-                            .clip(AppTheme.shape.large)
+                            .clip(AppTheme.shape.level3)
                     ) {
                         AppGifImage(
                             modifier = Modifier

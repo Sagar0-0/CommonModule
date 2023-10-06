@@ -65,7 +65,7 @@ fun BodyTypeLayout() {
                 .padding(
                     horizontal = AppTheme.spacing.small, vertical = AppTheme.spacing.medium
                 )
-                .height(AppTheme.customSize.extraLarge2),
+                .height(AppTheme.customSize.level9),
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
         )
@@ -85,7 +85,7 @@ fun BodyTypeListLayout(
             AppLocalImage(
                 painter = painterResource(id = listImg),
                 contentDescription = "BodyTypeImage",
-                modifier = Modifier.size(AppTheme.imageSize.largeMedium)
+                modifier = Modifier.size(AppTheme.imageSize.level5)
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.small))
             CaptionTexts.Level3(text = listType, textAlign = TextAlign.Center)

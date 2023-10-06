@@ -118,7 +118,7 @@ internal fun SearchBottomSheet(
                                 interactionSource = remember { MutableInteractionSource() },
                                 indication = rememberRipple(
                                     bounded = false,
-                                    radius = AppTheme.customSize.extraMedium
+                                    radius = AppTheme.customSize.level4
                                 )
                             ) {
                                 searchQuery = ""

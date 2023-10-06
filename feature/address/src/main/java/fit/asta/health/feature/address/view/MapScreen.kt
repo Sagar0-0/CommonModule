@@ -224,7 +224,7 @@ internal fun MapScreen(
                     modifier = Modifier
                         .padding(AppTheme.spacing.medium)
                         .align(Alignment.End)
-                        .size(AppTheme.iconButtonSize.extraLarge2),
+                        .size(AppTheme.buttonSize.level7),
                     onClick = {
                         onUiEvent(MapScreenUiEvent.UseCurrentLocation)
                         if (currentAddressState is UiState.Success) {
@@ -239,7 +239,7 @@ internal fun MapScreen(
                 ) {
                     AppDefaultIcon(
                         modifier = Modifier
-                            .size(AppTheme.iconButtonSize.large),
+                            .size(AppTheme.buttonSize.level4),
                         imageVector = Icons.Default.MyLocation,
                         contentDescription = R.string.use_my_current_location.toStringFromResId()
                     )
@@ -308,7 +308,7 @@ internal fun MapScreen(
                                 modifier = Modifier
                                     .padding(bottom = AppTheme.spacing.medium)
                                     .fillMaxWidth()
-                                    .clip(AppTheme.shape.medium)
+                                    .clip(AppTheme.shape.level2)
                             ) {
                                 TitleTexts.Level2(
                                     maxLines = 1,

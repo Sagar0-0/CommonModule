@@ -98,7 +98,7 @@ fun LoadingItem() {
     ) {
         AppCircularProgressIndicator(
             modifier = Modifier
-                .size(AppTheme.boxSize.largeSmall)
+                .size(AppTheme.boxSize.level5)
                 .padding(AppTheme.spacing.medium),
             strokeWidth = AppTheme.spacing.extraSmall
         )

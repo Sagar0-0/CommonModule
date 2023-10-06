@@ -74,7 +74,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
         Box(
             modifier = Modifier.dashedBorder(
                 width = 1.dp,
-                radius = AppTheme.customSize.small,
+                radius = AppTheme.customSize.level2,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
@@ -100,11 +100,11 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                             Row(
                                 modifier = Modifier
                                     .padding(AppTheme.spacing.extraSmall)
-                                    .clip(AppTheme.shape.extraLarge)
+                                    .clip(AppTheme.shape.level4)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AppTheme.shape.extraLarge
+                                        shape = AppTheme.shape.level4
                                     )
                                     .background(MaterialTheme.colorScheme.background)
                                     .padding(AppTheme.spacing.small),
@@ -118,7 +118,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
-                                IconButton(modifier = Modifier.size(AppTheme.iconButtonSize.extraMedium),
+                                IconButton(modifier = Modifier.size(AppTheme.buttonSize.level3),
                                     onClick = { uriList.remove(it) }) {
                                     Icon(
                                         imageVector = Icons.Default.Close, contentDescription = null
@@ -141,7 +141,7 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         imageVector = Icons.Rounded.CloudUpload,
                         contentDescription = "Upload File",
                         tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(AppTheme.imageSize.standard)
+                        modifier = Modifier.size(AppTheme.imageSize.level3)
                     )
                 }
             }

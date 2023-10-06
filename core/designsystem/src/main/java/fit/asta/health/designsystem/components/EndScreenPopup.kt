@@ -51,7 +51,7 @@ fun EndScreenPopup(
                     tint = Color.Green,
                     imageVector = Icons.Default.Done,
                     contentDescription = null,
-                    modifier = Modifier.size(AppTheme.iconSize.medium)
+                    modifier = Modifier.size(AppTheme.iconSize.level6)
                 )
 
                 Text(
@@ -71,7 +71,7 @@ fun EndScreenPopup(
 
                 Button(
                     onClick = onContinueClick,
-                    shape = AppTheme.shape.medium,
+                    shape = AppTheme.shape.level2,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(AppTheme.spacing.medium),

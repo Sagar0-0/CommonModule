@@ -292,13 +292,13 @@ private fun IconContent(
 ) {
     if (iconTintColor == Color.Transparent || iconTintColor == Color.Unspecified) {
         AppLocalImage(
-            modifier = modifier.size(AppTheme.imageSize.standard),
+            modifier = modifier.size(AppTheme.imageSize.level3),
             painter = buttonIcons[index],
             contentDescription = null,
         )
     } else {
         AppLocalImage(
-            modifier = modifier.size(AppTheme.imageSize.standard),
+            modifier = modifier.size(AppTheme.imageSize.level3),
             painter = buttonIcons[index],
             contentDescription = null,
             colorFilter = ColorFilter.tint(iconTintColor),

@@ -62,7 +62,7 @@ fun AppTopTabBar(
     // Card Layout Which is elevated
     // TODO :- Removing the Elevated card and using AppElevatedCard is changing shape
     ElevatedCard(
-        elevation = CardDefaults.elevatedCardElevation(defaultElevation = AppTheme.elevation.small),
+        elevation = CardDefaults.elevatedCardElevation(defaultElevation = AppTheme.elevation.level4),
         colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent),
         shape = RectangleShape
     ) {
@@ -81,7 +81,7 @@ fun AppTopTabBar(
                 Box(
                     modifier = Modifier
                         .weight(1f)
-                        .size(AppTheme.boxSize.smallMedium)
+                        .size(AppTheme.boxSize.level6)
                         .clickable {
 
                             // Changing the selected Item to the Item Index Clicked to move the State

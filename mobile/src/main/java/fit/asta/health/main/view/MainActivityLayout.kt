@@ -128,7 +128,7 @@ private fun BottomAppBarLayout(
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
         containerColor = MaterialTheme.colorScheme.background,
-        tonalElevation = AppTheme.elevation.small
+        tonalElevation = AppTheme.elevation.level4
     ) {
         items.forEach { item ->
             NavigationBarItem(

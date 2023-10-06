@@ -87,7 +87,7 @@ private fun NoInternetScreen(
             openFullDialogCustom.value = false
         }) {
             Surface(
-                color = AppTheme.colors.primaryContainer, shape = AppTheme.shape.medium
+                color = AppTheme.colors.primaryContainer, shape = AppTheme.shape.level2
             ) {
                 ErrorScreen(
                     imgID = imgID,
@@ -101,9 +101,9 @@ private fun NoInternetScreen(
     } else {
         AppCard(
             modifier = modifier.fillMaxSize(),
-            elevation = CardDefaults.cardElevation(defaultElevation = AppTheme.elevation.small),
+            elevation = CardDefaults.cardElevation(defaultElevation = AppTheme.elevation.level4),
             colors = CardDefaults.cardColors(containerColor = AppTheme.colors.primaryContainer),
-            shape = AppTheme.shape.medium
+            shape = AppTheme.shape.level2
         ) {
             ErrorScreen(
                 imgID = imgID,
@@ -213,7 +213,7 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
                     imageVector = imageVector,
                     contentDescription = "ErrorMessage Occurred while fetching Tst List",
                     tint = AppTheme.colors.surface,
-                    modifier = Modifier.size(AppTheme.imageHeight.small)
+                    modifier = Modifier.size(AppTheme.imageSize.level6)
                 )
                 HeadingTexts.Level4(text = message, color = AppTheme.colors.onError)
             }

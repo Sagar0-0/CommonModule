@@ -108,7 +108,7 @@ private fun DialogHeader(dialogData: DialogData) {
         imageVector = Icons.Filled.NotificationImportant,
         contentDescription = "Alert Message",
         tint = AppTheme.colors.error,
-        modifier = Modifier.size(AppTheme.iconSize.medium)
+        modifier = Modifier.size(AppTheme.iconSize.level6)
     )
     Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
     CaptionTexts.Level1(
@@ -159,7 +159,7 @@ private fun NegativeButton(
     AppButtons.AppStandardButton(
         onClick = onNegativeClick,
         modifier = Modifier
-            .height(AppTheme.buttonSize.extraLarge)
+            .height(AppTheme.buttonSize.level7)
             .fillMaxWidth(),
         colors = ButtonDefaults.buttonColors(
             containerColor = AppTheme.colors.error,
@@ -177,7 +177,7 @@ private fun PositiveButton(
     AppButtons.AppStandardButton(
         onClick = onPositiveClick,
         modifier = Modifier
-            .height(AppTheme.buttonSize.extraLarge)
+            .height(AppTheme.buttonSize.level7)
             .fillMaxWidth()
     ) {
         CaptionTexts.Level3(text = dialogData.posTitle, color = AppTheme.colors.onPrimary)

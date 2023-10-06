@@ -37,7 +37,7 @@ fun GenderOptionsLayout(
                 AppLocalImage(
                     painter = painterResource(id = cardImg),
                     contentDescription = "Gender Images",
-                    modifier = Modifier.size(AppTheme.imageSize.largeMedium)
+                    modifier = Modifier.size(AppTheme.imageSize.level5)
                 )
                 Column {
                     BodyTexts.Level3(text = cardType)

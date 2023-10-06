@@ -54,7 +54,7 @@ fun ReferAndEarn() {
                     AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(AppTheme.spacing.medium))
                     AppButtons.AppStandardButton(onClick = {},
-                        modifier = Modifier.height(AppTheme.buttonSize.large),
+                        modifier = Modifier.height(AppTheme.buttonSize.level4),
                         contentPadding = PaddingValues(
                             vertical = AppTheme.spacing.minSmall,
                             horizontal = AppTheme.spacing.small

@@ -114,12 +114,12 @@ private fun SubPlanItem(
         if (it) {
             0.dp
         } else {
-            AppTheme.iconSize.medium / 2
+            AppTheme.iconSize.level6 / 2
         }
     }
     val closeButtonSize by transition.animateDp(label = "") {
         if (it) {
-            AppTheme.iconButtonSize.medium
+            AppTheme.buttonSize.level2
         } else {
             0.dp
         }
@@ -245,7 +245,7 @@ private fun SubPlanItem(
             if (it) {
                 0.dp
             } else {
-                AppTheme.iconSize.medium
+                AppTheme.iconSize.level6
             }
         }
         Icon(

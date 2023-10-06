@@ -127,7 +127,7 @@ fun TestimonialForm(
                         },
                         errorMessage = testimonial.error,
                         isError = testimonial.error !is UiString.Empty,
-                        modifier = Modifier.height(AppTheme.boxSize.extraMedium),
+                        modifier = Modifier.height(AppTheme.boxSize.level8),
                         imeAction = if (testimonial.value.length > ValidateTxtLength.defLength) {
                             ImeAction.Next
                         } else {

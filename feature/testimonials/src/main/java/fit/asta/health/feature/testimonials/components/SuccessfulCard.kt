@@ -40,7 +40,7 @@ fun SuccessfulCard(
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
             .padding(top = AppTheme.spacing.extraLarge)
-            .heightIn(min = AppTheme.cardHeight.large),
+            .heightIn(min = AppTheme.cardHeight.level3),
             content = {
                 Column(
                     Modifier
@@ -88,7 +88,7 @@ fun SuccessfulCard(
         Box(
             modifier = Modifier
                 .clip(shape = CircleShape)
-                .defaultMinSize(minWidth = AppTheme.boxSize.medium, minHeight = AppTheme.boxSize.medium)
+                .defaultMinSize(minWidth = AppTheme.boxSize.level7, minHeight = AppTheme.boxSize.level7)
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
             AppDefaultIcon(
@@ -99,7 +99,7 @@ fun SuccessfulCard(
                 },
                 contentDescription = "Successful Tst Upload",
                 tint = MaterialTheme.colorScheme.onPrimary,
-                modifier = Modifier.size(AppTheme.iconSize.medium)
+                modifier = Modifier.size(AppTheme.iconSize.level6)
             )
         }
     }

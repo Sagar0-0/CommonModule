@@ -45,7 +45,7 @@ fun AppDefaultIcon(
         imageVector = imageVector,
         contentDescription = contentDescription,
         tint = tint,
-        modifier = modifier.size(AppTheme.imageSize.standard)
+        modifier = modifier.size(AppTheme.imageSize.level3)
     )
 }
 

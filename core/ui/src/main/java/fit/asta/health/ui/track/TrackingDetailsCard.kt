@@ -68,7 +68,7 @@ fun TrackingDetailsCard(
                 AppLocalImage(
                     painter = painterResource(id = image),
                     contentDescription = "Inhaled quantity",
-                    modifier = Modifier.size(AppTheme.imageSize.large)
+                    modifier = Modifier.size(AppTheme.imageSize.level4)
                 )
 
                 CaptionTexts.Level2(

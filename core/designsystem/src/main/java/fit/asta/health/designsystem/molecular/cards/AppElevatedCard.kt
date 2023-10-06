@@ -53,7 +53,7 @@ fun AppElevatedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.elevatedCardColors(),
-    shape: Shape = AppTheme.shape.large,
+    shape: Shape = AppTheme.shape.level3,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(),
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
@@ -72,7 +72,7 @@ fun AppElevatedCard(
     else
         ElevatedCard(
             modifier = modifier,
-            shape = AppTheme.shape.large,
+            shape = AppTheme.shape.level3,
             colors = colors,
             elevation = elevation,
             content = content

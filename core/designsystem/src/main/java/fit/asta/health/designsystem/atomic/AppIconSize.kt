@@ -10,12 +10,13 @@ import androidx.compose.ui.unit.dp
  */
 @Immutable
 data class AppIconSize(
-    val small: Dp = 8.dp,
-    val mediumSmall: Dp = 24.dp,
-    val regularSize: Dp = 32.dp,
-    val regularLarge: Dp = 42.dp,
-    val medium: Dp = 80.dp,
-    val large: Dp = 150.dp,
+    val level1: Dp = 8.dp,
+    val level2: Dp = 16.dp,
+    val level3: Dp = 24.dp,
+    val level4: Dp = 32.dp,
+    val level5: Dp = 40.dp,
+    val level6: Dp = 80.dp,
+    val level7: Dp = 150.dp
 )
 
 internal val LocalAppIconSize = compositionLocalOf { AppIconSize() }

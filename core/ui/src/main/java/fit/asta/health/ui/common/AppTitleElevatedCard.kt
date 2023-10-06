@@ -27,7 +27,7 @@ fun AppTitleElevatedCard(
     // This function draws an elevated Card View
     AppElevatedCard(
         modifier = modifier.fillMaxWidth(),
-        shape = AppTheme.shape.medium
+        shape = AppTheme.shape.level2
     ) {
 
         Column(modifier = Modifier.padding(AppTheme.spacing.small)) {

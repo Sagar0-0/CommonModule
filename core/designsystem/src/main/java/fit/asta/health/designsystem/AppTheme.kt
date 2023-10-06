@@ -21,9 +21,7 @@ import fit.asta.health.designsystem.atomic.AppCardHeight
 import fit.asta.health.designsystem.atomic.AppCustomSize
 import fit.asta.health.designsystem.atomic.DarkAppColors
 import fit.asta.health.designsystem.atomic.AppElevation
-import fit.asta.health.designsystem.atomic.AppIconButtonSize
 import fit.asta.health.designsystem.atomic.AppIconSize
-import fit.asta.health.designsystem.atomic.AppImageHeight
 import fit.asta.health.designsystem.atomic.AppImageSize
 import fit.asta.health.designsystem.atomic.LightAppColors
 import fit.asta.health.designsystem.atomic.LocalAppAspectRatio
@@ -33,9 +31,7 @@ import fit.asta.health.designsystem.atomic.LocalAppCardHeight
 import fit.asta.health.designsystem.atomic.LocalAppColors
 import fit.asta.health.designsystem.atomic.LocalAppCustomSize
 import fit.asta.health.designsystem.atomic.LocalAppElevation
-import fit.asta.health.designsystem.atomic.LocalAppIconButtonSize
 import fit.asta.health.designsystem.atomic.LocalAppIconSize
-import fit.asta.health.designsystem.atomic.LocalAppImageHeight
 import fit.asta.health.designsystem.atomic.LocalAppImageSize
 import fit.asta.health.designsystem.atomic.LocalAppShape
 import fit.asta.health.designsystem.atomic.LocalAppSpacing
@@ -188,22 +184,6 @@ object AppTheme {
         @Composable
         @ReadOnlyComposable
         get() = LocalAppCardHeight.current
-
-    /**
-     * Icon Button Sizes for the whole App
-     */
-    val iconButtonSize: AppIconButtonSize
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalAppIconButtonSize.current
-
-    /**
-     * Image Height for the whole Apps
-     */
-    val imageHeight: AppImageHeight
-        @Composable
-        @ReadOnlyComposable
-        get() = LocalAppImageHeight.current
 
     /**
      * Default Image Sizes for the whole App

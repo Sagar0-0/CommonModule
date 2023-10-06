@@ -79,11 +79,11 @@ fun AppElevatedButton(
             disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         ),
         elevation = ButtonDefaults.elevatedButtonElevation(
-            defaultElevation = AppTheme.elevation.extraSmall,
-            pressedElevation = AppTheme.elevation.extraSmall,
-            focusedElevation = AppTheme.elevation.extraSmall,
-            hoveredElevation = AppTheme.elevation.smallMedium,
-            disabledElevation = AppTheme.elevation.noElevation
+            defaultElevation = AppTheme.elevation.level1,
+            pressedElevation = AppTheme.elevation.level1,
+            focusedElevation = AppTheme.elevation.level1,
+            hoveredElevation = AppTheme.elevation.level2,
+            disabledElevation = AppTheme.elevation.level0
         ),
         contentPadding = PaddingValues(
             start = AppTheme.spacing.extraMedium,

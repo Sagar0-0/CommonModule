@@ -33,7 +33,7 @@ fun AppDivider(
     color: Color = AppTheme.colors.primary,
 ) {
     Divider(
-        color = color, thickness = thickness, modifier = modifier.clip(AppTheme.shape.small)
+        color = color, thickness = thickness, modifier = modifier.clip(AppTheme.shape.level1)
     )
 }
 

@@ -29,7 +29,7 @@ internal fun CurrentLocationUi(name: String, area: String) {
             AppDefaultIcon(
                 modifier = Modifier
                     .padding(end = AppTheme.spacing.extraSmall1)
-                    .size(AppTheme.iconSize.mediumSmall),
+                    .size(AppTheme.iconSize.level3),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = R.string.location.toStringFromResId()
             )

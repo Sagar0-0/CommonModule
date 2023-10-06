@@ -115,7 +115,7 @@ fun AppFilterChip(
         enabled = enabled,
         leadingIcon = if (leadingIcon != null) leadingIconComposable else null,
         trailingIcon = if (trailingIcon != null) trailingIconComposable else null,
-        shape = AppTheme.shape.large,
+        shape = AppTheme.shape.level3,
         colors = FilterChipDefaults.filterChipColors(),
         elevation = FilterChipDefaults.filterChipElevation(),
         border = FilterChipDefaults.filterChipBorder()

@@ -121,7 +121,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AppTheme.boxSize.medium)
+                        .size(AppTheme.boxSize.level7)
                 ) {
                     Image(
                         painter = painterResource(id = DrawR.drawable.ic_person),
@@ -137,7 +137,7 @@ fun BasicProfileScreen(
                     modifier = Modifier
                         .clip(CircleShape)
                         .align(Alignment.CenterHorizontally)
-                        .size(AppTheme.boxSize.medium)
+                        .size(AppTheme.boxSize.level7)
                 ) {
                     if (profileImageUri != null) {
                         Image(

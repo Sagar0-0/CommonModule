@@ -62,7 +62,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Filled Enabled Card")
                 }
@@ -72,7 +72,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Filled Disabled Card")
                 }
@@ -84,7 +84,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Elevated Enabled Card")
                 }
@@ -94,7 +94,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Elevated Disabled Card")
                 }
@@ -106,7 +106,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Outlined Enabled Card")
                 }
@@ -116,7 +116,7 @@ fun AppCardScreen() {
                     onClick = {},
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.large)
+                        .height(AppTheme.boxSize.level9)
                 ) {
                     CaptionTexts.Level1(text = "Outlined Disabled Card")
                 }

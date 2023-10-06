@@ -107,7 +107,7 @@ fun AppAssistChip(
         enabled = enabled,
         leadingIcon = if (leadingIcon != null) leadingIconComposable else null,
         trailingIcon = if (trailingIcon != null) trailingIconComposable else null,
-        shape = AppTheme.shape.large,
+        shape = AppTheme.shape.level3,
         colors = AssistChipDefaults.assistChipColors(),
         elevation = AssistChipDefaults.assistChipElevation(),
         border = AssistChipDefaults.assistChipBorder(),

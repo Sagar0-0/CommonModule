@@ -1,11 +1,12 @@
 package fit.asta.health.designsystem.atomic
 
 import androidx.compose.material3.Typography
+import androidx.compose.runtime.Immutable
 import androidx.compose.runtime.compositionLocalOf
 import androidx.compose.ui.text.TextStyle
 import fit.asta.health.designsystem.atomic.token.DefaultTypographyTokens
 
-
+@Immutable
 data class AppCustomTypography(
     val large: Large = Large(),
     val heading: Heading = Heading(),

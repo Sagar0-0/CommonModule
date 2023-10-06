@@ -63,7 +63,7 @@ private fun ProfileHeader(icon: Int, title: String) {
             AppLocalImage(
                 painter = painterResource(id = icon),
                 contentDescription = "Card Image",
-                modifier = Modifier.size(AppTheme.imageSize.largeMedium)
+                modifier = Modifier.size(AppTheme.imageSize.level5)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.small))
             TitleTexts.Level3(text = title)

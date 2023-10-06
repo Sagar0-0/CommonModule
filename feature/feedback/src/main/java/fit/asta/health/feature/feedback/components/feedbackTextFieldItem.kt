@@ -76,7 +76,7 @@ fun feedbackTextFieldItem(qn: Qn): MutableState<An> {
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .height(AppTheme.boxSize.medium),
+                    .height(AppTheme.boxSize.level7),
                 placeholder = R.string.write_your_answer_here,
             )
             AppTexts.TitleMedium(
