@@ -13,39 +13,38 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import java.time.LocalTime
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -59,11 +58,11 @@ fun AllAlarms(
         modifier = Modifier.fillMaxSize(),
         topBar = {
             AppTopBar(
-                title = "All Events",
+                title = stringResource(R.string.all_events),
                 onBack = { onEvent(AlarmEvent.OnBack) })
         },
         floatingActionButton = {
-            FloatingActionButton(
+            AppFloatingActionButton(
                 onClick = {
                     onEvent(AlarmEvent.SetAlarm)
                     onEvent(
@@ -77,12 +76,10 @@ fun AllAlarms(
                         )
                     )
                 },
-                containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(50.dp),
-                contentColor = Color.White
             ) {
-                Icon(Icons.Filled.Add, contentDescription = null)
+                AppDefaultIcon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         },
     )
@@ -130,10 +127,7 @@ fun AlarmItem(
     onStateChange: (Boolean) -> Unit = {},
     onSchedule: () -> Unit = {}
 ) {
-    AppCard(
-        modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
-    ) {
+    AppCard(modifier = modifier) {
         Column(
             modifier = Modifier
                 .padding(16.dp)
@@ -147,14 +141,13 @@ fun AlarmItem(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level2)
             ) {
-                AsyncImage(
+                AppNetworkImage(
                     model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
                         .crossfade(true).build(),
-                    placeholder = painterResource(R.drawable.placeholder_tag),
-                    contentDescription = stringResource(R.string.description),
+                    contentDescription = R.string.description.toStringFromResId(),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(RoundedCornerShape(10.dp))
+                        .clip(AppTheme.shape.level3)
                         .height(120.dp)
                         .width(80.dp)
                 )
@@ -162,27 +155,28 @@ fun AlarmItem(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    AppTexts.TitleMedium(text = title)
-                    AppTexts.BodyMedium(text = description)
-                    AppTexts.TitleMedium(text = time)
+                    TitleTexts.Level2(text = title)
+                    BodyTexts.Level2(text = description)
+                    TitleTexts.Level2(text = time)
                 }
-
             }
             Row {
-                AppButtons.AppTextButton(modifier = Modifier.weight(.5f), onClick = onSchedule) {
-                    AppTexts.TitleMedium(text = "Reschedule")
-                }
-                AppButtons.AppToggleButton(
+                AppTextButton(
+                    modifier = Modifier.weight(.5f),
+                    textToShow = stringResource(R.string.reschedule),
+                    onClick = onSchedule
+                )
+                AppToggleButton(
                     modifier = Modifier.weight(.5f),
                     checked = state,
                     onCheckedChange = onStateChange,
                     colors = SwitchDefaults.colors(
-                        checkedThumbColor = MaterialTheme.colorScheme.primary,
-                        uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
-                        checkedTrackColor = MaterialTheme.colorScheme.primaryContainer,
-                        uncheckedTrackColor = MaterialTheme.colorScheme.background,
-                        checkedBorderColor = MaterialTheme.colorScheme.primary,
-                        uncheckedBorderColor = MaterialTheme.colorScheme.primary,
+                        checkedThumbColor = AppTheme.colors.primary,
+                        uncheckedThumbColor = AppTheme.colors.primaryContainer,
+                        checkedTrackColor = AppTheme.colors.primaryContainer,
+                        uncheckedTrackColor = AppTheme.colors.background,
+                        checkedBorderColor = AppTheme.colors.primary,
+                        uncheckedBorderColor = AppTheme.colors.primary,
                     )
                 )
             }

@@ -602,6 +602,12 @@
     <string name="default_notification_channel_id">Default</string>
     <string name="title_activity_track_statistics">TrackStatisticsActivity</string>
     <string name="grant_locations_permission_to_continue">Please grant Locations Permission to continue</string>
+    <string name="reschedule">Reschedule</string>
+    <string name="all_events">All Events</string>
+    <string name="show_alarms">Show Alarms</string>
+    <string name="are_you_sure_you_want_to_delete_this_alarm">Are you sure you want to delete this alarm?</string>
+    <string name="are_you_sure_you_want_to_skip_this_alarm">Are you sure you want to skip this alarm?</string>
+    <string name="retry">Retry</string>
 
     // testing
 

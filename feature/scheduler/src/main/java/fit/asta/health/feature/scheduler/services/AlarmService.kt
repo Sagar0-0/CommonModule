@@ -25,6 +25,7 @@ import androidx.core.app.NotificationCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
 import androidx.media3.common.MediaItem
+import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
@@ -61,7 +62,7 @@ import fit.asta.health.resources.drawables.R as DrawR
 
 @AndroidEntryPoint
 class AlarmService : Service() {
-    val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
+    private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
     @Inject
     lateinit var alarmDao: AlarmDao
@@ -80,16 +81,24 @@ class AlarmService : Service() {
     private lateinit var vibrator: Vibrator
     private lateinit var partialWakeLock: PowerManager.WakeLock
     private var mTimer: Timer? = null
+    private var mTimer1: Timer? = null
     private val missedNotificationId = 999
     private val skipNotificationId = 777
-
+    private var notificationState: Boolean = true
     private var isConnected: Boolean = false
     private lateinit var player: Player
+    private lateinit var listener: Player.Listener
 
     @androidx.annotation.OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
         // Get an instance of the ConnectivityManager class
+        scope.launch {
+            prefManager.userData
+                .map {
+                    it.notificationStatus
+                }.collectLatest { notificationState = it }
+        }
         val connectivityManager =
             getSystemService(Context.CONNECTIVITY_SERVICE) as ConnectivityManager
 
@@ -107,6 +116,7 @@ class AlarmService : Service() {
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
+                Log.d("TAG", "run:1 ")
                 if (alarmEntity != null) {
                     notification(
                         message = "Alarm is skipped ",
@@ -116,10 +126,21 @@ class AlarmService : Service() {
                     )
                     stopService(Intent(applicationContext, AlarmScreenActivity::class.java))
                     stateManager.missedAlarm(applicationContext, alarmEntity!!)
+                    alarmEntity = null
+                } else {
+                    stopSelf()
                 }
-                stopSelf()
             }
         }, 3 * 60 * 1000)
+        mTimer1 = Timer()
+        mTimer1?.schedule(object : TimerTask() {
+            override fun run() {
+                Log.d("TAG", "run: 2")
+                if (alarmEntity == null) {
+                    stateManager.stopService(applicationContext)
+                }
+            }
+        }, (3 * 60 * 1000).plus(5 * 1000))
         partialWakeLock = (getSystemService(Context.POWER_SERVICE) as PowerManager).run {
             newWakeLock(PowerManager.PARTIAL_WAKE_LOCK, "AlarmService::WakeLock").apply {
                 acquire(3 * 60 * 1000L /*3 minutes*/)
@@ -129,6 +150,16 @@ class AlarmService : Service() {
             .setContentType(C.AUDIO_CONTENT_TYPE_MOVIE)
             .setUsage(C.USAGE_ALARM)
             .build()
+        listener = object : Player.Listener {
+            override fun onPlayerError(error: PlaybackException) {
+                super.onPlayerError(error)
+                player.apply {
+                    setMediaItem(MediaItem.fromUri(ringtone))
+                    prepare()
+                    play()
+                }
+            }
+        }
         player = ExoPlayer.Builder(this.applicationContext)
             .setMediaSourceFactory(
                 ProgressiveMediaSource.Factory(DefaultDataSource.Factory(this.applicationContext))
@@ -138,6 +169,7 @@ class AlarmService : Service() {
             .build().apply {
                 playWhenReady = false
                 repeatMode = Player.REPEAT_MODE_ONE
+                addListener(listener)
             }
         vibrator = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val vibratorManager = getSystemService(VIBRATOR_MANAGER_SERVICE) as VibratorManager
@@ -152,47 +184,39 @@ class AlarmService : Service() {
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
         //         getting bundle from intent
+
         if (intent != null) {
             val id: Long = intent.getLongExtra("id", -1)
+            if (alarmEntity != null) {
+                notification(
+                    message = "Alarm is missed ",
+                    alarmName = alarmEntity!!.info.name,
+                    tag = alarmEntity!!.info.tag,
+                    nId = alarmEntity!!.hashCode()
+                )
+                stateManager.dismissAlarm(applicationContext, alarmEntity!!.alarmId)
+            }
             scope.launch {
                 alarmDao.getAlarm(id)?.let { alarm ->
-                    if (alarmEntity != null) {
+                    alarmEntity = alarm
+                    player.apply {
+                        if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
+                        else setMediaItem(MediaItem.fromUri(ringtone))
+                        prepare()
+                    }
+                    if (notificationState || alarm.important) startAlarmWithMode(alarm)
+                    else {
                         notification(
-                            message = "Alarm is missed ",
-                            alarmName = alarmEntity!!.info.name,
-                            tag = alarmEntity!!.info.tag,
-                            nId = alarmEntity!!.hashCode()
+                            message = "Alarm Notification ",
+                            alarmName = alarm.info.name,
+                            tag = alarm.info.tag,
+                            nId = alarm.hashCode()
                         )
-                        stateManager.dismissAlarm(applicationContext, alarm.alarmId)
-                        stopSelf()
-                    } else {
-                        alarmEntity = alarm
-                        player.apply {
-                            if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
-                            else setMediaItem(MediaItem.fromUri(ringtone))
-                            prepare()
-                        }
-                        scope.launch {
-                            prefManager.userData
-                                .map {
-                                    it.notificationStatus
-                                }.collectLatest {
-                                    if (it || alarm.important) startAlarmWithMode(alarm)
-                                    else { //notification
-                                        notification(
-                                            message = "Alarm Notification ",
-                                            alarmName = alarmEntity!!.info.name,
-                                            tag = alarmEntity!!.info.tag,
-                                            nId = alarmEntity!!.hashCode()
-                                        )
-                                        stateManager.dismissAlarm(
-                                            applicationContext,
-                                            alarm.alarmId
-                                        )
-                                        stopSelf()
-                                    }
-                                }
-                        }
+                        stateManager.dismissAlarm(
+                            applicationContext,
+                            alarm.alarmId
+                        )
+                        alarmEntity = null
                     }
                 }
             }
@@ -244,7 +268,6 @@ class AlarmService : Service() {
             .setContentIntent(pendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
-            .setWhen(System.currentTimeMillis() + 2000)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
@@ -341,8 +364,10 @@ class AlarmService : Service() {
         super.onDestroy()
         alarmEntity = null
         mTimer?.cancel()
+        mTimer1?.cancel()
         vibrator.cancel()
         partialWakeLock.release()
+        player.removeListener(listener)
         player.release()
     }
 
@@ -359,9 +384,9 @@ class AlarmService : Service() {
                 .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
                 .setCategory(NotificationCompat.CATEGORY_ALARM)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setPriority(NotificationCompat.PRIORITY_MAX) // set base on important in alarm entity
+                .setPriority(NotificationCompat.PRIORITY_MAX)
                 .setStyle(bigTextStyle)
                 .setAutoCancel(true)
-        notificationManager.notify(nId, builder.build())
+        notificationManager.notify(nId.plus(1), builder.build())
     }
 }
