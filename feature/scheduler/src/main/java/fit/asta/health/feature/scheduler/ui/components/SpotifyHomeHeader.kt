@@ -1,28 +1,22 @@
 package fit.asta.health.feature.scheduler.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.resources.strings.R as StringR
+
 @Composable
-fun SpotifyHomeHeader(
-    onSearchIconClicked: () -> Unit
-) {
+fun SpotifyHomeHeader(onSearchIconClicked: () -> Unit) {
 
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -31,30 +25,16 @@ fun SpotifyHomeHeader(
     ) {
 
         // Welcoming Text with User Name
-        Text(
-            text = stringResource(id = StringR.string.spotify),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
-        )
+        HeadingTexts.Level1(text = stringResource(StringR.string.spotify))
 
         // Search Icon
-        Icon(
+        AppIconButton(
             imageVector = Icons.Outlined.Search,
-            contentDescription = stringResource(StringR.string.search),
-            tint = MaterialTheme.colorScheme.onSurface,
+            iconDesc = stringResource(StringR.string.search),
 
             // Modifications
-            modifier = Modifier
-                .size(28.dp)
-                .clickable {
-
-                    // Redirecting to Spotify Search Screen
-                    onSearchIconClicked()
-                }
+            modifier = Modifier.size(AppTheme.iconSize.level3),
+            onClick = onSearchIconClicked
         )
     }
 }
