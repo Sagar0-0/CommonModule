@@ -23,8 +23,6 @@ data class UserFeedbackDTO(
 data class An(
     @SerializedName("dtlAns")
     val dtlAns: String? = null,
-    @SerializedName("isDet")
-    val isDet: Boolean = false,
     @SerializedName("media")
     val media: List<Media>? = null,
     @SerializedName("opts")

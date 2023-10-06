@@ -58,10 +58,10 @@ fun AstaTextField(
         onValueChange = onValueChange,
         enabled = enabled,
         label = label?.let {
-             { Text(text = stringResource(id = it)) }
+            { Text(text = stringResource(id = it)) }
         },
         placeholder = placeholder?.let {
-             { Text(text = stringResource(id = it)) }
+            { Text(text = stringResource(id = it)) }
         },
         leadingIcon = leadingIcon?.let {
             {
@@ -74,7 +74,7 @@ fun AstaTextField(
             }
         },
         trailingIcon = trailingIcon?.let {
-             {
+            {
                 Icon(
                     imageVector = it,
                     contentDescription = trailingIconContentDesc?.let { desc ->
@@ -177,6 +177,7 @@ fun AstaValidatedTextField(
     modifier: Modifier = Modifier,
     type: AstaValidatedTextFieldType = AstaValidatedTextFieldType.Default(),
     enabled: Boolean = true,
+    isValidText: (Boolean) -> Unit = {},
     @StringRes label: Int? = null,
     @StringRes placeholder: Int? = null,
     leadingIcon: ImageVector? = null,
@@ -233,7 +234,19 @@ fun AstaValidatedTextField(
             }
         }
     }
+    val minChars = when (type) {
+        is AstaValidatedTextFieldType.Mail -> {
+            10
+        }
 
+        is AstaValidatedTextFieldType.Phone -> {
+            10
+        }
+
+        is AstaValidatedTextFieldType.Default -> {
+            type.minLength
+        }
+    }
     val maxChars = when (type) {
         is AstaValidatedTextFieldType.Mail -> {
             50
@@ -251,15 +264,18 @@ fun AstaValidatedTextField(
     AstaTextField(
         modifier = modifier,
         value = value,
-        onValueChange = onValueChange,
+        onValueChange = {
+            onValueChange(it)
+            isValidText(it.length in minChars..maxChars)
+        },
         enabled = enabled,
         label = label,
         placeholder = placeholder,
         leadingIcon = leadingIcon,
         leadingIconContentDesc = leadingIconContentDesc,
-        trailingIcon = if(isError) {
-                Icons.Default.Error
-        }else{
+        trailingIcon = if (isError) {
+            Icons.Default.Error
+        } else {
             trailingIcon
         },
         trailingIconContentDesc = trailingIconContentDesc,

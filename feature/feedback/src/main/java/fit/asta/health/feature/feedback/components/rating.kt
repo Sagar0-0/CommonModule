@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
@@ -18,7 +17,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppCard
 
 @Composable
-fun rating(): MutableState<Int> {
+fun Rating(updatedRating: (Int) -> Unit) {
     val rating = remember { mutableIntStateOf(0) }
     AppCard(
         modifier = Modifier.fillMaxWidth(),
@@ -32,7 +31,10 @@ fun rating(): MutableState<Int> {
         ) {
             RatingBar(
                 value = rating.intValue.toFloat(),
-                onValueChange = { rating.intValue = it.toInt() },
+                onValueChange = {
+                    rating.intValue = it.toInt()
+                    updatedRating(rating.intValue)
+                },
                 onRatingChanged = {},
                 config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
                     .inactiveColor(AppTheme.colors.onBackground.copy(0.25f))
@@ -40,5 +42,4 @@ fun rating(): MutableState<Int> {
             )
         }
     }
-    return rating
 }

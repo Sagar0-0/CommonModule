@@ -15,7 +15,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -29,11 +28,11 @@ import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.UploadFiles
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.components.uploadFiles
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -79,7 +78,6 @@ fun SessionFeedback(
                         qns.map {
                             An(
                                 null,
-                                false,
                                 null,
                                 null,
                                 0,
@@ -95,22 +93,39 @@ fun SessionFeedback(
                         .verticalScroll(rememberScrollState())
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
-
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                    WelcomeCard()
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-
-                    qns.forEachIndexed { idx, qn ->
-                        ansList.value[idx] = feedbackQuesItem(qn).value
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    val enabled = remember {
+                        mutableStateOf(true)
                     }
 
-                    SubmitButton(text = "Submit") {
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    WelcomeCard()
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                    qns.forEachIndexed { idx, qn ->
+                        FeedbackQuesItem(
+                            qn = qn,
+                            updatedAns = { an ->
+                                ansList.value[idx] = an
+                            },
+                            isValid = { valid ->
+                                enabled.value = enabled.value && valid
+                            }
+                        )
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    }
+
+
+                    SubmitButton(
+                        enabled = enabled.value,
+                        onDisable = {
+                            enabled.value = false
+                        }
+                    ) {
                         Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
             }
 
@@ -120,47 +135,39 @@ fun SessionFeedback(
 }
 
 @Composable
-fun feedbackQuesItem(qn: Qn): MutableState<An> {
+fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Unit) {
     val context = LocalContext.current
-    val ans = remember {
-        mutableStateOf(
-            An(
-                null,
-                false,
-                null,
-                null,
-                0,
-                0
-            )
-        )
-    }
     if (qn.type == 1) {
-        val uriList = uploadFiles(
+        UploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3)
-        )
-        val medias = uriList.map {
-            Media(
-                name = DocumentFile.fromSingleUri(context, it)?.name ?: "",
-                url = "",
-                localUri = it
-            )
-        }
-        ans.value = An(
-            dtlAns = null,
-            isDet = qn.isDet,
-            media = medias,
-            opts = qn.opts,
-            qid = qn.qno,
-            type = qn.type
+                .padding(horizontal = AppTheme.spacing.level2),
+            updatedUriList = {
+                val medias = it.map { uri ->
+                    Media(
+                        name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
+                        url = "",
+                        localUri = uri
+                    )
+                }
+                updatedAns(
+                    An(
+                        dtlAns = null,
+                        media = medias,
+                        opts = qn.opts,
+                        qid = qn.qno,
+                        type = qn.type
+                    )
+                )
+            }
         )
     } else {
-        ans.value = feedbackTextFieldItem(qn).value
+        FeedbackTextFieldItem(
+            qn = qn,
+            updatedAns = updatedAns,
+            isValid = isValid
+        )
     }
-
-    Log.d("ANS", "Ques No.${qn.qno}:ans = ${ans.value}")
-    return ans
 }
 
 

@@ -20,8 +20,6 @@ data class FeedbackQuesDTO(
 
 @Parcelize
 data class Qn(
-    @SerializedName("isDet")
-    val isDet: Boolean,
     @SerializedName("opts")
     val opts: List<String>?,
     @SerializedName("qn")
@@ -31,5 +29,19 @@ data class Qn(
     @SerializedName("ttl")
     val ttl: String,
     @SerializedName("type")
-    val type: Int
+    val type: Int,
+    @SerializedName("isMan")
+    val isMandatory: Int,
+    @SerializedName("ansType")
+    val ansType: AnsType
+) : Parcelable
+
+@Parcelize
+data class AnsType(
+    @SerializedName("isDet")
+    val isDet: Boolean,
+    @SerializedName("min")
+    val min: Int,
+    @SerializedName("max")
+    val max: Int,
 ) : Parcelable

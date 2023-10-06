@@ -19,16 +19,11 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.CloudUpload
-import androidx.compose.material3.Button
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -37,12 +32,13 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.modifier.dashedBorder
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
-fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
+fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Unit) {
     val uriList = remember {
         mutableStateListOf<Uri>()
     }
@@ -50,26 +46,17 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
     Column(modifier = modifier) {
         val resultLauncher =
             rememberLauncherForActivityResult(contract = ActivityResultContracts.GetMultipleContents()) { list ->
-                list.forEach lit@{
-                    if (uriList.size >= 5) {
-                        Toast.makeText(
-                            context, "You can upload maximum 5 files.", Toast.LENGTH_SHORT
-                        ).show()
-                        return@lit
-                    } else {
-                        if (!uriList.contains(it)) {
-                            uriList.add(it)
-                        } else {
-                            Toast.makeText(
-                                context, "Duplicate files are ignored!", Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                    }
+                if (list.size > 5) {
+                    Toast.makeText(
+                        context, "You can upload maximum 5 files.", Toast.LENGTH_SHORT
+                    ).show()
+                } else {
+                    uriList.addAll(list)
+                    updatedUriList(list.toSet().toList())
                 }
-
             }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
         Box(
             modifier = Modifier.dashedBorder(
@@ -82,8 +69,8 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AppTheme.spacing.level3,
-                        vertical = AppTheme.spacing.level2
+                        horizontal = AppTheme.spacing.level2,
+                        vertical = AppTheme.spacing.level3
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -99,61 +86,48 @@ fun uploadFiles(modifier: Modifier = Modifier): SnapshotStateList<Uri> {
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AppTheme.spacing.level1)
-                                    .clip(AppTheme.shape.level4)
+                                    .padding(AppTheme.spacing.level5)
+                                    .clip(AppTheme.shape.level2)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AppTheme.shape.level4
+                                        shape = AppTheme.shape.level1
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AppTheme.spacing.level2),
+                                    .padding(AppTheme.spacing.level3),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
-                                Text(
+                                TitleTexts.Level2(
                                     modifier = Modifier.fillMaxWidth(0.7f),
                                     text = DocumentFile.fromSingleUri(context, it)?.name ?: "",
                                     maxLines = 1,
-                                    softWrap = true,
                                     overflow = TextOverflow.Ellipsis
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
-                                IconButton(modifier = Modifier.size(AppTheme.buttonSize.level3),
-                                    onClick = { uriList.remove(it) }) {
-                                    Icon(
-                                        imageVector = Icons.Default.Close, contentDescription = null
-                                    )
-                                }
+                                AppIconButton(
+                                    modifier = Modifier.size(AppTheme.iconSize.level3),
+                                    imageVector = Icons.Default.Close,
+                                    onClick = { uriList.remove(it) }
+                                )
                             }
                         }
                     }
                 }
 
-                Button(
+                AppIconButton(
                     enabled = uriList.size < 5,
-                    onClick = {
-                        resultLauncher.launch("*/*")
-                    },
-                    colors = ButtonDefaults.buttonColors(containerColor = MaterialTheme.colorScheme.primary),
-                    shape = MaterialTheme.shapes.extraLarge
+                    imageVector = Icons.Rounded.CloudUpload,
                 ) {
-                    AppDefaultIcon(
-                        imageVector = Icons.Rounded.CloudUpload,
-                        contentDescription = "Upload File",
-                        tint = MaterialTheme.colorScheme.onPrimary,
-                        modifier = Modifier.size(AppTheme.imageSize.level3)
-                    )
+                    resultLauncher.launch("*/*")
                 }
             }
         }
 
         Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
-        Text(
+        TitleTexts.Level3(
             text = "You can upload maximum 5 files*",
-            color = Color.Black,
-            style = MaterialTheme.typography.bodySmall
+            color = Color.Black
         )
     }
-    return uriList
 }
