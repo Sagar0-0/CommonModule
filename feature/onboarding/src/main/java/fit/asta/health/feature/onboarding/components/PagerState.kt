@@ -4,13 +4,10 @@ import androidx.annotation.FloatRange
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.PagerState
 import fit.asta.health.designsystem.AppTheme
@@ -50,17 +47,20 @@ fun PagerIndicator(size: Int, currentPage: Int) {
 
 @Composable
 fun Indicator(isSelected: Boolean) {
-    val width = animateDpAsState(targetValue = if (isSelected) 25.dp else 10.dp, label = "")
+    val width = animateDpAsState(
+        targetValue = if (isSelected) AppTheme.customSize.level4 else AppTheme.customSize.level4,
+        label = ""
+    )
 
     Box(
         modifier = Modifier
-            .height(10.dp)
-            .padding(1.dp)
+            .height(AppTheme.customSize.level4)
+            .padding(AppTheme.spacing.level4)
             .width(width.value)
-            .clip(CircleShape)
+            .clip(AppTheme.shape.level4)
             .background(
-                if (isSelected) MaterialTheme.colorScheme.primary else MaterialTheme.colorScheme.onBackground.copy(
-                    alpha = 0.5f
+                if (isSelected) AppTheme.colors.primary else AppTheme.colors.onBackground.copy(
+                    alpha = AppTheme.alphaValues.level2
                 )
             )
     )

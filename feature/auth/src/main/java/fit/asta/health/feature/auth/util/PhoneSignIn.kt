@@ -37,7 +37,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -348,7 +347,7 @@ fun PhoneSignIn(
                     onValueChange = { if (it.length <= 6) otp = it },
                     placeholder = "Enter your otp",
                     modifier = Modifier
-                        .padding(16.dp)
+                        .padding(AppTheme.spacing.level2)
                         .fillMaxWidth(),
                     singleLine = true,
                     supportingText = "${otp.length} / 6",

@@ -30,7 +30,6 @@ import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -54,6 +53,7 @@ import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -304,7 +304,7 @@ fun ListPreference(
         AppDialog(
             onDismissRequest = { showDialog = false }
         ) {
-            Surface(
+            AppSurface(
                 modifier = Modifier
                     .wrapContentWidth()
                     .wrapContentHeight()

@@ -9,8 +9,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.unit.dp
 import com.gowtham.ratingbar.RatingBar
 import com.gowtham.ratingbar.RatingBarConfig
 import fit.asta.health.designsystem.AppTheme
@@ -36,8 +34,9 @@ fun Rating(updatedRating: (Int) -> Unit) {
                     updatedRating(rating.intValue)
                 },
                 onRatingChanged = {},
-                config = RatingBarConfig().size(40.dp).activeColor(Color(0xffFFC700))
-                    .inactiveColor(AppTheme.colors.onBackground.copy(0.25f))
+                config = RatingBarConfig().size(AppTheme.boxSize.level3)
+                    .activeColor(AppTheme.colors.tertiary)
+                    .inactiveColor(AppTheme.colors.onBackground.copy(AppTheme.alphaValues.level3))
                     .padding(AppTheme.spacing.level2)
             )
         }
