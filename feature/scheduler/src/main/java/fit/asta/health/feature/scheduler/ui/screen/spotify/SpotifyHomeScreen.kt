@@ -5,8 +5,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -24,6 +22,7 @@ import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -52,7 +51,7 @@ fun SpotifyHomeScreen(
     LazyColumn(
         modifier = Modifier
             .height(LocalConfiguration.current.screenHeightDp.dp)
-            .padding(16.dp)
+            .padding(AppTheme.spacing.level3)
             .width(LocalConfiguration.current.screenWidthDp.dp),
         horizontalAlignment = Alignment.Start,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
@@ -65,11 +64,7 @@ fun SpotifyHomeScreen(
 
         // Recently Played Text
         item {
-            Text(
-                text = stringResource(StringR.string.recently_played),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            HeadingTexts.Level3(text = stringResource(StringR.string.recently_played))
         }
 
         // Showing the user's recently played Data
@@ -141,11 +136,7 @@ fun SpotifyHomeScreen(
 
         // Top Mixes Text
         item {
-            Text(
-                text = stringResource(StringR.string.top_mixes),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            HeadingTexts.Level3(text = stringResource(StringR.string.top_mixes))
         }
 
         // Showing the user's top mix Data
@@ -218,11 +209,7 @@ fun SpotifyHomeScreen(
 
         // Liked Songs Text
         item {
-            Text(
-                text = stringResource(StringR.string.liked_songs),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            HeadingTexts.Level3(text = stringResource(StringR.string.liked_songs))
         }
 
         // Showing the user's Spotify Liked Songs
@@ -292,11 +279,7 @@ fun SpotifyHomeScreen(
 
         // Favourite Tracks Text
         item {
-            Text(
-                text = stringResource(StringR.string.favourite_tracks),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            HeadingTexts.Level3(text = stringResource(StringR.string.favourite_tracks))
         }
 
         // Showing the users favourite tracks
@@ -367,11 +350,7 @@ fun SpotifyHomeScreen(
 
         // Favourite Albums Text
         item {
-            Text(
-                text = stringResource(StringR.string.favourite_albums),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
-            )
+            HeadingTexts.Level3(text = stringResource(StringR.string.favourite_albums))
         }
 
         // Showing the Favourite Album List of the user

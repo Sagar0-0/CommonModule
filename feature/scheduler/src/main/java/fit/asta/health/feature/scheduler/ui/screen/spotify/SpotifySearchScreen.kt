@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -20,16 +18,14 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -51,14 +47,14 @@ fun SpotifySearchScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(AppTheme.colors.surface)
     ) {
         val toast = stringResource(StringR.string.search_bar_empty)
         // This function Draws the Search Bar to the Screen
         SearchBarUI(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(AppTheme.spacing.level3),
             userInput = userSearchInput.value,
             onUserInputChange = {
                 userSearchInput.value = it
@@ -99,24 +95,16 @@ fun SpotifySearchScreen(
                 searchResult.data.tracks.trackList.let { trackList ->
 
                     // Tracks
-                    Text(
+                    HeadingTexts.Level1(
                         text = stringResource(StringR.string.tracks),
-
-                        modifier = Modifier
-                            .padding(16.dp),
-
-                        // Text and Font Properties
-                        fontFamily = FontFamily.SansSerif,
-                        fontWeight = FontWeight.W800,
-                        fontSize = 22.sp,
-                        color = MaterialTheme.colorScheme.onSurface
+                        modifier = Modifier.padding(AppTheme.spacing.level3)
                     )
 
                     // Showing the Tracks List UI inside a Lazy Row
                     LazyColumn(
                         modifier = Modifier
                             .height(LocalConfiguration.current.screenHeightDp.dp)
-                            .padding(16.dp)
+                            .padding(AppTheme.spacing.level3)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalAlignment = Alignment.Start,
                         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)

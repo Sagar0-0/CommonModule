@@ -1,25 +1,24 @@
 package fit.asta.health.feature.scheduler.ui.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.resources.strings.R as StringR
 
 /**
@@ -60,29 +59,26 @@ fun SearchBarUI(
 
         // This is the Label of the input which is shown to the top left when selected
         label = {
-            Text(
-                stringResource(StringR.string.search_from_spotify),
-                color = MaterialTheme.colorScheme.primary
-            )
+            BodyTexts.Level2(stringResource(StringR.string.search_from_spotify))
         },
 
         // Setting Custom Colors for the Outlined TextField
         colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.primary,
-            disabledBorderColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledTextColor = AppTheme.colors.primary,
+            disabledBorderColor = AppTheme.colors.primaryContainer,
         ),
 
         // Shape of the TextField
-        shape = RoundedCornerShape(8.dp),
+        shape = AppTheme.shape.level2,
 
         leadingIcon = {
 
             // Search Icon
-            Icon(
+            AppLocalImage(
                 imageVector = Icons.Outlined.Search,
                 contentDescription = stringResource(id = StringR.string.search_button),
-                modifier = Modifier
-                    .size(24.dp)
+                modifier = Modifier.size(AppTheme.imageSize.level3),
+                colorFilter = ColorFilter.tint(AppTheme.colors.primary)
             )
         },
 
@@ -90,16 +86,12 @@ fun SearchBarUI(
             if (userInput.isNotEmpty()) {
 
                 // Clear Button
-                Icon(
+                AppIconButton(
                     imageVector = Icons.Outlined.Clear,
-                    contentDescription = stringResource(StringR.string.clear_button),
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable {
-                            onUserInputChange("")
-                        },
-                    tint = MaterialTheme.colorScheme.primary
-                )
+                    iconDesc = stringResource(StringR.string.clear_button),
+                    modifier = Modifier.size(AppTheme.imageSize.level3),
+                    iconTint = AppTheme.colors.primary
+                ) { onUserInputChange("") }
             }
         },
 
