@@ -11,6 +11,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.AppCustomTypography
@@ -34,17 +35,21 @@ object LargeTexts {
 
     /** List of all available methods inside [LargeTexts] -> [Level1] , [Level2] and [Level3]
      *
-     * @param text the text to be displayed
      * @param modifier the [Modifier] to be applied to this layout node
+     * @param text the text to be displayed
      * @param color [Color] to apply to the text.
      * @param textAlign the alignment of the text within the lines of the paragraph.
+     * @param maxLines This denotes the maximum lines this text composable can have
+     * @param overflow This is the way the text will be shown when it overflows
      */
     @Composable
     fun Level1(
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
-        textAlign: TextAlign? = null
+        textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -52,6 +57,8 @@ object LargeTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -60,7 +67,9 @@ object LargeTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
-        textAlign: TextAlign? = null
+        textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -68,6 +77,8 @@ object LargeTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
@@ -76,7 +87,9 @@ object LargeTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
-        textAlign: TextAlign? = null
+        textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -84,9 +97,10 @@ object LargeTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
-
 }
 
 // Preview Function

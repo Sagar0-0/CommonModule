@@ -36,17 +36,21 @@ object TitleTexts {
     /** List of all available methods inside [TitleTexts] -> [Level1] , [Level2] , [Level3] and
      * [Level4]
      *
-     * @param text the text to be displayed
      * @param modifier the [Modifier] to be applied to this layout node
+     * @param text the text to be displayed
      * @param color [Color] to apply to the text.
      * @param textAlign the alignment of the text within the lines of the paragraph.
+     * @param maxLines This denotes the maximum lines this text composable can have
+     * @param overflow This is the way the text will be shown when it overflows
      */
     @Composable
     fun Level1(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -54,35 +58,39 @@ object TitleTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
     @Composable
     fun Level2(
-        text: String,
-        maxLines: Int = Int.MAX_VALUE,
-        overflow: TextOverflow = TextOverflow.Clip,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
+            modifier = modifier,
             text = text,
             style = AppTheme.customTypography.title.level2,
-            maxLines = maxLines,
-            overflow = overflow,
-            modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
     @Composable
     fun Level3(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -90,15 +98,19 @@ object TitleTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 
     @Composable
     fun Level4(
-        text: String,
         modifier: Modifier = Modifier,
+        text: String,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
+        maxLines: Int = 1,
+        overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
@@ -106,6 +118,8 @@ object TitleTexts {
             modifier = modifier,
             color = color,
             textAlign = textAlign,
+            maxLines = maxLines,
+            overflow = overflow
         )
     }
 }
