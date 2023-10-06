@@ -7,10 +7,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -26,7 +23,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.feature.scheduler.ui.viewmodel.SpotifyViewModel
 import fit.asta.health.feature.scheduler.util.Constants
@@ -49,21 +46,53 @@ class SpotifyActivity : ComponentActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContent {
-            AppTheme {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .background(MaterialTheme.colorScheme.background)
-                ) {
+            AppScreen {
 
-                    spotifyViewModel = hiltViewModel()
+                spotifyViewModel = hiltViewModel()
 
-                    // Checking which state is there
-                    when (val loginState =
-                        spotifyViewModel.currentUserData.collectAsState().value) {
+                // Checking which state is there
+                when (val loginState =
+                    spotifyViewModel.currentUserData.collectAsState().value) {
 
-                        // Nothing is done yet and the fetching will be initiated here
-                        is UiState.Idle -> {
+                    // Nothing is done yet and the fetching will be initiated here
+                    is UiState.Idle -> {
+
+                        // checking if spotify is installed or not
+                        if (isSpotifyInstalled()) {
+                            // Starting the Auth Flow from here
+                            sendAuthRequest()
+                        } else {
+
+                            // downloading Spotify App in the user's App so it can be used
+                            Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT)
+                                .show()
+                            isResume = true
+                            openSpotifyInPlayStore()
+                        }
+                    }
+
+                    // The data is being fetched
+                    is UiState.Loading -> {
+                        LoadingAnimation(modifier = Modifier.fillMaxSize())
+                    }
+
+                    // Data fetched successfully
+                    is UiState.Success<*> -> {
+
+                        // Getting the Spotify App Remote
+                        getSpotifyRemote()
+
+                        // Nav Graph
+                        SpotifyNavGraph(
+                            navController = rememberNavController(),
+                            spotifyViewModel = spotifyViewModel
+                        )
+                    }
+
+                    // Data Fetched UnSuccessfully
+                    is UiState.ErrorMessage -> {
+
+                        AppErrorScreen(desc = loginState.resId.toStringFromResId()) {
 
                             // checking if spotify is installed or not
                             if (isSpotifyInstalled()) {
@@ -72,57 +101,19 @@ class SpotifyActivity : ComponentActivity() {
                             } else {
 
                                 // downloading Spotify App in the user's App so it can be used
-                                Toast.makeText(this, "Need to Download Spotify", Toast.LENGTH_SHORT)
-                                    .show()
+                                Toast.makeText(
+                                    this,
+                                    "Need to Download Spotify",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+
                                 isResume = true
                                 openSpotifyInPlayStore()
                             }
                         }
-
-                        // The data is being fetched
-                        is UiState.Loading -> {
-                            LoadingAnimation(modifier = Modifier.fillMaxSize())
-                        }
-
-                        // Data fetched successfully
-                        is UiState.Success<*> -> {
-
-                            // Getting the Spotify App Remote
-                            getSpotifyRemote()
-
-                            // Nav Graph
-                            SpotifyNavGraph(
-                                navController = rememberNavController(),
-                                spotifyViewModel = spotifyViewModel
-                            )
-                        }
-
-                        // Data Fetched UnSuccessfully
-                        is UiState.ErrorMessage -> {
-
-                            AppErrorScreen(desc = loginState.resId.toStringFromResId()) {
-
-                                // checking if spotify is installed or not
-                                if (isSpotifyInstalled()) {
-                                    // Starting the Auth Flow from here
-                                    sendAuthRequest()
-                                } else {
-
-                                    // downloading Spotify App in the user's App so it can be used
-                                    Toast.makeText(
-                                        this,
-                                        "Need to Download Spotify",
-                                        Toast.LENGTH_SHORT
-                                    ).show()
-
-                                    isResume = true
-                                    openSpotifyInPlayStore()
-                                }
-                            }
-                        }
-
-                        else -> {}
                     }
+
+                    else -> {}
                 }
             }
         }
