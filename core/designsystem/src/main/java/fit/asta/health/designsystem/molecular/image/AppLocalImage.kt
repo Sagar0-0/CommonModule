@@ -2,11 +2,8 @@ package fit.asta.health.designsystem.molecular.image
 
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -21,21 +18,23 @@ import fit.asta.health.designsystem.AppTheme
  * @param imageVector [ImageVector] to draw inside this icon
  * @param contentDescription text used by accessibility services to describe what this icon
  * represents.
- * @param tint tint to be applied to [imageVector]. If [Color.Unspecified] is provided, then no tint
- * is applied.
+ * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be used.
+ * @param colorFilter Optional colorFilter to apply for the [Painter] when it is rendered onscreen
  */
 @Composable
 fun AppLocalImage(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
     contentDescription: String?,
-    tint: Color = LocalContentColor.current,
+    contentScale: ContentScale = ContentScale.FillBounds,
+    colorFilter: ColorFilter? = null
 ) {
-    Icon(
+    Image(
         imageVector = imageVector,
         contentDescription = contentDescription,
-        tint = tint,
-        modifier = modifier.size(AppTheme.imageSize.level3)
+        modifier = modifier.size(AppTheme.imageSize.level3),
+        contentScale = contentScale,
+        colorFilter = colorFilter
     )
 }
 
@@ -49,6 +48,7 @@ fun AppLocalImage(
  * @param contentDescription text used by accessibility services to describe what this image
  * represents.
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be used.
+ * @param colorFilter Optional colorFilter to apply for the [Painter] when it is rendered onscreen
  */
 @Composable
 fun AppLocalImage(

@@ -8,7 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.material3.OutlinedButton
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -53,8 +52,55 @@ private fun DefaultPreview1() {
  * @param enabled Controls the enabled state of the button. When `false`, this button will not be
  * clickable and will appear disabled to accessibility services.
  * @param textToShow The button text is passed here.
+ * @param onClick Will be called when the user clicks the button.
+ */
+@Composable
+fun AppOutlinedButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    textToShow: String,
+    onClick: () -> Unit,
+) {
+
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colors.onSurface,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        ),
+        contentPadding = PaddingValues(
+            start = AppTheme.spacing.level4,
+            top = AppTheme.spacing.level2,
+            end = AppTheme.spacing.level4,
+            bottom = AppTheme.spacing.level2
+        )
+    ) {
+
+        CaptionTexts.Level1(
+            text = textToShow,
+            color = if (enabled)
+                AppTheme.colors.onSurface
+            else
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        )
+    }
+}
+
+
+/**
+ * Asta filled button with generic content slot. Wraps Material 3 [OutlinedButton].
+ *
+ * @param modifier Modifier to be applied to the button.
+ * @param enabled Controls the enabled state of the button. When `false`, this button will not be
+ * clickable and will appear disabled to accessibility services.
+ * @param textToShow The button text is passed here.
  * @param leadingIcon This is the leading Icon of the Button which is optional
  * @param iconDes This is the description of the Icon which is provided and it is also optional
+ * @param iconTint This is the tint color of the Icon given
  * @param onClick Will be called when the user clicks the button.
  */
 @Composable
@@ -63,9 +109,8 @@ fun AppOutlinedButton(
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
-    leadingPainterIcon: Painter? = null,
     iconDes: String? = null,
-    iconTint: Color = LocalContentColor.current,
+    iconTint: Color = AppTheme.colors.onSurface,
     onClick: () -> Unit,
 ) {
 
@@ -91,20 +136,84 @@ fun AppOutlinedButton(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
                 modifier = Modifier.padding(end = AppTheme.spacing.level1),
-                tint = iconTint
-            )
-        }
-        if (leadingPainterIcon != null) {
-            Icon(
-                painter = leadingPainterIcon,
-                contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1)
+                tint = if (enabled)
+                    iconTint
+                else
+                    iconTint.copy(alpha = AppTheme.alphaValues.level2)
+
             )
         }
 
         CaptionTexts.Level1(
-            text = textToShow, color = if (enabled) AppTheme.colors.onSurface
-            else AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+            text = textToShow,
+            color = if (enabled)
+                AppTheme.colors.onSurface
+            else
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        )
+    }
+}
+
+
+/**
+ * Asta filled button with generic content slot. Wraps Material 3 [OutlinedButton].
+ *
+ * @param modifier Modifier to be applied to the button.
+ * @param enabled Controls the enabled state of the button. When `false`, this button will not be
+ * clickable and will appear disabled to accessibility services.
+ * @param textToShow The button text is passed here.
+ * @param leadingIcon This is the leading Icon of the Button which is optional
+ * @param iconDes This is the description of the Icon which is provided and it is also optional
+ * @param iconTint This is the tint color of the Icon given
+ * @param onClick Will be called when the user clicks the button.
+ */
+@Composable
+fun AppOutlinedButton(
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    textToShow: String,
+    leadingIcon: Painter? = null,
+    iconDes: String? = null,
+    iconTint: Color = AppTheme.colors.onSurface,
+    onClick: () -> Unit,
+) {
+
+    OutlinedButton(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        colors = ButtonDefaults.outlinedButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colors.onSurface,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        ),
+        contentPadding = PaddingValues(
+            start = AppTheme.spacing.level4,
+            top = AppTheme.spacing.level2,
+            end = AppTheme.spacing.level4,
+            bottom = AppTheme.spacing.level2
+        )
+    ) {
+
+        if (leadingIcon != null) {
+            Icon(
+                painter = leadingIcon,
+                contentDescription = iconDes,
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                tint = if (enabled)
+                    iconTint
+                else
+                    iconTint.copy(alpha = AppTheme.alphaValues.level2)
+            )
+        }
+
+        CaptionTexts.Level1(
+            text = textToShow,
+            color = if (enabled)
+                AppTheme.colors.onSurface
+            else
+                AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     }
 }

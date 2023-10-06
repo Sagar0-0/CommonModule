@@ -54,7 +54,7 @@ fun GoogleSignIn(
             val googleSignInClient = GoogleSignIn.getClient(context, gso)
             launcher.launch(googleSignInClient.signInIntent)
         },
-        leadingPainterIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18),
+        leadingIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18),
         textToShow = stringResource(id = textId)
     )
 }
