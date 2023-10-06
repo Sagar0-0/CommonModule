@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Switch
+import androidx.compose.material3.SwitchColors
 import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -58,7 +59,39 @@ fun AppToggleButton(
     checked: Boolean,
     onCheckedChange: ((Boolean) -> Unit)? = null,
     enabled: Boolean = true,
-    thumbContent: (@Composable () -> Unit)? = null
+    thumbContent: (@Composable () -> Unit)? = null,
+    colors: SwitchColors = SwitchDefaults.colors(
+        checkedThumbColor = AppTheme.colors.onPrimary,
+        checkedTrackColor = AppTheme.colors.primary,
+        checkedBorderColor = Color.Transparent,
+        checkedIconColor = AppTheme.colors.onPrimaryContainer,
+        uncheckedThumbColor = AppTheme.colors.outline,
+        uncheckedTrackColor = AppTheme.colors.surfaceVariant,
+        uncheckedBorderColor = AppTheme.colors.outline,
+        uncheckedIconColor = AppTheme.colors.surfaceVariant,
+        disabledCheckedThumbColor = AppTheme.colors.surface
+            .copy(AppTheme.alphaValues.level5)
+            .compositeOver(AppTheme.colors.surface),
+        disabledCheckedTrackColor = AppTheme.colors.onSurface
+            .copy(AppTheme.alphaValues.level1)
+            .compositeOver(AppTheme.colors.surface),
+        disabledCheckedBorderColor = Color.Transparent,
+        disabledCheckedIconColor = AppTheme.colors.onSurface
+            .copy(AppTheme.alphaValues.level2)
+            .compositeOver(AppTheme.colors.surface),
+        disabledUncheckedThumbColor = AppTheme.colors.onSurface
+            .copy(AppTheme.alphaValues.level2)
+            .compositeOver(AppTheme.colors.surface),
+        disabledUncheckedTrackColor = AppTheme.colors.surfaceVariant
+            .copy(AppTheme.alphaValues.level1)
+            .compositeOver(AppTheme.colors.surface),
+        disabledUncheckedBorderColor = AppTheme.colors.onSurface
+            .copy(AppTheme.alphaValues.level1)
+            .compositeOver(AppTheme.colors.surface),
+        disabledUncheckedIconColor = AppTheme.colors.surfaceVariant
+            .copy(AppTheme.alphaValues.level2)
+            .compositeOver(AppTheme.colors.surface),
+    )
 ) {
     Switch(
         checked = checked,
@@ -66,38 +99,6 @@ fun AppToggleButton(
         modifier = modifier,
         thumbContent = thumbContent,
         enabled = enabled,
-        colors = SwitchDefaults.colors(
-            checkedThumbColor = AppTheme.colors.onPrimary,
-            checkedTrackColor = AppTheme.colors.primary,
-            checkedBorderColor = Color.Transparent,
-            checkedIconColor = AppTheme.colors.onPrimaryContainer,
-            uncheckedThumbColor = AppTheme.colors.outline,
-            uncheckedTrackColor = AppTheme.colors.surfaceVariant,
-            uncheckedBorderColor = AppTheme.colors.outline,
-            uncheckedIconColor = AppTheme.colors.surfaceVariant,
-            disabledCheckedThumbColor = AppTheme.colors.surface
-                .copy(AppTheme.alphaValues.level5)
-                .compositeOver(AppTheme.colors.surface),
-            disabledCheckedTrackColor = AppTheme.colors.onSurface
-                .copy(AppTheme.alphaValues.level1)
-                .compositeOver(AppTheme.colors.surface),
-            disabledCheckedBorderColor = Color.Transparent,
-            disabledCheckedIconColor = AppTheme.colors.onSurface
-                .copy(AppTheme.alphaValues.level2)
-                .compositeOver(AppTheme.colors.surface),
-            disabledUncheckedThumbColor = AppTheme.colors.onSurface
-                .copy(AppTheme.alphaValues.level2)
-                .compositeOver(AppTheme.colors.surface),
-            disabledUncheckedTrackColor = AppTheme.colors.surfaceVariant
-                .copy(AppTheme.alphaValues.level1)
-                .compositeOver(AppTheme.colors.surface),
-            disabledUncheckedBorderColor = AppTheme.colors.onSurface
-                .copy(AppTheme.alphaValues.level1)
-                .compositeOver(AppTheme.colors.surface),
-            disabledUncheckedIconColor = AppTheme.colors.surfaceVariant
-                .copy(AppTheme.alphaValues.level2)
-                .compositeOver(AppTheme.colors.surface),
-
-            )
+        colors = colors
     )
 }
