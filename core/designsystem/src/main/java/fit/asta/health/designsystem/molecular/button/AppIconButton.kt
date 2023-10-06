@@ -11,6 +11,7 @@ import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -69,6 +70,55 @@ fun AppIconButton(
         ),
         onClick = onClick
     ) {
-        Icon(imageVector = imageVector, contentDescription = iconDesc, tint = iconTint)
+        Icon(
+            imageVector = imageVector,
+            contentDescription = iconDesc,
+            tint = if (enabled)
+                iconTint
+            else
+                iconTint.copy(AppTheme.alphaValues.level2)
+        )
+    }
+}
+
+/**
+ * Asta filled Icon button with generic content slot. Wraps Material 3 [IconButton].
+ *
+ * @param modifier Modifier to be applied to the button.
+ * @param painter This is the Icon vector for drawing the Icon
+ * @param iconDesc This is the description of the Icon
+ * @param enabled Controls the enabled state of the button. When `false`, this button will not be
+ * clickable and will appear disabled to accessibility services.
+ * @param iconTint This is the tint of the Icon which will be given to the Icon
+ * @param onClick Will be called when the user clicks the button.
+ */
+@Composable
+fun AppIconButton(
+    modifier: Modifier = Modifier,
+    painter: Painter,
+    iconDesc: String? = null,
+    enabled: Boolean = true,
+    iconTint: Color = AppTheme.colors.onSurface,
+    onClick: () -> Unit
+) {
+    IconButton(
+        modifier = modifier,
+        enabled = enabled,
+        colors = IconButtonDefaults.iconButtonColors(
+            containerColor = Color.Transparent,
+            contentColor = AppTheme.colors.onSurface,
+            disabledContainerColor = Color.Transparent,
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        ),
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painter,
+            contentDescription = iconDesc,
+            tint = if (enabled)
+                iconTint
+            else
+                iconTint.copy(AppTheme.alphaValues.level2)
+        )
     }
 }

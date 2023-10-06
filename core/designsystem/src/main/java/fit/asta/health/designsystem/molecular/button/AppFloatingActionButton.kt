@@ -10,7 +10,9 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -72,17 +74,19 @@ fun AppFloatingActionButton(
  *
  * @param modifier the [Modifier] to be applied to this button
  * @param shape defines the shape of this Floating Action Button's container
- * @param onClick called when this FAB is clicked
  * @param imageVector the content of this FAB, typically an [Icon]
  * @param contentDescription This is the content description for the Icon
+ * @param iconTint This contains the Tint of the Icon Inside
+ * @param onClick called when this FAB is clicked
  * */
 @Composable
 fun AppFloatingActionButton(
-    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
     imageVector: ImageVector,
-    contentDescription: String? = null
+    contentDescription: String? = null,
+    iconTint: Color = AppTheme.colors.onPrimary,
+    onClick: () -> Unit
 ) {
 
     FloatingActionButton(
@@ -94,7 +98,45 @@ fun AppFloatingActionButton(
     ) {
         Icon(
             imageVector = imageVector,
-            contentDescription = contentDescription
+            contentDescription = contentDescription,
+            tint = iconTint
+        )
+    }
+}
+
+/**
+ * [AppFloatingActionButton] function is a custom composable function used to create a
+ * floating action button (FAB).
+ *
+ *
+ * @param modifier the [Modifier] to be applied to this button
+ * @param shape defines the shape of this Floating Action Button's container
+ * @param painter the content of this FAB, typically an [Icon]
+ * @param contentDescription This is the content description for the Icon
+ * @param iconTint This contains the Tint of the Icon Inside
+ * @param onClick called when this FAB is clicked
+ * */
+@Composable
+fun AppFloatingActionButton(
+    modifier: Modifier = Modifier,
+    shape: Shape = CircleShape,
+    painter: Painter,
+    contentDescription: String? = null,
+    iconTint: Color = AppTheme.colors.onPrimary,
+    onClick: () -> Unit
+) {
+
+    FloatingActionButton(
+        modifier = modifier,
+        shape = shape,
+        containerColor = AppTheme.colors.primary,
+        contentColor = AppTheme.colors.onPrimary,
+        onClick = onClick
+    ) {
+        Icon(
+            painter = painter,
+            contentDescription = contentDescription,
+            tint = iconTint
         )
     }
 }

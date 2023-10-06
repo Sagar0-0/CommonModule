@@ -13,6 +13,7 @@ import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -59,15 +60,17 @@ private fun DefaultPreview1() {
  * @param textToShow The button text content to be shown content.
  * @param leadingIcon This is the leading Icon of the Button which is optional
  * @param iconDes This is the description of the Icon which is provided and it is also optional
+ * @param iconTint - This is the tint color of the Icon given
  */
 @Composable
 fun AppTonalButton(
     modifier: Modifier = Modifier,
-    onClick: () -> Unit,
     enabled: Boolean = true,
     textToShow: String,
     leadingIcon: ImageVector? = null,
-    iconDes: String? = null
+    iconDes: String? = null,
+    iconTint: Color = AppTheme.colors.onSecondary,
+    onClick: () -> Unit
 ) {
 
     FilledTonalButton(
@@ -92,7 +95,11 @@ fun AppTonalButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = iconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1)
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                tint = if (enabled)
+                    iconTint
+                else
+                    AppTheme.colors.onSurface.copy(alpha = AppTheme.alphaValues.level2)
             )
         }
 

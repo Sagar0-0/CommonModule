@@ -62,6 +62,7 @@ private fun DefaultPreview1() {
  * @param leadingIconDes This is the description of the Icon which is provided and it is also optional
  * @param trailingIcon This is the trailing Icon of the Button which is optional
  * @param trailingIconDes This is the description of the Icon which is provided and it is also optional
+ * @param contentPadding the spacing values to apply internally between the container and the content
  * @param onClick Will be called when the user clicks the button.
  */
 @Composable
@@ -74,6 +75,7 @@ fun AppTextButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     contentPadding: PaddingValues = ButtonDefaults.TextButtonContentPadding,
+    iconTint: Color = AppTheme.colors.primary,
     onClick: () -> Unit,
 ) {
 
@@ -92,7 +94,11 @@ fun AppTextButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1)
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                tint = if (enabled)
+                    iconTint
+                else
+                    AppTheme.colors.onSurface.copy(alpha = AppTheme.alphaValues.level2)
             )
         }
 
@@ -108,7 +114,11 @@ fun AppTextButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1)
+                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                tint = if (enabled)
+                    iconTint
+                else
+                    AppTheme.colors.onSurface.copy(alpha = AppTheme.alphaValues.level2)
             )
         }
     }

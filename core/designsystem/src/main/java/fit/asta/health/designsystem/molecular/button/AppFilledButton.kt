@@ -3,7 +3,6 @@ package fit.asta.health.designsystem.molecular.button
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
@@ -12,7 +11,6 @@ import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -66,7 +64,7 @@ fun AppFilledButton(
     iconDes: String? = null,
     iconRightAlign: Boolean = true,
     shape: Shape = ButtonDefaults.shape,
-    onClick: () -> Unit,
+    onClick: () -> Unit
 ) {
     Button(
         onClick = onClick,
@@ -87,31 +85,26 @@ fun AppFilledButton(
         )
     ) {
 
-        Row(
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            if (iconRightAlign && leadingIcon != null) {
-                Icon(
-                    imageVector = leadingIcon,
-                    contentDescription = iconDes,
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
-                )
-            }
-
-            CaptionTexts.Level1(
-                text = textToShow,
-                color = if (enabled) AppTheme.colors.onPrimary
-                else AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        if (iconRightAlign && leadingIcon != null) {
+            Icon(
+                imageVector = leadingIcon,
+                contentDescription = iconDes,
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
             )
-
-            if (!iconRightAlign && leadingIcon != null) {
-                Icon(
-                    imageVector = leadingIcon,
-                    contentDescription = iconDes,
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
-                )
-            }
         }
 
+        CaptionTexts.Level1(
+            text = textToShow,
+            color = if (enabled) AppTheme.colors.onPrimary
+            else AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        )
+
+        if (!iconRightAlign && leadingIcon != null) {
+            Icon(
+                imageVector = leadingIcon,
+                contentDescription = iconDes,
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
+            )
+        }
     }
 }
