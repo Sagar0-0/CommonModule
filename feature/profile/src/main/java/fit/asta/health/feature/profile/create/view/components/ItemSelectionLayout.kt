@@ -148,7 +148,7 @@ fun AddChipOnCard(
         textToShow = textOnChip,
         trailingIcon = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
         colors = colors,
-        trailingIconTint = if (isSelected) AppTheme.colors.error else AppTheme.colors.primary
+        iconTint = if (isSelected) AppTheme.colors.error else AppTheme.colors.primary
     )
 }
 
