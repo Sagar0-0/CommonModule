@@ -1,16 +1,20 @@
 package fit.asta.health.designsystem.molecular.button
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
+import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material3.Button
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -63,7 +67,15 @@ fun AppFilledButton(
     leadingIcon: ImageVector? = null,
     iconDes: String? = null,
     iconRightAlign: Boolean = true,
+    colors: ButtonColors = ButtonDefaults.buttonColors(
+        containerColor = AppTheme.colors.primary,
+        contentColor = AppTheme.colors.onPrimary,
+        disabledContainerColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level1),
+        disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = ButtonDefaults.shape,
+    border: BorderStroke? = null,
     onClick: () -> Unit
 ) {
     Button(
@@ -71,12 +83,9 @@ fun AppFilledButton(
         modifier = modifier,
         enabled = enabled,
         shape = shape,
-        colors = ButtonDefaults.buttonColors(
-            containerColor = AppTheme.colors.primary,
-            contentColor = AppTheme.colors.onPrimary,
-            disabledContainerColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level1),
-            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
-        ),
+        colors = colors,
+        border = border,
+        interactionSource = interactionSource,
         contentPadding = PaddingValues(
             start = AppTheme.spacing.level4,
             top = AppTheme.spacing.level2,

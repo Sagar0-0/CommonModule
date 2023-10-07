@@ -6,16 +6,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.LinearProgressIndicator
 import androidx.compose.material3.ProgressIndicatorDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 
 @Composable
@@ -31,10 +29,8 @@ fun ProgressBarInt(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        CaptionTexts.Level1(
             text = "%.0f $postfix".format(targetDistance),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
         )
         val animatedProgress = animateFloatAsState(
             targetValue = progress,
@@ -47,9 +43,7 @@ fun ProgressBarInt(
             color = Color.Magenta,
             trackColor = Color.LightGray,
         )
-        Text(
-            text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold
-        )
+        CaptionTexts.Level1(text = name)
     }
 }
 
@@ -67,10 +61,8 @@ fun ProgressBarFloat(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
+        CaptionTexts.Level1(
             text = "%.1f $postfix".format(targetDistance),
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Bold
         )
         val animatedProgress = animateFloatAsState(
             targetValue = progress,
@@ -83,8 +75,8 @@ fun ProgressBarFloat(
             color = Color.Magenta,
             trackColor = Color.LightGray,
         )
-        Text(
-            text = name, fontSize = 12.sp, fontWeight = FontWeight.Bold
+        CaptionTexts.Level1(
+            text = name
         )
     }
 }
