@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.modifier.dashedBorder
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.feature.testimonials.components.SelectedImageView
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
 import fit.asta.health.feature.testimonials.create.vm.MediaType
@@ -46,7 +46,7 @@ fun ImageLayout(
 
 
     Column(modifier = modifier) {
-        AppTexts.BodyMedium(text = "Upload Images")
+        BodyTexts.Level2(text = "Upload Images")
         Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         Row(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
@@ -55,7 +55,9 @@ fun ImageLayout(
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)),
+                    .dashedBorder(
+                        width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)
+                    ),
                 img = imgBefore,
                 launcher = beforeLauncher,
                 getViewModel = getViewModel,
@@ -64,7 +66,9 @@ fun ImageLayout(
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
-                    .dashedBorder(width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)),
+                    .dashedBorder(
+                        width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)
+                    ),
                 img = imgAfter,
                 launcher = afterLauncher,
                 getViewModel = getViewModel,

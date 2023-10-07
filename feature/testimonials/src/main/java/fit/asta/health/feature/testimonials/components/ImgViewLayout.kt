@@ -11,16 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.UploadFile
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun UploadTstMediaView(
@@ -32,8 +33,8 @@ fun UploadTstMediaView(
             .padding(AppTheme.spacing.level1)
             .aspectRatio(AppTheme.aspectRatio.square)
             .clickable { onUploadClick() }
-            .clip(MaterialTheme.shapes.medium)
-            .background(color = MaterialTheme.colorScheme.tertiaryContainer),
+            .clip(AppTheme.shape.level2)
+            .background(color = AppTheme.colors.tertiaryContainer),
         contentAlignment = Alignment.Center) {
         Column(
             verticalArrangement = Arrangement.Center,
@@ -42,15 +43,13 @@ fun UploadTstMediaView(
             AppDefaultIcon(
                 imageVector = Icons.Filled.UploadFile,
                 contentDescription = "Upload Image",
-                tint = MaterialTheme.colorScheme.onTertiaryContainer
+                tint = AppTheme.colors.onTertiaryContainer
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            AppTexts.BodyMedium(
-                text = "Browse to Choose", color = MaterialTheme.colorScheme.onTertiaryContainer
-            )
+            BodyTexts.Level2(text = "Browse to Choose", color = AppTheme.colors.onTertiaryContainer)
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             title?.let {
-                AppTexts.HeadlineSmall(text = it, color = MaterialTheme.colorScheme.onSurface)
+                HeadingTexts.Level3(text = it)
             }
         }
     }
@@ -71,13 +70,13 @@ fun SelectedImageView(
             .aspectRatio(AppTheme.aspectRatio.square)
             .clickable { onImageClick() }, contentAlignment = Alignment.BottomCenter
     ) {
-        AppDefServerImg(
+        AppNetworkImage(
             model = url,
             contentDescription = "Selected Tst Image",
             modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square),
             contentScale = ContentScale.Crop
         )
-        AppTexts.TitleMedium(text = title, color = MaterialTheme.colorScheme.onSurface)
+        TitleTexts.Level2(text = title)
     }
     ClearTstMedia(onImageClear)
 }

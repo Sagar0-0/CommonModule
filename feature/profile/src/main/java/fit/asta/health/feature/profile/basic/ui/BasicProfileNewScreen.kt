@@ -542,8 +542,7 @@ fun BasicProfileCreateScreen() {
         scope.launch { modalBottomSheetState.hide() }
     }
 
-    AppModalBottomSheetLayout(
-        sheetState = modalBottomSheetState,
+    AppModalBottomSheetLayout(sheetState = modalBottomSheetState,
         sheetContent = { BasicProfileBtmSheetContent() }) {
         BasicProfileContent(onClick = { openSheet() })
     }

@@ -10,25 +10,23 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import fit.asta.health.data.testimonials.model.TestimonialType
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppErrorMsgCard
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppErrorMsgCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 
 @Composable
 fun TestimonialsList(
     paddingValues: PaddingValues,
-    viewModel: TestimonialListViewModel
+    viewModel: TestimonialListViewModel,
 ) {
     val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
 
@@ -37,10 +35,10 @@ fun TestimonialsList(
             val testimonial = testimonials[index]
             testimonial?.let { item ->
 
-                AppCard(modifier = Modifier
+                fit.asta.health.designsystem.molecular.cards.AppCard(modifier = Modifier
                     .fillMaxWidth()
                     .padding(AppTheme.spacing.level3),
-                    colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.onPrimary),
+                    colors = CardDefaults.cardColors(containerColor = AppTheme.colors.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
                             is TestimonialType.TEXT -> TstViewTxtLayout(item)

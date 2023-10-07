@@ -9,10 +9,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 
 
@@ -27,14 +26,8 @@ fun TestimonialsListLayout(
     AppScaffold(content = {
         TestimonialsList(paddingValues = it, viewModel = viewModel)
     }, floatingActionButton = {
-        AppButtons.AppFAB(onClick = onNavigateUp, content = {
-            AppDefaultIcon(
-                imageVector = Icons.Filled.Edit, contentDescription = "Create Testimonial"
-            )
-        })
+        AppFloatingActionButton(imageVector = Icons.Filled.Edit, onClick = onNavigateUp)
     }, topBar = {
-        AppTopBar(
-            title = "Testimonials", onBack = onNavigateBack, scrollBehavior = scrollBehavior
-        )
+        AppTopBar(title = "Testimonials", onBack = onNavigateBack, scrollBehavior = scrollBehavior)
     }, modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection))
 }

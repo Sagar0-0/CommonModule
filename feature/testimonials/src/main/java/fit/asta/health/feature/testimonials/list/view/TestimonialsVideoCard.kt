@@ -10,10 +10,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,8 +19,6 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
@@ -32,6 +28,7 @@ import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.feature.testimonials.components.ArtistCard
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
@@ -44,7 +41,7 @@ import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 
 @Composable
 fun TstViewVideoLayout(
-    tstVideoMedia: Testimonial
+    tstVideoMedia: Testimonial,
 ) {
     Column(
         Modifier
@@ -54,13 +51,14 @@ fun TstViewVideoLayout(
         PlayVideoLayout(tstVideoMedia.media)
         Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         ArtistCard(tstVideoMedia)
+
     }
 }
 
 @Composable
 @androidx.annotation.OptIn(UnstableApi::class)
 fun PlayVideoLayout(
-    tstVideoMedia: List<Media>
+    tstVideoMedia: List<Media>,
 ) {
 
     Row(
@@ -75,7 +73,7 @@ fun PlayVideoLayout(
                 }
             }
         } else {
-            Text(text = "MEDIA FILE NOT FOUND")
+            BodyTexts.Level1(text = "MEDIA FILE NOT FOUND", color = AppTheme.colors.error)
         }
     }
 }
@@ -93,8 +91,8 @@ fun VideoView(
     val player by rememberManagedExoPlayer()
     val mediaItem = remember {
         MediaItem.Builder().setUri(videoUri.toUri()).setMediaId(videoUri).setMediaMetadata(
-            MediaMetadata.Builder()
-                .setArtworkUri(getImgUrl("/tags/Breathing+Tag.png").toUri()).build()
+            MediaMetadata.Builder().setArtworkUri(getImgUrl("/tags/Breathing+Tag.png").toUri())
+                .build()
         ).build()
     }
     val state = rememberMediaState(player = player)
@@ -128,14 +126,7 @@ fun VideoView(
             },
             errorMessage = { error ->
                 Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    Text(
-                        error.message ?: "",
-                        modifier = Modifier
-                            .background(Color(0x80808080), RoundedCornerShape(16.dp))
-                            .padding(horizontal = 12.dp, vertical = 4.dp),
-                        color = Color.White,
-                        textAlign = TextAlign.Center
-                    )
+                    BodyTexts.Level1(text = error.message ?: "", color = AppTheme.colors.error)
                 }
             },
             controllerHideOnTouch = uiState.controllerHideOnTouchType,
@@ -144,15 +135,13 @@ fun VideoView(
                 ControllerType.None -> null
                 ControllerType.Simple -> @Composable { state1 ->
                     SimpleController(
-                        state1,
-                        Modifier.fillMaxSize()
+                        state1, Modifier.fillMaxSize()
                     )
                 }
 
                 ControllerType.PlayerControlView -> @Composable { state1 ->
                     PlayerControlViewController(
-                        state1,
-                        Modifier.fillMaxSize()
+                        state1, Modifier.fillMaxSize()
                     )
                 }
             })

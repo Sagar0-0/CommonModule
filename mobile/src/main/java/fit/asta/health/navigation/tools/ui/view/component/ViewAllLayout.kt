@@ -25,8 +25,7 @@ fun ViewAllLayout(
         HeadingTexts.Level1(text = title)
         onClick?.let { onClick ->
             AppTextButton(
-                textToShow = clickString,
-                trailingIcon = Icons.Filled.KeyboardArrowRight
+                textToShow = clickString, trailingIcon = Icons.Filled.KeyboardArrowRight
             ) { onClick() }
         }
     }

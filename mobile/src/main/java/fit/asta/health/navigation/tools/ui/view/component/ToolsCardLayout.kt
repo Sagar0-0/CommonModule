@@ -29,11 +29,10 @@ fun ToolsCardLayout(
     cardTitle: String,
     type: String,
     imgUrl: String,
-    onClick: (type: String) -> Unit
+    onClick: (type: String) -> Unit,
 ) {
     AppCard(onClick = { onClick(type) }) {
         Box {
-
             // Tools Card Images
             AppNetworkImage(
                 modifier = Modifier
@@ -56,8 +55,7 @@ fun ToolsCardLayout(
 
         // Tools Card Texts
         BodyTexts.Level1(
-            text = cardTitle,
-            modifier = Modifier.padding(AppTheme.spacing.level2)
+            text = cardTitle, modifier = Modifier.padding(AppTheme.spacing.level2)
         )
     }
 }
@@ -81,8 +79,7 @@ fun ScheduleButtonIcon(
                 .background(AppTheme.colors.surface)
         ) {
             AppIconButton(
-                imageVector = imageVector,
-                onClick = onButtonClick
+                imageVector = imageVector, onClick = onButtonClick
             )
         }
     }

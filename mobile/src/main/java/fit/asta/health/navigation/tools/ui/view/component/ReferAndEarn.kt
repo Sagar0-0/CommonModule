@@ -3,7 +3,6 @@ package fit.asta.health.navigation.tools.ui.view.component
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -11,24 +10,24 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import fit.asta.health.R
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppDrawImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun ReferAndEarn() {
 
     Box(modifier = Modifier.aspectRatio(AppTheme.aspectRatio.common), content = {
 
-        AppDrawImg(
-            painterResource(id = R.drawable.background_image),
+        AppLocalImage(
+            painter = painterResource(id = R.drawable.background_image),
             contentDescription = "Refer/Earn Img",
             modifier = Modifier.fillMaxSize()
         )
@@ -39,8 +38,8 @@ fun ReferAndEarn() {
             modifier = Modifier.padding(AppTheme.spacing.level2)
         ) {
 
-            AppDrawImg(
-                painterResource(id = R.drawable.refer_image),
+            AppLocalImage(
+                painter = painterResource(id = R.drawable.refer_image),
                 contentDescription = "Refer/Earn Img",
                 modifier = Modifier.aspectRatio(AppTheme.aspectRatio.fullScreen),
             )
@@ -49,24 +48,13 @@ fun ReferAndEarn() {
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
-                    AppTexts.TitleMedium(text = "Refer and Earn")
+                    TitleTexts.Level2(text = "Refer and Earn")
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                    AppTexts.BodySmall(text = "Send referral link to your friend to earn ₹100")
+                    BodyTexts.Level3(text = "Send referral link to your friend to earn ₹100")
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                    AppButtons.AppStandardButton(onClick = {},
-                        modifier = Modifier.height(AppTheme.buttonSize.level4),
-                        contentPadding = PaddingValues(
-                            vertical = AppTheme.spacing.level1,
-                            horizontal = AppTheme.spacing.level2
-                        ),
-                        content = {
-                            AppTexts.LabelLarge(
-                                text = "Refer Us", color = MaterialTheme.colorScheme.onPrimary
-                            )
-                        })
+                    AppFilledButton(textToShow = "Refer Us", onClick = {})
                 }
             }
         }
     })
-
 }

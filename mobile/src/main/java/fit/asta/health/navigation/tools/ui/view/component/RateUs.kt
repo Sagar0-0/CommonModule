@@ -29,12 +29,12 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
-import fit.asta.health.designsystem.molecular.other.AppRatingBar
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
-import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.other.AppRatingBar
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.tools.ui.viewmodel.RateUsEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.RateUsViewModel
@@ -46,7 +46,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun RateAppCard(
     modifier: Modifier = Modifier,
-    viewModel: RateUsViewModel = hiltViewModel()
+    viewModel: RateUsViewModel = hiltViewModel(),
 ) {
 
     val context = LocalContext.current
@@ -86,6 +86,7 @@ fun RateAppCard(
                     contentDescription = "Tagline"
                 )
 
+
                 // Your Feedback Text
                 TitleTexts.Level4(
                     text = "Your feedback will help us to make improvements",
@@ -96,10 +97,7 @@ fun RateAppCard(
                 )
 
                 // Rating Stars Function
-                AppRatingBar(
-                    rating = ratingState.value.toFloat(),
-                    onRatingChange = {}
-                )
+                AppRatingBar(rating = ratingState.value.toFloat(), onRatingChange = {})
 
                 // Last 2 Buttons on the Card
                 Row(

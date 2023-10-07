@@ -3,7 +3,6 @@ package fit.asta.health.feature.testimonials.create.view
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -12,9 +11,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.media3.exoplayer.ExoPlayer
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.modifier.dashedBorder
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.components.UploadTstMediaView
 import fit.asta.health.feature.testimonials.create.vm.MediaType.Video
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
@@ -47,7 +46,7 @@ fun GetVideo(
     onVideoClear: () -> Unit,
 ) {
     Column(modifier = modifier) {
-        AppTexts.TitleMedium(text = "Upload Video", color = MaterialTheme.colorScheme.onSurface)
+        TitleTexts.Level2(text = "Upload Video")
         Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         Box(
             modifier = Modifier

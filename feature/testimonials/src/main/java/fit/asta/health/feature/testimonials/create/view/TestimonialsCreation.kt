@@ -10,16 +10,15 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.testimonials.model.TestimonialType
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
@@ -37,7 +36,7 @@ fun TestimonialsRadioButton(
         ) {
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             Row(Modifier.fillMaxWidth()) {
-                AppTexts.BodyMedium(text = selectionTypeText)
+                BodyTexts.Level2(text = selectionTypeText)
             }
             FlowRow(Modifier.fillMaxWidth()) {
                 radioButtonList.forEach { item ->
@@ -51,14 +50,9 @@ fun TestimonialsRadioButton(
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                AppButtons.AppRadioButton(
-                                    selected = (item == selectedOption),
-                                    onClick = {
-                                        onOptionSelected(item)
-                                    },
-                                    colors = RadioButtonDefaults.colors(selectedColor = MaterialTheme.colorScheme.primary)
-                                )
-                                AppTexts.BodyLarge(text = item.title)
+                                AppRadioButton(selected = (item == selectedOption),
+                                    onClick = { onOptionSelected(item) })
+                                TitleTexts.Level2(text = item.title)
                             }
                         }
                     }

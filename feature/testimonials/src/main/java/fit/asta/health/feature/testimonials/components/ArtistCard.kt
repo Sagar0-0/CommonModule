@@ -11,12 +11,12 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun ArtistCard(testimonialsDataPages: Testimonial) {
@@ -28,21 +28,20 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        AppDefServerImg(
+        AppNetworkImage(
             model = imageUrl,
             contentDescription = "Tst Profile Pic",
-            modifier = Modifier.size(80.dp)
+            modifier = Modifier.size(AppTheme.imageSize.level7)
         )
         Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
         Column(
             horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.SpaceBetween
         ) {
-            AppTexts.TitleMedium(text = testimonialsDataPages.user.name)
-            AppTexts.BodyMedium(
+            TitleTexts.Level2(text = testimonialsDataPages.user.name)
+            BodyTexts.Level2(
                 text = "${testimonialsDataPages.user.role},${testimonialsDataPages.user.org}",
                 textAlign = TextAlign.Center
             )
         }
     }
-
 }

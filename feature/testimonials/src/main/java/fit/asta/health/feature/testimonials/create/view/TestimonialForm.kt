@@ -15,20 +15,19 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.OnSuccessfulSubmit
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.components.functional.ValidateTxtLength
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialSubmitState
@@ -172,21 +171,13 @@ fun TestimonialForm(
                     TstGetVideo()
                 }
 
-                AppButtons.AppStandardButton(
-                    onClick = {
-                        showCustomDialogWithResult = !showCustomDialogWithResult
-                        getViewModel.onEvent(TestimonialEvent.OnSubmit)
-                    },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AppTheme.spacing.level3),
-                    colors = ButtonDefaults.buttonColors(
-                        containerColor = MaterialTheme.colorScheme.primary,
-                        contentColor = MaterialTheme.colorScheme.onPrimary
-                    ),
-                    enabled = areInputsValid && areMediaValid
+                AppFilledButton(
+                    textToShow = "Submit",
+                    enabled = areInputsValid && areMediaValid,
+                    modifier = Modifier.fillMaxWidth()
                 ) {
-                    AppTexts.LabelLarge(text = "Submit")
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                    getViewModel.onEvent(TestimonialEvent.OnSubmit)
                 }
 
                 if (showCustomDialogWithResult) {

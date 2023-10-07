@@ -10,16 +10,15 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.components.TstTxtLayout
 
 @Composable
@@ -39,17 +38,20 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
 fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
 
     if (tstImageMedia.isNotEmpty()) {
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+        Row(
+            Modifier.fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
             tstImageMedia.forEach {
                 Box(
                     modifier = Modifier
                         .border(
-                            width = 1.dp, color = MaterialTheme.colorScheme.surface
+                            width = 1.dp, color = AppTheme.colors.surface
                         )
                         .aspectRatio(AppTheme.aspectRatio.square)
                         .weight(1f)
                 ) {
-                    AppDefServerImg(
+                    AppNetworkImage(
                         model = getImgUrl(url = it.url),
                         contentDescription = "Before and After Images",
                         modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square)
@@ -58,7 +60,6 @@ fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
             }
         }
     } else {
-        AppTexts.TitleSmall(text = "NO MEDIA FILE PRESENT", color = MaterialTheme.colorScheme.error)
+        TitleTexts.Level3(text = "NO MEDIA FILE PRESENT", color = AppTheme.colors.error)
     }
-
 }

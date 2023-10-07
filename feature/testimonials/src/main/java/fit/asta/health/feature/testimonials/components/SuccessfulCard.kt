@@ -16,18 +16,18 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CloudDone
 import androidx.compose.material.icons.filled.Reviews
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 
 @Composable
@@ -40,55 +40,53 @@ fun SuccessfulCard(
     Box(contentAlignment = Alignment.TopCenter) {
         AppCard(modifier = modifier
             .padding(top = AppTheme.spacing.level7)
-            .heightIn(min = AppTheme.cardHeight.level3),
-            content = {
-                Column(
+            .heightIn(min = AppTheme.cardHeight.level3), content = {
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(top = AppTheme.spacing.level9)
+            ) {
+                Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(top = AppTheme.spacing.level9)
+                        .padding(horizontal = AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.level3),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        AppTexts.HeadlineMedium(
-                            text = "Thank You",
-                            color = MaterialTheme.colorScheme.onPrimaryContainer,
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                    Row(
-                        Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.level3),
-                        horizontalArrangement = Arrangement.Center,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        AppTexts.BodyMedium(
-                            text = if (underReview) {
-                                "Your feedback is under review. Please wait few seconds."
-                            } else {
-                                "Your feedback has been submitted"
-                            },
-                            color = MaterialTheme.colorScheme.secondary,
-                            textAlign = TextAlign.Center
-                        )
-                    }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
-                    if (underReview) {
-                        LoadingAnimation()
-                    }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    HeadingTexts.Level2(
+                        text = "Thank You", color = AppTheme.colors.onPrimaryContainer
+                    )
                 }
-            })
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                Row(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    BodyTexts.Level1(
+                        text = if (underReview) {
+                            "Your feedback is under review. Please wait few seconds."
+                        } else {
+                            "Your feedback has been submitted"
+                        }, color = AppTheme.colors.secondary, textAlign = TextAlign.Center
+                    )
+                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
+                if (underReview) {
+                    LoadingAnimation()
+                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            }
+        })
 
         Box(
             modifier = Modifier
                 .clip(shape = CircleShape)
-                .defaultMinSize(minWidth = AppTheme.boxSize.level7, minHeight = AppTheme.boxSize.level7)
+                .defaultMinSize(
+                    minWidth = AppTheme.boxSize.level7, minHeight = AppTheme.boxSize.level7
+                )
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
             AppDefaultIcon(
@@ -98,11 +96,9 @@ fun SuccessfulCard(
                     Icons.Filled.CloudDone
                 },
                 contentDescription = "Successful Tst Upload",
-                tint = MaterialTheme.colorScheme.onPrimary,
+                tint = AppTheme.colors.onPrimary,
                 modifier = Modifier.size(AppTheme.iconSize.level6)
             )
         }
     }
-
-
 }

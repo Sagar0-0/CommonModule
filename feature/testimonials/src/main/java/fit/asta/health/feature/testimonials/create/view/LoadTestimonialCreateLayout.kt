@@ -7,8 +7,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import fit.asta.health.resources.strings.R

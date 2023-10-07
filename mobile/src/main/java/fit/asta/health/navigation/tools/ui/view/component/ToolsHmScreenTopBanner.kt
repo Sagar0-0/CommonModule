@@ -17,8 +17,7 @@ fun ToolsHmScreenTopBanner(
     bannerDataPages: ToolsHomeRes.ToolsHome.Banner,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(),
-        contentAlignment = Alignment.Center
+        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
     ) {
 
         // Image from the Server
