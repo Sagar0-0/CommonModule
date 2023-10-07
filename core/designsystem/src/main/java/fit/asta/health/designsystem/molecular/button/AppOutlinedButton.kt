@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedButton
@@ -64,6 +65,12 @@ fun AppOutlinedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textToShow: String,
+    colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
+        containerColor = Color.Transparent,
+        contentColor = AppTheme.colors.onSurface,
+        disabledContainerColor = Color.Transparent,
+        disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+    ),
     onClick: () -> Unit,
 ) {
 
@@ -71,12 +78,7 @@ fun AppOutlinedButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,
-        colors = ButtonDefaults.outlinedButtonColors(
-            containerColor = Color.Transparent,
-            contentColor = AppTheme.colors.onSurface,
-            disabledContainerColor = Color.Transparent,
-            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
-        ),
+        colors = colors,
         contentPadding = PaddingValues(
             start = AppTheme.spacing.level4,
             top = AppTheme.spacing.level2,

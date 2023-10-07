@@ -10,13 +10,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.Card
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SwitchDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -31,9 +29,12 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -62,15 +63,13 @@ fun CardItem(
             Column(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
-                Text(
+                BodyTexts.Level2(
                     text = name,
-                    style = MaterialTheme.typography.bodyMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                Text(
+                TitleTexts.Level2(
                     text = type,
-                    style = MaterialTheme.typography.titleMedium,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
@@ -84,16 +83,13 @@ fun ButtonWithColor(
     modifier: Modifier = Modifier, color: Color, text: String, onClick: () -> Unit
 ) {
 
-    Button(
+    AppFilledButton(
         modifier = modifier,
+        textToShow = text,
         onClick = {
             onClick()
         }, colors = ButtonDefaults.buttonColors(containerColor = color)
     )
-
-    {
-        Text(text = text, color = Color.White)
-    }
 }
 
 
@@ -134,8 +130,8 @@ fun DNDCard(modifier: Modifier, mCheckedState: Boolean, onCheckClicked: (Boolean
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            AppTexts.HeadlineSmall(text = stringResource(R.string.dnd_mode))
-            AppButtons.AppToggleButton(
+            HeadingTexts.Level3(text = stringResource(R.string.dnd_mode))
+            AppToggleButton(
                 checked = mCheckedState,
                 onCheckedChange = onCheckClicked,
                 colors = SwitchDefaults.colors(
