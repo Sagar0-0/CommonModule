@@ -23,8 +23,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import java.net.URLEncoder
@@ -47,11 +47,11 @@ internal fun AuthScreen(
     ) {
         when (loginState) {
             UiState.Loading -> {
-                LoadingAnimation()
+                AppCircularProgressIndicator()
             }
 
             is UiState.ErrorMessage -> {
-                AppTexts.TitleMedium(text = loginState.resId.toStringFromResId())
+                TitleTexts.Level2(text = loginState.resId.toStringFromResId())
             }
 
             is UiState.Success -> {

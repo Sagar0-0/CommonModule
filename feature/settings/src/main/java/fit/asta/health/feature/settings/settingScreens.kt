@@ -16,7 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.settings.view.SettingsNotificationLayout
 import fit.asta.health.feature.settings.view.SettingsNotificationsStatus
 import fit.asta.health.feature.settings.view.SettingsScreenLayout
@@ -46,7 +46,7 @@ fun NavGraphBuilder.settingScreens(
 
                 when (deleteAccountState) {
                     is UiState.Loading -> {
-                        LoadingAnimation()
+                        AppCircularProgressIndicator()
                     }
 
                     is UiState.Success -> {
@@ -71,7 +71,7 @@ fun NavGraphBuilder.settingScreens(
                 val logoutState by settingsViewModel.logoutState.collectAsStateWithLifecycle()
                 when (logoutState) {
                     is UiState.Loading -> {
-                        LoadingAnimation()
+                        AppCircularProgressIndicator()
                     }
 
                     is UiState.Success -> {

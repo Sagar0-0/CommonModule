@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components
+package fit.asta.health.designsystem.molecular
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row

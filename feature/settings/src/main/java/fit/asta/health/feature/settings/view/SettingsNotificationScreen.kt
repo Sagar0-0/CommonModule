@@ -21,10 +21,9 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -68,7 +67,7 @@ fun SettingsNotificationLayout(
             }
 
             item {
-                AppTexts.TitleMedium(
+                TitleTexts.Level2(
                     text = stringResource(id = R.string.title_notifications),
                     modifier = Modifier.padding(
                         top = AppTheme.spacing.level3,
@@ -233,11 +232,11 @@ fun SwitchItem(
                     start = AppTheme.spacing.level1
                 )
         ) {
-            AppTexts.TitleMedium(
+            TitleTexts.Level2(
                 text = text
             )
             if (subtitle != null) {
-                AppTexts.TitleMedium(
+                TitleTexts.Level2(
                     text = subtitle
                 )
             }

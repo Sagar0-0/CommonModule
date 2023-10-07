@@ -67,6 +67,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppTextButton(
+//TODO: SECONDARY TEXT PARAM IS REQUIRED
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textToShow: String,
@@ -78,7 +79,6 @@ fun AppTextButton(
     iconTint: Color = AppTheme.colors.primary,
     onClick: () -> Unit,
 ) {
-
     TextButton(
         onClick = onClick,
         modifier = modifier,

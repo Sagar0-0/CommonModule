@@ -36,7 +36,6 @@ import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.style.TextAlign
 import com.google.android.gms.auth.api.identity.GetPhoneNumberHintIntentRequest
 import com.google.android.gms.auth.api.identity.Identity
 import com.google.android.gms.auth.api.phone.SmsRetriever
@@ -50,10 +49,10 @@ import com.google.firebase.auth.PhoneAuthProvider
 import com.google.firebase.auth.ktx.auth
 import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ValidatedNumberField
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
+import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
@@ -253,7 +252,8 @@ fun PhoneSignIn(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            ValidatedNumberField(
+            AstaValidatedTextField(
+                type = AstaValidatedTextFieldType.Default(2, 4),
                 enabled = !codeSent && !loading,
                 value = postalCode,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -274,12 +274,13 @@ fun PhoneSignIn(
                 singleLine = true
             )
 
-            ValidatedNumberField(
+            AstaValidatedTextField(
+                type = AstaValidatedTextFieldType.Phone,
                 enabled = !codeSent && !loading,
                 value = phoneNumber,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { if (it.length <= 10) phoneNumber = it },
-                placeholder = "Enter your phone number",
+                placeholder = StringR.string.enter_your_phone_number,
                 modifier = Modifier
                     .padding(
                         top = AppTheme.spacing.level3,
@@ -292,10 +293,7 @@ fun PhoneSignIn(
                             getPhoneNumberHint()
                         }
                     },
-                singleLine = true,
-                supportingText = "${phoneNumber.length} / 10",
-                supportingTextModifier = Modifier.fillMaxWidth(),
-                supportingTextAlign = TextAlign.End
+                singleLine = true
             )
         }
 
@@ -312,7 +310,8 @@ fun PhoneSignIn(
                 animationSpec = tween(durationMillis = 500, delayMillis = 100)
             )
         ) {
-            AppButtons.AppTextButton(
+            AppTextButton(
+                textToShow = stringResource(id = StringR.string.generate_otp),
                 enabled = !loading && !codeSent,
                 onClick = {
                     onSendOtp()
@@ -320,12 +319,7 @@ fun PhoneSignIn(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(AppTheme.spacing.level3)
-            ) {
-                AppTexts.TitleMedium(
-                    text = stringResource(id = StringR.string.generate_otp),
-                    modifier = Modifier.padding(AppTheme.spacing.level2)
-                )
-            }
+            )
         }
 
         AnimatedVisibility(
@@ -340,24 +334,23 @@ fun PhoneSignIn(
             )
         ) {
             Column {
-                ValidatedNumberField(
+                AstaValidatedTextField(
+                    type = AstaValidatedTextFieldType.Default(6, 6),
                     enabled = !loading,
                     value = otp,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     onValueChange = { if (it.length <= 6) otp = it },
-                    placeholder = "Enter your otp",
+                    placeholder = StringR.string.enter_your_otp,
                     modifier = Modifier
                         .padding(AppTheme.spacing.level2)
                         .fillMaxWidth(),
-                    singleLine = true,
-                    supportingText = "${otp.length} / 6",
-                    supportingTextModifier = Modifier.fillMaxWidth(),
-                    supportingTextAlign = TextAlign.End
+                    singleLine = true
                 )
 
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
-                AppButtons.AppTextButton(
+                AppTextButton(
+                    textToShow = stringResource(id = StringR.string.verify_otp),
                     enabled = !loading,
                     onClick = {
                         onOtpSubmit()
@@ -365,34 +358,21 @@ fun PhoneSignIn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(AppTheme.spacing.level3)
-                ) {
-                    AppTexts.TitleMedium(
-                        text = stringResource(id = StringR.string.verify_otp),
-                        modifier = Modifier.padding(AppTheme.spacing.level2)
-                    )
-                }
-                AppButtons.AppTextButton(
+                )
+                AppTextButton(
+                    textToShow = if (ticks > 0) "Resend code in $ticks seconds" else "Still not received?",
                     enabled = !loading && ticks == 0,
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(AppTheme.spacing.level3)
-                ) {
-                    if (ticks > 0) {
-                        AppTexts.TitleMedium(text = "Resend code in $ticks seconds")
-                    } else {
-                        AppTexts.TitleMedium(
-                            text = "Still not received?",
-                            color = AppTheme.colors.onBackground
-                        )
-                    }
-                }
+                )
             }
         }
     }
 
     if (loading) {
-        LoadingAnimation()
+        AppCircularProgressIndicator()
     }
 
     callbacks = object : PhoneAuthProvider.OnVerificationStateChangedCallbacks() {

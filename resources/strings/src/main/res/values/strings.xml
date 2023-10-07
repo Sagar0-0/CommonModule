@@ -643,4 +643,6 @@
     <string name="verify_otp">Verify OTP</string>
     <string name="feedback_welcome">Your Feedback will help us to serve you better</string>
     <string name="your_feedback_is_important">Your feedback is important to us. We read every feedback we get and take it seriously.</string>
+    <string name="enter_your_phone_number">Enter your phone number</string>
+    <string name="enter_your_otp">Enter your otp</string>
 </resources>

@@ -175,6 +175,7 @@ fun AstaValidatedTextField(
     value: String,
     onValueChange: (String) -> Unit,
     modifier: Modifier = Modifier,
+    singleLine: Boolean = false,
     type: AstaValidatedTextFieldType = AstaValidatedTextFieldType.Default(),
     enabled: Boolean = true,
     isValidText: (Boolean) -> Unit = {},
@@ -268,6 +269,7 @@ fun AstaValidatedTextField(
             onValueChange(it)
             isValidText(it.length in minChars..maxChars)
         },
+        singleLine = singleLine,
         enabled = enabled,
         label = label,
         placeholder = placeholder,

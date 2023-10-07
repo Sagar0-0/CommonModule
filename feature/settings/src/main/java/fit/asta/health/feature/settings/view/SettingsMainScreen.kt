@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
@@ -45,15 +44,14 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppDialog
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -83,7 +81,7 @@ fun SettingsScreenLayout(
                         .padding(AppTheme.spacing.level3),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AppTexts.HeadlineMedium(
+                    TitleTexts.Level2(
                         text = R.string.confirm_delete.toStringFromResId()
                     )
                     Row(
@@ -92,21 +90,19 @@ fun SettingsScreenLayout(
                             .padding(horizontal = AppTheme.spacing.level3),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        AppButtons.AppTextButton(
+                        AppTextButton(
+                            textToShow = R.string.cancel.toStringFromResId(),
                             onClick = {
                                 showDeleteConfirmationDialog = false
                             }
-                        ) {
-                            AppTexts.TitleMedium(text = R.string.cancel.toStringFromResId())
-                        }
-                        AppButtons.AppTextButton(
+                        )
+                        AppTextButton(
+                            textToShow = R.string.yes.toStringFromResId(),
                             onClick = {
                                 showDeleteConfirmationDialog = false
                                 onClickEvent(SettingsUiEvent.DELETE)
                             }
-                        ) {
-                            AppTexts.TitleMedium(text = R.string.yes.toStringFromResId())
-                        }
+                        )
                     }
                 }
             }
@@ -213,7 +209,7 @@ fun PreferenceCategory(
     content: @Composable () -> Unit
 ) {
     Column {
-        if (titleId != null) AppTexts.TitleMedium(
+        if (titleId != null) TitleTexts.Level2(
             text = stringResource(id = titleId),
             modifier = Modifier.padding(
                 start = AppTheme.spacing.level3,
@@ -239,23 +235,14 @@ fun PreferenceItem(
     imageVector: ImageVector,
     onClick: () -> Unit
 ) {
-    AppButtons.AppTextButton(
+    AppTextButton(
+        textToShow = title ?: stringResource(id = titleId),
+        leadingIcon = imageVector,
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(AppTheme.spacing.level1)
-    ) {
-        AppDefaultIcon(
-            imageVector = imageVector,
-            contentDescription = null,
-            modifier = Modifier.padding(end = AppTheme.spacing.level3)
-        )
-        Column {
-            AppTexts.TitleMedium(text = title ?: stringResource(id = titleId))
-            if (secondary != null) AppTexts.TitleMedium(text = secondary)
-        }
-        Spacer(modifier = Modifier.weight(1f))
-    }
+    )//TODO: ADD SECONDARY TEXT
 }
 
 @Composable
@@ -272,33 +259,15 @@ fun ListPreference(
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }
 
-    AppButtons.AppTextButton(
+    AppTextButton(
+        textToShow = title,
+        leadingIcon = imageVector,
+        trailingIcon = Icons.Filled.ArrowDropDown,
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
             .padding(AppTheme.spacing.level1)
-    ) {
-        AppDefaultIcon(
-            imageVector = imageVector,
-            contentDescription = title,
-            modifier = Modifier.padding(end = AppTheme.spacing.level3)
-        )
-
-        AppTexts.TitleMedium(
-            text = title
-        )
-
-        Spacer(modifier = Modifier.weight(1f))
-
-        AppTexts.TitleMedium(
-            text = entries[selectedIndex],
-        )
-
-        AppDefaultIcon(
-            imageVector = Icons.Filled.ArrowDropDown,
-            contentDescription = null
-        )
-    }
+    )
 
     if (showDialog) {
         AppDialog(
@@ -314,7 +283,7 @@ fun ListPreference(
                 ) {
                     entries.forEachIndexed { index, entry ->
                         Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppButtons.AppRadioButton(
+                            AppRadioButton(
                                 selected = selectedIndex == index,
                                 onClick = {
                                     showDialog = false
@@ -322,7 +291,7 @@ fun ListPreference(
                                     onValueChange(values[selectedIndex])
                                 }
                             )
-                            AppTexts.TitleMedium(text = entry)
+                            TitleTexts.Level2(text = entry)
                         }
                     }
                 }

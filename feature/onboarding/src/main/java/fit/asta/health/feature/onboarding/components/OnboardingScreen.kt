@@ -16,12 +16,12 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.components.generic.carouselTransition
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.carouselTransition
 import fit.asta.health.designsystem.molecular.image.AppGifImage
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import kotlinx.coroutines.launch
 
 
@@ -38,7 +38,7 @@ fun OnboardingScreen(
                 modifier = Modifier.fillMaxSize(),
                 contentAlignment = Alignment.Center
             ) {
-                LoadingAnimation()
+                AppCircularProgressIndicator()
             }
         }
 
@@ -83,12 +83,12 @@ fun OnboardingScreen(
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
-                            AppTexts.TitleLarge(
+                            TitleTexts.Level2(
                                 modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
                                 text = items[page].title,
                                 textAlign = TextAlign.Center
                             )
-                            AppTexts.TitleMedium(
+                            TitleTexts.Level2(
                                 modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
                                 text = items[page].desc,
                                 textAlign = TextAlign.Center

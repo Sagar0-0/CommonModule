@@ -9,8 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -55,10 +54,9 @@ fun OnBoardingButton(
     text: String,
     onClick: () -> Unit
 ) {
-    AppButtons.AppTextButton(
+    AppTextButton(
+        textToShow = text,
         modifier = modifier,
         onClick = onClick,
-    ) {
-        TitleTexts.Level2(text = text)
-    }
+    )
 }

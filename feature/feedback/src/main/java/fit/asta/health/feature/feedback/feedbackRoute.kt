@@ -16,8 +16,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.EndScreenPopup
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.EndScreenPopup
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.feedback.components.SessionFeedback
 import fit.asta.health.feature.feedback.vm.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -56,7 +56,7 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
                         .fillMaxSize(),
                     contentAlignment = Alignment.Center
                 ) {
-                    LoadingAnimation()
+                    AppCircularProgressIndicator()
                 }
             }
 

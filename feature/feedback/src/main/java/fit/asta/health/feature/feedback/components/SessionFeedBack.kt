@@ -28,11 +28,11 @@ import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.UploadFiles
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.UploadFiles
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -55,12 +55,12 @@ fun SessionFeedback(
                         .padding(it),
                     contentAlignment = Alignment.Center
                 ) {
-                    LoadingAnimation()
+                    AppCircularProgressIndicator()
                 }
             }
 
             is UiState.ErrorMessage -> {
-                AppTexts.TitleMedium(text = feedbackQuesState.resId.toStringFromResId())
+                TitleTexts.Level2(text = feedbackQuesState.resId.toStringFromResId())
                 LaunchedEffect(feedbackQuesState) {
                     Toast.makeText(
                         context,

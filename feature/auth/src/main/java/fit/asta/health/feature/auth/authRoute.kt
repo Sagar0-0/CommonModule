@@ -15,7 +15,7 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.auth.screens.AuthEvent
 import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
@@ -68,7 +68,7 @@ fun NavGraphBuilder.authRoute(
             }
 
             is UiState.Loading -> {
-                LoadingAnimation()
+                AppCircularProgressIndicator()
             }
 
             is UiState.ErrorMessage -> {
