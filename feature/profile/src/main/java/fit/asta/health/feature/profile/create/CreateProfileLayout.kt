@@ -3,7 +3,6 @@
 package fit.asta.health.feature.profile.create
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.filled.Emergency
@@ -11,7 +10,7 @@ import androidx.compose.material.icons.outlined.AccountCircle
 import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
-import androidx.compose.material3.*
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
@@ -23,8 +22,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
 import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
@@ -36,8 +35,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(
     ExperimentalMaterial3Api::class,
-    ExperimentalCoroutinesApi::class,
-    ExperimentalMaterialApi::class
+    ExperimentalCoroutinesApi::class
 )
 @Composable
 fun CreateProfileLayout(
@@ -63,7 +61,7 @@ fun CreateProfileLayout(
         ) { currentStep = 5 },
         StepData(5, Outlined.Egg, stringResource(id = R.string.diet)) { currentStep = 6 })
 
-    val primaryColor = MaterialTheme.colorScheme.primary
+    val primaryColor = AppTheme.colors.primary
 
     AppScaffold(topBar = {
         Column(Modifier.fillMaxWidth()) {

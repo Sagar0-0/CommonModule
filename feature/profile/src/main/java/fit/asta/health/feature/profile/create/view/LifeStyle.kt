@@ -31,7 +31,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -42,12 +41,12 @@ import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.PHYACTIVE
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGENV
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.WORKINGHRS
@@ -355,7 +354,7 @@ private fun LifeStyleTimePicker(
                     .padding(start = AppTheme.spacing.level3, end = AppTheme.spacing.level2),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                AppTexts.TitleMedium(text = title)
+                TitleTexts.Level2(text = title)
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             Row(
@@ -365,14 +364,16 @@ private fun LifeStyleTimePicker(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppButtons.AppStandardButton(onClick = firstEvent, modifier = Modifier.weight(1f)) {
-                    AppTexts.LabelMedium(text = firstButtonType, textAlign = TextAlign.Center)
-                }
-                AppButtons.AppStandardButton(
-                    onClick = secondEvent, modifier = Modifier.weight(1f)
-                ) {
-                    AppTexts.LabelMedium(text = secButtonType, textAlign = TextAlign.Center)
-                }
+                AppFilledButton(
+                    textToShow = firstButtonType,
+                    onClick = firstEvent,
+                    modifier = Modifier.weight(1f)
+                )
+                AppFilledButton(
+                    textToShow = secButtonType,
+                    onClick = secondEvent,
+                    modifier = Modifier.weight(1f)
+                )
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             Row(

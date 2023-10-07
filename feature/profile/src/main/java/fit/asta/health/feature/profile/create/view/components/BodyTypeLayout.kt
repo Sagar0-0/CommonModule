@@ -69,6 +69,7 @@ fun BodyTypeLayout() {
             userScrollEnabled = false,
             horizontalArrangement = Arrangement.SpaceEvenly
         )
+
     }
 }
 

@@ -22,7 +22,6 @@ import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,10 +42,12 @@ import fit.asta.health.common.utils.getOneUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import fit.asta.health.resources.strings.R
@@ -113,19 +114,14 @@ fun DetailsCreateScreen(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             PrivacyAndUserConsent()
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-            AppButtons.AppStandardButton(
+            AppFilledButton(
+                textToShow = stringResource(R.string.next_button),
                 onClick = eventNext,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level5),
-                enabled = true,
                 shape = CircleShape
-            ) {
-                AppTexts.LabelLarge(
-                    text = stringResource(R.string.next_button),
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+            )
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         }
     }
@@ -144,18 +140,16 @@ fun PrivacyAndUserConsent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            AppDefaultIcon(
+            fit.asta.health.designsystem.molecular.AppDefaultIcon(
                 imageVector = Icons.Rounded.PrivacyTip,
                 contentDescription = "App Privacy",
-                tint = MaterialTheme.colorScheme.primary
+                tint = AppTheme.colors.primary
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
             Column {
-                AppTexts.TitleLarge(text = stringResource(R.string.privacy_statement_title))
+                TitleTexts.Level2(text = stringResource(R.string.privacy_statement_title))
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AppTexts.BodySmall(
-                    text = stringResource(R.string.privacy_statement)
-                )
+                BodyTexts.Level2(text = stringResource(R.string.privacy_statement))
             }
         }
         Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
@@ -164,13 +158,13 @@ fun PrivacyAndUserConsent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            AppButtons.AppCheckBox(
+            AppCheckBoxButton(
                 checked = checkedState.value,
                 onCheckedChange = { checkedState.value = it },
                 modifier = Modifier.size(AppTheme.imageSize.level3)
             )
             Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
-            AppTexts.BodyMedium(text = stringResource(R.string.user_consent))
+            BodyTexts.Level2(text = stringResource(R.string.user_consent))
         }
     }
 }
@@ -188,7 +182,7 @@ fun UserCircleImage(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
     ) {
-        AppDefServerImg(
+        AppNetworkImage(
             model = url,
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
@@ -197,7 +191,7 @@ fun UserCircleImage(
                 .clip(CircleShape)
                 .border(
                     border = BorderStroke(
-                        width = 4.dp, color = MaterialTheme.colorScheme.primary
+                        width = 4.dp, color = AppTheme.colors.primary
                     ), shape = CircleShape
                 ),
             placeholder = rememberVectorPainter(image = Icons.Filled.Person)
@@ -218,14 +212,11 @@ fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifi
     Row(
         horizontalArrangement = Arrangement.Start, modifier = modifier
     ) {
-        AppButtons.AppIconButton(onClick = onProfilePicClear) {
-            AppDefaultIcon(
-                imageVector = Icons.Filled.Delete,
-                contentDescription = "Delete Image",
-                modifier = Modifier.size(AppTheme.customSize.level7),
-                tint = MaterialTheme.colorScheme.error
-            )
-        }
+        AppIconButton(
+            imageVector = Icons.Filled.Delete,
+            iconTint = AppTheme.colors.error,
+            onClick = onProfilePicClear,
+        )
     }
 }
 
@@ -235,17 +226,14 @@ fun EditProfileImageButton(
     onUserProfileSelection: () -> Unit,
     modifier: Modifier = Modifier,
 ) {
+    val editIcon = if (isImgNotAvail) Icons.Rounded.AddAPhoto else Icons.Rounded.Edit
     Row(
         horizontalArrangement = Arrangement.End, modifier = modifier
     ) {
-        AppButtons.AppIconButton(onClick = onUserProfileSelection) {
-            val editIcon = if (isImgNotAvail) Icons.Rounded.AddAPhoto else Icons.Rounded.Edit
-            AppDefaultIcon(
-                imageVector = editIcon,
-                contentDescription = "Edit Profile Image",
-                modifier = Modifier.size(AppTheme.customSize.level7),
-                tint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
-            )
-        }
+        AppIconButton(
+            onClick = onUserProfileSelection,
+            imageVector = editIcon,
+            iconTint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+        )
     }
 }

@@ -22,6 +22,7 @@ fun TestimonialsListLayout(
     onNavigateBack: () -> Unit,
     viewModel: TestimonialListViewModel = hiltViewModel(),
 ) {
+
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
     AppScaffold(content = {
         TestimonialsList(paddingValues = it, viewModel = viewModel)

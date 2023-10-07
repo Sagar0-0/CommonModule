@@ -34,8 +34,8 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.AppDefaultIcon
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -92,7 +92,9 @@ fun SearchBar(
         imeAction = ImeAction.Done,
         placeholder = { CaptionTexts.Level5(text = "Search") },
         leadingIcon = {
-            AppDefaultIcon(imageVector = Icons.Rounded.Search, contentDescription = "Search Icon")
+            AppDefaultIcon(
+                imageVector = Icons.Rounded.Search, contentDescription = "Search Icon"
+            )
         },
     )
 }

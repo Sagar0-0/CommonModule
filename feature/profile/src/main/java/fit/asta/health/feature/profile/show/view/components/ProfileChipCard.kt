@@ -22,12 +22,11 @@ import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @Composable
 fun ProfileChipCard(

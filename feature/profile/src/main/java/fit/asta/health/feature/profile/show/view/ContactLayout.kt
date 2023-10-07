@@ -1,4 +1,4 @@
-package fit.asta.health.profile.feature.show.view
+package fit.asta.health.feature.profile.show.view
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -34,12 +33,13 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.profile.remote.model.Address
 import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppDrawImg
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.resources.strings.R
 import fit.asta.health.resources.drawables.R as RDraw
 
@@ -148,8 +148,8 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
     ) {
-        ProfileImageBorder(size = 188.dp, color = MaterialTheme.colorScheme.primary) {
-            AppDefServerImg(
+        ProfileImageBorder(size = 188.dp, color = AppTheme.colors.primary) {
+            AppNetworkImage(
                 model = imageUrl,
                 contentDescription = "User Profile Pic",
                 modifier = Modifier
@@ -157,7 +157,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                     .size(AppTheme.imageSize.level8)
                     .border(
                         border = BorderStroke(
-                            width = 2.dp, color = MaterialTheme.colorScheme.primary
+                            width = 2.dp, color = AppTheme.colors.primary
                         ), shape = CircleShape
                     ),
                 contentScale = ContentScale.Crop
@@ -195,7 +195,7 @@ fun UserAchievCard(
             verticalAlignment = Alignment.CenterVertically,
             modifier = Modifier.padding(AppTheme.spacing.level3)
         ) {
-            AppDrawImg(
+            AppLocalImage(
                 painter = painterResource(id = imageID),
                 contentDescription = "Leaderboard",
                 modifier = Modifier.size(AppTheme.imageSize.level5)
@@ -205,8 +205,8 @@ fun UserAchievCard(
                 modifier = Modifier.fillMaxHeight(),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
             ) {
-                AppTexts.BodyLarge(text = scoreBoard)
-                AppTexts.LabelSmall(text = cardType)
+                BodyTexts.Level1(text = scoreBoard)
+                CaptionTexts.Level3(text = cardType)
             }
         }
     }
@@ -234,13 +234,13 @@ private fun UserDetails(
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        AppTexts.BodyLarge(text = name)
+        BodyTexts.Level1(text = name)
         if (phoneNumber.isNotEmpty()) {
-            AppTexts.BodyMedium(text = "+91 $phoneNumber")
+            BodyTexts.Level2(text = "+91 $phoneNumber")
         }
-        AppTexts.BodyMedium(text = email)
+        BodyTexts.Level2(text = email)
         if (address.pin.isNotEmpty()) {
-            AppTexts.BodySmall(text = buildString {
+            BodyTexts.Level3(text = buildString {
                 append(address.address)
                 append(" ")
                 append(address.street)
@@ -263,24 +263,25 @@ fun ProfileDetails(
     modifier: Modifier = Modifier,
     onCardClick: () -> Unit = {},
 ) {
-    AppCard(modifier = modifier, onClick = onCardClick) {
+    AppCard(
+        modifier = modifier, onClick = onCardClick
+    ) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(
-                    horizontal = AppTheme.spacing.level3,
-                    vertical = AppTheme.spacing.level2
+                    horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2
                 ),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            AppDrawImg(
+            AppLocalImage(
                 painter = painterResource(id = imageID),
                 contentDescription = "Details Images",
                 modifier = Modifier.size(AppTheme.imageSize.level3)
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            AppTexts.LabelMedium(text = profileType, textAlign = TextAlign.Center)
+            CaptionTexts.Level3(text = profileType, textAlign = TextAlign.Center)
         }
     }
 }

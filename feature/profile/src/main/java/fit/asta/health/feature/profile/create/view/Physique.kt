@@ -56,9 +56,9 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
 import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
@@ -364,9 +364,10 @@ private fun AgeSection(
 
     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
+
     AppButtons.AppOutlinedButton(
         onClick = { calendarState.show() }, border = BorderStroke(
-            width = 2.dp, color = ageColorSelection
+            width = AppTheme.spacing.level1, color = ageColorSelection
         ), colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent)
     ) {
         Row(
