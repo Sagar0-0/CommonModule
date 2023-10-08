@@ -24,7 +24,6 @@ import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -57,6 +56,7 @@ import fit.asta.health.designsystem.components.functional.WeatherCardImage
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
@@ -140,7 +140,7 @@ fun TodayContent(
 
                 is UiState.ErrorMessage -> {
                     item {
-                        Surface(
+                        AppSurface(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp)

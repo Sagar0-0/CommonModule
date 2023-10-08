@@ -35,13 +35,13 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppToggleButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -79,7 +79,7 @@ fun AllAlarms(
                 shape = CircleShape,
                 modifier = Modifier.size(50.dp),
             ) {
-                AppDefaultIcon(imageVector = Icons.Filled.Add, contentDescription = null)
+                AppIcon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         },
     )
