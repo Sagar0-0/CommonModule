@@ -30,6 +30,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppScaffold
 import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.profile.show.view.DietLayout
 import fit.asta.health.feature.profile.show.view.HealthLayout
@@ -110,7 +111,7 @@ fun ProfileReadyScreen(
                         selected = content == index + 1,
                         onClick = { content = index + 1 },
                         icon = {
-                            fit.asta.health.designsystem.molecular.AppDefaultIcon(
+                            AppIcon(
                                 imageVector = item.icon,
                                 contentDescription = item.contentDescription
                             )

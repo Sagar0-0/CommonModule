@@ -45,6 +45,7 @@ import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -140,7 +141,7 @@ fun PrivacyAndUserConsent() {
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            fit.asta.health.designsystem.molecular.AppDefaultIcon(
+            AppIcon(
                 imageVector = Icons.Rounded.PrivacyTip,
                 contentDescription = "App Privacy",
                 tint = AppTheme.colors.primary

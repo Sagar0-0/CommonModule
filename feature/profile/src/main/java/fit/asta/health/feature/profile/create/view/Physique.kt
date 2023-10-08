@@ -57,8 +57,8 @@ import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppTextField
-import fit.asta.health.designsystem.molecular.AppDefaultIcon
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
@@ -375,7 +375,7 @@ private fun AgeSection(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            AppDefaultIcon(
+            AppIcon(
                 imageVector = Icons.Rounded.EditCalendar,
                 contentDescription = "Calendar Icon",
                 tint = if (userAge.error is UiString.Empty) {

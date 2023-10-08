@@ -69,6 +69,7 @@ import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -323,7 +324,7 @@ fun BasicProfileNewScreen() {
                         .padding(start = AppTheme.spacing.level3),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    fit.asta.health.designsystem.molecular.AppDefaultIcon(
+                    AppIcon(
                         imageVector = Icons.Default.Person, contentDescription = "User Name Icon"
                     )
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
@@ -341,7 +342,7 @@ fun BasicProfileNewScreen() {
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                                 TitleTexts.Level1(text = "Name")
                             }
-                            fit.asta.health.designsystem.molecular.AppDefaultIcon(
+                            AppIcon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit Profile Name"
                             )
