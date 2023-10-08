@@ -8,9 +8,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.data.spotify"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

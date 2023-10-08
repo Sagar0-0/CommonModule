@@ -9,9 +9,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.meditation"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

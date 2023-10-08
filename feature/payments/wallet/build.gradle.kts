@@ -7,10 +7,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.feature.wallet"
-
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

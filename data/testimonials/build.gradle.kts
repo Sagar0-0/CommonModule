@@ -7,9 +7,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.data.testimonials"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

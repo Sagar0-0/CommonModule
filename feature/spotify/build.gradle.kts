@@ -8,8 +8,6 @@ plugins {
 android {
     namespace = "fit.asta.health.feature.spotify"
     defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-
         manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
         manifestPlaceholders["redirectHostName"] = "auth"
     }
