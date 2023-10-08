@@ -1,17 +1,13 @@
 package fit.asta.health.designsystem.components.functional
 
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Button
 import androidx.compose.material3.ButtonColors
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 
 @Composable
 fun BottomSheetButton(
@@ -21,19 +17,12 @@ fun BottomSheetButton(
     onClick: (() -> Unit)? = null,
 ) {
     onClick?.let {
-        Button(
-            onClick = it,
-            shape = RoundedCornerShape(5.dp),
-            colors = colors,
-            modifier = modifier.fillMaxWidth()
-        ) {
-            Text(
-                text = title,
-                color = MaterialTheme.colorScheme.onPrimary,
-                lineHeight = 16.sp,
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.labelLarge
-            )
-        }
+        AppFilledButton(
+            modifier = modifier.fillMaxWidth(),
+            textToShow = title,
+            shape = AppTheme.shape.level1,
+            onClick = onClick,
+            colors = colors
+        )
     }
 }

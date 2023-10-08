@@ -21,7 +21,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.resources.strings.R
@@ -63,7 +63,7 @@ fun AlbumDetailScreen(
             }
 
             is UiState.Loading -> {
-                LoadingAnimation(modifier = Modifier.fillMaxSize())
+                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
             }
 
             is UiState.Success -> {
@@ -105,7 +105,7 @@ private fun LocalAlbumHandler(
 
         // Loading State
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         // Success State

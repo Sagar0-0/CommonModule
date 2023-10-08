@@ -22,7 +22,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.feature.scheduler.ui.viewmodel.SpotifyViewModel
@@ -73,7 +73,7 @@ class SpotifyActivity : ComponentActivity() {
 
                     // The data is being fetched
                     is UiState.Loading -> {
-                        LoadingAnimation(modifier = Modifier.fillMaxSize())
+                        AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
                     }
 
                     // Data fetched successfully

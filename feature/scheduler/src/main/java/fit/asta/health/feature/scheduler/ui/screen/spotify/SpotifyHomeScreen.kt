@@ -20,7 +20,7 @@ import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedMode
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
@@ -78,7 +78,7 @@ fun SpotifyHomeScreen(
             // Loading State
             is UiState.Loading -> {
                 item {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 
@@ -150,7 +150,7 @@ fun SpotifyHomeScreen(
             // Loading State
             is UiState.Loading -> {
                 item {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 
@@ -223,7 +223,7 @@ fun SpotifyHomeScreen(
             // Loading State
             is UiState.Loading -> {
                 item {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 
@@ -293,7 +293,7 @@ fun SpotifyHomeScreen(
             // Loading State
             is UiState.Loading -> {
                 item {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 
@@ -364,7 +364,7 @@ fun SpotifyHomeScreen(
             // Loading State
             is UiState.Loading -> {
                 item {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 

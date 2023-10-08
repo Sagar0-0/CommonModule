@@ -37,7 +37,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R as DrawR
@@ -65,7 +65,7 @@ fun ShareReferralUi(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 

@@ -43,7 +43,7 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -175,7 +175,7 @@ internal fun SearchBottomSheet(
                         modifier = Modifier.padding(top = AppTheme.spacing.level5),
                         contentAlignment = Alignment.Center
                     ) {
-                        LoadingAnimation()
+                        AppDotTypingAnimation()
                     }
                 }
 

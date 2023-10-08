@@ -42,7 +42,7 @@ import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -321,7 +321,7 @@ fun LifeStyleCreateBottomSheetLayout(
     when (state) {
         is HPropState.Empty -> TODO()
         is HPropState.Error -> TODO()
-        is HPropState.Loading -> LoadingAnimation()
+        is HPropState.Loading -> AppDotTypingAnimation()
         is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,

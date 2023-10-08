@@ -14,7 +14,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
@@ -39,7 +39,7 @@ fun SubscriptionPlansUi(
                         .padding(paddingValues),
                     contentAlignment = Alignment.Center
                 ) {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
             }
 

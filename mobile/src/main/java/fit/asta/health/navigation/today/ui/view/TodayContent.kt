@@ -55,8 +55,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.functional.WeatherCardImage
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
@@ -133,7 +133,7 @@ fun TodayContent(
                         Box(
                             modifier = Modifier.fillMaxWidth(), contentAlignment = Alignment.Center
                         ) {
-                            LoadingAnimation()
+                            AppDotTypingAnimation()
                         }
                     }
                 }

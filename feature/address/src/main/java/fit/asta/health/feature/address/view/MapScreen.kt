@@ -37,7 +37,7 @@ import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import java.util.*
@@ -267,7 +267,7 @@ internal fun MapScreen(
                                     .height(bottomCardHeight),
                                 contentAlignment = Alignment.Center
                             ) {
-                                LoadingAnimation()
+                                AppDotTypingAnimation()
                             }
                         }
 

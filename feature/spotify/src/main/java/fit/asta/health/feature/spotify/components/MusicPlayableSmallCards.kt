@@ -18,7 +18,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 
 /**
  * This function draws the Small Track UI like which we have in User Most Recently Played Tracks UI
@@ -55,7 +55,7 @@ fun MusicPlayableSmallCards(
             )
 
             // Circular Progress Bar
-            if (painter.state.painter == null) LoadingAnimation()
+            if (painter.state.painter == null) AppDotTypingAnimation()
 
             // track Name
             Text(

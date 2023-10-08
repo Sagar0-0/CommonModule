@@ -1,6 +1,5 @@
 package fit.asta.health.designsystem.components.functional
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
@@ -10,10 +9,8 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material.MaterialTheme
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.sharp.LocationOn
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,7 +19,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
@@ -39,7 +39,7 @@ fun WeatherCardImage(
             .height(151.dp)
             .clip(RoundedCornerShape(10.dp))
     ) {
-        Image(
+        AppLocalImage(
             painter = painterResource(id = R.drawable.weatherimage),
             contentDescription = null,
             contentScale = ContentScale.FillBounds,
@@ -54,8 +54,6 @@ fun WeatherCardImage(
 
 @Composable
 fun TemperatureAndWeather(temperature: String) {
-
-
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -66,14 +64,14 @@ fun TemperatureAndWeather(temperature: String) {
         Box {
             Row(horizontalArrangement = Arrangement.SpaceBetween) {
                 Box {
-                    AppTexts.HeadlineLarge(
+                    HeadingTexts.Level1(
                         text = temperature,
                         color = Color.White,
                         modifier = Modifier.align(alignment = Alignment.TopCenter)
                     )
                 }
                 Box(Modifier.size(13.5.dp)) {
-                    Image(
+                    AppLocalImage(
                         painter = painterResource(id = R.drawable.temperaturedegreeimage),
                         contentDescription = null,
                         modifier = Modifier.fillMaxSize(),
@@ -84,7 +82,7 @@ fun TemperatureAndWeather(temperature: String) {
         }
 
         Box {
-            Image(
+            AppLocalImage(
                 painter = painterResource(id = R.drawable.rainimage),
                 contentDescription = null,
                 modifier = Modifier.fillMaxSize(),
@@ -107,16 +105,16 @@ fun LocationAndDate(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        AppIcon(
             imageVector = Icons.Sharp.LocationOn,
             contentDescription = null,
             modifier = Modifier.size(24.dp),
-            tint = MaterialTheme.colors.onPrimary
+            tint = AppTheme.colors.onPrimary
         )
         TitleTexts.Level2(
             text = location,
-            color = MaterialTheme.colors.onPrimary
+            color = AppTheme.colors.onPrimary
         )
-        TitleTexts.Level2(text = date, color = MaterialTheme.colors.onPrimary)
+        TitleTexts.Level2(text = date, color = AppTheme.colors.onPrimary)
     }
 }

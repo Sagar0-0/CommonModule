@@ -3,7 +3,6 @@ package fit.asta.health.designsystem.components.functional
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.text.KeyboardActions
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.runtime.Composable
@@ -12,15 +11,17 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppTextField
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+
 
 /**[ValidateTxtLength] is an object that defines the default text length used in the [AppTextFieldValidate] composable.
  * */
-
 object ValidateTxtLength {
     const val defLength = 256
 }
+
 
 /**[AppTextFieldValidate] is a custom composable function in Jetpack Compose, designed to
  * create a text field with additional validation features. It includes an optional error message
@@ -45,7 +46,6 @@ object ValidateTxtLength {
  * will be displayed in the UI.
  * @param showLenErrorMsg  If set true it will display an error message based on text length [maxStringLength] .
  * */
-
 @Composable
 fun AppTextFieldValidate(
     value: String,
@@ -93,24 +93,25 @@ fun AppTextFieldValidate(
     }
 }
 
+
 /**[TxtFieldErrorMsg] Displays an error message if showError is set to true.
  * @param showError: Boolean - Set to true to show the error message, false to hide it.
  * @param errorMessage: String - The error message to be displayed.
  * */
-
 @Composable
 fun TxtFieldErrorMsg(
     showError: Boolean,
     errorMessage: String,
 ) {
     if (showError) {
-        AppTexts.TitleSmall(
+        CaptionTexts.Level1(
             text = errorMessage,
-            color = MaterialTheme.colorScheme.error,
+            color = AppTheme.colors.error,
             modifier = Modifier.fillMaxWidth()
         )
     }
 }
+
 
 /** [IsTxtLengthValid] Displays the character count of the text field if showErrorMsg is true and there are no validation errors.
  * @param showError Set to true if there is a validation error, false otherwise.
@@ -118,7 +119,6 @@ fun TxtFieldErrorMsg(
  * @param showLenErrorMsg Set to true to show the character count, false to hide it.
  * @param stringLength The maximum allowed length for the text in the text field. The character count will be compared against this value.
  * */
-
 @Composable
 fun IsTxtLengthValid(
     showError: Boolean,
@@ -127,6 +127,6 @@ fun IsTxtLengthValid(
     stringLength: Int = ValidateTxtLength.defLength,
 ) {
     if (showLenErrorMsg && !showError) {
-        AppTexts.LabelLarge(text = "${value.length}/${stringLength}")
+        CaptionTexts.Level1(text = "${value.length}/${stringLength}")
     }
 }

@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.navigation.TopTabNavigation
 import fit.asta.health.feature.spotify.utils.SpotifyConstants
@@ -90,7 +90,7 @@ class SpotifyLoginActivity : ComponentActivity() {
                         }
 
                         is UiState.Loading -> {
-                            LoadingAnimation(modifier = Modifier.fillMaxSize())
+                            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
                         }
 
                         is UiState.Success -> {

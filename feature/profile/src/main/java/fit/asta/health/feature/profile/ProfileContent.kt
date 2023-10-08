@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.profile.create.CreateProfileLayout
 import fit.asta.health.feature.profile.show.ProfileReadyScreen
@@ -24,7 +24,7 @@ fun ProfileContent(
     val profileState by viewModel.state.collectAsState()
 
     when (profileState) {
-        is ProfileGetState.Loading -> LoadingAnimation()
+        is ProfileGetState.Loading -> AppDotTypingAnimation()
         is ProfileGetState.Success -> {
             ProfileReadyScreen(
                 userProfile = (profileState as ProfileGetState.Success).userProfile,

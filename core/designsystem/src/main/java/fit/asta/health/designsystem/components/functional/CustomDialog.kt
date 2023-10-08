@@ -22,10 +22,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDialog
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import kotlinx.coroutines.delay
@@ -82,10 +82,9 @@ fun DialogContent(
     onPositiveClick: () -> Unit,
     dialogData: DialogData,
 ) {
-    AppCard(content = {
+    AppCard {
         Column(
-            modifier = modifier
-                .padding(AppTheme.spacing.level3),
+            modifier = modifier.padding(AppTheme.spacing.level3),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             DialogHeader(dialogData = dialogData)
@@ -99,12 +98,12 @@ fun DialogContent(
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         }
-    })
+    }
 }
 
 @Composable
 private fun DialogHeader(dialogData: DialogData) {
-    AppDefaultIcon(
+    AppIcon(
         imageVector = Icons.Filled.NotificationImportant,
         contentDescription = "Alert Message",
         tint = AppTheme.colors.error,
@@ -156,7 +155,7 @@ private fun NegativeButton(
     dialogData: DialogData,
 ) {
 
-    AppButtons.AppStandardButton(
+    AppFilledButton(
         onClick = onNegativeClick,
         modifier = Modifier
             .height(AppTheme.buttonSize.level7)
@@ -174,7 +173,7 @@ private fun PositiveButton(
     onPositiveClick: () -> Unit,
     dialogData: DialogData,
 ) {
-    AppButtons.AppStandardButton(
+    AppFilledButton(
         onClick = onPositiveClick,
         modifier = Modifier
             .height(AppTheme.buttonSize.level7)

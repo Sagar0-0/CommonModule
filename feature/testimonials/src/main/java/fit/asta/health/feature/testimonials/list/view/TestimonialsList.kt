@@ -17,7 +17,7 @@ import androidx.paging.LoadState
 import androidx.paging.compose.collectAsLazyPagingItems
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorMsgCard
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -56,7 +56,7 @@ fun TestimonialsList(
                     Box(
                         modifier = Modifier.fillParentMaxSize(), contentAlignment = Alignment.Center
                     ) {
-                        LoadingAnimation()
+                        AppDotTypingAnimation()
                     }
                 }
             }
