@@ -5,17 +5,18 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.components.generic.AppButtons.AppOutlinedButton
 import fit.asta.health.designsystem.components.generic.AppDialog
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppTonalButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -31,7 +32,6 @@ fun AlertDialogPopUp(
         )
     ) {
         AppCard(
-            shape = RoundedCornerShape(10.dp),
             elevation = CardDefaults.cardElevation(8.dp)
         ) {
 
@@ -41,28 +41,27 @@ fun AlertDialogPopUp(
                     .padding(16.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.Center) {
-                    AppTexts.DisplaySmall(text = stringResource(id = R.string.alert))
+                    LargeTexts.Level3(text = stringResource(id = R.string.alert))
                 }
-                AppTexts.BodyLarge(text = content)
+                BodyTexts.Level1(text = content)
                 Row {
-                    AppButtons.AppOutlinedButton(
+                    AppOutlinedButton(
                         onClick = onDismiss,
                         Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
                             .weight(1F)
                     ) {
-                        AppTexts.BodyLarge(text = stringResource(id = R.string.cancel))
+                        BodyTexts.Level1(text = stringResource(id = R.string.cancel))
                     }
-                    AppButtons.AppStandardButton(
+                    AppTonalButton(
                         onClick = onDone,
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        AppTexts.BodyLarge(text = actionButton)
-                    }
+                            .weight(1F),
+                        textToShow = actionButton
+                    )
                 }
             }
         }

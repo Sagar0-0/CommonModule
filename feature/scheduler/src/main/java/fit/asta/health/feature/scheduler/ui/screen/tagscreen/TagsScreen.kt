@@ -13,10 +13,8 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,16 +24,17 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.CustomModelBottomSheet
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.components.AlertDialogPopUp
 import fit.asta.health.feature.scheduler.ui.components.CustomTagBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.SwipeDemo
@@ -50,7 +49,7 @@ fun TagsScreen(
     tagsList: SnapshotStateList<TagEntity>,
     customTagList: SnapshotStateList<TagEntity>
 ) {
-    val bottomSheetState = androidx.compose.material3.rememberModalBottomSheetState()
+    val bottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
@@ -85,11 +84,11 @@ fun TagsScreen(
                     Modifier
                         .fillMaxWidth()
                         .padding(it)
-                        .background(color = MaterialTheme.colorScheme.secondaryContainer)
+                        .background(color = AppTheme.colors.secondaryContainer)
                 ) {
                     if (tagsList.isNotEmpty()) {
                         item {
-                            AppTexts.TitleMedium(text = "Default Tag")
+                            TitleTexts.Level2(text = "Default Tag")
                         }
                         items(tagsList) { data ->
                             SwipeDemo(data = data, onSwipe = {}, delete = false,
@@ -101,7 +100,7 @@ fun TagsScreen(
                     }
                     if (customTagList.isNotEmpty()) {
                         item {
-                            AppTexts.TitleMedium(text = "User Tag")
+                            TitleTexts.Level2(text = "User Tag")
                         }
                         items(customTagList) { data ->
                             SwipeDemo(data = data, onSwipe = {
@@ -117,14 +116,12 @@ fun TagsScreen(
             }
         },
         floatingActionButton = {
-            FloatingActionButton(
+            AppFloatingActionButton(
                 onClick = { openSheet() },
-                containerColor = MaterialTheme.colorScheme.primary,
                 shape = CircleShape,
                 modifier = Modifier.size(50.dp),
-                contentColor = Color.White
             ) {
-                Icon(Icons.Filled.Add, contentDescription = null)
+                AppIcon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
         },
         topBar = {

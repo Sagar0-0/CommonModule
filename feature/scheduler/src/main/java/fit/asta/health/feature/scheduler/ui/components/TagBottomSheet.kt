@@ -1,5 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.components
 
+import androidx.annotation.StringRes
 import androidx.compose.foundation.*
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
@@ -25,16 +26,18 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.textfield.AstaTextField
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 import fit.asta.health.resources.drawables.R as DrawR
@@ -46,7 +49,7 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
     val interactionSource = remember { MutableInteractionSource() }
     val isPressed by interactionSource.collectIsPressedAsState()
 
-    val color = if (isPressed) MaterialTheme.colorScheme.primary else Color.Transparent
+    val color = if (isPressed) AppTheme.colors.primary else Color.Transparent
 
     Button(
         onClick = { onClick() },
@@ -68,7 +71,7 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 private fun SwipeAbleArea(text: String, image: String) {
     Box {//"https://img2.asta.fit${image}"
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
-            AsyncImage(
+            AppNetworkImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(getImgUrl(url = image))
                     .crossfade(true)
@@ -83,12 +86,7 @@ private fun SwipeAbleArea(text: String, image: String) {
                     .padding(8.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            Text(
-                text = text,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.Bold,
-                color = Color.Black
-            )
+            TitleTexts.Level2(text = text)
         }
     }
 }
@@ -139,38 +137,28 @@ fun CustomTagBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            IconButton(onClick = {
-                onNavigateBack()
-                keyboardController?.hide()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    Modifier.size(24.dp)
-                )
-            }
-            Text(
+            AppIconButton(imageVector = Icons.Default.Close,
+                modifier = Modifier.size(24.dp), onClick = {
+                    onNavigateBack()
+                    keyboardController?.hide()
+                })
+            TitleTexts.Level2(
                 text = stringResource(StringR.string.custom_tags),
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = {
-                onSave()
-                keyboardController?.hide()
-            }) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            AppIconButton(imageVector = Icons.Default.Check,
+                iconTint = AppTheme.colors.primary,
+                onClick = {
+                    onSave()
+                    keyboardController?.hide()
+                })
         }
         Spacer(modifier = Modifier.height(20.dp))
         CustomTagImage(onImageSelect = onImageSelect, image = image)
         Spacer(modifier = Modifier.height(20.dp))
         CustomTagTextField(
-            label = stringResource(StringR.string.tag_name),
+            label = StringR.string.tag_name,
             onValueChange = onValueChange
         )
 
@@ -181,29 +169,26 @@ fun CustomTagBottomSheetLayout(
 @Composable
 fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
 
-    IconButton(
-        onClick = onImageSelect, modifier = Modifier
-            .size(180.dp)
-            .clip(CircleShape)
-            .border(width = 2.dp, color = MaterialTheme.colorScheme.primary, shape = CircleShape)
-    ) {
-        Box(contentAlignment = Alignment.Center) {
-            AsyncImage(
-                model = ImageRequest.Builder(LocalContext.current)
-                    .data(image)
-                    .crossfade(true)
-                    .build(),
-                placeholder = painterResource(DrawR.drawable.placeholder_tag),
-                contentDescription = stringResource(StringR.string.description),
-                contentScale = ContentScale.Crop,
-                modifier = Modifier.fillMaxSize()
-            )
-            Image(
-                painter = painterResource(id = DrawR.drawable.cameraicon),
-                contentDescription = stringResource(StringR.string.camera_icon),
-                contentScale = ContentScale.FillBounds
-            )
-        }
+    Box(contentAlignment = Alignment.Center, modifier = Modifier
+        .clickable { onImageSelect() }
+        .size(180.dp)
+        .clip(CircleShape)
+        .border(width = 2.dp, color = AppTheme.colors.primary, shape = CircleShape)) {
+        AppNetworkImage(
+            model = ImageRequest.Builder(LocalContext.current)
+                .data(image)
+                .crossfade(true)
+                .build(),
+            placeholder = painterResource(DrawR.drawable.placeholder_tag),
+            contentDescription = stringResource(StringR.string.description),
+            contentScale = ContentScale.Crop,
+            modifier = Modifier.fillMaxSize()
+        )
+        Image(
+            painter = painterResource(id = DrawR.drawable.cameraicon),
+            contentDescription = stringResource(StringR.string.camera_icon),
+            contentScale = ContentScale.FillBounds
+        )
     }
 }
 
@@ -211,7 +196,7 @@ fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
 @OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun CustomTagTextField(
-    label: String, onValueChange: (String) -> Unit = {},
+    @StringRes label: Int? = null, onValueChange: (String) -> Unit = {},
     keyboardType: KeyboardType = KeyboardType.Text,
     imeAction: ImeAction = ImeAction.Done
 ) {
@@ -225,17 +210,17 @@ fun CustomTagTextField(
 
     LaunchedEffect(key1 = Unit) { focusRequester.requestFocus() }
 
-    OutlinedTextField(
+    AstaTextField(
         value = value,
         onValueChange = {
             value = it
             onValueChange(it)
         },
-        label = { Text(label) },
+        label = label,
         colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = MaterialTheme.colorScheme.primary,
+            focusedBorderColor = AppTheme.colors.primary,
             unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = MaterialTheme.colorScheme.primary,
+            focusedLabelColor = AppTheme.colors.primary,
         ),
         modifier = Modifier.focusRequester(focusRequester = focusRequester),
         shape = RoundedCornerShape(8.dp),

@@ -30,15 +30,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.SpotifyActivity
 import fit.asta.health.feature.scheduler.ui.components.CustomLabelBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.DigitalDemo
@@ -115,7 +117,7 @@ fun AlarmSettingScreen(
                         verticalAlignment = Alignment.CenterVertically,
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
-                        IconButton(
+                        AppIconButton(
                             onClick = {
                                 if (areInputsValid) {
                                     aSEvent(AlarmSettingEvent.Save(context = context))
@@ -123,14 +125,9 @@ fun AlarmSettingScreen(
                                 } else {
                                     onClick = true
                                 }
-                            }
-                        ) {
-                            Icon(
-                                imageVector = Icons.Default.Check,
-                                contentDescription = null,
-                                tint = MaterialTheme.colorScheme.primary
-                            )
-                        }
+                            },
+                            imageVector = Icons.Default.Check,
+                        )
                     }
                 })
         }, content = { paddingValues ->
@@ -230,10 +227,9 @@ fun AlarmSettingScreen(
                     switchTitle = "",
                     onNavigateToClickText = null
                 )
-                Text(
+                TitleTexts.Level2(
                     text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
-                    color = MaterialTheme.colorScheme.onSurfaceVariant,
-                    fontSize = 16.sp,
+                    color = AppTheme.colors.onSurfaceVariant,
                     modifier = Modifier.padding(horizontal = 16.dp)
                 )
                 Spacer(modifier = Modifier.height(16.dp))
@@ -276,7 +272,7 @@ fun AlarmCreateBtmSheetLayout(
             Column(modifier = Modifier.fillMaxWidth()) {
                 CustomLabelBottomSheetLayout(
                     text = stringResource(StringR.string.labels),
-                    label = stringResource(StringR.string.enter_your_label),
+                    label = StringR.string.enter_your_label,
                     onNavigateBack = {
                         keyboardController?.hide()
                         closeSheet()
@@ -293,7 +289,7 @@ fun AlarmCreateBtmSheetLayout(
             Column(modifier = Modifier.fillMaxWidth()) {
                 CustomLabelBottomSheetLayout(
                     text = stringResource(id = StringR.string.add_description),
-                    label = stringResource(id = StringR.string.enter_description),
+                    label = StringR.string.enter_description,
                     onNavigateBack = {
                         closeSheet()
                         keyboardController?.hide()
@@ -385,16 +381,15 @@ private fun SoundOptionsUI() {
     ) {
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
             Box(contentAlignment = Alignment.Center) {
-                Icon(
+                AppIcon(
                     imageVector = Icons.Default.Audiotrack,
                     contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
+                    tint = AppTheme.colors.primary
                 )
             }
-            Text(
+            TitleTexts.Level2(
                 text = stringResource(StringR.string.sound),
-                style = MaterialTheme.typography.titleMedium,
-                color = MaterialTheme.colorScheme.onSecondaryContainer
+                color = AppTheme.colors.onSecondaryContainer
             )
         }
 
@@ -402,26 +397,19 @@ private fun SoundOptionsUI() {
             horizontalArrangement = Arrangement.SpaceEvenly,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            TextButton(onClick = {
+            AppTextButton(
+                onClick = {
+                    // Opening the Spotify Activity
+                    val intent = Intent(activity, SpotifyActivity::class.java)
+                    activity.startActivity(intent)
+                },
+                textToShow = stringResource(StringR.string.spotify),
+            )
 
-                // Opening the Spotify Activity
-                val intent = Intent(activity, SpotifyActivity::class.java)
-                activity.startActivity(intent)
-            }) {
-                Text(
-                    text = stringResource(StringR.string.spotify),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
-
-            TextButton(onClick = { /*TODO*/ }) {
-                Text(
-                    text = stringResource(StringR.string.local_music),
-                    style = MaterialTheme.typography.titleMedium,
-                    color = MaterialTheme.colorScheme.onSecondaryContainer
-                )
-            }
+            AppTextButton(
+                onClick = { /*TODO*/ },
+                textToShow = stringResource(StringR.string.local_music)
+            )
         }
     }
 }

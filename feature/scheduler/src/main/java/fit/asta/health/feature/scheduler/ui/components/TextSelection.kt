@@ -6,17 +6,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun TextSelection(
@@ -40,16 +39,15 @@ fun TextSelection(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 Box(contentAlignment = Alignment.Center) {
-                    Icon(
+                    AppIcon(
                         imageVector = imageIcon,
                         contentDescription = null,
-                        tint = color ?: MaterialTheme.colorScheme.primary
+                        tint = color ?: AppTheme.colors.primary
                     )
                 }
-                Text(
+                TitleTexts.Level2(
                     text = title,
-                    style = MaterialTheme.typography.titleMedium,
-                    color = color ?: MaterialTheme.colorScheme.onSecondaryContainer
+                    color = color ?: AppTheme.colors.onSecondaryContainer
                 )
             }
         }
@@ -62,10 +60,10 @@ fun TextSelection(
                 SelectableText(arrowTitle,btnEnabled,onNavigateAction)
                 Box(contentAlignment = Alignment.Center) {
                     IconButton(enabled = btnEnabled, onClick = onNavigateAction) {
-                        Icon(
+                        AppIcon(
                             imageVector = Icons.Default.ChevronRight,
                             contentDescription = null,
-                            tint = MaterialTheme.colorScheme.primary
+                            tint = AppTheme.colors.primary
                         )
                     }
                 }
@@ -76,11 +74,5 @@ fun TextSelection(
 
 @Composable
 fun SelectableText(arrowTitle: String,btnEnabled: Boolean=true, onClick: () -> Unit = {}) {
-    TextButton(onClick = onClick, enabled = btnEnabled) {
-        Text(
-            text = arrowTitle,
-            style = MaterialTheme.typography.titleMedium,
-            color = MaterialTheme.colorScheme.onSurfaceVariant
-        )
-    }
+    AppTextButton(onClick = onClick, enabled = btnEnabled, textToShow = arrowTitle)
 }

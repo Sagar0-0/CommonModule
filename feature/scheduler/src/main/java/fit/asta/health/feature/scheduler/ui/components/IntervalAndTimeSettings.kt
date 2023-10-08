@@ -17,12 +17,7 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.rounded.RemoveCircle
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -36,10 +31,13 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.chargemap.compose.numberpicker.NumberPicker
-import fit.asta.health.designsystem.components.ButtonWithColor
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppTonalButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
 import kotlin.math.abs
@@ -130,9 +128,7 @@ fun MinutesPicker(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        Text(
-            text = "Select Time", style = MaterialTheme.typography.titleLarge
-        )
+        TitleTexts.Level3(text = "Select Time")
 
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -146,23 +142,20 @@ fun MinutesPicker(
             }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
             )
 
-            Text(
+            TitleTexts.Level1(
                 textAlign = TextAlign.Center,
-                text = "Minutes",
-                style = MaterialTheme.typography.titleSmall
+                text = "Minutes"
             )
 
         }
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
-            ButtonWithColor(
+            AppTonalButton(
                 modifier = Modifier.weight(0.5f),
-                color = Color.Red,
-                text = stringResource(id = StringR.string.cancel)
+                textToShow = stringResource(id = StringR.string.cancel)
             ) { onCancel() }
-            ButtonWithColor(
+            AppTonalButton(
                 modifier = Modifier.weight(0.5f),
-                color = Color.Blue,
-                text = stringResource(StringR.string.save)
+                textToShow = stringResource(StringR.string.save)
             ) { onSave(min) }
         }
     }
@@ -199,13 +192,12 @@ fun CustomFloatingButton(
             Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            FloatingActionButton(
+            AppFloatingActionButton(
                 onClick = onEndAlarm,
                 shape = CircleShape,
                 modifier = Modifier.size(50.dp),
-                containerColor = MaterialTheme.colorScheme.primary
             ) {
-                Icon(
+                AppIcon(
                     imageVector = Icons.Default.Add,
                     contentDescription = null,
                     tint = Color.White
@@ -229,18 +221,17 @@ fun CustomVariantInterval(
         Box {
             Row {
                 Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                    Icon(
+                    AppIcon(
                         painter = painterResource(id = DrawR.drawable.ic_ic24_rotate),
                         contentDescription = null,
-                        Modifier.size(20.dp),
-                        tint = MaterialTheme.colorScheme.primary
+                        modifier = Modifier.size(20.dp),
+                        tint = AppTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.width(8.dp))
-                Text(
+                TitleTexts.Level3(
                     text = time,
-                    fontSize = 16.sp,
-                    color = MaterialTheme.colorScheme.onTertiaryContainer
+                    color = AppTheme.colors.onTertiaryContainer
                 )
             }
         }
@@ -252,14 +243,12 @@ fun CustomVariantInterval(
                 Spacer(modifier = Modifier.width(8.dp))
 
                 Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
-                    IconButton(onClick = onClick) {
-                        Icon(
-                            imageVector = Icons.Rounded.RemoveCircle,
-                            contentDescription = null,
-                            Modifier.size(24.dp),
-                            tint = MaterialTheme.colorScheme.primary
-                        )
-                    }
+                    AppIconButton(
+                        onClick = onClick,
+                        imageVector = Icons.Rounded.RemoveCircle,
+                        modifier = Modifier.size(24.dp),
+                        iconTint = AppTheme.colors.primary
+                    )
                 }
             }
         }

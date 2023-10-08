@@ -7,15 +7,10 @@ import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,10 +21,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.util.VibrationPattern
 import fit.asta.health.resources.strings.R as StringR
 
@@ -54,59 +49,43 @@ fun VibrationBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null,
-                    Modifier.size(24.dp)
-                )
-            }
-            Text(
+            AppIconButton(onClick = onNavigateBack, imageVector = Icons.Default.Close)
+            TitleTexts.Level2(
                 text = text,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            IconButton(onClick = { onSave(value) }) {
-                Icon(
-                    imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            AppIconButton(imageVector = Icons.Default.Check, onClick = { onSave(value) })
         }
         FlowRow(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            AppButtons.AppOutlinedButton(
+            AppOutlinedButton(
                 onClick = { value = VibrationPattern.Short },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (value == VibrationPattern.Short) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                AppTexts.TitleMedium(text = stringResource(id = StringR.string.shortPattern))
-            }
-            AppButtons.AppOutlinedButton(
+                    containerColor = if (value == VibrationPattern.Short) AppTheme.colors.primary
+                    else AppTheme.colors.onPrimary
+                ),
+                textToShow = stringResource(id = StringR.string.shortPattern)
+            )
+            AppOutlinedButton(
                 onClick = { value = VibrationPattern.Long },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (value == VibrationPattern.Long) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                AppTexts.TitleMedium(text = stringResource(id = StringR.string.longPattern))
-            }
-            AppButtons.AppOutlinedButton(
+                    containerColor = if (value == VibrationPattern.Long) AppTheme.colors.primary
+                    else AppTheme.colors.onPrimary
+                ),
+                textToShow = stringResource(id = StringR.string.longPattern)
+            )
+            AppOutlinedButton(
                 onClick = { value = VibrationPattern.Intermittent },
                 colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (value == VibrationPattern.Intermittent) MaterialTheme.colorScheme.primary
-                    else MaterialTheme.colorScheme.onPrimary
-                )
-            ) {
-                AppTexts.TitleMedium(text = stringResource(StringR.string.intermittent))
-            }
+                    containerColor = if (value == VibrationPattern.Intermittent) AppTheme.colors.primary
+                    else AppTheme.colors.onPrimary
+                ),
+                textToShow = stringResource(StringR.string.intermittent)
+            )
         }
     }
 

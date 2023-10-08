@@ -20,11 +20,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
@@ -37,7 +37,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
         snackBarHostState = snackBarHostState
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
-            AppDefServerImg(
+            AppNetworkImage(
                 model = ImageRequest.Builder(LocalContext.current)
                     .data(getImgUrl(url = uiState.image))
                     .crossfade(true)
@@ -59,7 +59,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                         .fillMaxWidth(),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    AppTexts.DisplayMedium(text = uiState.alarmTime, color = Color.White)
+                    HeadingTexts.Level2(text = uiState.alarmTime, color = Color.White)
                 }
             }
             Box(
@@ -76,28 +76,23 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level5)) {
-                        AppButtons.AppStandardButton(onClick = {
+                        AppFilledButton(onClick = {
                             event(
                                 AlarmEvent.onSwipedLeft(
                                     context
                                 )
                             )
-                        }) {
-                            AppTexts.TitleMedium(text = stringResource(id = StringR.string.snooze))
-                        }
-                        AppButtons.AppStandardButton(onClick = {
+                        }, textToShow = stringResource(id = StringR.string.snooze))
+                        AppFilledButton(onClick = {
                             event(
                                 AlarmEvent.onSwipedRight(
                                     context
                                 )
                             )
-                        }) {
-                            AppTexts.TitleMedium(text = stringResource(StringR.string.stop))
-                        }
+                        }, textToShow = stringResource(StringR.string.stop))
                     }
                 }
             }
-
         }
     }
 }

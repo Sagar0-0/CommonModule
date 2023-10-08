@@ -8,11 +8,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.RadioButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -21,7 +16,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R as StringR
 
 
@@ -51,25 +49,13 @@ fun NotificationBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            IconButton(onClick = onNavigateBack) {
-                Icon(
-                    imageVector = Icons.Default.Close,
-                    contentDescription = null
-                )
-            }
-           Text(
+            AppIconButton(onClick = onNavigateBack, imageVector = Icons.Default.Close)
+            TitleTexts.Level2(
                 text = text,
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onTertiaryContainer,
+                color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-           IconButton(onClick = { onSave(selectedOption) }) {
-               Icon(
-                   imageVector = Icons.Default.Check,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.primary
-                )
-            }
+            AppIconButton(onClick = { onSave(selectedOption) }, imageVector = Icons.Default.Check)
         }
 
         radioOptions.forEach { text ->
@@ -78,16 +64,15 @@ fun NotificationBottomSheetLayout(
                     .fillMaxWidth()
                     .padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically
             ) {
-                RadioButton(
+                AppRadioButton(
                     selected = (text == selectedOption),
                     onClick = {
                         onOptionSelected(text)
                     }
                 )
-                Text(
+                TitleTexts.Level2(
                     text = text,
                     modifier = Modifier.padding(start = 8.dp),
-                    fontSize = 16.sp
                 )
             }
         }
