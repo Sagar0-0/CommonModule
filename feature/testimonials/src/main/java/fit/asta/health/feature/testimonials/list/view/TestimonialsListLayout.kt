@@ -9,8 +9,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 

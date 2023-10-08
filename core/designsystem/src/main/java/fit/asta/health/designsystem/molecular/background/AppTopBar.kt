@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.molecular
+package fit.asta.health.designsystem.molecular.background
 
 
 import androidx.compose.foundation.layout.Arrangement
@@ -9,7 +9,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Help
 import androidx.compose.material.icons.outlined.NavigateBefore
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.TopAppBar
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.TopAppBarScrollBehavior
@@ -40,7 +39,7 @@ fun AppTopBar(
     title: String = "",
     containerColor: Color = Color.Transparent,
     scrollBehavior: TopAppBarScrollBehavior? = null,
-    titleContentColor: Color = MaterialTheme.colorScheme.onPrimaryContainer,
+    titleContentColor: Color = AppTheme.colors.onPrimaryContainer,
     backIcon: ImageVector? = Icons.Outlined.NavigateBefore,
     onBack: () -> Unit = {},
     windowInsets: WindowInsets = TopAppBarDefaults.windowInsets,
@@ -93,5 +92,4 @@ fun AppTopBarWithHelp(
             AppIconButton(imageVector = Icons.Default.Help, onClick = onHelp)
         }
     }
-
 }

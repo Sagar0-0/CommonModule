@@ -15,7 +15,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppVerticalGrid
+import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.animations.AppDividerLineWidth
 import fit.asta.health.designsystem.molecular.background.AppHorizontalPager

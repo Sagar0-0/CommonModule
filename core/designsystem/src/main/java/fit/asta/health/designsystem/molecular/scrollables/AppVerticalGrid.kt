@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.molecular
+package fit.asta.health.designsystem.molecular.scrollables
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,6 @@ import fit.asta.health.designsystem.AppTheme
  * @param verticalArrangement The vertical arrangement of the layout's children
  * @param horizontalArrangement The horizontal arrangement of the layout's children
  * */
-
 @Composable
 fun AppVerticalGrid(
     count: Int,

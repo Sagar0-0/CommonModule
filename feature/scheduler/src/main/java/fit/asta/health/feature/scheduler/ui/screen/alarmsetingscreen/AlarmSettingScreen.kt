@@ -34,8 +34,8 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton

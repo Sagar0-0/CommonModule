@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.molecular
+package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues

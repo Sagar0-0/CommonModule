@@ -23,7 +23,6 @@ import androidx.navigation.compose.rememberNavController
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.*
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel

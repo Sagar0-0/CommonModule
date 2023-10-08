@@ -11,8 +11,8 @@ import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
-import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.molecular.AppTopBar
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.feature.scheduler.ui.components.SettingsLayout
 import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet

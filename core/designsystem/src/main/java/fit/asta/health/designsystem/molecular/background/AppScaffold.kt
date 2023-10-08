@@ -4,7 +4,7 @@
     ExperimentalMaterial3Api::class
 )
 
-package fit.asta.health.designsystem.molecular
+package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -14,18 +14,17 @@ import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.contentColorFor
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import fit.asta.health.designsystem.AppTheme
 
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
  *  for the app.
@@ -47,23 +46,30 @@ fun AppScaffold(
     floatingActionButton: @Composable (() -> Unit)? = null,
     content: @Composable (PaddingValues) -> Unit = {},
 ) {
-    Scaffold(modifier = modifier.fillMaxSize(), topBar = {
-        topBar?.let { topBar -> topBar() }
-    }, bottomBar = {
-        bottomBar?.let { bottomBar ->
-            bottomBar()
+    Scaffold(
+        modifier = modifier.fillMaxSize(),
+        topBar = {
+            topBar?.let { topBar -> topBar() }
+        },
+        bottomBar = {
+            bottomBar?.let { bottomBar ->
+                bottomBar()
+            }
+        },
+        snackbarHost = {
+            snackBarHostState?.let { snackBarHostState ->
+                SnackbarHost(hostState = snackBarHostState)
+            }
+        },
+        floatingActionButton = {
+            floatingActionButton?.let { floatingActionButton ->
+                floatingActionButton()
+            }
+        },
+        content = { innerPadding ->
+            content(innerPadding)
         }
-    }, content = { innerPadding ->
-        content(innerPadding)
-    }, snackbarHost = {
-        snackBarHostState?.let { snackBarHostState ->
-            SnackbarHost(hostState = snackBarHostState)
-        }
-    }, floatingActionButton = {
-        floatingActionButton?.let { floatingActionButton ->
-            floatingActionButton()
-        }
-    })
+    )
 }
 
 
@@ -88,11 +94,11 @@ fun AppBottomSheetScaffold(
     sheetContent: @Composable ColumnScope.() -> Unit,
     modifier: Modifier = Modifier,
     scaffoldState: BottomSheetScaffoldState,
-    sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
-    sheetShape: Shape = MaterialTheme.shapes.large,
-    sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
-    sheetContainerColor: Color = BottomSheetDefaults.ContainerColor,
-    sheetContentColor: Color = contentColorFor(sheetContainerColor),
+    sheetPeekHeight: Dp = AppTheme.customSize.level8,
+    sheetShape: Shape = AppTheme.shape.level3,
+    sheetShadowElevation: Dp = AppTheme.elevation.level1,
+    sheetContainerColor: Color = AppTheme.colors.surface,
+    sheetContentColor: Color = AppTheme.colors.onSurface,
     sheetSwipeEnabled: Boolean = true,
     sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     topBar: @Composable (() -> Unit)? = null,

@@ -16,7 +16,6 @@ import kotlin.math.absoluteValue
  * retrieve the current page and its offset for computing the transition effect.
  * @return [carouselTransition] function returns a [Modifier] that can be applied to Compose UI elements.
  * */
-
 @OptIn(ExperimentalFoundationApi::class)
 fun Modifier.carouselTransition(page: Int, pagerState: PagerState) = graphicsLayer {
     val pageOffset =
