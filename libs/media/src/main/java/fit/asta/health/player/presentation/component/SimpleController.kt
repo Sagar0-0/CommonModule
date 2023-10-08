@@ -36,9 +36,9 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.C
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.player.domain.utils.getName
 import fit.asta.health.player.media.MediaState
 import fit.asta.health.player.media.TimeBar
@@ -193,7 +193,7 @@ fun TrackSelectionDialog(
                                         onTrackSelected(index)
                                     },
                                 )
-                                AppTexts.TitleMedium(text = item)
+                                BodyTexts.Level1(text = item)
                             }
                         }
                     }

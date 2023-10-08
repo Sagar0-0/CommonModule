@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components.generic
+package fit.asta.health.designsystem.molecular
 
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement

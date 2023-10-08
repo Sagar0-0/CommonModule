@@ -48,11 +48,11 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppModalBottomSheet
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -183,26 +183,26 @@ internal fun FillAddressSheet(
                 ) { closeSheet() }
             }
 
-            AppTexts.TitleMedium(
+            BodyTexts.Level1(
                 text = R.string.save_address_as.toStringFromResId(),
                 Modifier.padding(bottom = AppTheme.spacing.level2)
             )
             Row(Modifier.fillMaxWidth()) {
-                AppTexts.TitleMedium(
+                BodyTexts.Level1(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(if (name.value == R.string.home.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)
                         .clickable { name.value = R.string.home.toStringFromResId(context) }
                         .padding(8.dp), text = R.string.home.toStringFromResId())
                 Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-                AppTexts.TitleMedium(
+                BodyTexts.Level1(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(if (name.value == R.string.work.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)
                         .clickable { name.value = R.string.work.toStringFromResId(context) }
                         .padding(8.dp), text = R.string.work.toStringFromResId())
                 Spacer(modifier = Modifier.padding(horizontal = 3.dp))
-                AppTexts.TitleMedium(
+                BodyTexts.Level1(
                     modifier = Modifier
                         .clip(RoundedCornerShape(10.dp))
                         .background(if (name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) AppTheme.colors.primary else Color.Transparent)

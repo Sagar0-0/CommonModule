@@ -40,10 +40,10 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.AppTextField
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -162,7 +162,7 @@ internal fun SearchBottomSheet(
                                         contentDescription = null,
                                         modifier = Modifier.padding(end = AppTheme.spacing.level3)
                                     )
-                                    AppTexts.BodyLarge(text = it.name)
+                                    BodyTexts.Level2(text = it.name)
                                     Spacer(modifier = Modifier.weight(1f))
                                 }
                             }

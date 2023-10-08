@@ -21,7 +21,7 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.ProgressBarInt
+import fit.asta.health.designsystem.molecular.ProgressBarInt
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay

@@ -25,7 +25,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.util.Constants.Companion.getTimeDifference
 import kotlin.math.abs

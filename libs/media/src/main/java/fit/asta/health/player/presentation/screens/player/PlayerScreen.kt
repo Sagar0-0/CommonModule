@@ -72,12 +72,14 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.player.audio.common.MusicState
 import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.asFormattedString
@@ -514,14 +516,14 @@ fun AlertDialogTrack(
                     .padding(16.dp)
             ) {
                 Row(horizontalArrangement = Arrangement.Center) {
-                    AppTexts.TitleLarge(text = stringResource(id = R.string.audio_language))
+                    HeadingTexts.Level4(text = stringResource(id = R.string.audio_language))
                 }
                 content.forEach {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         AppRadioButton(
                             selected = it == current,
                             onClick = { onDone(it) })
-                        AppTexts.BodyLarge(text = it)
+                        BodyTexts.Level2(text = it)
                     }
                 }
 
@@ -533,7 +535,7 @@ fun AlertDialogTrack(
                             .padding(8.dp)
                             .weight(1F)
                     ) {
-                        AppTexts.BodyLarge(text = stringResource(id = R.string.cancel))
+                        BodyTexts.Level2(text = stringResource(id = R.string.cancel))
                     }
 
                 }
@@ -564,8 +566,8 @@ fun BackAlertDialog(
                 horizontalAlignment = Alignment.CenterHorizontally,
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
-                AppTexts.HeadlineMedium(text = stringResource(id = R.string.sure_you_want_to_leave))
-                AppTexts.TitleLarge(text = stringResource(id = R.string.meditation_benefits))
+                HeadingTexts.Level1(text = stringResource(id = R.string.sure_you_want_to_leave))
+                HeadingTexts.Level4(text = stringResource(id = R.string.meditation_benefits))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
@@ -577,7 +579,7 @@ fun BackAlertDialog(
                             .fillMaxWidth()
                             .weight(1F)
                     ) {
-                        AppTexts.BodySmall(text = stringResource(id = R.string.meditate_later))
+                        CaptionTexts.Level3(text = stringResource(id = R.string.meditate_later))
                     }
                     AppOutlinedButton(
                         onClick = onResume,
@@ -586,7 +588,7 @@ fun BackAlertDialog(
                             .fillMaxWidth()
                             .weight(1F)
                     ) {
-                        AppTexts.BodySmall(text = stringResource(id = R.string.resume_now))
+                        CaptionTexts.Level3(text = stringResource(id = R.string.resume_now))
                     }
                 }
             }

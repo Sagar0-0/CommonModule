@@ -14,7 +14,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.resources.strings.R
 
 @Composable
@@ -33,13 +33,13 @@ internal fun CurrentLocationUi(name: String, area: String) {
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = R.string.location.toStringFromResId()
             )
-            AppTexts.TitleMedium(
+            BodyTexts.Level1(
                 maxLines = 1,
                 overflow = TextOverflow.Ellipsis,
                 text = name,
             )
         }
-        AppTexts.TitleMedium(
+        BodyTexts.Level1(
             modifier = Modifier.padding(AppTheme.spacing.level1),
             text = area
         )

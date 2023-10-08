@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components.functional
+package fit.asta.health.designsystem.molecular
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Column

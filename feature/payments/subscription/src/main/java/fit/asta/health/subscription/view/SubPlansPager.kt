@@ -40,8 +40,8 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
@@ -170,14 +170,14 @@ private fun SubPlanItem(
             Crossfade(targetState = fullScreen, label = "") {
                 if (it) {
                     Column {
-                        AppTexts.HeadlineLarge(
+                        HeadingTexts.Level1(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
                             text = item.ttl
                         )
 
                     }
                 } else {
-                    AppTexts.HeadlineSmall(
+                    HeadingTexts.Level2(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
                         text = item.ttl
                     )

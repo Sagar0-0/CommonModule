@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components
+package fit.asta.health.designsystem.molecular
 
 import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable

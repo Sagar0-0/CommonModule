@@ -22,7 +22,7 @@ import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents
