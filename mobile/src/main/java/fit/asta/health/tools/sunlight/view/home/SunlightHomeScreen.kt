@@ -15,7 +15,7 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import fit.asta.health.tools.sunlight.nav.SunlightScreen

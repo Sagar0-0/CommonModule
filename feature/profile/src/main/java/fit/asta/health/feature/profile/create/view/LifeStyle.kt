@@ -41,7 +41,7 @@ import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
+import fit.asta.health.designsystem.molecular.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.button.AppFilledButton

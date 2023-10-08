@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components.functional
+package fit.asta.health.designsystem.molecular
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -12,7 +12,6 @@ import androidx.compose.ui.text.input.KeyboardCapitalization
 import androidx.compose.ui.text.input.KeyboardType
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 

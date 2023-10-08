@@ -32,10 +32,10 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -211,7 +211,7 @@ internal fun MapScreen(
                         )
                     },
                     leadingIcon = {
-                        AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
+                        AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                     }
                 )
             }

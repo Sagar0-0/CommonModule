@@ -27,7 +27,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
@@ -211,7 +211,7 @@ fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                AppDefaultIcon(
+                AppIcon(
                     imageVector = imageVector,
                     contentDescription = "ErrorMessage Occurred while fetching Tst List",
                     tint = AppTheme.colors.surface,

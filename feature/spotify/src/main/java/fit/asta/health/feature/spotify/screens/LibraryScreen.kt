@@ -25,7 +25,7 @@ import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsM
 import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.spotify.components.MusicProfileOptionList
 import fit.asta.health.feature.spotify.components.MusicSmallImageRow

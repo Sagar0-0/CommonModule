@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.icon.AppIcon

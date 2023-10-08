@@ -23,7 +23,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent

@@ -29,7 +29,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts

@@ -23,7 +23,7 @@ import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE

@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.resources.strings.R
 
@@ -26,7 +26,7 @@ internal fun CurrentLocationUi(name: String, area: String) {
         horizontalAlignment = Alignment.Start
     ) {
         Row {
-            AppDefaultIcon(
+            AppIcon(
                 modifier = Modifier
                     .padding(end = AppTheme.spacing.level2)
                     .size(AppTheme.iconSize.level3),

@@ -20,9 +20,9 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.functional.CircularSliderInt
+import fit.asta.health.designsystem.molecular.CircularSliderInt
 import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.TitleTexts

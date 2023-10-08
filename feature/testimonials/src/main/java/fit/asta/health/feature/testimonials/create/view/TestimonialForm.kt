@@ -17,11 +17,11 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
+import fit.asta.health.designsystem.molecular.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.OnSuccessfulSubmit
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
-import fit.asta.health.designsystem.components.functional.ValidateTxtLength
+import fit.asta.health.designsystem.molecular.ValidateTxtLength
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppScaffold

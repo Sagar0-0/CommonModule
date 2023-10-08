@@ -9,7 +9,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.tools.exercise.view.level.LevelItem
 

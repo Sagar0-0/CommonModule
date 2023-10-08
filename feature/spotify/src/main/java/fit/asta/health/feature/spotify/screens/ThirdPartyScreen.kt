@@ -38,9 +38,9 @@ import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedMode
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.components.MusicPlayableSmallCards

@@ -18,6 +18,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -51,7 +52,11 @@ fun AppTopBar(
         },
         navigationIcon = {
             backIcon?.let {
-                AppIconButton(imageVector = it, onClick = onBack)
+                AppIconButton(
+                    imageVector = it,
+                    iconTint = AppTheme.colors.primary,
+                    onClick = onBack
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(

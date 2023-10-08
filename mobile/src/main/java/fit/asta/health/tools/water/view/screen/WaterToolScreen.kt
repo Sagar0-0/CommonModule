@@ -46,9 +46,9 @@ import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.functional.CircularSliderFloat
+import fit.asta.health.designsystem.molecular.CircularSliderFloat
 import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarFloat
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton

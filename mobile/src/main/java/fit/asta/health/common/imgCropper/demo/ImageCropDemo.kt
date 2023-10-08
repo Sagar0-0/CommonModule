@@ -44,7 +44,7 @@ import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.molecular.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppTopBar
 
 
 @OptIn(ExperimentalMaterial3Api::class)

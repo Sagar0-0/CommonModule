@@ -41,7 +41,7 @@ import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.getOneUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
+import fit.asta.health.designsystem.molecular.AppTextFieldValidate
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton

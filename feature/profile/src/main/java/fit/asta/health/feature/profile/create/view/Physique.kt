@@ -53,9 +53,9 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.functional.AppTextFieldValidate
+import fit.asta.health.designsystem.molecular.AppTextFieldValidate
 import fit.asta.health.designsystem.components.functional.RowToggleButtonGroup
-import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon

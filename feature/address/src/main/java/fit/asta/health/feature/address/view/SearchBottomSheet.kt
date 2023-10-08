@@ -37,13 +37,13 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefServerImg
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
-import fit.asta.health.designsystem.components.generic.AppTextField
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.AppModalBottomSheet
+import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -107,11 +107,11 @@ internal fun SearchBottomSheet(
                     )
                 },
                 leadingIcon = {
-                    AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
+                    AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                 },
                 trailingIcon = {
                     if (searchQuery.length > 2) {
-                        AppDefaultIcon(
+                        AppIcon(
                             imageVector = Icons.Default.Close,
                             contentDescription = "Search Button",
                             modifier = Modifier.clickable(
@@ -156,7 +156,7 @@ internal fun SearchBottomSheet(
                                         .fillMaxWidth()
                                         .padding(AppTheme.spacing.level1)
                                 ) {
-                                    AppDefServerImg(
+                                    AppNetworkImage(
                                         placeholder = painterResource(DrawR.drawable.placeholder_tag),
                                         model = it.icon,
                                         contentDescription = null,

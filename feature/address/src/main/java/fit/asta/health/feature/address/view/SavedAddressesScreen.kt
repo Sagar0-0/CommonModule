@@ -54,10 +54,10 @@ import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.AppTextField
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.AppTextField
+import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -185,7 +185,7 @@ internal fun SavedAddressesScreen(
                         )
                     },
                     leadingIcon = {
-                        AppDefaultIcon(imageVector = Icons.Default.Search, contentDescription = "")
+                        AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                     }
                 )
             }
@@ -209,7 +209,7 @@ internal fun SavedAddressesScreen(
                         }
                     }
                 ) {
-                    AppDefaultIcon(
+                    AppIcon(
                         modifier = Modifier
                             .padding(end = AppTheme.spacing.level1)
                             .size(AppTheme.iconSize.level3),
@@ -257,7 +257,7 @@ internal fun SavedAddressesScreen(
                         }
                     }
 
-                    AppDefaultIcon(
+                    AppIcon(
                         imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                     )
                 }
@@ -284,7 +284,7 @@ internal fun SavedAddressesScreen(
                         Toast.makeText(context, "Fetching location...", Toast.LENGTH_SHORT).show()
                     }
                 }) {
-                AppDefaultIcon(
+                AppIcon(
                     modifier = Modifier
                         .padding(end = AppTheme.spacing.level1)
                         .size(AppTheme.iconSize.level3),
@@ -298,7 +298,7 @@ internal fun SavedAddressesScreen(
                     text = R.string.add_address.toStringFromResId(),
                     textAlign = TextAlign.Start
                 )
-                AppDefaultIcon(
+                AppIcon(
                     imageVector = Icons.Default.KeyboardArrowRight, contentDescription = ""
                 )
             }
@@ -439,7 +439,7 @@ private fun AddressItem(
             .fillMaxWidth()
             .padding(AppTheme.spacing.level2)
     ) {
-        AppDefaultIcon(
+        AppIcon(
             modifier = Modifier.padding(end = AppTheme.spacing.level1),
             imageVector = Icons.Default.Home,
             contentDescription = ""

@@ -27,7 +27,7 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall

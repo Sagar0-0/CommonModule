@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components.functional
+package fit.asta.health.designsystem.molecular
 
 
 import android.view.MotionEvent
