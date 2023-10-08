@@ -38,7 +38,6 @@ import androidx.compose.ui.unit.Dp
  * @param content content of the screen. The lambda receives a [PaddingValues] that should be
  * applied to the content root.
  * */
-
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
@@ -83,8 +82,6 @@ fun AppScaffold(
  * @param content content of the screen. The lambda receives a [PaddingValues] that should be
  * applied to the content root.
  * */
-
-
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomSheetScaffold(

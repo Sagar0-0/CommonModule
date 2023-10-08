@@ -21,7 +21,7 @@ import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
@@ -217,7 +217,7 @@ fun SwitchItem(
     onChange: (newValue: Boolean) -> Unit
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
-        AppDefaultIcon(
+        AppIcon(
             modifier = Modifier.padding(AppTheme.spacing.level1),
             imageVector = imageVector,
             contentDescription = ""

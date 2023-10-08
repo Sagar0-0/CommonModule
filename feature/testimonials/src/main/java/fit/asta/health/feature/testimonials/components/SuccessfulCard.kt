@@ -24,7 +24,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
-import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
@@ -89,7 +89,7 @@ fun SuccessfulCard(
                 )
                 .background(color = Color.Green), contentAlignment = Alignment.Center
         ) {
-            AppDefaultIcon(
+            AppIcon(
                 imageVector = if (underReview) {
                     Icons.Filled.Reviews
                 } else {

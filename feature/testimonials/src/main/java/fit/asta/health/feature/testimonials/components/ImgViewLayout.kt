@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppDefaultIcon
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
@@ -40,7 +40,7 @@ fun UploadTstMediaView(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppDefaultIcon(
+            AppIcon(
                 imageVector = Icons.Filled.UploadFile,
                 contentDescription = "Upload Image",
                 tint = AppTheme.colors.onTertiaryContainer
