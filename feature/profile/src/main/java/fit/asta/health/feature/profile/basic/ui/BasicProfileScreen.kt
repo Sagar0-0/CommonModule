@@ -42,7 +42,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.molecular.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType

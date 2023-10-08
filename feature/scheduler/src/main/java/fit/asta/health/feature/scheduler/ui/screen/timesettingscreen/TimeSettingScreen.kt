@@ -12,7 +12,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.CustomModelBottomSheet
-import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.molecular.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.feature.scheduler.ui.components.SettingsLayout
 import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet

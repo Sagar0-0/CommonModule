@@ -24,7 +24,7 @@ import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
-import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt

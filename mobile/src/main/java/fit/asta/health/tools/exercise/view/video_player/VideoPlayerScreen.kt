@@ -34,7 +34,7 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppScaffold
+import fit.asta.health.designsystem.molecular.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage

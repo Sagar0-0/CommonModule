@@ -1,4 +1,4 @@
-package fit.asta.health.designsystem.components.generic
+package fit.asta.health.designsystem.atomic.modifier
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState

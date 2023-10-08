@@ -13,7 +13,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.components.functional.BottomSheetButton
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 
 @Composable
 @Preview
@@ -31,7 +32,11 @@ fun BottomSheetButtonLayout() {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            BottomSheetButton(title = "Schedule")
+            AppFilledButton(
+                modifier = Modifier.fillMaxWidth(),
+                textToShow = "Schedule",
+                shape = AppTheme.shape.level1
+            ) {}
         }
 
         Spacer(modifier = Modifier.width(8.dp))
@@ -42,7 +47,11 @@ fun BottomSheetButtonLayout() {
                 .fillMaxWidth()
                 .weight(1f)
         ) {
-            BottomSheetButton(title = "Start")
+            AppFilledButton(
+                modifier = Modifier.fillMaxWidth(),
+                textToShow = "Start",
+                shape = AppTheme.shape.level1
+            ) {}
         }
     }
 }
