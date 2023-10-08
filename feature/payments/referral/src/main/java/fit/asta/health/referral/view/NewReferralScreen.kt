@@ -84,8 +84,7 @@ fun NewReferralDesign() {
                 ) {
                     AppFilledButton(
                         textToShow = "Share your link",
-                        iconRightAlign = false,
-                        leadingIcon = Icons.Filled.Link
+                        trailingIcon = Icons.Filled.Link
                     ) {
 
                     }

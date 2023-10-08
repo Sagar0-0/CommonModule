@@ -48,7 +48,7 @@ fun SpotifyMusicItem(
             contentAlignment = Alignment.Center
         ) {
             AppNetworkImage(
-                modifier = Modifier.size(AppTheme.imageSize.newLevel),
+                modifier = Modifier.size(AppTheme.imageSize.level8),
                 model = imageUri,
                 contentDescription = stringResource(StringR.string.playlist_image)
             )

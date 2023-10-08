@@ -31,7 +31,7 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
         AppNetworkImage(
             model = imageUrl,
             contentDescription = "Tst Profile Pic",
-            modifier = Modifier.size(AppTheme.imageSize.level7)
+            modifier = Modifier.size(AppTheme.imageSize.level9)
         )
         Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
         Column(

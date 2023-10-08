@@ -33,7 +33,7 @@ fun UserCard(user: String, userOrg: String, userRole: String, url: String) {
                     model = getImgUrl(url),
                     modifier = Modifier
                         .clip(shape = CircleShape)
-                        .size(AppTheme.imageSize.level7),
+                        .size(AppTheme.imageSize.level9),
                     contentScale = ContentScale.Crop
                 )
             }

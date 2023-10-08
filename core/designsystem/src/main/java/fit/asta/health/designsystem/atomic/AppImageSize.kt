@@ -13,10 +13,11 @@ data class AppImageSize(
     val level4: Dp = 32.dp,
     val level5: Dp = 40.dp,
     val level6: Dp = 48.dp,
-    val level7: Dp = 72.dp,
-    val level8: Dp = 160.dp,
-    val level9: Dp = 180.dp,
-    val newLevel: Dp = 64.dp
+    val level7: Dp = 56.dp,
+    val level8: Dp = 64.dp,
+    val level9: Dp = 72.dp,
+    val level10: Dp = 160.dp,
+    val level11: Dp = 180.dp
 )
 
 val LocalAppImageSize = compositionLocalOf { AppImageSize() }
