@@ -11,6 +11,7 @@ import androidx.compose.material3.OutlinedCard
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -39,6 +40,7 @@ private fun DefaultPreview1() {
  *
  * @param modifier the [Modifier] to be applied to this card
  * @param enabled This determines if the Card is enabled or not
+ * @param shape This is the Shape of the Card
  * @param colors [CardColors] that will be used to resolve the color(s) used for this card.
  * @param elevation [CardElevation] used to resolve the elevation for this card.
  * @param border This is the border of the card which would be set accordingly
@@ -50,6 +52,7 @@ private fun DefaultPreview1() {
 fun AppOutlinedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    shape: Shape = AppTheme.shape.level3,
     colors: CardColors = CardDefaults.outlinedCardColors(),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
     border: BorderStroke = CardDefaults.outlinedCardBorder(enabled),
@@ -61,7 +64,7 @@ fun AppOutlinedCard(
             modifier = modifier,
             onClick = onClick,
             enabled = enabled,
-            shape = AppTheme.shape.level3,
+            shape = shape,
             colors = colors,
             elevation = elevation,
             border = border,
@@ -70,7 +73,7 @@ fun AppOutlinedCard(
     else
         OutlinedCard(
             modifier = modifier,
-            shape = AppTheme.shape.level3,
+            shape = shape,
             colors = colors,
             elevation = elevation,
             border = border,

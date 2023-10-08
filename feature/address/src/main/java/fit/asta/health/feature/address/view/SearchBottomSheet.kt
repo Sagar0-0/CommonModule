@@ -37,13 +37,13 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefServerImg
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -141,7 +141,7 @@ internal fun SearchBottomSheet(
                     } else {
                         LazyColumn {
                             items(results) {
-                                AppButtons.AppTextButton(
+                                AppTextButton(
                                     onClick = {
                                         searchQuery = ""
                                         val myAddressItem = MyAddress(

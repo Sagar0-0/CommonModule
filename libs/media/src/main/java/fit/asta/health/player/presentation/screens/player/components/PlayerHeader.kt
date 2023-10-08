@@ -19,8 +19,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.resources.strings.R
 
 
@@ -52,32 +51,24 @@ fun PlayerHeader(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            AppButtons.AppTextButton(
+            AppTextButton(
+                textToShow = "Audio",
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (!audioVideo) Color.LightGray
                     else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
                     contentColor = MaterialTheme.colorScheme.primary
                 )
-            ) {
-                AppTexts.BodyMedium(
-                    text = "Audio",
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
-            AppButtons.AppTextButton(
+            )
+            AppTextButton(
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (audioVideo) Color.LightGray
                     else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
                     contentColor = MaterialTheme.colorScheme.primary
-                )
-            ) {
-                AppTexts.BodyMedium(
-                    text = "Video",
-                    color = MaterialTheme.colorScheme.onPrimary
-                )
-            }
+                ),
+                textToShow = "Video"
+            )
         }
 
         IconButton(

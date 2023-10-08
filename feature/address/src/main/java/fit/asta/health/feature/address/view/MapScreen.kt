@@ -32,12 +32,13 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import java.util.*
@@ -220,29 +221,23 @@ internal fun MapScreen(
                     .fillMaxWidth()
                     .align(Alignment.BottomCenter)
             ) {
-                AppButtons.AppIconButton(
+                AppIconButton(
                     modifier = Modifier
                         .padding(AppTheme.spacing.level3)
                         .align(Alignment.End)
-                        .size(AppTheme.buttonSize.level7),
-                    onClick = {
-                        onUiEvent(MapScreenUiEvent.UseCurrentLocation)
-                        if (currentAddressState is UiState.Success) {
-                            val latLng = LatLng(
-                                currentAddressState.data.latitude,
-                                currentAddressState.data.longitude
-                            )
-                            cameraPositionState.position =
-                                CameraPosition.fromLatLngZoom(latLng, 18f)
-                        }
-                    }
+                        .size(AppTheme.buttonSize.level4),
+                    imageVector = Icons.Default.MyLocation,
+                    iconDesc = R.string.use_my_current_location.toStringFromResId()
                 ) {
-                    AppDefaultIcon(
-                        modifier = Modifier
-                            .size(AppTheme.buttonSize.level4),
-                        imageVector = Icons.Default.MyLocation,
-                        contentDescription = R.string.use_my_current_location.toStringFromResId()
-                    )
+                    onUiEvent(MapScreenUiEvent.UseCurrentLocation)
+                    if (currentAddressState is UiState.Success) {
+                        val latLng = LatLng(
+                            currentAddressState.data.latitude,
+                            currentAddressState.data.longitude
+                        )
+                        cameraPositionState.position =
+                            CameraPosition.fromLatLngZoom(latLng, 18f)
+                    }
                 }
 
                 Column(
@@ -279,7 +274,7 @@ internal fun MapScreen(
                                 area = markerAddressState.data.getShortAddressName()
                             )
 
-                            AppButtons.AppOutlinedButton(
+                            AppOutlinedButton(
                                 onClick = {
                                     val data = markerAddressState.data
                                     val fillAddressSheetAddressItem = MyAddress(

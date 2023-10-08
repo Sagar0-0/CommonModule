@@ -72,11 +72,12 @@ import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDialog
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.player.audio.common.MusicState
 import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.asFormattedString
@@ -517,7 +518,7 @@ fun AlertDialogTrack(
                 }
                 content.forEach {
                     Row(verticalAlignment = Alignment.CenterVertically) {
-                        AppButtons.AppRadioButton(
+                        AppRadioButton(
                             selected = it == current,
                             onClick = { onDone(it) })
                         AppTexts.BodyLarge(text = it)
@@ -525,9 +526,9 @@ fun AlertDialogTrack(
                 }
 
                 Row {
-                    AppButtons.AppOutlinedButton(
+                    AppOutlinedButton(
                         onClick = onDismiss,
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
                             .weight(1F)
@@ -569,7 +570,7 @@ fun BackAlertDialog(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
                 ) {
-                    AppButtons.AppOutlinedButton(
+                    AppOutlinedButton(
                         onClick = onDismiss,
                         colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.LightGray),
                         modifier = Modifier
@@ -578,7 +579,7 @@ fun BackAlertDialog(
                     ) {
                         AppTexts.BodySmall(text = stringResource(id = R.string.meditate_later))
                     }
-                    AppButtons.AppOutlinedButton(
+                    AppOutlinedButton(
                         onClick = onResume,
                         colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.primary),
                         modifier = Modifier

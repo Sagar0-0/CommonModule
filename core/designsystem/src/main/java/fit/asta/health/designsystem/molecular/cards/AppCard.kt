@@ -11,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -41,6 +42,7 @@ private fun DefaultPreview1() {
  *
  * @param modifier the [Modifier] to be applied to this card
  * @param enabled This determines if the Card is enabled or not
+ * @param shape This is the shape of the Composable Function
  * @param colors [CardColors] that will be used to resolve the color(s) used for this card.
  * @param elevation [CardElevation] used to resolve the elevation for this card.
  * @param border This is to give the card any custom Border we want
@@ -52,6 +54,7 @@ private fun DefaultPreview1() {
 fun AppCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
+    shape: Shape = AppTheme.shape.level3,
     colors: CardColors = CardDefaults.cardColors(),
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
@@ -72,7 +75,7 @@ fun AppCard(
     else
         Card(
             modifier = modifier,
-            shape = AppTheme.shape.level3,
+            shape = shape,
             colors = colors,
             elevation = elevation,
             border = border,

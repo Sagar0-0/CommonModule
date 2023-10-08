@@ -30,9 +30,9 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.other.AppRatingBar
 import fit.asta.health.designsystem.molecular.texts.TitleTexts

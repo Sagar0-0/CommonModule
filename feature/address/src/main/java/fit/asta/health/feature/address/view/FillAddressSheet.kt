@@ -47,10 +47,10 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheet
 import fit.asta.health.designsystem.components.generic.AppTexts
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
 import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
 import fit.asta.health.resources.strings.R
@@ -176,16 +176,11 @@ internal fun FillAddressSheet(
                     name = myAddressItem.addressLine,
                     area = myAddressItem.shortAddress
                 )
-                AppButtons.AppIconButton(
-                    modifier = Modifier
-                        .align(Alignment.CenterEnd),
-                    onClick = { closeSheet() }
-                ) {
-                    AppDefaultIcon(
-                        imageVector = Icons.Default.Close,
-                        contentDescription = R.string.close.toStringFromResId()
-                    )
-                }
+                AppIconButton(
+                    modifier = Modifier.align(Alignment.CenterEnd),
+                    imageVector = Icons.Default.Close,
+                    iconDesc = R.string.close.toStringFromResId()
+                ) { closeSheet() }
             }
 
             AppTexts.TitleMedium(
@@ -341,7 +336,8 @@ internal fun FillAddressSheet(
                     }
 
                     else -> {
-                        AppButtons.AppOutlinedButton(
+                        AppOutlinedButton(
+                            textToShow = R.string.save_address.toStringFromResId(),
                             onClick = onSaveAddressClick,
                             modifier = Modifier
                                 .padding(AppTheme.spacing.level3)
@@ -352,11 +348,7 @@ internal fun FillAddressSheet(
                                 contentColor = AppTheme.colors.onSurface
                             ),
                             enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && phone.value.length == 10 && name.value.isNotEmpty()
-                        ) {
-                            AppTexts.TitleMedium(
-                                text = R.string.save_address.toStringFromResId()
-                            )
-                        }
+                        )
                     }
                 }
             }

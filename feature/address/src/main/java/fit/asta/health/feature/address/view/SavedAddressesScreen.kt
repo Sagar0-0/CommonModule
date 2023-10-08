@@ -54,12 +54,13 @@ import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
-import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppTextField
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
@@ -192,7 +193,7 @@ internal fun SavedAddressesScreen(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
             AnimatedVisibility(fillAddressSheetType == null) {
-                AppButtons.AppOutlinedButton(
+                AppOutlinedButton(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = AppTheme.spacing.level2),
@@ -264,7 +265,7 @@ internal fun SavedAddressesScreen(
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
-            AppButtons.AppOutlinedButton(
+            AppOutlinedButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level2),
@@ -456,10 +457,8 @@ private fun AddressItem(
                 modifier = Modifier.padding(bottom = 5.dp)
             )
             Row(Modifier.fillMaxWidth()) {
-                AppButtons.AppIconButton(onClick = { onClick(AddressEvent.Edit) }) {
-                    AppDefaultIcon(
-                        imageVector = Icons.Default.Edit, contentDescription = ""
-                    )
+                AppIconButton(imageVector = Icons.Default.Edit) {
+                    onClick(AddressEvent.Edit)
                 }
 
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
@@ -468,27 +467,21 @@ private fun AddressItem(
                     targetState = loading, label = ""
                 ) {
                     if (it) {
-                        AppButtons.AppIconButton(onClick = {}) {
+                        AppIconButton(onClick = {}) {
                             CircularProgressIndicator(modifier = Modifier.padding(2.dp))
                         }
                     } else {
-                        AppButtons.AppIconButton(onClick = {
+                        AppIconButton(imageVector = Icons.Default.Delete) {
                             onClick(AddressEvent.Delete)
                             loading = true
-                        }) {
-                            AppDefaultIcon(
-                                imageVector = Icons.Default.Delete, contentDescription = ""
-                            )
                         }
                     }
                 }
 
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
 
-                AppButtons.AppIconButton(onClick = { onClick(AddressEvent.Share) }) {
-                    AppDefaultIcon(
-                        imageVector = Icons.Default.Share, contentDescription = ""
-                    )
+                AppIconButton(imageVector = Icons.Default.Share) {
+                    onClick(AddressEvent.Share)
                 }
             }
         }

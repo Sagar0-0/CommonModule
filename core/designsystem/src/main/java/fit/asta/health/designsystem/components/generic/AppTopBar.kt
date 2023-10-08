@@ -18,6 +18,8 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 
 /**The [AppTopBar] is a custom composable function used to create a top app bar for Android apps
  * with Jetpack Compose UI toolkit.
@@ -49,13 +51,12 @@ fun AppTopBar(
         },
         navigationIcon = {
             backIcon?.let {
-                AppButtons.AppIconButton(onClick = onBack) {
-                    AppDefaultIcon(
-                        imageVector = it,
-                        contentDescription = "back",
-                        tint = MaterialTheme.colorScheme.primary
-                    )
-                }
+                AppIconButton(
+                    imageVector = it,
+                    iconDesc = "back",
+                    iconTint = AppTheme.colors.primary,
+                    onClick = onBack
+                )
             }
         },
         colors = TopAppBarDefaults.topAppBarColors(
@@ -89,11 +90,11 @@ fun AppTopBarWithHelp(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
-            AppButtons.AppIconButton(onClick = onHelp) {
-                AppDefaultIcon(
-                    imageVector = Icons.Default.Help, contentDescription = "Leading Icon"
-                )
-            }
+            AppIconButton(
+                onClick = onHelp,
+                iconDesc = "Leading Icon",
+                imageVector = Icons.Default.Help
+            )
         }
     }
 
