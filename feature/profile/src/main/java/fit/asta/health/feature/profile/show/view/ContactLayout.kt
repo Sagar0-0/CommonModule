@@ -17,7 +17,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +34,7 @@ import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -171,7 +171,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
 
 @Composable
 private fun ProfileImageBorder(size: Dp, color: Color, content: @Composable () -> Unit = {}) {
-    Surface(
+    AppSurface(
         shape = CircleShape,
         modifier = Modifier.size(size),
         color = Color.Transparent,

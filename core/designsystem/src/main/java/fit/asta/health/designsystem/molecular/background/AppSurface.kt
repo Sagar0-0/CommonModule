@@ -1,12 +1,15 @@
 package fit.asta.health.designsystem.molecular.background
 
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.material3.LocalAbsoluteTonalElevation
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.RectangleShape
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
@@ -14,9 +17,7 @@ import fit.asta.health.designsystem.AppTheme
 // Preview Function
 @Preview("Light")
 @Preview(
-    name = "Dark",
-    uiMode = Configuration.UI_MODE_NIGHT_YES,
-    showBackground = true
+    name = "Dark", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
 @Composable
 private fun DefaultPreview() {
@@ -37,11 +38,12 @@ private fun DefaultPreview() {
 fun AppSurface(
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.surface,
-    content: @Composable () -> Unit
+    shape: Shape = RectangleShape,
+    border: BorderStroke? = null,
+    content: @Composable () -> Unit,
 ) {
     Surface(
-        modifier = modifier,
-        color = color
+        modifier = modifier, color = color, shape = shape, border = border
     ) {
         CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
             content()

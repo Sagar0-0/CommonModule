@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,6 +27,7 @@ import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.feature.testimonials.components.ArtistCard
 import fit.asta.health.player.media.Media
@@ -66,7 +66,7 @@ fun PlayVideoLayout(
     ) {
         if (tstVideoMedia.isNotEmpty()) {
             tstVideoMedia.first().let {
-                Surface(modifier = Modifier.fillMaxWidth()) {
+                AppSurface(modifier = Modifier.fillMaxWidth()) {
                     VideoView(
                         videoUri = getVideoUrlTools(url = it.url)
                     )
