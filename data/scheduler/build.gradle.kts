@@ -8,9 +8,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.data.scheduler"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 dependencies {
 

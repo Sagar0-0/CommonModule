@@ -19,7 +19,6 @@ android {
     namespace = "fit.asta.health.core.common"
     defaultConfig {
         testInstrumentationRunner = "androidx.test.runner.AndroidJUnitRunner"
-        consumerProguardFiles("consumer-rules.pro")
     }
 }
 

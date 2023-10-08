@@ -7,9 +7,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.data.payment"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

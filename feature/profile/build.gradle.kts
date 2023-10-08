@@ -7,9 +7,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.feature.profile"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

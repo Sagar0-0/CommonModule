@@ -5,11 +5,7 @@ plugins {
 }
 
 android {
-
     namespace = "fit.asta.health.offers"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {

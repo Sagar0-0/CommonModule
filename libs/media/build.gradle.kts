@@ -8,9 +8,6 @@ plugins {
 
 android {
     namespace = "fit.asta.health.player"
-    defaultConfig {
-        consumerProguardFiles("consumer-rules.pro")
-    }
 }
 
 dependencies {
