@@ -11,21 +11,19 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import com.google.accompanist.flowlayout.FlowMainAxisAlignment
 import com.google.accompanist.flowlayout.FlowRow
 import com.google.accompanist.flowlayout.SizeMode
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.view.components.BottomSheetButtonLayout
 import fit.asta.health.tools.sunlight.view.components.DividerLineCenter
 import fit.asta.health.tools.view.PracticeGridView
@@ -52,12 +50,11 @@ fun BreathingBottomSheetGridView(cardList: List<PracticeGridView>) {
             }
 
             item {
-                Text("PRACTICE",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    lineHeight = 22.4.sp,
-                    color = MaterialTheme.colorScheme.onBackground,
-                    modifier = Modifier.padding(horizontal = 16.dp))
+                TitleTexts.Level1(
+                    text = "PRACTICE",
+                    color = AppTheme.colors.onBackground,
+                    modifier = Modifier.padding(horizontal = 16.dp)
+                )
             }
 
             item {

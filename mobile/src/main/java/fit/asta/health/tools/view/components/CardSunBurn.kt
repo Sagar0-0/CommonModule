@@ -11,18 +11,15 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.tools.sunlight.view.components.CircularSlider
 
 @Composable
@@ -40,13 +37,16 @@ fun CardSunBurn(
 
     val angle = -60f + ((300f * cardValue[0].code) / 6)
 
-    Card(modifier = Modifier
-        .fillMaxWidth()
-        .padding(horizontal = 16.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary)) {
-        Column(modifier = Modifier.padding(16.dp),
-            horizontalAlignment = Alignment.CenterHorizontally) {
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = 16.dp),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.secondary)
+    ) {
+        Column(
+            modifier = Modifier.padding(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
             Box(contentAlignment = Alignment.Center) {
                 CircularSlider(
                     modifier = Modifier.size(200.dp),
@@ -54,22 +54,19 @@ fun CardSunBurn(
                         if (valueChanged != null) {
                             valueChanged(it)
                         }
-                        Log.i("Circular SeeBar",it.toString())
+                        Log.i("Circular SeeBar", it.toString())
                     },
                     angle1 = angle
                 )
                 Column {
-                    Text(text = cardTitle,
-                        fontSize = 14.sp,
-                        lineHeight = 19.6.sp,
-                        letterSpacing = 1.25.sp,
-                        fontWeight = FontWeight.Normal,
-                        textAlign = TextAlign.Center)
-                    Text(text = cardValue,
-                        fontSize = 18.sp,
-                        lineHeight = 25.2.sp,
-                        fontWeight = FontWeight.Bold,
-                        textAlign = TextAlign.Center)
+                    BodyTexts.Level2(
+                        text = cardTitle,
+                        textAlign = TextAlign.Center
+                    )
+                    BodyTexts.Level2(
+                        text = cardValue,
+                        textAlign = TextAlign.Center
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(8.dp))
@@ -109,17 +106,15 @@ fun TimingMeterLayout(title: String, titleValue: String) {
 
     Column(horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center) {
-        Text(text = titleValue,
-            fontSize = 14.sp,
-            fontWeight = FontWeight.Bold,
-            lineHeight = 19.6.sp,
-            color = MaterialTheme.colorScheme.onPrimary)
+        BodyTexts.Level2(
+            text = titleValue,
+            color = AppTheme.colors.onPrimary
+        )
         Spacer(modifier = Modifier.height(10.dp))
-        Text(text = title,
-            fontSize = 12.sp,
-            fontWeight = FontWeight.Normal,
-            lineHeight = 19.6.sp,
-            textAlign = TextAlign.Center)
+        BodyTexts.Level2(
+            text = title,
+            textAlign = TextAlign.Center
+        )
     }
 
 }

@@ -15,8 +15,6 @@ import androidx.activity.viewModels
 import androidx.compose.foundation.layout.*
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,12 +22,9 @@ import androidx.lifecycle.lifecycleScope
 import androidx.navigation.compose.rememberNavController
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.designsystem.components.*
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.*
 import fit.asta.health.tools.walking.nav.StepsCounterNavigation
-import fit.asta.health.tools.walking.view.component.WalkingBottomSheet
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import fit.asta.health.tools.walking.work.CountStepsService
@@ -128,30 +123,6 @@ fun MyApp(context: @Composable () -> Unit) {
     AppTheme {
         context()
     }
-}
-
-@Preview
-@Composable
-fun WalkingToolHomeScreen() {
-
-    AppScaffold(topBar = {
-        AppTopBarWithHelp(
-            title = "Step Counter",
-            onBack = { /*TODO*/ },
-            onHelp = { /*TODO*/ }
-        )
-    }, content = {
-        WalkingBottomSheet(paddingValues = it)
-    })
-}
-
-@Preview(showBackground = true)
-@Composable
-fun DefaultPreview() {
-    Surface(Modifier.fillMaxSize()) {
-        WalkingToolHomeScreen()
-    }
-
 }
 
 fun setupWorker(context: Context) {

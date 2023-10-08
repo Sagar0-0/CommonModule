@@ -10,8 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -20,14 +18,14 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystem.components.CardItem
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -109,10 +107,9 @@ fun ExerciseHomeScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
-            Surface(
+            AppSurface(
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
             ) {
                 Column(
                     modifier = Modifier
@@ -201,7 +198,7 @@ fun DanceBottomSheet(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
-        Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
+        TitleTexts.Level3(text = "PRACTICE")
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),

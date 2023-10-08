@@ -11,8 +11,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -27,11 +25,11 @@ import androidx.compose.ui.graphics.drawscope.Stroke
 import androidx.compose.ui.input.pointer.pointerInteropFilter
 import androidx.compose.ui.layout.onGloballyPositioned
 import androidx.compose.ui.layout.onSizeChanged
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.IntSize
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import kotlin.math.*
 
 @OptIn(ExperimentalComposeUiApi::class)
@@ -40,7 +38,7 @@ fun CircularSlider(
     modifier: Modifier = Modifier,
     indicatorValue: Float = 2f,
     maxIndicatorValue: Float = 120f,
-    bigTextColor: Color = MaterialTheme.colorScheme.onSurface,
+    bigTextColor: Color = AppTheme.colors.onSurface,
     bigTextSuffix: String = "min",
     padding: Float = 50f,
     stroke: Float = 20f,
@@ -61,20 +59,20 @@ fun CircularSlider(
     onScroll:(Boolean)->Unit
 ) {
     var size by remember { mutableStateOf(IntSize.Zero) }
-    var width by remember { mutableStateOf(0) }
-    var height by remember { mutableStateOf(0) }
-    var angleDuration by rememberSaveable { mutableStateOf(-35f) }
-    var angleDistance by rememberSaveable { mutableStateOf(-35f) }
-    var lastDuration by rememberSaveable { mutableStateOf(0f) }
-    var lastDistance by rememberSaveable { mutableStateOf(0f) }
+    var width by remember { mutableIntStateOf(0) }
+    var height by remember { mutableIntStateOf(0) }
+    var angleDuration by rememberSaveable { mutableFloatStateOf(-35f) }
+    var angleDistance by rememberSaveable { mutableFloatStateOf(-35f) }
+    var lastDuration by rememberSaveable { mutableFloatStateOf(0f) }
+    var lastDistance by rememberSaveable { mutableFloatStateOf(0f) }
     var down by remember { mutableStateOf(false) }
-    var radius by remember { mutableStateOf(0f) }
+    var radius by remember { mutableFloatStateOf(0f) }
     var center by remember { mutableStateOf(Offset.Zero) }
     var appliedAngleDuration by remember(appliedAngleDurationValue) {
-        mutableStateOf(appliedAngleDurationValue)
+        mutableFloatStateOf(appliedAngleDurationValue)
     }
     var appliedAngleDistance by remember(appliedAngleDistanceValue) {
-        mutableStateOf(appliedAngleDistanceValue)
+        mutableFloatStateOf(appliedAngleDistanceValue)
     }
     LaunchedEffect(key1 = angleDuration) {
         var a = angleDuration
@@ -123,7 +121,7 @@ fun CircularSlider(
     }
 
     var allowedIndicatorValue by remember {
-        mutableStateOf(maxIndicatorValue)
+        mutableFloatStateOf(maxIndicatorValue)
     }
     allowedIndicatorValue = if (indicatorValue <= maxIndicatorValue) {
         indicatorValue
@@ -131,7 +129,7 @@ fun CircularSlider(
         maxIndicatorValue
     }
 
-    var animatedIndicatorValue by remember { mutableStateOf(0f) }
+    var animatedIndicatorValue by remember { mutableFloatStateOf(0f) }
     LaunchedEffect(key1 = allowedIndicatorValue) {
         animatedIndicatorValue = allowedIndicatorValue
     }
@@ -141,19 +139,19 @@ fun CircularSlider(
 
     val sweepAngle by animateFloatAsState(
         targetValue = (250 * percentage),
-        animationSpec = tween(1000)
+        animationSpec = tween(1000), label = ""
     )
 
     val receivedValue by animateFloatAsState(
         targetValue = allowedIndicatorValue,
-        animationSpec = tween(1000)
+        animationSpec = tween(1000), label = ""
     )
     val animatedBigTextColor by animateColorAsState(
         targetValue = if (allowedIndicatorValue == 0f)
-            MaterialTheme.colorScheme.onSurface.copy(alpha = 0.3f)
+            AppTheme.colors.onSurface.copy(alpha = 0.3f)
         else
             bigTextColor,
-        animationSpec = tween(1000)
+        animationSpec = tween(1000), label = ""
     )
 
     Box(
@@ -334,14 +332,13 @@ fun CircularSlider(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            Text(
+            BodyTexts.Level2(
                 modifier = Modifier.clickable { onChangeType() },
-                text = if (isDuration) "Duration" else "Distance", fontSize = 14.sp,
-                fontWeight = FontWeight.Bold,
+                text = if (isDuration) "Duration" else "Distance",
                 color = bigTextColor
             )
             AnimatedVisibility(visible = isStarted) {
-                Text(
+                CaptionTexts.Level2(
                     text = if (isDuration) {
                         "%.0f $bigTextSuffix".format(
                             receivedValue
@@ -352,13 +349,11 @@ fun CircularSlider(
                         )
                     },
                     color = animatedBigTextColor,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
+                    textAlign = TextAlign.Center
                 )
             }
             AnimatedVisibility(visible = !isStarted) {
-                Text(
+                CaptionTexts.Level2(
                     text = if (isDuration) {
                         "%.0f $bigTextSuffix".format(
                             range(appliedAngleDuration / 250f * 100f, maxIndicatorValue)
@@ -369,12 +364,9 @@ fun CircularSlider(
                         )
                     },
                     color = animatedBigTextColor,
-                    fontSize = 14.sp,
-                    textAlign = TextAlign.Center,
-                    fontWeight = FontWeight.Bold
+                    textAlign = TextAlign.Center
                 )
             }
-
         }
     }
 

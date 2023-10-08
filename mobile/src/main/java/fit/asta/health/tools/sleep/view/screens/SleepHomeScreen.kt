@@ -9,8 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,14 +19,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontStyle
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.navigation.NavController
-import fit.asta.health.designsystem.components.generic.ProgressBarInt
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.components.generic.ProgressBarInt
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay
 import java.time.LocalTime
@@ -36,7 +30,6 @@ import java.time.format.DateTimeFormatter
 
 @Composable
 fun SleepHomeScreen(
-    navController: NavController,
     progressData: ProgressData?
 ) {
 
@@ -64,7 +57,7 @@ fun SleepHomeScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        val color = MaterialTheme.colorScheme.onBackground
+        val color = AppTheme.colors.onBackground
 
         // This is the Clock
         Box(
@@ -82,12 +75,8 @@ fun SleepHomeScreen(
         ) {
 
             // Timing of the clock
-            Text(
-                text = formattedTime.uppercase(),
-                fontSize = 26.sp,
-                fontFamily = FontFamily.SansSerif,
-                fontStyle = FontStyle.Normal,
-                fontWeight = FontWeight.W600
+            TitleTexts.Level1(
+                text = formattedTime.uppercase()
             )
         }
 

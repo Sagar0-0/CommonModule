@@ -12,13 +12,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.view.components.CardSunBurn
 
 @Composable
@@ -35,11 +33,10 @@ fun SunlightLayout(it: PaddingValues) {
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)) {
 
-            Text(text = "Upcoming Slots",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
-                color = Color.Black)
+            TitleTexts.Level2(
+                text = "Upcoming Slots",
+                color = Color.Black
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -71,11 +68,10 @@ fun SunlightLayout(it: PaddingValues) {
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)) {
-            Text(text = "Total Duration",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
-                color = Color.Black)
+            TitleTexts.Level2(
+                text = "Total Duration",
+                color = Color.Black
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))
@@ -96,11 +92,10 @@ fun SunlightLayout(it: PaddingValues) {
             Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)) {
-            Text(text = "Total Vitamin D ",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
-                color = Color.Black)
+            TitleTexts.Level2(
+                text = "Total Vitamin D ",
+                color = Color.Black
+            )
         }
 
         Spacer(modifier = Modifier.height(24.dp))

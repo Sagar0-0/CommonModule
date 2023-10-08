@@ -11,7 +11,7 @@ import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.tools.walking.view.goals.GoalsScreen
 import fit.asta.health.tools.walking.view.home.StepsHomeScreen
 import fit.asta.health.tools.walking.view.steps_counter.StepsCounterScreen
-import fit.asta.health.tools.walking.view.walking_types.WalkingtypesScreen
+import fit.asta.health.tools.walking.view.walking_types.WalkingTypesScreen
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -30,7 +30,7 @@ fun  StepsCounterNavigation(navController: NavHostController,homeViewModel: Walk
             StepsHomeScreen(navController = navController, homeViewModel)
         }
         composable(StepsCounterScreen.TypesScreen.route) {
-            WalkingtypesScreen(navController = navController, homeViewModel)
+            WalkingTypesScreen(navController = navController, homeViewModel)
         }
         composable(StepsCounterScreen.GoalScreen.route) {
             GoalsScreen(navController = navController, homeViewModel)

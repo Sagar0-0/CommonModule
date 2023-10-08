@@ -8,14 +8,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -24,11 +18,12 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.tools.walking.model.ListItem
 
 @Composable
@@ -54,16 +49,13 @@ fun GoalsScreen(
     ) {
         LazyColumn(modifier = Modifier.padding(it)) {
             item {
-                Text(
+                BodyTexts.Level1(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "Select goals for your breathing exercise",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 18.sp,
-                    style = MaterialTheme.typography.bodyLarge
+                    text = "Select goals for your breathing exercise"
                 )
             }
             items(count = items.size) { indexNumber ->
-                Surface(
+                AppSurface(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                         .fillMaxWidth()
@@ -83,24 +75,21 @@ fun GoalsScreen(
                         Color(0xFFE9D7F7)
                     } else {
                         Color(0xFF7415BD)
-                    },
-                    shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+                    }
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.Start,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        BodyTexts.Level3(
                             modifier = Modifier
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
-                            text = items[indexNumber].title,
-                            style = MaterialTheme.typography.bodySmall,
-                            fontSize = 25.sp
+                            text = items[indexNumber].title
                         )
 
-                        Icon(
+                        AppIcon(
                             modifier = Modifier.weight(0.5f),
                             imageVector = Icons.Default.AdsClick,
                             contentDescription = null

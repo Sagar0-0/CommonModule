@@ -18,10 +18,7 @@ import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
 import androidx.compose.material3.Divider
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalContentColor
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -33,14 +30,16 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.player.domain.utils.AppIcons
 import fit.asta.health.tools.exercise.model.domain.model.VideoItem
 
@@ -91,7 +90,7 @@ fun VideoPlayerScreen(
                             navigateToPlayer()
                         },
                         modifier = Modifier.fillMaxWidth(),
-                        backgroundColor = MaterialTheme.colorScheme.surface
+                        backgroundColor = AppTheme.colors.surface
                     )
                 }
             }
@@ -110,7 +109,7 @@ fun VideoTrackItem(
     val spacing = AppTheme.spacing
     val context = LocalContext.current
 
-    val textColor = MaterialTheme.colorScheme.onSurface
+    val textColor = AppTheme.colors.onSurface
 
 
     Column(
@@ -137,25 +136,19 @@ fun VideoTrackItem(
                 verticalArrangement = Arrangement.spacedBy(spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
+                BodyTexts.Level1(
                     text = song.title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyLarge,
                     color = textColor,
                 )
-                Text(
+                TitleTexts.Level2(
                     text = song.artist,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium,
                     color = textColor,
                 )
                 Row(
                     horizontalArrangement = Arrangement.Center,
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    Icon(
+                    AppIcon(
                         painter = painterResource(
                             id = AppIcons.Play.resourceId
                         ),
@@ -171,21 +164,17 @@ fun VideoTrackItem(
                             .size(32.dp)
                             .padding(spacing.level2)
                     )
-                    Text(
+                    BodyTexts.Level3(
                         text = song.duration,
-                        color = textColor,
-                        maxLines = 1,
-                        overflow = TextOverflow.Ellipsis,
-                        style = MaterialTheme.typography.bodySmall,
+                        color = textColor
                     )
                 }
             }
-            AsyncImage(
+            AppNetworkImage(
                 model = ImageRequest.Builder(context = context)
                     .data(song.artworkUri)
                     .crossfade(true)
                     .build(),
-                contentDescription = null,
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
                     .size(75.dp)

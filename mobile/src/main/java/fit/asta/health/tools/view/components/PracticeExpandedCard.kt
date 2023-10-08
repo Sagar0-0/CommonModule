@@ -3,16 +3,18 @@
 package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun PracticeExpandedCard(
@@ -23,17 +25,16 @@ fun PracticeExpandedCard(
     onclick: () -> Unit,
 ) {
 
-    Card(
+    AppCard(
         modifier = modifier
             .blur(radius = 5.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.secondary),
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.secondary),
         onClick = onclick
     ) {
         Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)) {
             Box(contentAlignment = Alignment.Center) {
-                Icon(
+                AppIcon(
                     painter = painterResource(id = cardImg),
                     contentDescription = null,
                     modifier = Modifier.size(24.dp)
@@ -41,19 +42,9 @@ fun PracticeExpandedCard(
             }
             Spacer(modifier = Modifier.width(8.dp))
             Column {
-                Text(
-                    text = cardTitle,
-                    fontSize = 16.sp,
-                    lineHeight = 25.2.sp,
-                    fontWeight = FontWeight.Medium
-                )
+                TitleTexts.Level2(text = cardTitle)
                 Spacer(modifier = Modifier.height(8.dp))
-                Text(
-                    text = cardValue,
-                    fontSize = 18.sp,
-                    lineHeight = 25.2.sp,
-                    fontWeight = FontWeight.Bold
-                )
+                BodyTexts.Level2(text = cardValue)
             }
         }
     }

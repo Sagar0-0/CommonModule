@@ -1,12 +1,10 @@
 package fit.asta.health.tools.sunlight.view.skin_exposure
 
 import android.annotation.SuppressLint
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material3.*
@@ -15,14 +13,16 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -57,7 +57,7 @@ fun SkinExposureScreen(
     onClick: (String) -> Unit
 ) {
     val itemSelection = remember {
-        mutableStateOf(-1)
+        mutableIntStateOf(-1)
     }
 
     AppScaffold(
@@ -80,10 +80,8 @@ fun SkinExposureScreen(
                         .fillMaxWidth()
                         .padding(horizontal = 16.dp)
                 ) {
-                    Text(
+                    TitleTexts.Level2(
                         text = "Please select skin exposure percentage based on clothing",
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.Normal,
                         color = Color.Black
                     )
                 }
@@ -126,10 +124,8 @@ fun SkinExposureCardModified(
     modifier: Modifier,
     isSelected: Boolean
 ) {
-    Card(
-        modifier = modifier
-            .padding(8.dp),
-        shape = RoundedCornerShape(8.dp),
+    AppCard(
+        modifier = modifier.padding(8.dp),
         colors = CardDefaults.cardColors(Color(0x66959393))
     ) {
         SkinExposureCardComponentModified(
@@ -140,7 +136,7 @@ fun SkinExposureCardModified(
     }
     if (isSelected) {
         Box(contentAlignment = Alignment.TopEnd) {
-            Icon(
+            AppIcon(
                 imageVector = Icons.Default.Check,
                 contentDescription = "Selected",
                 tint = Color.Green,
@@ -165,16 +161,13 @@ fun SkinExposureCardComponentModified(
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Image(
+            AppLocalImage(
                 painter = painterResource(id = cardImg),
                 contentDescription = null,
                 modifier = Modifier.size(100.dp)
             )
-            Text(
+            TitleTexts.Level1(
                 text = cardValue,
-                fontSize = 18.sp,
-                fontWeight = FontWeight.Bold,
-                lineHeight = 25.2.sp
             )
         }
     }

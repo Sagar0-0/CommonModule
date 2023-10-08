@@ -8,20 +8,17 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sleep.model.network.common.Prc
 import fit.asta.health.tools.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
@@ -80,12 +77,8 @@ fun SleepFactorsScreen(
                 ) {
 
                     item {
-                        Text(
-                            text = "Tap to add/remove the reasons for sleep factors",
-
-                            fontSize = 20.sp,
-                            fontWeight = FontWeight.W600,
-                            fontFamily = FontFamily.SansSerif
+                        TitleTexts.Level2(
+                            text = "Tap to add/remove the reasons for sleep factors"
                         )
                     }
 
