@@ -39,7 +39,7 @@ import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationM
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
@@ -145,7 +145,7 @@ fun ThirdPartyScreen(
             }
 
             is UiState.Loading -> {
-                LoadingAnimation(
+                AppDotTypingAnimation(
                     modifier = Modifier
                         .height(190.dp)
                         .fillMaxWidth()
@@ -230,7 +230,7 @@ fun ThirdPartyScreen(
 
             // Loading State
             is UiState.Loading -> {
-                LoadingAnimation(
+                AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(210.dp)
@@ -298,7 +298,7 @@ fun ThirdPartyScreen(
 
             // Loading State
             is UiState.Loading -> {
-                LoadingAnimation(
+                AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(210.dp)
@@ -366,7 +366,7 @@ fun ThirdPartyScreen(
 
             // Loading State
             is UiState.Loading -> {
-                LoadingAnimation(
+                AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
                         .height(210.dp)

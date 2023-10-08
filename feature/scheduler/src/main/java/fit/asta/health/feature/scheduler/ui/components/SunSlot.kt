@@ -8,24 +8,28 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.Event
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Thermostat
 import androidx.compose.material.icons.filled.Waves
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.data.scheduler.remote.model.WeatherData
-import fit.asta.health.designsystem.components.functional.ScheduleIconLayout
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 import java.time.LocalDateTime
 import java.time.format.DateTimeFormatter
 import fit.asta.health.resources.strings.R as StringR
@@ -53,7 +57,14 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
             ) {
                 AppTexts.BodyLarge(text = weatherData.title)
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                ScheduleIconLayout(onButtonClick = onSchedule)
+                AppIconButton(
+                    modifier = Modifier
+                        .size(AppTheme.iconSize.level4)
+                        .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+                    onClick = onSchedule,
+                    imageVector = Icons.Filled.Schedule,
+                    iconDesc = "Schedule Icon"
+                )
             }
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),

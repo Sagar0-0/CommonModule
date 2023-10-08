@@ -6,7 +6,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
@@ -26,7 +26,7 @@ fun LoadTestimonialCreateLayout(
     when (getViewModel.state.collectAsState().value) {
         TestimonialGetState.Loading -> {
             Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
-                LoadingAnimation()
+                AppDotTypingAnimation()
             }
         }
 

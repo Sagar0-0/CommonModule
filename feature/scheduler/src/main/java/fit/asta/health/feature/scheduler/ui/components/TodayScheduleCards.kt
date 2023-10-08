@@ -18,8 +18,10 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.rounded.Schedule
 import androidx.compose.material.icons.rounded.Timelapse
 import androidx.compose.material3.ButtonDefaults
@@ -35,13 +37,13 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.components.functional.ScheduleIconLayout
 import fit.asta.health.designsystem.components.generic.AppButtons
 import fit.asta.health.designsystem.components.generic.AppCard
 import fit.asta.health.designsystem.components.generic.AppDefaultIcon
 import fit.asta.health.designsystem.components.generic.AppDrawImg
 import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -131,7 +133,15 @@ private fun CardTitleAndButton(cardTitle: String) {
         verticalAlignment = Alignment.Top
     ) {
         AppTexts.TitleLarge(text = cardTitle, color = Color.White)
-        ScheduleIconLayout(onButtonClick = { /*TODO*/ })
+        AppIconButton(
+            modifier = Modifier
+                .size(AppTheme.iconSize.level4)
+                .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+            imageVector = Icons.Filled.Schedule,
+            iconDesc = "Schedule Icon"
+        ) {
+            /*TODO*/
+        }
     }
 }
 
@@ -174,38 +184,41 @@ fun TodayCardType2(
                     modifier = Modifier.fillMaxSize()
                 )
                 Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.SpaceBetween
-            ) {
-                CardTopLayout(
-                    cardTitle = cardTitle,
-                    secondaryTitle = secondaryTitle,
-                    onButtonClick = onButtonClick
-                )
-                Row(
-                    Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween,
-                    verticalAlignment = Alignment.CenterVertically
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(
+                            horizontal = AppTheme.spacing.level3,
+                            vertical = AppTheme.spacing.level2
+                        ),
+                    verticalArrangement = Arrangement.SpaceBetween
                 ) {
-                    AppTexts.BodyLarge(text = cardDesc, color = Color.White)
-                    CardBottomLayout(cardTime = cardTime, remainingTime = remainingTime)
+                    CardTopLayout(
+                        cardTitle = cardTitle,
+                        secondaryTitle = secondaryTitle,
+                        onButtonClick = onButtonClick
+                    )
+                    Row(
+                        Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppTexts.BodyLarge(text = cardDesc, color = Color.White)
+                        CardBottomLayout(cardTime = cardTime, remainingTime = remainingTime)
+                    }
+                }
+
+                CardCenterButton(buttonTitle = buttonTitle)
+
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .padding(AppTheme.spacing.level3),
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    DisabledAssistChip(progressValue = progressValue)
                 }
             }
-
-            CardCenterButton(buttonTitle = buttonTitle)
-
-            Box(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(AppTheme.spacing.level3),
-                contentAlignment = Alignment.CenterEnd
-            ) {
-                DisabledAssistChip(progressValue = progressValue)
-            }
-        }
-    })
+        })
 }
 
 @Composable
@@ -241,7 +254,14 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppTexts.TitleLarge(text = cardTitle, color = Color.White)
-            ScheduleIconLayout(onButtonClick = onButtonClick)
+            AppIconButton(
+                modifier = Modifier
+                    .size(AppTheme.iconSize.level4)
+                    .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+                imageVector = Icons.Filled.Schedule,
+                iconDesc = "Schedule Icon",
+                onClick = onButtonClick
+            )
         }
         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         Row(Modifier.fillMaxWidth(), Arrangement.Start) {
@@ -295,7 +315,10 @@ fun AppointmentCard(url: String = "") {
             Column(
                 Modifier
                     .fillMaxSize()
-                    .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
+                    .padding(
+                        horizontal = AppTheme.spacing.level3,
+                        vertical = AppTheme.spacing.level2
+                    ),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
                 CardTitleAndButton(cardTitle = stringResource(StringR.string.appointment))

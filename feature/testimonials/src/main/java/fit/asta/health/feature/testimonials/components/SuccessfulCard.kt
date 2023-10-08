@@ -23,7 +23,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -75,7 +75,7 @@ fun SuccessfulCard(
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
                 if (underReview) {
-                    LoadingAnimation()
+                    AppDotTypingAnimation()
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             }

@@ -23,7 +23,7 @@ import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.orders.vm.OrdersViewModel
 
 private const val ORDERS_GRAPH_ROUTE = "graph_orders"
@@ -55,7 +55,7 @@ fun OrdersScreen(ordersState: UiState<List<OrderData>>, onBack: () -> Unit) {
     ) { padd ->
         when (ordersState) {
             is UiState.Loading -> {
-                LoadingAnimation(modifier = Modifier.padding(padd))
+                AppDotTypingAnimation(modifier = Modifier.padding(padd))
             }
 
             is UiState.Success -> {

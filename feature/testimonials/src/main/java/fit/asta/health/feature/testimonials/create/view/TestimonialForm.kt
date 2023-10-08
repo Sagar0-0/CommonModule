@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.components.functional.DialogData
 import fit.asta.health.designsystem.components.functional.OnSuccessfulSubmit
 import fit.asta.health.designsystem.components.functional.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.components.functional.ValidateTxtLength
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppScaffold
 import fit.asta.health.designsystem.molecular.AppTopBar
@@ -186,7 +186,7 @@ fun TestimonialForm(
                             Log.d("validate", "ErrorMessage -> ${events.error}")
                         }
 
-                        is TestimonialSubmitState.Loading -> LoadingAnimation()
+                        is TestimonialSubmitState.Loading -> AppDotTypingAnimation()
                         is TestimonialSubmitState.Success -> {
                             OnSuccessfulSubmit(onDismiss = {
                                 showCustomDialogWithResult = !showCustomDialogWithResult

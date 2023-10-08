@@ -29,7 +29,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
 import fit.asta.health.feature.spotify.components.MusicFilterOptions
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
@@ -133,7 +133,7 @@ fun SearchScreen(
             is UiState.Idle -> {}
 
             is UiState.Loading -> {
-                LoadingAnimation(modifier = Modifier.fillMaxSize())
+                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
             }
 
             is UiState.Success -> {

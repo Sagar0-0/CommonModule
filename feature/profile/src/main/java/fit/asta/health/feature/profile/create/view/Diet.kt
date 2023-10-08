@@ -17,7 +17,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.generic.AppModalBottomSheetLayout
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.*
@@ -213,7 +213,7 @@ fun DietContent(
                     }
 
                     is ProfileSubmitState.Loading -> {
-                        LoadingAnimation()
+                        AppDotTypingAnimation()
                     }
 
                     is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
@@ -243,7 +243,7 @@ fun DietCreateBottomSheetLayout(
     when (state) {
         is HPropState.Empty -> TODO()
         is HPropState.Error -> TODO()
-        is HPropState.Loading -> LoadingAnimation()
+        is HPropState.Loading -> AppDotTypingAnimation()
         is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,

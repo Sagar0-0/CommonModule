@@ -10,7 +10,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppButtons
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 
 @Composable
 fun TwoButtonLayout(
@@ -24,13 +25,13 @@ fun TwoButtonLayout(
         modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        AppButtons.AppOutlinedButton(
+        AppOutlinedButton(
             onClick = onClickButton1,
             modifier = Modifier.weight(1f),
             content = contentButton1,
             border = BorderStroke(width = 2.dp, color = AppTheme.colors.onSurface)
         )
-        AppButtons.AppStandardButton(
+        AppFilledButton(
             onClick = onClickButton2,
             modifier = Modifier.weight(1f),
             content = contentButton2,

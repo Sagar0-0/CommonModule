@@ -21,7 +21,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 
 
@@ -65,7 +65,7 @@ fun MusicArtistsUI(
 
             // Circular Progress Bar
             if (painter.state.painter == null)
-                LoadingAnimation()
+                AppDotTypingAnimation()
 
             // Artists Image
             Image(

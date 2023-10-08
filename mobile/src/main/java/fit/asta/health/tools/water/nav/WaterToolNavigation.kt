@@ -15,7 +15,7 @@ import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.testimonials.create.view.ServerErrorLayout
 import fit.asta.health.tools.water.view.screen.WaterToolScreen
 import fit.asta.health.tools.water.viewmodel.WaterState
@@ -53,7 +53,7 @@ fun NavGraphBuilder.waterToolNavigation(
                 "WaterToolNavigation:${uiState} \n" + "${waterTool}\n" + "$containerIndex"
             )
             when (state.value) {
-                is WaterState.Loading -> LoadingAnimation()
+                is WaterState.Loading -> AppDotTypingAnimation()
                 is WaterState.Error -> ServerErrorLayout((state.value as WaterState.Error).error)
                 else -> WaterToolScreen(
                     Event = viewModel::event,

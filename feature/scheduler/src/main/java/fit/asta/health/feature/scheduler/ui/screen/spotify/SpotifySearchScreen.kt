@@ -23,7 +23,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
@@ -85,7 +85,7 @@ fun SpotifySearchScreen(
 
             // Loading State
             is UiState.Loading -> {
-                LoadingAnimation(modifier = Modifier.fillMaxSize())
+                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
             }
 
             // Success State

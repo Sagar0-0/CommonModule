@@ -26,7 +26,7 @@ import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
 import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.designsystem.components.generic.AppErrorScreen
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.spotify.components.MusicProfileOptionList
 import fit.asta.health.feature.spotify.components.MusicSmallImageRow
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
@@ -84,7 +84,7 @@ private fun LikedSongsUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -149,7 +149,7 @@ private fun TracksUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -214,7 +214,7 @@ private fun PlaylistUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -273,7 +273,7 @@ private fun ArtistsUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -330,7 +330,7 @@ private fun AlbumsUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -388,7 +388,7 @@ private fun ShowUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {
@@ -446,7 +446,7 @@ private fun EpisodeUI(
         }
 
         is UiState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is UiState.Success -> {

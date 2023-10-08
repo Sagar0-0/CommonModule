@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeState
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
@@ -21,7 +21,7 @@ fun HomeContent(
 
     when (val state = viewModel.state.collectAsState().value) {
         is HomeState.Loading -> {
-            LoadingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
         is HomeState.Success -> {
