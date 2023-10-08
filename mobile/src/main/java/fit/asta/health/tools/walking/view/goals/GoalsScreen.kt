@@ -3,8 +3,6 @@ package fit.asta.health.tools.walking.view.goals
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material3.*
@@ -12,13 +10,15 @@ import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.navigation.NavController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.walking.model.ListItem
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -54,16 +54,13 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
 
         LazyColumn(modifier = Modifier.padding(it)) {
             item {
-                Text(
+                BodyTexts.Level1(
                     modifier = Modifier.padding(horizontal = 16.dp),
-                    text = "Select the Goals",
-                    fontWeight = FontWeight.Bold,
-                    fontSize = 20.sp,
-                    style = MaterialTheme.typography.bodyLarge
+                    text = "Select the Goals"
                 )
             }
             items(items.size) { i ->
-                Surface(
+                AppSurface(
                     modifier = Modifier
                         .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                         .fillMaxWidth()
@@ -79,30 +76,26 @@ fun GoalsScreen(navController: NavController, homeViewModel: WalkingViewModel) {
                         Color(0xFFE9D7F7)
                     } else {
                         Color(0xFF7415BD)
-                    },
-                    shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+                    }
                 ) {
                     Row(
                         modifier = Modifier.fillMaxWidth(),
                         horizontalArrangement = Arrangement.SpaceBetween,
                         verticalAlignment = Alignment.CenterVertically
                     ) {
-                        Text(
+                        TitleTexts.Level2(
                             modifier = Modifier
                                 .padding(start = 16.dp)
                                 .weight(0.5f),
-                            text = items[i].title,
-                            style = MaterialTheme.typography.titleMedium,
-                            fontSize = 25.sp
+                            text = items[i].title
                         )
                         if (items[i].isSelected) {
-                            Icon(
+                            AppIcon(
                                 modifier = Modifier.weight(0.5f),
                                 imageVector = Icons.Default.AdsClick,
                                 contentDescription = null
                             )
                         }
-
                     }
                 }
             }

@@ -7,16 +7,16 @@ import androidx.compose.material3.*
 import androidx.compose.runtime.*
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.components.*
@@ -149,13 +149,9 @@ fun SunlightHomeScreenLayout(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            Text(
+            TitleTexts.Level2(
                 text = "Upcoming Slots",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
-                //color = Color.Black
-                color = MaterialTheme.colorScheme.onSurface
+                color = AppTheme.colors.onSurface
             )
         }
 
@@ -193,11 +189,8 @@ fun SunlightHomeScreenLayout(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            Text(
+            TitleTexts.Level2(
                 text = "Total Duration",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
                 color = Color.Black
             )
         }
@@ -223,11 +216,8 @@ fun SunlightHomeScreenLayout(
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp)
         ) {
-            Text(
+            TitleTexts.Level2(
                 text = "Total Vitamin D ",
-                fontWeight = FontWeight.Bold,
-                fontSize = 16.sp,
-                lineHeight = 22.4.sp,
                 color = Color.Black
             )
         }

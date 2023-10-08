@@ -4,7 +4,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RunCircle
 import androidx.compose.material3.*
@@ -12,15 +11,17 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.walking.view.home.StepCounterUIEvent
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -71,24 +72,18 @@ fun StepsItem(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Spacer(modifier = Modifier.width(16.dp))
-            Icon(
+            AppIcon(
                 modifier = Modifier
                     .size(35.dp)
                     .align(Alignment.CenterVertically),
                 imageVector = Icons.Default.RunCircle,
                 contentDescription = null
             )
-            Text(
-                text = "Continue running?",
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.headlineSmall
-            )
+            HeadingTexts.Level3(text = "Continue running?")
         }
-        Text(
+        TitleTexts.Level1(
             modifier = Modifier.padding(start = 16.dp, bottom = 16.dp),
-            text = "Session Details",
-            fontWeight = FontWeight.Bold,
-            style = MaterialTheme.typography.titleLarge
+            text = "Session Details"
         )
 
         LazyVerticalGrid(
@@ -158,10 +153,9 @@ fun SessionCard(
     count: String = "500Km",
     onClick: () -> Unit = {}
 ) {
-    Card(
+    AppCard(
         modifier = modifier
             .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(Color.LightGray),
     ) {
         Column(
@@ -170,16 +164,8 @@ fun SessionCard(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             horizontalAlignment = Alignment.Start
         ) {
-            Text(
-                text = type,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
-            )
-            Text(
-                text = count,
-                fontWeight = FontWeight.Bold,
-                style = MaterialTheme.typography.titleMedium
-            )
+            TitleTexts.Level2(text = type)
+            TitleTexts.Level2(text = count)
         }
     }
 }

@@ -19,9 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -40,6 +37,9 @@ import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.generic.AppScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.player.domain.utils.ControllerTypes
 import fit.asta.health.player.domain.utils.ResizeModes
 import fit.asta.health.player.domain.utils.findActivity
@@ -95,7 +95,7 @@ fun VideoScreen(
         movableContentOf { isLandscape: Boolean, modifier: Modifier ->
             MediaContent(
                 isLandscape = isLandscape, modifier = modifier,
-                SetResizeMode = { event(VideoEvent.SetResizeMode(it)) },
+                setResizeMode = { event(VideoEvent.SetResizeMode(it)) },
                 controllerType = { event(VideoEvent.SetControllerType(it)) },
                 uiState = uiState,
                 state = state
@@ -139,7 +139,7 @@ private fun MediaContent(
     isLandscape: Boolean,
     modifier: Modifier = Modifier,
     uiState: VideoState,
-    SetResizeMode: (ResizeMode) -> Unit,
+    setResizeMode: (ResizeMode) -> Unit,
     controllerType: (ControllerType) -> Unit,
     state: MediaState
 ) {
@@ -176,12 +176,11 @@ private fun MediaContent(
                 },
                 errorMessage = { error ->
                     Box(Modifier.fillMaxSize(), Alignment.Center) {
-                        Text(
-                            error.message ?: "",
+                        HeadingTexts.Level2(
+                            text = error.message ?: "",
                             modifier = Modifier
                                 .background(Color(0x80808080), RoundedCornerShape(16.dp))
                                 .padding(horizontal = 12.dp, vertical = 4.dp),
-                            color = Color.White,
                             textAlign = TextAlign.Center
                         )
                     }
@@ -199,21 +198,25 @@ private fun MediaContent(
                     }
                 }
             )
-            IconButton(
+            AppIconButton(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
                     .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(30.dp)),
                 onClick = if (isLandscape) exitFullscreen else enterFullscreen
             ) {
-                Icon(Icons.Filled.Fullscreen, contentDescription = null, tint = Color.White)
+                AppIcon(
+                    imageVector = Icons.Filled.Fullscreen,
+                    contentDescription = null,
+                    tint = Color.White
+                )
             }
         }
 
         AnimatedVisibility(visible = !isLandscape) {
             LazyColumn(modifier = Modifier.fillMaxWidth()){
                 item {
-                    Option("Resize Mode", ResizeModes, uiState.resizeMode) { SetResizeMode(it) }
+                    Option("Resize Mode", ResizeModes, uiState.resizeMode) { setResizeMode(it) }
                 }
                 item {
                     Option("Controller", ControllerTypes, uiState.controllerType) { controllerType(it) }

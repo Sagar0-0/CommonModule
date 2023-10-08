@@ -43,7 +43,6 @@ fun SleepNavGraph(
                         .data?.sleepData?.progressData
 
                     SleepHomeScreen(
-                        navController = navController,
                         progressData = progressData
                     )
                 }

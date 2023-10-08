@@ -22,7 +22,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.shape.CornerSize
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.*
@@ -31,7 +30,6 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -41,28 +39,34 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderFloat
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarFloat
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.water.model.domain.BeverageDetails
 import fit.asta.health.tools.water.model.network.TodayActivityData
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WaterToolScreen(
-    Event: (WTEvent) -> Unit,
+    event: (WTEvent) -> Unit,
     beverageList: SnapshotStateList<BeverageDetails>,
     todayActivityData: SnapshotStateList<TodayActivityData>,
     selectedBeverage: String,
@@ -81,7 +85,7 @@ fun WaterToolScreen(
     )
 
     LaunchedEffect(key1 = scaffoldState.bottomSheetState.currentValue) {
-        Event(WTEvent.SheetState(sheetState.hasPartiallyExpandedState))
+        event(WTEvent.SheetState(sheetState.hasPartiallyExpandedState))
     }
 
     AppBottomSheetScaffold(
@@ -98,7 +102,7 @@ fun WaterToolScreen(
         sheetContent = {
             WaterBottomSheet(
                 scaffoldState = scaffoldState,
-                Event = Event,
+                Event = event,
                 uiState = uiState,
                 beverageList = beverageList,
                 selectedBeverage = selectedBeverage,
@@ -108,7 +112,7 @@ fun WaterToolScreen(
         },
     ) {
         val scrollState = rememberScrollState()
-        var isScrollEnabled by remember { mutableStateOf(true) }
+        val isScrollEnabled by remember { mutableStateOf(true) }
         Column(
             modifier = Modifier
                 .fillMaxSize()
@@ -116,19 +120,18 @@ fun WaterToolScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            AppSurface(
+                modifier = Modifier.fillMaxWidth()
             ) {
                 if (uiState.showCustomDialog) {
-                    CustomAlertDialog(dialogString = uiState.dialogString,
+                    CustomAlertDialog(
+                        dialogString = uiState.dialogString,
                         onDismiss = {
-                            Event(WTEvent.DialogState(false))
+                            event(WTEvent.DialogState(false))
                         },
                         onUpdate = {
-                            Event(WTEvent.UpdateQuantity)
-                            Event(WTEvent.DialogState(false))
+                            event(WTEvent.UpdateQuantity)
+                            event(WTEvent.DialogState(false))
                         }
                     )
                 }
@@ -146,10 +149,10 @@ fun WaterToolScreen(
                         appliedAngleDistanceValue = if (uiState.start) uiState.angle else uiState.targetAngle,
                         indicatorValue = uiState.water.consume.toFloat(),
                         onChangeDistance = {
-                            Event(WTEvent.SelectTarget(it))
+                            event(WTEvent.SelectTarget(it))
                         },
                         onChangeAngleDistance = {
-                            Event(WTEvent.SelectAngle(it))
+                            event(WTEvent.SelectAngle(it))
                         }
                     )
 
@@ -179,9 +182,8 @@ fun WaterToolScreen(
                             .fillMaxWidth(),
                         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                     ) {
-                        Text(
+                        TitleTexts.Level2(
                             text = "Recommendation ",
-                            style = MaterialTheme.typography.titleMedium,
                             textAlign = TextAlign.Start
                         )
                         RecommendItem(
@@ -239,11 +241,9 @@ fun WaterBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
-                Text(
-                    "BEVERAGES",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                TitleTexts.Level2(
+                    text = "BEVERAGES",
+                    color = AppTheme.colors.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
                     beverageList.forEach {
@@ -257,11 +257,9 @@ fun WaterBottomSheet(
                         }
                     }
                 }
-                Text(
-                    "QUANTITY-${beverageName(selectedBeverage)}",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                TitleTexts.Level2(
+                    text = "QUANTITY-${beverageName(selectedBeverage)}",
+                    color = AppTheme.colors.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
                     containerList.forEachIndexed { index, value ->
@@ -281,11 +279,9 @@ fun WaterBottomSheet(
                 modifier = Modifier.fillMaxWidth(),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
-                Text(
-                    "QUANTITY-${beverageName(selectedBeverage)}",
-                    fontSize = 16.sp,
-                    fontWeight = FontWeight.Bold,
-                    color = MaterialTheme.colorScheme.onBackground
+                TitleTexts.Level2(
+                    text = "QUANTITY-${beverageName(selectedBeverage)}",
+                    color = AppTheme.colors.onBackground
                 )
                 LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
                     containerList.forEachIndexed { index, value ->
@@ -340,10 +336,8 @@ fun QuantityContainerComponent(
                 verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
+                CaptionTexts.Level2(
                     text = value,
-                    fontSize = 13.sp,
-                    fontWeight = FontWeight.Light,
                     textAlign = TextAlign.Center,
                     color = Color.White
                 )
@@ -355,11 +349,10 @@ fun QuantityContainerComponent(
 
 @Composable
 fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
-    Surface(
+    AppSurface(
         modifier = Modifier
             .fillMaxWidth()
-            .height(300.dp),
-        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            .height(300.dp)
     ) {
         Column(
             modifier = Modifier
@@ -367,32 +360,27 @@ fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            Text(
+            TitleTexts.Level2(
                 text = "Today Activity",
-                style = MaterialTheme.typography.titleMedium,
                 textAlign = TextAlign.Start
             )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                Text(
+                BodyTexts.Level3(
                     text = "Beverages",
-                    style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Start
                 )
-                Text(
+                BodyTexts.Level3(
                     text = "Consume",
-                    style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Start
                 )
-                Text(
+                BodyTexts.Level3(
                     text = "Time",
-                    style = MaterialTheme.typography.bodySmall,
                     textAlign = TextAlign.Start
                 )
             }
-            val daily = listOf("W", "SD", "FG", "M", "BM", "C")
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
@@ -417,7 +405,7 @@ fun ActivityItem(title: String, consumeValue: Float, icon_code: Int, time: Strin
         modifier = Modifier.fillMaxWidth(),
         verticalAlignment = Alignment.Bottom
     ) {
-        Icon(
+        AppIcon(
             painter = painterResource(id = icon_code),
             contentDescription = null,
             modifier = Modifier
@@ -425,20 +413,17 @@ fun ActivityItem(title: String, consumeValue: Float, icon_code: Int, time: Strin
                 .weight(.15f),
             tint = Color.Green
         )
-        Text(
+        TitleTexts.Level3(
             modifier = Modifier.weight(.35f),
             text = title,
-            style = MaterialTheme.typography.titleSmall
         )
-        Text(
+        TitleTexts.Level3(
             modifier = Modifier.weight(.3f),
             text = "$consumeValue ml",
-            style = MaterialTheme.typography.titleSmall
         )
-        Text(
+        TitleTexts.Level3(
             modifier = Modifier.weight(.2f),
             text = time,
-            style = MaterialTheme.typography.bodySmall
         )
     }
 }
@@ -446,11 +431,9 @@ fun ActivityItem(title: String, consumeValue: Float, icon_code: Int, time: Strin
 @Composable
 @Preview
 fun RecommendBeverage() {
-    Surface(
+    AppSurface(
         modifier = Modifier
             .fillMaxWidth(),
-//        color = Color.Green,
-        shape = RoundedCornerShape(corner = CornerSize(15.dp)),
     ) {
         val daily = listOf("W", "SD", "FG", "M", "BM", "C")
         LazyColumn(
@@ -460,9 +443,8 @@ fun RecommendBeverage() {
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
             item {
-                Text(
+                TitleTexts.Level2(
                     text = "Recommend ",
-                    style = MaterialTheme.typography.titleMedium,
                     textAlign = TextAlign.Start
                 )
             }
@@ -484,22 +466,19 @@ fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, pr
             modifier = modifier.fillMaxWidth(),
             verticalAlignment = Alignment.Bottom
         ) {
-            Text(
+            TitleTexts.Level3(
                 text = title,
                 modifier = Modifier.weight(.3f),
-                style = MaterialTheme.typography.titleSmall,
                 textAlign = TextAlign.Start
             )
-            Text(
+            BodyTexts.Level2(
                 text = "$value ml",
                 modifier = Modifier.weight(.2f),
-                style = MaterialTheme.typography.bodyMedium,
                 textAlign = TextAlign.Start
             )
-            Text(
+            BodyTexts.Level3(
                 text = "$progress %",
                 modifier = Modifier.weight(.5f),
-                style = MaterialTheme.typography.bodySmall,
                 textAlign = TextAlign.End
             )
         }
@@ -521,11 +500,9 @@ fun GridItem(
     @DrawableRes id: Int,
     onClick: () -> Unit
 ) {
-    Card(
-        modifier = modifier
-            .clickable { onClick() },
-        shape = RoundedCornerShape(8.dp),
-        colors = CardDefaults.cardColors(MaterialTheme.colorScheme.onTertiary),
+    AppCard(
+        modifier = modifier.clickable { onClick() },
+        colors = CardDefaults.cardColors(AppTheme.colors.onTertiary),
     ) {
 
         Row(
@@ -533,21 +510,15 @@ fun GridItem(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
-                Icon(
+                AppIcon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             ) {
-                Text(
-                    text = name,
-                    style = MaterialTheme.typography.titleSmall
-                )
-                Text(
-                    text = type,
-                    style = MaterialTheme.typography.bodySmall
-                )
+                TitleTexts.Level3(text = name)
+                BodyTexts.Level3(text = type)
             }
         }
     }
@@ -556,15 +527,12 @@ fun GridItem(
 @Composable
 fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString: String) {
 
-    Dialog(
+    AppDialog(
         onDismissRequest = { onDismiss() }, properties = DialogProperties(
             dismissOnBackPress = false, dismissOnClickOutside = false
         )
     ) {
-        Card(
-            //shape = MaterialTheme.shapes.medium,
-            shape = RoundedCornerShape(10.dp),
-            // modifier = modifier.size(280.dp, 240.dp)
+        AppCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(8.dp),
@@ -577,36 +545,32 @@ fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString:
             ) {
 
 
-                Text(
+                HeadingTexts.Level2(
                     text = "Attention:  Quantity Update",
-                    modifier = Modifier.padding(8.dp), fontSize = 20.sp
+                    modifier = Modifier.padding(8.dp)
                 )
 
-                Text(
+                TitleTexts.Level2(
                     text = dialogString, modifier = Modifier.padding(8.dp)
                 )
 
                 Row(Modifier.padding(top = 10.dp)) {
-                    OutlinedButton(
+                    AppOutlinedButton(
                         onClick = { onDismiss() },
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Cancel")
-                    }
-
-
-                    Button(
+                            .weight(1F),
+                        textToShow = "Cancel"
+                    )
+                    AppFilledButton(
                         onClick = { onUpdate() },
-                        Modifier
+                        modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .weight(1F)
-                    ) {
-                        Text(text = "Update")
-                    }
+                            .weight(1F),
+                        textToShow = "Update"
+                    )
                 }
             }
         }
@@ -620,15 +584,14 @@ fun BeveragesItem(title: String, icon_code: String, index: String, onClick: () -
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
     ) {
-        Icon(
+        AppIcon(
             painter = painterResource(id = beverageIcons(icon_code)),
             contentDescription = null,
             modifier = Modifier.size(24.dp),
             tint = if (icon_code == index) Color.Green else Color.Gray
         )
-        Text(
+        CaptionTexts.Level3(
             text = title,
-            fontSize = 12.sp,
             color = if (icon_code == index) Color.Green else Color.Gray,
             textAlign = TextAlign.Center
         )
@@ -746,7 +709,7 @@ fun CustomProgressBar(
     val screenWidth = configuration.screenWidthDp - 32
     val animatedProgress = animateFloatAsState(
         targetValue = (screenWidth * percent / 100).toFloat(),
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec
+        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
     ).value
 
     Box(

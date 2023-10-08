@@ -23,7 +23,7 @@ package fit.asta.health.tools.sunlight.view.components
 //                fontSize = 16.sp,
 //                lineHeight = 22.4.sp,
 //                //color = Color.Black
-//                color = MaterialTheme.colorScheme.onSurface
+//                color = AppTheme.colors.onSurface
 //            )
 //        }
 //

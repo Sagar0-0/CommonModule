@@ -1,7 +1,6 @@
 package fit.asta.health.tools.sleep.view.screens
 
 import android.widget.Toast
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -12,8 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -21,12 +18,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sleep.model.network.jetlag.SleepJetLagTipResponse
 import fit.asta.health.tools.sleep.utils.SleepNetworkCall
 
@@ -74,13 +72,9 @@ fun SleepJetLagTipsScreen(
             ) {
 
                 item {
-                    Text(
+                    TitleTexts.Level2(
                         text = "Here are few tips and tricks that may help prevent " +
-                                "Jet lag or reduce its effects ",
-
-                        fontSize = 20.sp,
-                        fontWeight = FontWeight.W600,
-                        fontFamily = FontFamily.SansSerif
+                                "Jet lag or reduce its effects "
                     )
                 }
 
@@ -108,32 +102,23 @@ fun SleepJetLagTipsScreen(
                             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                         ) {
 
-                            Image(
+                            AppLocalImage(
                                 painter = painterResource(id = icon),
                                 contentDescription = null,
-                                modifier = Modifier
-                                    .size(24.dp),
-                                colorFilter = ColorFilter.tint(color = MaterialTheme.colorScheme.onBackground)
+                                modifier = Modifier.size(24.dp),
+                                colorFilter = ColorFilter.tint(color = AppTheme.colors.onBackground)
                             )
 
                             Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
 
                                 // Subject / Title
-                                Text(
-                                    text = currentItem.sub,
-
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.W600,
-                                    fontFamily = FontFamily.SansSerif
+                                BodyTexts.Level2(
+                                    text = currentItem.sub
                                 )
 
                                 // Description
-                                Text(
-                                    text = currentItem.dsc,
-
-                                    fontSize = 12.sp,
-                                    fontWeight = FontWeight.W400,
-                                    fontFamily = FontFamily.SansSerif
+                                CaptionTexts.Level2(
+                                    text = currentItem.dsc
                                 )
                             }
                         }

@@ -1,9 +1,15 @@
 package fit.asta.health.tools.water.view.component
 
 import androidx.compose.foundation.Canvas
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.Slider
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableFloatStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.geometry.Offset
@@ -12,18 +18,14 @@ import androidx.compose.ui.graphics.nativeCanvas
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Preview
 @Composable
 fun ForecastSlider(
     dates: List<String> = listOf("0","50","100","150","200","250","300","350","400","450","500","550","600","650","700","750","800","850","900","950","100"),
     onValueChange: (Int) -> Unit = {},
-//    viewModel: WaterViewModel = hiltViewModel()
 ) {
-//    val value by viewModel.sliderInitialValue.collectAsState()
-    val (sliderValue, setSliderValue) = remember { mutableStateOf(0f) }
+    val (sliderValue, setSliderValue) = remember { mutableFloatStateOf(0f) }
     val drawPadding = with(LocalDensity.current) { 10.dp.toPx() }
     val textSize = with(LocalDensity.current) { 10.dp.toPx() }
     val lineHeightDp = 10.dp
@@ -65,18 +67,15 @@ fun ForecastSlider(
                     }
                 }
             }
-            if (sliderValue != null) {
-                Slider(
-                    modifier = Modifier.fillMaxWidth(),
-                    value = sliderValue,
-                    valueRange = 0f..1000f,
-                    steps = dates.size.minus(2),
-                    //colors = customSliderColors(),
-                    onValueChange = {
-                        setSliderValue(it)
-                        onValueChange(it.toInt())
-                    })
-            }
+            Slider(
+                modifier = Modifier.fillMaxWidth(),
+                value = sliderValue,
+                valueRange = 0f..1000f,
+                steps = dates.size.minus(2),
+                onValueChange = {
+                    setSliderValue(it)
+                    onValueChange(it.toInt())
+                })
         }
     }
 

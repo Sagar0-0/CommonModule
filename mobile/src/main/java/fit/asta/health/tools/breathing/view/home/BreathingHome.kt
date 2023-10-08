@@ -1,6 +1,5 @@
 package fit.asta.health.tools.breathing.view.home
 
-import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -12,11 +11,8 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -24,17 +20,17 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBar
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
-import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.ButtonWithColor
-import fit.asta.health.designsystem.components.CardItem
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.walking.view.home.SunlightCard
 
 
@@ -115,10 +111,9 @@ fun BreathingHomeScreen(
                 .padding(16.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
-            Surface(
+            AppSurface(
                 modifier = Modifier
                     .fillMaxWidth(),
-                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
             ) {
                 Column(
                     modifier = Modifier
@@ -204,7 +199,7 @@ fun BreathingBottomSheet(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
-        Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
+        TitleTexts.Level3(text = "PRACTICE")
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -310,9 +305,6 @@ fun Test() {
     val scaffoldState = rememberBottomSheetScaffoldState(
         bottomSheetState = sheetState
     )
-    val coroutine = rememberCoroutineScope()
-    Log.d("subhash", "Test: ${scaffoldState.bottomSheetState.currentValue}")
-
     AppBottomSheetScaffold(
         modifier = Modifier.fillMaxSize(),
         scaffoldState = scaffoldState,
@@ -328,7 +320,7 @@ fun Test() {
                     .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
-                Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
+                TitleTexts.Level3(text = "PRACTICE")
                 LazyVerticalGrid(
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -406,10 +398,9 @@ fun Test() {
         }
     ) {
         Column(modifier = Modifier.fillMaxSize()) {
-            Text(
+            HeadingTexts.Level2(
                 text = "Breathing Tool",
-                fontSize = 20.sp,
-                color = MaterialTheme.colorScheme.onBackground,
+                color = AppTheme.colors.onBackground,
                 textAlign = TextAlign.Center,
             )
         }

@@ -6,7 +6,6 @@ import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.foundation.shape.CornerSize
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -28,15 +25,20 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.components.*
 import fit.asta.health.designsystem.components.functional.CircularSliderInt
 import fit.asta.health.designsystem.components.generic.AppBottomSheetScaffold
 import fit.asta.health.designsystem.components.generic.AppTopBarWithHelp
 import fit.asta.health.designsystem.components.generic.ProgressBarInt
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,10 +107,8 @@ fun MeditationHomeScreen(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Surface(
-                modifier = Modifier
-                    .fillMaxWidth(),
-                shape = RoundedCornerShape(corner = CornerSize(15.dp)),
+            AppSurface(
+                modifier = Modifier.fillMaxWidth()
             ) {
 
                 Column(
@@ -200,7 +200,7 @@ fun MeditationBottomSheet(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
     ) {
 
-        Text(text = "PRACTICE", style = MaterialTheme.typography.titleSmall)
+        TitleTexts.Level3(text = "PRACTICE")
         LazyVerticalGrid(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -281,9 +281,8 @@ fun MeditationBottomSheet(
 @Composable
 fun SunlightCard(modifier: Modifier) {
     val checked = remember { mutableStateOf(true) }
-    Card(
+    AppCard(
         modifier = modifier,
-        shape = RoundedCornerShape(8.dp),
         colors = CardDefaults.cardColors(containerColor = MaterialTheme.colorScheme.background)
     ) {
         Row(
@@ -293,7 +292,7 @@ fun SunlightCard(modifier: Modifier) {
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.Top
         ) {
-            Image(
+            AppLocalImage(
                 painter = painterResource(id = R.drawable.ic_ic24_notification),
                 contentDescription = null,
             )
@@ -301,16 +300,15 @@ fun SunlightCard(modifier: Modifier) {
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(text = "Sunlight", fontSize = 12.sp, fontWeight = FontWeight.Bold)
-                Text(
+                BodyTexts.Level2(text = "Sunlight")
+                CaptionTexts.Level2(
                     text = "There will be addition of 500 ml to 1 Litre of water to your daily intake based on the weather temperature.",
-                    fontSize = 12.sp
                 )
             }
             Column(
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                Switch(
+                AppToggleButton(
                     checked = checked.value,
                     onCheckedChange = { checked.value = it },
                 )

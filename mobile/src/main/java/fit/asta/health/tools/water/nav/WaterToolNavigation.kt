@@ -56,7 +56,7 @@ fun NavGraphBuilder.waterToolNavigation(
                 is WaterState.Loading -> AppDotTypingAnimation()
                 is WaterState.Error -> ServerErrorLayout((state.value as WaterState.Error).error)
                 else -> WaterToolScreen(
-                    Event = viewModel::event,
+                    event = viewModel::event,
                     beverageList = beverageList,
                     containerList = containerList,
                     selectedBeverage = selectedBeverage,
