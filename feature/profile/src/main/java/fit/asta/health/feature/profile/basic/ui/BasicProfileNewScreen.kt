@@ -323,7 +323,7 @@ fun BasicProfileNewScreen() {
                         .padding(start = AppTheme.spacing.level3),
                     verticalAlignment = Alignment.CenterVertically,
                 ) {
-                    AppDefaultIcon(
+                    fit.asta.health.designsystem.molecular.AppDefaultIcon(
                         imageVector = Icons.Default.Person, contentDescription = "User Name Icon"
                     )
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
@@ -341,7 +341,7 @@ fun BasicProfileNewScreen() {
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                                 TitleTexts.Level1(text = "Name")
                             }
-                            AppDefaultIcon(
+                            fit.asta.health.designsystem.molecular.AppDefaultIcon(
                                 imageVector = Icons.Default.Edit,
                                 contentDescription = "Edit Profile Name"
                             )
@@ -542,7 +542,8 @@ fun BasicProfileCreateScreen() {
         scope.launch { modalBottomSheetState.hide() }
     }
 
-    AppModalBottomSheetLayout(sheetState = modalBottomSheetState,
+    AppModalBottomSheetLayout(
+        sheetState = modalBottomSheetState,
         sheetContent = { BasicProfileBtmSheetContent() }) {
         BasicProfileContent(onClick = { openSheet() })
     }

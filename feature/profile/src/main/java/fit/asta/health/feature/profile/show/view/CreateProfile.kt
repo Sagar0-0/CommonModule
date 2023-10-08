@@ -11,7 +11,6 @@ package fit.asta.health.feature.profile.show.view
 import androidx.compose.foundation.layout.*
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment.Companion.CenterVertically
@@ -19,11 +18,12 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.data.profile.remote.model.HealthProperties
-import fit.asta.health.designsystem.components.generic.AppButtons
-import fit.asta.health.designsystem.components.generic.AppCard
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppTexts
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
@@ -51,8 +51,8 @@ fun TwoTogglesGroup(
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level3)
             ) {
-                AppTexts.TitleSmall(
-                    text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
+                TitleTexts.Level3(
+                    text = selectionTypeText, color = AppTheme.colors.onTertiaryContainer
                 )
             }
         }
@@ -63,13 +63,13 @@ fun TwoTogglesGroup(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                    AppRadioButton(selected = selectedOption == option,
                         onClick = { onStateChange(option) })
-                    AppTexts.LabelSmall(
+                    CaptionTexts.Level4(
                         text = when (option) {
                             TwoRadioBtnSelections.First -> firstOption
                             TwoRadioBtnSelections.Second -> secondOption
-                        }, color = MaterialTheme.colorScheme.onPrimaryContainer
+                        }, color = AppTheme.colors.onPrimaryContainer
                     )
                 }
             }
@@ -95,8 +95,8 @@ fun ThreeTogglesGroups(
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level3)
             ) {
-                AppTexts.TitleLarge(
-                    text = selectionTypeText, color = MaterialTheme.colorScheme.onTertiaryContainer
+                TitleTexts.Level2(
+                    text = selectionTypeText, color = AppTheme.colors.onTertiaryContainer
                 )
             }
         }
@@ -109,14 +109,15 @@ fun ThreeTogglesGroups(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppButtons.AppRadioButton(selected = selectedOption == option,
+                    AppRadioButton(
+                        selected = selectedOption == option,
                         onClick = { onStateChange(option) })
-                    AppTexts.LabelSmall(
+                    CaptionTexts.Level3(
                         text = when (option) {
                             ThreeRadioBtnSelections.First -> firstOption
                             ThreeRadioBtnSelections.Second -> secondOption
                             ThreeRadioBtnSelections.Third -> thirdOption
-                        }, color = MaterialTheme.colorScheme.onPrimaryContainer
+                        }, color = AppTheme.colors.onPrimaryContainer
                     )
                 }
             }
@@ -155,7 +156,7 @@ fun SelectionCardCreateProfile(
                         horizontalArrangement = Arrangement.Center,
                         verticalAlignment = CenterVertically
                     ) {
-                        AppTexts.TitleSmall(text = cardType)
+                        TitleTexts.Level3(text = cardType)
                     }
                     if (selectedOption == TwoRadioBtnSelections.First) {
                         ProfileAddIcon(onClick = onItemsSelect)
@@ -213,7 +214,7 @@ fun OnlyChipSelectionCard(
                 Row(
                     horizontalArrangement = Arrangement.Center, verticalAlignment = CenterVertically
                 ) {
-                    AppTexts.TitleSmall(text = cardType)
+                    TitleTexts.Level3(text = cardType)
                 }
                 ProfileAddIcon(onClick = onItemsSelect)
             }
@@ -236,14 +237,11 @@ fun OnlyChipSelectionCard(
 private fun ProfileAddIcon(
     onClick: () -> Unit,
 ) {
-    AppButtons.AppIconButton(onClick = onClick) {
-        AppDefaultIcon(
-            imageVector = Icons.Rounded.AddCircle,
-            contentDescription = "Add Item",
-            tint = MaterialTheme.colorScheme.primary
-        )
-    }
+    AppIconButton(
+        imageVector = Icons.Rounded.AddCircle, iconTint = AppTheme.colors.primary, onClick = onClick
+    )
 }
+
 
 @Composable
 private fun ValidateListError(
@@ -254,9 +252,9 @@ private fun ValidateListError(
 ) {
     Row(Modifier.fillMaxWidth()) {
         if (selectedOption is TwoRadioBtnSelections.First && cardList.isEmpty()) {
-            AppTexts.TitleSmall(
+            TitleTexts.Level3(
                 text = viewModel.validateDataList(cardList, listName).asString(),
-                color = MaterialTheme.colorScheme.error
+                color = AppTheme.colors.error
             )
         }
     }

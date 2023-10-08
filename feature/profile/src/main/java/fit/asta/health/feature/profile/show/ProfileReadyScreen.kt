@@ -27,9 +27,8 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.data.profile.remote.model.UserProfile
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppDefaultIcon
-import fit.asta.health.designsystem.components.generic.AppScaffold
-import fit.asta.health.designsystem.components.generic.AppTopBar
+import fit.asta.health.designsystem.molecular.AppScaffold
+import fit.asta.health.designsystem.molecular.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.profile.show.view.DietLayout
@@ -111,7 +110,7 @@ fun ProfileReadyScreen(
                         selected = content == index + 1,
                         onClick = { content = index + 1 },
                         icon = {
-                            AppDefaultIcon(
+                            fit.asta.health.designsystem.molecular.AppDefaultIcon(
                                 imageVector = item.icon,
                                 contentDescription = item.contentDescription
                             )

@@ -5,8 +5,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.components.generic.AppErrorScreen
 import fit.asta.health.designsystem.components.generic.LoadingAnimation
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.profile.create.CreateProfileLayout
 import fit.asta.health.feature.profile.show.ProfileReadyScreen
 import fit.asta.health.feature.profile.show.vm.ProfileGetState

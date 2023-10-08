@@ -1,7 +1,7 @@
 package fit.asta.health.feature.profile.show.view.components
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.feature.profile.create.view.components.rememberAssistChipColors
 
@@ -10,8 +10,7 @@ import fit.asta.health.feature.profile.create.view.components.rememberAssistChip
 fun DisabledChipForList(
     textOnChip: String,
 ) {
-    val colors =
-        rememberAssistChipColors(disabledContainerColor = MaterialTheme.colorScheme.primaryContainer)
+    val colors = rememberAssistChipColors(disabledContainerColor = AppTheme.colors.primaryContainer)
     AppAssistChip(onClick = { /*TODO*/ }, textToShow = textOnChip, colors = colors, enabled = false)
 }
 

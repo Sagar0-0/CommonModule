@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.Session
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.components.generic.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
