@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -13,19 +12,13 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.Link
-import androidx.compose.material3.Button
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Surface
-import androidx.compose.material3.TopAppBar
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -35,6 +28,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -60,18 +56,14 @@ import fit.asta.health.resources.drawables.R
 fun NewReferralDesign() {
 
     AppTheme {
-        Surface(modifier = Modifier.fillMaxSize()) {
+        AppSurface(modifier = Modifier.fillMaxSize()) {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TopAppBar(title = { TitleTexts.Level1(text = "Refer and Earn") }, navigationIcon = {
-                    Icon(
-                        imageVector = Icons.Filled.ArrowBackIosNew, contentDescription = "Go Back"
-                    )
-                })
+                AppTopBar(title = "Refer and Earn", backIcon = Icons.Filled.ArrowBackIosNew)
                 Spacer(modifier = Modifier.height(16.dp))
                 AppLocalImage(
                     painter = painterResource(id = R.drawable.ref_ed_2),
@@ -111,35 +103,16 @@ fun NewReferralDesign() {
                                 textAlign = TextAlign.Center,
                                 color = AppTheme.colors.primary
                             )
-                            Button(
+                            AppTextButton(
                                 onClick = { /*TODO*/ },
-                                shape = RoundedCornerShape(12.dp),
-                                contentPadding = PaddingValues(
-                                    start = AppTheme.spacing.level4,
-                                    top = AppTheme.spacing.level2,
-                                    end = AppTheme.spacing.level4,
-                                    bottom = AppTheme.spacing.level2
-                                )
-                            ) {
-                                Row(
-                                    verticalAlignment = Alignment.CenterVertically,
-                                    modifier = Modifier.padding(vertical = 24.dp)
-                                ) {
-                                    Icon(
-                                        imageVector = Icons.Filled.ContentCopy,
-                                        contentDescription = "Copy",
-                                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
-                                    )
-                                    CaptionTexts.Level1(
-                                        text = "Copy", color = AppTheme.colors.onPrimary
-                                    )
-                                }
-                            }
+                                leadingIcon = Icons.Filled.ContentCopy,
+                                textToShow = "Copy"
+                            )
                         }
                     }
                 }
                 Spacer(modifier = Modifier.height(16.dp))
-                Divider(modifier = Modifier.padding(horizontal = 8.dp))
+                AppDivider(modifier = Modifier.padding(horizontal = 8.dp))
                 Spacer(modifier = Modifier.height(16.dp))
                 Row(
                     Modifier
@@ -189,7 +162,7 @@ fun JoinedUserList() {
             JoinedUser()
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+        AppDivider(modifier = Modifier.padding(horizontal = 16.dp))
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -214,7 +187,7 @@ fun SendReminderList() {
             SendReminder()
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+        AppDivider(modifier = Modifier.padding(horizontal = 16.dp))
     }
     Spacer(modifier = Modifier.height(16.dp))
 }
@@ -239,7 +212,7 @@ fun ExpiredUserList() {
             ExpiredUser()
         }
         Spacer(modifier = Modifier.height(16.dp))
-        Divider(modifier = Modifier.padding(horizontal = 16.dp))
+        AppDivider(modifier = Modifier.padding(horizontal = 16.dp))
     }
     Spacer(modifier = Modifier.height(16.dp))
 }

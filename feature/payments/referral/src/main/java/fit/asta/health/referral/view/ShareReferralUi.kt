@@ -13,12 +13,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.Card
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +31,12 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R as DrawR
@@ -51,8 +50,7 @@ fun ShareReferralUi(
     onBackPress: () -> Unit,
     onTryAgain: () -> Unit
 ) {
-
-    Scaffold(
+    AppScaffold(
         topBar = {
             AppTopBar(title = "Referral", onBack = onBackPress)
         },
@@ -130,14 +128,12 @@ fun ShareReferralUi(
 
 @Composable
 fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
-    Card(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3)
-            .background(MaterialTheme.colorScheme.surface),
-        shape = MaterialTheme.shapes.extraLarge,
+            .padding(AppTheme.spacing.level3),
     ) {
-        Text(
+        TitleTexts.Level2(
             modifier = Modifier
                 .padding(top = AppTheme.spacing.level3, start = AppTheme.spacing.level3),
             text = title,
@@ -152,24 +148,22 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
 private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
     val context = LocalContext.current
     Column {
-        Card(
+        AppCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level3)
                 .clickable {
                     shareReferralCode(code)
                 },
-            shape = MaterialTheme.shapes.extraLarge,
         ) {
-            Text(
+            TitleTexts.Level2(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(AppTheme.spacing.level5),
                 text = stringResource(id = StringR.string.refer_and_earn),
-                textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.headlineMedium
+                textAlign = TextAlign.Center
             )
-            Text(
+            TitleTexts.Level2(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(
@@ -179,16 +173,14 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                     ),
                 text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
-                style = MaterialTheme.typography.bodyMedium
             )
-            Icon(
+            AppIcon(
                 modifier = Modifier
                     .clip(CircleShape)
                     .padding(AppTheme.spacing.level3)
                     .align(Alignment.CenterHorizontally),
                 imageVector = Icons.Default.Share,
-                contentDescription = "",
-                tint = MaterialTheme.colorScheme.secondaryContainer
+                contentDescription = ""
             )
 
         }
@@ -199,19 +191,17 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 .dashedBorder(
                     width = 1.dp,
                     radius = 1.dp,
-                    color = MaterialTheme.colorScheme.onBackground
+                    color = AppTheme.colors.onBackground
                 )
-                .background(MaterialTheme.colorScheme.secondaryContainer.copy(0.5f))
                 .clickable {
                     context.copyTextToClipboard(
                         code
                     )
                 }
         ) {
-            Text(
+            TitleTexts.Level2(
                 modifier = Modifier.padding(AppTheme.spacing.level3),
                 text = stringResource(id = StringR.string.code_side_text) + code,
-                style = MaterialTheme.typography.labelLarge,
                 textAlign = TextAlign.Center
             )
         }
@@ -228,7 +218,6 @@ private fun ReferredUserItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .clip(MaterialTheme.shapes.extraLarge)
             .background(if (user.prime) Color.Green else Color.Red),
         verticalAlignment = Alignment.CenterVertically
     ) {
@@ -243,6 +232,6 @@ private fun ReferredUserItem(
                 )
             ), contentDescription = "Profile"
         )
-        Text(text = user.name)
+        TitleTexts.Level2(text = user.name)
     }
 }

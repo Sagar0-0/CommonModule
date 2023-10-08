@@ -25,7 +25,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBox
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -37,11 +36,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
@@ -79,25 +82,15 @@ internal fun SubPlansPager(
             item = subscriptionPlans.categories[page],
             modifier = Modifier
                 .carouselTransition(page, pagerState),
-            color = CardDefaults.cardColors(
-                containerColor =
-                if (pagerState.currentPage == page) {
-                    MaterialTheme.colorScheme.primaryContainer
-                } else {
-                    MaterialTheme.colorScheme.secondaryContainer
-                }
-            ),
             onPayClick = onClick
         )
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun SubPlanItem(
     item: SubscriptionResponse.SubscriptionPlans.Category,
     modifier: Modifier,
-    color: CardColors,
     fullScreen: Boolean,
     onFullScreenChange: (Boolean) -> Unit,
     transition: Transition<Boolean>,
@@ -144,7 +137,7 @@ private fun SubPlanItem(
             .animateContentSize(),
         contentAlignment = Alignment.TopCenter
     ) {
-        Card(
+        AppCard(
             onClick = {
                 if (!fullScreen) {
                     onFullScreenChange(true)
@@ -154,18 +147,15 @@ private fun SubPlanItem(
                 .padding(top = cardTopPadding)
                 .height(cardSize)
                 .fillMaxWidth(),
-            shape = MaterialTheme.shapes.large,
-            colors = color
         ) {
-            IconButton(
+            AppIconButton(
+                imageVector = Icons.Default.Close,
                 modifier = Modifier
                     .size(closeButtonSize)
                     .clip(CircleShape)
                     .align(Alignment.End),
                 onClick = { onFullScreenChange(false) }
-            ) {
-                Icon(imageVector = Icons.Default.Close, contentDescription = "")
-            }
+            )
 
             Crossfade(targetState = fullScreen, label = "") {
                 if (it) {
@@ -193,21 +183,17 @@ private fun SubPlanItem(
                         .horizontalScroll(rememberScrollState())
                 ) {
                     item.durations.forEachIndexed { idx, duration ->
-                        Card(
+                        AppCard(
                             modifier = Modifier
                                 .padding(AppTheme.spacing.level2)
                                 .weight(1f)
                                 .clickable {
                                     selectedDurationIndex = idx
                                 },
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer
-                            ),
-                            shape = MaterialTheme.shapes.medium
                         ) {
                             Column(modifier = Modifier.padding(AppTheme.spacing.level2)) {
-                                Text(text = duration.ttl)
-                                Text(text = duration.price)
+                                TitleTexts.Level2(text = duration.ttl)
+                                TitleTexts.Level2(text = duration.price)
                             }
 
                         }
@@ -215,7 +201,8 @@ private fun SubPlanItem(
                 }
             }
 
-            Button(
+            AppTextButton(
+                textToShow = buttonText,
                 enabled = !fullScreen || selectedDurationIndex != -1,
                 modifier = Modifier
                     .fillMaxWidth()
@@ -231,14 +218,8 @@ private fun SubPlanItem(
                     } else {
                         onFullScreenChange(true)
                     }
-                }) {
-                Text(
-                    modifier = Modifier.fillMaxWidth(),
-                    text = buttonText,
-                    textAlign = TextAlign.Center
-                )
-            }
-
+                }
+            )
         }
 
         val animatedIconSize by transition.animateDp(label = "") {
@@ -248,7 +229,7 @@ private fun SubPlanItem(
                 AppTheme.iconSize.level6
             }
         }
-        Icon(
+        AppIcon(
             modifier = Modifier
                 .size(animatedIconSize)
                 .clip(CircleShape)

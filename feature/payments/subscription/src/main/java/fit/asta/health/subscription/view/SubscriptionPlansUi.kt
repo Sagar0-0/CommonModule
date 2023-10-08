@@ -5,16 +5,16 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
@@ -26,7 +26,7 @@ fun SubscriptionPlansUi(
     onTryAgain: () -> Unit,
     onClick: (orderRequest: OrderRequest) -> Unit
 ) {
-    Scaffold(
+    AppScaffold(
         topBar = {
             AppTopBar(title = "Subscription", onBack = onBackPress)
         }
@@ -44,7 +44,7 @@ fun SubscriptionPlansUi(
             }
 
             is UiState.ErrorMessage -> {
-                Text(state.resId.toStringFromResId())
+                TitleTexts.Level2(text = state.resId.toStringFromResId())
             }
 
             is UiState.Success -> {
@@ -88,7 +88,7 @@ fun PendingPlanUI(data: SubscriptionResponse) {
 
 @Composable
 private fun ShowUserActivePlan(data: SubscriptionResponse) {
-    Text(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].ttl)
+    TitleTexts.Level2(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].ttl)
 }
 
 

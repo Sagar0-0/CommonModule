@@ -5,7 +5,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -21,9 +20,10 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.orders.vm.OrdersViewModel
 
 private const val ORDERS_GRAPH_ROUTE = "graph_orders"
@@ -61,7 +61,7 @@ fun OrdersScreen(ordersState: UiState<List<OrderData>>, onBack: () -> Unit) {
             is UiState.Success -> {
                 LazyColumn(modifier = Modifier.padding(padd)) {
                     items(ordersState.data) {
-                        Text(text = it.orderId)
+                        TitleTexts.Level2(text = it.orderId)
                     }
                 }
             }
