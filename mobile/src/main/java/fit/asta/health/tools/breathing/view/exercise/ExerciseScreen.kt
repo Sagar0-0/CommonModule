@@ -13,7 +13,10 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.Divider
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,11 +30,11 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts

@@ -4,7 +4,6 @@ import android.annotation.SuppressLint
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.*
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -15,8 +14,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.view.components.SPFLevelContent
@@ -24,7 +23,6 @@ import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.tools.view.components.ItemData
 import fit.asta.health.tools.view.components.ItemList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable

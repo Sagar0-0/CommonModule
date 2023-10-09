@@ -10,7 +10,12 @@ import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.*
+import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
@@ -26,11 +31,11 @@ import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CardItem
+import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.button.AppToggleButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
