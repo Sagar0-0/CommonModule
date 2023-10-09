@@ -34,6 +34,7 @@ import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AstaTextField
@@ -51,7 +52,7 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
     val color = if (isPressed) AppTheme.colors.primary else Color.Transparent
 
-    Button(
+    AppFilledButton(
         onClick = { onClick() },
         modifier = Modifier
             .fillMaxWidth()
@@ -69,7 +70,7 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
 @Composable
 private fun SwipeAbleArea(text: String, image: String) {
-    Box {//"https://img2.asta.fit${image}"
+    Box {
         Row(verticalAlignment = Alignment.CenterVertically, modifier = Modifier.fillMaxWidth()) {
             AppNetworkImage(
                 model = ImageRequest.Builder(LocalContext.current)
@@ -86,7 +87,7 @@ private fun SwipeAbleArea(text: String, image: String) {
                     .padding(8.dp)
             )
             Spacer(modifier = Modifier.width(8.dp))
-            TitleTexts.Level2(text = text)
+            TitleTexts.Level2(text = text, color = AppTheme.colors.onSecondaryContainer)
         }
     }
 }

@@ -29,9 +29,9 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -88,7 +88,10 @@ fun TagsScreen(
                 ) {
                     if (tagsList.isNotEmpty()) {
                         item {
-                            TitleTexts.Level2(text = "Default Tag")
+                            TitleTexts.Level2(
+                                text = "Default Tag",
+                                modifier = Modifier.padding(horizontal = 16.dp)
+                            )
                         }
                         items(tagsList) { data ->
                             SwipeDemo(data = data, onSwipe = {}, delete = false,

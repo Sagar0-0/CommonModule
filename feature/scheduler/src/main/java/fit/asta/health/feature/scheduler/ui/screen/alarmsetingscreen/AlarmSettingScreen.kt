@@ -34,12 +34,13 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.SpotifyActivity
 import fit.asta.health.feature.scheduler.ui.components.CustomLabelBottomSheetLayout
@@ -227,10 +228,10 @@ fun AlarmSettingScreen(
                     switchTitle = "",
                     onNavigateToClickText = null
                 )
-                TitleTexts.Level2(
+                CaptionTexts.Level2(
                     text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
                     color = AppTheme.colors.onSurfaceVariant,
-                    modifier = Modifier.padding(horizontal = 16.dp)
+                    maxLines = 2
                 )
                 Spacer(modifier = Modifier.height(16.dp))
             }
