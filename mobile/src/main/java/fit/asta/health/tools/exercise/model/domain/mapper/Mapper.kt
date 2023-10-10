@@ -1,7 +1,7 @@
 package fit.asta.health.tools.exercise.model.domain.mapper
 
-import fit.asta.health.meditation.model.domain.model.MusicData
-import fit.asta.health.meditation.model.domain.model.MusicTool
+import fit.asta.health.meditation.domain.model.MusicData
+import fit.asta.health.meditation.domain.model.MusicTool
 import fit.asta.health.tools.exercise.model.domain.model.ExerciseTool
 import fit.asta.health.tools.exercise.model.network.NetGetRes
 import fit.asta.health.tools.exercise.model.network.NetGetStart

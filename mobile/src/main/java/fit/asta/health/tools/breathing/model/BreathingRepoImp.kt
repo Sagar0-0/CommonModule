@@ -1,6 +1,5 @@
 package fit.asta.health.tools.breathing.model
 
-import android.util.Log
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.breathing.model.api.BreathingApi
@@ -55,9 +54,9 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.putBreathingData(netPut)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }
@@ -67,9 +66,8 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.postBreathingData(netPost)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }
@@ -79,9 +77,8 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.postRatioData(customRatioData)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }
@@ -91,9 +88,8 @@ class BreathingRepoImp(val api: BreathingApi):BreathingRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.deleteRatioData(ratioId)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }
