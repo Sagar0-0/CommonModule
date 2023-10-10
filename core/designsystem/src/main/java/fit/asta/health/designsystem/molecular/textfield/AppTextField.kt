@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
-import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
@@ -29,11 +29,10 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -73,7 +72,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -114,7 +113,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -160,11 +159,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -204,7 +202,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -245,7 +243,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -291,11 +289,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -335,7 +332,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -376,7 +373,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -422,11 +419,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -466,7 +462,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -507,7 +503,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -553,11 +549,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -602,7 +597,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -646,7 +641,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -699,11 +694,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -748,7 +742,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -792,7 +786,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -845,11 +839,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -894,7 +887,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -938,7 +931,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
@@ -991,11 +984,10 @@ fun AppOutlinedTextField(
 
 /**
  * Text fields allow users to enter text into a UI. They typically appear in forms and dialogs.
- * Outlined text fields have less visual emphasis than filled text fields. When they appear in
- * places like forms, where many text fields are placed together, their reduced emphasis helps
- * simplify the layout.
+ * Filled text fields have more visual emphasis than outlined text fields, making them stand out
+ * when surrounded by other content and components.
  *
- * ![Outlined text field image](https://developer.android.com/images/reference/androidx/compose/material3/outlined-text-field.png)
+ * ![Filled text field image](https://developer.android.com/images/reference/androidx/compose/material3/filled-text-field.png)
  *
  * @param modifier the [Modifier] to be applied to this text field
  * @param value the input text to be shown in the text field
@@ -1040,7 +1032,7 @@ fun AppOutlinedTextField(
  * updated text comes as a parameter of the callback
  */
 @Composable
-fun AppOutlinedTextField(
+fun AppTextField(
     modifier: Modifier = Modifier,
     value: String,
     enabled: Boolean = true,
@@ -1084,7 +1076,7 @@ fun AppOutlinedTextField(
 
 
     // Text Field Layout from Material 3
-    OutlinedTextField(
+    TextField(
         value = value,
         onValueChange = {
             onValueChange(it)
