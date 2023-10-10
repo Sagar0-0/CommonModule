@@ -9,10 +9,11 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.textfield.AstaTextField
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.resources.strings.R as StringR
 
 /**
@@ -36,7 +37,7 @@ fun SearchBarUI(
     val focusManager = LocalFocusManager.current
 
     // This is the text Input where the user will give his input
-    AstaTextField(
+    AppOutlinedTextField(
         value = userInput,
         onValueChange = {
 
@@ -52,7 +53,7 @@ fun SearchBarUI(
         modifier = modifier,
 
         // This is the Label of the input which is shown to the top left when selected
-        label = StringR.string.search_from_spotify,
+        label = stringResource(StringR.string.search_from_spotify),
 
         // Setting Custom Colors for the Outlined TextField
         colors = OutlinedTextFieldDefaults.colors(
@@ -76,6 +77,10 @@ fun SearchBarUI(
                 focusManager.clearFocus()
                 onUserDone()
             }
-        )
+        ),
+
+        onTrailingIconClicked = {
+            onUserInputChange("")
+        }
     )
 }
