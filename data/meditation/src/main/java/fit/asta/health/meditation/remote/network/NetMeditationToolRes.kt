@@ -1,4 +1,4 @@
-package fit.asta.health.meditation.model.network
+package fit.asta.health.meditation.remote.network
 
 
 import com.google.gson.annotations.SerializedName
@@ -6,11 +6,12 @@ import fit.asta.health.network.data.Status
 
 data class NetMeditationToolRes(
     @SerializedName("data")
-    val `data`: Data,
+    val `data`: NetMeditationToolResponse,
     @SerializedName("status")
     val status: Status
 )
-data class Data(
+
+data class NetMeditationToolResponse(
     @SerializedName("meditationProgressData")
     val meditationProgressData: MeditationProgressData,
     @SerializedName("meditationToolData")

@@ -1,16 +1,10 @@
-package fit.asta.health.meditation.model.network
+package fit.asta.health.meditation.remote.network
 
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.network.data.Status
+
 
 data class NetMusicRes(
-    @SerializedName("data")
-    val `data`: DataX,
-    @SerializedName("status")
-    val status: Status
-)
-data class DataX(
     @SerializedName("InstructorData")
     val instructorData: List<InstructorData>?,
     @SerializedName("MusicData")

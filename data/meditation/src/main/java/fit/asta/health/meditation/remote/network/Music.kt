@@ -1,4 +1,4 @@
-package fit.asta.health.meditation.model.network
+package fit.asta.health.meditation.remote.network
 
 
 import com.google.gson.annotations.SerializedName
