@@ -8,23 +8,19 @@ import android.provider.MediaStore
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
-import androidx.compose.material3.FloatingActionButton
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.FloatingActionButtonElevation
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.graphics.ImageBitmap
 import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.os.BuildCompat.PrereleaseSdkCheck
 import com.google.modernstorage.photopicker.PhotoPicker
+import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 
 @OptIn(PrereleaseSdkCheck::class)
 @SuppressLint("UnsafeOptInUsageError")
 @Composable
 fun ImageSelectionButton(
-    elevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(),
     onImageSelected: (ImageBitmap) -> Unit,
 ) {
 
@@ -48,17 +44,13 @@ fun ImageSelectionButton(
 
     }
 
-    FloatingActionButton(
-        elevation = elevation,
+    AppFloatingActionButton(
         onClick = {
             photoPicker.launch(PhotoPicker.Args(PhotoPicker.Type.IMAGES_ONLY, 1))
-        },
-
-        ) {
-        Icon(
+        }) {
+        AppIcon(
             imageVector = Icons.Default.Add,
-            contentDescription = null,
-            tint = MaterialTheme.colorScheme.primary
+            contentDescription = null
         )
     }
 }

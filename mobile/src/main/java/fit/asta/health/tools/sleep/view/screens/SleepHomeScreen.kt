@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.Card
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -22,6 +21,7 @@ import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ProgressBarInt
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sleep.model.network.get.ProgressData
 import kotlinx.coroutines.delay
@@ -85,7 +85,7 @@ fun SleepHomeScreen(
         val goal = progressData?.tgt?.toFloat() ?: 7f
         val achieved = progressData?.ach?.toFloat() ?: 0f
 
-        Card {
+        AppCard {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
                 modifier = Modifier

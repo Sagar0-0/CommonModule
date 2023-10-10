@@ -3,7 +3,6 @@ package fit.asta.health.common.imgCropper.cropper.widget
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Box
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -18,7 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.Constraints
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 /**
  * Composable that positions and displays [Image]s based on count as one element,
@@ -69,7 +68,7 @@ fun GridImageLayout(
                     contentAlignment = Alignment.Center
                 ) {
                     val carry = size - 3
-                    Text(text = "+$carry", fontSize = 20.sp)
+                    TitleTexts.Level2(text = "+$carry")
                 }
             }
         }

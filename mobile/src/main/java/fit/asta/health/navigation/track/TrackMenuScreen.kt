@@ -16,7 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -30,10 +29,8 @@ import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.graphics.ColorUtils
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -54,6 +51,7 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.data.remote.model.menu.HomeMenuResponse
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
@@ -359,15 +357,13 @@ private fun TrackMenuSuccessScreen(
                                     "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
 
                         // Text Composable under BMI Chart
-                        Text(
+                        TitleTexts.Level2(
                             text = text,
 
                             modifier = Modifier
                                 .padding(horizontal = 16.dp),
 
-                            maxLines = 2,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W400
+                            maxLines = 2
                         )
                     }
                 }
@@ -498,7 +494,7 @@ private fun ToolsItemsCard(
                     )
 
                     // Description Text
-                    Text(text = bodyDescription)
+                    TitleTexts.Level2(text = bodyDescription)
                 }
 
                 // Trailing Image of this row at the bottom of the Chart
