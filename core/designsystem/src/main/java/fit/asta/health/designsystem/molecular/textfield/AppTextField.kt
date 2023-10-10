@@ -8,6 +8,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material3.Icon
 import androidx.compose.material3.TextField
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
@@ -130,6 +133,13 @@ fun AppTextField(
                 }
             }
         },
+        trailingIcon = {
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
+        },
         isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
@@ -260,6 +270,13 @@ fun AppTextField(
                 }
             }
         },
+        trailingIcon = {
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
+        },
         isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
@@ -384,11 +401,16 @@ fun AppTextField(
         textStyle = AppTheme.customTypography.caption.level2,
         label = { BodyTexts.Level3(text = label) },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(imageVector = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -514,11 +536,16 @@ fun AppTextField(
         textStyle = AppTheme.customTypography.caption.level2,
         label = { BodyTexts.Level3(text = label) },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(painter = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -659,11 +686,16 @@ fun AppTextField(
             }
         },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(imageVector = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -804,11 +836,16 @@ fun AppTextField(
             }
         },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(painter = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -949,11 +986,16 @@ fun AppTextField(
             }
         },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(imageVector = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -1094,11 +1136,16 @@ fun AppTextField(
             }
         },
         trailingIcon = {
-            if (trailingIcon != null) {
+            if (trailingIcon != null && !isError) {
                 AppIconButton(painter = trailingIcon, iconDesc = trailingIconDes) {
                     onTrailingIconClicked()
                 }
             }
+            if (isError)
+                Icon(
+                    imageVector = Icons.Filled.Error,
+                    contentDescription = "ErrorMessage Icon"
+                )
         },
         isError = isError,
         visualTransformation = visualTransformation,
