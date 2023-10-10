@@ -68,7 +68,7 @@ fun CardItem(
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,
                 )
-                TitleTexts.Level2(
+                TitleTexts.Level3(
                     text = type,
                     maxLines = 1,
                     overflow = TextOverflow.Ellipsis,

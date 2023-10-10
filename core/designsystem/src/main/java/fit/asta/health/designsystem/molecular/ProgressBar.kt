@@ -29,7 +29,7 @@ fun ProgressBarInt(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        CaptionTexts.Level1(
+        CaptionTexts.Level2(
             text = "%.0f $postfix".format(targetDistance),
         )
         val animatedProgress = animateFloatAsState(
@@ -43,7 +43,7 @@ fun ProgressBarInt(
             color = Color.Magenta,
             trackColor = Color.LightGray,
         )
-        CaptionTexts.Level1(text = name)
+        CaptionTexts.Level3(text = name)
     }
 }
 
