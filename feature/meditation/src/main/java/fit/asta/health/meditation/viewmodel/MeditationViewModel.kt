@@ -20,20 +20,24 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.meditation.db.MeditationData
-import fit.asta.health.meditation.model.LocalRepo
-import fit.asta.health.meditation.model.MeditationRepo
-import fit.asta.health.meditation.model.domain.mapper.getMusicTool
-import fit.asta.health.meditation.model.network.PostRes
-import fit.asta.health.meditation.model.network.Prc
-import fit.asta.health.meditation.model.network.PutData
-import fit.asta.health.meditation.model.network.Value
+import fit.asta.health.meditation.domain.mapper.getMeditationTool
+import fit.asta.health.meditation.domain.mapper.getMusicTool
+import fit.asta.health.meditation.domain.mapper.toValue
+import fit.asta.health.meditation.remote.network.NetSheetData
+import fit.asta.health.meditation.remote.network.PostRes
+import fit.asta.health.meditation.remote.network.Prc
+import fit.asta.health.meditation.remote.network.PutData
+import fit.asta.health.meditation.remote.network.Value
+import fit.asta.health.meditation.repo.LocalRepo
+import fit.asta.health.meditation.repo.MeditationRepo
 import fit.asta.health.meditation.view.home.HomeUiState
 import fit.asta.health.meditation.view.home.MEvent
-import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.player.audio.MusicServiceConnection
 import fit.asta.health.player.domain.mapper.asMediaItem
 import fit.asta.health.player.domain.model.Song
@@ -43,7 +47,7 @@ import fit.asta.health.player.presentation.screens.player.PlayerEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -66,20 +70,17 @@ class MeditationViewModel @Inject constructor(
     fun getPlayer() = player
     private var backgroundPlayer: Player? = null
     private val date = LocalDate.now().dayOfMonth
-    private val _selectedLevel = MutableStateFlow("Beginner 1")
-    val selectedLevel: StateFlow<String> = _selectedLevel
-
-    private val _selectedMusic = MutableStateFlow("relaxing")
-    val selectedMusic: StateFlow<String> = _selectedMusic
-
-    private val _selectedLanguage = MutableStateFlow("English")
-    val selectedLanguage: StateFlow<String> = _selectedLanguage
-
-    private val _selectedInstructor = MutableStateFlow("Darlene Robertson")
-    val selectedInstructor: StateFlow<String> = _selectedInstructor
 
     private val _uiState = mutableStateOf(HomeUiState())
     val uiState: State<HomeUiState> = _uiState
+    private val _mutableState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
+    val state = _mutableState.asStateFlow()
+
+    private val _selectedData = mutableStateListOf<Prc>()
+    val selectedData = MutableStateFlow(_selectedData)
+    private val _sheetDataList = mutableStateListOf<NetSheetData>()
+    val sheetDataList = MutableStateFlow(_sheetDataList)
+
 
     private val music = MutableStateFlow<Song?>(null)
     private val list = mutableStateListOf<Song>()
@@ -122,6 +123,35 @@ class MeditationViewModel @Inject constructor(
 //        loadMusicData()
     }
 
+    private fun getSheetItemValue(code: String) {
+        viewModelScope.launch {
+            when (val result = meditationRepo.getSheetData(code)) {
+                is ResponseState.Success -> {
+                    _sheetDataList.clear()
+                    _sheetDataList.addAll(result.data)
+                }
+
+                else -> {}
+            }
+        }
+    }
+
+    fun setMultiple(index: Int, itemIndex: Int) {
+        val data = _selectedData[index]
+        val item = _sheetDataList[itemIndex]
+        _sheetDataList[itemIndex] = item.copy(isSelected = !item.isSelected)
+        data.values = _sheetDataList.filter { it.isSelected }.map { it.toValue() }.toList()
+        _selectedData[index] = data
+    }
+
+    fun setSingle(index: Int, itemIndex: Int) {
+        val data = _selectedData[index]
+        _sheetDataList.map { it.isSelected = false }
+        val item = _sheetDataList[itemIndex].copy(isSelected = true)
+        _sheetDataList[itemIndex] = item
+        data.values = listOf(item.toValue())
+        _selectedData[index] = data
+    }
 
     private fun saveState() {
         player.currentMediaItem?.let { mediaItem ->
@@ -143,20 +173,12 @@ class MeditationViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(targetAngle = event.angle)
             }
 
-            is MEvent.SetLanguage -> {
-                _selectedLanguage.value = event.language
-            }
-
-            is MEvent.SetLevel -> {
-                _selectedLevel.value = event.level
-            }
-
-            is MEvent.SetInstructor -> {
-                _selectedInstructor.value = event.instructor
-            }
-
             is MEvent.SetDNDMode -> {
                 _uiState.value = _uiState.value.copy(dndMode = event.value)
+            }
+
+            is MEvent.GetSheetData -> {
+                getSheetItemValue(event.code)
             }
 
             is MEvent.Start -> {
@@ -191,28 +213,38 @@ class MeditationViewModel @Inject constructor(
 
     private fun loadData() {
         viewModelScope.launch {
-            meditationRepo.getMeditationTool(
+            _mutableState.value = UiState.Loading
+            val result = meditationRepo.getMeditationTool(
                 uid = "6309a9379af54f142c65fbfe",
                 date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
                     .toString()//"2023-03-27"
-            ).collectLatest { result ->
-                when (result) {
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        result.data?.data.let { mdata ->
-                            _uiState.value = _uiState.value.copy(
-                                target = mdata!!.meditationProgressData.tgt,
-                                achieved = mdata.meditationProgressData.ach,
-                                recommended = mdata.meditationProgressData.rcm,
-                                remaining = mdata.meditationProgressData.rem,
-                            )
-                        }
-                    }
+            )
+            _mutableState.value = when (result) {
+                is ResponseState.Success -> {
+                    val data = result.data.getMeditationTool()
+                    _selectedData.clear()
+                    _selectedData.addAll(data.bottomSheetPrc)
+                    _uiState.value = _uiState.value.copy(
+                        target = data.target,
+                        achieved = data.achieved,
+                        recommended = data.recommended,
+                        remaining = data.remaining,
+                    )
+                    UiState.Success(Unit)
+                }
 
-                    is NetworkResult.Error -> {}
+                is ResponseState.ErrorMessage -> {
+                    UiState.ErrorMessage(result.resId)
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    UiState.ErrorRetry(result.resId)
+                }
+
+                else -> {
+                    UiState.NoInternet
                 }
             }
-
         }
     }
 
@@ -223,7 +255,7 @@ class MeditationViewModel @Inject constructor(
                 _uiState.value = _uiState.value.copy(
                     start = data.start,
                     targetAngle = data.appliedAngleDistance,
-                    progress_angle = data.appliedAngleDistance,
+                    progressAngle = data.appliedAngleDistance,
                     consume = data.time.toFloat()
                 )
             } else {// val time = ((System.nanoTime() - data.time) / 1_000_000_000L / 60L).toInt()
@@ -249,105 +281,55 @@ class MeditationViewModel @Inject constructor(
     }
 
     private fun putMeditationData() {
-        val music = Prc(
-            id = "",
-            code = "music",
-            title = "music",
-            description = "music",
-            type = 1,
+
+        _selectedData[0] = _selectedData[0].copy(
             values = listOf(
                 Value(
-                    id = "", name = _selectedMusic.value, value = _selectedMusic.value
-                )
-            )
-        )
-        val target = Prc(
-            id = "",
-            code = "target",
-            title = "target",
-            description = "target",
-            type = 1,
-            values = listOf(
-                Value(
+                    dsc = "",
                     id = "",
-                    name = _uiState.value.targetValue.toInt().toString(),
-                    value = _uiState.value.targetValue.toInt().toString()
+                    ttl = _uiState.value.targetValue.toInt().toString(),
+                    type = 1,
+                    url = ""
                 )
             )
         )
-        val instructor = Prc(
-            id = "",
-            code = "instructor",
-            title = "instructor",
-            description = "instructor",
-            type = 1,
-            values = listOf(
-                Value(
-                    id = "", name = _selectedInstructor.value, value = _selectedInstructor.value
-                )
-            )
-        )
-        val level = Prc(
-            id = "",
-            code = "level",
-            title = "level",
-            description = "level",
-            type = 1,
-            values = listOf(
-                Value(
-                    id = "", name = _selectedLevel.value, value = _selectedLevel.value
-                )
-            )
-        )
-        val language = Prc(
-            id = "",
-            code = "language",
-            title = "language",
-            description = "language",
-            type = 1,
-            values = listOf(
-                Value(
-                    id = "", name = _selectedLanguage.value, value = _selectedLanguage.value
-                )
-            )
-        )
-        val prc = mutableListOf<Prc>()
-        prc.add(music)
-        prc.add(target)
-        prc.add(instructor)
-        prc.add(level)
-        prc.add(language)
 
         viewModelScope.launch {
             val result = meditationRepo.putMeditationData(
                 PutData(
                     code = "meditation",
                     id = "",
-                    prc = prc,
+                    prc = _selectedData.toList(),
                     type = 3,
                     uid = "6309a9379af54f142c65fbfe",
                     wea = true
                 )
             )
             when (result) {
-                is NetworkResult.Success -> {
-                    Log.d("subhash", "putMeditationData:Success ${result.data}")
-                    loadMusicData()
+                is ResponseState.Success -> {
                     localRepo.updateAngle(
                         date = LocalDate.now().dayOfMonth,
                         appliedAngleDistance = _uiState.value.targetAngle
                     )
                     localRepo.updateState(date = LocalDate.now().dayOfMonth, start = true)
                     localRepo.updateTime(date = LocalDate.now().dayOfMonth, time = 0)
-                    loadData()
                     _uiState.value = _uiState.value.copy(start = true)
+                    loadData()
+                    loadMusicData()
+                    UiState.Success(result.data)
                 }
 
-                is NetworkResult.Error -> {
-                    Log.d("subhash", "putMeditationData:ErrorMessage ${result.message}")
+                is ResponseState.ErrorMessage -> {
+                    UiState.ErrorMessage(result.resId)
                 }
 
-                is NetworkResult.Loading -> {}
+                is ResponseState.ErrorRetry -> {
+                    UiState.ErrorRetry(result.resId)
+                }
+
+                else -> {
+                    UiState.NoInternet
+                }
             }
         }
     }
@@ -364,13 +346,23 @@ class MeditationViewModel @Inject constructor(
                 )
             )
             when (result) {
-                is NetworkResult.Success -> {
+                is ResponseState.Success -> {
                     localRepo.updateState(date = LocalDate.now().dayOfMonth, start = false)
                     _uiState.value = _uiState.value.copy(start = false)
+                    UiState.Success(result.data)
                 }
 
-                is NetworkResult.Error -> {}
-                is NetworkResult.Loading -> {}
+                is ResponseState.ErrorMessage -> {
+                    UiState.ErrorMessage(result.resId)
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    UiState.ErrorRetry(result.resId)
+                }
+
+                else -> {
+                    UiState.NoInternet
+                }
             }
         }
     }
@@ -378,54 +370,54 @@ class MeditationViewModel @Inject constructor(
 
     private fun loadMusicData() {
         viewModelScope.launch {
-            meditationRepo.getMusicTool(
-                uid = "6309a9379af54f142c65fbfe"
-            ).collectLatest { result ->
-                when (result) {
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        Log.d("subhash", "music:Success ${result.data}")
-                        result.data?.let { netMusicRes ->
-                            val data = netMusicRes.getMusicTool()
-                            music.value = Song(
-                                id = 55,
-                                artist = data.music.artist_name,
-                                artworkUri = getImgUrl(data.music.imgUrl).toUri(),
-                                duration = 4,
-                                mediaUri = getVideoUrl(data.music.music_url).toUri(),
-                                title = data.music.music_name,
-                                audioList = data.music.language
+            when (val result = meditationRepo.getMusicTool(uid = "6309a9379af54f142c65fbfe")) {
+                is ResponseState.Success -> {
+                    val data = result.data.getMusicTool()
+                    music.value = Song(
+                        id = 55,
+                        artist = data.music.artist_name,
+                        artworkUri = getImgUrl(data.music.imgUrl).toUri(),
+                        duration = 4,
+                        mediaUri = getVideoUrl(data.music.music_url).toUri(),
+                        title = data.music.music_name,
+                        audioList = data.music.language
+                    )
+                    val listIterator = mutableListOf<Song>()
+                    data.instructor.forEachIndexed { index, it ->
+                        val subUrl = it.music_url.split(".")
+                        val url = subUrl[0] + "_hi." + subUrl[1]
+                        Log.d("TAG", "loadMusicData: $url")
+                        listIterator.add(
+                            Song(
+                                id = index,
+                                artist = it.artist_name,
+                                artworkUri = getImgUrl(it.imgUrl).toUri(),
+                                duration = duration(it.duration),
+                                mediaUri = getVideoUrl(if (index > 17) url else it.music_url).toUri(),
+                                title = "Day $index",
+                                audioList = it.language
                             )
-                            val listIterator = mutableListOf<Song>()
-                            data.instructor.forEachIndexed { index, it ->
-                                val subUrl = it.music_url.split(".")
-                                val url = subUrl[0] + "_hi." + subUrl[1]
-                                Log.d("TAG", "loadMusicData: $url")
-                                listIterator.add(
-                                    Song(
-                                        id = index,
-                                        artist = it.artist_name,
-                                        artworkUri = getImgUrl(it.imgUrl).toUri(),
-                                        duration = duration(it.duration),
-                                        mediaUri = getVideoUrl(if (index > 17) url else it.music_url).toUri(),
-                                        title = "Day $index",
-                                        audioList = it.language
-                                    )
-                                )
-                            }
-                            listIterator.reverse()
-                            list.clear()
-                            list.addAll(listIterator)
-                            startPlayer(list)
-                        }
+                        )
                     }
+                    listIterator.reverse()
+                    list.clear()
+                    list.addAll(listIterator)
+                    startPlayer(list)
+                    UiState.Success(data)
+                }
 
-                    is NetworkResult.Error -> {
-                        Log.d("subhash", "music:ErrorMessage ${result.message}")
-                    }
+                is ResponseState.ErrorMessage -> {
+                    UiState.ErrorMessage(result.resId)
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    UiState.ErrorRetry(result.resId)
+                }
+
+                else -> {
+                    UiState.NoInternet
                 }
             }
-
         }
     }
 
@@ -453,11 +445,12 @@ class MeditationViewModel @Inject constructor(
 
 
     val musicState = musicServiceConnection.musicState
-    val currentPosition = musicServiceConnection.currentPosition.stateIn(
-        scope = viewModelScope,
-        started = SharingStarted.Lazily,
-        initialValue = MediaConstants.DEFAULT_POSITION_MS
-    )
+
+    //    val currentPosition = musicServiceConnection.currentPosition.stateIn(
+//        scope = viewModelScope,
+//        started = SharingStarted.Lazily,
+//        initialValue = MediaConstants.DEFAULT_POSITION_MS
+//    )
     private val _visibility = MutableStateFlow(false)
     val visibility: StateFlow<Boolean> = _visibility
 
