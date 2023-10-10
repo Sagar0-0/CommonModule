@@ -15,14 +15,15 @@ import coil.imageLoader
 import coil.request.ImageRequest
 import coil.request.SuccessResult
 import coil.size.Scale
+import fit.asta.health.designsystem.AppTheme
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 @Composable
 fun rememberDominantColorState(
     context: Context = LocalContext.current,
-    defaultColor: Color = MaterialTheme.colorScheme.primary,
-    defaultOnColor: Color = MaterialTheme.colorScheme.onPrimary,
+    defaultColor: Color = AppTheme.colors.primary,
+    defaultOnColor: Color = AppTheme.colors.onPrimary,
     cacheSize: Int = 12,
     isColorValid: (Color) -> Boolean = { true }
 ): DominantColorState = remember {
@@ -38,7 +39,7 @@ fun DynamicThemePrimaryColorsFromImage(
     dominantColorState: DominantColorState = rememberDominantColorState(),
     content: @Composable () -> Unit
 ) {
-    val colors = MaterialTheme.colorScheme.copy(
+    val colors = AppTheme.colors.copy(
         primary = animateColorAsState(
             dominantColorState.color,
             spring(stiffness = Spring.StiffnessLow), label = ""

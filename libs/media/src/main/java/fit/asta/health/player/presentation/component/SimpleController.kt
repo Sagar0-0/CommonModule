@@ -1,7 +1,6 @@
 package fit.asta.health.player.presentation.component
 
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -20,7 +19,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Pause
 import androidx.compose.material.icons.filled.PlayArrow
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.RadioButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -36,8 +34,10 @@ import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.C
 import androidx.media3.common.Tracks
 import androidx.media3.common.util.UnstableApi
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.player.domain.utils.getName
 import fit.asta.health.player.media.MediaState
@@ -100,7 +100,7 @@ fun SimpleController(
 //                        }
 //                        .align(Alignment.TopEnd),
 //                colorFilter = ColorFilter.tint(Color.White))
-                Image(
+                AppLocalImage(
                     imageVector = if (controllerState.showPause) Icons.Default.Pause
                     else Icons.Default.PlayArrow,
                     contentDescription = null,
@@ -186,7 +186,7 @@ fun TrackSelectionDialog(
                     ) {
                         trackNames.forEachIndexed { index, item ->
                             Row {
-                                RadioButton(
+                                AppRadioButton(
                                     selected = selectedTrackIndex == index,
                                     onClick = {
                                         selectedTrackIndex = index
