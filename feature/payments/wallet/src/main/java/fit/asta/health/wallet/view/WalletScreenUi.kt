@@ -17,14 +17,7 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.MoneyOff
-import androidx.compose.material3.Button
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +31,13 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -51,7 +49,7 @@ fun WalletScreenUi(
     onBackPress: () -> Unit,
     onTryAgain: () -> Unit
 ) {
-    Scaffold(
+    AppScaffold(
         topBar = {
             AppTopBar(title = "Wallet", onBack = onBackPress)
         },
@@ -96,19 +94,18 @@ fun WalletScreenUi(
                                 .fillMaxWidth()
                                 .padding(AppTheme.spacing.level3)
                                 .height(1.dp)
-                                .background(MaterialTheme.colorScheme.surfaceVariant)
+                                .background(AppTheme.colors.surfaceVariant)
                         )
-                        Card(
+                        AppCard(
                             modifier = Modifier
-                                .padding(AppTheme.spacing.level3),
-                            colors = CardDefaults.cardColors(
-                                containerColor = MaterialTheme.colorScheme.secondaryContainer
-                            ),
-                            shape = MaterialTheme.shapes.extraLarge
+                                .padding(AppTheme.spacing.level3)
                         ) {
-                            Text(
+                            TitleTexts.Level2(
                                 modifier = Modifier
-                                    .padding(top = AppTheme.spacing.level3, start = AppTheme.spacing.level3),
+                                    .padding(
+                                        top = AppTheme.spacing.level3,
+                                        start = AppTheme.spacing.level3
+                                    ),
                                 text = "Your transaction history:",
                                 textAlign = TextAlign.Start
                             )
@@ -138,7 +135,7 @@ fun WalletScreenUi(
                                 contentDescription = ""
                             )
                             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                            Text(
+                            TitleTexts.Level2(
                                 textAlign = TextAlign.Center,
                                 text = stringResource(id = StringR.string.no_transactions_text)
                             )
@@ -161,13 +158,13 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
             .padding(bottom = AppTheme.spacing.level3),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        AppIcon(
             modifier = Modifier.padding(end = AppTheme.spacing.level2),
             imageVector = if (received) Icons.Default.MonetizationOn else Icons.Default.MoneyOff,
             contentDescription = ""
         )
         Column(modifier = Modifier.weight(1f)) {
-            Text(
+            TitleTexts.Level2(
                 overflow = TextOverflow.Ellipsis,
                 text = when (item.creditType) {
                     1 -> {
@@ -181,15 +178,13 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
                     else -> {
                         "Made purchase"
                     }
-                },
-                style = MaterialTheme.typography.labelLarge,
+                }
             )
-            Text(
-                text = item.timeStamp,
-                style = MaterialTheme.typography.labelSmall
+            TitleTexts.Level2(
+                text = item.timeStamp
             )
         }
-        Text(
+        TitleTexts.Level2(
             color = if (received) Color.Green else Color.Red,
             text = (if (received) "+" else "-") + item.credits.toString()
         )
@@ -199,20 +194,16 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
             .fillMaxWidth()
             .padding(AppTheme.spacing.level3)
             .height(1.dp)
-            .background(MaterialTheme.colorScheme.onSecondaryContainer)
+            .background(AppTheme.colors.onSecondaryContainer)
     )
 }
 
 @Composable
 fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
-    Card(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth()
             .padding(AppTheme.spacing.level3),
-        colors = CardDefaults.cardColors(
-            containerColor = MaterialTheme.colorScheme.primaryContainer
-        ),
-        shape = MaterialTheme.shapes.extraLarge,
     ) {
         Row(
             modifier = Modifier
@@ -225,19 +216,15 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
                 modifier = Modifier
                     .padding(AppTheme.spacing.level2)
             ) {
-                Text(text = amount.toString(), style = MaterialTheme.typography.headlineLarge)
+                TitleTexts.Level2(text = amount.toString())
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                Text(text = "available balance")
+                TitleTexts.Level2(text = "available balance")
             }
-            Button(
+            AppTextButton(
+                textToShow = "Redeem",
                 modifier = Modifier.padding(AppTheme.spacing.level2),
                 onClick = onButtonClick
-            ) {
-                Text(
-                    modifier = Modifier.padding(AppTheme.spacing.level2),
-                    text = "Redeem"
-                )
-            }
+            )
         }
     }
 }
