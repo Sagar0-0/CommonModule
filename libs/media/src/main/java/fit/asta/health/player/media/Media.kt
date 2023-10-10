@@ -3,7 +3,6 @@ package fit.asta.health.player.media
 import android.view.SurfaceView
 import android.view.TextureView
 import android.view.View
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -22,6 +21,7 @@ import androidx.media3.common.PlaybackException
 import androidx.media3.common.Player
 import androidx.media3.common.text.CueGroup
 import androidx.media3.common.util.UnstableApi
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
 
 /**
  * The type of surface view used for video playbacks.
@@ -210,7 +210,7 @@ fun  Media(
             else -> null
         }
         if (artworkPainter != null) {
-            Image(
+            AppLocalImage(
                 painter = artworkPainter,
                 contentDescription = null,
                 modifier = Modifier

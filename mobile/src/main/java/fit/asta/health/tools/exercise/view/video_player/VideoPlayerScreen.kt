@@ -17,8 +17,6 @@ import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.Divider
-import androidx.compose.material3.LocalContentColor
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -34,6 +32,7 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -119,7 +118,7 @@ fun VideoTrackItem(
             .background(backgroundColor),
         verticalArrangement = Arrangement.spacedBy(spacing.level2)
     ) {
-        Divider(
+        AppDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
@@ -153,7 +152,6 @@ fun VideoTrackItem(
                             id = AppIcons.Play.resourceId
                         ),
                         contentDescription = stringResource(id = R.string.play),
-                        tint = LocalContentColor.current,
                         modifier = Modifier
                             .clickable(
                                 interactionSource = remember { MutableInteractionSource() },

@@ -18,14 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
 import androidx.compose.material3.AlertDialog
 import androidx.compose.material3.BottomAppBar
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.FloatingActionButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
-import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
@@ -42,8 +35,11 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -75,25 +71,19 @@ fun ImageCropperScreen(
         },
         bottomBar = {
             BottomAppBar(actions = {
-                IconButton(onClick = { crop = true }) {
-                    Icon(Icons.Filled.Crop, contentDescription = "Crop")
-                }
-                IconButton(onClick = { angle = (angle + 90) % 360f }) {
-                    Icon(
-                        Icons.Filled.Rotate90DegreesCw, contentDescription = ""
-                    )
-                }
-                IconButton(onClick = { imageBitmap = null }) {
-                    Icon(
-                        Icons.Filled.LockReset,
-                        contentDescription = "delete image",
-                        tint = MaterialTheme.colorScheme.error
-                    )
-                }
+                AppIconButton(
+                    imageVector = Icons.Filled.Crop,
+                    onClick = { crop = true }
+                )
+                AppIconButton(
+                    imageVector = Icons.Filled.Rotate90DegreesCw,
+                    onClick = { angle = (angle + 90) % 360f }
+                )
+                AppIconButton(
+                    imageVector = Icons.Filled.LockReset,
+                    onClick = { imageBitmap = null })
             }, floatingActionButton = {
-                ImageSelectionButton(elevation = FloatingActionButtonDefaults.elevation(
-                    defaultElevation = 0.dp
-                ), onImageSelected = { bitmap: ImageBitmap ->
+                ImageSelectionButton(onImageSelected = { bitmap: ImageBitmap ->
                     imageBitmap = bitmap
                 })
             })
@@ -132,7 +122,7 @@ fun ImageCropperScreen(
                 }
 
                 if (isCropping) {
-                    CircularProgressIndicator()
+                    AppCircularProgressIndicator()
                 }
             }
 
@@ -189,14 +179,15 @@ private fun ShowCroppedImageDialog(
             contentDescription = "result"
         )
     }, confirmButton = {
-        TextButton(onClick = onApprovedRequest) {
-            Text("Confirm")
-        }
+        AppTextButton(
+            textToShow = "Confirm",
+            onClick = onApprovedRequest
+        )
     }, dismissButton = {
-        TextButton(onClick = {
-            onDismissRequest()
-        }) {
-            Text("Dismiss")
-        }
+        AppTextButton(
+            textToShow = "Dismiss",
+            onClick = {
+                onDismissRequest()
+            })
     })
 }

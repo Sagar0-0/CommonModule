@@ -8,21 +8,18 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 // Preview Composable Function
 @Preview(
@@ -37,7 +34,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 private fun DefaultPreview() {
     AppTheme {
-        Surface {
+        AppSurface {
             TrackingYourMoodCard(
                 moodImage = R.drawable.image_happy_face,
                 moodText = "I feel Happy Today"
@@ -66,14 +63,12 @@ fun TrackingYourMoodCard(
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            Text(
+            TitleTexts.Level2(
                 text = "Your Mood",
 
                 // Text Features
                 textAlign = TextAlign.Start,
-                fontSize = 16.sp,
-                fontWeight = FontWeight.W600,
-                color = MaterialTheme.colorScheme.onSurface.copy(alpha = .7f),
+                color = AppTheme.colors.onSurface.copy(alpha = .7f),
             )
             Image(
                 painter = painterResource(id = moodImage),
@@ -84,16 +79,12 @@ fun TrackingYourMoodCard(
             )
         }
 
-        Text(
+        TitleTexts.Level2(
             text = moodText,
-
             modifier = Modifier
                 .weight(1f),
-
             // Text Features
             textAlign = TextAlign.Center,
-            fontSize = 20.sp,
-            fontWeight = FontWeight.W600,
             color = Color.Blue,
         )
     }

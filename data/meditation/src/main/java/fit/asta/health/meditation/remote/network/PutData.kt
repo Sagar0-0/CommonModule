@@ -1,9 +1,9 @@
-package fit.asta.health.meditation.model.network
+package fit.asta.health.meditation.remote.network
 
 
 import com.google.gson.annotations.SerializedName
 
-data class MeditationToolData(
+data class PutData(
     @SerializedName("code")
     val code: String,
     @SerializedName("id")
@@ -13,5 +13,7 @@ data class MeditationToolData(
     @SerializedName("type")
     val type: Int,
     @SerializedName("uid")
-    val uid: String
+    val uid: String,
+    @SerializedName("wea")
+    val wea: Boolean
 )

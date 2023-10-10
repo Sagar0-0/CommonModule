@@ -8,9 +8,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,7 +16,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.resources.strings.R
 
 
@@ -36,11 +36,11 @@ fun PlayerHeader(
         verticalAlignment = Alignment.CenterVertically,
         horizontalArrangement = Arrangement.SpaceAround,
     ) {
-        IconButton(
+        AppTextButton(
             onClick = onBackPress,
 
             ) {
-            Icon(
+            AppIcon(
                 imageVector = Icons.Default.ArrowBack,
                 contentDescription = stringResource(id = R.string.back_button)
             )
@@ -56,25 +56,25 @@ fun PlayerHeader(
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (!audioVideo) Color.LightGray
-                    else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
-                    contentColor = MaterialTheme.colorScheme.primary
+                    else AppTheme.colors.primary.copy(alpha = .5f),
+                    contentColor = AppTheme.colors.primary
                 )
             )
             AppTextButton(
                 onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (audioVideo) Color.LightGray
-                    else MaterialTheme.colorScheme.primary.copy(alpha = .5f),
-                    contentColor = MaterialTheme.colorScheme.primary
+                    else AppTheme.colors.primary.copy(alpha = .5f),
+                    contentColor = AppTheme.colors.primary
                 ),
                 textToShow = "Video"
             )
         }
 
-        IconButton(
+        AppIconButton(
             onClick = more,
         ) {
-            Icon(
+            AppIcon(
                 imageVector = Icons.Default.MoreVert,
                 contentDescription = stringResource(id = R.string.more)
             )

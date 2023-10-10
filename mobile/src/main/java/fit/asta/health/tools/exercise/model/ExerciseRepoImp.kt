@@ -1,6 +1,5 @@
 package fit.asta.health.tools.exercise.model
 
-import android.util.Log
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.network.utils.NetworkResult
 import fit.asta.health.tools.exercise.model.api.ExerciseApi
@@ -46,9 +45,8 @@ class ExerciseRepoImp(val api:ExerciseApi):ExerciseRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.putExerciseData(netPutRes, name)
-            Log.d("subhash", "putExeData: result${result.status}")
-            if (result.status.msg == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }
@@ -61,8 +59,8 @@ class ExerciseRepoImp(val api:ExerciseApi):ExerciseRepo {
         return try {
             NetworkResult.Loading<ServerRes>()
             val result = api.postExerciseData(netPost, name)
-            if (result.status.msg  == "Successful") NetworkResult.Success(result)
-            else NetworkResult.Error(message = result.status.msg)
+            if (result.msg == "Successful") NetworkResult.Success(result)
+            else NetworkResult.Error(message = result.msg)
         } catch (e: Exception) {
             NetworkResult.Error(message = e.message)
         }

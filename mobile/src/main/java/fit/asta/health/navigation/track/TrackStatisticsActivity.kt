@@ -15,20 +15,18 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBackIos
-import androidx.compose.material3.Icon
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppScreen
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.ui.screens.TrackBreathingScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackExerciseScreenControl
 import fit.asta.health.navigation.track.ui.screens.TrackMeditationScreenControl
@@ -81,7 +79,7 @@ class TrackStatisticsActivity : ComponentActivity() {
                     trackViewModel.uiEventListener(TrackUiEvent.SetNewDate(localDate))
                 }
 
-                Scaffold(
+                AppScaffold(
                     modifier = Modifier
                         .fillMaxSize(),
 
@@ -94,7 +92,7 @@ class TrackStatisticsActivity : ComponentActivity() {
                             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
                         ) {
 
-                            Icon(
+                            AppIcon(
                                 imageVector = Icons.Default.ArrowBackIos,
                                 contentDescription = null,
                                 modifier = Modifier
@@ -104,10 +102,8 @@ class TrackStatisticsActivity : ComponentActivity() {
                                     }
                             )
 
-                            Text(
-                                text = "${title[0].uppercase() + title.substring(1)} Statistics",
-                                fontSize = 18.sp,
-                                fontWeight = FontWeight.W500
+                            TitleTexts.Level2(
+                                text = "${title[0].uppercase() + title.substring(1)} Statistics"
                             )
 
                         }

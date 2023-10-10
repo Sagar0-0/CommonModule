@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -32,6 +30,7 @@ import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
@@ -305,7 +304,7 @@ fun VerticalLine() {
     Row(
         horizontalArrangement = Arrangement.Center
     ) {
-        Divider(
+        AppDivider(
             modifier = Modifier
                 .height(110.dp)
                 .width(3.dp)
@@ -319,13 +318,6 @@ fun StandardRatio(ratio: Ratio, index: Int, code: Int, onClick: (Int) -> Unit) {
         border = BorderStroke(
             width = 2.dp, color = if (index != code) {
                 AppTheme.colors.onBackground
-            } else {
-                Color(0xFF7415BD)
-            }
-        ),
-        colors = CardDefaults.outlinedCardColors(
-            contentColor = if (index != code) {
-                Color(0xFFE9D7F7)
             } else {
                 Color(0xFF7415BD)
             }

@@ -37,11 +37,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -64,22 +60,24 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.media3.common.Player
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
-import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.player.audio.common.MusicState
 import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.asFormattedString
@@ -131,7 +129,7 @@ fun PlayerScreen(
         systemUiController.isStatusBarVisible = !isLandscape
         systemUiController.isNavigationBarVisible = !isLandscape
     }
-    val surfaceColor = MaterialTheme.colorScheme.surface
+    val surfaceColor = AppTheme.colors.surface
     val dominantColorState = rememberDominantColorState { color ->
         // We want a color which has sufficient contrast against the surface color
         color.contrastAgainst(surfaceColor) >= MinContrastOfPrimaryVsSurface
@@ -187,8 +185,8 @@ fun PlayerScreen(
         AppBottomSheetScaffold(
             modifier = Modifier.fillMaxSize(),
             scaffoldState = scaffoldState,
-            sheetContainerColor = MaterialTheme.colorScheme.primary,
-            sheetContentColor = MaterialTheme.colorScheme.onPrimary,
+            sheetContainerColor = AppTheme.colors.primary,
+            sheetContentColor = AppTheme.colors.onPrimary,
             sheetDragHandle = { BottomSheetDefaults.DragHandle() },
             sheetPeekHeight = 150.dp,
             sheetContent = {
@@ -219,7 +217,7 @@ fun PlayerScreen(
                     Modifier
                         .fillMaxSize()
                         .verticalGradientScrim(
-                            color = MaterialTheme.colorScheme.primary,
+                            color = AppTheme.colors.primary,
                             startYPercentage = 1f,
                             endYPercentage = 0f
                         )
@@ -271,7 +269,6 @@ private fun MediaContentView(
         // Will reset to SCREEN_ORIENTATION_USER later
         activity.requestedOrientation = ActivityInfo.SCREEN_ORIENTATION_USER_PORTRAIT
     }
-    val spacing = AppTheme.spacing
     if (trackDialog) {
         AlertDialogTrack(
             selectedTrack = selectedTrack,
@@ -338,7 +335,7 @@ private fun MediaContentView(
                         },
                         errorMessage = { error ->
                             Box(Modifier.fillMaxSize(), Alignment.Center) {
-                                Text(
+                                BodyTexts.Level3(
                                     error.message ?: "",
                                     modifier = Modifier
                                         .background(
@@ -376,7 +373,7 @@ private fun MediaContentView(
                             }
                         }
                     )
-                    IconButton(
+                    AppIconButton(
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
@@ -386,7 +383,7 @@ private fun MediaContentView(
                             ),
                         onClick = if (isLandscape) exitFullscreen else enterFullscreen
                     ) {
-                        Icon(
+                        AppIcon(
                             imageVector = if (isLandscape) Icons.Filled.FullscreenExit else Icons.Filled.Fullscreen,
                             contentDescription = null, tint = Color.White
                         )
@@ -404,11 +401,8 @@ private fun MediaContentView(
         AnimatedVisibility(visible = !isLandscape) {
             Column {
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
-                Text(
+                TitleTexts.Level1(
                     text = musicState.currentSong.title,
-                    style = MaterialTheme.typography.titleLarge,
-                    textAlign = TextAlign.Center,
-                    overflow = TextOverflow.Ellipsis,
                     maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
@@ -442,9 +436,9 @@ private fun MediaContentView(
                         .fillMaxWidth()
                         .padding(horizontal = AppTheme.spacing.level3)
                 ) {
-                    Text(text = controllerState.positionMs.asFormattedString())
+                    BodyTexts.Level2(text = controllerState.positionMs.asFormattedString())
                     Spacer(modifier = Modifier.weight(1f))
-                    Text(musicState.duration.asFormattedString())
+                    BodyTexts.Level2(musicState.duration.asFormattedString())
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
                 PlayerButtons(
@@ -583,7 +577,7 @@ fun BackAlertDialog(
                     }
                     AppOutlinedButton(
                         onClick = onResume,
-                        colors = ButtonDefaults.outlinedButtonColors(containerColor = MaterialTheme.colorScheme.primary),
+                        colors = ButtonDefaults.outlinedButtonColors(containerColor = AppTheme.colors.primary),
                         modifier = Modifier
                             .fillMaxWidth()
                             .weight(1F)
@@ -604,7 +598,6 @@ fun TrackItem(
     song: Song,
     backgroundColor: Color = Color.Transparent
 ) {
-    val spacing = AppTheme.spacing
     val context = LocalContext.current
     val isRunning = musicState.currentSong.id == song.id
 
@@ -636,22 +629,16 @@ fun TrackItem(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.Start
             ) {
-                Text(
+                BodyTexts.Level1(
                     text = song.title,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.bodyLarge,
                     color = textColor,
                 )
-                Text(
+                TitleTexts.Level2(
                     text = song.artist,
-                    maxLines = 1,
-                    overflow = TextOverflow.Ellipsis,
-                    style = MaterialTheme.typography.titleMedium,
                     color = textColor,
                 )
             }
-            AsyncImage(
+            AppNetworkImage(
                 model = ImageRequest.Builder(context = context)
                     .data("https://dj9n1wsbrvg44.cloudfront.net/tags/Breathing+Tag.png")
                     .crossfade(true)

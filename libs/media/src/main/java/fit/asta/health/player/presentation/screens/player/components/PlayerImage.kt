@@ -10,9 +10,9 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
-import coil.compose.AsyncImage
 import coil.request.ImageRequest
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 
 
 @Composable
@@ -26,7 +26,7 @@ fun PlayerImage(
         modifier = modifier.padding(horizontal = spacing.level7)
     ) {
         val url = "https://dj9n1wsbrvg44.cloudfront.net/tags/Breathing+Tag.png"
-        AsyncImage(
+        AppNetworkImage(
             model = ImageRequest.Builder(LocalContext.current)
                 .data(imageBitmap ?: url)
                 .crossfade(true)

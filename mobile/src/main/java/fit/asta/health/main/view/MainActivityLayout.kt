@@ -24,13 +24,8 @@ import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Handyman
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.NavigationBarItem
-import androidx.compose.material3.NavigationBarItemDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -58,6 +53,9 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
@@ -120,28 +118,22 @@ private fun BottomAppBarLayout(
     currentRoute: String,
     onNavigate: (route: String) -> Unit,
 ) {
-    val colors = NavigationBarItemDefaults.colors(
-        selectedTextColor = MaterialTheme.colorScheme.primary,
-        unselectedTextColor = MaterialTheme.colorScheme.onSurface
-    )
 
     NavigationBar(
         modifier = Modifier.fillMaxWidth(),
-        containerColor = MaterialTheme.colorScheme.background,
         tonalElevation = AppTheme.elevation.level4
     ) {
         items.forEach { item ->
             NavigationBarItem(
                 icon = {
-                    Icon(
+                    AppIcon(
                         imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
                         contentDescription = item.title
                     )
                 },
-                label = { Text(text = item.title) },
+                label = { TitleTexts.Level2(text = item.title) },
                 selected = currentRoute == item.route,
-                onClick = { onNavigate(item.route) },
-                colors = colors
+                onClick = { onNavigate(item.route) }
             )
         }
     }
@@ -161,14 +153,13 @@ private fun RowScope.NewMainTopBarActions(
         horizontalArrangement = Arrangement.Start,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Icon(
+        AppIcon(
             modifier = Modifier.padding(start = AppTheme.spacing.level2),
             imageVector = Icons.Default.LocationOn,
-            contentDescription = "Location",
-            tint = MaterialTheme.colorScheme.onBackground
+            contentDescription = "Location"
         )
 
-        Text(
+        TitleTexts.Level2(
             text =
             when (currentAddressState) {
                 UiState.Idle -> {
@@ -195,29 +186,22 @@ private fun RowScope.NewMainTopBarActions(
             modifier = Modifier
                 .weight(1f)
                 .padding(AppTheme.spacing.level1),
-            color = MaterialTheme.colorScheme.onBackground,
             overflow = TextOverflow.Ellipsis,
             maxLines = 1,
         )
     }
 
     Row(horizontalArrangement = Arrangement.End) {
-        IconButton(onClick = { onClick(MainTopBarActions.Notification) }) {
-            Icon(
-                imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
-                contentDescription = "Notifications",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
-        IconButton(onClick = { onClick(MainTopBarActions.Share) }) {
-            Icon(
-                imageVector = Icons.Default.Share,
-                contentDescription = "Share",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        AppIconButton(
+            imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
+            onClick = { onClick(MainTopBarActions.Notification) }
+        )
+        AppIconButton(
+            imageVector = Icons.Default.Share,
+            onClick = { onClick(MainTopBarActions.Share) }
+        )
         if (profileImageUri != null) {
-            IconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
+            AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
                 Image(
                     modifier = Modifier.clip(CircleShape),
                     painter = rememberAsyncImagePainter(
@@ -227,13 +211,10 @@ private fun RowScope.NewMainTopBarActions(
                 )
             }
         }
-        IconButton(onClick = { onClick(MainTopBarActions.Settings) }) {
-            Icon(
-                imageVector = Icons.Default.Settings,
-                contentDescription = "Settings",
-                tint = MaterialTheme.colorScheme.onBackground
-            )
-        }
+        AppIconButton(
+            imageVector = Icons.Default.Settings,
+            onClick = { onClick(MainTopBarActions.Settings) }
+        )
     }
 }
 

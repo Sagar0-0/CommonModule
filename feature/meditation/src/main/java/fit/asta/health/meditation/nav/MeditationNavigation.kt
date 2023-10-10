@@ -16,9 +16,7 @@ import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.meditation.view.home.MEvent
 import fit.asta.health.meditation.view.home.MeditationHomeScreen
-import fit.asta.health.meditation.view.instructor.InstructorScreen
-import fit.asta.health.meditation.view.language.LanguageScreen
-import fit.asta.health.meditation.view.level.LevelScreen
+import fit.asta.health.meditation.view.other.SheetDataSelectionScreen
 import fit.asta.health.meditation.viewmodel.MeditationViewModel
 import fit.asta.health.player.presentation.UiState
 import fit.asta.health.player.presentation.screens.player.PlayerScreen
@@ -38,54 +36,39 @@ fun NavGraphBuilder.meditationNavigation(
             action = Intent.ACTION_VIEW
         })
     ) {
-        composable(MeditationScreen.MeditationHomeScreen.route) {
-            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
+        composable(MeditationScreen.MeditationHomeScreen.route) { navBackStackEntry ->
+            val viewModel: MeditationViewModel = navBackStackEntry.sharedViewModel(navController)
             val uiState = viewModel.uiState.value
-            val level by viewModel.selectedLevel.collectAsStateWithLifecycle()
-            val language by viewModel.selectedLanguage.collectAsStateWithLifecycle()
-            val instructor by viewModel.selectedInstructor.collectAsStateWithLifecycle()
-            val music by viewModel.selectedMusic.collectAsStateWithLifecycle()
+            val state by viewModel.state.collectAsStateWithLifecycle()
+            val selectedData by viewModel.selectedData.collectAsStateWithLifecycle()
             val context = LocalContext.current
             viewModel.setBackgroundSound(context)
             MeditationHomeScreen(
-                Event = viewModel::event,
+                state = state,
+                event = viewModel::event,
                 uiState = uiState,
-                language = language,
-                instructor = instructor,
-                music = music,
-                level = level,
+                selectedData = selectedData,
                 onClickMusic = { navController.navigate(route = MeditationScreen.AudioMeditation.route) },
-                onClickLanguage = { navController.navigate(route = MeditationScreen.Language.route) },
-                onClickLevel = { navController.navigate(route = MeditationScreen.Level.route) },
-                onClickInstructor = { navController.navigate(route = MeditationScreen.Instructor.route) },
+                goToList = { navController.navigate(route = MeditationScreen.SheetScreen.route + "/$it") },
                 onBack = onBack,
                 onDNDPermission = viewModel::checkDNDStatus
             )
         }
-//        composable(MeditationScreen.Music.route) {
-//            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
-//            val musicState by viewModel.musicState.collectAsStateWithLifecycle()
-//            val currentPosition by viewModel.currentPosition.collectAsStateWithLifecycle()
-//            MusicScreen(
-//                musicState = musicState,
-//                currentPosition = currentPosition,
-//                onMusicEvents = {},
-//                navigateToPlayer = { navController.navigate(route = MeditationScreen.AudioMeditation.route) },
-//                onBack = { navController.popBackStack() }
-//            )
-//        }
-        composable(MeditationScreen.Level.route) { navBackStackEntry ->
-            val viewModel: MeditationViewModel = navBackStackEntry.sharedViewModel(navController)
-            LevelScreen(
-                onClick = { viewModel.event(MEvent.SetLevel(it)) },
-                onBack = { navController.popBackStack() })
+        composable(MeditationScreen.SheetScreen.route + "/{id}") { navBackStack ->
+            val index = navBackStack.arguments?.getString("id")?.toInt()
+            val viewModel: MeditationViewModel = navBackStack.sharedViewModel(navController)
+            val list by viewModel.sheetDataList.collectAsStateWithLifecycle()
+            val selectedData by viewModel.selectedData.collectAsStateWithLifecycle()
+
+            SheetDataSelectionScreen(
+                prc = selectedData[index ?: 1],
+                list = list,
+                onMClick = { viewModel.setMultiple(index ?: 1, it) },
+                onSClick = { viewModel.setSingle(index ?: 1, it) },
+                onBack = { navController.popBackStack() }
+            )
         }
-        composable(MeditationScreen.Instructor.route) {
-            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
-            InstructorScreen(
-                onClick = { viewModel.event(MEvent.SetInstructor(it)) },
-                onBack = { navController.popBackStack() })
-        }
+
         composable(MeditationScreen.AudioMeditation.route) {
             val viewModel: MeditationViewModel = it.sharedViewModel(navController)
             val musicState by viewModel.musicState.collectAsStateWithLifecycle()
@@ -110,12 +93,6 @@ fun NavGraphBuilder.meditationNavigation(
                     navController.popBackStack()
                 }
             )
-        }
-        composable(MeditationScreen.Language.route) {
-            val viewModel: MeditationViewModel = it.sharedViewModel(navController)
-            LanguageScreen(
-                onClick = { viewModel.event(MEvent.SetLanguage(it)) },
-                onBack = { navController.popBackStack() })
         }
     }
 }

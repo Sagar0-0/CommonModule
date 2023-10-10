@@ -28,10 +28,10 @@ import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.UploadFiles
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -64,7 +64,7 @@ fun SessionFeedback(
                 LaunchedEffect(feedbackQuesState) {
                     Toast.makeText(
                         context,
-                        "Unexpected error occurred.",
+                        feedbackQuesState.resId.toStringFromResId(context),
                         Toast.LENGTH_SHORT
                     ).show()
                 }

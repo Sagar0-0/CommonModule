@@ -22,10 +22,12 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.ExperimentalComposeUiApi
 import androidx.compose.ui.Modifier
@@ -104,6 +106,19 @@ internal fun FillAddressSheet(
                 R.string.home.toStringFromResId(context)
             }
         )
+    }
+
+    var isNameValid by remember {
+        mutableStateOf(true)
+    }
+    var isHnValid by remember {
+        mutableStateOf(false)
+    }
+    var isBlkValid by remember {
+        mutableStateOf(false)
+    }
+    var isPhoneValid by remember {
+        mutableStateOf(false)
     }
 
     val (nameField, houseField, blockField, nearbyField, phoneField) = FocusRequester.createRefs()
@@ -231,6 +246,9 @@ internal fun FillAddressSheet(
                     onValueChange = {
                         name.value = it
                     },
+                    isValidText = {
+                        isNameValid = it
+                    },
                     label = R.string.location_name
                 )
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
@@ -253,6 +271,9 @@ internal fun FillAddressSheet(
                 onValueChange = {
                     houseNo.value = it
                 },
+                isValidText = {
+                    isHnValid = it
+                },
                 label = R.string.house_number,
             )
 
@@ -274,6 +295,9 @@ internal fun FillAddressSheet(
                 value = block.value,
                 onValueChange = {
                     block.value = it
+                },
+                isValidText = {
+                    isBlkValid = it
                 },
                 label = R.string.block_street_road,
             )
@@ -320,6 +344,9 @@ internal fun FillAddressSheet(
                 ),
                 value = phone.value,
                 onValueChange = { phone.value = it },
+                isValidText = {
+                    isPhoneValid = it
+                },
                 label = R.string.phone_number
             )
 
@@ -342,7 +369,7 @@ internal fun FillAddressSheet(
                                 .padding(AppTheme.spacing.level3)
                                 .fillMaxWidth()
                                 .clip(AppTheme.shape.level3),
-                            enabled = houseNo.value.isNotEmpty() && block.value.isNotEmpty() && phone.value.isNotEmpty() && phone.value.length == 10 && name.value.isNotEmpty()
+                            enabled = isNameValid && isHnValid && isBlkValid && isPhoneValid
                         )
                     }
                 }

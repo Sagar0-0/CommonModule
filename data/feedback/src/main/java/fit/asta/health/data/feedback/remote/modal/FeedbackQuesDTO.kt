@@ -31,7 +31,7 @@ data class Qn(
     @SerializedName("type")
     val type: Int,
     @SerializedName("isMan")
-    val isMandatory: Int,
+    val isMandatory: Boolean,
     @SerializedName("ansType")
     val ansType: AnsType
 ) : Parcelable

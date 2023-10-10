@@ -1,6 +1,7 @@
 package fit.asta.health.common.utils
 
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.StringRes
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.resources.strings.R
@@ -40,6 +41,8 @@ suspend fun <T> getApiResponseState(
     return try {
         val response = request()
         onSuccess()
+
+        Log.e("TAG", "ResponseState: $response")
         when (response.status.code) {
             SUCCESS_STATUS_CODE -> {
                 if (response.data != null) {

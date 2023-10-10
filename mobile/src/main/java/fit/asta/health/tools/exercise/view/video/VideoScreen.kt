@@ -17,7 +17,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Fullscreen
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -34,6 +33,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.Player
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
@@ -170,7 +170,7 @@ private fun MediaContent(
                 showBuffering = uiState.showBuffering,
                 buffering = {
                     Box(Modifier.fillMaxSize(), Alignment.Center) {
-                        CircularProgressIndicator()
+                        AppCircularProgressIndicator()
                     }
                 },
                 errorMessage = { error ->

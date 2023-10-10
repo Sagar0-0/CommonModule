@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.selection.toggleable
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Switch
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -22,6 +19,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun <T> Option(
@@ -40,20 +40,14 @@ fun <T> Option(
             .padding(horizontal = 16.dp, vertical = 0.dp),
         verticalArrangement = Arrangement.Center
     ) {
-        Text(
-            text = name,
-            style = MaterialTheme.typography.titleMedium
-        )
+        TitleTexts.Level2(text = name)
         Row {
-            Text(
-                text = formatter(currentValue),
-                style = MaterialTheme.typography.labelSmall
-            )
+            CaptionTexts.Level3(text = formatter(currentValue))
             DropdownMenu(expanded = expanded, onDismissRequest = { expanded = false }) {
                 values.forEach { value ->
                     DropdownMenuItem(
                         text = {
-                            Text(text = formatter(value))
+                            CaptionTexts.Level3(text = formatter(value))
                         },
                         onClick = {
                             onValueChanged(value)
@@ -86,11 +80,10 @@ fun BooleanOption(
             .padding(horizontal = 16.dp, vertical = 0.dp),
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Text(
+        TitleTexts.Level2(
             text = name,
-            modifier = Modifier.weight(1f),
-            style = MaterialTheme.typography.titleMedium
+            modifier = Modifier.weight(1f)
         )
-        Switch(value, onValueChange, enabled = enabled)
+        AppToggleButton(checked = value, onCheckedChange = onValueChange, enabled = enabled)
     }
 }

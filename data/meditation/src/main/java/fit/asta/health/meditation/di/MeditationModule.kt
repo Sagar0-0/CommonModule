@@ -7,13 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.meditation.db.MeditationToolDatabase
-import fit.asta.health.meditation.model.LocalRepo
-import fit.asta.health.meditation.model.LocalRepoImp
-import fit.asta.health.meditation.model.MeditationRepo
-import fit.asta.health.meditation.model.MeditationRepoImp
-import fit.asta.health.meditation.model.api.MeditationApi
-import fit.asta.health.meditation.model.api.MeditationRestApi
+import fit.asta.health.meditation.remote.MeditationApi
+import fit.asta.health.meditation.repo.LocalRepo
+import fit.asta.health.meditation.repo.LocalRepoImp
+import fit.asta.health.meditation.repo.MeditationRepo
+import fit.asta.health.meditation.repo.MeditationRepoImp
+import fit.asta.health.network.utils.NetworkUtil
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -23,14 +25,18 @@ object MeditationModule {
 
     @Singleton
     @Provides
-    fun provideApi(client: OkHttpClient): MeditationApi {
-        return MeditationRestApi(client)
-    }
+    fun provideApi(client: OkHttpClient): MeditationApi =
+        NetworkUtil.getRetrofit(client).create(MeditationApi::class.java)
+
     @Singleton
     @Provides
-    fun provideRepo(api: MeditationApi):MeditationRepo{
-        return MeditationRepoImp(api)
+    fun provideRepo(
+        api: MeditationApi,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
+    ): MeditationRepo {
+        return MeditationRepoImp(api, coroutineDispatcher)
     }
+
     @Singleton
     @Provides
     fun provideMeditationDatabase(
@@ -47,5 +53,5 @@ object MeditationModule {
     fun provideLocalRepo(db: MeditationToolDatabase): LocalRepo {
         return LocalRepoImp(db.meditationDao())
     }
-   
+
 }

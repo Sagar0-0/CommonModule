@@ -1,4 +1,4 @@
-package fit.asta.health.meditation.model
+package fit.asta.health.meditation.repo
 
 import fit.asta.health.meditation.db.MeditationData
 

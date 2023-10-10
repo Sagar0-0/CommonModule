@@ -1,8 +1,8 @@
-package fit.asta.health.meditation.model.domain.model
+package fit.asta.health.meditation.domain.model
 
 data class MusicTool(
-    val music:MusicData,
-    val instructor:List<MusicData>
+    val music: MusicData,
+    val instructor: List<MusicData>
 )
 data class MusicData(
     val artist_name: String,

@@ -68,9 +68,9 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
                 )
             }
 
-            is UiState.ErrorMessage -> {
+            else -> {
                 val errorMessage =
-                    (postResultState as UiState.ErrorMessage).resId.toStringFromResId()
+                    (postResultState as? UiState.ErrorMessage)?.resId?.toStringFromResId()
                 LaunchedEffect(postResultState) {
                     Toast.makeText(
                         context,
@@ -79,8 +79,6 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
                     ).show()
                 }
             }
-
-            else -> {}
         }
     }
 }

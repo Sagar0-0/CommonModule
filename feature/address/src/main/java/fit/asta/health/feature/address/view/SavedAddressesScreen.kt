@@ -28,7 +28,6 @@ import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
@@ -53,14 +52,15 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.AppTextField
-import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
@@ -468,7 +468,7 @@ private fun AddressItem(
                 ) {
                     if (it) {
                         AppIconButton(onClick = {}) {
-                            CircularProgressIndicator(modifier = Modifier.padding(2.dp))
+                            AppCircularProgressIndicator(modifier = Modifier.padding(2.dp))
                         }
                     } else {
                         AppIconButton(imageVector = Icons.Default.Delete) {

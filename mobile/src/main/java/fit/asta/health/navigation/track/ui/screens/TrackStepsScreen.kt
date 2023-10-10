@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableIntStateOf
@@ -27,10 +26,8 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.toArgb
 import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import androidx.core.content.ContextCompat
 import androidx.core.graphics.ColorUtils
 import fit.asta.chart.circular.CircularChart
@@ -53,6 +50,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.navigation.track.ui.util.TrackStringConstants
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
@@ -288,13 +286,11 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                                     circularForeground = CircularDonutTargetForeground(strokeWidth = 10f)
                                 )
 
-                                Text(
+                                TitleTexts.Level2(
                                     text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
                                     // Text Features
                                     textAlign = TextAlign.Start,
-                                    fontSize = 14.sp,
-                                    fontWeight = FontWeight.W700,
                                     color = AppTheme.colors.onSurface,
                                 )
                             }
@@ -387,15 +383,11 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
                                     "${DecimalFormat("#.##").format(it.idealBmi)} ${it.unit}"
 
                         // Text Composable under BMI Chart
-                        Text(
+                        TitleTexts.Level2(
                             text = text,
-
                             modifier = Modifier
                                 .padding(horizontal = 16.dp),
-
                             maxLines = 2,
-                            fontSize = 14.sp,
-                            fontWeight = FontWeight.W400
                         )
                     }
                 }

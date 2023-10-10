@@ -11,20 +11,17 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 // Preview Composable Function
 @Preview("Light")
@@ -36,7 +33,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 private fun DefaultPreview() {
     AppTheme {
-        Surface {
+        AppSurface {
             TrackingChangeInPlanCard(
                 startLabelIcon = R.drawable.image_sunny,
                 endLabelIcon = R.drawable.image_upward_arrow,
@@ -48,27 +45,20 @@ private fun DefaultPreview() {
                 Column {
 
                     // Sunny Text
-                    Text(
+                    TitleTexts.Level2(
                         text = "Sunny",
 
                         // Text and Font Properties
                         textAlign = TextAlign.Start,
-                        color = MaterialTheme.colorScheme.onSurface,
-//                        fontFamily = InterFontFamily,
-                        fontWeight = FontWeight.W400,
-                        fontSize = 16.sp
+                        color = AppTheme.colors.onSurface,
                     )
 
                     // Degree Text
-                    Text(
+                    TitleTexts.Level2(
                         text = "32 °C",
-
                         // Text and Font Properties
                         textAlign = TextAlign.Start,
-                        color = MaterialTheme.colorScheme.onSurface,
-//                        fontFamily = InterFontFamily,
-                        fontWeight = FontWeight.W600,
-                        fontSize = 18.sp
+                        color = AppTheme.colors.onSurface,
                     )
                 }
             }
@@ -128,15 +118,12 @@ fun TrackingChangeInPlanCard(
             ) {
 
                 // 500mL addition Text
-                Text(
+                TitleTexts.Level2(
                     text = value,
 
                     // Text and Font Properties
                     textAlign = TextAlign.Start,
-                    color = MaterialTheme.colorScheme.onSurface,
-//                    fontFamily = InterFontFamily,
-                    fontWeight = FontWeight.W600,
-                    fontSize = 16.sp
+                    color = AppTheme.colors.onSurface
                 )
 
                 Spacer(modifier = Modifier.width(6.dp))
@@ -154,15 +141,12 @@ fun TrackingChangeInPlanCard(
         Spacer(modifier = Modifier.height(16.dp))
 
         // Body Text of the function explaining the user what happened and why his intake has increased
-        Text(
+        TitleTexts.Level2(
             text = bodyText,
 
             // Text and Font Properties
             textAlign = TextAlign.Start,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
-//            fontFamily = InterFontFamily,
-            fontWeight = FontWeight.W500,
-            fontSize = 14.sp
+            color = AppTheme.colors.onSurface.copy(alpha = .6f),
         )
     }
 }
