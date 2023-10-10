@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -27,6 +26,7 @@ import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.feature.testimonials.components.ArtistCard
@@ -121,7 +121,7 @@ fun VideoView(
             showBuffering = uiState.showBuffering,
             buffering = {
                 Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    CircularProgressIndicator()
+                    AppCircularProgressIndicator()
                 }
             },
             errorMessage = { error ->
