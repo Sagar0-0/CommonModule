@@ -27,6 +27,7 @@ sealed class AppTextFieldType(
         val maxSize: Int = 0,
         val isInvalidLogic: ((input: String, isTyping: Boolean) -> Boolean)? = null,
         val getErrorMessageLogic: ((input: String, isError: Boolean) -> String)? = null,
-        val getStringCounterLogic: ((input: String) -> String)? = null
+        val getStringCounterLogic: ((input: String) -> String)? = null,
+        val isTextValidLogic: ((input: String) -> Boolean)? = null
     ) : AppTextFieldType(minSize, maxSize)
 }

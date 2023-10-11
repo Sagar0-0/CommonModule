@@ -106,10 +106,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -119,7 +115,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -241,10 +237,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -254,7 +246,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -379,10 +371,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -392,7 +380,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -517,10 +505,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -530,7 +514,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -653,10 +637,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -666,7 +646,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -797,10 +777,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -810,7 +786,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -948,10 +924,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -961,7 +933,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -1099,10 +1071,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -1112,7 +1080,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,
@@ -1250,10 +1218,6 @@ fun AppOutlinedTextField(
     // Formulating what will be the error Message of the text Field Type
     val errorMessage = appTextFieldType.getErrorMessage(value)
 
-    // Getting the Minimum and Maximum Characters allowed for this TextField
-    val minCharacters = appTextFieldType.getMinCharacters()
-    val maxCharacters = appTextFieldType.getMaxCharacters()
-
     // This variable contains the Counter for the String
     val stringCounter = appTextFieldType.getStringCounter(value)
 
@@ -1263,7 +1227,7 @@ fun AppOutlinedTextField(
         value = value,
         onValueChange = {
             onValueChange(it)
-            isValidText(it.length in minCharacters..maxCharacters)
+            isValidText(appTextFieldType.isTextValid(it))
         },
         modifier = modifier,
         enabled = enabled,

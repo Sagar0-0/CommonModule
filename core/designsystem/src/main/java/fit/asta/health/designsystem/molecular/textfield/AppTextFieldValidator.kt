@@ -90,18 +90,26 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
             }
 
             else -> {
-                "${input.length}/${getMaxCharacters()}"
+                "${input.length}/${appTextFieldType.maxStringSize}"
             }
         }
     }
 
     /**
-     * This function provides the minimum String Size for the [AppTextFieldType]
+     * This function provides if the text is valid or not for something
      */
-    fun getMinCharacters() = appTextFieldType.minStringSize
+    fun isTextValid(input: String): Boolean {
+        return when (appTextFieldType) {
+            is AppTextFieldType.Custom -> {
+                if (appTextFieldType.isTextValidLogic != null)
+                    appTextFieldType.isTextValidLogic.invoke(input)
+                else
+                    true
+            }
 
-    /**
-     * This function provides the maximum String Size for the [AppTextFieldType]
-     */
-    fun getMaxCharacters() = appTextFieldType.maxStringSize
+            else -> {
+                input.length in appTextFieldType.minStringSize..appTextFieldType.maxStringSize
+            }
+        }
+    }
 }
