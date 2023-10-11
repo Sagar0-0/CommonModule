@@ -49,8 +49,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppNavigationBar
-import fit.asta.health.designsystem.molecular.AppNavigationBarItem
+import fit.asta.health.designsystem.molecular.background.AppNavigationBar
+import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
@@ -131,7 +131,7 @@ private fun BottomAppBarLayout(
                         contentDescription = item.title
                     )
                 },
-                label = { TitleTexts.Level2(text = item.title) },
+                label = item.title,
                 selected = currentRoute == item.route,
                 onClick = { onNavigate(item.route) }
             )
