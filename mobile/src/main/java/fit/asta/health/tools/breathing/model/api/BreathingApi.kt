@@ -1,22 +1,86 @@
 package fit.asta.health.tools.breathing.model.api
 
+import fit.asta.health.common.utils.NetSheetData
+import fit.asta.health.common.utils.Response
 import fit.asta.health.network.data.ServerRes
 import fit.asta.health.tools.breathing.model.network.AllExerciseData
 import fit.asta.health.tools.breathing.model.network.CustomRatioData
 import fit.asta.health.tools.breathing.model.network.NetGetRes
 import fit.asta.health.tools.breathing.model.network.NetGetStart
-import fit.asta.health.tools.breathing.model.network.request.CustomRatioPost
 import fit.asta.health.tools.breathing.model.network.request.NetPost
 import fit.asta.health.tools.breathing.model.network.request.NetPut
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Query
+
 
 interface BreathingApi {
-    suspend fun getBreathingTool(userId: String, date: String): NetGetRes
-    suspend fun getAllBreathingData(userId: String): AllExerciseData
-    suspend fun getStart(userId: String): NetGetStart
-    suspend fun putBreathingData(netPut: NetPut): ServerRes
-    suspend fun postBreathingData(netPost: NetPost): ServerRes
-    suspend fun postRatioData(customRatioData: CustomRatioData): ServerRes
-    suspend fun deleteRatioData(ratioId: String): ServerRes
-    suspend fun postAdminData(customRatioPost: CustomRatioPost): ServerRes
-    suspend fun deleteAdminData(exerciseId: String): ServerRes
+
+    //https://asta.fit/tools/breathing/put/
+    //https://asta.fit/tools/breathing/get/?uid=6309a9379af54f142c65fbfe&date=2023-03-09
+    //https://asta.fit/tools/breathing/activity/post/
+    //https://asta.fit/tools/breathing/start/session/get/?uid=
+    //
+    //https://asta.fit/tools/breathing/exercise/get/all/?uid=
+    //
+    //https://asta.fit/tools/breathing/ratio/post/
+    //https://asta.fit/tools/breathing/ratio/delete/?rid=
+    //
+    //admin:
+    //https://asta.fit/tools/breathing/exercise/post/
+    //https://asta.fit/tools/breathing/exercise/delete/?eid=
+
+    @GET("tools/breathing/get/?")
+    suspend fun getBreathingTool(
+        @Query("uid") userId: String,
+        @Query("date") date: String
+    ): Response<NetGetRes>
+
+    @GET("tools/breathing/exercise/get/all/?")
+    suspend fun getAllBreathingData(
+        @Query("uid") userId: String
+    ): Response<AllExerciseData>
+
+    @GET("tools/breathing/start/session/get/?")
+    suspend fun getStart(
+        @Query("uid") userId: String = "6309a9379af54f142c65fbfe"
+    ): Response<NetGetStart>
+
+    @PUT("tools/breathing/put/")
+    suspend fun putBreathingData(
+        @Body netPut: NetPut
+    ): Response<ServerRes>
+
+    @POST("tools/breathing/activity/post/?")
+    suspend fun postBreathingData(
+        @Body netPost: NetPost
+    ): Response<ServerRes>
+
+    @POST("tools/breathing/ratio/post/?")
+    suspend fun postRatioData(
+        @Body customRatioData: CustomRatioData
+    ): Response<ServerRes>
+
+    @DELETE("tools/breathing/ratio/delete/?")
+    suspend fun deleteRatioData(
+        @Query("rid") ratioId: String
+    ): Response<ServerRes>
+
+    @GET("tools/health/list/get/?")
+    suspend fun getSheetData(
+        @Query("screenName") code: String
+    ): Response<List<NetSheetData>>
+
+//    @POST("tools/breathing/exercise/post/?")
+//    suspend fun postAdminData(
+//        @Body customRatioPost: CustomRatioPost
+//    ): Response<ServerRes>
+//
+//    @DELETE("tools/breathing/exercise/delete/?")
+//    suspend fun deleteAdminData(
+//        @Query("eid") exerciseId: String
+//    ): Response<ServerRes>
 }

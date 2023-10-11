@@ -5,8 +5,6 @@ import fit.asta.health.meditation.domain.model.MusicData
 import fit.asta.health.meditation.domain.model.MusicTool
 import fit.asta.health.meditation.remote.network.NetMeditationToolResponse
 import fit.asta.health.meditation.remote.network.NetMusicRes
-import fit.asta.health.meditation.remote.network.NetSheetData
-import fit.asta.health.meditation.remote.network.Value
 
 
 fun NetMusicRes.getMusicTool(): MusicTool {
@@ -48,8 +46,3 @@ fun NetMeditationToolResponse.getMeditationTool(): MeditationTool {
     )
 }
 
-fun NetSheetData.toValue(): Value {
-    return Value(
-        dsc = this.dsc, id = "", ttl = this.name, url = this.url, type = 1
-    )
-}

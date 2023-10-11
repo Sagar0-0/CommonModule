@@ -2,6 +2,7 @@ package fit.asta.health.tools.breathing.model.network
 
 
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.Prc
 
 data class BreathingToolData(
     @SerializedName("code")

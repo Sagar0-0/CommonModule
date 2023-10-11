@@ -1,9 +1,9 @@
 package fit.asta.health.meditation.repo
 
+import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.meditation.remote.MeditationApi
-import fit.asta.health.meditation.remote.network.NetSheetData
 import fit.asta.health.meditation.remote.network.PostRes
 import fit.asta.health.meditation.remote.network.PutData
 import kotlinx.coroutines.CoroutineDispatcher

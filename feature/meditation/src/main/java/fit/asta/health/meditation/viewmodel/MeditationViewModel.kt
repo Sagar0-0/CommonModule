@@ -20,24 +20,24 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
+import fit.asta.health.common.utils.NetSheetData
+import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.Value
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.meditation.db.MeditationData
 import fit.asta.health.meditation.domain.mapper.getMeditationTool
 import fit.asta.health.meditation.domain.mapper.getMusicTool
-import fit.asta.health.meditation.domain.mapper.toValue
-import fit.asta.health.meditation.remote.network.NetSheetData
 import fit.asta.health.meditation.remote.network.PostRes
-import fit.asta.health.meditation.remote.network.Prc
 import fit.asta.health.meditation.remote.network.PutData
-import fit.asta.health.meditation.remote.network.Value
 import fit.asta.health.meditation.repo.LocalRepo
 import fit.asta.health.meditation.repo.MeditationRepo
-import fit.asta.health.meditation.view.home.HomeUiState
 import fit.asta.health.meditation.view.home.MEvent
+import fit.asta.health.meditation.view.home.ToolUiState
+import fit.asta.health.network.utils.toValue
 import fit.asta.health.player.audio.MusicServiceConnection
 import fit.asta.health.player.domain.mapper.asMediaItem
 import fit.asta.health.player.domain.model.Song
@@ -71,8 +71,8 @@ class MeditationViewModel @Inject constructor(
     private var backgroundPlayer: Player? = null
     private val date = LocalDate.now().dayOfMonth
 
-    private val _uiState = mutableStateOf(HomeUiState())
-    val uiState: State<HomeUiState> = _uiState
+    private val _uiState = mutableStateOf(ToolUiState())
+    val uiState: State<ToolUiState> = _uiState
     private val _mutableState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val state = _mutableState.asStateFlow()
 
@@ -250,7 +250,7 @@ class MeditationViewModel @Inject constructor(
 
     private fun loadLocalData() {
         viewModelScope.launch {
-            val data = localRepo.getWaterData(date = LocalDate.now().dayOfMonth)
+            val data = localRepo.getWaterData(date = date)
             if (data != null) {
                 _uiState.value = _uiState.value.copy(
                     start = data.start,
@@ -267,10 +267,9 @@ class MeditationViewModel @Inject constructor(
                 )
             }
             musicServiceConnection.currentProgress.collect { progress ->
-                val result = localRepo.getWaterData(date = date)
-                if (result != null) {
+                if (data != null) {
                     var pro: Long = 0
-                    pro = if (progress >= result.time) progress else result.time + 1
+                    pro = if (progress >= data.time) progress else data.time + 1
                     localRepo.updateTime(date = date, time = pro)
                     _uiState.value = _uiState.value.copy(
                         consume = pro.toFloat()
@@ -288,7 +287,7 @@ class MeditationViewModel @Inject constructor(
                     dsc = "",
                     id = "",
                     ttl = _uiState.value.targetValue.toInt().toString(),
-                    type = 1,
+                    code = _uiState.value.targetValue.toInt().toString(),
                     url = ""
                 )
             )
@@ -446,11 +445,6 @@ class MeditationViewModel @Inject constructor(
 
     val musicState = musicServiceConnection.musicState
 
-    //    val currentPosition = musicServiceConnection.currentPosition.stateIn(
-//        scope = viewModelScope,
-//        started = SharingStarted.Lazily,
-//        initialValue = MediaConstants.DEFAULT_POSITION_MS
-//    )
     private val _visibility = MutableStateFlow(false)
     val visibility: StateFlow<Boolean> = _visibility
 
@@ -495,7 +489,7 @@ class MeditationViewModel @Inject constructor(
         _trackList.addAll(list[player.previousMediaItemIndex].audioList)
     }
 
-    fun playIndex(index: Int) {
+    private fun playIndex(index: Int) {
         musicServiceConnection.playIndex(index)
     }
 
@@ -504,7 +498,7 @@ class MeditationViewModel @Inject constructor(
         backgroundPlayer?.play()
     }
 
-    fun pause() {
+    private fun pause() {
         musicServiceConnection.pause()
         backgroundPlayer?.pause()
     }

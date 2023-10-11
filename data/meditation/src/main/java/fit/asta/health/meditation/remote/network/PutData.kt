@@ -2,6 +2,7 @@ package fit.asta.health.meditation.remote.network
 
 
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.Prc
 
 data class PutData(
     @SerializedName("code")

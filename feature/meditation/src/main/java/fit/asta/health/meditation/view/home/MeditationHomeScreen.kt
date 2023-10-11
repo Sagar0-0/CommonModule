@@ -34,6 +34,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toDraw
 import fit.asta.health.common.utils.toStringFromResId
@@ -53,7 +54,6 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.meditation.remote.network.Prc
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -61,7 +61,7 @@ import fit.asta.health.resources.drawables.R
 fun MeditationHomeScreen(
     state: UiState<Unit>,
     event: (MEvent) -> Unit,
-    uiState: HomeUiState,
+    uiState: ToolUiState,
     selectedData: SnapshotStateList<Prc>,
     onClickMusic: () -> Unit,
     onDNDPermission: () -> Boolean,
@@ -215,11 +215,11 @@ fun MeditationHomeScreen(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun MeditationBottomSheet(
-    uiState: HomeUiState,
+    uiState: ToolUiState,
     selectedData: SnapshotStateList<Prc>,
     scaffoldState: BottomSheetScaffoldState,
-    event: (MEvent) -> Unit,
     goToList: (Int) -> Unit,
+    event: (MEvent) -> Unit,
 ) {
     val context = LocalContext.current
     if (selectedData.isNotEmpty()) {

@@ -1,9 +1,9 @@
 package fit.asta.health.meditation.remote
 
+import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Response
 import fit.asta.health.meditation.remote.network.NetMeditationToolResponse
 import fit.asta.health.meditation.remote.network.NetMusicRes
-import fit.asta.health.meditation.remote.network.NetSheetData
 import fit.asta.health.meditation.remote.network.PostRes
 import fit.asta.health.meditation.remote.network.PutData
 import fit.asta.health.network.data.ServerRes
