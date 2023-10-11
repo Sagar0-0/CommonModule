@@ -7,13 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.tools.breathing.db.BreathingDatabase
 import fit.asta.health.tools.breathing.model.BreathingRepo
 import fit.asta.health.tools.breathing.model.BreathingRepoImp
 import fit.asta.health.tools.breathing.model.LocalRepo
 import fit.asta.health.tools.breathing.model.LocalRepoImp
 import fit.asta.health.tools.breathing.model.api.BreathingApi
-import fit.asta.health.tools.breathing.model.api.BreathingRestApi
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -22,14 +24,18 @@ import javax.inject.Singleton
 object BreathingModule {
     @Singleton
     @Provides
-    fun provideApi(client: OkHttpClient): BreathingApi {
-        return BreathingRestApi(client)
-    }
+    fun provideApi(client: OkHttpClient): BreathingApi =
+        NetworkUtil.getRetrofit(client).create(BreathingApi::class.java)
+
     @Singleton
     @Provides
-    fun provideRepo(api: BreathingApi): BreathingRepo {
-        return BreathingRepoImp(api)
+    fun provideRepo(
+        api: BreathingApi,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
+    ): BreathingRepo {
+        return BreathingRepoImp(api, coroutineDispatcher)
     }
+
     @Singleton
     @Provides
     fun provideBreathingDatabase(
