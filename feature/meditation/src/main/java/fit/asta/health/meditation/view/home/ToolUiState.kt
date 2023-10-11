@@ -1,6 +1,6 @@
 package fit.asta.health.meditation.view.home
 
-data class HomeUiState(
+data class ToolUiState(
     val targetAngle: Float = 0f,
     val progressAngle: Float = 0f,
     val targetValue: Float = 0f,
@@ -11,4 +11,5 @@ data class HomeUiState(
     val remaining: Int = 0,
     val recommended: Int = 90,
     val dndMode: Boolean = false,
+    val weather: Boolean = false
 )

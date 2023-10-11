@@ -16,14 +16,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.NetSheetData
+import fit.asta.health.common.utils.Prc
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.meditation.remote.network.NetSheetData
-import fit.asta.health.meditation.remote.network.Prc
 
 @Composable
 fun SheetDataSelectionScreen(
@@ -44,7 +44,7 @@ fun SheetDataSelectionScreen(
         }
     ) {
 
-        if (prc.selectType) {//multiple
+        if (prc.isMultiSel) {//multiple
             MultipleTypeScreen(
                 modifier = Modifier.padding(it),
                 list = list,
