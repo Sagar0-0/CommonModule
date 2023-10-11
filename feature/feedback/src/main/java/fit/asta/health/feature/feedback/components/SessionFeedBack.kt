@@ -15,6 +15,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
@@ -72,6 +73,14 @@ fun SessionFeedback(
             }
 
             is UiState.Success -> {
+                val list = remember {
+                    mutableStateListOf(false)
+                }
+                var isEnabled = list.none { bool ->
+                    !bool
+                }
+
+
                 val qns = feedbackQuesState.data.qns
                 val ansList = remember {
                     mutableStateOf(
@@ -93,9 +102,6 @@ fun SessionFeedback(
                         .verticalScroll(rememberScrollState())
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
-                    val enabled = remember {
-                        mutableStateOf(true)
-                    }
 
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                     WelcomeCard()
@@ -108,7 +114,7 @@ fun SessionFeedback(
                                 ansList.value[idx] = an
                             },
                             isValid = { valid ->
-                                enabled.value = enabled.value && valid
+                                list[idx] = valid
                             }
                         )
                         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -116,9 +122,9 @@ fun SessionFeedback(
 
 
                     SubmitButton(
-                        enabled = enabled.value,
+                        enabled = isEnabled,
                         onDisable = {
-                            enabled.value = false
+                            isEnabled = false
                         }
                     ) {
                         Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
