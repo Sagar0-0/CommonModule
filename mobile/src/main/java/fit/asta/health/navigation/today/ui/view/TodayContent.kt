@@ -22,8 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
-import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -53,9 +51,9 @@ import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.WeatherCardImage
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
@@ -83,7 +81,6 @@ fun TodayContent(
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
     var deleteDialog by rememberSaveable { mutableStateOf(false) }
     var skipDialog by rememberSaveable { mutableStateOf(false) }
     var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
@@ -111,9 +108,7 @@ fun TodayContent(
                 skipDialog = false
             })
     }
-    AppScaffold(
-        snackBarHostState = snackBarHostState,
-    ) { paddingValues ->
+    AppScaffold { paddingValues ->
         LazyColumn(
             Modifier
                 .fillMaxWidth()
@@ -301,8 +296,7 @@ fun TodayItem(
     val isPressed by interactionSource.collectIsPressedAsState()
     val color = if (!isPressed) AppTheme.colors.primary else Color.Green
     AppCard(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.surface)
+        modifier = modifier
     ) {
         Column(
             modifier = modifier.padding(16.dp),
@@ -461,8 +455,7 @@ fun AlertDialogPopUp(
         )
     ) {
         AppCard(
-            modifier = Modifier.clip(AppTheme.shape.level3),
-            elevation = CardDefaults.cardElevation(8.dp)
+            modifier = Modifier.clip(AppTheme.shape.level3)
         ) {
             Column(
                 modifier = Modifier

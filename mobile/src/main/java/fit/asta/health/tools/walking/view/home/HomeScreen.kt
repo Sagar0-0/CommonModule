@@ -11,7 +11,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -368,8 +367,7 @@ fun MainCircularSlider(
 @Composable
 fun StepsDetailsCard(modifier: Modifier, distance: Double, duration: Int, steps: Int) {
     AppCard(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier
@@ -403,8 +401,7 @@ fun DetailsCard(
     bp: String
 ) {
     AppCard(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier
@@ -509,8 +506,7 @@ fun CustomProgressBar(
 @Composable
 fun VitaminCard(modifier: Modifier, recommendedValue: Int, achievedValue: Int) {
     AppCard(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+        modifier = modifier
     ) {
         Column(
             modifier = Modifier
@@ -549,8 +545,7 @@ fun RowItem(name: String, value: String) {
 fun SunlightCard(modifier: Modifier) {
     val checked = remember { mutableStateOf(true) }
     AppCard(
-        modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier

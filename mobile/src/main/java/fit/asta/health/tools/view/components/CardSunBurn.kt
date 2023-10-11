@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,8 +39,7 @@ fun CardSunBurn(
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = 16.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.secondary)
+            .padding(horizontal = 16.dp)
     ) {
         Column(
             modifier = Modifier.padding(16.dp),

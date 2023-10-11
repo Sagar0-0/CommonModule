@@ -3,7 +3,6 @@
 package fit.asta.health.tools.view.components
 
 import androidx.compose.foundation.layout.*
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -11,7 +10,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.blur
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -30,7 +28,6 @@ fun PracticeExpandedCard(
         modifier = modifier
             .blur(radius = 5.dp)
             .padding(horizontal = 16.dp, vertical = 8.dp),
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.secondary),
         onClick = onclick
     ) {
         Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)) {

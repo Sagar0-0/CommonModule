@@ -16,8 +16,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.*
-import androidx.compose.material3.AlertDialog
-import androidx.compose.material3.BottomAppBar
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -35,6 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
+import fit.asta.health.designsystem.molecular.AppAlertDialog
+import fit.asta.health.designsystem.molecular.AppBottomBar
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -70,23 +70,26 @@ fun ImageCropperScreen(
             AppTopBar(title = "Crop Image", onBack = onCloseImgCropper)
         },
         bottomBar = {
-            BottomAppBar(actions = {
-                AppIconButton(
-                    imageVector = Icons.Filled.Crop,
-                    onClick = { crop = true }
-                )
-                AppIconButton(
-                    imageVector = Icons.Filled.Rotate90DegreesCw,
-                    onClick = { angle = (angle + 90) % 360f }
-                )
-                AppIconButton(
-                    imageVector = Icons.Filled.LockReset,
-                    onClick = { imageBitmap = null })
-            }, floatingActionButton = {
-                ImageSelectionButton(onImageSelected = { bitmap: ImageBitmap ->
-                    imageBitmap = bitmap
-                })
-            })
+            AppBottomBar(
+                actions = {
+                    AppIconButton(
+                        imageVector = Icons.Filled.Crop,
+                        onClick = { crop = true }
+                    )
+                    AppIconButton(
+                        imageVector = Icons.Filled.Rotate90DegreesCw,
+                        onClick = { angle = (angle + 90) % 360f }
+                    )
+                    AppIconButton(
+                        imageVector = Icons.Filled.LockReset,
+                        onClick = { imageBitmap = null })
+                },
+                floatingActionButton = {
+                    ImageSelectionButton(onImageSelected = { bitmap: ImageBitmap ->
+                        imageBitmap = bitmap
+                    })
+                }
+            )
         },
         content = { innerPadding ->
             Box(
@@ -168,26 +171,28 @@ private fun ShowCroppedImageDialog(
     onDismissRequest: () -> Unit,
     onApprovedRequest: () -> Unit,
 ) {
-    AlertDialog(onDismissRequest = onDismissRequest, text = {
-        Image(
-            modifier = Modifier
-                .drawChecker(RoundedCornerShape(8.dp))
-                .fillMaxWidth()
-                .aspectRatio(1f),
-            contentScale = ContentScale.Fit,
-            bitmap = imageBitmap,
-            contentDescription = "result"
-        )
-    }, confirmButton = {
-        AppTextButton(
-            textToShow = "Confirm",
-            onClick = onApprovedRequest
-        )
-    }, dismissButton = {
-        AppTextButton(
-            textToShow = "Dismiss",
-            onClick = {
-                onDismissRequest()
-            })
-    })
+    AppAlertDialog(
+        onDismissRequest = onDismissRequest,
+        text = {
+            Image(
+                modifier = Modifier
+                    .drawChecker(RoundedCornerShape(8.dp))
+                    .fillMaxWidth()
+                    .aspectRatio(1f),
+                contentScale = ContentScale.Fit,
+                bitmap = imageBitmap,
+                contentDescription = "result"
+            )
+        }, confirmButton = {
+            AppTextButton(
+                textToShow = "Confirm",
+                onClick = onApprovedRequest
+            )
+        }, dismissButton = {
+            AppTextButton(
+                textToShow = "Dismiss",
+                onClick = {
+                    onDismissRequest()
+                })
+        })
 }

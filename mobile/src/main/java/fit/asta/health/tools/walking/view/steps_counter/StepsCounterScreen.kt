@@ -6,7 +6,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.RunCircle
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -155,8 +154,7 @@ fun SessionCard(
 ) {
     AppCard(
         modifier = modifier
-            .clickable { onClick() },
-        colors = CardDefaults.cardColors(Color.LightGray),
+            .clickable { onClick() }
     ) {
         Column(
             modifier = Modifier
