@@ -3,14 +3,13 @@ package fit.asta.health.feature.spotify.components
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Sort
-import androidx.compose.material3.OutlinedTextField
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
@@ -19,7 +18,8 @@ import androidx.compose.ui.text.input.KeyboardType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
+
 
 /**
  * This composable function creates a Outlined Search Bar UI in the Screen
@@ -44,7 +44,7 @@ fun SearchBar(
     val focusManager = LocalFocusManager.current
 
     // This is the text Input where the user will give his input
-    OutlinedTextField(
+    AppOutlinedTextField(
         value = userInput,
         onValueChange = {
 
@@ -60,13 +60,7 @@ fun SearchBar(
         modifier = modifier,
 
         // This is the Label of the input which is shown to the top left when selected
-        label = { BodyTexts.Level3(text = "Search from Spotify") },
-
-        // Setting Custom Colors for the Outlined TextField
-        colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = AppTheme.colors.primary,
-            disabledBorderColor = AppTheme.colors.primaryContainer,
-        ),
+        label = "Search from Spotify",
 
         // Shape of the TextField
         shape = AppTheme.shape.level2,
@@ -85,7 +79,7 @@ fun SearchBar(
             Row(
                 modifier = Modifier
                     .padding(horizontal = AppTheme.spacing.level3),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
 
                 if (userInput.isNotEmpty()) {
@@ -93,14 +87,16 @@ fun SearchBar(
                     // Clear Button
                     AppIconButton(
                         imageVector = Icons.Outlined.Clear,
-                        iconDesc = "Clear Button"
+                        iconDesc = "Clear Button",
+                        modifier = Modifier.size(AppTheme.iconSize.level3)
                     ) { onUserInputChange("") }
                 }
 
                 // Filter / Sort Icons
                 AppIconButton(
                     imageVector = Icons.Outlined.Sort,
-                    iconDesc = "Filter Button"
+                    iconDesc = "Filter Button",
+                    modifier = Modifier.size(AppTheme.iconSize.level3)
                 ) { onFilterButtonClick() }
             }
         },
