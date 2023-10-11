@@ -33,8 +33,8 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
-import fit.asta.health.designsystem.molecular.AppAlertDialog
-import fit.asta.health.designsystem.molecular.AppBottomBar
+import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
+import fit.asta.health.designsystem.molecular.background.AppBottomBar
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
