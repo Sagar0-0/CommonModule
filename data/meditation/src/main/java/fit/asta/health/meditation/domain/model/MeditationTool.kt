@@ -1,6 +1,6 @@
 package fit.asta.health.meditation.domain.model
 
-import fit.asta.health.meditation.remote.network.Prc
+import fit.asta.health.common.utils.Prc
 
 data class MeditationTool(
     val uid: String = "",

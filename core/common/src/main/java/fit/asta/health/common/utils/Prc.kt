@@ -1,4 +1,4 @@
-package fit.asta.health.meditation.remote.network
+package fit.asta.health.common.utils
 
 
 import com.google.gson.annotations.SerializedName
@@ -8,10 +8,8 @@ data class Prc(
     val code: String,
     @SerializedName("dsc")
     val dsc: String,
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("selectType")
-    val selectType: Boolean,
+    @SerializedName("isMultiSel")
+    val isMultiSel: Boolean,
     @SerializedName("ttl")
     val ttl: String,
     @SerializedName("type")
@@ -27,8 +25,8 @@ data class Value(
     val id: String,
     @SerializedName("ttl")
     val ttl: String,
-    @SerializedName("type")
-    val type: Int,
+    @SerializedName("code")
+    val code: String,
     @SerializedName("url")
     val url: String
 )
