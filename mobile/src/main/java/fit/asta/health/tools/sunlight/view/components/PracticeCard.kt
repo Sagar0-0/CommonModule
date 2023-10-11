@@ -9,11 +9,9 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
@@ -24,8 +22,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun PracticeCard() {
     AppCard(
-        modifier = Modifier.fillMaxWidth(),
-        colors = CardDefaults.cardColors(containerColor = Color(0x66959393))
+        modifier = Modifier.fillMaxWidth()
     ) {
         Row(modifier = Modifier.padding(start = 16.dp, top = 16.dp, bottom = 16.dp)) {
             Box(contentAlignment = Alignment.Center) {

@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
@@ -54,8 +52,7 @@ fun SPFLevelContent() {
 
     Column(Modifier.fillMaxWidth()) {
         AppCard(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(Color(0x66959593))
+            modifier = Modifier.fillMaxWidth()
         ) {
             Column(
                 modifier = Modifier
@@ -83,8 +80,7 @@ fun SPFLevelContent() {
         Spacer(modifier = Modifier.height(16.dp))
 
         AppCard(
-            modifier = Modifier.fillMaxWidth(),
-            colors = CardDefaults.cardColors(Color(0x66959593))
+            modifier = Modifier.fillMaxWidth()
         ) {
             CaptionTexts.Level2(
                 text = "Wearing sunscreen is one of the best — and easiest — ways to protect your skin's appearance and health at any age.Sunscreen may help prevent the sun's rays from causing photographing and skin cancer.",
@@ -128,7 +124,6 @@ fun TimeSelectionLayout(title: String) {
         AppFilledButton(
             onClick = { /*TODO*/ },
             shape = RoundedCornerShape(5.dp),
-            colors = ButtonDefaults.buttonColors(containerColor = Color.White),
             modifier = Modifier.fillMaxWidth(),
             border = BorderStroke(2.dp, color = Color(0x99E4E4E4))
         ) {

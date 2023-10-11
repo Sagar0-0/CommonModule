@@ -7,7 +7,7 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.CardDefaults
+
 import androidx.compose.runtime.*
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -124,8 +124,7 @@ fun SkinExposureCardModified(
     isSelected: Boolean
 ) {
     AppCard(
-        modifier = modifier.padding(8.dp),
-        colors = CardDefaults.cardColors(Color(0x66959393))
+        modifier = modifier.padding(8.dp)
     ) {
         SkinExposureCardComponentModified(
             cardValue = cardValue,

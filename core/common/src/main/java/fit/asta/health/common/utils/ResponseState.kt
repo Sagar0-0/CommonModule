@@ -8,7 +8,7 @@ import fit.asta.health.resources.strings.R
 import kotlinx.parcelize.Parcelize
 
 const val TAG = "RES"
-const val SUCCESS_STATUS_CODE = 200
+const val SUCCESS_STATUS_CODE = 0
 
 data class Response<T>(
     @SerializedName("status")

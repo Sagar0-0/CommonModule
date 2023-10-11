@@ -14,7 +14,6 @@ import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -116,8 +115,7 @@ fun SkinExposureCard(
                 demoSelected = !demoSelected
             }
         }
-        .padding(8.dp),
-        colors = CardDefaults.cardColors(Color(0x66959393))
+        .padding(8.dp)
     ) {
         SkinExposureCardComponent(
             cardValue = cardValue,

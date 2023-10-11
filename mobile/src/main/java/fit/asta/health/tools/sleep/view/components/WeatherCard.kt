@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -25,10 +24,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun WeatherCard() {
     val checked = remember { mutableStateOf(true) }
-    AppCard(
-        modifier = Modifier,
-        colors = CardDefaults.cardColors(AppTheme.colors.background),
-    ) {
+    AppCard {
         Row(
             modifier = Modifier
                 .fillMaxWidth()

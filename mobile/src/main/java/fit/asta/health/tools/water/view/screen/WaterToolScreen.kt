@@ -25,9 +25,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ProgressIndicatorDefaults
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -507,8 +505,7 @@ fun GridItem(
     onClick: () -> Unit
 ) {
     AppCard(
-        modifier = modifier.clickable { onClick() },
-        colors = CardDefaults.cardColors(AppTheme.colors.onTertiary),
+        modifier = modifier.clickable { onClick() }
     ) {
 
         Row(
@@ -541,8 +538,7 @@ fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString:
         AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(8.dp),
-            elevation = CardDefaults.cardElevation(8.dp)
+                .padding(8.dp)
         ) {
             Column(
                 Modifier
@@ -714,8 +710,7 @@ fun CustomProgressBar(
     val configuration = LocalConfiguration.current
     val screenWidth = configuration.screenWidthDp - 32
     val animatedProgress = animateFloatAsState(
-        targetValue = (screenWidth * percent / 100).toFloat(),
-        animationSpec = ProgressIndicatorDefaults.ProgressAnimationSpec, label = ""
+        targetValue = (screenWidth * percent / 100).toFloat(), label = ""
     ).value
 
     Box(

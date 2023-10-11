@@ -24,8 +24,6 @@ import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Handyman
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.NavigationBar
-import androidx.compose.material3.NavigationBarItem
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
@@ -51,6 +49,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppNavigationBar
+import fit.asta.health.designsystem.molecular.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
@@ -119,12 +119,12 @@ private fun BottomAppBarLayout(
     onNavigate: (route: String) -> Unit,
 ) {
 
-    NavigationBar(
+    AppNavigationBar(
         modifier = Modifier.fillMaxWidth(),
         tonalElevation = AppTheme.elevation.level4
     ) {
         items.forEach { item ->
-            NavigationBarItem(
+            AppNavigationBarItem(
                 icon = {
                     AppIcon(
                         imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
