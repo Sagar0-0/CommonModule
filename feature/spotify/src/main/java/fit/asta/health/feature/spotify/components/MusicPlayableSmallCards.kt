@@ -1,24 +1,18 @@
 package fit.asta.health.feature.spotify.components
 
-import androidx.compose.foundation.Image
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Card
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 /**
  * This function draws the Small Track UI like which we have in User Most Recently Played Tracks UI
@@ -34,43 +28,34 @@ fun MusicPlayableSmallCards(
     onClick: () -> Unit
 ) {
 
-    // request for the image and load when it is fetched from the internet
-    val painter = rememberAsyncImagePainter(imageUri)
-
     // Parent Composable of the small Tracks UI
-    Card(
+    AppCard(
         modifier = Modifier
-            .padding(4.dp)
-            .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 20.dp)
-
-            // Redirecting the User to Spotify App
-            .clickable { onClick() }
+            .padding(AppTheme.spacing.level1)
+            .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 20.dp),
+        onClick = onClick
     ) {
         Row(verticalAlignment = Alignment.CenterVertically) {
 
             // Track Image
-            Image(
-                painter = painter,
+            AppNetworkImage(
+                model = imageUri,
                 contentDescription = "Track Image",
+                contentScale = ContentScale.FillHeight
             )
 
-            // Circular Progress Bar
-            if (painter.state.painter == null) AppDotTypingAnimation()
-
             // track Name
-            Text(
+            BodyTexts.Level3(
                 text = name,
-
                 modifier = Modifier
                     .width(LocalConfiguration.current.screenWidthDp.dp)
-                    .padding(start = 8.dp, top = 4.dp, end = 4.dp, bottom = 4.dp),
-
-                maxLines = 2,
-                textAlign = TextAlign.Start,
-                color = MaterialTheme.colorScheme.onSurface,
-                fontWeight = FontWeight.Bold,
-                fontSize = 12.sp,
-                overflow = TextOverflow.Ellipsis
+                    .padding(
+                        start = AppTheme.spacing.level2,
+                        top = AppTheme.spacing.level1,
+                        end = AppTheme.spacing.level1,
+                        bottom = AppTheme.spacing.level1
+                    ),
+                maxLines = 2
             )
         }
     }

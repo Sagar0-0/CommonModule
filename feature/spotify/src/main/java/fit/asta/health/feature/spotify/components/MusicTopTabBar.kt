@@ -9,9 +9,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,10 +16,9 @@ import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 /**
  * This function draws Tab Options in the screen when called.
@@ -52,12 +48,12 @@ fun MusicTopTabBar(
     Column(
         Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(AppTheme.colors.surface)
     ) {
 
-        ElevatedCard(
+        AppElevatedCard(
             elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = 8.dp
+                defaultElevation = AppTheme.elevation.level4
             ),
             colors = CardDefaults.elevatedCardColors(
                 containerColor = Color.Transparent
@@ -68,7 +64,7 @@ fun MusicTopTabBar(
             // Contains all the Text Options
             Row(
                 modifier = modifier
-                    .background(MaterialTheme.colorScheme.surface)
+                    .background(AppTheme.colors.surface)
                     .fillMaxWidth()
             ) {
 
@@ -79,7 +75,7 @@ fun MusicTopTabBar(
                     Box(
                         modifier = Modifier
                             .weight(1f)
-                            .size(54.dp)
+                            .size(AppTheme.boxSize.level6)
                             .clickable {
 
                                 // Changing the selected Item to the Item Index Clicked to move the State
@@ -100,14 +96,10 @@ fun MusicTopTabBar(
                     ) {
 
                         // Text of the Option to be showed
-                        Text(
+                        TitleTexts.Level4(
                             text = option,
-
                             // Text and Font Properties
                             color = if (selectedItem == index) selectedColor else unselectedColor,
-                            fontFamily = FontFamily.Monospace,
-                            fontWeight = FontWeight.W800,
-                            fontSize = 16.sp
                         )
                     }
                 }

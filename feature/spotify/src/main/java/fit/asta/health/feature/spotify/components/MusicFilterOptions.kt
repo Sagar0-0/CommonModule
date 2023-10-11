@@ -6,14 +6,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.Card
-import androidx.compose.material3.Checkbox
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 /**
  * This function draws a Filter/ Sorting Options List in the Screen
@@ -30,10 +29,10 @@ fun MusicFilterOptions(
     onFilterOptionClicked: (Boolean, String) -> Unit
 ) {
 
-    Card(
+    AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(12.dp)
+            .padding(AppTheme.spacing.level3)
     ) {
 
         // This Row continues to put the UI elements to next line if the screen width is reached
@@ -45,7 +44,7 @@ fun MusicFilterOptions(
                 Row(verticalAlignment = Alignment.CenterVertically) {
 
                     // Check Box
-                    Checkbox(
+                    AppCheckBoxButton(
                         checked = currentOption.value,
                         onCheckedChange = {
                             onFilterOptionClicked(it, currentOption.key)
@@ -53,10 +52,7 @@ fun MusicFilterOptions(
                     )
 
                     // Filter Name
-                    Text(
-                        text = currentOption.key,
-                        fontSize = 12.sp
-                    )
+                    CaptionTexts.Level4(text = currentOption.key)
                 }
             }
         }

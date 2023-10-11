@@ -1,27 +1,21 @@
 package fit.asta.health.feature.spotify.components
 
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import coil.compose.rememberAsyncImagePainter
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.data.spotify.model.common.Artist
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 
 /**
@@ -43,14 +37,11 @@ fun MusicLargeImageColumn(
 ) {
 
     // Width of the Image of the Track
-    val widthOfImage = 144.dp
-
-    // request for the image and load when it is fetched from the internet
-    val painter = rememberAsyncImagePainter(imageUri)
+    val widthOfImage = AppTheme.imageSize.level10
 
     Column(
         modifier = Modifier
-            .padding(8.dp)
+            .padding(AppTheme.spacing.level2)
             .width(widthOfImage)
 
             // Redirecting the User to Spotify App
@@ -61,37 +52,19 @@ fun MusicLargeImageColumn(
     ) {
 
         // Showing the Loader or the Image accordingly
-        Box(
+        AppNetworkImage(
+            model = imageUri,
             modifier = Modifier
                 .size(widthOfImage),
-            contentAlignment = Alignment.Center
-        ) {
+            contentDescription = "Track Image",
+        )
 
-            // Circular Progress Bar
-            if (painter.state.painter == null)
-                AppDotTypingAnimation()
-
-            // Track Image
-            Image(
-                painter = painter,
-                contentDescription = "Track Image",
-                modifier = Modifier
-                    .size(widthOfImage)
-            )
-        }
 
         // track Name
-        Text(
+        BodyTexts.Level3(
             text = headerText,
-
-            modifier = Modifier
-                .width(widthOfImage),
-
-            maxLines = 1,
+            modifier = Modifier.width(widthOfImage),
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface,
-            fontWeight = FontWeight.Bold,
-            fontSize = 14.sp,
             overflow = TextOverflow.Ellipsis
         )
 
@@ -103,16 +76,12 @@ fun MusicLargeImageColumn(
             .filter { it != ']' }
 
         // Artist Names
-        Text(
+        CaptionTexts.Level1(
             text = artistsNames,
-
             modifier = Modifier
-                .width(widthOfImage),
-
-            maxLines = 1,
+                .width(widthOfImage)
+                .alpha(AppTheme.alphaValues.level3),
             textAlign = TextAlign.Center,
-            color = MaterialTheme.colorScheme.onSurface.copy(alpha = .6f),
-            fontSize = 14.sp,
             overflow = TextOverflow.Ellipsis
         )
     }

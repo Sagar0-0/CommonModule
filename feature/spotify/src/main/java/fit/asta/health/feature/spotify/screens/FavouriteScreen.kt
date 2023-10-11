@@ -8,23 +8,20 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.navigation.SpotifyNavRoutes
@@ -55,21 +52,13 @@ fun FavouriteScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
+            .background(AppTheme.colors.surface)
     ) {
 
         // Track Text
-        Text(
+        HeadingTexts.Level1(
             text = stringResource(id = R.string.tracks),
-
-            modifier = Modifier
-                .padding(8.dp),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(AppTheme.spacing.level2),
         )
 
         // This Draws all the Track Cards
@@ -84,7 +73,7 @@ fun FavouriteScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth()
                 )
             }
@@ -93,7 +82,7 @@ fun FavouriteScreen(
             is UiState.Success -> {
                 LazyRow(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(tracksData.data.size) {
@@ -119,7 +108,7 @@ fun FavouriteScreen(
             is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth(),
                     desc = tracksData.resId.toStringFromResId()
                 ) {
@@ -131,17 +120,15 @@ fun FavouriteScreen(
         }
 
         // Albums Text
-        Text(
+        HeadingTexts.Level1(
             text = stringResource(id = R.string.albums),
-
             modifier = Modifier
-                .padding(top = 24.dp, bottom = 8.dp, start = 8.dp, end = 8.dp),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+                .padding(
+                    top = AppTheme.spacing.level4,
+                    bottom = AppTheme.spacing.level2,
+                    start = AppTheme.spacing.level2,
+                    end = AppTheme.spacing.level2
+                ),
         )
 
         // This Draws all the Albums Cards
@@ -156,7 +143,7 @@ fun FavouriteScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth()
                 )
             }
@@ -165,7 +152,7 @@ fun FavouriteScreen(
             is UiState.Success -> {
                 LazyRow(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(albumData.data.size) {
@@ -190,7 +177,7 @@ fun FavouriteScreen(
             is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth(),
                     desc = albumData.resId.toStringFromResId()
                 ) {

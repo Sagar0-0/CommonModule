@@ -1,7 +1,6 @@
 package fit.asta.health.feature.spotify.screens
 
 import androidx.compose.foundation.background
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -9,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
@@ -19,18 +17,12 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Person
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Track
@@ -41,6 +33,8 @@ import fit.asta.health.data.spotify.model.search.TrackList
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.components.MusicPlayableSmallCards
@@ -76,64 +70,43 @@ fun ThirdPartyScreen(
     Column(
         modifier = modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface)
-            .verticalScroll(rememberScrollState())
+            .background(AppTheme.colors.surface)
+            .verticalScroll(rememberScrollState()),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
     ) {
 
         // Welcoming Text , Search Bar , Profile Icon
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(12.dp),
+                .padding(horizontal = AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
 
             // Welcoming Text with User Name
-            Text(
-                text = "Hey ${displayName ?: "User"} !!",
-
-                // Text and Font Properties
-                fontFamily = FontFamily.SansSerif,
-                fontWeight = FontWeight.W800,
-                fontSize = 22.sp,
-                color = MaterialTheme.colorScheme.onSurface
-            )
+            HeadingTexts.Level1(text = "Hey ${displayName ?: "User"} !!")
 
             // Search and Profile Icon
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
 
                 // Search Icon
-                Icon(
+                AppIconButton(
                     imageVector = Icons.Outlined.Search,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
-
-                    // Modifications
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clickable {
-
-                            // Redirecting to Spotify Search Screen
-                            navigator(SpotifyNavRoutes.SearchScreen.routes)
-                        }
-                )
+                    iconDesc = "Search Button"
+                ) {
+                    // Redirecting to Spotify Search Screen
+                    navigator(SpotifyNavRoutes.SearchScreen.routes)
+                }
 
                 // Profile Icon
-                Icon(
+                AppIconButton(
                     imageVector = Icons.Outlined.Person,
-                    contentDescription = null,
-                    tint = MaterialTheme.colorScheme.onSurface,
-
-                    // Modifications
-                    modifier = Modifier
-                        .size(28.dp)
-                        .clickable {
-
-                            // Redirecting to Spotify Profile Screen
-                            navigator(SpotifyNavRoutes.ProfileScreen.routes)
-                        }
-                )
+                    iconDesc = "Go to Library Button"
+                ) {
+                    // Redirecting to Spotify Profile Screen
+                    navigator(SpotifyNavRoutes.ProfileScreen.routes)
+                }
             }
         }
 
@@ -147,7 +120,7 @@ fun ThirdPartyScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(190.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth()
                 )
             }
@@ -167,10 +140,10 @@ fun ThirdPartyScreen(
 
                     // This Draws the Lazy Horizontal Grid for the recently played tracks
                     LazyHorizontalGrid(
-                        rows = GridCells.Adaptive(58.dp),
+                        rows = GridCells.Adaptive(AppTheme.boxSize.level6),
                         modifier = Modifier
-                            .height(190.dp)
-                            .padding(start = 12.dp)
+                            .height(AppTheme.boxSize.level9)
+                            .padding(start = AppTheme.spacing.level2)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalArrangement = Arrangement.SpaceEvenly,
@@ -195,7 +168,7 @@ fun ThirdPartyScreen(
             is UiState.ErrorMessage -> {
                 AppErrorScreen(
                     modifier = Modifier
-                        .height(190.dp)
+                        .height(AppTheme.boxSize.level9)
                         .fillMaxWidth(),
                     desc = recentlyPlayed.resId.toStringFromResId()
                 ) {
@@ -207,17 +180,9 @@ fun ThirdPartyScreen(
         }
 
         // Recommended Text
-        Text(
+        HeadingTexts.Level3(
             text = stringResource(id = R.string.recommended),
-
-            modifier = Modifier
-                .padding(12.dp),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
         )
 
         // This function draws the recommendation Tracks for the User
@@ -233,7 +198,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                 )
             }
 
@@ -243,7 +208,7 @@ fun ThirdPartyScreen(
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(recommendedData.data.trackList.size) {
@@ -275,17 +240,9 @@ fun ThirdPartyScreen(
         }
 
         // Top Tracks
-        Text(
+        HeadingTexts.Level3(
             text = stringResource(id = R.string.top_tracks),
-
-            modifier = Modifier
-                .padding(12.dp),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
         )
 
         // This function draws the top tracks for the User
@@ -301,7 +258,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                 )
             }
 
@@ -311,7 +268,7 @@ fun ThirdPartyScreen(
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(topTracksData.data.trackList.size) {
@@ -343,17 +300,9 @@ fun ThirdPartyScreen(
         }
 
         // Top Artists
-        Text(
+        HeadingTexts.Level3(
             text = stringResource(id = R.string.top_artists),
-
-            modifier = Modifier
-                .padding(12.dp),
-
-            // Text and Font Properties
-            fontFamily = FontFamily.SansSerif,
-            fontWeight = FontWeight.W800,
-            fontSize = 22.sp,
-            color = MaterialTheme.colorScheme.onSurface
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
         )
 
         // This function draws the top Artists for the User
@@ -369,7 +318,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                 )
             }
 
@@ -378,7 +327,7 @@ fun ThirdPartyScreen(
 
                 LazyRow(
                     modifier = Modifier
-                        .height(210.dp)
+                        .height(AppTheme.boxSize.level9)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
 

@@ -7,21 +7,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.resources.strings.R
@@ -50,7 +48,7 @@ fun AlbumDetailScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(AppTheme.colors.surface),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -136,42 +134,39 @@ private fun LocalAlbumHandler(
                 }
 
                 // Add to Favourites Button
-                Button(
-                    onClick = {
-
-                        // Checking if the Album is already present or not
-                        if (!isPresent)
-                            setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
-                        else
-                            setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
-
-                        Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
-                    },
+                AppFilledButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(top = 32.dp, bottom = 12.dp, start = 12.dp, end = 12.dp)
+                        .padding(
+                            top = AppTheme.spacing.level5,
+                            bottom = AppTheme.spacing.level1,
+                            start = AppTheme.spacing.level2,
+                            end = AppTheme.spacing.level2
+                        ),
+                    textToShow = buttonText
                 ) {
 
-                    Text(
-                        text = buttonText,
-                        modifier = Modifier.padding(4.dp)
-                    )
+                    // Checking if the Album is already present or not
+                    if (!isPresent)
+                        setEvent(SpotifyUiEvent.LocalIO.InsertAlbum(networkAlbumData))
+                    else
+                        setEvent(SpotifyUiEvent.LocalIO.DeleteAlbum(networkAlbumData))
+
+                    Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
                 }
 
                 // Play on Spotify Button
-                Button(
-                    onClick = {
-                        setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
-                    },
+                AppFilledButton(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                        .padding(
+                            top = AppTheme.spacing.level1,
+                            start = AppTheme.spacing.level2,
+                            end = AppTheme.spacing.level2
+                        ),
+                    textToShow = stringResource(id = R.string.play_using_spotify)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.play_using_spotify),
-                        modifier = Modifier
-                            .padding(4.dp)
-                    )
+                    setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
                 }
             }
         }

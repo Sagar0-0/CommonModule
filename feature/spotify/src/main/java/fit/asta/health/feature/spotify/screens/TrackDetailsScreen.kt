@@ -7,21 +7,19 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.Button
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.resources.strings.R
@@ -51,7 +49,7 @@ fun TrackDetailsScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .background(MaterialTheme.colorScheme.surface),
+            .background(AppTheme.colors.surface),
         verticalArrangement = Arrangement.Center,
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
@@ -140,46 +138,33 @@ private fun LocalTrackHandler(
 
 
                 // Add and Remove Favourites Button
-                Button(
-                    onClick = {
-
-                        if (!isPresent)
-                            setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
-                        else
-                            setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
-
-                        Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
-                    },
+                AppFilledButton(
+                    textToShow = buttonText,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = 32.dp,
-                            bottom = 12.dp,
-                            start = 12.dp,
-                            end = 12.dp
+                            top = AppTheme.spacing.level5,
+                            bottom = AppTheme.spacing.level2,
+                            start = AppTheme.spacing.level2,
+                            end = AppTheme.spacing.level2
                         )
                 ) {
-                    Text(
-                        text = buttonText,
-                        modifier = Modifier
-                            .padding(4.dp)
-                    )
+                    if (!isPresent)
+                        setEvent(SpotifyUiEvent.LocalIO.InsertTrack(networkTrack))
+                    else
+                        setEvent(SpotifyUiEvent.LocalIO.DeleteTrack(networkTrack))
+
+                    Toast.makeText(context, notification, Toast.LENGTH_SHORT).show()
                 }
 
                 // Play on Spotify Button
-                Button(
-                    onClick = {
-                        setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
-                    },
+                AppFilledButton(
+                    textToShow = stringResource(id = R.string.play_using_spotify),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(bottom = 12.dp, start = 12.dp, end = 12.dp)
+                        .padding(AppTheme.spacing.level2)
                 ) {
-                    Text(
-                        text = stringResource(id = R.string.play_using_spotify),
-                        modifier = Modifier
-                            .padding(4.dp)
-                    )
+                    setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
                 }
             }
         }

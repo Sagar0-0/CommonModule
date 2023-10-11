@@ -1,29 +1,25 @@
 package fit.asta.health.feature.spotify.components
 
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
 import androidx.compose.material.icons.outlined.Sort
-import androidx.compose.material3.Icon
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 /**
  * This composable function creates a Outlined Search Bar UI in the Screen
@@ -64,29 +60,23 @@ fun SearchBar(
         modifier = modifier,
 
         // This is the Label of the input which is shown to the top left when selected
-        label = {
-            Text(
-                "Search from Spotify",
-                color = MaterialTheme.colorScheme.primary
-            )
-        },
+        label = { BodyTexts.Level3(text = "Search from Spotify") },
 
         // Setting Custom Colors for the Outlined TextField
         colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = MaterialTheme.colorScheme.primary,
-            disabledBorderColor = MaterialTheme.colorScheme.primaryContainer,
+            disabledTextColor = AppTheme.colors.primary,
+            disabledBorderColor = AppTheme.colors.primaryContainer,
         ),
 
         // Shape of the TextField
-        shape = RoundedCornerShape(8.dp),
+        shape = AppTheme.shape.level2,
 
         leadingIcon = {
 
             // Search Icon
-            Icon(
+            AppIcon(
                 imageVector = Icons.Outlined.Search,
-                contentDescription = "Search Button",
-                modifier = Modifier.size(24.dp)
+                contentDescription = "Search Button"
             )
         },
 
@@ -94,30 +84,24 @@ fun SearchBar(
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = 12.dp),
+                    .padding(horizontal = AppTheme.spacing.level3),
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
 
                 if (userInput.isNotEmpty()) {
 
                     // Clear Button
-                    Icon(
+                    AppIconButton(
                         imageVector = Icons.Outlined.Clear,
-                        contentDescription = "Clear Button",
-                        modifier = Modifier
-                            .size(24.dp)
-                            .clickable { onUserInputChange("") }
-                    )
+                        iconDesc = "Clear Button"
+                    ) { onUserInputChange("") }
                 }
 
                 // Filter / Sort Icons
-                Icon(
+                AppIconButton(
                     imageVector = Icons.Outlined.Sort,
-                    contentDescription = "Filter Button",
-                    modifier = Modifier
-                        .size(24.dp)
-                        .clickable { onFilterButtonClick() }
-                )
+                    iconDesc = "Filter Button"
+                ) { onFilterButtonClick() }
             }
         },
 

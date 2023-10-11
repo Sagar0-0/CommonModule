@@ -4,14 +4,11 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.OutlinedButton
-import androidx.compose.material3.Text
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.chip.AppFilterChip
 
 /**
  * This function creates the option list of what they want to get fetched eg. : Playlist , Tracks ,
@@ -21,7 +18,7 @@ import androidx.compose.ui.unit.sp
  * @param categoryList This contains the list of options from which the user can choose
  * @param onSelectionChange This function is used to send the chosen value to the parent function
  */
-@OptIn(ExperimentalLayoutApi::class)
+@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun MusicProfileOptionList(
     selectedItem: Int,
@@ -39,33 +36,19 @@ fun MusicProfileOptionList(
 
     FlowRow(
         modifier = Modifier
-            .padding(12.dp)
+            .padding(AppTheme.spacing.level3)
             .wrapContentWidth()
     ) {
 
         categoryList.forEachIndexed { index, option ->
-
-            OutlinedButton(
-                onClick = {
-                    onSelectionChange(index)
-                },
-                modifier = Modifier
-                    .padding(4.dp),
-
-                colors = ButtonDefaults.outlinedButtonColors(
-                    contentColor = if (index == selectedItem)
-                        MaterialTheme.colorScheme.primary
-                    else
-                        MaterialTheme.colorScheme.secondary
+            AppFilterChip(
+                selected = (index == selectedItem),
+                textToShow = option,
+                modifier = Modifier.padding(
+                    horizontal = AppTheme.spacing.level2,
+                    vertical = AppTheme.spacing.level1
                 )
-            ) {
-
-                // Category Name
-                Text(
-                    text = option,
-                    fontSize = 12.sp
-                )
-            }
+            ) { onSelectionChange(index) }
         }
     }
 }

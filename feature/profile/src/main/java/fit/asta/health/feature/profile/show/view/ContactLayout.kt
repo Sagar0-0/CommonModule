@@ -154,7 +154,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
                 contentDescription = "User Profile Pic",
                 modifier = Modifier
                     .clip(CircleShape)
-                    .size(AppTheme.imageSize.level10)
+                    .size(AppTheme.imageSize.level11)
                     .border(
                         border = BorderStroke(
                             width = 2.dp, color = AppTheme.colors.primary
