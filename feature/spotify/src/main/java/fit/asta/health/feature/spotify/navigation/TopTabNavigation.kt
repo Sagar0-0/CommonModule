@@ -1,9 +1,9 @@
 package fit.asta.health.feature.spotify.navigation
 
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.currentBackStackEntryAsState
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.components.MusicTopTabBar
 import fit.asta.health.feature.spotify.viewmodel.SpotifyViewModelX
 
@@ -31,8 +31,8 @@ fun TopTabNavigation(
     MusicTopTabBar(
         tabList = optionList.map { it.first },
         selectedItem = selectedItem,
-        selectedColor = MaterialTheme.colorScheme.primary,
-        unselectedColor = MaterialTheme.colorScheme.secondary,
+        selectedColor = AppTheme.colors.primary,
+        unselectedColor = AppTheme.colors.secondary,
         onNewTabClicked = {
 
             // Changing the Current Selected Item according to the User Interactions

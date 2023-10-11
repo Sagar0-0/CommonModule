@@ -34,8 +34,6 @@ import androidx.compose.material.icons.filled.FullscreenExit
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.CircularProgressIndicator
-import androidx.compose.material3.Divider
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
@@ -66,6 +64,8 @@ import androidx.media3.common.Player
 import coil.request.ImageRequest
 import com.google.accompanist.systemuicontroller.rememberSystemUiController
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -330,7 +330,7 @@ private fun MediaContentView(
                         showBuffering = uiState.showBuffering,
                         buffering = {
                             Box(Modifier.fillMaxSize(), Alignment.Center) {
-                                CircularProgressIndicator()
+                                AppCircularProgressIndicator()
                             }
                         },
                         errorMessage = { error ->
@@ -612,7 +612,7 @@ fun TrackItem(
             .background(backgroundColor),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        Divider(
+        AppDivider(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(2.dp)
