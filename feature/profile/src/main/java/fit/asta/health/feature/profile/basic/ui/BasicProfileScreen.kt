@@ -39,13 +39,15 @@ import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
@@ -157,8 +159,8 @@ fun BasicProfileScreen(
 
 
 
-            AstaValidatedTextField(
-                label = StringR.string.name,
+            AppTextField(
+                label = StringR.string.name.toStringFromResId(),
                 value = name.ifEmpty { user.name ?: "" },
                 onValueChange = { s -> name = s }
             )
@@ -232,12 +234,13 @@ fun BasicProfileScreen(
 
                     else -> {
                         Row {
-                            AstaValidatedTextField(
-                                type = AstaValidatedTextFieldType.Default(
-                                    REFERRAL_LENGTH,
-                                    REFERRAL_LENGTH
+                            AppTextField(
+                                appTextFieldType = AppTextFieldValidator(
+                                    AppTextFieldType.Custom(
+                                        REFERRAL_LENGTH, REFERRAL_LENGTH
+                                    )
                                 ),
-                                label = StringR.string.refer_code,
+                                label = StringR.string.refer_code.toStringFromResId(),
                                 value = ref,
                                 onValueChange = { str ->
                                     ref = str

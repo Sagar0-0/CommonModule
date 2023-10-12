@@ -16,10 +16,10 @@ import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.resources.strings.R
 
 @Composable
 fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Unit) {
@@ -84,8 +84,13 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
             }
         }
 
-        AstaValidatedTextField(
-            type = AstaValidatedTextFieldType.Default(qn.ansType.min, maxChar),
+        AppTextField(
+            appTextFieldType = AppTextFieldValidator(
+                AppTextFieldType.Custom(
+                    qn.ansType.min,
+                    maxChar
+                )
+            ),
             value = text.value,
             onValueChange = {
                 if (it.length <= maxChar) text.value = it
@@ -103,7 +108,6 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
             modifier = Modifier
                 .fillMaxWidth()
                 .height(AppTheme.boxSize.level2),
-            placeholder = R.string.write_your_answer_here,
         )
         TitleTexts.Level2(
             text = "${text.value.length} / $maxChar",
