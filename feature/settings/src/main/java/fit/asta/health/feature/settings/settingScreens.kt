@@ -16,6 +16,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.settings.view.SettingsNotificationLayout
 import fit.asta.health.feature.settings.view.SettingsNotificationsStatus
@@ -45,6 +46,12 @@ fun NavGraphBuilder.settingScreens(
                 val deleteAccountState by settingsViewModel.deleteState.collectAsStateWithLifecycle()
 
                 when (deleteAccountState) {
+                    is UiState.ErrorRetry -> {
+                        AppRetryCard(text = (deleteAccountState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                            settingsViewModel.deleteAccount()
+                        }
+                    }
+
                     is UiState.Loading -> {
                         AppCircularProgressIndicator()
                     }
@@ -70,6 +77,12 @@ fun NavGraphBuilder.settingScreens(
 
                 val logoutState by settingsViewModel.logoutState.collectAsStateWithLifecycle()
                 when (logoutState) {
+                    is UiState.ErrorRetry -> {
+                        AppRetryCard(text = (logoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                            settingsViewModel.logout()
+                        }
+                    }
+
                     is UiState.Loading -> {
                         AppCircularProgressIndicator()
                     }

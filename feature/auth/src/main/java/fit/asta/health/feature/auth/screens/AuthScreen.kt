@@ -23,6 +23,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
@@ -46,6 +47,12 @@ internal fun AuthScreen(
         verticalArrangement = Arrangement.Center
     ) {
         when (loginState) {
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = loginState.resId.toStringFromResId()) {
+                    onAuthEvent(AuthEvent.ResetLoginState)
+                }
+            }
+
             UiState.Loading -> {
                 AppCircularProgressIndicator()
             }

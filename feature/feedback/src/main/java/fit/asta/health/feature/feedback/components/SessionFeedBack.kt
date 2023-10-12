@@ -29,6 +29,7 @@ import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.UploadFiles
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -49,6 +50,12 @@ fun SessionFeedback(
         }
     ) {
         when (feedbackQuesState) {
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = feedbackQuesState.resId.toStringFromResId()) {
+                    onBack()
+                }
+            }
+
             UiState.Loading -> {
                 Box(
                     modifier = Modifier

@@ -16,6 +16,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.EndScreenPopup
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.feedback.components.SessionFeedback
@@ -42,6 +43,12 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
         val postResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
 
         when (postResultState) {
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = (postResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                    feedbackViewModel.resetPostResultState()
+                }
+            }
+
             UiState.Idle -> {
                 SessionFeedback(
                     feedbackQuesState = quesState,

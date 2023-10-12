@@ -52,7 +52,7 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
@@ -253,6 +253,15 @@ internal fun SavedAddressesScreen(
                                 )
                             }
 
+                            is UiState.ErrorRetry -> {
+                                AppRetryCard(
+                                    text = currentAddressState.resId.toStringFromResId(),
+                                    onRetry = {
+                                        onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
+                                    }
+                                )
+                            }
+
                             else -> {}
                         }
                     }
@@ -398,9 +407,16 @@ internal fun SavedAddressesScreen(
                 }
 
                 is UiState.ErrorMessage -> {
-                    AppErrorScreen(desc = savedAddressListState.resId.toStringFromResId()) {
-                        onUiEvent(SavedAddressUiEvent.GetSavedAddress)
-                    }
+                    TitleTexts.Level2(text = savedAddressListState.resId.toStringFromResId())
+                }
+
+                is UiState.ErrorRetry -> {
+                    AppRetryCard(
+                        onRetry = {
+                            onUiEvent(SavedAddressUiEvent.GetSavedAddress)
+                        },
+                        text = savedAddressListState.resId.toStringFromResId()
+                    )
                 }
 
                 else -> {}

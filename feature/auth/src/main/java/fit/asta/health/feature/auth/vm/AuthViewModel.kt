@@ -7,6 +7,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.fcm.remote.TokenDTO
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
@@ -29,7 +30,8 @@ import javax.inject.Inject
 internal class AuthViewModel
 @Inject constructor(
     private val authRepo: AuthRepo,
-    private val profileRepo: ProfileRepo
+    private val profileRepo: ProfileRepo,
+    @UID private val uid: String
 ) : ViewModel() {
 
     private val _isProfileAvailable = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
@@ -65,7 +67,7 @@ internal class AuthViewModel
 
     fun isAuthenticated() = authRepo.isAuthenticated()
 
-    fun isProfileAvailable(userId: String) {
+    fun isProfileAvailable(userId: String = uid) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
             val res = profileRepo.isUserProfileAvailable(userId)

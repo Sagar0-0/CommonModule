@@ -64,4 +64,8 @@ class FeedbackViewModel
             _feedbackPostState.value = feedbackRepo.postUserFeedback(feedback).toUiState()
         }
     }
+
+    fun resetPostResultState() {
+        _feedbackPostState.value = UiState.Idle
+    }
 }

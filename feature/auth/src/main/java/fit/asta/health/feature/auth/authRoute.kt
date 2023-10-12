@@ -15,6 +15,7 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.auth.screens.AuthEvent
 import fit.asta.health.feature.auth.screens.AuthScreen
@@ -73,9 +74,15 @@ fun NavGraphBuilder.authRoute(
 
             is UiState.ErrorMessage -> {
                 Log.e(
-                    "TAG",
+                    "Auth",
                     "authRoute: ${(isProfileAvailable as UiState.ErrorMessage).resId.toStringFromResId()}"
                 )
+            }
+
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = (isProfileAvailable as UiState.ErrorRetry).resId.toStringFromResId()) {
+                    authViewModel.isProfileAvailable()
+                }
             }
 
             else -> {}
