@@ -65,7 +65,7 @@ fun AppIconButton(
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
-    content: @Composable () -> Unit
+    content: @Composable () -> Unit,
 ) {
     IconButton(
         modifier = modifier,
@@ -107,7 +107,7 @@ fun AppIconButton(
     iconDesc: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
         modifier = modifier,
@@ -117,12 +117,8 @@ fun AppIconButton(
         interactionSource = interactionSource
     ) {
         Icon(
-            imageVector = imageVector,
-            contentDescription = iconDesc,
-            tint = if (enabled)
-                iconTint
-            else
-                iconTint.copy(AppTheme.alphaValues.level2)
+            imageVector = imageVector, contentDescription = iconDesc, tint = if (enabled) iconTint
+            else iconTint.copy(AppTheme.alphaValues.level2)
         )
     }
 }
@@ -156,7 +152,7 @@ fun AppIconButton(
     iconDesc: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit
+    onClick: () -> Unit,
 ) {
     IconButton(
         modifier = modifier,
@@ -166,12 +162,8 @@ fun AppIconButton(
         interactionSource = interactionSource
     ) {
         Icon(
-            painter = painter,
-            contentDescription = iconDesc,
-            tint = if (enabled)
-                iconTint
-            else
-                iconTint.copy(AppTheme.alphaValues.level2)
+            painter = painter, contentDescription = iconDesc, tint = if (enabled) iconTint
+            else iconTint.copy(AppTheme.alphaValues.level2)
         )
     }
 }
