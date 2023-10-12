@@ -88,7 +88,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -145,7 +145,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -218,7 +218,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -278,7 +278,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -351,7 +351,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -411,7 +411,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -484,7 +484,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -542,7 +542,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -615,7 +615,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -673,7 +673,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -754,7 +754,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -819,7 +819,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -900,7 +900,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -965,7 +965,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -1046,7 +1046,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -1111,7 +1111,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)
@@ -1192,7 +1192,7 @@ fun AppTextField(
     maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
@@ -1257,7 +1257,7 @@ fun AppTextField(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError)

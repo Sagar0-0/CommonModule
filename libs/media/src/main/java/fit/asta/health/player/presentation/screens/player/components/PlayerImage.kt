@@ -22,7 +22,7 @@ fun PlayerImage(
 ) {
     val spacing = AppTheme.spacing
     Box(
-        modifier = modifier.padding(horizontal = spacing.level7)
+        modifier = modifier.padding(horizontal = spacing.level6)
     ) {
         val url = "https://dj9n1wsbrvg44.cloudfront.net/tags/Breathing+Tag.png"
         AppNetworkImage(
@@ -34,7 +34,7 @@ fun PlayerImage(
             contentScale = ContentScale.Crop,
             modifier = modifier
                 .aspectRatio(1f)
-                .clip(AppTheme.shape.level3)
+                .clip(AppTheme.shape.level2)
         )
     }
 }

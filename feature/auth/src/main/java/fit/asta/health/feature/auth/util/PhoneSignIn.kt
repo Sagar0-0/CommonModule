@@ -261,10 +261,10 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length in 1..4) postalCode = it },
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.spacing.level3,
-                        bottom = AppTheme.spacing.level3,
-                        start = AppTheme.spacing.level3,
-                        end = AppTheme.spacing.level2
+                        top = AppTheme.spacing.level2,
+                        bottom = AppTheme.spacing.level2,
+                        start = AppTheme.spacing.level2,
+                        end = AppTheme.spacing.level1
                     )
                     .weight(0.3f)
                     .onFocusChanged {
@@ -283,9 +283,9 @@ fun PhoneSignIn(
                 onValueChange = { if (it.length <= 10) phoneNumber = it },
                 modifier = Modifier
                     .padding(
-                        top = AppTheme.spacing.level3,
-                        bottom = AppTheme.spacing.level3,
-                        end = AppTheme.spacing.level3
+                        top = AppTheme.spacing.level2,
+                        bottom = AppTheme.spacing.level2,
+                        end = AppTheme.spacing.level2
                     )
                     .weight(0.7f)
                     .onFocusChanged {
@@ -297,7 +297,7 @@ fun PhoneSignIn(
             )
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
         AnimatedVisibility(
             visible = !codeSent,
@@ -318,7 +318,7 @@ fun PhoneSignIn(
                 },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level3)
+                    .padding(AppTheme.spacing.level2)
             )
         }
 
@@ -341,12 +341,12 @@ fun PhoneSignIn(
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     onValueChange = { if (it.length <= 6) otp = it },
                     modifier = Modifier
-                        .padding(AppTheme.spacing.level2)
+                        .padding(AppTheme.spacing.level1)
                         .fillMaxWidth(),
                     singleLine = true
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
                 AppTextButton(
                     textToShow = stringResource(id = StringR.string.verify_otp),
@@ -356,7 +356,7 @@ fun PhoneSignIn(
                     },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level3)
+                        .padding(AppTheme.spacing.level2)
                 )
                 AppTextButton(
                     textToShow = if (ticks > 0) "Resend code in $ticks seconds" else "Still not received?",
@@ -364,7 +364,7 @@ fun PhoneSignIn(
                     onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AppTheme.spacing.level3)
+                        .padding(AppTheme.spacing.level2)
                 )
             }
         }

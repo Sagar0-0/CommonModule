@@ -88,7 +88,7 @@ fun AllAlarms(
                 .fillMaxWidth()
                 .padding(paddingValues),
             contentPadding = PaddingValues(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
             items(list) { alarm ->
                 val time = AMPMHoursMin(
@@ -132,13 +132,13 @@ fun AlarmItem(
                 .padding(16.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level2)
+            verticalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth(),
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level2)
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
             ) {
                 AppNetworkImage(
                     model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
@@ -146,12 +146,12 @@ fun AlarmItem(
                     contentDescription = R.string.description.toStringFromResId(),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(AppTheme.shape.level3)
+                        .clip(AppTheme.shape.level2)
                         .height(120.dp)
                         .width(80.dp)
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                     horizontalAlignment = Alignment.Start
                 ) {
                     TitleTexts.Level2(text = title)

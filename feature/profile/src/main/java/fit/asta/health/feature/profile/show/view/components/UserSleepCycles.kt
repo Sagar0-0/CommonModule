@@ -18,7 +18,7 @@ fun UserSleepCycles(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TitleTexts.Level3(text = columnType)
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         TitleTexts.Level3(text = columnValue)
     }
 }

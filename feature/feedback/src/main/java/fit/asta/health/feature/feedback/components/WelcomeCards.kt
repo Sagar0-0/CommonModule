@@ -26,12 +26,12 @@ fun WelcomeCard() {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level3)
+                .padding(AppTheme.spacing.level2)
         ) {
             AppLocalImage(
                 painter = painterResource(id = DrawR.drawable.feedback1),
@@ -40,7 +40,7 @@ fun WelcomeCard() {
                 contentScale = ContentScale.Crop
             )
 
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
 
             Column {
                 TitleTexts.Level2(
@@ -48,7 +48,7 @@ fun WelcomeCard() {
                     textAlign = TextAlign.Left
                 )
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
                 TitleTexts.Level2(
                     text = stringResource(id = StringR.string.your_feedback_is_important),

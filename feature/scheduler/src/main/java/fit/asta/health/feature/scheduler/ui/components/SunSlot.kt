@@ -35,14 +35,14 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level2)
+            .padding(AppTheme.spacing.level1)
     ) {
         Column(
             modifier = Modifier.padding(
-                horizontal = AppTheme.spacing.level3,
-                vertical = AppTheme.spacing.level2
+                horizontal = AppTheme.spacing.level2,
+                vertical = AppTheme.spacing.level1
             ),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             Row(
                 Modifier.fillMaxWidth(),
@@ -50,18 +50,18 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 BodyTexts.Level1(text = weatherData.title)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
                 AppIconButton(
                     modifier = Modifier
                         .size(AppTheme.iconSize.level4)
-                        .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+                        .clip(RoundedCornerShape(AppTheme.spacing.level1)),
                     onClick = onSchedule,
                     imageVector = Icons.Filled.Schedule,
                     iconDesc = "Schedule Icon"
                 )
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             ) {
                 AppIcon(
                     imageVector = Icons.Default.Event,
@@ -71,7 +71,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
             }
 
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             ) {
                 AppIcon(
                     imageVector = Icons.Default.Thermostat,
@@ -80,7 +80,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 BodyTexts.Level3(text = weatherData.temperature)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             ) {
                 AppIcon(
                     imageVector = Icons.Default.Waves,
@@ -89,7 +89,7 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 BodyTexts.Level3(text = weatherData.uvDetails)
             }
             Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             ) {
                 AppIcon(
                     imageVector = Icons.Default.AccessTime,

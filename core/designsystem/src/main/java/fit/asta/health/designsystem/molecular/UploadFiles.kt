@@ -56,12 +56,12 @@ fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Un
                 }
             }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
         Box(
             modifier = Modifier.dashedBorder(
                 width = 1.dp,
-                radius = AppTheme.customSize.level2,
+                radius = AppTheme.customSize.level1,
                 color = MaterialTheme.colorScheme.onSurfaceVariant
             )
         ) {
@@ -69,8 +69,8 @@ fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Un
                 Modifier
                     .fillMaxWidth()
                     .padding(
-                        horizontal = AppTheme.spacing.level2,
-                        vertical = AppTheme.spacing.level3
+                        horizontal = AppTheme.spacing.level1,
+                        vertical = AppTheme.spacing.level2
                     ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
@@ -86,15 +86,15 @@ fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Un
                         uriList.forEach {
                             Row(
                                 modifier = Modifier
-                                    .padding(AppTheme.spacing.level5)
-                                    .clip(AppTheme.shape.level2)
+                                    .padding(AppTheme.spacing.level4)
+                                    .clip(AppTheme.shape.level1)
                                     .border(
                                         width = 0.4.dp,
                                         color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AppTheme.shape.level1
+                                        shape = AppTheme.shape.level0
                                     )
                                     .background(MaterialTheme.colorScheme.background)
-                                    .padding(AppTheme.spacing.level3),
+                                    .padding(AppTheme.spacing.level2),
                                 verticalAlignment = Alignment.CenterVertically
                             ) {
                                 TitleTexts.Level2(
@@ -123,7 +123,7 @@ fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Un
             }
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
         TitleTexts.Level3(
             text = "You can upload maximum 5 files*",

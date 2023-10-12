@@ -54,7 +54,7 @@ private fun DefaultPreview1() {
 fun AppCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: CardColors = CardDefaults.cardColors(),
     elevation: CardElevation = CardDefaults.cardElevation(),
     border: BorderStroke? = null,
@@ -65,7 +65,7 @@ fun AppCard(
         Card(
             modifier = modifier,
             enabled = enabled,
-            shape = AppTheme.shape.level3,
+            shape = AppTheme.shape.level2,
             colors = colors,
             elevation = elevation,
             border = border,

@@ -199,7 +199,7 @@ internal fun MapScreen(
                     enabled = false,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level2)
+                        .padding(AppTheme.spacing.level1)
                         .clickable {
                             openSearchSheet(SearchSheetType.FromMapScreen)
                         },
@@ -223,7 +223,7 @@ internal fun MapScreen(
             ) {
                 AppIconButton(
                     modifier = Modifier
-                        .padding(AppTheme.spacing.level3)
+                        .padding(AppTheme.spacing.level2)
                         .align(Alignment.End)
                         .size(AppTheme.buttonSize.level4),
                     imageVector = Icons.Default.MyLocation,
@@ -245,12 +245,12 @@ internal fun MapScreen(
                         .fillMaxWidth()
                         .clip(
                             RoundedCornerShape(
-                                topStart = AppTheme.spacing.level3,
-                                topEnd = AppTheme.spacing.level3
+                                topStart = AppTheme.spacing.level2,
+                                topEnd = AppTheme.spacing.level2
                             )
                         )
                         .background(AppTheme.colors.surface)
-                        .padding(horizontal = AppTheme.spacing.level3),
+                        .padding(horizontal = AppTheme.spacing.level2),
                     verticalArrangement = Arrangement.Top,
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
@@ -301,9 +301,9 @@ internal fun MapScreen(
                                     )
                                 },
                                 modifier = Modifier
-                                    .padding(bottom = AppTheme.spacing.level3)
+                                    .padding(bottom = AppTheme.spacing.level2)
                                     .fillMaxWidth()
-                                    .clip(AppTheme.shape.level2)
+                                    .clip(AppTheme.shape.level1)
                             ) {
                                 TitleTexts.Level2(
                                     maxLines = 1,

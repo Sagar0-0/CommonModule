@@ -54,7 +54,7 @@ fun SpotifySearchScreen(
         SearchBarUI(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level3),
+                .padding(AppTheme.spacing.level2),
             userInput = userSearchInput.value,
             onUserInputChange = {
                 userSearchInput.value = it
@@ -97,17 +97,17 @@ fun SpotifySearchScreen(
                     // Tracks
                     HeadingTexts.Level1(
                         text = stringResource(StringR.string.tracks),
-                        modifier = Modifier.padding(AppTheme.spacing.level3)
+                        modifier = Modifier.padding(AppTheme.spacing.level2)
                     )
 
                     // Showing the Tracks List UI inside a Lazy Row
                     LazyColumn(
                         modifier = Modifier
                             .height(LocalConfiguration.current.screenHeightDp.dp)
-                            .padding(AppTheme.spacing.level3)
+                            .padding(AppTheme.spacing.level2)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                     ) {
                         items(trackList.size) {
                             val currentItem = trackList[it]

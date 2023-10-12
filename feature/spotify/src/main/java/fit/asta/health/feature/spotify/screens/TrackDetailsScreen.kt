@@ -143,10 +143,10 @@ private fun LocalTrackHandler(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = AppTheme.spacing.level5,
-                            bottom = AppTheme.spacing.level2,
-                            start = AppTheme.spacing.level2,
-                            end = AppTheme.spacing.level2
+                            top = AppTheme.spacing.level4,
+                            bottom = AppTheme.spacing.level1,
+                            start = AppTheme.spacing.level1,
+                            end = AppTheme.spacing.level1
                         )
                 ) {
                     if (!isPresent)
@@ -162,7 +162,7 @@ private fun LocalTrackHandler(
                     textToShow = stringResource(id = R.string.play_using_spotify),
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level2)
+                        .padding(AppTheme.spacing.level1)
                 ) {
                     setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkTrack.uri))
                 }

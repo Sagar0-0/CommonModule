@@ -104,7 +104,7 @@ fun ExerciseScreen(
             modifier = Modifier
                 .padding(it)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             item {
                 BodyTexts.Level1(
@@ -204,7 +204,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
     ) {
         Column(
             modifier = Modifier.fillMaxWidth(),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
@@ -212,8 +212,8 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
             FlowRow(
                 modifier = Modifier.fillMaxWidth(),
                 maxItemsInEachRow = 4,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 StandardRatio(ratio = ratioList[0],
                     index = 0, code = index, onClick = { index = it })
@@ -235,7 +235,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                     BodyTexts.Level2(text = "inhale")
                     NumberPicker(value = inhaleValue,
                         range = 0..10,
@@ -246,7 +246,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                     BodyTexts.Level2(text = "hold")
                     NumberPicker(value = inhaleHoldValue,
                         range = 0..10,
@@ -257,7 +257,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                     BodyTexts.Level2(text = "exhale")
                     NumberPicker(value = exhaleValue,
                         range = 0..10,
@@ -268,7 +268,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
                 VerticalLine()
-                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                     BodyTexts.Level2(text = "hold")
                     NumberPicker(value = exhaleHoldValue,
                         range = 0..10,
@@ -279,7 +279,7 @@ fun NumberPickerRatio(onSave: (Ratio) -> Unit = {}, onCancel: () -> Unit = {}) {
                         })
                 }
             }
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Red, text = "CANCEL"
                 ) { onCancel() }

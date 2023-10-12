@@ -76,7 +76,7 @@ fun AppAlertDialog(
     dismissButton: @Composable (() -> Unit)? = null,
     icon: @Composable (() -> Unit)? = null,
     title: @Composable (() -> Unit)? = null,
-    shape: Shape = AppTheme.shape.level4,
+    shape: Shape = AppTheme.shape.level3,
     containerColor: Color = AppTheme.colors.surface,
     iconContentColor: Color = AppTheme.colors.secondary,
     titleContentColor: Color = AppTheme.colors.onSurface,

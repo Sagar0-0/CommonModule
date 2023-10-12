@@ -24,7 +24,7 @@ fun SubmitButton(
             },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3)
+                .padding(horizontal = AppTheme.spacing.level2)
         )
     }
 }

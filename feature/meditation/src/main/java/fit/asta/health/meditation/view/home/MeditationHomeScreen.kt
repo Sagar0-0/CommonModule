@@ -121,7 +121,7 @@ fun MeditationHomeScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     AppSurface(
@@ -132,7 +132,7 @@ fun MeditationHomeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             CircularSliderInt(
@@ -148,7 +148,7 @@ fun MeditationHomeScreen(
                                     event(MEvent.SetTargetAngle(it))
                                 }
                             )
-                            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                                 ProgressBarInt(
                                     modifier = Modifier.weight(0.3f),
                                     targetDistance = uiState.recommended.toFloat(),
@@ -227,13 +227,13 @@ fun MeditationBottomSheet(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
 
             TitleTexts.Level3(text = "PRACTICE")
             LazyVerticalGrid(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 columns = GridCells.Fixed(2)
             ) {
                 item {
@@ -259,12 +259,12 @@ fun MeditationBottomSheet(
             AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
 
                     LazyVerticalGrid(
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                         columns = GridCells.Fixed(2)
                     ) {
                         selectedData.forEachIndexed { index, prc ->
@@ -285,7 +285,7 @@ fun MeditationBottomSheet(
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
                 ) { }
@@ -316,12 +316,12 @@ fun SunlightCard(modifier: Modifier) {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppIcon(

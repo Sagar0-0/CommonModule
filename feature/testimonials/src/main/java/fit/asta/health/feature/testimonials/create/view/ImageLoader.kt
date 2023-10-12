@@ -47,16 +47,16 @@ fun ImageLayout(
 
     Column(modifier = modifier) {
         BodyTexts.Level2(text = "Upload Images")
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         Row(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
             modifier = Modifier.fillMaxWidth()
         ) {
             ImageSelectionView(
                 modifier = Modifier
                     .weight(1f)
                     .dashedBorder(
-                        width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)
+                        width = 1.dp, radius = AppTheme.spacing.level1, color = Color(0xff8694A9)
                     ),
                 img = imgBefore,
                 launcher = beforeLauncher,
@@ -67,7 +67,7 @@ fun ImageLayout(
                 modifier = Modifier
                     .weight(1f)
                     .dashedBorder(
-                        width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)
+                        width = 1.dp, radius = AppTheme.spacing.level1, color = Color(0xff8694A9)
                     ),
                 img = imgAfter,
                 launcher = afterLauncher,

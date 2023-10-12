@@ -90,13 +90,13 @@ private fun SleepBottomSheetOptionUI(
         modifier = Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
 
     ) {
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             columns = GridCells.Fixed(2)
         ) {
 
@@ -184,7 +184,7 @@ private fun SleepDisturbanceRowUI(
             .fillMaxWidth()
             .padding(top = 16.dp),
         verticalAlignment = Alignment.CenterVertically,
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Checking if the selected Disturbance is empty or not
@@ -232,7 +232,7 @@ private fun SleepBottomSheetButtonRow(
     Row(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
         ButtonWithColor(
             modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"

@@ -17,7 +17,7 @@ import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 @Composable
 fun TstBannerCard(testimonialsData: Testimonial) {
     AppCard(content = {
-        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = AppTheme.spacing.level3))
+        TstTxtLayout(testimonialsData, modifier = Modifier.padding(all = AppTheme.spacing.level2))
     }, modifier = Modifier.fillMaxSize())
 }
 

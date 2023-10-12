@@ -58,7 +58,7 @@ fun VibrationBottomSheetLayout(
             AppIconButton(imageVector = Icons.Default.Check, onClick = { onSave(value) })
         }
         FlowRow(
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {

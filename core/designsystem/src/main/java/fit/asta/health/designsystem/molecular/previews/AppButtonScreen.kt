@@ -59,16 +59,16 @@ fun AppButtonScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.spacing.level3)
+                    .padding(AppTheme.spacing.level2)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
 
                 // Filled Button Section
                 TitleTexts.Level1(text = "Filled Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -87,7 +87,7 @@ fun AppButtonScreen() {
 
                 TitleTexts.Level1(text = "Tonal Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppTonalButton(
@@ -106,7 +106,7 @@ fun AppButtonScreen() {
 
                 TitleTexts.Level1(text = "Elevated Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppElevatedButton(
@@ -126,7 +126,7 @@ fun AppButtonScreen() {
                 // Outlined Button Section
                 TitleTexts.Level1(text = "Outlined Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -147,7 +147,7 @@ fun AppButtonScreen() {
                 // Icon Button Section
                 TitleTexts.Level1(text = "Icon Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -165,7 +165,7 @@ fun AppButtonScreen() {
                 // Asta Text Buttons
                 TitleTexts.Level1(text = "Text Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
 
@@ -187,7 +187,7 @@ fun AppButtonScreen() {
                 // Floating Action Buttons
                 TitleTexts.Level1(text = "Floating Action Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppFloatingActionButton(
@@ -208,7 +208,7 @@ fun AppButtonScreen() {
                 // Radio Buttons
                 TitleTexts.Level1(text = "Radio Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppRadioButton(
@@ -227,7 +227,7 @@ fun AppButtonScreen() {
                 // Toggle Buttons
                 TitleTexts.Level1(text = "Toggle Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppToggleButton(
@@ -244,7 +244,7 @@ fun AppButtonScreen() {
                 // Check Box Buttons
                 TitleTexts.Level1(text = "Check Box Buttons")
                 Row(
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppCheckBoxButton(

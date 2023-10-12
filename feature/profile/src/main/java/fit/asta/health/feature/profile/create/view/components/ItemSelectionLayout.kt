@@ -62,17 +62,17 @@ fun ItemSelectionLayout(
         Column(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level3)
+                .padding(AppTheme.spacing.level2)
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
                 AppDivider(modifier = Modifier.width(80.dp))
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-            SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
     }
 }
@@ -114,7 +114,7 @@ fun ChipRow(
         it.name.contains(searchQuery, ignoreCase = true)
     }
 
-    FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+    FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
         filteredList.forEach { healthProperties ->
             val isSelected = cardList2?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {

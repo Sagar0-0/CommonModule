@@ -35,7 +35,7 @@ fun BottomSheetButtonLayout() {
             AppFilledButton(
                 modifier = Modifier.fillMaxWidth(),
                 textToShow = "Schedule",
-                shape = AppTheme.shape.level1
+                shape = AppTheme.shape.level0
             ) {}
         }
 
@@ -50,7 +50,7 @@ fun BottomSheetButtonLayout() {
             AppFilledButton(
                 modifier = Modifier.fillMaxWidth(),
                 textToShow = "Start",
-                shape = AppTheme.shape.level1
+                shape = AppTheme.shape.level0
             ) {}
         }
     }

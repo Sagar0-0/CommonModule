@@ -90,7 +90,7 @@ private fun NoInternetScreen(
             openFullDialogCustom.value = false
         }) {
             Surface(
-                color = AppTheme.colors.primaryContainer, shape = AppTheme.shape.level2
+                color = AppTheme.colors.primaryContainer, shape = AppTheme.shape.level1
             ) {
                 ErrorScreen(
                     imgID = imgID,
@@ -143,27 +143,27 @@ fun ErrorScreen(
                 .height(200.dp)
                 .fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         TitleTexts.Level1(
             text = primaryIssue,
             color = AppTheme.colors.primary,
             textAlign = TextAlign.Center,
             modifier = Modifier
-                .padding(top = AppTheme.spacing.level3)
+                .padding(top = AppTheme.spacing.level2)
                 .fillMaxWidth()
         )
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         BodyTexts.Level3(
             text = desc, textAlign = TextAlign.Center, modifier = Modifier
                 .padding(
-                    top = AppTheme.spacing.level2,
-                    start = AppTheme.spacing.level2,
-                    end = AppTheme.spacing.level2
+                    top = AppTheme.spacing.level1,
+                    start = AppTheme.spacing.level1,
+                    end = AppTheme.spacing.level1
                 )
                 .fillMaxWidth(), color = AppTheme.colors.primary
         )
         //.........................Spacer
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level4))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
         GradientButton(
             nameButton = btnTxt, onClick = onTryAgain
         )
@@ -182,10 +182,10 @@ fun GradientButton(
         textToShow = nameButton, modifier = Modifier
             .fillMaxWidth()
             .padding(
-                start = AppTheme.spacing.level5,
-                end = AppTheme.spacing.level5,
-                bottom = AppTheme.spacing.level5
-            ), onClick = onClick, shape = RoundedCornerShape(AppTheme.spacing.level3)
+                start = AppTheme.spacing.level4,
+                end = AppTheme.spacing.level4,
+                bottom = AppTheme.spacing.level4
+            ), onClick = onClick, shape = RoundedCornerShape(AppTheme.spacing.level2)
     )
 }
 
@@ -200,14 +200,14 @@ fun GradientButton(
 fun AppErrorMsgCard(message: String, imageVector: ImageVector) {
     AppCard(
         modifier = Modifier
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
             .fillMaxWidth()
             .wrapContentHeight(),
         content = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2),
+                    .padding(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {

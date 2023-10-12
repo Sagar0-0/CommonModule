@@ -114,7 +114,7 @@ fun BreathingHomeScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
                     AppSurface(
                         modifier = Modifier
@@ -124,7 +124,7 @@ fun BreathingHomeScreen(
                             modifier = Modifier
                                 .fillMaxWidth()
                                 .padding(16.dp),
-                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
 
@@ -141,7 +141,7 @@ fun BreathingHomeScreen(
                                     event(UiEvent.SetTargetAngle(it))
                                 }
                             )
-                            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                                 ProgressBarInt(
                                     modifier = Modifier.weight(0.3f),
                                     targetDistance = uiState.recommended.toFloat(),
@@ -214,13 +214,13 @@ fun BreathingBottomSheet(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
 
             TitleTexts.Level3(text = "PRACTICE")
             LazyVerticalGrid(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 columns = GridCells.Fixed(2)
             ) {
                 item {
@@ -247,12 +247,12 @@ fun BreathingBottomSheet(
             AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
 
                     LazyVerticalGrid(
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                         columns = GridCells.Fixed(2)
                     ) {
                         selectedData.forEachIndexed { index, prc ->
@@ -273,7 +273,7 @@ fun BreathingBottomSheet(
                 }
             }
 
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
                 ) { }

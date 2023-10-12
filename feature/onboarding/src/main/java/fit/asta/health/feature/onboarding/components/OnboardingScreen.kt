@@ -68,20 +68,20 @@ fun OnboardingScreen(
                 HorizontalPager(
                     modifier = Modifier.weight(1f),
                     state = pagerState,
-                    contentPadding = PaddingValues(AppTheme.spacing.level2),
-                    pageSpacing = AppTheme.spacing.level3,
+                    contentPadding = PaddingValues(AppTheme.spacing.level1),
+                    pageSpacing = AppTheme.spacing.level2,
                 ) { page ->
                     AppCard(
                         modifier = Modifier
                             .carouselTransition(page, pagerState)
                             .fillMaxHeight()
-                            .padding(AppTheme.spacing.level2)
-                            .clip(AppTheme.shape.level3)
+                            .padding(AppTheme.spacing.level1)
+                            .clip(AppTheme.shape.level2)
                     ) {
                         AppGifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(bottom = AppTheme.spacing.level3),
+                                .padding(bottom = AppTheme.spacing.level2),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -91,12 +91,12 @@ fun OnboardingScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             TitleTexts.Level2(
-                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
                                 text = items[page].title,
                                 textAlign = TextAlign.Center
                             )
                             TitleTexts.Level2(
-                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
                                 text = items[page].desc,
                                 textAlign = TextAlign.Center
                             )

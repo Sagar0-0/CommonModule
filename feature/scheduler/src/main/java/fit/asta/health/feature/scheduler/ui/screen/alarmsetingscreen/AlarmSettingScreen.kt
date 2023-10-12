@@ -382,7 +382,7 @@ private fun SoundOptionsUI() {
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
             Box(contentAlignment = Alignment.Center) {
                 AppIcon(
                     imageVector = Icons.Default.Audiotrack,

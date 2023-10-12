@@ -67,7 +67,7 @@ fun VideoPlayerScreen(
                 .padding(it)
                 .fillMaxSize()
         ) {
-            Spacer(Modifier.height(spacing.level2))
+            Spacer(Modifier.height(spacing.level1))
             LazyColumn(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -76,7 +76,7 @@ fun VideoPlayerScreen(
             ) {
 
                 item {
-                    Spacer(Modifier.height(spacing.level2))
+                    Spacer(Modifier.height(spacing.level1))
                 }
 
                 itemsIndexed(state) { index: Int, item: VideoItem ->
@@ -116,7 +116,7 @@ fun VideoTrackItem(
             .fillMaxWidth()
             .clickable { onClick() }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(spacing.level2)
+        verticalArrangement = Arrangement.spacedBy(spacing.level1)
     ) {
         AppDivider(
             modifier = Modifier
@@ -128,11 +128,11 @@ fun VideoTrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(spacing.level3)
+            horizontalArrangement = Arrangement.spacedBy(spacing.level2)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(spacing.level2),
+                verticalArrangement = Arrangement.spacedBy(spacing.level1),
                 horizontalAlignment = Alignment.Start
             ) {
                 BodyTexts.Level1(
@@ -160,7 +160,7 @@ fun VideoTrackItem(
                                 onClick()
                             }
                             .size(32.dp)
-                            .padding(spacing.level2)
+                            .padding(spacing.level1)
                     )
                     BodyTexts.Level3(
                         text = song.duration,

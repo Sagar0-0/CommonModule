@@ -58,7 +58,7 @@ fun FavouriteScreen(
         // Track Text
         HeadingTexts.Level1(
             text = stringResource(id = R.string.tracks),
-            modifier = Modifier.padding(AppTheme.spacing.level2),
+            modifier = Modifier.padding(AppTheme.spacing.level1),
         )
 
         // This Draws all the Track Cards
@@ -124,10 +124,10 @@ fun FavouriteScreen(
             text = stringResource(id = R.string.albums),
             modifier = Modifier
                 .padding(
-                    top = AppTheme.spacing.level4,
-                    bottom = AppTheme.spacing.level2,
-                    start = AppTheme.spacing.level2,
-                    end = AppTheme.spacing.level2
+                    top = AppTheme.spacing.level3,
+                    bottom = AppTheme.spacing.level1,
+                    start = AppTheme.spacing.level1,
+                    end = AppTheme.spacing.level1
                 ),
         )
 

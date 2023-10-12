@@ -306,7 +306,7 @@ private fun MediaContentView(
                     },
                     onAudioVideo = onVisibility, more = { trackDialog = true }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level6))
             }
         }
         AnimatedContent(targetState = visibility, label = "player") { targetState ->
@@ -400,15 +400,15 @@ private fun MediaContentView(
         }
         AnimatedVisibility(visible = !isLandscape) {
             Column {
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level6))
                 TitleTexts.Level1(
                     text = musicState.currentSong.title,
                     maxLines = 1,
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2)
+                        .padding(horizontal = AppTheme.spacing.level1)
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 LaunchedEffect(Unit) {
                     while (true) {
                         delay(1000)
@@ -434,13 +434,13 @@ private fun MediaContentView(
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level3)
+                        .padding(horizontal = AppTheme.spacing.level2)
                 ) {
                     BodyTexts.Level2(text = controllerState.positionMs.asFormattedString())
                     Spacer(modifier = Modifier.weight(1f))
                     BodyTexts.Level2(musicState.duration.asFormattedString())
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level5))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level4))
                 PlayerButtons(
                     modifier = Modifier.fillMaxWidth(),
                     playWhenReady = musicState.playWhenReady,
@@ -451,7 +451,7 @@ private fun MediaContentView(
                     next = { onAudioEvent(PlayerEvent.SkipNext) },
                     previous = { onAudioEvent(PlayerEvent.SkipPrevious) }
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level7))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level6))
             }
         }
     }
@@ -558,13 +558,13 @@ fun BackAlertDialog(
                     .fillMaxWidth()
                     .padding(16.dp),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 HeadingTexts.Level1(text = stringResource(id = R.string.sure_you_want_to_leave))
                 HeadingTexts.Level4(text = stringResource(id = R.string.meditation_benefits))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
                     AppOutlinedButton(
                         onClick = onDismiss,
@@ -610,7 +610,7 @@ fun TrackItem(
             .fillMaxWidth()
             .clickable { onClick(isRunning) }
             .background(backgroundColor),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
         AppDivider(
             modifier = Modifier
@@ -622,11 +622,11 @@ fun TrackItem(
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Column(
                 modifier = Modifier.weight(.5f),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 horizontalAlignment = Alignment.Start
             ) {
                 BodyTexts.Level1(

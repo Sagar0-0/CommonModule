@@ -32,7 +32,7 @@ fun MusicFilterOptions(
     AppCard(
         modifier = modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
     ) {
 
         // This Row continues to put the UI elements to next line if the screen width is reached

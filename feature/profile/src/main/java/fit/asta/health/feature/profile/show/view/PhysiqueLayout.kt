@@ -27,8 +27,8 @@ fun PhysiqueLayout(
                 )
             }
         },
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     )
 }
 

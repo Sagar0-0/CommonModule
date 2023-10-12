@@ -115,7 +115,7 @@ fun TodayContent(
                 .padding(paddingValues)
                 .background(color = AppTheme.colors.background),
             contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         ) {
             item {
                 NameAndMoodHomeScreenHeader(
@@ -300,12 +300,12 @@ fun TodayItem(
     ) {
         Column(
             modifier = modifier.padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1),
                 modifier = modifier.fillMaxWidth()
             ) {
                 AppNetworkImage(
@@ -314,12 +314,12 @@ fun TodayItem(
                     contentDescription = stringResource(R.string.description),
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
-                        .clip(AppTheme.shape.level3)
+                        .clip(AppTheme.shape.level2)
                         .height(120.dp)
                         .width(80.dp)
                 )
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                     horizontalAlignment = Alignment.Start
                 ) {
                     Row(
@@ -348,7 +348,7 @@ fun TodayItem(
                         onClick = onDone,
                         border = BorderStroke(width = 2.dp, color = color),
                         interactionSource = interactionSource,
-                        shape = AppTheme.shape.level3,
+                        shape = AppTheme.shape.level2,
                         leadingIcon = Icons.Default.Check,
                         textToShow = "Done",
                     )
@@ -455,7 +455,7 @@ fun AlertDialogPopUp(
         )
     ) {
         AppCard(
-            modifier = Modifier.clip(AppTheme.shape.level3)
+            modifier = Modifier.clip(AppTheme.shape.level2)
         ) {
             Column(
                 modifier = Modifier
@@ -469,7 +469,7 @@ fun AlertDialogPopUp(
                 Row {
                     AppOutlinedButton(
                         onClick = onDismiss,
-                        shape = AppTheme.shape.level4,
+                        shape = AppTheme.shape.level3,
                         modifier = Modifier
                             .weight(1F)
                             .padding(end = 8.dp),

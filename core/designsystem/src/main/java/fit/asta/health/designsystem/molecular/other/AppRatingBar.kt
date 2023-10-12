@@ -77,7 +77,7 @@ fun AppRatingBar(
     gestureStrategy: GestureStrategy = GestureStrategy.DragAndPress,
     shimmerEffect: ShimmerEffect? = null,
     itemCount: Int = 5,
-    space: Dp = AppTheme.spacing.level2,
+    space: Dp = AppTheme.spacing.level1,
     ratingInterval: RatingInterval = RatingInterval.Full,
     allowZeroRating: Boolean = true,
     onRatingChangeFinished: ((Float) -> Unit)? = null,

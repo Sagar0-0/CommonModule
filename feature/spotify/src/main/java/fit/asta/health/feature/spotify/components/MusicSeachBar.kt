@@ -63,7 +63,7 @@ fun SearchBar(
         label = "Search from Spotify",
 
         // Shape of the TextField
-        shape = AppTheme.shape.level2,
+        shape = AppTheme.shape.level1,
 
         leadingIcon = {
 
@@ -78,8 +78,8 @@ fun SearchBar(
 
             Row(
                 modifier = Modifier
-                    .padding(horizontal = AppTheme.spacing.level3),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    .padding(horizontal = AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
 
                 if (userInput.isNotEmpty()) {

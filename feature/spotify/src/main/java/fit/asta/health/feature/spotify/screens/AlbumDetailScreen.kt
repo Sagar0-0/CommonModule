@@ -138,10 +138,10 @@ private fun LocalAlbumHandler(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = AppTheme.spacing.level5,
-                            bottom = AppTheme.spacing.level1,
-                            start = AppTheme.spacing.level2,
-                            end = AppTheme.spacing.level2
+                            top = AppTheme.spacing.level4,
+                            bottom = AppTheme.spacing.level0,
+                            start = AppTheme.spacing.level1,
+                            end = AppTheme.spacing.level1
                         ),
                     textToShow = buttonText
                 ) {
@@ -160,9 +160,9 @@ private fun LocalAlbumHandler(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
-                            top = AppTheme.spacing.level1,
-                            start = AppTheme.spacing.level2,
-                            end = AppTheme.spacing.level2
+                            top = AppTheme.spacing.level0,
+                            start = AppTheme.spacing.level1,
+                            end = AppTheme.spacing.level1
                         ),
                     textToShow = stringResource(id = R.string.play_using_spotify)
                 ) {

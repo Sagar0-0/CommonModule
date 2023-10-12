@@ -85,7 +85,7 @@ fun BasicProfileNewScreen() {
                 .padding(paddingValues)
                 .verticalScroll(
                     rememberScrollState()
-                ), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                ), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             CircularImageWithIconButton(onClick = { imagePickerLauncher.launch("image/*") })
             TextBlock()
@@ -96,7 +96,7 @@ fun BasicProfileNewScreen() {
                 textToShow = "Create your Profile",
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level3)
+                    .padding(horizontal = AppTheme.spacing.level2)
             )
         }
     })
@@ -107,7 +107,7 @@ fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Un
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         val (image, button) = createRefs()
 
@@ -142,23 +142,23 @@ fun TextBlock() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level2),
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppIcon(imageVector = Icons.Rounded.Person)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                 Column {
                     TitleTexts.Level4(text = "Name", color = AppTheme.colors.onSurface)
                     if (text.text.isNotEmpty() && !isEditing) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                         BodyTexts.Level2(text = text.text)
                     }
                 }
@@ -169,7 +169,7 @@ fun TextBlock() {
                 })
             }
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         if (text.text.isEmpty() || isEditing) {
             LaunchedEffect(isEditing) {
                 if (isEditing) {
@@ -211,23 +211,23 @@ fun EmailBlock() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level2),
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppIcon(imageVector = Icons.Rounded.Email)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                 Column {
                     TitleTexts.Level4(text = "Email", color = AppTheme.colors.onSurface)
                     if (text.text.isNotEmpty() && !isEditing) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                         BodyTexts.Level2(text = text.text)
                     }
                 }
@@ -238,7 +238,7 @@ fun EmailBlock() {
                 })
             }
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         if (text.text.isEmpty() || isEditing) {
             LaunchedEffect(isEditing) {
                 if (isEditing) {
@@ -282,23 +282,23 @@ fun PhoneBlock() {
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level2),
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppIcon(imageVector = Icons.Rounded.Phone)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                 Column {
                     TitleTexts.Level4(text = "Phone", color = AppTheme.colors.onSurface)
                     if (text.text.isNotEmpty() && !isEditing) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                         BodyTexts.Level2(text = text.text)
                     }
                 }
@@ -309,7 +309,7 @@ fun PhoneBlock() {
                 })
             }
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         if (text.text.isEmpty() || isEditing) {
             LaunchedEffect(isEditing) {
                 if (isEditing) {
@@ -342,7 +342,7 @@ fun PhoneBlock() {
                             }
                         },
                 )
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
                 TextField(value = text,
                     onValueChange = {
                         text = it
@@ -383,7 +383,7 @@ fun ReferBlock() {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         ClickableText(
             text = AnnotatedString(text = "Have you got any Referral Code?"),
@@ -391,7 +391,7 @@ fun ReferBlock() {
             style = TextStyle.Default.copy(color = AppTheme.colors.primary)
         )
         if (isEditing) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
             TextField(value = text,
                 onValueChange = {
                     text = it
@@ -414,7 +414,7 @@ fun ReferBlock() {
                             isEditing = true
                         }
                     })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             GenerateButton(textToShow = "Apply Referral Code")
         }
     }

@@ -51,10 +51,10 @@ fun SpotifyHomeScreen(
     LazyColumn(
         modifier = Modifier
             .height(LocalConfiguration.current.screenHeightDp.dp)
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
             .width(LocalConfiguration.current.screenWidthDp.dp),
         horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Search Option And Spotify Title

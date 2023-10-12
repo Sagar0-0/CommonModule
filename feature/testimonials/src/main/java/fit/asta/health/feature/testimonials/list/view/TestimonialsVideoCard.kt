@@ -46,10 +46,10 @@ fun TstViewVideoLayout(
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
     ) {
         PlayVideoLayout(tstVideoMedia.media)
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         ArtistCard(tstVideoMedia)
 
     }

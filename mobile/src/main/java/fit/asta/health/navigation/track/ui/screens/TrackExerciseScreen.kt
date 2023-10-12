@@ -221,7 +221,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Daily Progress
@@ -250,7 +250,7 @@ private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData)
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

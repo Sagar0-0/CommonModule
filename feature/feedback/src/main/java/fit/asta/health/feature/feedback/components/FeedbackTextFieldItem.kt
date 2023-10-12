@@ -31,18 +31,18 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
     AppCard(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.level1),
+            .padding(horizontal = AppTheme.spacing.level0),
     ) {
         Column(
             modifier = Modifier
                 .fillMaxSize()
-                .padding(AppTheme.spacing.level2)
+                .padding(AppTheme.spacing.level1)
         ) {
 
             TitleTexts.Level2(
                 text = qn.qn
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             when (qn.type) {
                 2 -> {
                     Rating {
@@ -58,7 +58,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                         )
                     }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
 
                 3, 5 -> {
@@ -79,7 +79,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                             }
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
             }
         }

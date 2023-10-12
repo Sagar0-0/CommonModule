@@ -50,7 +50,7 @@ fun SettingsNotificationLayout(
             onBack = onBackPress
         )
 
-        LazyColumn(modifier = Modifier.padding(AppTheme.spacing.level3)) {
+        LazyColumn(modifier = Modifier.padding(AppTheme.spacing.level2)) {
             item {
                 SwitchItem(
                     imageVector = Icons.Default.Notifications,
@@ -70,8 +70,8 @@ fun SettingsNotificationLayout(
                 TitleTexts.Level2(
                     text = stringResource(id = R.string.title_notifications),
                     modifier = Modifier.padding(
-                        top = AppTheme.spacing.level3,
-                        bottom = AppTheme.spacing.level2
+                        top = AppTheme.spacing.level2,
+                        bottom = AppTheme.spacing.level1
                     )
                 )
 
@@ -218,7 +218,7 @@ fun SwitchItem(
 ) {
     Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
         AppIcon(
-            modifier = Modifier.padding(AppTheme.spacing.level1),
+            modifier = Modifier.padding(AppTheme.spacing.level0),
             imageVector = imageVector,
             contentDescription = ""
         )
@@ -227,9 +227,9 @@ fun SwitchItem(
             Modifier
                 .weight(1f)
                 .padding(
-                    top = AppTheme.spacing.level2,
-                    bottom = AppTheme.spacing.level3,
-                    start = AppTheme.spacing.level1
+                    top = AppTheme.spacing.level1,
+                    bottom = AppTheme.spacing.level2,
+                    start = AppTheme.spacing.level0
                 )
         ) {
             TitleTexts.Level2(
@@ -245,7 +245,7 @@ fun SwitchItem(
         Switch(
             checked = isChecked,
             onCheckedChange = { onChange(it) },
-            modifier = Modifier.padding(bottom = AppTheme.spacing.level2),
+            modifier = Modifier.padding(bottom = AppTheme.spacing.level1),
             enabled = isEnabled
         )
     }

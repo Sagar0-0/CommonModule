@@ -41,14 +41,14 @@ fun MusicLargeImageColumn(
 
     Column(
         modifier = Modifier
-            .padding(AppTheme.spacing.level2)
+            .padding(AppTheme.spacing.level1)
             .width(widthOfImage)
 
             // Redirecting the User to Spotify App
             .clickable {
                 onClick()
             },
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)
     ) {
 
         // Showing the Loader or the Image accordingly
