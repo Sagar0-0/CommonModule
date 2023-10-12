@@ -51,8 +51,9 @@ import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndi
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
@@ -227,7 +228,7 @@ internal fun FillAddressSheet(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
             AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
-                AstaValidatedTextField(
+                AppTextField(
                     modifier = Modifier
                         .fillMaxWidth()
                         .focusRequester(nameField)
@@ -249,12 +250,12 @@ internal fun FillAddressSheet(
                     isValidText = {
                         isNameValid = it
                     },
-                    label = R.string.location_name
+                    label = R.string.location_name.toStringFromResId()
                 )
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             }
 
-            AstaValidatedTextField(
+            AppTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(houseField)
@@ -274,12 +275,12 @@ internal fun FillAddressSheet(
                 isValidText = {
                     isHnValid = it
                 },
-                label = R.string.house_number,
+                label = R.string.house_number.toStringFromResId()
             )
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
-            AstaValidatedTextField(
+            AppTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(blockField)
@@ -299,13 +300,13 @@ internal fun FillAddressSheet(
                 isValidText = {
                     isBlkValid = it
                 },
-                label = R.string.block_street_road,
+                label = R.string.block_street_road.toStringFromResId()
             )
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
-            AstaValidatedTextField(
-                type = AstaValidatedTextFieldType.Default(0),
+            AppTextField(
+                appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(0, 256)),
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(nearbyField)
@@ -323,16 +324,15 @@ internal fun FillAddressSheet(
                 onValueChange = {
                     nearby.value = it
                 },
-                label = R.string.nearby_landmark
+                label = R.string.nearby_landmark.toStringFromResId()
             )
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
 
-            AstaValidatedTextField(
+            AppTextField(
                 modifier = Modifier
                     .fillMaxWidth()
                     .focusRequester(phoneField),
-                type = AstaValidatedTextFieldType.Phone,
                 keyboardOptions = KeyboardOptions.Default.copy(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
@@ -347,7 +347,7 @@ internal fun FillAddressSheet(
                 isValidText = {
                     isPhoneValid = it
                 },
-                label = R.string.phone_number
+                label = R.string.phone_number.toStringFromResId()
             )
 
             Crossfade(targetState = putAddressState, label = "") {

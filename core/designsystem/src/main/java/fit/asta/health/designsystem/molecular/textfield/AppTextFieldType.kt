@@ -20,8 +20,8 @@ sealed class AppTextFieldType(
     val maxStringSize: Int = 256
 ) {
     data object Phone : AppTextFieldType(10, 10)
-    data object Mail : AppTextFieldType(11, 50)
-    data object Default : AppTextFieldType(1, 10)
+    data object Mail : AppTextFieldType(6, 50)
+    data object Default : AppTextFieldType(1, 256)
     data class Custom(
         val minSize: Int = 0,
         val maxSize: Int = 0,

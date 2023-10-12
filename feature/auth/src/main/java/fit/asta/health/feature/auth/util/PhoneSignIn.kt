@@ -51,8 +51,9 @@ import com.google.firebase.ktx.Firebase
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextField
-import fit.asta.health.designsystem.molecular.textfield.AstaValidatedTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.feature.auth.screens.OTPReceiver
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
@@ -252,8 +253,8 @@ fun PhoneSignIn(
             modifier = Modifier
                 .fillMaxWidth()
         ) {
-            AstaValidatedTextField(
-                type = AstaValidatedTextFieldType.Default(2, 4),
+            AppTextField(
+                appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(2, 4)),
                 enabled = !codeSent && !loading,
                 value = postalCode,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
@@ -274,13 +275,12 @@ fun PhoneSignIn(
                 singleLine = true
             )
 
-            AstaValidatedTextField(
-                type = AstaValidatedTextFieldType.Phone,
+            AppTextField(
+                appTextFieldType = AppTextFieldValidator(AppTextFieldType.Phone),
                 enabled = !codeSent && !loading,
                 value = phoneNumber,
                 keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                 onValueChange = { if (it.length <= 10) phoneNumber = it },
-                placeholder = StringR.string.enter_your_phone_number,
                 modifier = Modifier
                     .padding(
                         top = AppTheme.spacing.level3,
@@ -334,13 +334,12 @@ fun PhoneSignIn(
             )
         ) {
             Column {
-                AstaValidatedTextField(
-                    type = AstaValidatedTextFieldType.Default(6, 6),
+                AppTextField(
+                    appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(6, 6)),
                     enabled = !loading,
                     value = otp,
                     keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
                     onValueChange = { if (it.length <= 6) otp = it },
-                    placeholder = StringR.string.enter_your_otp,
                     modifier = Modifier
                         .padding(AppTheme.spacing.level2)
                         .fillMaxWidth(),
