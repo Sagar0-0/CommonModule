@@ -33,12 +33,13 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
-import fit.asta.health.designsystem.molecular.textfield.AstaTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -212,13 +213,13 @@ fun CustomTagTextField(
 
     LaunchedEffect(key1 = Unit) { focusRequester.requestFocus() }
 
-    AstaTextField(
+    AppTextField(
         value = value,
         onValueChange = {
             value = it
             onValueChange(it)
         },
-        label = label,
+        label = label?.toStringFromResId() ?: "",
         colors = OutlinedTextFieldDefaults.colors(
             focusedBorderColor = AppTheme.colors.primary,
             unfocusedBorderColor = Color.LightGray,
