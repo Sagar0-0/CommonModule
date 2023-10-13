@@ -1,18 +1,20 @@
 package fit.asta.health.feature.settings.view
 
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.wrapContentHeight
-import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
@@ -41,18 +43,19 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
+import fit.asta.health.ui.common.AppDialogPopUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -62,101 +65,99 @@ fun SettingsScreenLayout(
     onClickEvent: (key: SettingsUiEvent) -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
-    var showDeleteConfirmationDialog by rememberSaveable {
-        mutableStateOf(false)
-    }
+    var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
+    // This is the App Dialog which pops up
     AnimatedVisibility(showDeleteConfirmationDialog) {
-        AppDialog(
-            properties = DialogProperties(
-                dismissOnBackPress = true,
-                dismissOnClickOutside = true
-            ),
-            onDismissRequest = { showDeleteConfirmationDialog = false }
+        AppDialogPopUp(
+            headingText = R.string.confirm_delete.toStringFromResId(),
+            bodyText = "Are you sure you want to delete ??",
+            primaryButtonText = R.string.yes.toStringFromResId(),
+            secondaryButtonText = R.string.cancel.toStringFromResId(),
+            onDismiss = { showDeleteConfirmationDialog = false }
         ) {
-            AppCard(modifier = Modifier.fillMaxWidth()) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AppTheme.spacing.level2),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TitleTexts.Level2(
-                        text = R.string.confirm_delete.toStringFromResId()
-                    )
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.level2),
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        AppTextButton(
-                            textToShow = R.string.cancel.toStringFromResId(),
-                            onClick = {
-                                showDeleteConfirmationDialog = false
-                            }
-                        )
-                        AppTextButton(
-                            textToShow = R.string.yes.toStringFromResId(),
-                            onClick = {
-                                showDeleteConfirmationDialog = false
-                                onClickEvent(SettingsUiEvent.DELETE)
-                            }
-                        )
-                    }
-                }
-            }
+            showDeleteConfirmationDialog = false
+            onClickEvent(SettingsUiEvent.DELETE)
         }
     }
 
-    AppScaffold(snackBarHostState = snackBarHostState) { padding ->
-        Column(
-            modifier = Modifier
-                .padding(padding)
-                .verticalScroll(rememberScrollState())
-        ) {
+    // Scaffold for the Screen
+    AppScaffold(
+        snackBarHostState = snackBarHostState,
+        topBar = {
+
+            // Top App Bar
             AppTopBar(
                 title = stringResource(id = R.string.title_settings),
                 onBack = { onClickEvent(SettingsUiEvent.BACK) }
             )
+        }
+    ) { padding ->
 
-            PreferenceCategory(titleId = R.string.user_pref_support_us_cat_title) {
-                PreferenceItem(
-                    titleId = R.string.user_pref_share_app_title,
-                    imageVector = Icons.Default.Share
+        // This Column contains all the necessary Composable Functions
+        Column(
+            modifier = Modifier
+                .padding(padding)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        ) {
+
+            // support Us Card Layout Function
+            CardLayout(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
+
+                // Share
+                CardItem(
+                    icon = Icons.Default.Share,
+                    textToShow = stringResource(R.string.user_pref_share_app_title)
                 ) { onClickEvent(SettingsUiEvent.SHARE) }
-                PreferenceItem(
-                    title = R.string.subscribe.toStringFromResId(),
-                    imageVector = Icons.Default.Subscriptions
+
+                // Subscribe
+                CardItem(
+                    icon = Icons.Default.Subscriptions,
+                    textToShow = R.string.subscribe.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.NavigateToSubscription) }
-                PreferenceItem(
-                    title = R.string.orders.toStringFromResId(),
-                    imageVector = Icons.Default.ShoppingCart
+
+                // Orders
+                CardItem(
+                    icon = Icons.Default.ShoppingCart,
+                    textToShow = R.string.orders.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.NavigateToOrders) }
-                PreferenceItem(
-                    title = R.string.refer_and_earn.toStringFromResId(),
-                    imageVector = Icons.Default.MonetizationOn
+
+                // Refer and Earn
+                CardItem(
+                    icon = Icons.Default.MonetizationOn,
+                    textToShow = R.string.refer_and_earn.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.REFERRAL) }
-                PreferenceItem(
-                    title = R.string.saved_address.toStringFromResId(),
-                    imageVector = Icons.Default.LocationOn
+
+                // Saved Addresses
+                CardItem(
+                    icon = Icons.Default.LocationOn,
+                    textToShow = R.string.saved_address.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.ADDRESS) }
 
-                PreferenceItem(
-                    title = R.string.wallet.toStringFromResId(),
-                    imageVector = Icons.Default.AccountBalanceWallet
+                // Wallet
+                CardItem(
+                    icon = Icons.Default.AccountBalanceWallet,
+                    textToShow = R.string.wallet.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.WALLET) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_rate_us_title,
-                    imageVector = Icons.Default.StarRate
+
+                // Rate Us
+                CardItem(
+                    icon = Icons.Default.StarRate,
+                    textToShow = R.string.user_pref_rate_us_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.RATE) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_feedback_title,
-                    imageVector = Icons.Default.Feedback
+
+                // Feedback
+                CardItem(
+                    icon = Icons.Default.Feedback,
+                    textToShow = R.string.user_pref_feedback_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.FEEDBACK) }
             }
 
-            PreferenceCategory(titleId = R.string.user_pref_display_cat_title) {
+            // This is the Display card section
+            CardLayout(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
+
+                // Theme
                 ListPreference(
                     titleId = R.string.user_pref_theme_title,
                     imageVector = Icons.Default.ColorLens,
@@ -168,85 +169,56 @@ fun SettingsScreenLayout(
                 }
             }
 
-            PreferenceCategory(titleId = R.string.user_pref_account_cat_title) {
-                PreferenceItem(
-                    titleId = R.string.user_pref_sign_out_title,
-                    imageVector = Icons.Default.Logout
+            // This is the Account Section
+            CardLayout(title = R.string.user_pref_account_cat_title.toStringFromResId()) {
+
+                // Sign out
+                CardItem(
+                    icon = Icons.Default.Logout,
+                    textToShow = R.string.user_pref_sign_out_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.SIGNOUT) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_delete_account_title,
-                    secondary = stringResource(id = R.string.user_pref_delete_account_summary),
-                    imageVector = Icons.Default.DeleteForever
+
+                // Delete
+                CardItem(
+                    icon = Icons.Default.DeleteForever,
+                    textToShow = R.string.user_pref_delete_account_title.toStringFromResId()
                 ) { showDeleteConfirmationDialog = true }
             }
 
-            PreferenceCategory(titleId = R.string.user_pref_about_cat_title) {
-                PreferenceItem(
-                    titleId = R.string.user_pref_bug_report_title,
-                    imageVector = Icons.Default.BugReport
+            // This is the About Card Section
+            CardLayout(title = R.string.user_pref_about_cat_title.toStringFromResId()) {
+
+                // Bug Report
+                CardItem(
+                    icon = Icons.Default.BugReport,
+                    textToShow = R.string.user_pref_bug_report_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.BUG) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_terms_of_use_title,
-                    imageVector = Icons.Default.FileCopy
+
+                // Terms of Use
+                CardItem(
+                    icon = Icons.Default.FileCopy,
+                    textToShow = R.string.user_pref_terms_of_use_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.TERMS) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_privacy_policy_title,
-                    imageVector = Icons.Default.NightShelter
+
+                // Privacy Policy
+                CardItem(
+                    icon = Icons.Default.NightShelter,
+                    textToShow = R.string.user_pref_privacy_policy_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.PRIVACY) }
-                PreferenceItem(
-                    titleId = R.string.user_pref_version_title,
-                    secondary = builtVersion,
-                    imageVector = Icons.Default.SettingsPhone
+
+                // Version
+                CardItem(
+                    icon = Icons.Default.SettingsPhone,
+                    textToShow = R.string.user_pref_version_title.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.VERSION) }
             }
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         }
     }
 }
 
 @Composable
-fun PreferenceCategory(
-    titleId: Int? = null,
-    content: @Composable () -> Unit
-) {
-    Column {
-        if (titleId != null) TitleTexts.Level2(
-            text = stringResource(id = titleId),
-            modifier = Modifier.padding(
-                start = AppTheme.spacing.level2,
-                top = AppTheme.spacing.level1
-            )
-        )
-        Column(
-            modifier = Modifier.padding(
-                vertical = AppTheme.spacing.level1,
-                horizontal = AppTheme.spacing.level1
-            )
-        ) {
-            content()
-        }
-    }
-}
-
-@Composable
-fun PreferenceItem(
-    titleId: Int = 0,
-    title: String? = null,
-    secondary: String? = null,
-    imageVector: ImageVector,
-    onClick: () -> Unit
-) {
-    AppTextButton(
-        textToShow = title ?: stringResource(id = titleId),
-        leadingIcon = imageVector,
-        onClick = onClick,
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level0)
-    )//TODO: ADD SECONDARY TEXT
-}
-
-@Composable
-fun ListPreference(
+private fun ListPreference(
     titleId: Int,
     imageVector: ImageVector,
     theme: String,
@@ -259,43 +231,74 @@ fun ListPreference(
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }
 
-    AppTextButton(
-        textToShow = title,
-        leadingIcon = imageVector,
-        trailingIcon = Icons.Filled.ArrowDropDown,
-        onClick = { showDialog = true },
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level0)
-    )
+    CardItem(icon = imageVector, textToShow = title) {
+        showDialog = true
+    }
 
     if (showDialog) {
-        AppDialog(
-            onDismissRequest = { showDialog = false }
-        ) {
-            AppSurface(
-                modifier = Modifier
-                    .wrapContentWidth()
-                    .wrapContentHeight()
+        AppDialog(onDismissRequest = { showDialog = false }) {
+            AppCard(
+                shape = AppTheme.shape.level2,
+                modifier = Modifier.fillMaxWidth()
             ) {
-                Column(
-                    modifier = Modifier.fillMaxWidth()
-                ) {
-                    entries.forEachIndexed { index, entry ->
-                        Row(verticalAlignment = Alignment.CenterVertically) {
-                            AppRadioButton(
-                                selected = selectedIndex == index,
-                                onClick = {
-                                    showDialog = false
-                                    selectedIndex = index
-                                    onValueChange(values[selectedIndex])
-                                }
-                            )
-                            TitleTexts.Level2(text = entry)
-                        }
+                entries.forEachIndexed { index, entry ->
+                    Row(verticalAlignment = Alignment.CenterVertically) {
+                        AppRadioButton(
+                            selected = selectedIndex == index,
+                            onClick = {
+                                showDialog = false
+                                selectedIndex = index
+                                onValueChange(values[selectedIndex])
+                            }
+                        )
+                        TitleTexts.Level2(text = entry)
                     }
                 }
             }
+        }
+    }
+}
+
+
+@Composable
+private fun CardLayout(
+    title: String,
+    content: @Composable ColumnScope.() -> Unit
+) {
+    AppElevatedCard(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+        TitleTexts.Level2(
+            text = title,
+            modifier = Modifier.padding(
+                start = AppTheme.spacing.level2,
+                top = AppTheme.spacing.level2
+            )
+        )
+        content()
+    }
+}
+
+@Composable
+private fun CardItem(
+    icon: ImageVector,
+    textToShow: String,
+    onClick: () -> Unit
+) {
+    Box(
+        modifier = Modifier
+            .fillMaxWidth()
+            .clickable { onClick() }
+    ) {
+        Row(
+            modifier = Modifier.padding(vertical = AppTheme.spacing.level2),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AppIcon(
+                imageVector = icon,
+                modifier = Modifier.padding(start = AppTheme.spacing.level2),
+                tint = AppTheme.colors.primary
+            )
+            CaptionTexts.Level1(text = textToShow)
         }
     }
 }
