@@ -40,12 +40,12 @@ import fit.asta.health.designsystem.AppTheme
 fun AppBottomBar(
     modifier: Modifier = Modifier,
     floatingActionButton: @Composable () -> Unit,
-    actions: @Composable RowScope.() -> Unit,
     containerColor: Color = AppTheme.colors.surface,
     contentColor: Color = AppTheme.colors.onSurface,
     tonalElevation: Dp = AppTheme.elevation.level1,
     contentPadding: PaddingValues = BottomAppBarDefaults.ContentPadding,
-    windowInsets: WindowInsets = BottomAppBarDefaults.windowInsets
+    windowInsets: WindowInsets = BottomAppBarDefaults.windowInsets,
+    actions: @Composable() (RowScope.() -> Unit)
 ) {
     BottomAppBar(
         modifier = modifier,

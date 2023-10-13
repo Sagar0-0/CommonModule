@@ -125,16 +125,15 @@ private fun BottomAppBarLayout(
     ) {
         items.forEach { item ->
             AppNavigationBarItem(
+                selected = currentRoute == item.route,
                 icon = {
                     AppIcon(
                         imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
                         contentDescription = item.title
                     )
                 },
-                label = item.title,
-                selected = currentRoute == item.route,
-                onClick = { onNavigate(item.route) }
-            )
+                label = item.title
+            ) { onNavigate(item.route) }
         }
     }
 }

@@ -33,13 +33,13 @@ import androidx.compose.ui.unit.dp
 import com.smarttoolfactory.colorpicker.widget.drawChecker
 import fit.asta.health.common.imgCropper.ImageSelectionButton
 import fit.asta.health.common.imgCropper.cropper.ImageCropper
-import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
-import fit.asta.health.designsystem.molecular.background.AppBottomBar
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.background.AppBottomBar
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -71,25 +71,24 @@ fun ImageCropperScreen(
         },
         bottomBar = {
             AppBottomBar(
-                actions = {
-                    AppIconButton(
-                        imageVector = Icons.Filled.Crop,
-                        onClick = { crop = true }
-                    )
-                    AppIconButton(
-                        imageVector = Icons.Filled.Rotate90DegreesCw,
-                        onClick = { angle = (angle + 90) % 360f }
-                    )
-                    AppIconButton(
-                        imageVector = Icons.Filled.LockReset,
-                        onClick = { imageBitmap = null })
-                },
                 floatingActionButton = {
                     ImageSelectionButton(onImageSelected = { bitmap: ImageBitmap ->
                         imageBitmap = bitmap
                     })
                 }
-            )
+            ) {
+                AppIconButton(
+                    imageVector = Icons.Filled.Crop,
+                    onClick = { crop = true }
+                )
+                AppIconButton(
+                    imageVector = Icons.Filled.Rotate90DegreesCw,
+                    onClick = { angle = (angle + 90) % 360f }
+                )
+                AppIconButton(
+                    imageVector = Icons.Filled.LockReset,
+                    onClick = { imageBitmap = null })
+            }
         },
         content = { innerPadding ->
             Box(

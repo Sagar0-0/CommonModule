@@ -41,13 +41,12 @@ private fun DefaultPreview1() {
 
                     for (i in 1..3) {
                         AppNavigationBarItem(
+                            selected = true,
                             icon = {
                                 AppIcon(imageVector = Icons.Default.ArtTrack)
                             },
-                            label = "test",
-                            selected = true,
-                            onClick = { }
-                        )
+                            label = "test"
+                        ) { }
                     }
                 }
             }
@@ -91,7 +90,6 @@ private fun DefaultPreview1() {
 @Composable
 fun RowScope.AppNavigationBarItem(
     selected: Boolean,
-    onClick: () -> Unit,
     icon: @Composable () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
@@ -106,7 +104,8 @@ fun RowScope.AppNavigationBarItem(
         disabledIconColor = AppTheme.colors.onSurfaceVariant.copy(AppTheme.alphaValues.level2),
         disabledTextColor = AppTheme.colors.onSurfaceVariant.copy(AppTheme.alphaValues.level2)
     ),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: () -> Unit
 ) {
     NavigationBarItem(
         selected = selected,
@@ -163,14 +162,14 @@ fun RowScope.AppNavigationBarItem(
 fun RowScope.AppNavigationBarItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
-    onClick: () -> Unit,
     icon: ImageVector,
     contentDescription: String? = null,
     enabled: Boolean = true,
     label: String? = null,
     alwaysShowLabel: Boolean = true,
     colors: NavigationBarItemColors = NavigationBarItemDefaults.colors(),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: () -> Unit
 ) {
     NavigationBarItem(
         selected = selected,
@@ -232,14 +231,14 @@ fun RowScope.AppNavigationBarItem(
 fun RowScope.AppNavigationBarItem(
     modifier: Modifier = Modifier,
     selected: Boolean,
-    onClick: () -> Unit,
     icon: Painter,
     contentDescription: String? = null,
     enabled: Boolean = true,
     label: String? = null,
     alwaysShowLabel: Boolean = true,
     colors: NavigationBarItemColors = NavigationBarItemDefaults.colors(),
-    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() }
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    onClick: () -> Unit
 ) {
     NavigationBarItem(
         selected = selected,
