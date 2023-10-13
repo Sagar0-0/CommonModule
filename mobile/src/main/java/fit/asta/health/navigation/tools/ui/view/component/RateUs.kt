@@ -83,7 +83,7 @@ fun RateAppCard(
                     modifier = Modifier
                         .fillMaxSize()
                         .clip(AppTheme.shape.level2)
-                        .size(AppTheme.imageSize.newLevel)
+                        .size(AppTheme.imageSize.level10)
                         .padding(horizontal = AppTheme.spacing.level4),
                     painter = painterResource(id = R.drawable.rating_image),
                     contentDescription = "Tagline",
