@@ -23,7 +23,6 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import kotlinx.coroutines.delay
 
@@ -58,9 +57,9 @@ private fun DefaultPreview1() {
 @Composable
 fun AppDotTypingAnimation(
     modifier: Modifier = Modifier,
-    circleSize: Dp = 25.dp,
-    spaceBetween: Dp = 10.dp,
-    travelDistance: Dp = 20.dp,
+    circleSize: Dp = AppTheme.iconSize.level3,
+    spaceBetween: Dp = AppTheme.spacing.level1,
+    travelDistance: Dp = AppTheme.customSize.level3,
     contentAlignment: Alignment = Alignment.Center,
 ) {
 
