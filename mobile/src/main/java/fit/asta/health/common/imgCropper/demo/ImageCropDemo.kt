@@ -78,16 +78,14 @@ fun ImageCropperScreen(
                 }
             ) {
                 AppIconButton(
-                    imageVector = Icons.Filled.Crop,
-                    onClick = { crop = true }
-                )
+                    imageVector = Icons.Filled.Crop
+                ) { crop = true }
                 AppIconButton(
-                    imageVector = Icons.Filled.Rotate90DegreesCw,
-                    onClick = { angle = (angle + 90) % 360f }
-                )
+                    imageVector = Icons.Filled.Rotate90DegreesCw
+                ) { angle = (angle + 90) % 360f }
                 AppIconButton(
-                    imageVector = Icons.Filled.LockReset,
-                    onClick = { imageBitmap = null })
+                    imageVector = Icons.Filled.LockReset
+                ) { imageBitmap = null }
             }
         },
         content = { innerPadding ->
@@ -182,16 +180,16 @@ private fun ShowCroppedImageDialog(
                 bitmap = imageBitmap,
                 contentDescription = "result"
             )
-        }, confirmButton = {
-            AppTextButton(
-                textToShow = "Confirm",
-                onClick = onApprovedRequest
-            )
         }, dismissButton = {
             AppTextButton(
-                textToShow = "Dismiss",
-                onClick = {
-                    onDismissRequest()
-                })
-        })
+                textToShow = "Dismiss"
+            ) {
+                onDismissRequest()
+            }
+        }) {
+        AppTextButton(
+            textToShow = "Confirm",
+            onClick = onApprovedRequest
+        )
+    }
 }

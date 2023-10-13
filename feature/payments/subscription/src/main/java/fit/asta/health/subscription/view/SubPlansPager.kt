@@ -153,9 +153,8 @@ private fun SubPlanItem(
                 modifier = Modifier
                     .size(closeButtonSize)
                     .clip(CircleShape)
-                    .align(Alignment.End),
-                onClick = { onFullScreenChange(false) }
-            )
+                    .align(Alignment.End)
+            ) { onFullScreenChange(false) }
 
             Crossfade(targetState = fullScreen, label = "") {
                 if (it) {
@@ -203,23 +202,22 @@ private fun SubPlanItem(
 
             AppTextButton(
                 textToShow = buttonText,
-                enabled = !fullScreen || selectedDurationIndex != -1,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(AppTheme.spacing.level2),
-                onClick = {
-                    if (fullScreen) {
-                        onPayClick(
-                            OrderRequest(
-                                subType = item.id,
-                                durType = item.durations[selectedDurationIndex].id
-                            )
+                enabled = !fullScreen || selectedDurationIndex != -1
+            ) {
+                if (fullScreen) {
+                    onPayClick(
+                        OrderRequest(
+                            subType = item.id,
+                            durType = item.durations[selectedDurationIndex].id
                         )
-                    } else {
-                        onFullScreenChange(true)
-                    }
+                    )
+                } else {
+                    onFullScreenChange(true)
                 }
-            )
+            }
         }
 
         val animatedIconSize by transition.animateDp(label = "") {

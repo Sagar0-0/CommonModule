@@ -121,16 +121,15 @@ fun AlarmSettingScreen(
                         horizontalArrangement = Arrangement.SpaceBetween,
                     ) {
                         AppIconButton(
-                            onClick = {
-                                if (areInputsValid) {
-                                    aSEvent(AlarmSettingEvent.Save(context = context))
-                                    navBack()
-                                } else {
-                                    onClick = true
-                                }
-                            },
                             imageVector = Icons.Default.Check,
-                        )
+                        ) {
+                            if (areInputsValid) {
+                                aSEvent(AlarmSettingEvent.Save(context = context))
+                                navBack()
+                            } else {
+                                onClick = true
+                            }
+                        }
                     }
                 })
         }, content = { paddingValues ->
@@ -401,18 +400,16 @@ private fun SoundOptionsUI() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             AppTextButton(
-                onClick = {
-                    // Opening the Spotify Activity
-                    val intent = Intent(activity, SpotifyActivity::class.java)
-                    activity.startActivity(intent)
-                },
                 textToShow = stringResource(StringR.string.spotify),
-            )
+            ) {
+                // Opening the Spotify Activity
+                val intent = Intent(activity, SpotifyActivity::class.java)
+                activity.startActivity(intent)
+            }
 
             AppTextButton(
-                onClick = { /*TODO*/ },
                 textToShow = stringResource(StringR.string.local_music)
-            )
+            ) { /*TODO*/ }
         }
     }
 }

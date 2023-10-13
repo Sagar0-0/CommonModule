@@ -40,15 +40,14 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppFilledButton(
-                    onClick = {}, textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
-                )
+                    textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
+                ) {}
 
                 AppFilledButton(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled Button",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
             }
         }
     }
@@ -85,6 +84,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppFilledButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.shape,
@@ -109,8 +109,7 @@ fun AppFilledButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable (RowScope.() -> Unit)
 ) {
     Button(
         onClick = onClick,
@@ -157,9 +156,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     shape: Shape = ButtonDefaults.shape,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
@@ -237,9 +236,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -333,9 +332,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -429,9 +428,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -525,9 +524,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -623,9 +622,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String?,
     trailingIcon: ImageVector? = null,
@@ -735,9 +734,9 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String?,
     trailingIcon: Painter? = null,
@@ -847,11 +846,11 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
-    leadingIconDes: String?,
+    leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -959,11 +958,11 @@ fun AppFilledButton(
  */
 @Composable
 fun AppFilledButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
-    leadingIconDes: String?,
+    leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,

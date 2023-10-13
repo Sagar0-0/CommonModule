@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
@@ -84,12 +84,12 @@ fun ButtonWithColor(
 ) {
 
     AppFilledButton(
-        modifier = modifier,
         textToShow = text,
-        onClick = {
-            onClick()
-        }, colors = ButtonDefaults.buttonColors(containerColor = color)
-    )
+        modifier = modifier,
+        colors = ButtonDefaults.buttonColors(containerColor = color)
+    ) {
+        onClick()
+    }
 }
 
 
@@ -131,9 +131,8 @@ fun DNDCard(modifier: Modifier, mCheckedState: Boolean, onCheckClicked: (Boolean
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             HeadingTexts.Level3(text = stringResource(R.string.dnd_mode))
-            AppToggleButton(
+            AppSwitch(
                 checked = mCheckedState,
-                onCheckedChange = onCheckClicked,
                 colors = SwitchDefaults.colors(
                     checkedThumbColor = MaterialTheme.colorScheme.primary,
                     uncheckedThumbColor = MaterialTheme.colorScheme.primaryContainer,
@@ -141,7 +140,8 @@ fun DNDCard(modifier: Modifier, mCheckedState: Boolean, onCheckClicked: (Boolean
                     uncheckedTrackColor = MaterialTheme.colorScheme.background,
                     checkedBorderColor = MaterialTheme.colorScheme.primary,
                     uncheckedBorderColor = MaterialTheme.colorScheme.primary,
-                )
+                ),
+                onCheckedChange = onCheckClicked
             )
         }
     }

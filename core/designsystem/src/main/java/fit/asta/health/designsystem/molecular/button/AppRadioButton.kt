@@ -27,15 +27,13 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppRadioButton(
-                    selected = true,
-                    onClick = {}
-                )
+                    selected = true
+                ) {}
 
                 AppRadioButton(
                     selected = true,
-                    enabled = false,
-                    onClick = {}
-                )
+                    enabled = false
+                ) {}
             }
         }
     }
@@ -56,8 +54,8 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppRadioButton(
-    modifier: Modifier = Modifier,
     selected: Boolean,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: RadioButtonColors = RadioButtonDefaults.colors(
         selectedColor = AppTheme.colors.primary,

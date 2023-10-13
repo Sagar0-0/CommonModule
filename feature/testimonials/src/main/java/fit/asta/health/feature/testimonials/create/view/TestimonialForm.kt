@@ -172,8 +172,8 @@ fun TestimonialForm(
 
                 AppFilledButton(
                     textToShow = "Submit",
-                    enabled = areInputsValid && areMediaValid,
-                    modifier = Modifier.fillMaxWidth()
+                    modifier = Modifier.fillMaxWidth(),
+                    enabled = areInputsValid && areMediaValid
                 ) {
                     showCustomDialogWithResult = !showCustomDialogWithResult
                     getViewModel.onEvent(TestimonialEvent.OnSubmit)

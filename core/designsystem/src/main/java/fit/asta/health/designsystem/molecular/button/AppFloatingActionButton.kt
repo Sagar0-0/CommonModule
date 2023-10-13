@@ -64,6 +64,7 @@ private fun DefaultPreview1() {
  * */
 @Composable
 fun AppFloatingActionButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
     containerColor: Color = AppTheme.colors.primary,
@@ -75,7 +76,6 @@ fun AppFloatingActionButton(
         hoveredElevation = AppTheme.elevation.level4
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
     content: @Composable () -> Unit
 ) {
     FloatingActionButton(
@@ -114,9 +114,9 @@ fun AppFloatingActionButton(
  * */
 @Composable
 fun AppFloatingActionButton(
+    imageVector: ImageVector,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
-    imageVector: ImageVector,
     containerColor: Color = AppTheme.colors.primary,
     contentColor: Color = AppTheme.colors.onPrimary,
     elevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(
@@ -171,9 +171,9 @@ fun AppFloatingActionButton(
  * */
 @Composable
 fun AppFloatingActionButton(
+    painter: Painter,
     modifier: Modifier = Modifier,
     shape: Shape = CircleShape,
-    painter: Painter,
     containerColor: Color = AppTheme.colors.primary,
     contentColor: Color = AppTheme.colors.onPrimary,
     elevation: FloatingActionButtonElevation = FloatingActionButtonDefaults.elevation(

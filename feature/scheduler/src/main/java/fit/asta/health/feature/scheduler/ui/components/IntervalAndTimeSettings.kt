@@ -150,12 +150,12 @@ fun MinutesPicker(
         }
         Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
             AppTonalButton(
-                modifier = Modifier.weight(0.5f),
-                textToShow = stringResource(id = StringR.string.cancel)
+                textToShow = stringResource(id = StringR.string.cancel),
+                modifier = Modifier.weight(0.5f)
             ) { onCancel() }
             AppTonalButton(
-                modifier = Modifier.weight(0.5f),
-                textToShow = stringResource(StringR.string.save)
+                textToShow = stringResource(StringR.string.save),
+                modifier = Modifier.weight(0.5f)
             ) { onSave(min) }
         }
     }
@@ -194,8 +194,8 @@ fun CustomFloatingButton(
         ) {
             AppFloatingActionButton(
                 onClick = onEndAlarm,
-                shape = CircleShape,
                 modifier = Modifier.size(50.dp),
+                shape = CircleShape,
             ) {
                 AppIcon(
                     imageVector = Icons.Default.Add,
@@ -244,10 +244,10 @@ fun CustomVariantInterval(
 
                 Box(Modifier.size(24.dp), contentAlignment = Alignment.Center) {
                     AppIconButton(
-                        onClick = onClick,
                         imageVector = Icons.Rounded.RemoveCircle,
                         modifier = Modifier.size(24.dp),
-                        iconTint = AppTheme.colors.primary
+                        iconTint = AppTheme.colors.primary,
+                        onClick = onClick
                     )
                 }
             }

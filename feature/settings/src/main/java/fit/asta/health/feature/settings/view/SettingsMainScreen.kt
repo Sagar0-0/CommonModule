@@ -244,13 +244,12 @@ private fun ListPreference(
                 entries.forEachIndexed { index, entry ->
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         AppRadioButton(
-                            selected = selectedIndex == index,
-                            onClick = {
-                                showDialog = false
-                                selectedIndex = index
-                                onValueChange(values[selectedIndex])
-                            }
-                        )
+                            selected = selectedIndex == index
+                        ) {
+                            showDialog = false
+                            selectedIndex = index
+                            onValueChange(values[selectedIndex])
+                        }
                         TitleTexts.Level2(text = entry)
                     }
                 }

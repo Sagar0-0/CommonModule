@@ -44,17 +44,15 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppTonalButton(
-                    onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
 
                 AppTonalButton(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled Button",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
             }
         }
     }
@@ -91,6 +89,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppTonalButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.filledTonalShape,
@@ -114,8 +113,7 @@ fun AppTonalButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable() (RowScope.() -> Unit)
 ) {
     FilledTonalButton(
         onClick = onClick,
@@ -162,9 +160,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     shape: Shape = ButtonDefaults.filledTonalShape,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
@@ -243,9 +241,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
@@ -341,9 +339,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
@@ -439,9 +437,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
@@ -537,9 +535,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
@@ -637,9 +635,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -751,9 +749,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
@@ -865,9 +863,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -979,9 +977,9 @@ fun AppTonalButton(
  */
 @Composable
 fun AppTonalButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,

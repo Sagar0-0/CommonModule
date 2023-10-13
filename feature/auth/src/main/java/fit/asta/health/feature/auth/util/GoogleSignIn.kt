@@ -42,19 +42,18 @@ fun GoogleSignIn(
     }
 
     AppOutlinedButton(
+        textToShow = stringResource(id = textId),
         modifier = Modifier
             .fillMaxWidth()
             .height(AppTheme.buttonSize.level7),
-        onClick = {
-            val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-                .requestIdToken(token)
-                .requestEmail()
-                .build()
+        leadingIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18)
+    ) {
+        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(token)
+            .requestEmail()
+            .build()
 
-            val googleSignInClient = GoogleSignIn.getClient(context, gso)
-            launcher.launch(googleSignInClient.signInIntent)
-        },
-        leadingIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18),
-        textToShow = stringResource(id = textId)
-    )
+        val googleSignInClient = GoogleSignIn.getClient(context, gso)
+        launcher.launch(googleSignInClient.signInIntent)
+    }
 }

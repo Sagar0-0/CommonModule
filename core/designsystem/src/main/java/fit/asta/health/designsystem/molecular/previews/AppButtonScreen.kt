@@ -24,8 +24,8 @@ import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -74,15 +74,13 @@ fun AppButtonScreen() {
 
                     // Filled button With Texts Passed down to it
                     AppFilledButton(
-                        onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                     AppFilledButton(
-                        onClick = { /*TODO*/ },
-                        enabled = false,
-                        textToShow = "Disabled"
-                    )
+                        textToShow = "Disabled",
+                        enabled = false
+                    ) { /*TODO*/ }
                 }
 
                 TitleTexts.Level1(text = "Tonal Buttons")
@@ -91,17 +89,15 @@ fun AppButtonScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppTonalButton(
-                        onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) {}
 
                     AppTonalButton(
-                        enabled = false,
-                        onClick = {},
                         textToShow = "Disabled",
+                        enabled = false,
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) {}
                 }
 
                 TitleTexts.Level1(text = "Elevated Buttons")
@@ -110,17 +106,15 @@ fun AppButtonScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppElevatedButton(
-                        onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) {}
 
                     AppElevatedButton(
-                        enabled = false,
-                        onClick = {},
                         textToShow = "Disabled",
+                        enabled = false,
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) {}
                 }
 
                 // Outlined Button Section
@@ -132,16 +126,14 @@ fun AppButtonScreen() {
 
                     // Filled button With Texts Passed down to it
                     AppOutlinedButton(
-                        onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                     AppOutlinedButton(
-                        onClick = { /*TODO*/ },
-                        enabled = false,
                         textToShow = "Disabled",
+                        enabled = false,
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                 }
 
                 // Icon Button Section
@@ -153,13 +145,12 @@ fun AppButtonScreen() {
 
                     // Icon Button from Material Icons
                     AppIconButton(
-                        imageVector = Icons.Default.Person, onClick = { /*TODO*/ }
-                    )
+                        imageVector = Icons.Default.Person
+                    ) { /*TODO*/ }
                     AppIconButton(
                         imageVector = Icons.Default.Person,
-                        onClick = { /*TODO*/ },
                         enabled = false
-                    )
+                    ) { /*TODO*/ }
                 }
 
                 // Asta Text Buttons
@@ -171,16 +162,14 @@ fun AppButtonScreen() {
 
                     // Filled button With Texts Passed down to it
                     AppTextButton(
-                        onClick = { /*TODO*/ },
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                     AppTextButton(
-                        onClick = { /*TODO*/ },
-                        enabled = false,
                         textToShow = "Disabled",
+                        enabled = false,
                         leadingIcon = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                 }
 
 
@@ -200,9 +189,8 @@ fun AppButtonScreen() {
                     }
 
                     AppFloatingActionButton(
-                        onClick = { /*TODO*/ },
                         imageVector = Icons.Default.Person
-                    )
+                    ) { /*TODO*/ }
                 }
 
                 // Radio Buttons
@@ -212,15 +200,13 @@ fun AppButtonScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppRadioButton(
-                        selected = true,
-                        onClick = {}
-                    )
+                        selected = true
+                    ) {}
 
                     AppRadioButton(
                         selected = true,
-                        enabled = false,
-                        onClick = {}
-                    )
+                        enabled = false
+                    ) {}
                 }
 
 
@@ -230,11 +216,11 @@ fun AppButtonScreen() {
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AppToggleButton(
+                    AppSwitch(
                         checked = true,
                     )
 
-                    AppToggleButton(
+                    AppSwitch(
                         checked = false,
                         enabled = false
                     )

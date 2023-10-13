@@ -222,11 +222,11 @@ internal fun MapScreen(
                     .align(Alignment.BottomCenter)
             ) {
                 AppIconButton(
+                    imageVector = Icons.Default.MyLocation,
                     modifier = Modifier
                         .padding(AppTheme.spacing.level2)
                         .align(Alignment.End)
                         .size(AppTheme.buttonSize.level4),
-                    imageVector = Icons.Default.MyLocation,
                     iconDesc = R.string.use_my_current_location.toStringFromResId()
                 ) {
                     onUiEvent(MapScreenUiEvent.UseCurrentLocation)

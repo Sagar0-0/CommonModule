@@ -41,21 +41,19 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppFilterChip(
-                    onClick = {},
                     textToShow = "Enabled",
+                    selected = true,
                     leadingIcon = Icons.Default.Person,
-                    trailingIcon = Icons.Default.TrackChanges,
-                    selected = true
-                )
+                    trailingIcon = Icons.Default.TrackChanges
+                ) {}
 
                 AppFilterChip(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled",
+                    selected = false,
+                    enabled = false,
                     leadingIcon = Icons.Default.Person,
-                    trailingIcon = Icons.Default.TrackChanges,
-                    selected = false
-                )
+                    trailingIcon = Icons.Default.TrackChanges
+                ) {}
             }
         }
     }
@@ -100,10 +98,10 @@ private fun DefaultPreview1() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppFilterChip(
-    modifier: Modifier = Modifier,
-    selected: Boolean,
-    enabled: Boolean = true,
     textToShow: String,
+    selected: Boolean,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,

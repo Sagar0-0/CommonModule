@@ -198,11 +198,11 @@ private fun MediaContent(
                 }
             )
             AppIconButton(
+                onClick = if (isLandscape) exitFullscreen else enterFullscreen,
                 modifier = Modifier
                     .align(Alignment.TopEnd)
                     .padding(8.dp)
-                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(30.dp)),
-                onClick = if (isLandscape) exitFullscreen else enterFullscreen
+                    .background(Color.Black.copy(alpha = 0.6f), RoundedCornerShape(30.dp))
             ) {
                 AppIcon(
                     imageVector = Icons.Filled.Fullscreen,

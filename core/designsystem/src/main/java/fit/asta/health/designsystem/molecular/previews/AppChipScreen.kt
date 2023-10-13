@@ -67,19 +67,17 @@ fun AppChipScreen() {
                 ) {
 
                     AppAssistChip(
-                        onClick = {},
                         textToShow = "Enabled",
                         leadingIcon = Icons.Default.Person,
                         trailingIcon = Icons.Default.TrackChanges
-                    )
+                    ) {}
 
                     AppAssistChip(
-                        enabled = false,
-                        onClick = {},
                         textToShow = "Disabled",
+                        enabled = false,
                         leadingIcon = Icons.Default.Person,
                         trailingIcon = Icons.Default.TrackChanges
-                    )
+                    ) {}
                 }
 
 
@@ -90,21 +88,19 @@ fun AppChipScreen() {
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppFilterChip(
-                        onClick = {},
                         textToShow = "Enabled",
+                        selected = true,
                         leadingIcon = Icons.Default.Person,
-                        trailingIcon = Icons.Default.TrackChanges,
-                        selected = true
-                    )
+                        trailingIcon = Icons.Default.TrackChanges
+                    ) {}
 
                     AppFilterChip(
-                        enabled = false,
-                        onClick = {},
                         textToShow = "Disabled",
+                        selected = false,
+                        enabled = false,
                         leadingIcon = Icons.Default.Person,
-                        trailingIcon = Icons.Default.TrackChanges,
-                        selected = false
-                    )
+                        trailingIcon = Icons.Default.TrackChanges
+                    ) {}
                 }
             }
         }

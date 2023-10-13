@@ -75,8 +75,8 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -204,8 +204,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,
@@ -337,8 +337,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -470,8 +470,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     trailingIconDes: String? = null,
@@ -601,8 +601,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     trailingIconDes: String? = null,
@@ -737,8 +737,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,
@@ -883,8 +883,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -1029,8 +1029,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -1175,8 +1175,8 @@ fun AppTextField(
  */
 @Composable
 fun AppTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,

@@ -312,14 +312,13 @@ fun PhoneSignIn(
         ) {
             AppTextButton(
                 textToShow = stringResource(id = StringR.string.generate_otp),
-                enabled = !loading && !codeSent,
-                onClick = {
-                    onSendOtp()
-                },
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2)
-            )
+                    .padding(AppTheme.spacing.level2),
+                enabled = !loading && !codeSent
+            ) {
+                onSendOtp()
+            }
         }
 
         AnimatedVisibility(
@@ -350,22 +349,20 @@ fun PhoneSignIn(
 
                 AppTextButton(
                     textToShow = stringResource(id = StringR.string.verify_otp),
-                    enabled = !loading,
-                    onClick = {
-                        onOtpSubmit()
-                    },
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level2)
-                )
+                        .padding(AppTheme.spacing.level2),
+                    enabled = !loading
+                ) {
+                    onOtpSubmit()
+                }
                 AppTextButton(
                     textToShow = if (ticks > 0) "Resend code in $ticks seconds" else "Still not received?",
-                    enabled = !loading && ticks == 0,
-                    onClick = { codeSent = false },
                     modifier = Modifier
                         .align(Alignment.End)
-                        .padding(AppTheme.spacing.level2)
-                )
+                        .padding(AppTheme.spacing.level2),
+                    enabled = !loading && ticks == 0
+                ) { codeSent = false }
             }
         }
     }

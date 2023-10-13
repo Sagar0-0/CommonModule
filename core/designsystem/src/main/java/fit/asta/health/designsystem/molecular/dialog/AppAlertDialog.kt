@@ -28,9 +28,8 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppAlertDialog(
-                    onDismissRequest = {},
-                    confirmButton = {}
-                )
+                    onDismissRequest = {}
+                ) {}
             }
         }
     }
@@ -69,9 +68,8 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppAlertDialog(
-    modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    confirmButton: @Composable () -> Unit,
+    modifier: Modifier = Modifier,
     text: @Composable (() -> Unit)? = null,
     dismissButton: @Composable (() -> Unit)? = null,
     icon: @Composable (() -> Unit)? = null,
@@ -82,7 +80,8 @@ fun AppAlertDialog(
     titleContentColor: Color = AppTheme.colors.onSurface,
     textContentColor: Color = AppTheme.colors.onSurfaceVariant,
     tonalElevation: Dp = AppTheme.elevation.level3,
-    properties: DialogProperties = DialogProperties()
+    properties: DialogProperties = DialogProperties(),
+    confirmButton: @Composable () -> Unit
 ) {
     AlertDialog(
         modifier = modifier,

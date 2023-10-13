@@ -74,5 +74,5 @@ fun TextSelection(
 
 @Composable
 fun SelectableText(arrowTitle: String,btnEnabled: Boolean=true, onClick: () -> Unit = {}) {
-    AppTextButton(onClick = onClick, enabled = btnEnabled, textToShow = arrowTitle)
+    AppTextButton(textToShow = arrowTitle, enabled = btnEnabled, onClick = onClick)
 }

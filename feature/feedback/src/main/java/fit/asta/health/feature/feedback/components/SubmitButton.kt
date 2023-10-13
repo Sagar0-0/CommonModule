@@ -17,14 +17,13 @@ fun SubmitButton(
     onClick?.let {
         AppTextButton(
             textToShow = text,
-            enabled = enabled,
-            onClick = {
-                onDisable()
-                it()
-            },
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2)
-        )
+                .padding(horizontal = AppTheme.spacing.level2),
+            enabled = enabled
+        ) {
+            onDisable()
+            it()
+        }
     }
 }

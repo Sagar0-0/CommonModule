@@ -123,8 +123,8 @@ fun TimeSelectionLayout(title: String) {
         Spacer(modifier = Modifier.height(16.dp))
         AppFilledButton(
             onClick = { /*TODO*/ },
-            shape = RoundedCornerShape(5.dp),
             modifier = Modifier.fillMaxWidth(),
+            shape = RoundedCornerShape(5.dp),
             border = BorderStroke(2.dp, color = Color(0x99E4E4E4))
         ) {
             TitleTexts.Level3(

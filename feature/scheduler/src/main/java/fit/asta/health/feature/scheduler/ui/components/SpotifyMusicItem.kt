@@ -83,8 +83,8 @@ fun SpotifyMusicItem(
         }
 
         AppOutlinedButton(
-            modifier = Modifier.weight(.3f),
             textToShow = stringResource(StringR.string.apply),
+            modifier = Modifier.weight(.3f),
             onClick = onApplyClick
         )
     }

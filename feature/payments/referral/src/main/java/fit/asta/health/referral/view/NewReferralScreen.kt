@@ -104,10 +104,9 @@ fun NewReferralDesign() {
                                 color = AppTheme.colors.primary
                             )
                             AppTextButton(
-                                onClick = { /*TODO*/ },
-                                leadingIcon = Icons.Filled.ContentCopy,
-                                textToShow = "Copy"
-                            )
+                                textToShow = "Copy",
+                                leadingIcon = Icons.Filled.ContentCopy
+                            ) { /*TODO*/ }
                         }
                     }
                 }

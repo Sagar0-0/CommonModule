@@ -76,20 +76,20 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     Row(horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level4)) {
-                        AppFilledButton(onClick = {
+                        AppFilledButton(textToShow = stringResource(id = StringR.string.snooze)) {
                             event(
                                 AlarmEvent.onSwipedLeft(
                                     context
                                 )
                             )
-                        }, textToShow = stringResource(id = StringR.string.snooze))
-                        AppFilledButton(onClick = {
+                        }
+                        AppFilledButton(textToShow = stringResource(StringR.string.stop)) {
                             event(
                                 AlarmEvent.onSwipedRight(
                                     context
                                 )
                             )
-                        }, textToShow = stringResource(StringR.string.stop))
+                        }
                     }
                 }
             }

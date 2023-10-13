@@ -63,8 +63,9 @@ fun TwoTogglesGroup(
                 Row(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
-                    AppRadioButton(selected = selectedOption == option,
-                        onClick = { onStateChange(option) })
+                    AppRadioButton(
+                        selected = selectedOption == option
+                    ) { onStateChange(option) }
                     CaptionTexts.Level4(
                         text = when (option) {
                             TwoRadioBtnSelections.First -> firstOption
@@ -110,8 +111,8 @@ fun ThreeTogglesGroups(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
                     AppRadioButton(
-                        selected = selectedOption == option,
-                        onClick = { onStateChange(option) })
+                        selected = selectedOption == option
+                    ) { onStateChange(option) }
                     CaptionTexts.Level3(
                         text = when (option) {
                             ThreeRadioBtnSelections.First -> firstOption

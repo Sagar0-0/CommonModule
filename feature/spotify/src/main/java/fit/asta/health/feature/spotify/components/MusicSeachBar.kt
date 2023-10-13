@@ -87,16 +87,16 @@ fun SearchBar(
                     // Clear Button
                     AppIconButton(
                         imageVector = Icons.Outlined.Clear,
-                        iconDesc = "Clear Button",
-                        modifier = Modifier.size(AppTheme.iconSize.level3)
+                        modifier = Modifier.size(AppTheme.iconSize.level3),
+                        iconDesc = "Clear Button"
                     ) { onUserInputChange("") }
                 }
 
                 // Filter / Sort Icons
                 AppIconButton(
                     imageVector = Icons.Outlined.Sort,
-                    iconDesc = "Filter Button",
-                    modifier = Modifier.size(AppTheme.iconSize.level3)
+                    modifier = Modifier.size(AppTheme.iconSize.level3),
+                    iconDesc = "Filter Button"
                 ) { onFilterButtonClick() }
             }
         },

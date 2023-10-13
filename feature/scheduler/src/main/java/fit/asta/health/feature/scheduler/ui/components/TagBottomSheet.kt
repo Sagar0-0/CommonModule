@@ -59,12 +59,12 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
-        elevation = ButtonDefaults.buttonElevation(5.dp),
         shape = RoundedCornerShape(8.dp),
         colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        interactionSource = interactionSource,
+        elevation = ButtonDefaults.buttonElevation(5.dp),
+        border = BorderStroke(width = 3.dp, color = color),
         contentPadding = PaddingValues(0.dp),
-        border = BorderStroke(width = 3.dp, color = color)
+        interactionSource = interactionSource
     ) {
         SwipeAbleArea(text, image)
     }
@@ -140,22 +140,25 @@ fun CustomTagBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            AppIconButton(imageVector = Icons.Default.Close,
-                modifier = Modifier.size(24.dp), onClick = {
-                    onNavigateBack()
-                    keyboardController?.hide()
-                })
+            AppIconButton(
+                imageVector = Icons.Default.Close,
+                modifier = Modifier.size(24.dp)
+            ) {
+                onNavigateBack()
+                keyboardController?.hide()
+            }
             TitleTexts.Level2(
                 text = stringResource(StringR.string.custom_tags),
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(imageVector = Icons.Default.Check,
-                iconTint = AppTheme.colors.primary,
-                onClick = {
-                    onSave()
-                    keyboardController?.hide()
-                })
+            AppIconButton(
+                imageVector = Icons.Default.Check,
+                iconTint = AppTheme.colors.primary
+            ) {
+                onSave()
+                keyboardController?.hide()
+            }
         }
         Spacer(modifier = Modifier.height(20.dp))
         CustomTagImage(onImageSelect = onImageSelect, image = image)

@@ -121,8 +121,8 @@ fun TagsScreen(
         floatingActionButton = {
             AppFloatingActionButton(
                 onClick = { openSheet() },
-                shape = CircleShape,
                 modifier = Modifier.size(50.dp),
+                shape = CircleShape,
             ) {
                 AppIcon(imageVector = Icons.Filled.Add, contentDescription = null)
             }

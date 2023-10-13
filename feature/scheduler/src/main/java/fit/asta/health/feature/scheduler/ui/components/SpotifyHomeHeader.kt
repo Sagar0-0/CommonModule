@@ -30,10 +30,10 @@ fun SpotifyHomeHeader(onSearchIconClicked: () -> Unit) {
         // Search Icon
         AppIconButton(
             imageVector = Icons.Outlined.Search,
-            iconDesc = stringResource(StringR.string.search),
+            modifier = Modifier.size(AppTheme.iconSize.level3),
 
             // Modifications
-            modifier = Modifier.size(AppTheme.iconSize.level3),
+            iconDesc = stringResource(StringR.string.search),
             onClick = onSearchIconClicked
         )
     }

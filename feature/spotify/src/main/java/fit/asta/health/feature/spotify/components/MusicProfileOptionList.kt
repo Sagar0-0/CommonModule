@@ -42,8 +42,8 @@ fun MusicProfileOptionList(
 
         categoryList.forEachIndexed { index, option ->
             AppFilterChip(
-                selected = (index == selectedItem),
                 textToShow = option,
+                selected = (index == selectedItem),
                 modifier = Modifier.padding(
                     horizontal = AppTheme.spacing.level1,
                     vertical = AppTheme.spacing.level0

@@ -192,8 +192,8 @@ internal fun FillAddressSheet(
                     area = myAddressItem.shortAddress
                 )
                 AppIconButton(
-                    modifier = Modifier.align(Alignment.CenterEnd),
                     imageVector = Icons.Default.Close,
+                    modifier = Modifier.align(Alignment.CenterEnd),
                     iconDesc = R.string.close.toStringFromResId()
                 ) { closeSheet() }
             }
@@ -364,12 +364,12 @@ internal fun FillAddressSheet(
                     else -> {
                         AppOutlinedButton(
                             textToShow = R.string.save_address.toStringFromResId(),
-                            onClick = onSaveAddressClick,
                             modifier = Modifier
                                 .padding(AppTheme.spacing.level2)
                                 .fillMaxWidth()
                                 .clip(AppTheme.shape.level2),
-                            enabled = isNameValid && isHnValid && isBlkValid && isPhoneValid
+                            enabled = isNameValid && isHnValid && isBlkValid && isPhoneValid,
+                            onClick = onSaveAddressClick
                         )
                     }
                 }

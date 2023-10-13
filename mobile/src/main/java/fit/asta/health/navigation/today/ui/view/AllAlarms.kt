@@ -38,7 +38,7 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -75,8 +75,8 @@ fun AllAlarms(
                         )
                     )
                 },
-                shape = CircleShape,
                 modifier = Modifier.size(50.dp),
+                shape = CircleShape,
             ) {
                 AppIcon(imageVector = Icons.Filled.Add, contentDescription = null)
             }
@@ -161,13 +161,13 @@ fun AlarmItem(
             }
             Row {
                 AppTextButton(
-                    modifier = Modifier.weight(.5f),
                     textToShow = stringResource(R.string.reschedule),
+                    modifier = Modifier.weight(.5f),
                     onClick = onSchedule
                 )
-                AppToggleButton(
-                    modifier = Modifier.weight(.5f),
+                AppSwitch(
                     checked = state,
+                    modifier = Modifier.weight(.5f),
                     onCheckedChange = onStateChange
                 )
             }

@@ -41,15 +41,14 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppOutlinedButton(
-                    onClick = {}, textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
-                )
+                    textToShow = "Enabled Button", leadingIcon = Icons.Default.Person
+                ) {}
 
                 AppOutlinedButton(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled Button",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
             }
         }
     }
@@ -85,6 +84,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppOutlinedButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = AppTheme.shape.level2,
@@ -103,8 +103,7 @@ fun AppOutlinedButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable (RowScope.() -> Unit)
 ) {
     OutlinedButton(
         onClick = onClick,
@@ -150,9 +149,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
@@ -227,9 +226,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
@@ -319,9 +318,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
@@ -411,9 +410,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onSurface,
@@ -503,9 +502,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onSurface,
@@ -597,9 +596,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -705,9 +704,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
@@ -813,9 +812,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -921,9 +920,9 @@ fun AppOutlinedButton(
  */
 @Composable
 fun AppOutlinedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,

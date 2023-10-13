@@ -188,11 +188,10 @@ fun TrackSelectionDialog(
                             Row {
                                 AppRadioButton(
                                     selected = selectedTrackIndex == index,
-                                    onClick = {
-                                        selectedTrackIndex = index
-                                        onTrackSelected(index)
-                                    },
-                                )
+                                ) {
+                                    selectedTrackIndex = index
+                                    onTrackSelected(index)
+                                }
                                 BodyTexts.Level1(text = item)
                             }
                         }

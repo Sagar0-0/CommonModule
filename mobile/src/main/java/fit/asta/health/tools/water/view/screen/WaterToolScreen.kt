@@ -558,21 +558,19 @@ fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString:
 
                 Row(Modifier.padding(top = 10.dp)) {
                     AppOutlinedButton(
-                        onClick = { onDismiss() },
+                        textToShow = "Cancel",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .weight(1F),
-                        textToShow = "Cancel"
-                    )
+                            .weight(1F)
+                    ) { onDismiss() }
                     AppFilledButton(
-                        onClick = { onUpdate() },
+                        textToShow = "Update",
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
-                            .weight(1F),
-                        textToShow = "Update"
-                    )
+                            .weight(1F)
+                    ) { onUpdate() }
                 }
             }
         }

@@ -76,8 +76,8 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: @Composable (() -> Unit)? = null,
@@ -206,8 +206,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,
@@ -340,8 +340,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -474,8 +474,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     trailingIconDes: String? = null,
@@ -606,8 +606,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     trailingIconDes: String? = null,
@@ -743,8 +743,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,
@@ -890,8 +890,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -1037,8 +1037,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: Painter? = null,
@@ -1184,8 +1184,8 @@ fun AppOutlinedTextField(
  */
 @Composable
 fun AppOutlinedTextField(
-    modifier: Modifier = Modifier,
     value: String,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     label: String = "",
     leadingIcon: ImageVector? = null,

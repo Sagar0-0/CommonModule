@@ -55,12 +55,12 @@ fun AlertDialogPopUp(
                         BodyTexts.Level1(text = stringResource(id = R.string.cancel))
                     }
                     AppTonalButton(
-                        onClick = onDone,
+                        textToShow = actionButton,
                         modifier = Modifier
                             .fillMaxWidth()
                             .padding(8.dp)
                             .weight(1F),
-                        textToShow = actionButton
+                        onClick = onDone
                     )
                 }
             }

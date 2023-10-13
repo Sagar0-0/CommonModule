@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.AppTheme
 fun AppLocalImage(
     modifier: Modifier = Modifier,
     imageVector: ImageVector,
-    contentDescription: String?,
+    contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.FillBounds,
     colorFilter: ColorFilter? = null
 ) {
