@@ -6,10 +6,10 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
@@ -23,6 +23,8 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
@@ -58,7 +60,7 @@ fun RateAppCard(
     }
 
     var isVisible by remember { mutableStateOf(true) }
-    val rating by remember { mutableIntStateOf(5) }
+    val rating by remember { mutableIntStateOf(3) }
 
     val ratingState = rememberUpdatedState(newValue = rating)
 
@@ -76,14 +78,16 @@ fun RateAppCard(
                     isVisible = false
                 }
 
-                // Asta Image
+                // Rating Image
                 AppLocalImage(
                     modifier = Modifier
                         .fillMaxSize()
-                        .padding(horizontal = AppTheme.spacing.level4)
-                        .aspectRatio(AppTheme.aspectRatio.common),
-                    painter = painterResource(id = R.drawable.splash_logo),
-                    contentDescription = "Tagline"
+                        .clip(AppTheme.shape.level2)
+                        .size(AppTheme.imageSize.newLevel)
+                        .padding(horizontal = AppTheme.spacing.level4),
+                    painter = painterResource(id = R.drawable.rating_image),
+                    contentDescription = "Tagline",
+                    contentScale = ContentScale.Fit
                 )
 
 
@@ -93,7 +97,8 @@ fun RateAppCard(
                     modifier = Modifier
                         .padding(horizontal = AppTheme.spacing.level4)
                         .alpha(.7f),
-                    textAlign = TextAlign.Center
+                    textAlign = TextAlign.Center,
+                    maxLines = 3
                 )
 
                 // Rating Stars Function

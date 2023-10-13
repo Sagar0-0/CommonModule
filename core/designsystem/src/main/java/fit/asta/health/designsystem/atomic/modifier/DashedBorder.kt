@@ -4,7 +4,6 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
@@ -38,7 +37,7 @@ private fun DefaultPreview() {
                     .dashedBorder(
                         width = 1.dp,
                         radius = AppTheme.customSize.level1,
-                        color = MaterialTheme.colorScheme.onSurfaceVariant
+                        color = AppTheme.colors.onSurfaceVariant
                     )
             )
         }
@@ -55,7 +54,6 @@ private fun DefaultPreview() {
  * @param radius: The radius of the corners of the rounded rectangle forming the border. This is specified in density-independent pixels (Dp).
  * @param color: The color of the dashed border.
  * */
-
 fun Modifier.dashedBorder(width: Dp, radius: Dp, color: Color) = drawBehind {
     drawIntoCanvas {
         val paint = Paint().apply {

@@ -27,7 +27,7 @@ fun ToolsHmScreenTopBanner(
                 model = imgUrl,
                 contentDescription = "ToolsHm Banner",
                 modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Fit
+                contentScale = ContentScale.FillBounds
             )
         }
 
