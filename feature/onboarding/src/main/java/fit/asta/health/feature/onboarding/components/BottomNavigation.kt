@@ -17,7 +17,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AppTheme.spacing.level3),
+            .padding(bottom = AppTheme.spacing.level2),
         verticalAlignment = Alignment.Bottom,
         horizontalArrangement = if (lastPage) Arrangement.End else Arrangement.SpaceBetween
     ) {
@@ -25,7 +25,7 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = R.string.proceed.toStringFromResId(),
                 modifier = Modifier
-                    .padding(end = AppTheme.spacing.level3),
+                    .padding(end = AppTheme.spacing.level2),
             ) {
                 onSkipClick()
             }
@@ -33,14 +33,14 @@ fun BottomNavigationSection(lastPage: Boolean, onNextClick: () -> Unit, onSkipCl
             OnBoardingButton(
                 text = "Skip",
                 modifier = Modifier
-                    .padding(start = AppTheme.spacing.level3),
+                    .padding(start = AppTheme.spacing.level2),
             ) {
                 onSkipClick()
             }
             OnBoardingButton(
                 text = "Next",
                 modifier = Modifier
-                    .padding(end = AppTheme.spacing.level3),
+                    .padding(end = AppTheme.spacing.level2),
             ) {
                 onNextClick()
             }

@@ -79,7 +79,7 @@ fun SearchScreen(
         SearchBar(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3),
+                .padding(horizontal = AppTheme.spacing.level2),
             userInput = userSearchInput.value,
             onUserInputChange = { userSearchInput.value = it },
             onFilterButtonClick = { isSortActive.value = !isSortActive.value }
@@ -147,7 +147,7 @@ fun SearchScreen(
                         item {
                             HeadingTexts.Level1(
                                 text = stringResource(id = R.string.tracks),
-                                modifier = Modifier.padding(AppTheme.spacing.level3)
+                                modifier = Modifier.padding(AppTheme.spacing.level2)
                             )
                         }
 
@@ -184,7 +184,7 @@ fun SearchScreen(
                         item {
                             HeadingTexts.Level1(
                                 text = stringResource(id = R.string.artists),
-                                modifier = Modifier.padding(AppTheme.spacing.level3)
+                                modifier = Modifier.padding(AppTheme.spacing.level2)
                             )
                         }
 
@@ -219,7 +219,7 @@ fun SearchScreen(
                         item {
                             HeadingTexts.Level1(
                                 text = stringResource(id = R.string.albums),
-                                modifier = Modifier.padding(AppTheme.spacing.level3)
+                                modifier = Modifier.padding(AppTheme.spacing.level2)
                             )
                         }
 
@@ -259,7 +259,7 @@ fun SearchScreen(
                         item {
                             HeadingTexts.Level1(
                                 text = stringResource(id = R.string.playlists),
-                                modifier = Modifier.padding(AppTheme.spacing.level3)
+                                modifier = Modifier.padding(AppTheme.spacing.level2)
                             )
                         }
 
@@ -281,7 +281,7 @@ fun SearchScreen(
                     }
 
                     item {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level4))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                     }
                 }
             }

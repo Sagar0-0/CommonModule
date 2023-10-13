@@ -97,10 +97,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = ButtonDefaults.outlinedButtonBorder,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
@@ -163,10 +163,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = ButtonDefaults.outlinedButtonBorder,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -233,7 +233,7 @@ fun AppOutlinedButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -243,10 +243,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -267,7 +267,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -325,7 +325,7 @@ fun AppOutlinedButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -335,10 +335,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -360,7 +360,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -417,7 +417,7 @@ fun AppOutlinedButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -427,10 +427,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -460,7 +460,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -509,7 +509,7 @@ fun AppOutlinedButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -519,10 +519,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -552,7 +552,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -605,7 +605,7 @@ fun AppOutlinedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -615,10 +615,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -640,7 +640,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -660,7 +660,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -713,7 +713,7 @@ fun AppOutlinedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -723,10 +723,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -748,7 +748,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -768,7 +768,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -821,7 +821,7 @@ fun AppOutlinedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -831,10 +831,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -856,7 +856,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -876,7 +876,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -929,7 +929,7 @@ fun AppOutlinedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -939,10 +939,10 @@ fun AppOutlinedButton(
     elevation: ButtonElevation? = null,
     border: BorderStroke? = BorderStroke(width = 1.dp, color = AppTheme.colors.onSurface),
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -964,7 +964,7 @@ fun AppOutlinedButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -984,7 +984,7 @@ fun AppOutlinedButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else

@@ -96,7 +96,7 @@ fun ShareReferralUi(
                                 ReferredUserItem(
                                     modifier = Modifier
                                         .fillMaxWidth()
-                                        .padding(AppTheme.spacing.level3),
+                                        .padding(AppTheme.spacing.level2),
                                     user = it
                                 )
                             }
@@ -110,7 +110,7 @@ fun ShareReferralUi(
                                     ReferredUserItem(
                                         modifier = Modifier
                                             .fillMaxWidth()
-                                            .padding(AppTheme.spacing.level3),
+                                            .padding(AppTheme.spacing.level2),
                                         user = user
                                     )
                                 }
@@ -131,11 +131,11 @@ fun ReferralCustomCard(title: String, content: @Composable () -> Unit) {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3),
+            .padding(AppTheme.spacing.level2),
     ) {
         TitleTexts.Level2(
             modifier = Modifier
-                .padding(top = AppTheme.spacing.level3, start = AppTheme.spacing.level3),
+                .padding(top = AppTheme.spacing.level2, start = AppTheme.spacing.level2),
             text = title,
             textAlign = TextAlign.Start
         )
@@ -151,7 +151,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level3)
+                .padding(AppTheme.spacing.level2)
                 .clickable {
                     shareReferralCode(code)
                 },
@@ -159,7 +159,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             TitleTexts.Level2(
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
-                    .padding(AppTheme.spacing.level5),
+                    .padding(AppTheme.spacing.level4),
                 text = stringResource(id = StringR.string.refer_and_earn),
                 textAlign = TextAlign.Center
             )
@@ -167,9 +167,9 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 modifier = Modifier
                     .align(Alignment.CenterHorizontally)
                     .padding(
-                        bottom = AppTheme.spacing.level5,
-                        start = AppTheme.spacing.level5,
-                        end = AppTheme.spacing.level5
+                        bottom = AppTheme.spacing.level4,
+                        start = AppTheme.spacing.level4,
+                        end = AppTheme.spacing.level4
                     ),
                 text = stringResource(id = StringR.string.refer_invite_text),
                 textAlign = TextAlign.Center,
@@ -177,7 +177,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
             AppIcon(
                 modifier = Modifier
                     .clip(CircleShape)
-                    .padding(AppTheme.spacing.level3)
+                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.CenterHorizontally),
                 imageVector = Icons.Default.Share,
                 contentDescription = ""
@@ -186,7 +186,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
         }
         Box(
             modifier = Modifier
-                .padding(AppTheme.spacing.level3)
+                .padding(AppTheme.spacing.level2)
                 .align(Alignment.CenterHorizontally)
                 .dashedBorder(
                     width = 1.dp,
@@ -200,7 +200,7 @@ private fun ReferralCard(code: String, shareReferralCode: (String) -> Unit) {
                 }
         ) {
             TitleTexts.Level2(
-                modifier = Modifier.padding(AppTheme.spacing.level3),
+                modifier = Modifier.padding(AppTheme.spacing.level2),
                 text = stringResource(id = StringR.string.code_side_text) + code,
                 textAlign = TextAlign.Center
             )
@@ -223,7 +223,7 @@ private fun ReferredUserItem(
     ) {
         Image(
             modifier = Modifier
-                .padding(AppTheme.spacing.level2)
+                .padding(AppTheme.spacing.level1)
                 .clip(CircleShape),
             painter = rememberAsyncImagePainter(
                 model = getImgUrl(url = user.pic),

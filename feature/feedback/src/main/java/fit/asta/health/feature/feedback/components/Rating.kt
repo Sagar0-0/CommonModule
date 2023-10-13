@@ -22,7 +22,7 @@ fun Rating(updatedRating: (Int) -> Unit) {
         Row(
             Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
+                .padding(AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
             RatingBar(
@@ -35,7 +35,7 @@ fun Rating(updatedRating: (Int) -> Unit) {
                 config = RatingBarConfig().size(AppTheme.boxSize.level3)
                     .activeColor(AppTheme.colors.tertiary)
                     .inactiveColor(AppTheme.colors.onBackground.copy(AppTheme.alphaValues.level3))
-                    .padding(AppTheme.spacing.level2)
+                    .padding(AppTheme.spacing.level1)
             )
         }
     }

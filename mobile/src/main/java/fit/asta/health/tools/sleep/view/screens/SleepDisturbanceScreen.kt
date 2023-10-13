@@ -73,7 +73,7 @@ fun SleepDisturbanceScreen(
                     modifier = Modifier
                         .fillMaxSize()
                         .padding(top = 24.dp, bottom = 16.dp, start = 16.dp, end = 16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 

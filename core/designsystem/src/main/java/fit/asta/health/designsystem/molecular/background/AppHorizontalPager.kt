@@ -88,7 +88,7 @@ fun <T> AppHorizontalPager(
                 pagerState = pagerState,
                 modifier = Modifier
                     .align(Alignment.BottomCenter)
-                    .padding(bottom = AppTheme.spacing.level3)
+                    .padding(bottom = AppTheme.spacing.level2)
             )
         }
     }

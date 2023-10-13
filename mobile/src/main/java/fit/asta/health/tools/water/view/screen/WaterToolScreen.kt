@@ -122,7 +122,7 @@ fun WaterToolScreen(
                 .fillMaxSize()
                 .verticalScroll(scrollState, enabled = isScrollEnabled)
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             AppSurface(
                 modifier = Modifier.fillMaxWidth()
@@ -143,7 +143,7 @@ fun WaterToolScreen(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(16.dp),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -160,7 +160,7 @@ fun WaterToolScreen(
                         }
                     )
 
-                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                    Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                         ProgressBarFloat(
                             modifier = Modifier.weight(0.3f),
                             targetDistance = uiState.water.recommend.toFloat(),
@@ -184,7 +184,7 @@ fun WaterToolScreen(
                     Column(
                         modifier = Modifier
                             .fillMaxWidth(),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                     ) {
                         TitleTexts.Level2(
                             text = "Recommendation ",
@@ -237,19 +237,19 @@ fun WaterBottomSheet(
             .heightIn(min = 200.dp, max = 320.dp)
             .fillMaxSize()
             .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
 
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 TitleTexts.Level2(
                     text = "BEVERAGES",
                     color = AppTheme.colors.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                     beverageList.forEach {
                         item {
                             BeveragesItem(
@@ -265,7 +265,7 @@ fun WaterBottomSheet(
                     text = "QUANTITY-${beverageName(selectedBeverage)}",
                     color = AppTheme.colors.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                     containerList.forEachIndexed { index, value ->
                         item {
                             QuantityContainerComponent(
@@ -281,13 +281,13 @@ fun WaterBottomSheet(
         AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue != SheetValue.Expanded) {
             Column(
                 modifier = Modifier.fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 TitleTexts.Level2(
                     text = "QUANTITY-${beverageName(selectedBeverage)}",
                     color = AppTheme.colors.onBackground
                 )
-                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+                LazyRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                     containerList.forEachIndexed { index, value ->
                         item {
                             QuantityContainerComponent(
@@ -300,7 +300,7 @@ fun WaterBottomSheet(
             }
         }
 
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
             ) { Event(WTEvent.Schedule) }
@@ -362,7 +362,7 @@ fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
             modifier = Modifier
                 .fillMaxSize()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             TitleTexts.Level2(
                 text = "Today Activity",
@@ -388,7 +388,7 @@ fun DailyActivity(todayActivityData: SnapshotStateList<TodayActivityData>) {
             LazyColumn(
                 modifier = Modifier
                     .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
             ) {
                 items(todayActivityData) {
                     ActivityItem(
@@ -444,7 +444,7 @@ fun RecommendBeverage() {
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             item {
                 TitleTexts.Level2(
@@ -463,7 +463,7 @@ fun RecommendBeverage() {
 fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, progress: Int) {
     Column(
         modifier = modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Row(
@@ -510,15 +510,15 @@ fun GridItem(
 
         Row(
             modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                 AppIcon(
                     painter = painterResource(id), contentDescription = null
                 )
             }
             Column(
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             ) {
                 TitleTexts.Level3(text = name)
                 BodyTexts.Level3(text = type)
@@ -584,7 +584,7 @@ fun BeveragesItem(title: String, icon_code: String, index: String, onClick: () -
     Column(
         modifier = Modifier.clickable { onClick() },
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         AppIcon(
             painter = painterResource(id = beverageIcons(icon_code)),

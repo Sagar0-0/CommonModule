@@ -37,7 +37,7 @@ fun TestimonialsList(
 
                 fit.asta.health.designsystem.molecular.cards.AppCard(modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level3),
+                    .padding(AppTheme.spacing.level2),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.colors.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
@@ -97,8 +97,8 @@ fun LoadingItem() {
         AppCircularProgressIndicator(
             modifier = Modifier
                 .size(AppTheme.boxSize.level5)
-                .padding(AppTheme.spacing.level3),
-            strokeWidth = AppTheme.spacing.level1
+                .padding(AppTheme.spacing.level2),
+            strokeWidth = AppTheme.spacing.level0
         )
     }
 }

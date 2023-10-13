@@ -52,7 +52,7 @@ private fun DefaultPreview1() {
 fun AppOutlinedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: CardColors = CardDefaults.outlinedCardColors(),
     elevation: CardElevation = CardDefaults.outlinedCardElevation(),
     border: BorderStroke = CardDefaults.outlinedCardBorder(enabled),

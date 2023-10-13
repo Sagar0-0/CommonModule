@@ -35,7 +35,7 @@ fun ReferAndEarn() {
         Row(
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically,
-            modifier = Modifier.padding(AppTheme.spacing.level2)
+            modifier = Modifier.padding(AppTheme.spacing.level1)
         ) {
 
             AppLocalImage(
@@ -44,14 +44,14 @@ fun ReferAndEarn() {
                 modifier = Modifier.aspectRatio(AppTheme.aspectRatio.fullScreen),
             )
 
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
 
             Box {
                 Column(verticalArrangement = Arrangement.SpaceBetween) {
                     TitleTexts.Level2(text = "Refer and Earn")
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     BodyTexts.Level3(text = "Send referral link to your friend to earn ₹100")
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                     AppFilledButton(textToShow = "Refer Us", onClick = {})
                 }
             }

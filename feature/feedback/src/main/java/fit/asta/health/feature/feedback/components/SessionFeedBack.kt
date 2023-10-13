@@ -110,9 +110,9 @@ fun SessionFeedback(
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     WelcomeCard()
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
                     qns.forEachIndexed { idx, qn ->
                         FeedbackQuesItem(
@@ -124,7 +124,7 @@ fun SessionFeedback(
                                 list[idx] = valid
                             }
                         )
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     }
 
 
@@ -138,7 +138,7 @@ fun SessionFeedback(
                         onSubmit(ansList.value.toList())
                     }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
             }
 
@@ -154,7 +154,7 @@ fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Uni
         UploadFiles(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2),
+                .padding(horizontal = AppTheme.spacing.level1),
             updatedUriList = {
                 val medias = it.map { uri ->
                     Media(

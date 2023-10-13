@@ -227,7 +227,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Daily Progress
@@ -256,7 +256,7 @@ fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

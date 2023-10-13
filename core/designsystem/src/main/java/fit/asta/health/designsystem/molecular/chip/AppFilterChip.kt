@@ -109,7 +109,7 @@ fun AppFilterChip(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: SelectableChipColors = FilterChipDefaults.filterChipColors(),
     elevation: SelectableChipElevation? = FilterChipDefaults.filterChipElevation(),
     border: SelectableChipBorder? = FilterChipDefaults.filterChipBorder(),

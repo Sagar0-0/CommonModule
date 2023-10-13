@@ -26,10 +26,10 @@ fun TstViewImgLayout(tstImageMedia: Testimonial) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
     ) {
         BeforeAndCardLayout(tstImageMedia.media)
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         TstTxtLayout(tstImageMedia)
     }
 }
@@ -40,7 +40,7 @@ fun BeforeAndCardLayout(tstImageMedia: List<Media>) {
     if (tstImageMedia.isNotEmpty()) {
         Row(
             Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             tstImageMedia.forEach {
                 Box(

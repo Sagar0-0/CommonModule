@@ -35,7 +35,7 @@ fun MusicSmallImageRow(
     // Parent Composable of the Playlist UI
     Row(
         modifier = Modifier
-            .padding(vertical = AppTheme.spacing.level2)
+            .padding(vertical = AppTheme.spacing.level1)
             .fillMaxWidth()
 
             // Redirecting the User to Spotify App playlist
@@ -52,7 +52,7 @@ fun MusicSmallImageRow(
 
         // showing the playlist type and the owner name to the user
         Column(
-            modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level1),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
         ) {

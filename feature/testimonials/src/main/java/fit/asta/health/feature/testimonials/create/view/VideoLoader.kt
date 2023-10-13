@@ -47,11 +47,11 @@ fun GetVideo(
 ) {
     Column(modifier = modifier) {
         TitleTexts.Level2(text = "Upload Video")
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         Box(
             modifier = Modifier
                 .dashedBorder(
-                    width = 1.dp, radius = AppTheme.spacing.level2, color = Color(0xff8694A9)
+                    width = 1.dp, radius = AppTheme.spacing.level1, color = Color(0xff8694A9)
                 )
                 .fillMaxWidth()
         ) {

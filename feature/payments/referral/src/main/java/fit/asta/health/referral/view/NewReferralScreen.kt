@@ -89,7 +89,7 @@ fun NewReferralDesign() {
                 Row(
                     Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level3),
+                        .padding(AppTheme.spacing.level2),
                     horizontalArrangement = Arrangement.Center
                 ) {
                     AppCard {
@@ -99,7 +99,7 @@ fun NewReferralDesign() {
                         ) {
                             HeadingTexts.Level1(
                                 text = "QWE123",
-                                modifier = Modifier.padding(AppTheme.spacing.level3),
+                                modifier = Modifier.padding(AppTheme.spacing.level2),
                                 textAlign = TextAlign.Center,
                                 color = AppTheme.colors.primary
                             )

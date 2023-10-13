@@ -35,11 +35,11 @@ fun rememberPagerState(
 fun PagerIndicator(size: Int, currentPage: Int) {
     Row(
         horizontalArrangement = Arrangement.SpaceBetween,
-        modifier = Modifier.padding(vertical = AppTheme.spacing.level7)
+        modifier = Modifier.padding(vertical = AppTheme.spacing.level6)
     ) {
         repeat(size) {
             Indicator(isSelected = it == currentPage)
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
         }
     }
 }
@@ -48,16 +48,16 @@ fun PagerIndicator(size: Int, currentPage: Int) {
 @Composable
 fun Indicator(isSelected: Boolean) {
     val width = animateDpAsState(
-        targetValue = if (isSelected) AppTheme.customSize.level4 else AppTheme.customSize.level4,
+        targetValue = if (isSelected) AppTheme.customSize.level3 else AppTheme.customSize.level3,
         label = ""
     )
 
     Box(
         modifier = Modifier
-            .height(AppTheme.customSize.level4)
-            .padding(AppTheme.spacing.level4)
+            .height(AppTheme.customSize.level3)
+            .padding(AppTheme.spacing.level3)
             .width(width.value)
-            .clip(AppTheme.shape.level4)
+            .clip(AppTheme.shape.level3)
             .background(
                 if (isSelected) AppTheme.colors.primary else AppTheme.colors.onBackground.copy(
                     alpha = AppTheme.alphaValues.level2

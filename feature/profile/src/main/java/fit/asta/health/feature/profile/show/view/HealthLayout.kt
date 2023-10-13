@@ -18,10 +18,10 @@ fun HealthLayout(health: Health) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
     ) {
         item {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
 
         val healthItems = listOf(
@@ -40,7 +40,7 @@ fun HealthLayout(health: Health) {
                     ProfileChipCard(
                         icon = propertyType.icon, title = propertyType.getTitle(), list = list
                     )
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
             }
         }

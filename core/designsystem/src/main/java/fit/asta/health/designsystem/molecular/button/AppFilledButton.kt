@@ -103,10 +103,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit,
@@ -176,10 +176,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -259,10 +259,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -283,7 +283,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -355,10 +355,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -379,7 +379,7 @@ fun AppFilledButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -451,10 +451,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -481,7 +481,7 @@ fun AppFilledButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -547,10 +547,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -577,7 +577,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -647,10 +647,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -671,7 +671,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -689,7 +689,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -759,10 +759,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -783,7 +783,7 @@ fun AppFilledButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -801,7 +801,7 @@ fun AppFilledButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -871,10 +871,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -895,7 +895,7 @@ fun AppFilledButton(
             Icon(
                 painter = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -913,7 +913,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -983,10 +983,10 @@ fun AppFilledButton(
     ),
     border: BorderStroke? = null,
     contentPadding: PaddingValues = PaddingValues(
-        start = AppTheme.spacing.level4,
-        top = AppTheme.spacing.level2,
-        end = AppTheme.spacing.level4,
-        bottom = AppTheme.spacing.level2
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
@@ -1007,7 +1007,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier.padding(end = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else
@@ -1025,7 +1025,7 @@ fun AppFilledButton(
             Icon(
                 painter = trailingIcon,
                 contentDescription = trailingIconDes,
-                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                modifier = Modifier.padding(start = AppTheme.spacing.level0),
                 tint = if (enabled)
                     iconTint
                 else

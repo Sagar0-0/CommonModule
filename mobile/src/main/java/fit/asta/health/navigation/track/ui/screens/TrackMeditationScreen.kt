@@ -231,7 +231,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
                 )
             ),
         contentPadding = PaddingValues(horizontal = 16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Daily Progress
@@ -260,7 +260,7 @@ private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData
                         it.forEachIndexed { index, weekly ->
                             Column(
                                 modifier = Modifier.weight(1f),
-                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                                 horizontalAlignment = Alignment.CenterHorizontally
                             ) {
 

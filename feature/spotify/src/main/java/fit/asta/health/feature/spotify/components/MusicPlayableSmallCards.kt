@@ -31,7 +31,7 @@ fun MusicPlayableSmallCards(
     // Parent Composable of the small Tracks UI
     AppCard(
         modifier = Modifier
-            .padding(AppTheme.spacing.level1)
+            .padding(AppTheme.spacing.level0)
             .width(LocalConfiguration.current.screenWidthDp.dp / 2 - 20.dp),
         onClick = onClick
     ) {
@@ -50,10 +50,10 @@ fun MusicPlayableSmallCards(
                 modifier = Modifier
                     .width(LocalConfiguration.current.screenWidthDp.dp)
                     .padding(
-                        start = AppTheme.spacing.level2,
-                        top = AppTheme.spacing.level1,
-                        end = AppTheme.spacing.level1,
-                        bottom = AppTheme.spacing.level1
+                        start = AppTheme.spacing.level1,
+                        top = AppTheme.spacing.level0,
+                        end = AppTheme.spacing.level0,
+                        bottom = AppTheme.spacing.level0
                     ),
                 maxLines = 2
             )

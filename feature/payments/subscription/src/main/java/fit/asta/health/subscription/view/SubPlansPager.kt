@@ -59,13 +59,13 @@ internal fun SubPlansPager(
 
     val pagerState = rememberPagerState(pageCount = { subscriptionPlans.categories.size })
     val pageSpacing by transition.animateDp(label = "") {
-        if (!it) AppTheme.spacing.level2 else 0.dp
+        if (!it) AppTheme.spacing.level1 else 0.dp
     }
     val contentPadding by transition.animateDp(label = "") {
         if (it) {
             0.dp
         } else {
-            AppTheme.spacing.level7
+            AppTheme.spacing.level6
         }
     }
     HorizontalPager(
@@ -185,13 +185,13 @@ private fun SubPlanItem(
                     item.durations.forEachIndexed { idx, duration ->
                         AppCard(
                             modifier = Modifier
-                                .padding(AppTheme.spacing.level2)
+                                .padding(AppTheme.spacing.level1)
                                 .weight(1f)
                                 .clickable {
                                     selectedDurationIndex = idx
                                 },
                         ) {
-                            Column(modifier = Modifier.padding(AppTheme.spacing.level2)) {
+                            Column(modifier = Modifier.padding(AppTheme.spacing.level1)) {
                                 TitleTexts.Level2(text = duration.ttl)
                                 TitleTexts.Level2(text = duration.price)
                             }
@@ -206,7 +206,7 @@ private fun SubPlanItem(
                 enabled = !fullScreen || selectedDurationIndex != -1,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level3),
+                    .padding(AppTheme.spacing.level2),
                 onClick = {
                     if (fullScreen) {
                         onPayClick(

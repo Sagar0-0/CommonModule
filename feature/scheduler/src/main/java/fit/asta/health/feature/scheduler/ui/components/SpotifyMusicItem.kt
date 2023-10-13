@@ -57,7 +57,7 @@ fun SpotifyMusicItem(
         // showing the playlist type and the owner name to the user
         Column(
             modifier = Modifier
-                .padding(horizontal = AppTheme.spacing.level3)
+                .padding(horizontal = AppTheme.spacing.level2)
                 .weight(.6f),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start

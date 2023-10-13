@@ -33,7 +33,7 @@ fun ArtistCard(testimonialsDataPages: Testimonial) {
             contentDescription = "Tst Profile Pic",
             modifier = Modifier.size(AppTheme.imageSize.level9)
         )
-        Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
         Column(
             horizontalAlignment = Alignment.Start, verticalArrangement = Arrangement.SpaceBetween
         ) {

@@ -23,16 +23,16 @@ fun UserBodyType(
     bodyImg: Int,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.level3)) {
+        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.level2)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AppTheme.spacing.level3, end = AppTheme.spacing.level2),
+                    .padding(start = AppTheme.spacing.level2, end = AppTheme.spacing.level1),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 BodyTexts.Level1(text = bodyType)
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -44,11 +44,11 @@ fun UserBodyType(
                     modifier = Modifier.size(width = 70.dp, height = 109.dp)
                 )
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(end = AppTheme.spacing.level3),
+                    .padding(end = AppTheme.spacing.level2),
                 horizontalArrangement = Arrangement.End
             ) {
                 BodyTexts.Level2(text = "Body Status")

@@ -68,7 +68,7 @@ fun StepsItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             Spacer(modifier = Modifier.width(16.dp))
             AppIcon(
@@ -86,8 +86,8 @@ fun StepsItem(
         )
 
         LazyVerticalGrid(
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             columns = GridCells.Fixed(2),
             contentPadding = PaddingValues(
                 horizontal = 16.dp
@@ -126,7 +126,7 @@ fun StepsItem(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = 16.dp, vertical = 8.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             ButtonWithColor(
                 modifier = Modifier
@@ -159,7 +159,7 @@ fun SessionCard(
         Column(
             modifier = Modifier
                 .padding(start = 16.dp, top = 16.dp, bottom = 16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             horizontalAlignment = Alignment.Start
         ) {
             TitleTexts.Level2(text = type)

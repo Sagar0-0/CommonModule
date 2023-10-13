@@ -94,7 +94,7 @@ private fun LikedSongsUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -159,7 +159,7 @@ private fun TracksUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -224,7 +224,7 @@ private fun PlaylistUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -282,7 +282,7 @@ private fun ArtistsUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -340,7 +340,7 @@ private fun AlbumsUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -397,7 +397,7 @@ private fun ShowUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -455,7 +455,7 @@ private fun EpisodeUI(
                 LazyColumn(
                     modifier = Modifier
                         .height(LocalConfiguration.current.screenHeightDp.dp)
-                        .padding(start = AppTheme.spacing.level2)
+                        .padding(start = AppTheme.spacing.level1)
                         .width(LocalConfiguration.current.screenWidthDp.dp),
                     horizontalAlignment = Alignment.Start
                 ) {

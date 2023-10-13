@@ -37,7 +37,7 @@ private fun DefaultPreview() {
                     .fillMaxWidth()
                     .dashedBorder(
                         width = 1.dp,
-                        radius = AppTheme.customSize.level2,
+                        radius = AppTheme.customSize.level1,
                         color = MaterialTheme.colorScheme.onSurfaceVariant
                     )
             )

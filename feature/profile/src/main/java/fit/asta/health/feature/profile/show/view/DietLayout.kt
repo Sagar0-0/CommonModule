@@ -36,9 +36,9 @@ fun DietLayout(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(top = AppTheme.spacing.level3)
-            .padding(AppTheme.spacing.level3),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+            .padding(top = AppTheme.spacing.level2)
+            .padding(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         items(userPropertyList) { (property, type) ->
             property?.let {
@@ -49,6 +49,6 @@ fun DietLayout(
                 )
             }
         }
-        item { Spacer(modifier = Modifier.height(AppTheme.spacing.level3)) }
+        item { Spacer(modifier = Modifier.height(AppTheme.spacing.level2)) }
     }
 }

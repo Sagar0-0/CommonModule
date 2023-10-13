@@ -76,11 +76,11 @@ fun DetailsCreateScreen(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3)
+                .padding(horizontal = AppTheme.spacing.level2)
                 .verticalScroll(rememberScrollState()),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             UserCircleImage(url = getOneUrl(
                 localUrl = userImage.localUrl, remoteUrl = userImage.url
             ), onUserProfileSelection = {
@@ -88,7 +88,7 @@ fun DetailsCreateScreen(
             }, onProfilePicClear = {
                 viewModel.onEvent(ProfileEvent.OnProfilePicClear)
             })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppTextFieldValidate(
                 value = nameState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnNameChange(name = it)) },
@@ -99,7 +99,7 @@ fun DetailsCreateScreen(
                 imeAction = ImeAction.Next,
                 keyboardActions = KeyboardActions(onNext = { focusManager.moveFocus(FocusDirection.Down) })
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppTextFieldValidate(
                 value = emailState.value,
                 onValueChange = { viewModel.onEvent(ProfileEvent.OnEmailChange(email = it)) },
@@ -111,18 +111,18 @@ fun DetailsCreateScreen(
                 modifier = Modifier.focusRequester(focusRequester = focusRequester),
                 keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             PrivacyAndUserConsent()
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppFilledButton(
                 textToShow = stringResource(R.string.next_button),
                 onClick = eventNext,
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level5),
+                    .padding(horizontal = AppTheme.spacing.level4),
                 shape = CircleShape
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
     }
 }
@@ -145,14 +145,14 @@ fun PrivacyAndUserConsent() {
                 contentDescription = "App Privacy",
                 tint = AppTheme.colors.primary
             )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
             Column {
                 TitleTexts.Level2(text = stringResource(R.string.privacy_statement_title))
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                 BodyTexts.Level2(text = stringResource(R.string.privacy_statement))
             }
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
@@ -163,7 +163,7 @@ fun PrivacyAndUserConsent() {
                 onCheckedChange = { checkedState.value = it },
                 modifier = Modifier.size(AppTheme.imageSize.level3)
             )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
             BodyTexts.Level2(text = stringResource(R.string.user_consent))
         }
     }
@@ -180,14 +180,14 @@ fun UserCircleImage(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
     ) {
         AppNetworkImage(
             model = url,
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier
-                .size(AppTheme.customSize.level12)
+                .size(AppTheme.customSize.level11)
                 .clip(CircleShape)
                 .border(
                     border = BorderStroke(

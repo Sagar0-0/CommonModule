@@ -72,14 +72,14 @@ fun ThirdPartyScreen(
             .fillMaxSize()
             .background(AppTheme.colors.surface)
             .verticalScroll(rememberScrollState()),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Welcoming Text , Search Bar , Profile Icon
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2),
+                .padding(horizontal = AppTheme.spacing.level1),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -88,7 +88,7 @@ fun ThirdPartyScreen(
             HeadingTexts.Level1(text = "Hey ${displayName ?: "User"} !!")
 
             // Search and Profile Icon
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)) {
 
                 // Search Icon
                 AppIconButton(
@@ -143,7 +143,7 @@ fun ThirdPartyScreen(
                         rows = GridCells.Adaptive(AppTheme.boxSize.level6),
                         modifier = Modifier
                             .height(AppTheme.boxSize.level9)
-                            .padding(start = AppTheme.spacing.level2)
+                            .padding(start = AppTheme.spacing.level1)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
                         verticalArrangement = Arrangement.SpaceEvenly,
@@ -182,7 +182,7 @@ fun ThirdPartyScreen(
         // Recommended Text
         HeadingTexts.Level3(
             text = stringResource(id = R.string.recommended),
-            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
         )
 
         // This function draws the recommendation Tracks for the User
@@ -242,7 +242,7 @@ fun ThirdPartyScreen(
         // Top Tracks
         HeadingTexts.Level3(
             text = stringResource(id = R.string.top_tracks),
-            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
         )
 
         // This function draws the top tracks for the User
@@ -302,7 +302,7 @@ fun ThirdPartyScreen(
         // Top Artists
         HeadingTexts.Level3(
             text = stringResource(id = R.string.top_artists),
-            modifier = Modifier.padding(horizontal = AppTheme.spacing.level3)
+            modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
         )
 
         // This function draws the top Artists for the User

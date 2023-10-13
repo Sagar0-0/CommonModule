@@ -98,7 +98,7 @@ fun AppAssistChip(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level3,
+    shape: Shape = AppTheme.shape.level2,
     colors: ChipColors = AssistChipDefaults.assistChipColors(),
     elevation: ChipElevation? = AssistChipDefaults.assistChipElevation(),
     border: ChipBorder? = AssistChipDefaults.assistChipBorder(),

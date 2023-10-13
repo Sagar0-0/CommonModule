@@ -92,19 +92,19 @@ fun WalletScreenUi(
                         Spacer(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AppTheme.spacing.level3)
+                                .padding(AppTheme.spacing.level2)
                                 .height(1.dp)
                                 .background(AppTheme.colors.surfaceVariant)
                         )
                         AppCard(
                             modifier = Modifier
-                                .padding(AppTheme.spacing.level3)
+                                .padding(AppTheme.spacing.level2)
                         ) {
                             TitleTexts.Level2(
                                 modifier = Modifier
                                     .padding(
-                                        top = AppTheme.spacing.level3,
-                                        start = AppTheme.spacing.level3
+                                        top = AppTheme.spacing.level2,
+                                        start = AppTheme.spacing.level2
                                     ),
                                 text = "Your transaction history:",
                                 textAlign = TextAlign.Start
@@ -113,8 +113,8 @@ fun WalletScreenUi(
                             LazyColumn(
                                 modifier = Modifier
                                     .fillMaxWidth()
-                                    .padding(top = AppTheme.spacing.level3),
-                                contentPadding = PaddingValues(AppTheme.spacing.level3)
+                                    .padding(top = AppTheme.spacing.level2),
+                                contentPadding = PaddingValues(AppTheme.spacing.level2)
                             ) {
                                 items(transactionHistory) { item ->
                                     TransactionHistoryItem(item)
@@ -125,7 +125,7 @@ fun WalletScreenUi(
                         Column(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(AppTheme.spacing.level3)
+                                .padding(AppTheme.spacing.level2)
                                 .weight(1f),
                             verticalArrangement = Arrangement.Center,
                             horizontalAlignment = Alignment.CenterHorizontally
@@ -134,7 +134,7 @@ fun WalletScreenUi(
                                 painter = painterResource(id = DrawR.drawable.placeholder_tag),
                                 contentDescription = ""
                             )
-                            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                             TitleTexts.Level2(
                                 textAlign = TextAlign.Center,
                                 text = stringResource(id = StringR.string.no_transactions_text)
@@ -155,11 +155,11 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AppTheme.spacing.level3),
+            .padding(bottom = AppTheme.spacing.level2),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AppIcon(
-            modifier = Modifier.padding(end = AppTheme.spacing.level2),
+            modifier = Modifier.padding(end = AppTheme.spacing.level1),
             imageVector = if (received) Icons.Default.MonetizationOn else Icons.Default.MoneyOff,
             contentDescription = ""
         )
@@ -192,7 +192,7 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
     Spacer(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
             .height(1.dp)
             .background(AppTheme.colors.onSecondaryContainer)
     )
@@ -203,26 +203,26 @@ fun WalletBalance(amount: Int, onButtonClick: () -> Unit) {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level3),
+            .padding(AppTheme.spacing.level2),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
+                .padding(AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
                 modifier = Modifier
-                    .padding(AppTheme.spacing.level2)
+                    .padding(AppTheme.spacing.level1)
             ) {
                 TitleTexts.Level2(text = amount.toString())
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                 TitleTexts.Level2(text = "available balance")
             }
             AppTextButton(
                 textToShow = "Redeem",
-                modifier = Modifier.padding(AppTheme.spacing.level2),
+                modifier = Modifier.padding(AppTheme.spacing.level1),
                 onClick = onButtonClick
             )
         }

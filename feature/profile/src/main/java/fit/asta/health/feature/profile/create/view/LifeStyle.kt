@@ -41,9 +41,9 @@ import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -217,12 +217,12 @@ fun LifeStyleContent(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3)
+                .padding(horizontal = AppTheme.spacing.level2)
                 .verticalScroll(rememberScrollState())
                 .background(color = AppTheme.colors.background),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             timePickers.forEach { timePicker ->
                 LifeStyleTimePicker(
                     title = timePicker.title,
@@ -257,7 +257,7 @@ fun LifeStyleContent(
                     )
                 }
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
             LifeStyleToggleSelectionCard(selectionTypeText = PHYACTIVE.getListName(),
                 options = listOf("Less", "Moderate", "Very"),
@@ -265,28 +265,28 @@ fun LifeStyleContent(
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(PHYACTIVE.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGENV.getListName(),
                 options = listOf("Standing", "Sitting"),
                 selectedOption = radioButtonSelections[WORKINGENV.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGENV.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGSTYLE.getListName(),
                 options = listOf("Indoor", "Outdoor"),
                 selectedOption = radioButtonSelections[WORKINGSTYLE.key] as TwoRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGSTYLE.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             LifeStyleToggleSelectionCard(selectionTypeText = WORKINGHRS.getListName(),
                 options = listOf("Morning", "Afternoon", "Night"),
                 selectedOption = radioButtonSelections[WORKINGHRS.key] as ThreeRadioBtnSelections?,
                 onStateChange = { state ->
                     viewModel.updateRadioButtonSelection(WORKINGHRS.key, state)
                 })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             cardList.forEach { cardData ->
                 OnlyChipSelectionCard(
@@ -296,10 +296,10 @@ fun LifeStyleContent(
                     cardIndex = cardData.cardIndex,
                     composeIndex = ComposeIndex.Second,
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
             CreateProfileTwoButtonLayout(eventPrevious, eventNext)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
     }
 }
@@ -347,21 +347,21 @@ private fun LifeStyleTimePicker(
     secButtonType: String,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
-        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.level3)) {
+        Column(modifier = Modifier.padding(vertical = AppTheme.spacing.level2)) {
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(start = AppTheme.spacing.level3, end = AppTheme.spacing.level2),
+                    .padding(start = AppTheme.spacing.level2, end = AppTheme.spacing.level1),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 TitleTexts.Level2(text = title)
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             Row(
                 Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level3),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    .padding(horizontal = AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppFilledButton(
@@ -375,13 +375,13 @@ private fun LifeStyleTimePicker(
                     modifier = Modifier.weight(1f)
                 )
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             Row(
                 Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.Center,
             ) {
                 UserSleepCycles(columnType = firstColType, columnValue = firstColValue)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level5))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level4))
                 UserSleepCycles(columnType = secondColType, columnValue = secColValue)
             }
         }

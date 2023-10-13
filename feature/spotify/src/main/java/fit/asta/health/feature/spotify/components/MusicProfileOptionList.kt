@@ -36,7 +36,7 @@ fun MusicProfileOptionList(
 
     FlowRow(
         modifier = Modifier
-            .padding(AppTheme.spacing.level3)
+            .padding(AppTheme.spacing.level2)
             .wrapContentWidth()
     ) {
 
@@ -45,8 +45,8 @@ fun MusicProfileOptionList(
                 selected = (index == selectedItem),
                 textToShow = option,
                 modifier = Modifier.padding(
-                    horizontal = AppTheme.spacing.level2,
-                    vertical = AppTheme.spacing.level1
+                    horizontal = AppTheme.spacing.level1,
+                    vertical = AppTheme.spacing.level0
                 )
             ) { onSelectionChange(index) }
         }

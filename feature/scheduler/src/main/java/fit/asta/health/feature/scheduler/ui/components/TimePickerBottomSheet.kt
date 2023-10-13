@@ -91,7 +91,7 @@ fun TimePickerClock(
         modifier = modifier
             .fillMaxWidth()
             .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         TitleTexts.Level1(text = title)
@@ -160,7 +160,7 @@ fun TimePickerClock(
             }, dividersColor = dividersColor, textStyle = textStyle, range = (0..1)
             )
         }
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)) {
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
             ButtonWithColor(
                 modifier = Modifier.weight(0.5f),
                 color = Color.Red,

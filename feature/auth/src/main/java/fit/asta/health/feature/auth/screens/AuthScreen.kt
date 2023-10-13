@@ -42,7 +42,7 @@ internal fun AuthScreen(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(AppTheme.spacing.level3),
+            .padding(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
@@ -137,7 +137,7 @@ internal fun AuthScreen(
 
         ClickableText(
             modifier = Modifier
-                .padding(vertical = AppTheme.spacing.level3)
+                .padding(vertical = AppTheme.spacing.level2)
                 .fillMaxWidth()
                 .align(Alignment.CenterHorizontally),
             text = annotatedLinkString,

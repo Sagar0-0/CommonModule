@@ -45,8 +45,8 @@ import androidx.compose.ui.window.DialogProperties
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -78,7 +78,7 @@ fun SettingsScreenLayout(
                 Column(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(AppTheme.spacing.level3),
+                        .padding(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     TitleTexts.Level2(
@@ -87,7 +87,7 @@ fun SettingsScreenLayout(
                     Row(
                         modifier = Modifier
                             .fillMaxWidth()
-                            .padding(horizontal = AppTheme.spacing.level3),
+                            .padding(horizontal = AppTheme.spacing.level2),
                         horizontalArrangement = Arrangement.SpaceBetween
                     ) {
                         AppTextButton(
@@ -212,14 +212,14 @@ fun PreferenceCategory(
         if (titleId != null) TitleTexts.Level2(
             text = stringResource(id = titleId),
             modifier = Modifier.padding(
-                start = AppTheme.spacing.level3,
-                top = AppTheme.spacing.level2
+                start = AppTheme.spacing.level2,
+                top = AppTheme.spacing.level1
             )
         )
         Column(
             modifier = Modifier.padding(
-                vertical = AppTheme.spacing.level2,
-                horizontal = AppTheme.spacing.level2
+                vertical = AppTheme.spacing.level1,
+                horizontal = AppTheme.spacing.level1
             )
         ) {
             content()
@@ -241,7 +241,7 @@ fun PreferenceItem(
         onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level1)
+            .padding(AppTheme.spacing.level0)
     )//TODO: ADD SECONDARY TEXT
 }
 
@@ -266,7 +266,7 @@ fun ListPreference(
         onClick = { showDialog = true },
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level1)
+            .padding(AppTheme.spacing.level0)
     )
 
     if (showDialog) {

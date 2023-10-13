@@ -53,7 +53,7 @@ fun TodayCardType1(
 ) {
     AppCard(
         modifier = Modifier
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
             .aspectRatio(AppTheme.aspectRatio.wideScreen)
     ) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -109,7 +109,7 @@ private fun CardContent(
     Column(
         modifier = Modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.level3, vertical = AppTheme.spacing.level2),
+            .padding(horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level1),
         verticalArrangement = Arrangement.SpaceBetween
     ) {
         CardTitleAndButton(cardTitle)
@@ -131,7 +131,7 @@ private fun CardTitleAndButton(cardTitle: String) {
         AppIconButton(
             modifier = Modifier
                 .size(AppTheme.iconSize.level4)
-                .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+                .clip(RoundedCornerShape(AppTheme.spacing.level1)),
             imageVector = Icons.Filled.Schedule,
             iconDesc = "Schedule Icon"
         ) {
@@ -167,7 +167,7 @@ fun TodayCardType2(
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level3)
+            .padding(horizontal = AppTheme.spacing.level2)
             .aspectRatio(AppTheme.aspectRatio.fullScreen), content = {
             Box(
                 modifier = Modifier.fillMaxSize()
@@ -182,8 +182,8 @@ fun TodayCardType2(
                 modifier = Modifier
                     .fillMaxSize()
                     .padding(
-                        horizontal = AppTheme.spacing.level3,
-                        vertical = AppTheme.spacing.level2
+                        horizontal = AppTheme.spacing.level2,
+                        vertical = AppTheme.spacing.level1
                     ),
                 verticalArrangement = Arrangement.SpaceBetween
             ) {
@@ -207,7 +207,7 @@ fun TodayCardType2(
             Box(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.spacing.level3),
+                    .padding(AppTheme.spacing.level2),
                 contentAlignment = Alignment.CenterEnd
             ) {
                 DisabledAssistChip(progressValue = progressValue)
@@ -222,7 +222,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
         Row(horizontalArrangement = Arrangement.End, modifier = Modifier.fillMaxWidth()) {
             BodyTexts.Level3(text = cardTime, color = Color.White)
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
         Row(
             horizontalArrangement = Arrangement.End,
             modifier = Modifier.fillMaxWidth(),
@@ -234,7 +234,7 @@ private fun CardBottomLayout(cardTime: String, remainingTime: String) {
                 tint = Color.White,
                 modifier = Modifier.size(16.dp)
             )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
             BodyTexts.Level3(text = remainingTime, color = Color.White)
         }
     }
@@ -252,13 +252,13 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
             AppIconButton(
                 modifier = Modifier
                     .size(AppTheme.iconSize.level4)
-                    .clip(RoundedCornerShape(AppTheme.spacing.level2)),
+                    .clip(RoundedCornerShape(AppTheme.spacing.level1)),
                 imageVector = Icons.Filled.Schedule,
                 iconDesc = "Schedule Icon",
                 onClick = onButtonClick
             )
         }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
         Row(Modifier.fillMaxWidth(), Arrangement.Start) {
             BodyTexts.Level3(text = secondaryTitle, color = Color.White)
         }
@@ -269,14 +269,14 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
 private fun DisabledAssistChip(progressValue: String) {
     Box(
         modifier = Modifier
-            .clip(shape = AppTheme.shape.level3)
+            .clip(shape = AppTheme.shape.level2)
             .background(color = AppTheme.colors.primaryContainer),
         contentAlignment = Alignment.Center
     ) {
         BodyTexts.Level3(
             text = progressValue,
             color = AppTheme.colors.onPrimaryContainer,
-            modifier = Modifier.padding(AppTheme.spacing.level1)
+            modifier = Modifier.padding(AppTheme.spacing.level0)
         )
     }
 }

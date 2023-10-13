@@ -50,10 +50,10 @@ fun AppCardScreen() {
             Column(
                 modifier = Modifier
                     .fillMaxSize()
-                    .padding(AppTheme.spacing.level3)
+                    .padding(AppTheme.spacing.level2)
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
 
                 // Filled Card Section

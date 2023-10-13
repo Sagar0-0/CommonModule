@@ -26,7 +26,7 @@ fun ProgressBarInt(
 ) {
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CaptionTexts.Level2(
@@ -58,7 +58,7 @@ fun ProgressBarFloat(
 
     Column(
         modifier = modifier,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         CaptionTexts.Level1(

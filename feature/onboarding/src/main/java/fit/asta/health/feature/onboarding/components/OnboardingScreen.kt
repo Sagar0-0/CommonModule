@@ -117,12 +117,12 @@ fun OnboardingScreen(
                             horizontalAlignment = Alignment.CenterHorizontally
                         ) {
                             TitleTexts.Level2(
-                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
                                 text = items[page].title,
                                 textAlign = TextAlign.Center
                             )
                             TitleTexts.Level2(
-                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level4),
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
                                 text = items[page].desc,
                                 textAlign = TextAlign.Center
                             )

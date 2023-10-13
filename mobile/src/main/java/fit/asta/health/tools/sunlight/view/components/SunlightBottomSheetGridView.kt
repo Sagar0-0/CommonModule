@@ -105,7 +105,7 @@ fun SunlightBottomSheetGridView(
                 Row(
                     modifier = Modifier
                         .padding(horizontal = 16.dp),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
                     ButtonWithColor(
                         modifier = Modifier.weight(0.5f),

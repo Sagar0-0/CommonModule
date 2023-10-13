@@ -173,15 +173,15 @@ internal fun FillAddressSheet(
             modifier = Modifier
                 .clip(
                     RoundedCornerShape(
-                        topStart = AppTheme.customSize.level3,
-                        topEnd = AppTheme.customSize.level3
+                        topStart = AppTheme.customSize.level2,
+                        topEnd = AppTheme.customSize.level2
                     )
                 )
                 .background(AppTheme.colors.background)
                 .padding(
-                    top = AppTheme.spacing.level3,
-                    start = AppTheme.spacing.level3,
-                    end = AppTheme.spacing.level3
+                    top = AppTheme.spacing.level2,
+                    start = AppTheme.spacing.level2,
+                    end = AppTheme.spacing.level2
                 ),
             verticalArrangement = Arrangement.Center,
             horizontalAlignment = Alignment.Start
@@ -200,7 +200,7 @@ internal fun FillAddressSheet(
 
             BodyTexts.Level1(
                 text = R.string.save_address_as.toStringFromResId(),
-                Modifier.padding(bottom = AppTheme.spacing.level2)
+                Modifier.padding(bottom = AppTheme.spacing.level1)
             )
             Row(Modifier.fillMaxWidth()) {
                 BodyTexts.Level1(
@@ -225,7 +225,7 @@ internal fun FillAddressSheet(
                         .padding(8.dp), text = R.string.other.toStringFromResId())
             }
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             AnimatedVisibility(name.value != R.string.home.toStringFromResId() && name.value != R.string.work.toStringFromResId()) {
                 AppTextField(
@@ -252,7 +252,7 @@ internal fun FillAddressSheet(
                     },
                     label = R.string.location_name.toStringFromResId()
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
 
             AppTextField(
@@ -278,7 +278,7 @@ internal fun FillAddressSheet(
                 label = R.string.house_number.toStringFromResId()
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             AppTextField(
                 modifier = Modifier
@@ -303,7 +303,7 @@ internal fun FillAddressSheet(
                 label = R.string.block_street_road.toStringFromResId()
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             AppTextField(
                 appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(0, 256)),
@@ -327,7 +327,7 @@ internal fun FillAddressSheet(
                 label = R.string.nearby_landmark.toStringFromResId()
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             AppTextField(
                 modifier = Modifier
@@ -366,9 +366,9 @@ internal fun FillAddressSheet(
                             textToShow = R.string.save_address.toStringFromResId(),
                             onClick = onSaveAddressClick,
                             modifier = Modifier
-                                .padding(AppTheme.spacing.level3)
+                                .padding(AppTheme.spacing.level2)
                                 .fillMaxWidth()
-                                .clip(AppTheme.shape.level3),
+                                .clip(AppTheme.shape.level2),
                             enabled = isNameValid && isHnValid && isBlkValid && isPhoneValid
                         )
                     }

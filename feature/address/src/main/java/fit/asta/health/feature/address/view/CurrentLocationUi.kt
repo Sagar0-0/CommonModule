@@ -22,13 +22,13 @@ internal fun CurrentLocationUi(name: String, area: String) {
     Column(
         Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level2),
+            .padding(AppTheme.spacing.level1),
         horizontalAlignment = Alignment.Start
     ) {
         Row {
             AppIcon(
                 modifier = Modifier
-                    .padding(end = AppTheme.spacing.level2)
+                    .padding(end = AppTheme.spacing.level1)
                     .size(AppTheme.iconSize.level3),
                 imageVector = Icons.Default.LocationOn,
                 contentDescription = R.string.location.toStringFromResId()
@@ -40,7 +40,7 @@ internal fun CurrentLocationUi(name: String, area: String) {
             )
         }
         BodyTexts.Level1(
-            modifier = Modifier.padding(AppTheme.spacing.level1),
+            modifier = Modifier.padding(AppTheme.spacing.level0),
             text = area
         )
     }
