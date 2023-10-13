@@ -87,7 +87,7 @@ private fun DefaultPreview1() {
 fun AppOutlinedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.outlinedShape,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -153,7 +153,7 @@ fun AppOutlinedButton(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     textToShow: String,
-    shape: Shape = ButtonDefaults.outlinedShape,
+    shape: Shape = AppTheme.shape.level2,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,

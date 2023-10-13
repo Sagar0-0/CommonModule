@@ -39,7 +39,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.window.DialogProperties
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
@@ -52,20 +51,19 @@ import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.WeatherCardImage
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.components.WeatherCard
 import fit.asta.health.main.Graph
 import fit.asta.health.main.view.ALL_ALARMS_ROUTE
+import fit.asta.health.ui.common.AppDialogPopUp
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
@@ -89,38 +87,44 @@ fun TodayContent(
     val context = LocalContext.current
 
     if (deleteDialog) {
-        AlertDialogPopUp(
-            content = stringResource(R.string.are_you_sure_you_want_to_delete_this_alarm),
-            actionButton = stringResource(id = R.string.delete),
+        AppDialogPopUp(
+            headingText = stringResource(id = R.string.alert),
+            bodyText = stringResource(R.string.are_you_sure_you_want_to_delete_this_alarm),
+            primaryButtonText = stringResource(id = R.string.delete),
+            secondaryButtonText = stringResource(id = R.string.cancel),
             onDismiss = { deleteDialog = false },
             onDone = {
                 deletedItem?.let { hSEvent(HomeEvent.DeleteAlarm(it, context)) }
                 deleteDialog = false
-            })
+            }
+        )
     }
     if (skipDialog) {
-        AlertDialogPopUp(
-            content = stringResource(R.string.are_you_sure_you_want_to_skip_this_alarm),
-            actionButton = stringResource(id = R.string.skip),
+        AppDialogPopUp(
+            headingText = stringResource(id = R.string.alert),
+            bodyText = stringResource(R.string.are_you_sure_you_want_to_skip_this_alarm),
+            primaryButtonText = stringResource(id = R.string.skip),
+            secondaryButtonText = stringResource(id = R.string.cancel),
             onDismiss = { skipDialog = false },
             onDone = {
                 skipItem?.let { hSEvent(HomeEvent.SkipAlarm(it, context)) }
                 skipDialog = false
-            })
+            }
+        )
     }
-    AppScaffold { paddingValues ->
+    AppScreen {
         LazyColumn(
-            Modifier
-                .fillMaxWidth()
-                .padding(paddingValues)
-                .background(color = AppTheme.colors.background),
-            contentPadding = PaddingValues(horizontal = 16.dp, vertical = 0.dp),
+            Modifier.fillMaxWidth(),
+            contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         ) {
+
+            // Heading Name, show Alarms and What's your mood composable
             item {
                 NameAndMoodHomeScreenHeader(
                     userName = userName,
-                    onAlarm = { onNav(ALL_ALARMS_ROUTE) })
+                    onAlarm = { onNav(ALL_ALARMS_ROUTE) }
+                )
             }
             when (state) {
                 is UiState.Loading -> {
@@ -441,51 +445,3 @@ fun TodayCard(
         modifier = modifier
     )
 }
-
-@Composable
-fun AlertDialogPopUp(
-    content: String,
-    actionButton: String,
-    onDismiss: () -> Unit,
-    onDone: () -> Unit,
-) {
-    AppDialog(
-        onDismissRequest = onDismiss, properties = DialogProperties(
-            dismissOnBackPress = false, dismissOnClickOutside = false
-        )
-    ) {
-        AppCard(
-            modifier = Modifier.clip(AppTheme.shape.level2)
-        ) {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(16.dp)
-            ) {
-                Row(horizontalArrangement = Arrangement.Center) {
-                    LargeTexts.Level3(text = stringResource(id = R.string.alert))
-                }
-                BodyTexts.Level1(text = content, maxLines = 3)
-                Row {
-                    AppOutlinedButton(
-                        onClick = onDismiss,
-                        shape = AppTheme.shape.level3,
-                        modifier = Modifier
-                            .weight(1F)
-                            .padding(end = 8.dp),
-                        textToShow = stringResource(id = R.string.cancel)
-                    )
-                    AppTonalButton(
-                        onClick = onDone,
-                        modifier = Modifier
-                            .weight(1F)
-                            .padding(end = 8.dp),
-                        textToShow = actionButton
-                    )
-                }
-            }
-        }
-    }
-}
-
-

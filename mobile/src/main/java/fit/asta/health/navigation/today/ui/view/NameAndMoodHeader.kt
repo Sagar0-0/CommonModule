@@ -9,31 +9,25 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.R
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 @Composable
 fun NameAndMoodHomeScreenHeader(userName: String, onAlarm: () -> Unit) {
-    Column(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalAlignment = Alignment.Start
-    ) {
+
+    val textToShow =
+        stringResource(id = R.string.hello_Aastha) + " " + userName + " " + "\uD83D\uDC4B"
+
+    Column(modifier = Modifier.fillMaxWidth()) {
         Row(
+            modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
-            HeadingTexts.Level3(
-                text = stringResource(id = R.string.hello_Aastha) + " " + userName,
-            )
-            HeadingTexts.Level3(text = "\uD83D\uDC4B")
+            HeadingTexts.Level3(text = textToShow)
             AppTextButton(onClick = onAlarm, textToShow = stringResource(R.string.show_alarms))
         }
-        CaptionTexts.Level2(
-            text = stringResource(id = R.string.greeting),
-            color = AppTheme.colors.onSurfaceVariant
-        )
+        CaptionTexts.Level1(text = stringResource(id = R.string.greeting))
     }
-
 }
