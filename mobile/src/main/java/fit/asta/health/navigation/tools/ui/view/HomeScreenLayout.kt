@@ -142,8 +142,8 @@ fun HomeScreenLayout(
                 Modifier.fillMaxWidth(),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                TitleTexts.Level1(text = "Why our customers love ASTA?")
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
+                TitleTexts.Level3(text = "Why our customers love ASTA?")
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 AppDivider(modifier = Modifier.width(AppDividerLineWidth.TstDividerWidth))
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
@@ -171,8 +171,11 @@ fun HomeScreenLayout(
 
         // Feedback Card
         item(span = { GridItemSpan(columns) }) {
-            FeedbackCard {
-                onNav("$FEEDBACK_GRAPH_ROUTE/application")
+            Column {
+                FeedbackCard {
+                    onNav("$FEEDBACK_GRAPH_ROUTE/application")
+                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 

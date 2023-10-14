@@ -54,7 +54,14 @@ fun AppElevatedCard(
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.elevatedCardColors(),
     shape: Shape = AppTheme.shape.level2,
-    elevation: CardElevation = CardDefaults.elevatedCardElevation(),
+    elevation: CardElevation = CardDefaults.elevatedCardElevation(
+        defaultElevation = AppTheme.elevation.level1,
+        pressedElevation = AppTheme.elevation.level1,
+        focusedElevation = AppTheme.elevation.level1,
+        hoveredElevation = AppTheme.elevation.level2,
+        draggedElevation = AppTheme.elevation.level4,
+        disabledElevation = AppTheme.elevation.level1
+    ),
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {

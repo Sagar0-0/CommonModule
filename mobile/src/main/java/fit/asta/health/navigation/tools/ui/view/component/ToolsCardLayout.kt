@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
@@ -31,18 +30,16 @@ fun ToolsCardLayout(
     imgUrl: String,
     onClick: (type: String) -> Unit,
 ) {
-    AppCard(onClick = { onClick(type) }) {
+    AppCard(
+        onClick = { onClick(type) },
+        shape = AppTheme.shape.level1
+    ) {
         Box {
             // Tools Card Images
             AppNetworkImage(
                 modifier = Modifier
                     .aspectRatio(AppTheme.aspectRatio.square)
-                    .clip(
-                        RoundedCornerShape(
-                            bottomStart = AppTheme.spacing.level1,
-                            bottomEnd = AppTheme.spacing.level1
-                        )
-                    ),
+                    .clip(AppTheme.shape.level1),
                 model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
                 contentScale = ContentScale.Crop,
             )
@@ -75,7 +72,7 @@ fun ScheduleButtonIcon(
             contentAlignment = Alignment.Center,
             modifier = Modifier
                 .size(AppTheme.iconSize.level4)
-                .clip(RoundedCornerShape(AppTheme.spacing.level1))
+                .clip(AppTheme.shape.level1)
                 .background(AppTheme.colors.surface)
         ) {
             AppIconButton(

@@ -43,7 +43,9 @@ fun FeedbackCard(
 
         AppCard {
             Column(
-                Modifier.fillMaxWidth(),
+                Modifier
+                    .fillMaxWidth()
+                    .padding(bottom = AppTheme.spacing.level1),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {

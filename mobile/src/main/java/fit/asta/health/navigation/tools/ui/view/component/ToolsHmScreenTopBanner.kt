@@ -6,8 +6,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
@@ -17,7 +19,10 @@ fun ToolsHmScreenTopBanner(
     bannerDataPages: ToolsHomeRes.ToolsHome.Banner,
 ) {
     Box(
-        modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center
+        modifier = Modifier
+            .clip(AppTheme.shape.level1)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
 
         // Image from the Server
