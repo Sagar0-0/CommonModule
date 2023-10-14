@@ -366,13 +366,13 @@ private fun LifeStyleTimePicker(
             ) {
                 AppFilledButton(
                     textToShow = firstButtonType,
-                    onClick = firstEvent,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    onClick = firstEvent
                 )
                 AppFilledButton(
                     textToShow = secButtonType,
-                    onClick = secondEvent,
-                    modifier = Modifier.weight(1f)
+                    modifier = Modifier.weight(1f),
+                    onClick = secondEvent
                 )
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))

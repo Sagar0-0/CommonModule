@@ -26,7 +26,7 @@ fun NameAndMoodHomeScreenHeader(userName: String, onAlarm: () -> Unit) {
             verticalAlignment = Alignment.CenterVertically
         ) {
             HeadingTexts.Level3(text = textToShow)
-            AppTextButton(onClick = onAlarm, textToShow = stringResource(R.string.show_alarms))
+            AppTextButton(textToShow = stringResource(R.string.show_alarms), onClick = onAlarm)
         }
         CaptionTexts.Level1(text = stringResource(id = R.string.greeting))
     }

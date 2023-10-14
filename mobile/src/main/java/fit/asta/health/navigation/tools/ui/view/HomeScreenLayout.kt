@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
@@ -15,10 +14,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.animations.AppDividerLineWidth
 import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
+import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
@@ -45,76 +44,84 @@ fun HomeScreenLayout(
 
     AppVerticalGrid(
         count = columns,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
         // Top Sliding Images
         item(span = { GridItemSpan(columns) }) {
-            AppHorizontalPager(
-                bannerList = toolsHome.banners,
-                modifier = Modifier.aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
-            ) { page ->
-                ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+            Column {
+                AppHorizontalPager(
+                    bannerList = toolsHome.banners,
+                    modifier = Modifier.aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
+                ) { page ->
+                    ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             }
         }
 
         // My Tools text and View All button
         item(span = { GridItemSpan(columns) }) {
-            ViewAllLayout(title = "My Tools")
+            Column {
+                ViewAllLayout(title = "My Tools")
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            }
         }
 
         // All The Tools Composable cards
         items(toolsHome.tools) { tool ->
-            ToolsCardLayout(
-                cardTitle = tool.title,
-                type = tool.name,
-                imgUrl = tool.url
-            ) { type ->
-                when (type.lowercase(Locale.getDefault())) {
-                    "water" -> {
-                        onNav(Graph.WaterTool.route)
-                    }
+            Column {
+                ToolsCardLayout(
+                    cardTitle = tool.title,
+                    type = tool.name,
+                    imgUrl = tool.url
+                ) { type ->
+                    when (type.lowercase(Locale.getDefault())) {
+                        "water" -> {
+                            onNav(Graph.WaterTool.route)
+                        }
 
-                    "steps" -> {
-                        WalkingActivity.launch(context = context)
-                    }
+                        "steps" -> {
+                            WalkingActivity.launch(context = context)
+                        }
 
-                    "workout" -> {
-                        onNav(Graph.ExerciseTool.route + "?activity=workout")
-                    }
+                        "workout" -> {
+                            onNav(Graph.ExerciseTool.route + "?activity=workout")
+                        }
 
-                    "yoga" -> {
-                        onNav(Graph.ExerciseTool.route + "?activity=yoga")
-                    }
+                        "yoga" -> {
+                            onNav(Graph.ExerciseTool.route + "?activity=yoga")
+                        }
 
-                    "hiit" -> {
-                        onNav(Graph.ExerciseTool.route + "?activity=HIIT")
-                    }
+                        "hiit" -> {
+                            onNav(Graph.ExerciseTool.route + "?activity=HIIT")
+                        }
 
-                    "dance" -> {
-                        onNav(Graph.ExerciseTool.route + "?activity=dance")
-                    }
+                        "dance" -> {
+                            onNav(Graph.ExerciseTool.route + "?activity=dance")
+                        }
 
-                    "meditation" -> {
-                        onNav(Graph.MeditationTool.route)
-                    }
+                        "meditation" -> {
+                            onNav(Graph.MeditationTool.route)
+                        }
 
-                    "sleep" -> {
-                        onNav(Graph.SleepTool.route)
-                        SleepToolActivity.launch(
-                            context = context, userId = userId
-                        )
-                    }
+                        "sleep" -> {
+                            onNav(Graph.SleepTool.route)
+                            SleepToolActivity.launch(
+                                context = context, userId = userId
+                            )
+                        }
 
-                    "breathing" -> {
-                        onNav(Graph.BreathingTool.route)
-                    }
+                        "breathing" -> {
+                            onNav(Graph.BreathingTool.route)
+                        }
 
-                    "sunlight" -> {
-                        onNav(Graph.SunlightTool.route)
+                        "sunlight" -> {
+                            onNav(Graph.SunlightTool.route)
+                        }
                     }
                 }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 
@@ -133,28 +140,30 @@ fun HomeScreenLayout(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 TitleTexts.Level1(text = "Why our customers love ASTA?")
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                 AppDivider(modifier = Modifier.width(AppDividerLineWidth.TstDividerWidth))
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
-        }
-
-        item {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         }
 
         // Testimonials Banners in a Horizontal Pager
         item(span = { GridItemSpan(columns) }) {
-            AppHorizontalPager(
-                bannerList = toolsHome.testimonials
-            ) {
-                TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+            Column {
+                AppHorizontalPager(
+                    bannerList = toolsHome.testimonials
+                ) {
+                    TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+                }
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 
         // rate my app Card
         item(span = { GridItemSpan(columns) }) {
-            RateAppCard(
-                modifier = Modifier.padding(vertical = AppTheme.spacing.level2)
-            )
+            Column {
+                RateAppCard()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            }
         }
 
         // Refer and Earn Card

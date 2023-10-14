@@ -99,7 +99,7 @@ fun Stepper(
                         icons
                     } else {
                         icons
-                    }, onClick = logic, iconTint = if (isCompete) {
+                    }, modifier = modifier.padding(AppTheme.spacing.level0), iconTint = if (isCompete) {
                         when (step) {
                             1 -> {
                                 detailsColor
@@ -123,7 +123,7 @@ fun Stepper(
                         }
                     } else {
                         AppTheme.colors.onSurface
-                    }, modifier = modifier.padding(AppTheme.spacing.level0)
+                    }, onClick = logic
                 )
             }
         }

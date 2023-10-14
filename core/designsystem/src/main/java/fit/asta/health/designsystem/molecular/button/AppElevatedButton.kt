@@ -42,17 +42,15 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppElevatedButton(
-                    onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
 
                 AppElevatedButton(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled Button",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person
-                )
+                ) {}
             }
         }
     }
@@ -90,6 +88,7 @@ private fun DefaultPreview1() {
 @Composable
 fun AppElevatedButton(
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.elevatedShape,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
@@ -113,8 +112,7 @@ fun AppElevatedButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable() (RowScope.() -> Unit)
 ) {
     ElevatedButton(
         onClick,
@@ -161,9 +159,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     shape: Shape = ButtonDefaults.elevatedShape,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
@@ -243,9 +241,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -342,9 +340,9 @@ fun AppElevatedButton(
 
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -440,9 +438,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -538,9 +536,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
@@ -638,9 +636,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
@@ -752,9 +750,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -866,9 +864,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
@@ -979,9 +977,9 @@ fun AppElevatedButton(
  */
 @Composable
 fun AppElevatedButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,

@@ -84,8 +84,8 @@ fun ProfileReadyScreen(
             AppTopBar(title = stringResource(R.string.profile_screen), onBack = onBack, actions = {
                 AppIconButton(
                     imageVector = Icons.Filled.Edit,
-                    iconTint = AppTheme.colors.primary,
                     iconDesc = "Profile Edit",
+                    iconTint = AppTheme.colors.primary,
                     onClick = onEdit
                 )
             })

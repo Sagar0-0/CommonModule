@@ -49,13 +49,13 @@ fun VibrationBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            AppIconButton(onClick = onNavigateBack, imageVector = Icons.Default.Close)
+            AppIconButton(imageVector = Icons.Default.Close, onClick = onNavigateBack)
             TitleTexts.Level2(
                 text = text,
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(imageVector = Icons.Default.Check, onClick = { onSave(value) })
+            AppIconButton(imageVector = Icons.Default.Check) { onSave(value) }
         }
         FlowRow(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
@@ -63,29 +63,26 @@ fun VibrationBottomSheetLayout(
             modifier = Modifier.fillMaxWidth()
         ) {
             AppOutlinedButton(
-                onClick = { value = VibrationPattern.Short },
+                textToShow = stringResource(id = StringR.string.shortPattern),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (value == VibrationPattern.Short) AppTheme.colors.primary
                     else AppTheme.colors.onPrimary
-                ),
-                textToShow = stringResource(id = StringR.string.shortPattern)
-            )
+                )
+            ) { value = VibrationPattern.Short }
             AppOutlinedButton(
-                onClick = { value = VibrationPattern.Long },
+                textToShow = stringResource(id = StringR.string.longPattern),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (value == VibrationPattern.Long) AppTheme.colors.primary
                     else AppTheme.colors.onPrimary
-                ),
-                textToShow = stringResource(id = StringR.string.longPattern)
-            )
+                )
+            ) { value = VibrationPattern.Long }
             AppOutlinedButton(
-                onClick = { value = VibrationPattern.Intermittent },
+                textToShow = stringResource(StringR.string.intermittent),
                 colors = ButtonDefaults.outlinedButtonColors(
                     containerColor = if (value == VibrationPattern.Intermittent) AppTheme.colors.primary
                     else AppTheme.colors.onPrimary
-                ),
-                textToShow = stringResource(StringR.string.intermittent)
-            )
+                )
+            ) { value = VibrationPattern.Intermittent }
         }
     }
 

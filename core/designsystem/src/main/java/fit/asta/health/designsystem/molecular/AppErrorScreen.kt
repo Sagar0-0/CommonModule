@@ -185,7 +185,7 @@ fun GradientButton(
                 start = AppTheme.spacing.level4,
                 end = AppTheme.spacing.level4,
                 bottom = AppTheme.spacing.level4
-            ), onClick = onClick, shape = RoundedCornerShape(AppTheme.spacing.level2)
+            ), shape = RoundedCornerShape(AppTheme.spacing.level2), onClick = onClick
     )
 }
 

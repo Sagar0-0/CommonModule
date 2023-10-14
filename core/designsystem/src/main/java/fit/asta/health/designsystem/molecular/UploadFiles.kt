@@ -105,18 +105,17 @@ fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Un
                                 )
                                 Spacer(modifier = Modifier.width(1.dp))
                                 AppIconButton(
-                                    modifier = Modifier.size(AppTheme.iconSize.level3),
                                     imageVector = Icons.Default.Close,
-                                    onClick = { uriList.remove(it) }
-                                )
+                                    modifier = Modifier.size(AppTheme.iconSize.level3)
+                                ) { uriList.remove(it) }
                             }
                         }
                     }
                 }
 
                 AppIconButton(
-                    enabled = uriList.size < 5,
                     imageVector = Icons.Rounded.CloudUpload,
+                    enabled = uriList.size < 5,
                 ) {
                     resultLauncher.launch("*/*")
                 }

@@ -374,14 +374,14 @@ private fun MediaContentView(
                         }
                     )
                     AppIconButton(
+                        onClick = if (isLandscape) exitFullscreen else enterFullscreen,
                         modifier = Modifier
                             .align(Alignment.TopEnd)
                             .padding(8.dp)
                             .background(
                                 Color.Black.copy(alpha = 0.6f),
                                 RoundedCornerShape(30.dp)
-                            ),
-                        onClick = if (isLandscape) exitFullscreen else enterFullscreen
+                            )
                     ) {
                         AppIcon(
                             imageVector = if (isLandscape) Icons.Filled.FullscreenExit else Icons.Filled.Fullscreen,
@@ -515,8 +515,8 @@ fun AlertDialogTrack(
                 content.forEach {
                     Row(verticalAlignment = Alignment.CenterVertically) {
                         AppRadioButton(
-                            selected = it == current,
-                            onClick = { onDone(it) })
+                            selected = it == current
+                        ) { onDone(it) }
                         BodyTexts.Level2(text = it)
                     }
                 }
@@ -568,19 +568,19 @@ fun BackAlertDialog(
                 ) {
                     AppOutlinedButton(
                         onClick = onDismiss,
-                        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.LightGray),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1F)
+                            .weight(1F),
+                        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.LightGray)
                     ) {
                         CaptionTexts.Level3(text = stringResource(id = R.string.meditate_later))
                     }
                     AppOutlinedButton(
                         onClick = onResume,
-                        colors = ButtonDefaults.outlinedButtonColors(containerColor = AppTheme.colors.primary),
                         modifier = Modifier
                             .fillMaxWidth()
-                            .weight(1F)
+                            .weight(1F),
+                        colors = ButtonDefaults.outlinedButtonColors(containerColor = AppTheme.colors.primary)
                     ) {
                         CaptionTexts.Level3(text = stringResource(id = R.string.resume_now))
                     }

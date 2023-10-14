@@ -116,11 +116,11 @@ fun DetailsCreateScreen(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppFilledButton(
                 textToShow = stringResource(R.string.next_button),
-                onClick = eventNext,
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level4),
-                shape = CircleShape
+                shape = CircleShape,
+                onClick = eventNext
             )
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
@@ -231,9 +231,9 @@ fun EditProfileImageButton(
         horizontalArrangement = Arrangement.End, modifier = modifier
     ) {
         AppIconButton(
-            onClick = onUserProfileSelection,
             imageVector = editIcon,
-            iconTint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current)
+            iconTint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
+            onClick = onUserProfileSelection
         )
     }
 }

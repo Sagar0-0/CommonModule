@@ -194,9 +194,6 @@ internal fun SavedAddressesScreen(
 
             AnimatedVisibility(fillAddressSheetType == null) {
                 AppOutlinedButton(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level1),
                     onClick = {
                         if (currentAddressState is UiState.Success) {
                             openFillAddressSheet(
@@ -207,7 +204,10 @@ internal fun SavedAddressesScreen(
                         } else if (currentAddressState is UiState.ErrorMessage) {
                             onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
                         }
-                    }
+                    },
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level1)
                 ) {
                     AppIcon(
                         modifier = Modifier
@@ -275,9 +275,6 @@ internal fun SavedAddressesScreen(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
             AppOutlinedButton(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level1),
                 onClick = {
                     if (currentAddressState is UiState.Success) {
                         onUiEvent(
@@ -292,7 +289,11 @@ internal fun SavedAddressesScreen(
                     } else {
                         Toast.makeText(context, "Fetching location...", Toast.LENGTH_SHORT).show()
                     }
-                }) {
+                },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level1)
+            ) {
                 AppIcon(
                     modifier = Modifier
                         .padding(end = AppTheme.spacing.level0)

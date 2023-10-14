@@ -48,7 +48,7 @@ import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndi
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -329,11 +329,10 @@ fun SunlightCard(modifier: Modifier) {
                     contentDescription = null,
                 )
                 BodyTexts.Level2(text = "Sunlight")
-                AppToggleButton(
-                    modifier = Modifier.weight(0.5f),
+                AppSwitch(
                     checked = checked.value,
-                    onCheckedChange = { checked.value = it },
-                )
+                    modifier = Modifier.weight(0.5f),
+                ) { checked.value = it }
             }
             CaptionTexts.Level3(
                 maxLines = 3,

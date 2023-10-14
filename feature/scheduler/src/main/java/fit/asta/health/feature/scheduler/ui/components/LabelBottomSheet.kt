@@ -54,9 +54,9 @@ fun CustomLabelBottomSheetLayout(
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(imageVector = Icons.Default.Check, onClick = {
+            AppIconButton(imageVector = Icons.Default.Check) {
                 onSave(value)
-            })
+            }
         }
     }
     Spacer(modifier = Modifier.height(20.dp))

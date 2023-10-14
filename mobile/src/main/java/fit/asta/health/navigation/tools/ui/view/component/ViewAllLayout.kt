@@ -9,7 +9,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun ViewAllLayout(
@@ -22,7 +22,7 @@ fun ViewAllLayout(
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {
-        HeadingTexts.Level1(text = title)
+        TitleTexts.Level2(text = title)
         onClick?.let { onClick ->
             AppTextButton(
                 textToShow = clickString, trailingIcon = Icons.Filled.KeyboardArrowRight

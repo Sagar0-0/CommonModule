@@ -82,8 +82,8 @@ fun AppDatePicker(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             AppIconButton(
-                modifier = Modifier.size(AppTheme.iconSize.level5),
                 imageVector = Icons.Default.ArrowLeft,
+                modifier = Modifier.size(AppTheme.iconSize.level5),
                 onClick = onPreviousButtonClick
             )
 
@@ -91,8 +91,8 @@ fun AppDatePicker(
 
 
             AppIconButton(
-                modifier = Modifier.size(AppTheme.iconSize.level5),
                 imageVector = Icons.Default.ArrowRight,
+                modifier = Modifier.size(AppTheme.iconSize.level5),
                 onClick = onNextButtonClick
             )
         }

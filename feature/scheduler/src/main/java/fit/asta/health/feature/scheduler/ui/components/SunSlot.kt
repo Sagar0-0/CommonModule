@@ -52,12 +52,12 @@ fun WeatherCard(weatherData: WeatherData, modifier: Modifier = Modifier, onSched
                 BodyTexts.Level1(text = weatherData.title)
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
                 AppIconButton(
+                    imageVector = Icons.Filled.Schedule,
                     modifier = Modifier
                         .size(AppTheme.iconSize.level4)
                         .clip(RoundedCornerShape(AppTheme.spacing.level1)),
-                    onClick = onSchedule,
-                    imageVector = Icons.Filled.Schedule,
-                    iconDesc = "Schedule Icon"
+                    iconDesc = "Schedule Icon",
+                    onClick = onSchedule
                 )
             }
             Row(

@@ -29,11 +29,11 @@ private fun DefaultPreview1() {
     AppTheme {
         Surface {
             Column {
-                AppToggleButton(
+                AppSwitch(
                     checked = true,
                 )
 
-                AppToggleButton(
+                AppSwitch(
                     checked = false,
                     enabled = false
                 )
@@ -44,7 +44,7 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AppToggleButton] composable is a custom implementation of a toggle button.
+ * [AppSwitch] composable is a custom implementation of a toggle button.
  *
  * @param modifier the [Modifier] to be applied to this switch
  * @param checked whether or not this switch is checked
@@ -60,11 +60,11 @@ private fun DefaultPreview1() {
  * @param onCheckedChange called when this switch is clicked.
  * */
 @Composable
-fun AppToggleButton(
-    modifier: Modifier = Modifier,
+fun AppSwitch(
     checked: Boolean,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    thumbContent: (@Composable () -> Unit)? = null,
+    thumbContent: @Composable (() -> Unit)? = null,
     colors: SwitchColors = SwitchDefaults.colors(
         checkedThumbColor = AppTheme.colors.onPrimary,
         checkedTrackColor = AppTheme.colors.primary,

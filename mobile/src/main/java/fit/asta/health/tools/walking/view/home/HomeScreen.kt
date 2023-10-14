@@ -35,7 +35,7 @@ import fit.asta.health.designsystem.molecular.CardItem
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -570,10 +570,9 @@ fun SunlightCard(modifier: Modifier) {
             Column(
                 verticalArrangement = Arrangement.SpaceAround
             ) {
-                AppToggleButton(
+                AppSwitch(
                     checked = checked.value,
-                    onCheckedChange = { checked.value = it },
-                )
+                ) { checked.value = it }
             }
         }
     }

@@ -53,21 +53,21 @@ fun PlayerHeader(
         ) {
             AppTextButton(
                 textToShow = "Audio",
-                onClick = onAudioVideo,
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (!audioVideo) Color.LightGray
                     else AppTheme.colors.primary.copy(alpha = .5f),
                     contentColor = AppTheme.colors.primary
-                )
+                ),
+                onClick = onAudioVideo
             )
             AppTextButton(
-                onClick = onAudioVideo,
+                textToShow = "Video",
                 colors = ButtonDefaults.textButtonColors(
                     containerColor = if (audioVideo) Color.LightGray
                     else AppTheme.colors.primary.copy(alpha = .5f),
                     contentColor = AppTheme.colors.primary
                 ),
-                textToShow = "Video"
+                onClick = onAudioVideo
             )
         }
 

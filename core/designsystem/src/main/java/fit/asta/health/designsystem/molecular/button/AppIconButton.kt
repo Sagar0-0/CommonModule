@@ -30,12 +30,12 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppIconButton(
-                    onClick = {}, imageVector = Icons.Default.ArrowBackIos
-                )
+                    imageVector = Icons.Default.ArrowBackIos
+                ) {}
 
                 AppIconButton(
-                    enabled = false, onClick = {}, imageVector = Icons.Default.ArrowBackIos
-                )
+                    imageVector = Icons.Default.ArrowBackIos, enabled = false
+                ) {}
             }
         }
     }
@@ -55,6 +55,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppIconButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(
@@ -64,7 +65,6 @@ fun AppIconButton(
         disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
     content: @Composable () -> Unit,
 ) {
     IconButton(
@@ -95,8 +95,8 @@ fun AppIconButton(
  */
 @Composable
 fun AppIconButton(
-    modifier: Modifier = Modifier,
     imageVector: ImageVector,
+    modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: IconButtonColors = IconButtonDefaults.iconButtonColors(
         containerColor = Color.Transparent,

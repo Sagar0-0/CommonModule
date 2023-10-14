@@ -145,9 +145,8 @@ fun TodayContent(
                                 .padding(16.dp)
                         ) {
                             AppTonalButton(
-                                textToShow = stringResource(R.string.retry),
-                                onClick = { hSEvent(HomeEvent.Retry) }
-                            )
+                                textToShow = stringResource(R.string.retry)
+                            ) { hSEvent(HomeEvent.Retry) }
                         }
                     }
                 }
@@ -187,8 +186,9 @@ fun TodayContent(
             if (defaultScheduleVisibility) {
                 item {
                     AnimatedVisibility(visible = true) {
-                        AppOutlinedButton(textToShow = stringResource(R.string.default_schedule),
-                            onClick = { hSEvent(HomeEvent.SetDefaultSchedule(context)) })
+                        AppOutlinedButton(
+                            textToShow = stringResource(R.string.default_schedule)
+                        ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
                     }
                 }
             }
@@ -349,12 +349,12 @@ fun TodayItem(
                     }
                     BodyTexts.Level2(text = description)
                     AppOutlinedButton(
-                        onClick = onDone,
+                        textToShow = "Done",
+                        leadingIcon = Icons.Default.Check,
+                        shape = AppTheme.shape.level2,
                         border = BorderStroke(width = 2.dp, color = color),
                         interactionSource = interactionSource,
-                        shape = AppTheme.shape.level2,
-                        leadingIcon = Icons.Default.Check,
-                        textToShow = "Done",
+                        onClick = onDone,
                     )
                 }
             }
@@ -366,8 +366,8 @@ fun TodayItem(
                     text = time,
                 )
                 AppTextButton(
-                    modifier = Modifier.weight(.5f),
                     textToShow = stringResource(id = R.string.reschedule),
+                    modifier = Modifier.weight(.5f),
                     onClick = onReschedule
                 )
             }

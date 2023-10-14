@@ -85,8 +85,8 @@ private fun CardCenterButton(buttonTitle: String, modifier: Modifier = Modifier)
     Box(modifier = Modifier.fillMaxSize(), Alignment.Center) {
         AppFilledButton(
             onClick = { /*TODO*/ },
-            shape = CircleShape,
             modifier = modifier.size(100.dp),
+            shape = CircleShape,
             colors = ButtonDefaults.buttonColors(
                 containerColor = Color.White.copy(alpha = 0.6f)
             )
@@ -129,10 +129,10 @@ private fun CardTitleAndButton(cardTitle: String) {
     ) {
         TitleTexts.Level1(text = cardTitle, color = Color.White)
         AppIconButton(
+            imageVector = Icons.Filled.Schedule,
             modifier = Modifier
                 .size(AppTheme.iconSize.level4)
                 .clip(RoundedCornerShape(AppTheme.spacing.level1)),
-            imageVector = Icons.Filled.Schedule,
             iconDesc = "Schedule Icon"
         ) {
             /*TODO*/
@@ -250,10 +250,10 @@ private fun CardTopLayout(cardTitle: String, secondaryTitle: String, onButtonCli
         ) {
             TitleTexts.Level1(text = cardTitle, color = Color.White)
             AppIconButton(
+                imageVector = Icons.Filled.Schedule,
                 modifier = Modifier
                     .size(AppTheme.iconSize.level4)
                     .clip(RoundedCornerShape(AppTheme.spacing.level1)),
-                imageVector = Icons.Filled.Schedule,
                 iconDesc = "Schedule Icon",
                 onClick = onButtonClick
             )

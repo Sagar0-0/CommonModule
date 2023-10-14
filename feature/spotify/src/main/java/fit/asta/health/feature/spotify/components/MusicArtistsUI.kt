@@ -33,7 +33,7 @@ fun MusicArtistsUI(
 ) {
 
     // Width of the Image of the Track
-    val widthOfImage = AppTheme.imageSize.level10
+    val widthOfImage = AppTheme.imageSize.level11
 
     Column(
         modifier = Modifier

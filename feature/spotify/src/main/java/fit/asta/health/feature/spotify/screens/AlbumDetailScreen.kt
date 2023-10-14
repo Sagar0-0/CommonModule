@@ -135,6 +135,7 @@ private fun LocalAlbumHandler(
 
                 // Add to Favourites Button
                 AppFilledButton(
+                    textToShow = buttonText,
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
@@ -142,8 +143,7 @@ private fun LocalAlbumHandler(
                             bottom = AppTheme.spacing.level0,
                             start = AppTheme.spacing.level1,
                             end = AppTheme.spacing.level1
-                        ),
-                    textToShow = buttonText
+                        )
                 ) {
 
                     // Checking if the Album is already present or not
@@ -157,14 +157,14 @@ private fun LocalAlbumHandler(
 
                 // Play on Spotify Button
                 AppFilledButton(
+                    textToShow = stringResource(id = R.string.play_using_spotify),
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(
                             top = AppTheme.spacing.level0,
                             start = AppTheme.spacing.level1,
                             end = AppTheme.spacing.level1
-                        ),
-                    textToShow = stringResource(id = R.string.play_using_spotify)
+                        )
                 ) {
                     setEvent(SpotifyUiEvent.HelperEvent.PlaySong(networkAlbumData.uri))
                 }

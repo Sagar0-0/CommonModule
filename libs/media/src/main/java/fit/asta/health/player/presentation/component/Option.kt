@@ -19,7 +19,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.semantics.Role
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -84,6 +84,6 @@ fun BooleanOption(
             text = name,
             modifier = Modifier.weight(1f)
         )
-        AppToggleButton(checked = value, onCheckedChange = onValueChange, enabled = enabled)
+        AppSwitch(checked = value, enabled = enabled, onCheckedChange = onValueChange)
     }
 }

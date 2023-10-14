@@ -146,11 +146,11 @@ fun AddChipOnCard(
     val colors = rememberAssistChipColors(containerColor = AppTheme.colors.primaryContainer)
 
     AppAssistChip(
-        onClick = onClick,
         textToShow = textOnChip,
         trailingIcon = if (isSelected) Icons.Rounded.RemoveCircle else Icons.Rounded.AddCircle,
+        iconTint = if (isSelected) AppTheme.colors.error else AppTheme.colors.primary,
         colors = colors,
-        iconTint = if (isSelected) AppTheme.colors.error else AppTheme.colors.primary
+        onClick = onClick
     )
 }
 

@@ -125,16 +125,15 @@ private fun BottomAppBarLayout(
     ) {
         items.forEach { item ->
             AppNavigationBarItem(
+                selected = currentRoute == item.route,
                 icon = {
                     AppIcon(
                         imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
                         contentDescription = item.title
                     )
                 },
-                label = item.title,
-                selected = currentRoute == item.route,
-                onClick = { onNavigate(item.route) }
-            )
+                label = item.title
+            ) { onNavigate(item.route) }
         }
     }
 }
@@ -193,13 +192,11 @@ private fun RowScope.NewMainTopBarActions(
 
     Row(horizontalArrangement = Arrangement.End) {
         AppIconButton(
-            imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff,
-            onClick = { onClick(MainTopBarActions.Notification) }
-        )
+            imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
+        ) { onClick(MainTopBarActions.Notification) }
         AppIconButton(
-            imageVector = Icons.Default.Share,
-            onClick = { onClick(MainTopBarActions.Share) }
-        )
+            imageVector = Icons.Default.Share
+        ) { onClick(MainTopBarActions.Share) }
         if (profileImageUri != null) {
             AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
                 Image(
@@ -212,9 +209,8 @@ private fun RowScope.NewMainTopBarActions(
             }
         }
         AppIconButton(
-            imageVector = Icons.Default.Settings,
-            onClick = { onClick(MainTopBarActions.Settings) }
-        )
+            imageVector = Icons.Default.Settings
+        ) { onClick(MainTopBarActions.Settings) }
     }
 }
 

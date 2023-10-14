@@ -37,19 +37,17 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppAssistChip(
-                    onClick = {},
                     textToShow = "Enabled",
                     leadingIcon = Icons.Default.Person,
                     trailingIcon = Icons.Default.TrackChanges
-                )
+                ) {}
 
                 AppAssistChip(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person,
                     trailingIcon = Icons.Default.TrackChanges
-                )
+                ) {}
             }
         }
     }
@@ -90,9 +88,9 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppAssistChip(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,

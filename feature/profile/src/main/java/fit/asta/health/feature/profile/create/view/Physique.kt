@@ -366,9 +366,11 @@ private fun AgeSection(
 
 
     AppOutlinedButton(
-        onClick = { calendarState.show() }, border = BorderStroke(
+        onClick = { calendarState.show() },
+        colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent),
+        border = BorderStroke(
             width = AppTheme.spacing.level0, color = ageColorSelection
-        ), colors = ButtonDefaults.outlinedButtonColors(containerColor = Color.Transparent)
+        )
     ) {
         Row(
             Modifier.fillMaxWidth(),

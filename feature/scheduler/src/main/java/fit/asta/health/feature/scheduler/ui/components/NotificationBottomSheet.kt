@@ -49,13 +49,13 @@ fun NotificationBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            AppIconButton(onClick = onNavigateBack, imageVector = Icons.Default.Close)
+            AppIconButton(imageVector = Icons.Default.Close, onClick = onNavigateBack)
             TitleTexts.Level2(
                 text = text,
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(onClick = { onSave(selectedOption) }, imageVector = Icons.Default.Check)
+            AppIconButton(imageVector = Icons.Default.Check) { onSave(selectedOption) }
         }
 
         radioOptions.forEach { text ->
@@ -65,11 +65,10 @@ fun NotificationBottomSheetLayout(
                     .padding(horizontal = 16.dp), verticalAlignment = Alignment.CenterVertically
             ) {
                 AppRadioButton(
-                    selected = (text == selectedOption),
-                    onClick = {
-                        onOptionSelected(text)
-                    }
-                )
+                    selected = (text == selectedOption)
+                ) {
+                    onOptionSelected(text)
+                }
                 TitleTexts.Level2(
                     text = text,
                     modifier = Modifier.padding(start = 8.dp),

@@ -15,7 +15,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -50,12 +50,11 @@ fun WeatherCard() {
                     text = "There will be addition of 500 ml to 1 Litre of water to your daily intake based on the weather temperature.",
                 )
             }
-            AppToggleButton(
+            AppSwitch(
                 checked = checked.value,
-                onCheckedChange = { checked.value = it },
                 modifier = Modifier
                     .size(24.dp)
-            )
+            ) { checked.value = it }
         }
     }
 }

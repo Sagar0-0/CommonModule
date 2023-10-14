@@ -36,7 +36,7 @@ import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.button.AppToggleButton
+import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -86,11 +86,8 @@ fun OnlyToggleButton(
                     btnEnabled = btnEnabled,
                     arrowTitle = switchTitle,
                     onClick = { onNavigateToClickText?.invoke() })
-                AppToggleButton(
+                AppSwitch(
                     checked = mCheckedState,
-                    onCheckedChange = {
-                        onCheckClicked(it)
-                    },
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = AppTheme.colors.primary,
                         uncheckedThumbColor = AppTheme.colors.primaryContainer,
@@ -99,7 +96,9 @@ fun OnlyToggleButton(
                         checkedBorderColor = AppTheme.colors.primary,
                         uncheckedBorderColor = AppTheme.colors.primary,
                     )
-                )
+                ) {
+                    onCheckClicked(it)
+                }
             }
         }
     }
@@ -203,8 +202,8 @@ fun DaysCircleButton(
 
     AppTextButton(
         onClick = { onDaySelect() },
-        shape = CircleShape,
         modifier = Modifier.size(40.dp),
+        shape = CircleShape,
         colors = buttonColors(
             containerColor = colorState,
             contentColor = colorState2

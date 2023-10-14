@@ -50,8 +50,9 @@ fun TestimonialsRadioButton(
                             )
                         ) {
                             Row(verticalAlignment = Alignment.CenterVertically) {
-                                AppRadioButton(selected = (item == selectedOption),
-                                    onClick = { onOptionSelected(item) })
+                                AppRadioButton(
+                                    selected = (item == selectedOption)
+                                ) { onOptionSelected(item) }
                                 TitleTexts.Level2(text = item.title)
                             }
                         }

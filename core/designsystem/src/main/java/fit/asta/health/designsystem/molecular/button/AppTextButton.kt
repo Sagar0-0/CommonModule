@@ -43,19 +43,17 @@ private fun DefaultPreview1() {
         Surface {
             Column {
                 AppTextButton(
-                    onClick = {},
                     textToShow = "Enabled Button",
                     leadingIcon = Icons.Default.Person,
                     trailingIcon = Icons.Default.Person
-                )
+                ) {}
 
                 AppTextButton(
-                    enabled = false,
-                    onClick = {},
                     textToShow = "Disabled Button",
+                    enabled = false,
                     leadingIcon = Icons.Default.Person,
                     trailingIcon = Icons.Default.Person
-                )
+                ) {}
             }
         }
     }
@@ -93,6 +91,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun AppTextButton(
+    onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     shape: Shape = ButtonDefaults.textShape,
@@ -110,8 +109,7 @@ fun AppTextButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit,
-    content: @Composable RowScope.() -> Unit
+    content: @Composable (RowScope.() -> Unit)
 ) {
     TextButton(
         onClick = onClick,
@@ -159,9 +157,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     shape: Shape = ButtonDefaults.textShape,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
@@ -234,9 +232,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
@@ -325,9 +323,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
@@ -416,9 +414,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.primary,
@@ -507,9 +505,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.primary,
@@ -600,9 +598,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -707,9 +705,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,
@@ -814,9 +812,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
@@ -921,9 +919,9 @@ fun AppTextButton(
  */
 @Composable
 fun AppTextButton(
+    textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    textToShow: String,
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     trailingIcon: Painter? = null,

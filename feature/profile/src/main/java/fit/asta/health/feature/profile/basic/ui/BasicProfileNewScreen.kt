@@ -122,14 +122,16 @@ fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Un
                     end.linkTo(parent.end)
                 })
 
-        AppIconButton(imageVector = Icons.Rounded.CameraEnhance,
-            onClick = onClick,
+        AppIconButton(
+            imageVector = Icons.Rounded.CameraEnhance,
             modifier = Modifier
                 .size(AppTheme.buttonSize.level6)
                 .constrainAs(button) {
                     bottom.linkTo(image.bottom)
                     end.linkTo(image.end)
-                })
+                },
+            onClick = onClick
+        )
     }
 }
 
@@ -164,9 +166,9 @@ fun TextBlock() {
                 }
             }
             if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit, onClick = {
+                AppIconButton(imageVector = Icons.Rounded.Edit) {
                     isEditing = true
-                })
+                }
             }
         }
         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -233,9 +235,9 @@ fun EmailBlock() {
                 }
             }
             if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit, onClick = {
+                AppIconButton(imageVector = Icons.Rounded.Edit) {
                     isEditing = true
-                })
+                }
             }
         }
         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -304,9 +306,9 @@ fun PhoneBlock() {
                 }
             }
             if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit, onClick = {
+                AppIconButton(imageVector = Icons.Rounded.Edit) {
                     isEditing = true
-                })
+                }
             }
         }
         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -426,5 +428,5 @@ fun GenerateButton(
     textToShow: String = "",
     onClick: () -> Unit = {},
 ) {
-    AppFilledButton(textToShow = textToShow, onClick = onClick, modifier = modifier)
+    AppFilledButton(textToShow = textToShow, modifier = modifier, onClick = onClick)
 }

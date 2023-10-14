@@ -69,14 +69,14 @@ fun AppDialogPopUp(
                 BodyTexts.Level2(text = bodyText, maxLines = 5)
                 Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                     AppOutlinedButton(
-                        modifier = Modifier.weight(1F),
                         textToShow = secondaryButtonText,
+                        modifier = Modifier.weight(1F),
                         onClick = onDismiss
                     )
                     AppTonalButton(
-                        onClick = onDone,
+                        textToShow = primaryButtonText,
                         modifier = Modifier.weight(1F),
-                        textToShow = primaryButtonText
+                        onClick = onDone
                     )
                 }
             }

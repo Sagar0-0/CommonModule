@@ -11,6 +11,6 @@ fun DisabledChipForList(
     textOnChip: String,
 ) {
     val colors = rememberAssistChipColors(disabledContainerColor = AppTheme.colors.primaryContainer)
-    AppAssistChip(onClick = { /*TODO*/ }, textToShow = textOnChip, colors = colors, enabled = false)
+    AppAssistChip(textToShow = textOnChip, enabled = false, colors = colors) { /*TODO*/ }
 }
 

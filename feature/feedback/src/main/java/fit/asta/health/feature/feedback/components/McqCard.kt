@@ -22,12 +22,11 @@ fun McqCard(list: List<String>, updatedAns: (String) -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 AppRadioButton(
-                    selected = text == ans.value,
-                    onClick = {
-                        ans.value = text
-                        updatedAns(text)
-                    }
-                )
+                    selected = text == ans.value
+                ) {
+                    ans.value = text
+                    updatedAns(text)
+                }
                 TitleTexts.Level2(text = text)
             }
         }
