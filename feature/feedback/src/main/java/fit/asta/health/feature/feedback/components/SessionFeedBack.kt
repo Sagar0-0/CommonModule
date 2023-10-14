@@ -4,12 +4,13 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -102,19 +103,21 @@ fun SessionFeedback(
                         } as MutableList<An>
                     )
                 }
-                Column(
-                    Modifier
+
+                LazyColumn(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(it)
                         .verticalScroll(rememberScrollState())
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
+                    item {
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                        WelcomeCard()
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                    }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                    WelcomeCard()
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-
-                    qns.forEachIndexed { idx, qn ->
+                    itemsIndexed(qns) { idx, qn ->
                         FeedbackQuesItem(
                             qn = qn,
                             updatedAns = { an ->
@@ -127,18 +130,19 @@ fun SessionFeedback(
                         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     }
 
-
-                    SubmitButton(
-                        enabled = isEnabled,
-                        onDisable = {
-                            isEnabled = false
+                    item {
+                        SubmitButton(
+                            enabled = isEnabled,
+                            onDisable = {
+                                isEnabled = false
+                            }
+                        ) {
+                            Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
+                            onSubmit(ansList.value.toList())
                         }
-                    ) {
-                        Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
-                        onSubmit(ansList.value.toList())
-                    }
 
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    }
                 }
             }
 

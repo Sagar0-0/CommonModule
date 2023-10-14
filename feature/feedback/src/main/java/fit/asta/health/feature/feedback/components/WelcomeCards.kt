@@ -16,7 +16,7 @@ import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -43,14 +43,14 @@ fun WelcomeCard() {
             Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
 
             Column {
-                TitleTexts.Level2(
+                BodyTexts.Level2(
                     text = stringResource(id = StringR.string.feedback_welcome),
                     textAlign = TextAlign.Left
                 )
 
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
-                TitleTexts.Level2(
+                BodyTexts.Level2(
                     text = stringResource(id = StringR.string.your_feedback_is_important),
                     textAlign = TextAlign.Left
                 )

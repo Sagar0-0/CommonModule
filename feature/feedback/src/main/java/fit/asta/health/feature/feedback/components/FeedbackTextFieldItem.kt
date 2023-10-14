@@ -85,6 +85,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
         }
 
         AppTextField(
+            minLines = 6,
             appTextFieldType = AppTextFieldValidator(
                 AppTextFieldType.Custom(
                     qn.ansType.min,
