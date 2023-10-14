@@ -31,14 +31,13 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
-import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.AppTextField
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import java.util.*
@@ -194,7 +193,7 @@ internal fun MapScreen(
             }
 
             AnimatedVisibility(searchSheetType == null) {
-                AppTextField(
+                AppOutlinedTextField(
                     singleLine = true,
                     enabled = false,
                     modifier = Modifier
@@ -205,11 +204,7 @@ internal fun MapScreen(
                         },
                     value = "",
                     onValueChange = {},
-                    placeholder = {
-                        BodyTexts.Level1(
-                            text = R.string.search_for_area_street.toStringFromResId(),
-                        )
-                    },
+                    label = R.string.search_for_area_street.toStringFromResId(),
                     leadingIcon = {
                         AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                     }

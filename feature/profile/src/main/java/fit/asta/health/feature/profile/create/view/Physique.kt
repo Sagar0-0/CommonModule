@@ -24,6 +24,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.EditCalendar
@@ -55,10 +56,10 @@ import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppTextFieldValidate
 import fit.asta.health.designsystem.molecular.RowToggleButtonGroup
-import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
@@ -267,13 +268,13 @@ private fun MeasurementSection(
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AppTextField(
+                AppOutlinedTextField(
                     value = userWeight.value,
-                    keyboardActions = KeyboardActions(onNext = {
-                        focusManager.moveFocus(
-                            FocusDirection.Next
-                        )
-                    }),
+                    keyboardActions = KeyboardActions(
+                        onNext = {
+                            focusManager.moveFocus(FocusDirection.Next)
+                        }
+                    ),
                     onValueChange = {
                         viewModel.onEvent(
                             ProfileEvent.OnUserWeightChange(
@@ -281,9 +282,13 @@ private fun MeasurementSection(
                             )
                         )
                     },
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Next,
-                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Next
+                    ),
+                    colors = OutlinedTextFieldDefaults.colors(
+                        unfocusedBorderColor = AppTheme.colors.onSurface
+                    )
                 )
                 if (userWeight.error !is UiString.Empty) {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
@@ -310,7 +315,7 @@ private fun MeasurementSection(
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AppTextField(
+                AppOutlinedTextField(
                     value = userHeight.value,
                     onValueChange = {
                         viewModel.onEvent(
@@ -319,8 +324,10 @@ private fun MeasurementSection(
                             )
                         )
                     },
-                    keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done,
+                    keyboardOptions = KeyboardOptions(
+                        keyboardType = KeyboardType.Number,
+                        imeAction = ImeAction.Done,
+                    ),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )

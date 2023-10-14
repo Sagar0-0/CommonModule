@@ -16,6 +16,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
+import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
@@ -34,11 +35,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
-import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -83,19 +82,18 @@ fun SearchBar(
     searchQuery: MutableState<String>,
 ) {
     val focusManager = LocalFocusManager.current
-    AppTextField(
+    AppOutlinedTextField(
         value = searchQuery.value,
         onValueChange = { onSearchQueryChange(it) },
         modifier = Modifier.fillMaxWidth(),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-        keyboardType = KeyboardType.Text,
-        imeAction = ImeAction.Done,
-        placeholder = { CaptionTexts.Level5(text = "Search") },
-        leadingIcon = {
-            AppIcon(
-                imageVector = Icons.Rounded.Search, contentDescription = "Search Icon"
-            )
-        },
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.Text,
+            imeAction = ImeAction.Done
+        ),
+        label = "Search",
+        leadingIcon = Icons.Rounded.Search,
+        leadingIconDes = "Search Icon"
     )
 }
 

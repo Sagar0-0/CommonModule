@@ -53,7 +53,6 @@ import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
-import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
@@ -61,6 +60,7 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 
@@ -168,7 +168,7 @@ internal fun SavedAddressesScreen(
                 .padding(padding)
         ) {
             AnimatedVisibility(searchSheetType == null) {
-                AppTextField(
+                AppOutlinedTextField(
                     maxLines = 1,
                     enabled = false,
                     modifier = Modifier
@@ -179,11 +179,7 @@ internal fun SavedAddressesScreen(
                         },
                     value = "",
                     onValueChange = {},
-                    placeholder = {
-                        TitleTexts.Level2(
-                            text = R.string.search_for_area_street.toStringFromResId(),
-                        )
-                    },
+                    label = R.string.search_for_area_street.toStringFromResId(),
                     leadingIcon = {
                         AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                     }

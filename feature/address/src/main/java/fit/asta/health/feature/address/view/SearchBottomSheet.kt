@@ -38,12 +38,12 @@ import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
-import fit.asta.health.designsystem.molecular.AppTextField
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
@@ -90,7 +90,7 @@ internal fun SearchBottomSheet(
             modifier = Modifier.fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            AppTextField(
+            AppOutlinedTextField(
                 maxLines = 1,
                 singleLine = true,
                 modifier = Modifier
@@ -102,11 +102,7 @@ internal fun SearchBottomSheet(
                     searchQuery = it
                     if (it.length > 2) onUiEvent(SearchSheetUiEvent.Search(it))
                 },
-                placeholder = {
-                    TitleTexts.Level2(
-                        text = R.string.search_for_area_street.toStringFromResId(),
-                    )
-                },
+                label = R.string.search_for_area_street.toStringFromResId(),
                 leadingIcon = {
                     AppIcon(imageVector = Icons.Default.Search, contentDescription = "")
                 },
