@@ -1,14 +1,20 @@
 package fit.asta.health.feature.auth.screens
 
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -25,6 +31,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.PhoneSignIn
@@ -76,17 +83,31 @@ internal fun AuthScreen(
             modifier = Modifier.weight(1f)
         )
 
+        var isGoogleVisible by rememberSaveable {
+            mutableStateOf(true)
+        }
+        AuthDivider("Login or Sign up")
         PhoneSignIn(
             failed = loginState is UiState.ErrorMessage,
             resetFailedState = {
                 onAuthEvent(AuthEvent.ResetLoginState)
+            },
+            isPhoneEntered = {
+                isGoogleVisible = !it
             }
         ) {
             onAuthEvent(AuthEvent.SignInWithCredentials(it))
         }
-        GoogleSignIn(StringR.string.sign_in_with_google) {
-            onAuthEvent(AuthEvent.SignInWithCredentials(it))
+
+        AnimatedVisibility(visible = isGoogleVisible) {
+            Column {
+                AuthDivider("or")
+                GoogleSignIn(StringR.string.sign_in_with_google) {
+                    onAuthEvent(AuthEvent.SignInWithCredentials(it))
+                }
+            }
         }
+
 
         val annotatedLinkString: AnnotatedString = buildAnnotatedString {
 
@@ -161,6 +182,30 @@ internal fun AuthScreen(
                         onAuthEvent(AuthEvent.NavigateToWebView(url))
                     }
             }
+        )
+    }
+}
+
+@Composable
+fun AuthDivider(s: String) {
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(AppTheme.spacing.level1),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        AppDivider(
+            Modifier
+                .weight(1f)
+                .padding(AppTheme.spacing.level1)
+        )
+
+        TitleTexts.Level3(text = s)
+
+        AppDivider(
+            Modifier
+                .weight(1f)
+                .padding(AppTheme.spacing.level1)
         )
     }
 }

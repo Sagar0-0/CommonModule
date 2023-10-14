@@ -64,6 +64,7 @@ import fit.asta.health.resources.strings.R as StringR
 fun PhoneSignIn(
     failed: Boolean = false,
     resetFailedState: () -> Unit,
+    isPhoneEntered: (Boolean) -> Unit = {},
     signInWithCredentials: (AuthCredential) -> Unit
 ) {
     var phoneNumber by rememberSaveable {
@@ -96,6 +97,7 @@ fun PhoneSignIn(
         if (failed) {
             loading = false
             codeSent = false
+            isPhoneEntered(codeSent)
             otp = ""
             resetFailedState()
             Toast.makeText(
@@ -179,6 +181,7 @@ fun PhoneSignIn(
                 Toast.makeText(context, "Otp retrieval failed", Toast.LENGTH_SHORT).show()
                 loading = false
                 codeSent = false
+                isPhoneEntered(codeSent)
             }
         )
         myOTPReceiver.register(context)
@@ -361,7 +364,10 @@ fun PhoneSignIn(
                 AppTextButton(
                     textToShow = if (ticks > 0) "Resend code in $ticks seconds" else "Still not received?",
                     enabled = !loading && ticks == 0,
-                    onClick = { codeSent = false },
+                    onClick = {
+                        codeSent = false
+                        isPhoneEntered(codeSent)
+                    },
                     modifier = Modifier
                         .align(Alignment.End)
                         .padding(AppTheme.spacing.level2)
@@ -385,6 +391,7 @@ fun PhoneSignIn(
                 .show()
             loading = false
             codeSent = false
+            isPhoneEntered(codeSent)
         }
 
         override fun onCodeSent(
@@ -394,6 +401,7 @@ fun PhoneSignIn(
             super.onCodeSent(verificationId, token)
             verificationID = verificationId
             codeSent = true
+            isPhoneEntered(codeSent)
             loading = false
         }
     }
