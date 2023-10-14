@@ -1,5 +1,6 @@
 package fit.asta.health.feature.onboarding.components
 
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.*
@@ -8,7 +9,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +18,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.text.style.TextAlign
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
+import androidx.media3.common.Player
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
@@ -106,7 +107,10 @@ fun OnboardingScreen(
 
                             3 -> {
                                 VideoView(
-                                    url = getVideoUrl(url = items[page].url),
+                                    onPlay = page == pagerState.currentPage,
+                                    onPause = page != pagerState.currentPage,
+                                    mediaItem = MediaItem.Builder()
+                                        .setUri(getVideoUrl(url = items[page].url).toUri()).build()
                                 )
                             }
                         }
@@ -153,24 +157,35 @@ fun OnboardingScreen(
 
 @Composable
 fun VideoView(
-    url: String,
+    mediaItem: MediaItem,
     uiState: VideoState = VideoState(
         controllerType = ControllerType.None,
         resizeMode = ResizeMode.FixedWidth,
         useArtwork = true
-    )
+    ),
+    onPlay: Boolean,
+    onPause: Boolean
 ) {
     val player by rememberManagedExoPlayer()
-    val mediaItem = remember {
-        MediaItem.Builder().setUri(url.toUri()).setMediaId(url).build()
-    }
+
     val state = rememberMediaState(player = player)
-    LaunchedEffect(mediaItem, player) {
+    LaunchedEffect(player) {
+        Log.d("TAG", "VideoView: ")
         player?.run {
             setMediaItem(mediaItem)
             playWhenReady = false
+            repeatMode = Player.REPEAT_MODE_ONE
             prepare()
-            stop()
+        }
+    }
+    LaunchedEffect(onPlay) {
+        if (onPlay) {
+            player?.play()
+        }
+    }
+    LaunchedEffect(onPause) {
+        if (onPause) {
+            player?.pause()
         }
     }
 
