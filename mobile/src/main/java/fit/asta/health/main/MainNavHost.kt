@@ -19,7 +19,6 @@ import fit.asta.health.common.ui.webView
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.rateUs
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
@@ -30,7 +29,6 @@ import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
 import fit.asta.health.feature.feedback.feedbackRoute
-import fit.asta.health.feature.feedback.navigateToFeedback
 import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
 import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
@@ -166,15 +164,6 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.SHARE -> {
                     context.shareApp(BuildConfig.APPLICATION_ID)
-                }
-
-                SettingsUiEvent.RATE -> {
-                    context.rateUs(BuildConfig.APPLICATION_ID)
-                }
-
-
-                SettingsUiEvent.FEEDBACK -> {
-                    navController.navigateToFeedback(context.getString(R.string.application_fid))
                 }
 
                 SettingsUiEvent.BUG -> {

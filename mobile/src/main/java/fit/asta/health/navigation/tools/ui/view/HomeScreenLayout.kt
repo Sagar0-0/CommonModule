@@ -19,9 +19,11 @@ import fit.asta.health.designsystem.molecular.animations.AppDividerLineWidth
 import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
 import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
 import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
 import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
@@ -35,7 +37,8 @@ import java.util.Locale
 @ExperimentalCoroutinesApi
 @Composable
 fun HomeScreenLayout(
-    toolsHome: ToolsHomeRes.ToolsHome, userId: String,
+    toolsHome: ToolsHomeRes.ToolsHome,
+    userId: String,
     onNav: (String) -> Unit,
 ) {
 
@@ -163,6 +166,13 @@ fun HomeScreenLayout(
             Column {
                 RateAppCard()
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            }
+        }
+
+        // Feedback Card
+        item(span = { GridItemSpan(columns) }) {
+            FeedbackCard {
+                onNav("$FEEDBACK_GRAPH_ROUTE/application")
             }
         }
 

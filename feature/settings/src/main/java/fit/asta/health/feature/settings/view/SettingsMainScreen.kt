@@ -18,7 +18,6 @@ import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
-import androidx.compose.material.icons.filled.Feedback
 import androidx.compose.material.icons.filled.FileCopy
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
@@ -27,7 +26,6 @@ import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.StarRate
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
@@ -140,18 +138,6 @@ fun SettingsScreenLayout(
                     icon = Icons.Default.AccountBalanceWallet,
                     textToShow = R.string.wallet.toStringFromResId()
                 ) { onClickEvent(SettingsUiEvent.WALLET) }
-
-                // Rate Us
-                CardItem(
-                    icon = Icons.Default.StarRate,
-                    textToShow = R.string.user_pref_rate_us_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.RATE) }
-
-                // Feedback
-                CardItem(
-                    icon = Icons.Default.Feedback,
-                    textToShow = R.string.user_pref_feedback_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.FEEDBACK) }
             }
 
             // This is the Display card section

@@ -23,7 +23,7 @@ import fit.asta.health.feature.feedback.components.SessionFeedback
 import fit.asta.health.feature.feedback.vm.FeedbackViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-private const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
+const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
 
 fun NavController.navigateToFeedback(feature: String, navOptions: NavOptions? = null) {
     this.navigate("$FEEDBACK_GRAPH_ROUTE/$feature", navOptions)
