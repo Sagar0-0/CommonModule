@@ -2,7 +2,6 @@ package fit.asta.health.feature.feedback.components
 
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -30,12 +29,12 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
     val maxChar = qn.ansType.max
     AppCard(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(horizontal = AppTheme.spacing.level0),
     ) {
         Column(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
                 .padding(AppTheme.spacing.level1)
         ) {
 
@@ -94,8 +93,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
             ),
             value = text.value,
             onValueChange = {
-                if (it.length <= maxChar) text.value = it
-                isValid(it.length in qn.ansType.min..maxChar)
+                text.value = it
                 updatedAns(
                     An(
                         dtlAns = text.value,
@@ -106,6 +104,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                     )
                 )
             },
+            isValidText = isValid,
             modifier = Modifier
                 .fillMaxWidth()
                 .height(AppTheme.boxSize.level2),
