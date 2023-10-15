@@ -9,22 +9,17 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPagerIndicator
 import com.google.accompanist.pager.PagerState
 import fit.asta.health.designsystem.AppTheme
 
 
-/** [AppDivider] is a compose method, which creates a horizontal divider line.
- * [AppDividerLineWidth] define an object containing custom divider widths.
- */
-object AppDividerLineWidth {
-    val TstDividerWidth = 71.dp
-}
-
-
-/** @param modifier (optional) - A set of modifiers to customize the layout and behavior of the [AppDivider].
+/**
+ *  @param modifier (optional) - A set of modifiers to customize the layout and behavior
+ *  of the [AppDivider].
+ *  @param thickness This is the thickness of the Divider Line which would be created
+ *  @param color This is the Color of the App Divider Line
  */
 @Composable
 fun AppDivider(

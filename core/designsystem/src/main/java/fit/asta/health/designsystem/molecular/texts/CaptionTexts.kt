@@ -49,7 +49,7 @@ object CaptionTexts {
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
-        maxLines: Int = 1,
+        maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
@@ -69,7 +69,7 @@ object CaptionTexts {
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
-        maxLines: Int = 1,
+        maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
@@ -89,7 +89,7 @@ object CaptionTexts {
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
-        maxLines: Int = 1,
+        maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
@@ -109,7 +109,7 @@ object CaptionTexts {
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
-        maxLines: Int = 1,
+        maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
@@ -129,7 +129,7 @@ object CaptionTexts {
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
-        maxLines: Int = 1,
+        maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(

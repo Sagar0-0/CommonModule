@@ -15,7 +15,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
-import fit.asta.health.designsystem.molecular.animations.AppDividerLineWidth
 import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -144,7 +143,7 @@ fun HomeScreenLayout(
             ) {
                 TitleTexts.Level3(text = "Why our customers love ASTA?")
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AppDivider(modifier = Modifier.width(AppDividerLineWidth.TstDividerWidth))
+                AppDivider(modifier = Modifier.width(AppTheme.customSize.level9))
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
