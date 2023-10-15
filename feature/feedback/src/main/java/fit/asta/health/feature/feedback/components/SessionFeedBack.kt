@@ -11,14 +11,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -81,34 +78,28 @@ fun SessionFeedback(
             }
 
             is UiState.Success -> {
+                val qns = feedbackQuesState.data.qns
+
                 val list = remember {
-                    mutableStateListOf(false)
+                    qns.map {
+                        false
+                    }.toMutableStateList()
                 }
+
                 var isEnabled = list.none { bool ->
                     !bool
                 }
 
-
-                val qns = feedbackQuesState.data.qns
                 val ansList = remember {
-                    mutableStateOf(
-                        qns.map {
-                            An(
-                                null,
-                                null,
-                                null,
-                                0,
-                                0
-                            )
-                        } as MutableList<An>
-                    )
+                    qns.map {
+                        An()
+                    }.toMutableStateList()
                 }
 
                 LazyColumn(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(it)
-                        .verticalScroll(rememberScrollState())
                         .background(color = AppTheme.colors.secondaryContainer)
                 ) {
                     item {
@@ -121,9 +112,10 @@ fun SessionFeedback(
                         FeedbackQuesItem(
                             qn = qn,
                             updatedAns = { an ->
-                                ansList.value[idx] = an
+                                ansList[idx] = an
                             },
                             isValid = { valid ->
+                                Log.d("FEE", "SessionFeedback: ${list.toList()}")
                                 list[idx] = valid
                             }
                         )
@@ -137,8 +129,8 @@ fun SessionFeedback(
                                 isEnabled = false
                             }
                         ) {
-                            Log.e("ANS", "SessionFeedback: ${ansList.value.toList()}")
-                            onSubmit(ansList.value.toList())
+                            Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
+                            onSubmit(ansList.toList())
                         }
 
                         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -167,6 +159,7 @@ fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Uni
                         localUri = uri
                     )
                 }
+                isValid(!(qn.isMandatory && medias.isEmpty()))
                 updatedAns(
                     An(
                         dtlAns = null,

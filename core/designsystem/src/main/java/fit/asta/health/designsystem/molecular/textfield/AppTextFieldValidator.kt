@@ -68,12 +68,14 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
             }
 
             is AppTextFieldType.Default -> {
-                "Text should be between " +
-                        "${appTextFieldType.minStringSize} - ${appTextFieldType.maxStringSize}"
+                "Text should be between ${appTextFieldType.minStringSize} - ${appTextFieldType.maxStringSize}"
             }
 
             is AppTextFieldType.Custom -> {
-                appTextFieldType.getErrorMessageLogic.invoke(input)
+                if (appTextFieldType.getErrorMessageLogic != null)
+                    appTextFieldType.getErrorMessageLogic.invoke(input, true)
+                else
+                    ""
             }
         }
     }
@@ -110,6 +112,7 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
 
             is AppTextFieldType.Custom -> {
                 appTextFieldType.isTextValidLogic.invoke(input)
+                //input.length in appTextFieldType.minStringSize..appTextFieldType.maxStringSize
             }
 
             else -> {
