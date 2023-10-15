@@ -32,11 +32,14 @@ sealed class AppTextFieldType(
             else
                 input.length < minSize || input.length > maxSize
         },
-        val getErrorMessageLogic: ((input: String) -> String) = { input ->
-            if (input.isEmpty())
-                "It can't be empty"
+        val getErrorMessageLogic: ((input: String, isTyping: Boolean) -> String) = { input, isTyping ->
+            if (isTyping)
+                if (input.isEmpty())
+                    "It can't be empty"
+                else
+                    "Text should be between $minSize - $maxSize"
             else
-                "Text should be between $minSize - $maxSize"
+                ""
         },
         val getStringCounterLogic: ((input: String) -> String) = {
             "${it.length}/$maxSize"
