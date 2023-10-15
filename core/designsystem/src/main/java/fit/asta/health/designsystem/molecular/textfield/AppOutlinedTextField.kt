@@ -762,7 +762,7 @@ fun AppOutlinedTextField(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = AppTheme.shape.level1,
     colors: TextFieldColors = TextFieldDefaults.colors(),
-    appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
+    appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.None),
     isValidText: (Boolean) -> Unit = {},
     onValueChange: (String) -> Unit
 ) {

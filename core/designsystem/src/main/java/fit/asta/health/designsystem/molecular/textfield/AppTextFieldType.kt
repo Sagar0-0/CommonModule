@@ -19,15 +19,30 @@ sealed class AppTextFieldType(
     val minStringSize: Int = 1,
     val maxStringSize: Int = 256
 ) {
+    data object None : AppTextFieldType(0, 0)
     data object Phone : AppTextFieldType(10, 10)
     data object Mail : AppTextFieldType(6, 50)
     data object Default : AppTextFieldType(1, 256)
     data class Custom(
         val minSize: Int = 0,
-        val maxSize: Int = 0,
-        val isInvalidLogic: ((input: String, isTyping: Boolean) -> Boolean)? = null,
-        val getErrorMessageLogic: ((input: String, isError: Boolean) -> String)? = null,
-        val getStringCounterLogic: ((input: String) -> String)? = null,
-        val isTextValidLogic: ((input: String) -> Boolean)? = null
+        val maxSize: Int = 256,
+        val isInvalidLogic: ((input: String, isTyping: Boolean) -> Boolean) = { input, isTyping ->
+            if (!isTyping)
+                false
+            else
+                input.length < minSize || input.length > maxSize
+        },
+        val getErrorMessageLogic: ((input: String) -> String) = { input ->
+            if (input.isEmpty())
+                "It can't be empty"
+            else
+                "Text should be between $minSize - $maxSize"
+        },
+        val getStringCounterLogic: ((input: String) -> String) = {
+            "${it.length}/$maxSize"
+        },
+        val isTextValidLogic: ((input: String) -> Boolean) = { input ->
+            input.length in minSize..maxSize
+        }
     ) : AppTextFieldType(minSize, maxSize)
 }

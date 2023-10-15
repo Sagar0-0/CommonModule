@@ -19,6 +19,10 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
         if (!isTyping) return false
 
         return when (appTextFieldType) {
+            is AppTextFieldType.None -> {
+                false
+            }
+
             is AppTextFieldType.Phone -> {
                 input.length != 10
             }
@@ -34,10 +38,7 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
             }
 
             is AppTextFieldType.Custom -> {
-                if (appTextFieldType.isInvalidLogic != null)
-                    appTextFieldType.isInvalidLogic.invoke(input, true)
-                else
-                    false
+                appTextFieldType.isInvalidLogic.invoke(input, true)
             }
         }
     }
@@ -51,6 +52,10 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
      */
     fun getErrorMessage(input: String): String {
         return when (appTextFieldType) {
+            is AppTextFieldType.None -> {
+                ""
+            }
+
             is AppTextFieldType.Phone -> {
                 "Enter a valid phone number"
             }
@@ -63,14 +68,12 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
             }
 
             is AppTextFieldType.Default -> {
-                "Text should be between ${appTextFieldType.minStringSize} - ${appTextFieldType.maxStringSize}"
+                "Text should be between " +
+                        "${appTextFieldType.minStringSize} - ${appTextFieldType.maxStringSize}"
             }
 
             is AppTextFieldType.Custom -> {
-                if (appTextFieldType.getErrorMessageLogic != null)
-                    appTextFieldType.getErrorMessageLogic.invoke(input, true)
-                else
-                    ""
+                appTextFieldType.getErrorMessageLogic.invoke(input)
             }
         }
     }
@@ -82,11 +85,12 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
      */
     fun getStringCounter(input: String): String {
         return when (appTextFieldType) {
+            is AppTextFieldType.None -> {
+                ""
+            }
+
             is AppTextFieldType.Custom -> {
-                if (appTextFieldType.getStringCounterLogic != null)
-                    appTextFieldType.getStringCounterLogic.invoke(input)
-                else
-                    ""
+                appTextFieldType.getStringCounterLogic.invoke(input)
             }
 
             else -> {
@@ -100,11 +104,12 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
      */
     fun isTextValid(input: String): Boolean {
         return when (appTextFieldType) {
+            is AppTextFieldType.None -> {
+                false
+            }
+
             is AppTextFieldType.Custom -> {
-                if (appTextFieldType.isTextValidLogic != null)
-                    appTextFieldType.isTextValidLogic.invoke(input)
-                else
-                    true
+                appTextFieldType.isTextValidLogic.invoke(input)
             }
 
             else -> {
