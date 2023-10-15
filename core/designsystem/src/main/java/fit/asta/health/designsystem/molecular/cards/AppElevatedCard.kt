@@ -53,7 +53,7 @@ fun AppElevatedCard(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
     colors: CardColors = CardDefaults.elevatedCardColors(),
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(
         defaultElevation = AppTheme.elevation.level1,
         pressedElevation = AppTheme.elevation.level1,
@@ -79,7 +79,7 @@ fun AppElevatedCard(
     else
         ElevatedCard(
             modifier = modifier,
-            shape = AppTheme.shape.level2,
+            shape = shape,
             colors = colors,
             elevation = elevation,
             content = content

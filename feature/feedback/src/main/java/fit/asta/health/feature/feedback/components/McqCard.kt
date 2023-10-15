@@ -1,6 +1,5 @@
 package fit.asta.health.feature.feedback.components
 
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
@@ -17,17 +16,12 @@ fun McqCard(list: List<String>, updatedAns: (String) -> Unit) {
 
     Column {
         list.forEach { text ->
-            Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppRadioButton(
-                    selected = text == ans.value
-                ) {
+            Row(verticalAlignment = Alignment.CenterVertically) {
+                AppRadioButton(selected = text == ans.value) {
                     ans.value = text
                     updatedAns(text)
                 }
-                TitleTexts.Level2(text = text)
+                TitleTexts.Level4(text = text)
             }
         }
     }

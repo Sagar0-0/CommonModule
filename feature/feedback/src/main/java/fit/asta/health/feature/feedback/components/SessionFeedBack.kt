@@ -2,7 +2,7 @@ package fit.asta.health.feature.feedback.components
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -36,7 +36,9 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SessionFeedback(
+fun
+
+        SessionFeedback(
     feedbackQuesState: UiState<FeedbackQuesDTO>,
     onBack: () -> Unit,
     onSubmit: (ans: List<An>) -> Unit
@@ -78,63 +80,11 @@ fun SessionFeedback(
             }
 
             is UiState.Success -> {
-                val qns = feedbackQuesState.data.qns
-
-                val list = remember {
-                    qns.map {
-                        false
-                    }.toMutableStateList()
-                }
-
-                var isEnabled = list.none { bool ->
-                    !bool
-                }
-
-                val ansList = remember {
-                    qns.map {
-                        An()
-                    }.toMutableStateList()
-                }
-
-                LazyColumn(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(it)
-                        .background(color = AppTheme.colors.secondaryContainer)
-                ) {
-                    item {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                        WelcomeCard()
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                    }
-
-                    itemsIndexed(qns) { idx, qn ->
-                        FeedbackQuesItem(
-                            qn = qn,
-                            updatedAns = { an ->
-                                ansList[idx] = an
-                            },
-                            isValid = { valid ->
-                                Log.d("FEE", "SessionFeedback: ${list.toList()}")
-                                list[idx] = valid
-                            }
-                        )
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                    }
-
-                    item {
-                        SubmitButton(
-                            enabled = isEnabled,
-                            onDisable = {
-                                isEnabled = false
-                            }
-                        ) {
-                            Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
-                            onSubmit(ansList.toList())
-                        }
-
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                    }
+                Box(modifier = Modifier.padding(it)) {
+                    FeedbackSuccessScreen(
+                        feedbackQuesState = feedbackQuesState.data,
+                        onSubmit = onSubmit
+                    )
                 }
             }
 
@@ -147,10 +97,10 @@ fun SessionFeedback(
 fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Unit) {
     val context = LocalContext.current
     if (qn.type == 1) {
+
+        // TODO :- Need to remove this function from the design system
         UploadFiles(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level1),
+            modifier = Modifier.fillMaxWidth(),
             updatedUriList = {
                 val medias = it.map { uri ->
                     Media(
@@ -181,4 +131,55 @@ fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Uni
 }
 
 
+@Composable
+private fun FeedbackSuccessScreen(
+    feedbackQuesState: FeedbackQuesDTO,
+    onSubmit: (ans: List<An>) -> Unit
+) {
+    val qns = feedbackQuesState.qns
+    val list = remember { qns.map { false }.toMutableStateList() }
+    var isEnabled = list.none { !it }
+    val ansList = remember { qns.map { An() }.toMutableStateList() }
 
+    // Parent Composable which overlaps the Whole Screen
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+    ) {
+
+        // Your Feedback will help us Card Composable
+        item {
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+            WelcomeCard()
+        }
+
+        // Feedback Question Items and all the Feedback Composable are shown here
+        itemsIndexed(qns) { idx, qn ->
+            FeedbackQuesItem(
+                qn = qn,
+                updatedAns = { an ->
+                    ansList[idx] = an
+                },
+                isValid = { valid ->
+                    Log.d("FEE", "SessionFeedback: ${list.toList()}")
+                    list[idx] = valid
+                }
+            )
+        }
+
+        // Submit Button
+        item {
+            SubmitButton(
+                enabled = isEnabled,
+                onDisable = {
+                    isEnabled = false
+                }
+            ) {
+                Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
+                onSubmit(ansList.toList())
+            }
+        }
+    }
+}

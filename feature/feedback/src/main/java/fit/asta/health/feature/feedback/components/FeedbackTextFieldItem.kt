@@ -1,48 +1,48 @@
 package fit.asta.health.feature.feedback.components
 
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
-fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Unit) {
+fun FeedbackTextFieldItem(
+    qn: Qn,
+    updatedAns: (An) -> Unit,
+    isValid: (Boolean) -> Unit
+) {
+
     val text = rememberSaveable { mutableStateOf("") }
-    val opts = remember {
-        mutableStateOf(qn.opts)
-    }
+    val opts = remember { mutableStateOf(qn.opts) }
     val maxChar = qn.ansType.max
-    AppCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level0),
-    ) {
+
+    AppElevatedCard(modifier = Modifier.fillMaxWidth()) {
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level1)
+                .padding(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
 
-            TitleTexts.Level2(
-                text = qn.qn
-            )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+            // This is the Question of this Card
+            TitleTexts.Level3(text = qn.qn)
+
+            // This is either the Rating Stars or the Radio Buttons
             when (qn.type) {
+
                 2 -> {
                     Rating {
                         opts.value = listOf(it.toString())
@@ -56,8 +56,6 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                             )
                         )
                     }
-
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
 
                 3, 5 -> {
@@ -78,21 +76,22 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                             }
                         )
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
             }
-        }
 
-        AppTextField(
-            minLines = 6,
-            appTextFieldType = AppTextFieldValidator(
-                AppTextFieldType.Custom(
-                    qn.ansType.min,
-                    maxChar
-                )
-            ),
-            value = text.value,
-            onValueChange = {
+            // This is the Outlined Text Field for the user to give their Feedbacks
+            AppOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = text.value,
+                appTextFieldType = AppTextFieldValidator(
+                    AppTextFieldType.Custom(
+                        qn.ansType.min,
+                        maxChar
+                    )
+                ),
+                isValidText = isValid,
+                minLines = 4
+            ) {
                 text.value = it
                 updatedAns(
                     An(
@@ -103,17 +102,7 @@ fun FeedbackTextFieldItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -
                         type = qn.type
                     )
                 )
-            },
-            isValidText = isValid,
-            modifier = Modifier
-                .fillMaxWidth()
-                .height(AppTheme.boxSize.level2),
-        )
-        TitleTexts.Level2(
-            text = "${text.value.length} / $maxChar",
-            textAlign = TextAlign.End,
-            modifier = Modifier.fillMaxWidth()
-        )
-
+            }
+        }
     }
 }
