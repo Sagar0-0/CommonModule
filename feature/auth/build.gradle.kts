@@ -20,7 +20,10 @@ dependencies {
     implementation(project(":core:test"))
 
     implementation(project(":data:auth"))
+    implementation(project(":data:onboarding"))
     implementation(project(":data:profile"))
+
+    implementation(project(":libs:media"))
 
     //Firebase authentication
     implementation(platform(libs.firebase.bom))
@@ -44,4 +47,12 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+
+
+    //Media 3
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media3.session)
 }

@@ -22,6 +22,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
+import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
@@ -29,8 +30,6 @@ import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
 import fit.asta.health.feature.feedback.feedbackRoute
-import fit.asta.health.feature.onboarding.ONBOARDING_GRAPH_ROUTE
-import fit.asta.health.feature.onboarding.onboardingRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
 import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
@@ -71,15 +70,11 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
     when (screenCode) {
         is UiState.Success -> {
             val startDestination = when ((screenCode as UiState.Success<Int>).data) {
-                0 -> {
-                    ONBOARDING_GRAPH_ROUTE
-                }
-
-                1 -> {
+                ScreenCode.Auth.code -> {
                     AUTH_GRAPH_ROUTE
                 }
 
-                2 -> {
+                ScreenCode.BasicProfile.code -> {
                     BASIC_PROFILE_GRAPH_ROUTE
                 }
 
@@ -106,7 +101,6 @@ private fun MainNavHost(startDestination: String) {
         route = Graph.ROOT.route,
         startDestination = startDestination
     ) {
-        onboardingRoute()
         authRoute(navController::navigateToWebView)
         basicProfileRoute()
         homeScreen(navController)

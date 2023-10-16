@@ -22,7 +22,7 @@ class OnboardingRepoImpl(
     }
 
     override suspend fun setOnboardingDone() {
-        prefManager.setScreenCode(1)
+        //TODO: TO BE REMOVED
     }
 }
 

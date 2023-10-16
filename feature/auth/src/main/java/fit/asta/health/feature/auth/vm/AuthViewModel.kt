@@ -14,6 +14,8 @@ import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.profile.repo.ProfileRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -31,6 +33,7 @@ internal class AuthViewModel
 @Inject constructor(
     private val authRepo: AuthRepo,
     private val profileRepo: ProfileRepo,
+    private val onboardingRepo: OnboardingRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
@@ -39,6 +42,9 @@ internal class AuthViewModel
 
     private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
+
+    private val _onboardingDataState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)
+    val onboardingDatState = _onboardingDataState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val logoutState = _logoutState.asStateFlow()
@@ -58,6 +64,14 @@ internal class AuthViewModel
             started = SharingStarted.Eagerly,
             initialValue = false,
         )
+
+
+    fun getOnboardingData() {
+        _onboardingDataState.value = UiState.Loading
+        viewModelScope.launch {
+            _onboardingDataState.value = onboardingRepo.getData().toUiState()
+        }
+    }
 
     private suspend fun uploadFcmToken(tokenDTO: TokenDTO) {
         viewModelScope.launch {

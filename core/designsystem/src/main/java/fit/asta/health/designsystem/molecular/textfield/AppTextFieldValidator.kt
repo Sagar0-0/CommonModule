@@ -109,6 +109,7 @@ class AppTextFieldValidator(private val appTextFieldType: AppTextFieldType) {
 
             is AppTextFieldType.Custom -> {
                 appTextFieldType.isTextValidLogic.invoke(input)
+                //input.length in appTextFieldType.minStringSize..appTextFieldType.maxStringSize
             }
 
             else -> {

@@ -17,8 +17,8 @@ import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
-import fit.asta.health.feature.auth.screens.AuthEvent
 import fit.asta.health.feature.auth.screens.AuthScreen
+import fit.asta.health.feature.auth.screens.AuthUiEvent
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -41,6 +41,7 @@ fun NavGraphBuilder.authRoute(
         val context = LocalContext.current
         val authViewModel: AuthViewModel = hiltViewModel()
         LaunchedEffect(Unit) {
+            authViewModel.getOnboardingData()
             if (authViewModel.isAuthenticated()) {
                 Toast.makeText(context, "Complete Basic Profile to continue!", Toast.LENGTH_SHORT)
                     .show()
@@ -49,6 +50,7 @@ fun NavGraphBuilder.authRoute(
         }
 
         val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
+        val onboardingState by authViewModel.onboardingDatState.collectAsStateWithLifecycle()
         val isProfileAvailable by authViewModel.isProfileAvailable.collectAsStateWithLifecycle()
 
         when (isProfileAvailable) {
@@ -92,23 +94,28 @@ fun NavGraphBuilder.authRoute(
 
 
         AuthScreen(
-            loginState = loginState
+            loginState = loginState,
+            onboardingState = onboardingState
         ) {
             when (it) {
-                AuthEvent.ResetLoginState -> {
+                AuthUiEvent.ResetLoginState -> {
                     authViewModel.resetLoginState()
                 }
 
-                is AuthEvent.NavigateToWebView -> {
+                is AuthUiEvent.NavigateToWebView -> {
                     navigateToWebView(it.url)
                 }
 
-                is AuthEvent.SignInWithCredentials -> {
+                is AuthUiEvent.SignInWithCredentials -> {
                     authViewModel.signInWithGoogleCredentials(it.authCredential)
                 }
 
-                is AuthEvent.CheckProfileAndNavigate -> {
+                is AuthUiEvent.CheckProfileAndNavigate -> {
                     checkProfileAndNavigate(it.user)
+                }
+
+                is AuthUiEvent.GetOnboardingData -> {
+                    authViewModel.getOnboardingData()
                 }
             }
         }

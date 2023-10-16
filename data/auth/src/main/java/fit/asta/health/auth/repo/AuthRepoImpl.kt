@@ -17,6 +17,7 @@ import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.datastore.PrefManager
+import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.datastore.UserPreferencesData
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.CoroutineDispatcher
@@ -47,7 +48,7 @@ class AuthRepoImpl @Inject constructor(
 
     override val userData: Flow<UserPreferencesData> = prefManager.userData
     override suspend fun setLogoutDone() {
-        prefManager.setScreenCode(1)//show auth screen
+        prefManager.setScreenCode(ScreenCode.Auth.code)
     }
 
     override suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse> {
@@ -68,11 +69,11 @@ class AuthRepoImpl @Inject constructor(
     }
 
     override suspend fun setLoginDone() {
-        prefManager.setScreenCode(2)//Show basic profile
+        prefManager.setScreenCode(ScreenCode.BasicProfile.code)
     }
 
     override suspend fun setBasicProfileDone() {
-        prefManager.setScreenCode(3)//Show home
+        prefManager.setScreenCode(ScreenCode.Home.code)
     }
 
     override fun isAuthenticated(): Boolean {
