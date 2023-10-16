@@ -2,7 +2,7 @@ package fit.asta.health.datastore
 
 data class UserPreferencesData(
     val screenCode: Int = 0,
-    val notificationStatus: Boolean = false,
+    val notificationStatus: Boolean = true,
     val locationPermissionRejectedCount: Int = 0,
     val currentAddress: String = "",
     val theme: String = "",
