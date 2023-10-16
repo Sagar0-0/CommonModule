@@ -7,6 +7,7 @@ import androidx.compose.ui.unit.dp
 
 @Immutable
 data class AppCustomSize(
+    val level0: Dp = 1.dp,
     val level1: Dp = 8.dp,
     val level2: Dp = 16.dp,
     val level3: Dp = 24.dp,
@@ -17,7 +18,7 @@ data class AppCustomSize(
     val level8: Dp = 64.dp,
     val level9: Dp = 86.dp,
     val level10: Dp = 100.dp,
-    val level11: Dp = 160.dp
+    val level11: Dp = 160.dp,
 )
 
 internal val LocalAppCustomSize = compositionLocalOf { AppCustomSize() }

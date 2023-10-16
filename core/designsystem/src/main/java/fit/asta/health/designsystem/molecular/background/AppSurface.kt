@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 
@@ -39,11 +40,16 @@ fun AppSurface(
     modifier: Modifier = Modifier,
     color: Color = AppTheme.colors.surface,
     shape: Shape = RectangleShape,
+    shadowElevation: Dp = 0.dp,
     border: BorderStroke? = null,
     content: @Composable () -> Unit,
 ) {
     Surface(
-        modifier = modifier, color = color, shape = shape, border = border
+        modifier = modifier,
+        color = color,
+        shape = shape,
+        border = border,
+        shadowElevation = shadowElevation
     ) {
         CompositionLocalProvider(LocalAbsoluteTonalElevation provides 0.dp) {
             content()

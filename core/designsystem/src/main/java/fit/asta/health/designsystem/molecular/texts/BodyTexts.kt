@@ -4,12 +4,14 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -88,11 +90,12 @@ object BodyTexts {
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
-        overflow: TextOverflow = TextOverflow.Ellipsis
+        overflow: TextOverflow = TextOverflow.Ellipsis,
+        style: TextStyle = AppTheme.customTypography.body.level3
     ) {
         Text(
             text = text,
-            style = AppTheme.customTypography.body.level3,
+            style = style,
             modifier = modifier,
             color = color,
             textAlign = textAlign,

@@ -1,8 +1,10 @@
 package fit.asta.health.feature.profile.basic.ui
 
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -23,8 +25,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Email
+import androidx.compose.material.icons.rounded.Link
 import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
@@ -46,12 +50,14 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -59,7 +65,10 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
-@Preview
+@Preview("Light Button")
+@Preview(
+    name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
+)
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BasicProfileNewScreen() {
@@ -75,61 +84,54 @@ fun BasicProfileNewScreen() {
             }
         }
 
-    AppScaffold(topBar = {
-        AppTopBar(title = "Create Basic Profile")
-    }, content = { paddingValues ->
+    AppTheme {
+        AppScaffold(topBar = {
+            AppTopBar(title = "Create Basic Profile")
+        }, content = { paddingValues ->
 
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .padding(paddingValues)
-                .verticalScroll(
-                    rememberScrollState()
-                ), verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-        ) {
-            CircularImageWithIconButton(onClick = { imagePickerLauncher.launch("image/*") })
-            TextBlock()
-            EmailBlock()
-            PhoneBlock()
-            ReferBlock()
-            GenerateButton(
-                textToShow = "Create your Profile",
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2)
-            )
-        }
-    })
+            Column(
+                modifier = Modifier.fillMaxSize().padding(paddingValues)
+                    .verticalScroll(rememberScrollState()),
+//            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            ) {
+                CircularImageWithIconButton(onClick = { imagePickerLauncher.launch("image/*") })
+                TextBlock()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                PhoneBlock()
+                EmailBlock()
+                ReferBlock()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                GenerateButton(
+                    textToShow = "Create your Profile",
+                    modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+                )
+            }
+        })
+    }
+
 }
 
 @Composable
 fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     ConstraintLayout(
-        modifier = modifier
-            .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.level2)
+        modifier = modifier.fillMaxSize().padding(horizontal = AppTheme.spacing.level2)
     ) {
         val (image, button) = createRefs()
 
         AppLocalImage(painter = painterResource(id = R.drawable.ic_person),
             contentDescription = "Profile",
-            modifier = Modifier
-                .size(AppTheme.boxSize.level8)
-                .clip(CircleShape)
-                .constrainAs(image) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                })
+            modifier = Modifier.size(AppTheme.boxSize.level8).clip(CircleShape).constrainAs(image) {
+                top.linkTo(parent.top)
+                start.linkTo(parent.start)
+                end.linkTo(parent.end)
+            })
 
         AppIconButton(
             imageVector = Icons.Rounded.CameraEnhance,
-            modifier = Modifier
-                .size(AppTheme.buttonSize.level6)
-                .constrainAs(button) {
-                    bottom.linkTo(image.bottom)
-                    end.linkTo(image.end)
-                },
+            modifier = Modifier.size(AppTheme.buttonSize.level6).constrainAs(button) {
+                bottom.linkTo(image.bottom)
+                end.linkTo(image.end)
+            },
             onClick = onClick
         )
     }
@@ -142,14 +144,10 @@ fun TextBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
+            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -191,14 +189,11 @@ fun TextBlock() {
                     isEditing = false
                 }),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isEditing = true
-                        }
-                    })
+                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester).onFocusChanged {
+                    if (it.isFocused) {
+                        isEditing = true
+                    }
+                })
         }
     }
 }
@@ -206,20 +201,15 @@ fun TextBlock() {
 @Composable
 fun EmailBlock() {
 
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    var isEditing by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
+    var userEmail by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceBetween
+            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
             Row(
                 verticalAlignment = Alignment.CenterVertically
@@ -227,49 +217,18 @@ fun EmailBlock() {
                 AppIcon(imageVector = Icons.Rounded.Email)
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                 Column {
-                    TitleTexts.Level4(text = "Email", color = AppTheme.colors.onSurface)
-                    if (text.text.isNotEmpty() && !isEditing) {
+                    TitleTexts.Level4(
+                        text = "Link your Google Account", color = AppTheme.colors.onSurface
+                    )
+                    if (userEmail.text.isNotEmpty()) {
                         Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                        BodyTexts.Level2(text = text.text)
+                        BodyTexts.Level2(text = userEmail.text)
                     }
                 }
             }
-            if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit) {
-                    isEditing = true
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-        if (text.text.isEmpty() || isEditing) {
-            LaunchedEffect(isEditing) {
-                if (isEditing) {
-                    focusRequester.requestFocus()
-                }
-            }
-
-            TextField(value = text,
-                onValueChange = {
-                    text = it
-                    isEditing = it.text.isNotEmpty()
-                },
-                placeholder = {
-                    CaptionTexts.Level4(text = "Enter your full name")
-                },
-                keyboardActions = KeyboardActions(onDone = {
-                    isEditing = false
-                }),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isEditing = true
-                        }
-                    })
-        } else {
-            GenerateButton(textToShow = "Verify your email")
+            AppIconButton(imageVector = Icons.Rounded.Link,
+                iconTint = AppTheme.colors.primary,
+                onClick = {})
         }
     }
 }
@@ -282,14 +241,10 @@ fun PhoneBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
+            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -335,9 +290,7 @@ fun PhoneBlock() {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
                     ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .focusRequester(focusRequester)
+                    modifier = Modifier.fillMaxWidth(0.2f).focusRequester(focusRequester)
                         .onFocusChanged {
                             if (it.isFocused) {
                                 isEditing = true
@@ -359,9 +312,7 @@ fun PhoneBlock() {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
                     ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester)
+                    modifier = Modifier.fillMaxWidth().focusRequester(focusRequester)
                         .onFocusChanged {
                             if (it.isFocused) {
                                 isEditing = true
@@ -369,11 +320,10 @@ fun PhoneBlock() {
                         })
             }
         } else {
-            GenerateButton(textToShow = "Verify your phone")
+            VerifyButton(textToShow = "Verify your Phone")
         }
     }
 }
-
 
 @Composable
 fun ReferBlock() {
@@ -383,9 +333,7 @@ fun ReferBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+        Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
     ) {
         ClickableText(
             text = AnnotatedString(text = "Have you got any Referral Code?"),
@@ -393,7 +341,7 @@ fun ReferBlock() {
             style = TextStyle.Default.copy(color = AppTheme.colors.primary)
         )
         if (isEditing) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             TextField(value = text,
                 onValueChange = {
                     text = it
@@ -408,16 +356,13 @@ fun ReferBlock() {
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                 ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isEditing = true
-                        }
-                    })
+                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester).onFocusChanged {
+                    if (it.isFocused) {
+                        isEditing = true
+                    }
+                })
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            GenerateButton(textToShow = "Apply Referral Code")
+            VerifyButton(textToShow = "Apply Referral Code")
         }
     }
 }
@@ -429,4 +374,16 @@ fun GenerateButton(
     onClick: () -> Unit = {},
 ) {
     AppFilledButton(textToShow = textToShow, modifier = modifier, onClick = onClick)
+}
+
+@Composable
+fun VerifyButton(textToShow: String, onClick: () -> Unit = {}) {
+    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
+        AppOutlinedButton(
+            textToShow = textToShow,
+            onClick = onClick,
+            colors = ButtonDefaults.outlinedButtonColors(contentColor = AppTheme.colors.primary),
+            border = BorderStroke(color = AppTheme.colors.primary, width = 2.dp)
+        )
+    }
 }

@@ -28,7 +28,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun CustomLabelBottomSheetLayout(
     text: String,
-    @StringRes label: Int? = null,
+    @StringRes label: Int,
     onNavigateBack: () -> Unit,
     onSave: (String) -> Unit = {},
 ) {
