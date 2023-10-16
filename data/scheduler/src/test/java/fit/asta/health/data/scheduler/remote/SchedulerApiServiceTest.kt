@@ -8,8 +8,8 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListR
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.Status
-import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
+import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.MultipartBody
@@ -54,7 +54,7 @@ class SchedulerApiServiceTest {
         val data = api.getTodayDataFromBackend("", "", "", 0f, 0f)
         server.takeRequest()
 
-        assertEquals(data, dto)
+        assertEquals(data.data, dto)
     }
 
     @Test
@@ -134,7 +134,7 @@ class SchedulerApiServiceTest {
 
     @Test
     fun `getTagListFromBackend,return Success`() = runTest {
-        val dto = AstaGetTagsListResponse()
+        val dto = TagsListResponse()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -143,7 +143,7 @@ class SchedulerApiServiceTest {
         val data = api.getTagListFromBackend("")
         server.takeRequest()
 
-        assertEquals(data.status.code, dto.status.code)
+        assertEquals(data.data, dto)
     }
 
     @Test
@@ -157,7 +157,7 @@ class SchedulerApiServiceTest {
         val data = api.deleteTagFromBackend("", "")
         server.takeRequest()
 
-        assertEquals(data.code, dto.code)
+        assertEquals(data.status.code, dto.code)
     }
 
     @Test
@@ -174,6 +174,6 @@ class SchedulerApiServiceTest {
         val requestReceived = server.takeRequest()
         assertEquals(requestReceived.method, "PUT")
         assertEquals(requestReceived.path, "/tag/put")
-        assertEquals(data, dto)
+        assertEquals(data.status.code, dto.code)
     }
 }

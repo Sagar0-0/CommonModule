@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class Data(
+data class TagData(
     @SerializedName("id")
     val id: String, // 633eac4769e8a8a7f88421d8
     @SerializedName("name")

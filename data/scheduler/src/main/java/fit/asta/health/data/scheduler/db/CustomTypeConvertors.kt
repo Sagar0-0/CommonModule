@@ -9,7 +9,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.data.scheduler.remote.net.scheduler.Tone
 import fit.asta.health.data.scheduler.remote.net.scheduler.Vib
-import fit.asta.health.data.scheduler.remote.net.tag.Data
+import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
 class CustomTypeConvertors {
     @TypeConverter
@@ -56,11 +56,11 @@ class CustomTypeConvertors {
         Gson().fromJson(string, Time::class.java)
 
     @TypeConverter
-    fun tagItemToString(item: Data): String = Gson().toJson(item)
+    fun tagItemToString(item: TagData): String = Gson().toJson(item)
 
     @TypeConverter
-    fun stringToTagItem(string: String): Data =
-        Gson().fromJson(string, Data::class.java)
+    fun stringToTagItem(string: String): TagData =
+        Gson().fromJson(string, TagData::class.java)
 
     @TypeConverter
     fun fromWeekdays(weekdays: Weekdays): String = Gson().toJson(weekdays)

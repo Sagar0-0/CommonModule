@@ -6,11 +6,9 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class AstaGetTagsListResponse(
+data class TagsListResponse(
     @SerializedName("CustomTagData")
-    val customTagData: List<Data> = emptyList(),
-    @SerializedName("data")
-    val `data`: List<Data> = emptyList(),
-    @SerializedName("status")
-    val status: Status = Status()
+    val customTagData: List<TagData>? = null,
+    @SerializedName("TagData")
+    val tagData: List<TagData> = emptyList(),
 ) : Parcelable

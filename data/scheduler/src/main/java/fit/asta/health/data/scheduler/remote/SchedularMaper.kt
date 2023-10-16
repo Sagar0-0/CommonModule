@@ -2,28 +2,12 @@ package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.common.utils.Constants
 import fit.asta.health.data.scheduler.db.entity.TagEntity
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetData
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetListData
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.model.WeatherData
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
-import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
-import fit.asta.health.data.scheduler.remote.net.tag.Data
+import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
-fun AstaSchedulerGetResponse.mapToSchedulerGetData(): SchedulerGetData {
-    return SchedulerGetData(data = this.data)
-}
 
-fun AstaSchedulerGetListResponse.mapToSchedulerGetListData(): SchedulerGetListData {
-    return SchedulerGetListData(list = this.data)
-}
-
-fun AstaGetTagsListResponse.mapToSchedulerGetTagsList(): SchedulerGetTagsList {
-    return SchedulerGetTagsList(customTagList = this.customTagData, list = this.data)
-}
 
 fun TodaySchedules.getTodayData(): TodayData {
     return TodayData(
@@ -44,7 +28,7 @@ fun TodaySchedules.getTodayData(): TodayData {
     )
 }
 
-fun Data.toTagEntity(): TagEntity {
+fun TagData.toTagEntity(): TagEntity {
     return TagEntity(
         id = this.id, uid = this.uid, name = this.name, url = this.url
     )

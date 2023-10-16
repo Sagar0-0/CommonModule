@@ -1,15 +1,12 @@
 package fit.asta.health.data.scheduler.remote
 
+import fit.asta.health.common.utils.Response
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
-import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
-import fit.asta.health.network.data.Status
+import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
+import fit.asta.health.network.data.ServerRes
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -24,49 +21,49 @@ interface SchedulerApiService {
         @Query("loc") location: String,
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float
-    ): TodaySchedules
+    ): Response<TodaySchedules>
 
     @GET("schedule/home/today/events/get/?")
     suspend fun getDefaultSchedule(
         @Query("uid") userID: String
-    ): TodayDefaultSchedule
+    ): Response<TodayDefaultSchedule>
 
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(
         @Body schedule: AlarmEntity
-    ): AstaSchedulerPutResponse
+    ): Response<ServerRes>
 
     @GET("schedule/get/")
     suspend fun getScheduleDataFromBackend(
         @Query("sid") scheduleId: String
-    ): AstaSchedulerGetResponse
+    ): Response<AlarmEntity>
 
     @GET("schedule/list/get/?")
     suspend fun getScheduleListDataFromBackend(
         @Query("uid") userID: String
-    ): AstaSchedulerGetListResponse
+    ): Response<List<AlarmEntity>>
 
     @DELETE("schedule/delete/")
     suspend fun deleteScheduleDataFromBackend(
         @Query("sid") scheduleID: String
-    ): AstaSchedulerDeleteResponse
+    ): Response<ServerRes>
 
     // Tags Endpoints
     @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=6309a9379af54f142c65fbfe
     suspend fun getTagListFromBackend(
         @Query("uid") userID: String
-    ): AstaGetTagsListResponse
+    ): Response<TagsListResponse>
 
     @PUT("tag/put")
     @Multipart
     suspend fun updateScheduleTag(
         @Part("json") schedule: NetCustomTag,
         @Part file: MultipartBody.Part,
-    ): Status
+    ): Response<ServerRes>
 
     @DELETE("tag/delete/")
     suspend fun deleteTagFromBackend(
         @Query("uid") userID: String,
         @Query("tid") id: String
-    ): Status
+    ): Response<ServerRes>
 }

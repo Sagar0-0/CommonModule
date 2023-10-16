@@ -1,17 +1,12 @@
 package fit.asta.health.data.scheduler.repo
 
 import android.content.Context
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.SchedulerApiService
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
-import fit.asta.health.data.scheduler.remote.net.tag.AstaGetTagsListResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
-import fit.asta.health.network.data.Status
 import io.mockk.MockKAnnotations
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
@@ -58,7 +53,7 @@ class AlarmBackendRepoImpTest {
                 any(),
                 any()
             )
-        } returns TodaySchedules()
+        } returns Response(data = TodaySchedules())
         val res = repo.getTodayDataFromBackend("", "", "", 0f, 0f)
         coVerify { remoteApi.getTodayDataFromBackend("", "", "", 0f, 0f) }
         assert(res is ResponseState.Success)
@@ -82,9 +77,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `getScheduleDataFromBackend,return Success`() = runTest {
-        coEvery { remoteApi.getScheduleDataFromBackend(any()) } returns AstaSchedulerGetResponse(
-            mockk(), mockk()
-        )
+        coEvery { remoteApi.getScheduleDataFromBackend(any()) } returns Response(data = mockk())
         val res = repo.getScheduleDataFromBackend("")
         coVerify { remoteApi.getScheduleDataFromBackend("") }
         assert(res is ResponseState.Success)
@@ -100,9 +93,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `getScheduleListDataFromBackend,return Success`() = runTest {
-        coEvery { remoteApi.getScheduleListDataFromBackend(any()) } returns AstaSchedulerGetListResponse(
-            mockk(), mockk()
-        )
+        coEvery { remoteApi.getScheduleListDataFromBackend(any()) } returns Response(data = mockk())
         val res = repo.getScheduleListDataFromBackend("")
         coVerify { remoteApi.getScheduleListDataFromBackend("") }
         assert(res is ResponseState.Success)
@@ -118,9 +109,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `getTagListFromBackend,return Success`() = runTest {
-        coEvery { remoteApi.getTagListFromBackend(any()) } returns AstaGetTagsListResponse(
-            mockk(), mockk()
-        )
+        coEvery { remoteApi.getTagListFromBackend(any()) } returns Response(data = mockk())
         val res = repo.getTagListFromBackend("")
         coVerify { remoteApi.getTagListFromBackend("") }
         assert(res is ResponseState.Success)
@@ -136,7 +125,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `updateScheduleDataOnBackend,return Success`() = runTest {
-        coEvery { remoteApi.updateScheduleDataOnBackend(any()) } returns AstaSchedulerPutResponse()
+        coEvery { remoteApi.updateScheduleDataOnBackend(any()) } returns Response(data = mockk())
         val alarmEntity = mockk<AlarmEntity>()
         val res = repo.updateScheduleDataOnBackend(alarmEntity)
         coVerify { remoteApi.updateScheduleDataOnBackend(alarmEntity) }
@@ -154,9 +143,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `deleteScheduleDataFromBackend,return Success`() = runTest {
-        coEvery { remoteApi.deleteScheduleDataFromBackend(any()) } returns AstaSchedulerDeleteResponse(
-            mockk(), mockk()
-        )
+        coEvery { remoteApi.deleteScheduleDataFromBackend(any()) } returns Response(data = mockk())
         val res = repo.deleteScheduleDataFromBackend("123")
         coVerify { remoteApi.deleteScheduleDataFromBackend("123") }
         assert(res is ResponseState.Success)
@@ -172,7 +159,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `deleteTagFromBackend,return Success`() = runTest {
-        coEvery { remoteApi.deleteTagFromBackend(any(), any()) } returns Status()
+        coEvery { remoteApi.deleteTagFromBackend(any(), any()) } returns Response(data = mockk())
         val res = repo.deleteTagFromBackend("", "")
         coVerify { remoteApi.deleteTagFromBackend("", "") }
         assert(res is ResponseState.Success)
@@ -188,7 +175,7 @@ class AlarmBackendRepoImpTest {
 
     @Test
     fun `updateScheduleTag,return Success`() = runTest {
-        coEvery { remoteApi.updateScheduleTag(any(), any()) } returns Status()
+        coEvery { remoteApi.updateScheduleTag(any(), any()) } returns Response(data = mockk())
         val tag = NetCustomTag()
         val uri = mockk<android.net.Uri>()
         tag.localUrl = uri

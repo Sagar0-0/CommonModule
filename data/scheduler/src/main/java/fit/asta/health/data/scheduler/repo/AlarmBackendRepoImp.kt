@@ -1,29 +1,20 @@
 package fit.asta.health.data.scheduler.repo
 
 import android.content.Context
-import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.SchedulerApiService
-import fit.asta.health.data.scheduler.remote.getTodayData
-import fit.asta.health.data.scheduler.remote.mapToSchedulerGetData
-import fit.asta.health.data.scheduler.remote.mapToSchedulerGetListData
-import fit.asta.health.data.scheduler.remote.mapToSchedulerGetTagsList
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetData
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetListData
-import fit.asta.health.data.scheduler.remote.model.SchedulerGetTagsList
-import fit.asta.health.data.scheduler.remote.model.TodayData
-import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
-import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutResponse
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
-import fit.asta.health.network.data.Status
 import fit.asta.health.network.utils.InputStreamRequestBody
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 
 class AlarmBackendRepoImp(
     private val context: Context,
-    private val remoteApi: SchedulerApiService
+    private val remoteApi: SchedulerApiService,
+    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(
         userID: String,
@@ -31,59 +22,70 @@ class AlarmBackendRepoImp(
         location: String,
         latitude: Float,
         longitude: Float
-    ): ResponseState<TodayData> {
-        return getResponseState {
-            remoteApi.getTodayDataFromBackend(userID, date, location, latitude, longitude)
-                .getTodayData()
+    ) = withContext(coroutineDispatcher) {
+        getApiResponseState {
+            remoteApi.getTodayDataFromBackend(
+                userID,
+                date,
+                location,
+                latitude,
+                longitude
+            )
         }
     }
 
-    override suspend fun getDefaultSchedule(userID: String): ResponseState<TodayDefaultSchedule> {
-        return getResponseState {
-            remoteApi.getDefaultSchedule(userID)
+    override suspend fun getDefaultSchedule(userID: String) = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getDefaultSchedule(userID) }
+    }
+
+    override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.updateScheduleDataOnBackend(schedule)
+            }
+        }
+
+    override suspend fun getScheduleDataFromBackend(scheduleId: String) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.getScheduleDataFromBackend(scheduleId)
+            }
+        }
+
+    override suspend fun getScheduleListDataFromBackend(userId: String) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.getScheduleListDataFromBackend(userId)
+            }
+        }
+
+    override suspend fun deleteScheduleDataFromBackend(scheduleId: String) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.deleteScheduleDataFromBackend(scheduleId)
+            }
+        }
+
+    override suspend fun getTagListFromBackend(userId: String) = withContext(coroutineDispatcher) {
+        getApiResponseState {
+            remoteApi.getTagListFromBackend(userId)
         }
     }
 
-    override suspend fun updateScheduleDataOnBackend(schedule: AlarmEntity): ResponseState<AstaSchedulerPutResponse> {
-        return getResponseState { remoteApi.updateScheduleDataOnBackend(schedule) }
-    }
-
-    override suspend fun getScheduleDataFromBackend(scheduleId: String): ResponseState<SchedulerGetData> {
-        return getResponseState {
-            remoteApi.getScheduleDataFromBackend(scheduleId).mapToSchedulerGetData()
+    override suspend fun updateScheduleTag(schedule: NetCustomTag) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState {
+                val file = MultipartBody.Part.createFormData(
+                    name = "file",
+                    filename = schedule.name,
+                    body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
+                )
+                remoteApi.updateScheduleTag(schedule, file)
+            }
         }
-    }
 
-    override suspend fun getScheduleListDataFromBackend(userId: String): ResponseState<SchedulerGetListData> {
-        return getResponseState {
-            remoteApi.getScheduleListDataFromBackend(userId).mapToSchedulerGetListData()
+    override suspend fun deleteTagFromBackend(userId: String, id: String) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState { remoteApi.deleteTagFromBackend(userID = userId, id = id) }
         }
-    }
-
-    override suspend fun deleteScheduleDataFromBackend(scheduleId: String): ResponseState<AstaSchedulerDeleteResponse> {
-        return getResponseState { remoteApi.deleteScheduleDataFromBackend(scheduleId) }
-    }
-
-    override suspend fun getTagListFromBackend(userId: String): ResponseState<SchedulerGetTagsList> {
-        return getResponseState {
-            remoteApi.getTagListFromBackend(userId).mapToSchedulerGetTagsList()
-        }
-    }
-
-    override suspend fun updateScheduleTag(schedule: NetCustomTag): ResponseState<Status> {
-        val file = MultipartBody.Part.createFormData(
-            name = "file",
-            filename = schedule.name,
-            body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
-        )
-
-        return getResponseState {
-            remoteApi.updateScheduleTag(schedule, file)
-        }
-    }
-
-    override suspend fun deleteTagFromBackend(userId: String, id: String): ResponseState<Status> {
-        return getResponseState { remoteApi.deleteTagFromBackend(userID = userId, id = id) }
-    }
-
 }
