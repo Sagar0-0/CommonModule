@@ -43,7 +43,4 @@ dependencies {
     implementation(libs.accompanist.pager)
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.coil)
-
-    //Rating-Bar
-    implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
 }
