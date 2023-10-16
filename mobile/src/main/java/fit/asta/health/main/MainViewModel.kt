@@ -50,7 +50,7 @@ class MainViewModel
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Eagerly,
-            initialValue = false,
+            initialValue = true,
         )
 
     val isReferralChecked = prefManager.userData

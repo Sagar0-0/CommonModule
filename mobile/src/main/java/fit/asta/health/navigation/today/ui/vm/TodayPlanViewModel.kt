@@ -12,10 +12,10 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
-import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.Weekdays
+import fit.asta.health.data.scheduler.remote.getTodayData
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
@@ -78,7 +78,7 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = alarmBackendRepo.getDefaultSchedule(uId)) {
                 is ResponseState.Success -> {
-                    result.data.data.schedule.forEach { alarmEntity ->
+                    result.data.schedule.forEach { alarmEntity ->
                         val alarm = alarmEntity.copy(
                             meta = Meta(
                                 cBy = alarmEntity.meta.cBy,
@@ -207,13 +207,29 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest {
                 viewModelScope.launch {
-                    _todayState.value = alarmBackendRepo.getTodayDataFromBackend(
+                    _todayState.value = when (val result = alarmBackendRepo.getTodayDataFromBackend(
                         userID = uId,
                         date = getCurrentDate(),
                         location = it.currentAddress,
                         latitude = it.lat.toFloat(),
                         longitude = it.long.toFloat()
-                    ).toUiState()
+                    )) {
+                        is ResponseState.Success -> {
+                            UiState.Success(result.data.getTodayData())
+                        }
+
+                        is ResponseState.ErrorMessage -> {
+                            UiState.ErrorMessage(result.resId)
+                        }
+
+                        is ResponseState.ErrorRetry -> {
+                            UiState.ErrorRetry(result.resId)
+                        }
+
+                        else -> {
+                            UiState.NoInternet
+                        }
+                    }
                 }
             }
         }

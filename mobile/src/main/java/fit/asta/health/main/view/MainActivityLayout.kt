@@ -2,6 +2,18 @@
 
 package fit.asta.health.main.view
 
+import android.Manifest
+import android.content.Context
+import android.content.Intent
+import android.content.pm.PackageManager
+import android.net.Uri
+import android.os.Build
+import android.provider.Settings
+import android.util.Log
+import android.widget.Toast
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.ActivityResultLauncher
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -25,14 +37,17 @@ import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Handyman
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.core.content.ContextCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -41,10 +56,13 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import androidx.work.ExistingWorkPolicy
+import androidx.work.WorkManager
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.MainTopBarActions
+import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
@@ -56,6 +74,7 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.scheduler.services.SchedulerWorker
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
@@ -300,6 +319,74 @@ private fun MainNavHost(
             val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
             val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
+            val context = LocalContext.current
+            val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
+                rememberLauncherForActivityResult(
+                    contract = ActivityResultContracts.RequestPermission()
+                ) { perms ->
+                    if (perms) {
+                        Toast.makeText(
+                            context,
+                            "Notification is recommended for better functionality.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        PrefManager.setNotificationPermissionRejectedCount(context, 0)
+                    } else {
+                        Toast.makeText(
+                            context,
+                            "Notification is recommended for better functionality.",
+                            Toast.LENGTH_SHORT
+                        ).show()
+                        PrefManager.setNotificationPermissionRejectedCount(
+                            context,
+                            PrefManager.getNotificationPermissionRejectedCount(context) + 1
+                        )
+                    }
+                }
+
+            val checkPermissionAndLaunchScheduler = {
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    )
+                    == PackageManager.PERMISSION_GRANTED
+                ) {
+                    PrefManager.setNotificationPermissionRejectedCount(context, 0)
+                } else {
+                    if (PrefManager.getNotificationPermissionRejectedCount(context) > 2) {
+                        Toast.makeText(
+                            context,
+                            "Please allow Notification permission access.",
+                            Toast.LENGTH_SHORT
+                        )
+                            .show()
+                        with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
+                            data = Uri.fromParts("package", context.packageName, null)
+                            addCategory(Intent.CATEGORY_DEFAULT)
+                            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                            addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
+                            addFlags(Intent.FLAG_ACTIVITY_EXCLUDE_FROM_RECENTS)
+                            context.startActivity(this)
+                        }
+                    } else {
+                        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                            notificationPermissionResultLauncher.launch(Manifest.permission.POST_NOTIFICATIONS)
+                        }
+                    }
+                }
+            }
+            LaunchedEffect(Unit) {
+                if (ContextCompat.checkSelfPermission(
+                        context,
+                        Manifest.permission.POST_NOTIFICATIONS
+                    ) != PackageManager.PERMISSION_GRANTED
+                ) {
+                    checkPermissionAndLaunchScheduler()
+                }
+            }
+            LaunchedEffect(Unit) {
+                setupWorker(context)
+            }
             TodayContent(
                 state = state,
                 userName = todayPlanViewModel.getUserName(),
@@ -328,7 +415,15 @@ private fun MainNavHost(
                         }
 
                         is HomeEvent.SetDefaultSchedule -> {
-                            todayPlanViewModel.getDefaultSchedule(uiEvent.context)
+                            if (ContextCompat.checkSelfPermission(
+                                    context,
+                                    Manifest.permission.POST_NOTIFICATIONS
+                                ) != PackageManager.PERMISSION_GRANTED
+                            ) {
+                                checkPermissionAndLaunchScheduler()
+                            } else {
+                                todayPlanViewModel.getDefaultSchedule(uiEvent.context)
+                            }
                         }
 
                         is HomeEvent.NavSchedule -> {
@@ -355,3 +450,21 @@ data class BottomNavItem(
     val unselectedIcon: ImageVector,
     val title: String,
 )
+
+fun setupWorker(context: Context) {
+    Log.d("TAGTAG", "app setupWorker")
+    WorkManager.getInstance(context).apply {
+        // Run sync on app startup and ensure only one sync worker runs at any time
+        enqueueUniqueWork(
+            "SyncWorkName",
+            ExistingWorkPolicy.KEEP,
+            SchedulerWorker.startUpSyncWork(),
+        )
+    }
+//   WorkManager.getInstance(context).apply {
+//       enqueueUniquePeriodicWork(
+//           "worker_for_upload_data", ExistingPeriodicWorkPolicy.UPDATE,
+//           SchedulerWorker.startUpSyncWork()
+//       )
+//   }
+}

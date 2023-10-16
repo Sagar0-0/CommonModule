@@ -284,7 +284,7 @@ fun checkPermissionAndLaunchScheduler(
                     "Notification is recommended for better functionality.",
                     Toast.LENGTH_SHORT
                 ).show()
-                PrefManager.setNotificationPermissionRejectedCount(context, 1)
+                PrefManager.setNotificationPermissionRejectedCount(context, 0)
                 navController.navigate(Graph.Scheduler.route)
             } else {
                 Toast.makeText(
@@ -296,6 +296,7 @@ fun checkPermissionAndLaunchScheduler(
                     context,
                     PrefManager.getNotificationPermissionRejectedCount(context) + 1
                 )
+
             }
         }
 
@@ -306,10 +307,10 @@ fun checkPermissionAndLaunchScheduler(
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
-            PrefManager.setNotificationPermissionRejectedCount(context, 1)
+            PrefManager.setNotificationPermissionRejectedCount(context, 0)
             navController.navigateToScheduler()
         } else {
-            if (PrefManager.getNotificationPermissionRejectedCount(context) >= 2) {
+            if (PrefManager.getNotificationPermissionRejectedCount(context) > 2) {
                 Toast.makeText(
                     context,
                     "Please allow Notification permission access.",

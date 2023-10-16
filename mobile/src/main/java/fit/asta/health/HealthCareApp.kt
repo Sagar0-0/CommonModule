@@ -5,12 +5,9 @@ import android.app.NotificationChannel
 import android.app.NotificationManager
 import android.content.Context
 import android.os.Build
-import androidx.work.ExistingWorkPolicy
-import androidx.work.WorkManager
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
-import fit.asta.health.feature.scheduler.services.SchedulerWorker
 
 @HiltAndroidApp
 class HealthCareApp : /*MultiDexApplication*/ Application() {
@@ -34,7 +31,6 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
 //                workerFactory
 //            ).build()
 //        )
-        setupWorker(this)
     }
 
     private fun createNotificationChannel() {
@@ -69,21 +65,4 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             notificationManager.createNotificationChannel(channel)
         }
     }
-}
-
-fun setupWorker(context: Context) {
-    WorkManager.getInstance(context).apply {
-        // Run sync on app startup and ensure only one sync worker runs at any time
-        enqueueUniqueWork(
-            "SyncWorkName",
-            ExistingWorkPolicy.KEEP,
-            SchedulerWorker.startUpSyncWork(),
-        )
-    }
-//   WorkManager.getInstance(context).apply {
-//       enqueueUniquePeriodicWork(
-//           "worker_for_upload_data", ExistingPeriodicWorkPolicy.UPDATE,
-//           SchedulerWorker.startUpSyncWork()
-//       )
-//   }
 }
