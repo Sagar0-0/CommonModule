@@ -17,8 +17,8 @@ import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
-import fit.asta.health.data.scheduler.remote.net.tag.Data
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
+import fit.asta.health.data.scheduler.remote.net.tag.TagData
 import fit.asta.health.data.scheduler.remote.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
@@ -203,7 +203,7 @@ class SchedulerViewModel
             )
             when (result) {
                 is ResponseState.Success -> {
-
+                    getTagDataFromServer()
                 }
 
                 is ResponseState.ErrorMessage -> {}
@@ -237,10 +237,10 @@ class SchedulerViewModel
             when (val result = backendRepo.getTagListFromBackend(uId)) {
                 is ResponseState.Success -> {
                     result.data.let { schedulerGetTagsList ->
-                        schedulerGetTagsList.list.forEach { tag ->
+                        schedulerGetTagsList.tagData.forEach { tag ->
                             insertTag(tag)
                         }
-                        schedulerGetTagsList.customTagList?.forEach { tag ->
+                        schedulerGetTagsList.customTagData?.forEach { tag ->
                             insertTag(tag)
                         }
                     }
@@ -251,7 +251,7 @@ class SchedulerViewModel
         }
     }
 
-    private suspend fun insertTag(tag: Data) {
+    private suspend fun insertTag(tag: TagData) {
         alarmLocalRepo.insertTag(tag.toTagEntity())
     }
 

@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,7 +59,7 @@ fun TimePickerClock(
     hoursDivider: (@Composable () -> Unit)? = null,
     minutesDivider: (@Composable () -> Unit)? = null,
     dividersColor: Color = Color.Green,
-    textStyle: TextStyle = LocalTextStyle.current,
+    textStyle: TextStyle = AppTheme.customTypography.title.level3,
 ) {
     val selectionTimePassed = stringResource(StringR.string.selected_time_is_passed)
     var ampmHoursMin by remember(value) {

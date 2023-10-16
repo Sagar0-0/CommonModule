@@ -16,7 +16,7 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
-import fit.asta.health.data.scheduler.remote.net.tag.Data
+import fit.asta.health.data.scheduler.remote.net.tag.TagData
 import fit.asta.health.data.scheduler.remote.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
@@ -38,11 +38,9 @@ class SchedulerWorker @AssistedInject constructor(
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 
-        Log.d("TAGTAG", "doWork:start ")
+        Log.v("TAGTAG", "doWork: uid $uId")
 
-        if (uId.isEmpty()) {
-            Result.retry()
-        } else {
+        if (uId.isNotEmpty()) {
             syncAlarmLocal(uId)
             syncTagsData(uId)
         }
@@ -51,15 +49,12 @@ class SchedulerWorker @AssistedInject constructor(
 
 
     private suspend fun syncAlarmLocal(userId: String) {
-        Log.d("TAGTAG", "doWork:sync alarm  ")
+        Log.v("TAGTAG", "doWork:syncAlarmLocal  ")
         val list = alarmLocalRepo.getAllAlarmList()
         if (list.isNullOrEmpty()) {
-            val result = withContext(Dispatchers.Default) {
-                backendRepo.getScheduleListDataFromBackend(userId)
-            }
-            when (result) {
+            when (val result = backendRepo.getScheduleListDataFromBackend(userId)) {
                 is ResponseState.Success -> {
-                    result.data.list.forEach { alarm ->
+                    result.data.forEach { alarm ->
 //                        backendRepo.deleteScheduleDataFromBackend(alarm.idFromServer)
                         alarmLocalRepo.insertAlarm(alarm)
                         if (alarm.status) {
@@ -74,24 +69,20 @@ class SchedulerWorker @AssistedInject constructor(
             list.forEach { entity ->
                 when (entity.meta.sync) {
                     1 -> {//update
-                        val result = withContext(Dispatchers.Default) {
-                            backendRepo.updateScheduleDataOnBackend(schedule = entity)
-                        }
-                        when (result) {
+                        val alarm = entity.copy(
+                            meta = Meta(
+                                cBy = entity.meta.cBy,
+                                cDate = entity.meta.cDate,
+                                sync = 0,
+                                uDate = getCurrentTime()
+                            )
+                        )
+                        when (val result =
+                            backendRepo.updateScheduleDataOnBackend(schedule = alarm)) {
                             is ResponseState.Success -> {
-                                if (result.data.data.flag) {
-                                    val alarm = entity.copy(
-                                        idFromServer = result.data.data.id,
-                                        meta = Meta(
-                                            cBy = entity.meta.cBy,
-                                            cDate = entity.meta.cDate,
-                                            sync = 0,
-                                            uDate = getCurrentTime()
-                                        )
-                                    )
-                                    alarmLocalRepo.insertAlarm(alarm)
-                                    Log.d("TAGTAG", "doWork:noidfromserver alarm $alarm")
-                                }
+                                val newAlarm = alarm.copy(idFromServer = result.data.id)
+                                alarmLocalRepo.insertAlarm(newAlarm)
+                                Log.v("TAGTAG", "doWork:noidfromserver alarm $alarm")
                             }
 
                             else -> {}
@@ -99,15 +90,15 @@ class SchedulerWorker @AssistedInject constructor(
                     }
 
                     2 -> { // delete
-                        val result = withContext(Dispatchers.Default) {
-                            backendRepo.deleteScheduleDataFromBackend(entity.idFromServer)
-                        }
-                        when (result) {
+                        when (backendRepo.deleteScheduleDataFromBackend(entity.idFromServer)) {
                             is ResponseState.Success -> {
                                 alarmLocalRepo.deleteAlarm(entity)
+                                Log.v("TAGTAG", "doWork:delete alarm ")
                             }
 
-                            else -> {}
+                            else -> {
+                                Log.v("TAGTAG", "doWork:delete alarm error ")
+                            }
                         }
                     }
 
@@ -119,27 +110,27 @@ class SchedulerWorker @AssistedInject constructor(
 
 
     private suspend fun syncTagsData(userId: String) {//"6309a9379af54f142c65fbfe"
+        Log.v("TAGTAG", "doWork: syncTagsData")
         alarmLocalRepo.getAllTags().collect {
             if (it.isEmpty()) {
                 when (val result = backendRepo.getTagListFromBackend(userId)) {
                     is ResponseState.Success -> {
                         result.data.let { schedulerGetTagsList ->
-                            schedulerGetTagsList.list.forEach { tag ->
+                            schedulerGetTagsList.tagData.forEach { tag ->
                                 insertTag(tag)
                             }
-                            schedulerGetTagsList.customTagList?.forEach { tag ->
+                            schedulerGetTagsList.customTagData?.forEach { tag ->
                                 insertTag(tag)
                             }
                         }
                     }
-
                     else -> {}
                 }
             }
         }
     }
 
-    private suspend fun insertTag(tag: Data) {
+    private suspend fun insertTag(tag: TagData) {
         alarmLocalRepo.insertTag(tag.toTagEntity())
     }
 

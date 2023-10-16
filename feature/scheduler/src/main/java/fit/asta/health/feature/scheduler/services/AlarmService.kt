@@ -9,7 +9,7 @@ import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
-import android.graphics.drawable.Drawable
+import android.graphics.drawable.BitmapDrawable
 import android.media.RingtoneManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
@@ -31,10 +31,8 @@ import androidx.media3.common.util.UnstableApi
 import androidx.media3.datasource.DefaultDataSource
 import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
-import com.bumptech.glide.Glide
-import com.bumptech.glide.load.engine.DiskCacheStrategy
-import com.bumptech.glide.request.target.CustomTarget
-import com.bumptech.glide.request.transition.Transition
+import coil.ImageLoader
+import coil.request.ImageRequest
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
@@ -82,8 +80,6 @@ class AlarmService : Service() {
     private lateinit var partialWakeLock: PowerManager.WakeLock
     private var mTimer: Timer? = null
     private var mTimer1: Timer? = null
-    private val missedNotificationId = 999
-    private val skipNotificationId = 777
     private var notificationState: Boolean = true
     private var isConnected: Boolean = false
     private lateinit var player: Player
@@ -188,35 +184,42 @@ class AlarmService : Service() {
         if (intent != null) {
             val id: Long = intent.getLongExtra("id", -1)
             if (alarmEntity != null) {
-                notification(
-                    message = "Alarm is missed ",
-                    alarmName = alarmEntity!!.info.name,
-                    tag = alarmEntity!!.info.tag,
-                    nId = alarmEntity!!.hashCode()
-                )
-                stateManager.dismissAlarm(applicationContext, alarmEntity!!.alarmId)
-            }
-            scope.launch {
-                alarmDao.getAlarm(id)?.let { alarm ->
-                    alarmEntity = alarm
-                    player.apply {
-                        if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
-                        else setMediaItem(MediaItem.fromUri(ringtone))
-                        prepare()
-                    }
-                    if (notificationState || alarm.important) startAlarmWithMode(alarm)
-                    else {
-                        notification(
-                            message = "Alarm Notification ",
-                            alarmName = alarm.info.name,
-                            tag = alarm.info.tag,
-                            nId = alarm.hashCode()
-                        )
-                        stateManager.dismissAlarm(
-                            applicationContext,
-                            alarm.alarmId
-                        )
-                        alarmEntity = null
+                if (alarmEntity!!.alarmId != id) {
+                    notification(
+                        message = "Alarm is missed ",
+                        alarmName = alarmEntity!!.info.name,
+                        tag = alarmEntity!!.info.tag,
+                        nId = alarmEntity!!.hashCode()
+                    )
+                    stateManager.dismissAlarm(applicationContext, alarmEntity!!.alarmId)
+                }
+            } else {
+                scope.launch {
+                    alarmDao.getAlarm(id)?.let { alarm ->
+                        alarmEntity = alarm
+                        try {
+                            player.apply {
+                                if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
+                                else setMediaItem(MediaItem.fromUri(ringtone))
+                                prepare()
+                            }
+                        } catch (_: Exception) {
+
+                        }
+                        if (notificationState || alarm.important) startAlarmWithMode(alarm)
+                        else {
+                            notification(
+                                message = "Alarm Notification ",
+                                alarmName = alarm.info.name,
+                                tag = alarm.info.tag,
+                                nId = alarm.hashCode()
+                            )
+                            stateManager.dismissAlarm(
+                                applicationContext,
+                                alarm.alarmId
+                            )
+                            alarmEntity = null
+                        }
                     }
                 }
             }
@@ -233,6 +236,8 @@ class AlarmService : Service() {
     private fun notificationAlarm(
         alarm: AlarmEntity
     ) {
+        val picStyleBig = NotificationCompat.BigPictureStyle()
+        val loader = ImageLoader(this)
         val stopIntent = Intent(this, AlarmBroadcastReceiver::class.java).apply {
             action = Utils.DISMISS_ACTION
             putExtra("id", alarm.alarmId)
@@ -263,7 +268,6 @@ class AlarmService : Service() {
             .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
             .setSound(null)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
-//            .setStyle(NotificationCompat.DecoratedCustomViewStyle())
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
@@ -273,45 +277,40 @@ class AlarmService : Service() {
             .addAction(0, "Stop", pendingIntentStop)
             .setContentTitle(alarmName)
             .setContentText(alarm.info.tag)
-//        val notificationLayout = RemoteViews(packageName, DrawR.layout.notification_small)
-//        val notificationLayoutExpanded = RemoteViews(packageName, DrawR.layout.notification_large)
-//        notificationLayout.apply {
-//            setTextViewText(DrawR.id.title, alarmName)
-//            setTextViewText(DrawR.id.tag, alarm.info.tag)
-//        }
-//        notificationLayoutExpanded.apply {
-//            setTextViewText(DrawR.id.title, alarmName)
-//            setTextViewText(DrawR.id.tag, alarm.info.tag)
-//        }
 
-        Glide.with(this).asBitmap().load(
-            if (isConnected) getImgUrl(url = alarm.info.url)
-            else DrawR.drawable.weatherimage
-        )
-            .diskCacheStrategy(DiskCacheStrategy.ALL).placeholder(DrawR.drawable.weatherimage)
-            .into(object : CustomTarget<Bitmap?>() {
-                override fun onResourceReady(
-                    resource: Bitmap, transition: Transition<in Bitmap?>?
-                ) {
-//                    notificationLayout.setImageViewBitmap(DrawR.id.image, resource)
-//                    notificationLayoutExpanded.setImageViewBitmap(DrawR.id.image, resource)
-//
-//                    builder.setCustomContentView(notificationLayout)
-//                        .setCustomBigContentView(notificationLayoutExpanded)
-                    val picStyleBig = NotificationCompat.BigPictureStyle()
-                        .bigPicture(resource)
-                    builder.setStyle(picStyleBig)
-
+        try {
+            val req = ImageRequest.Builder(this)
+                .data(
+                    if (isConnected) getImgUrl(url = alarm.info.url)
+                    else DrawR.drawable.weatherimage
+                )// demo link
+                .target { result ->
+                    val bitmap = (result as BitmapDrawable).bitmap
+                    val bitmap1: Bitmap? = null
+                    picStyleBig.bigPicture(bitmap).bigLargeIcon(bitmap1)
+                    builder.setStyle(picStyleBig).setLargeIcon(bitmap)
                     startForGroundService(
                         notification = builder.build(),
                         id = alarm.hashCode(),
                         vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
                     )
                 }
+                .build()
+            loader.enqueue(req)
 
-                override fun onLoadCleared(placeholder: Drawable?) {}
-            })
-
+        } catch (_: Exception) {
+            val req = ImageRequest.Builder(this)
+                .data(DrawR.drawable.weatherimage)
+                .target { result ->
+                    val bitmap = (result as BitmapDrawable).bitmap
+                    val bitmap1: Bitmap? = null
+                    picStyleBig.bigPicture(bitmap).bigLargeIcon(bitmap1)
+                    builder.setStyle(picStyleBig).setLargeIcon(bitmap)
+                    notificationManager.notify(alarm.hashCode(), builder.build())
+                }
+                .build()
+            loader.enqueue(req)
+        }
     }
 
     private fun splashAlarm(
@@ -339,7 +338,6 @@ class AlarmService : Service() {
             id = alarm.hashCode(),
             vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
         )
-
     }
 
 
