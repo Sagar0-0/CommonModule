@@ -64,6 +64,9 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
+import fit.asta.otpfield.OTPInput
+import fit.asta.otpfield.configuration.OTPCellConfiguration
+import fit.asta.otpfield.configuration.OTPConfigurations
 
 @Preview("Light Button")
 @Preview(
@@ -90,20 +93,25 @@ fun BasicProfileNewScreen() {
         }, content = { paddingValues ->
 
             Column(
-                modifier = Modifier.fillMaxSize().padding(paddingValues)
+                modifier = Modifier
+                    .fillMaxSize()
+                    .padding(paddingValues)
                     .verticalScroll(rememberScrollState()),
-//            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 CircularImageWithIconButton(onClick = { imagePickerLauncher.launch("image/*") })
                 TextBlock()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                PhoneBlock()
                 EmailBlock()
+                PhoneBlock()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                OTPBlock()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 ReferBlock()
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 GenerateButton(
                     textToShow = "Create your Profile",
-                    modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2)
                 )
             }
         })
@@ -114,24 +122,31 @@ fun BasicProfileNewScreen() {
 @Composable
 fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
     ConstraintLayout(
-        modifier = modifier.fillMaxSize().padding(horizontal = AppTheme.spacing.level2)
+        modifier = modifier
+            .fillMaxSize()
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         val (image, button) = createRefs()
 
         AppLocalImage(painter = painterResource(id = R.drawable.ic_person),
             contentDescription = "Profile",
-            modifier = Modifier.size(AppTheme.boxSize.level8).clip(CircleShape).constrainAs(image) {
-                top.linkTo(parent.top)
-                start.linkTo(parent.start)
-                end.linkTo(parent.end)
-            })
+            modifier = Modifier
+                .size(AppTheme.boxSize.level8)
+                .clip(CircleShape)
+                .constrainAs(image) {
+                    top.linkTo(parent.top)
+                    start.linkTo(parent.start)
+                    end.linkTo(parent.end)
+                })
 
         AppIconButton(
             imageVector = Icons.Rounded.CameraEnhance,
-            modifier = Modifier.size(AppTheme.buttonSize.level6).constrainAs(button) {
-                bottom.linkTo(image.bottom)
-                end.linkTo(image.end)
-            },
+            modifier = Modifier
+                .size(AppTheme.buttonSize.level6)
+                .constrainAs(button) {
+                    bottom.linkTo(image.bottom)
+                    end.linkTo(image.end)
+                },
             onClick = onClick
         )
     }
@@ -144,10 +159,14 @@ fun TextBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -189,11 +208,14 @@ fun TextBlock() {
                     isEditing = false
                 }),
                 keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester).onFocusChanged {
-                    if (it.isFocused) {
-                        isEditing = true
-                    }
-                })
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            isEditing = true
+                        }
+                    })
         }
     }
 }
@@ -201,13 +223,17 @@ fun TextBlock() {
 @Composable
 fun EmailBlock() {
 
-    var userEmail by remember { mutableStateOf(TextFieldValue("")) }
+    val userEmail by remember { mutableStateOf(TextFieldValue("")) }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -226,7 +252,8 @@ fun EmailBlock() {
                     }
                 }
             }
-            AppIconButton(imageVector = Icons.Rounded.Link,
+            AppIconButton(
+                imageVector = Icons.Rounded.Link,
                 iconTint = AppTheme.colors.primary,
                 onClick = {})
         }
@@ -241,10 +268,14 @@ fun PhoneBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        modifier = Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Row(
-            modifier = Modifier.fillMaxWidth().padding(vertical = AppTheme.spacing.level1),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = AppTheme.spacing.level1),
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row(
@@ -290,7 +321,9 @@ fun PhoneBlock() {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
                     ),
-                    modifier = Modifier.fillMaxWidth(0.2f).focusRequester(focusRequester)
+                    modifier = Modifier
+                        .fillMaxWidth(0.2f)
+                        .focusRequester(focusRequester)
                         .onFocusChanged {
                             if (it.isFocused) {
                                 isEditing = true
@@ -312,7 +345,9 @@ fun PhoneBlock() {
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
                     ),
-                    modifier = Modifier.fillMaxWidth().focusRequester(focusRequester)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .focusRequester(focusRequester)
                         .onFocusChanged {
                             if (it.isFocused) {
                                 isEditing = true
@@ -333,7 +368,9 @@ fun ReferBlock() {
     val focusRequester = remember { FocusRequester() }
 
     Column(
-        Modifier.fillMaxWidth().padding(horizontal = AppTheme.spacing.level2)
+        Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         ClickableText(
             text = AnnotatedString(text = "Have you got any Referral Code?"),
@@ -356,11 +393,14 @@ fun ReferBlock() {
                 keyboardOptions = KeyboardOptions.Default.copy(
                     imeAction = ImeAction.Done,
                 ),
-                modifier = Modifier.fillMaxWidth().focusRequester(focusRequester).onFocusChanged {
-                    if (it.isFocused) {
-                        isEditing = true
-                    }
-                })
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .focusRequester(focusRequester)
+                    .onFocusChanged {
+                        if (it.isFocused) {
+                            isEditing = true
+                        }
+                    })
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             VerifyButton(textToShow = "Apply Referral Code")
         }
@@ -384,6 +424,46 @@ fun VerifyButton(textToShow: String, onClick: () -> Unit = {}) {
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = AppTheme.colors.primary),
             border = BorderStroke(color = AppTheme.colors.primary, width = 2.dp)
+        )
+    }
+}
+
+@Preview
+@Composable
+fun OTPBlock() {
+
+    var otpValue: String by remember { mutableStateOf("") }
+
+    val defaultConfig = OTPCellConfiguration.withDefaults()
+
+    Row(
+        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+    ) {
+        OTPInput(
+            value = otpValue,
+            onValueChange = { newValue, isValid ->
+                otpValue = newValue
+                if (isValid) {
+                    // Validate the value here...
+                }
+            },
+            /* when the value is 1111, all cells will use errorCellConfig */
+            isValueInvalid = otpValue == "111111",
+            configurations = OTPConfigurations.withDefaults(
+                cellsCount = 6,
+                emptyCellConfig = defaultConfig,
+                filledCellConfig = defaultConfig,
+                activeCellConfig = defaultConfig.copy(
+                    borderColor = AppTheme.colors.onSurface, borderWidth = AppTheme.elevation.level1
+                ),
+                errorCellConfig = defaultConfig.copy(
+                    borderColor = AppTheme.colors.error, borderWidth = AppTheme.elevation.level1
+                ),
+                placeHolder = "*",
+                cellModifier = Modifier
+                    .padding(horizontal = AppTheme.spacing.level0)
+                    .size(AppTheme.customSize.level6),
+            ),
         )
     }
 }

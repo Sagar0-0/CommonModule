@@ -22,6 +22,7 @@ dependencies {
 
     implementation(project(":data:profile"))
     implementation(project(":data:auth"))
+    implementation(project(":libs:otpfield"))
 
     implementation(project(":feature:auth"))
 
