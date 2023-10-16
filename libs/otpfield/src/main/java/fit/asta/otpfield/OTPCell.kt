@@ -37,18 +37,18 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.otpfield.configuration.OhTeePeeConfigurations
+import fit.asta.otpfield.configuration.OTPConfigurations
 import fit.asta.otpfield.utils.conditional
 
 private val MIN_HEIGHT_CELL_SIZE = 48.dp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-internal fun OhTeePeeCell(
+internal fun OTPCell(
     value: String,
     onValueChange: (String) -> Unit,
     keyboardType: KeyboardType,
-    configurations: OhTeePeeConfigurations,
+    configurations: OTPConfigurations,
     placeHolder: String,
     visualTransformation: VisualTransformation,
     isErrorOccurred: Boolean,
@@ -74,6 +74,7 @@ internal fun OhTeePeeCell(
     val textStyle = remember(cellConfiguration.textStyle) {
         cellConfiguration.textStyle.copy(textAlign = TextAlign.Center)
     }
+
     val placeHolderTextStyle = remember(cellConfiguration.placeHolderTextStyle) {
         cellConfiguration.placeHolderTextStyle.copy(textAlign = TextAlign.Center)
     }

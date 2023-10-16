@@ -6,16 +6,15 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.otpfield.utils.EMPTY
 
 private const val DEFAULT_PLACE_HOLDER = " "
 
 /**
- * OhTeePeeConfigurations is a class that holds all the ui configurations for OhTeePeeInput.
+ * OTPConfigurations is a class that holds all the ui configurations for OhTeePeeInput.
  *
- * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to pass
+ * If you don't want to pass all the configurations, you can use [OTPConfigurations.withDefaults] to pass
  * only the configurations you want.
  *
  * @param cellModifier a [Modifier] for each cell.
@@ -31,26 +30,26 @@ private const val DEFAULT_PLACE_HOLDER = " "
  * Note: it should be a single char.
  *
  * @param placeHolder String a string that will be used as a place holder for empty cells.
- * @param activeCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's focused.
- * @param errorCellConfig [OhTeePeeCellConfiguration] cell ui configuration when an error occurred.
- * @param emptyCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's empty & not focused.
- * @param filledCellConfig [OhTeePeeCellConfiguration] cell ui configuration when it's filled.
+ * @param activeCellConfig [OTPCellConfiguration] cell ui configuration when it's focused.
+ * @param errorCellConfig [OTPCellConfiguration] cell ui configuration when an error occurred.
+ * @param emptyCellConfig [OTPCellConfiguration] cell ui configuration when it's empty & not focused.
+ * @param filledCellConfig [OTPCellConfiguration] cell ui configuration when it's filled.
  * @param enableBottomLine when set to `true`, a bottom line will be drawn for each
  * cell instead of full shape using the other cell configurations.
  *
- * @see [OhTeePeeCellConfiguration.withDefaults]
+ * @see [OTPCellConfiguration.withDefaults]
  */
-data class OhTeePeeConfigurations(
+data class OTPConfigurations(
     val cellModifier: Modifier,
     val elevation: Dp,
     val cursorColor: Color,
     val cellsCount: Int,
     val obscureText: String,
     val placeHolder: String,
-    val activeCellConfig: OhTeePeeCellConfiguration,
-    val errorCellConfig: OhTeePeeCellConfiguration,
-    val emptyCellConfig: OhTeePeeCellConfiguration,
-    val filledCellConfig: OhTeePeeCellConfiguration,
+    val activeCellConfig: OTPCellConfiguration,
+    val errorCellConfig: OTPCellConfiguration,
+    val emptyCellConfig: OTPCellConfiguration,
+    val filledCellConfig: OTPCellConfiguration,
     val enableBottomLine: Boolean,
 ) {
 
@@ -58,12 +57,12 @@ data class OhTeePeeConfigurations(
         @Composable
         fun withDefaults(
             cellsCount: Int,
-            emptyCellConfig: OhTeePeeCellConfiguration,
-            filledCellConfig: OhTeePeeCellConfiguration = emptyCellConfig,
-            activeCellConfig: OhTeePeeCellConfiguration = emptyCellConfig.copy(
+            emptyCellConfig: OTPCellConfiguration,
+            filledCellConfig: OTPCellConfiguration = emptyCellConfig,
+            activeCellConfig: OTPCellConfiguration = emptyCellConfig.copy(
                 borderColor = AppTheme.colors.primary
             ),
-            errorCellConfig: OhTeePeeCellConfiguration = emptyCellConfig.copy(
+            errorCellConfig: OTPCellConfiguration = emptyCellConfig.copy(
                 borderColor = AppTheme.colors.error
             ),
             cellModifier: Modifier = Modifier
@@ -74,7 +73,7 @@ data class OhTeePeeConfigurations(
             enableBottomLine: Boolean = false,
             obscureText: String = String.EMPTY,
             placeHolder: String = DEFAULT_PLACE_HOLDER,
-        ) = OhTeePeeConfigurations(
+        ) = OTPConfigurations(
             cellModifier = cellModifier,
             elevation = elevation,
             activeCellConfig = activeCellConfig,

@@ -17,7 +17,7 @@ import androidx.compose.ui.graphics.Color.Companion.Transparent
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.PasswordVisualTransformation
 import androidx.compose.ui.text.input.VisualTransformation
-import fit.asta.otpfield.configuration.OhTeePeeConfigurations
+import fit.asta.otpfield.configuration.OTPConfigurations
 import fit.asta.otpfield.utils.EMPTY
 import fit.asta.otpfield.utils.requestFocusSafely
 
@@ -27,25 +27,25 @@ private const val NOT_ENTERED_VALUE = '₺'
  * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
  *
  * Whenever the user edits the text, [onValueChange] is called with the most up to date state
- * including the empty values that represented by [OhTeePeeConfigurations.placeHolder].
+ * including the empty values that represented by [OTPConfigurations.placeHolder].
  *
  * When the user fills all the cells, [onValueChange]'s isValid parameter will be `true`,
  * otherwise it will be `false`.
  *
  * To customize the appearance of cells you can pass [configurations] parameter with
- * a lot of options like , [OhTeePeeConfigurations.cellModifier], [OhTeePeeConfigurations.errorCellConfig] and more.
+ * a lot of options like , [OTPConfigurations.cellModifier], [OTPConfigurations.errorCellConfig] and more.
  *
- * If you don't want to pass all the configurations, you can use [OhTeePeeConfigurations.withDefaults] to customize
+ * If you don't want to pass all the configurations, you can use [OTPConfigurations.withDefaults] to customize
  * only the configurations you want.
  *
- * @param value will be split to chars and shown in the [OhTeePeeInput].
+ * @param value will be split to chars and shown in the [OTPInput].
  * @param onValueChange Called when user enters or deletes any cell.
- * @param configurations [OhTeePeeConfigurations] to customize the appearance of cells.
+ * @param configurations [OTPConfigurations] to customize the appearance of cells.
  *
- * @param modifier optional [Modifier] for the whole [OhTeePeeInput].
- * You can use [OhTeePeeConfigurations.cellModifier] to customize each single cell.
+ * @param modifier optional [Modifier] for the whole [OTPInput].
+ * You can use [OTPConfigurations.cellModifier] to customize each single cell.
  *
- * @param isValueInvalid when set to true, all cells will use [OhTeePeeConfigurations.errorCellConfig] and
+ * @param isValueInvalid when set to true, all cells will use [OTPConfigurations.errorCellConfig] and
  * focus will be requested on first cell. you should set this to false when user starts editing the text.
  *
  * @param keyboardType The keyboard type to be used for this text field.
@@ -55,13 +55,12 @@ private const val NOT_ENTERED_VALUE = '₺'
  *
  * @param autoFocusByDefault when set to true, first cell will be focused by default.
  *
- * @sample BasicOhTeePeeExample
  */
 @Composable
-fun OhTeePeeInput(
+fun OTPInput(
     value: String,
     onValueChange: (newValue: String, isValid: Boolean) -> Unit,
-    configurations: OhTeePeeConfigurations,
+    configurations: OTPConfigurations,
     modifier: Modifier = Modifier,
     isValueInvalid: Boolean = false,
     keyboardType: KeyboardType = KeyboardType.Number,
@@ -117,7 +116,7 @@ fun OhTeePeeInput(
         if (isValueInvalid) focusRequester.first().requestFocus()
     }
 
-    OhTeePeeInput(
+    OTPInput(
         modifier = modifier,
         textSelectionColors = transparentTextSelectionColors,
         cellsCount = cellsCount,
@@ -125,7 +124,7 @@ fun OhTeePeeInput(
         placeHolder = placeHolder,
         isErrorOccurred = isValueInvalid,
         keyboardType = keyboardType,
-        ohTeePeeConfigurations = configurations,
+        OTPConfigurations = configurations,
         focusRequesters = focusRequester,
         enabled = enabled,
         visualTransformation = visualTransformation,
@@ -164,7 +163,7 @@ fun OhTeePeeInput(
 }
 
 @Composable
-private fun OhTeePeeInput(
+private fun OTPInput(
     modifier: Modifier = Modifier,
     textSelectionColors: TextSelectionColors,
     cellsCount: Int,
@@ -172,7 +171,7 @@ private fun OhTeePeeInput(
     placeHolder: String,
     isErrorOccurred: Boolean,
     keyboardType: KeyboardType,
-    ohTeePeeConfigurations: OhTeePeeConfigurations,
+    OTPConfigurations: OTPConfigurations,
     focusRequesters: List<FocusRequester>,
     enabled: Boolean,
     visualTransformation: VisualTransformation,
@@ -186,13 +185,13 @@ private fun OhTeePeeInput(
                 val displayValue = getCellDisplayCharacter(
                     currentChar = otpValue[index],
                 )
-                OhTeePeeCell(
+                OTPCell(
                     value = displayValue,
                     isErrorOccurred = isErrorOccurred,
                     keyboardType = keyboardType,
-                    modifier = ohTeePeeConfigurations.cellModifier.focusRequester(focusRequester = focusRequesters[index]),
+                    modifier = OTPConfigurations.cellModifier.focusRequester(focusRequester = focusRequesters[index]),
                     enabled = enabled,
-                    configurations = ohTeePeeConfigurations,
+                    configurations = OTPConfigurations,
                     onValueChange = {
                         onCellInputChange(index, it)
                     },

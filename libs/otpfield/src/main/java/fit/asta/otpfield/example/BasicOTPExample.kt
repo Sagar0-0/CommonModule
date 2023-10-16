@@ -3,7 +3,6 @@ package fit.asta.otpfield.example
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.material3.MaterialTheme
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -14,15 +13,17 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.otpfield.OhTeePeeInput
-import fit.asta.otpfield.configuration.OhTeePeeCellConfiguration
-import fit.asta.otpfield.configuration.OhTeePeeConfigurations
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.otpfield.OTPInput
+import fit.asta.otpfield.configuration.OTPCellConfiguration
+import fit.asta.otpfield.configuration.OTPConfigurations
 
 @Composable
-internal fun BasicOhTeePeeExample() {
+internal fun BasicOTPExample() {
+
     var otpValue: String by remember { mutableStateOf("12") }
 
-    val defaultConfig = OhTeePeeCellConfiguration.withDefaults(
+    val defaultConfig = OTPCellConfiguration.withDefaults(
         borderColor = Color.LightGray,
         borderWidth = 1.dp,
         shape = RoundedCornerShape(16.dp),
@@ -31,7 +32,7 @@ internal fun BasicOhTeePeeExample() {
         )
     )
 
-    OhTeePeeInput(
+    OTPInput(
         value = otpValue,
         onValueChange = { newValue, isValid ->
             otpValue = newValue
@@ -41,7 +42,7 @@ internal fun BasicOhTeePeeExample() {
         },
         /* when the value is 1111, all cells will use errorCellConfig */
         isValueInvalid = otpValue == "1111",
-        configurations = OhTeePeeConfigurations.withDefaults(
+        configurations = OTPConfigurations.withDefaults(
             cellsCount = 6,
             emptyCellConfig = defaultConfig,
             filledCellConfig = defaultConfig,
@@ -61,8 +62,8 @@ internal fun BasicOhTeePeeExample() {
 
 @Preview
 @Composable
-private fun BasicOhTeePeePreview() {
-    MaterialTheme {
-        BasicOhTeePeeExample()
+private fun BasicOTPPreview() {
+    AppTheme {
+        BasicOTPExample()
     }
 }
