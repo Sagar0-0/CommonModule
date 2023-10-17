@@ -2,6 +2,7 @@ package fit.asta.health.feature.auth.screens
 
 import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -11,11 +12,14 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.text.ClickableText
@@ -295,6 +299,7 @@ fun ColumnScope.OnboardingDataPager(items: List<OnboardingData>) {
             }
         }
     }
+    PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
 }
 
 @Composable
@@ -384,4 +389,39 @@ fun VideoView(
             controller = null
         )
     }
+}
+
+@Composable
+fun PagerIndicator(size: Int, currentPage: Int) {
+    Row(
+        horizontalArrangement = Arrangement.SpaceBetween,
+        modifier = Modifier.padding(vertical = AppTheme.spacing.level6)
+    ) {
+        repeat(size) {
+            Indicator(isSelected = it == currentPage)
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
+        }
+    }
+}
+
+
+@Composable
+fun Indicator(isSelected: Boolean) {
+    val width = animateDpAsState(
+        targetValue = if (isSelected) AppTheme.customSize.level3 else AppTheme.customSize.level3,
+        label = ""
+    )
+
+    Box(
+        modifier = Modifier
+            .height(AppTheme.customSize.level3)
+            .padding(AppTheme.spacing.level3)
+            .width(width.value)
+            .clip(AppTheme.shape.level3)
+            .background(
+                if (isSelected) AppTheme.colors.primary else AppTheme.colors.onBackground.copy(
+                    alpha = AppTheme.alphaValues.level2
+                )
+            )
+    )
 }
