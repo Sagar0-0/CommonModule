@@ -19,12 +19,10 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
-import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
@@ -32,13 +30,12 @@ import fit.asta.health.designsystem.molecular.UploadFiles
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun
-
-        SessionFeedback(
+fun SessionFeedback(
     feedbackQuesState: UiState<FeedbackQuesDTO>,
     onBack: () -> Unit,
     onSubmit: (ans: List<An>) -> Unit
@@ -98,27 +95,35 @@ fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Uni
     val context = LocalContext.current
     if (qn.type == 1) {
 
-        // TODO :- Need to remove this function from the design system
         UploadFiles(
             modifier = Modifier.fillMaxWidth(),
-            updatedUriList = {
-                val medias = it.map { uri ->
-                    Media(
-                        name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
-                        url = "",
-                        localUri = uri
-                    )
-                }
-                isValid(!(qn.isMandatory && medias.isEmpty()))
-                updatedAns(
-                    An(
-                        dtlAns = null,
-                        media = medias,
-                        opts = qn.opts,
-                        qid = qn.qno,
-                        type = qn.type
-                    )
-                )
+//            updatedUriList = {
+//                val medias = it.map { uri ->
+//                    Media(
+//                        name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
+//                        url = "",
+//                        localUri = uri
+//                    )
+//                }
+//                isValid(!(qn.isMandatory && medias.isEmpty()))
+//                updatedAns(
+//                    An(
+//                        dtlAns = null,
+//                        media = medias,
+//                        opts = qn.opts,
+//                        qid = qn.qno,
+//                        type = qn.type
+//                    )
+//                )
+//            },
+            uriList = listOf(), // TODO :- Add the URI list of the uploaded Files
+            isValid = false, // TODO :- IsValid Variable needs to be made and should be checked everyTime we add or delete from the URI List
+            uploadLimit = 5, // TODO :- To be added from the Backend as said by Sir
+            onItemAdded = {
+                // TODO :- Add URI Item and Check the isValid boolean which decide the error Text
+            },
+            onItemDeleted = {
+                // TODO :- Delete URI Item and Check the isValid boolean which decide the error Text
             }
         )
     } else {
@@ -171,12 +176,13 @@ private fun FeedbackSuccessScreen(
 
         // Submit Button
         item {
-            SubmitButton(
+            AppFilledButton(
+                textToShow = "Submit",
+                modifier = Modifier.fillMaxWidth(),
                 enabled = isEnabled,
-                onDisable = {
-                    isEnabled = false
-                }
+                shape = AppTheme.shape.level1
             ) {
+                isEnabled = false
                 Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
                 onSubmit(ansList.toList())
             }
