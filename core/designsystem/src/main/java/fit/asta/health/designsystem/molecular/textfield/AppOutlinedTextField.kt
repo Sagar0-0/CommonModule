@@ -93,7 +93,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -126,11 +127,9 @@ fun AppOutlinedTextField(
             if (trailingIcon != null && !isError) {
                 trailingIcon()
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -149,12 +148,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -224,7 +223,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -260,11 +260,9 @@ fun AppOutlinedTextField(
             }
         },
         trailingIcon = {
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -283,12 +281,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -358,7 +356,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -394,11 +393,9 @@ fun AppOutlinedTextField(
             }
         },
         trailingIcon = {
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -417,12 +414,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -492,7 +489,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -526,11 +524,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -549,12 +545,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -624,7 +620,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -658,11 +655,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -681,12 +676,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -764,7 +759,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.None),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -805,11 +801,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -828,12 +822,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -911,7 +905,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -952,11 +947,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -975,12 +968,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -1058,7 +1051,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -1099,11 +1093,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -1122,12 +1114,12 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }
 
@@ -1205,7 +1197,8 @@ fun AppOutlinedTextField(
     colors: TextFieldColors = TextFieldDefaults.colors(),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
-    onValueChange: (String) -> Unit
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (String) -> Unit,
 ) {
 
     // This variable keeps if the user is typing or not
@@ -1246,11 +1239,9 @@ fun AppOutlinedTextField(
                     onTrailingIconClicked()
                 }
             }
-            if (isError)
-                Icon(
-                    imageVector = Icons.Filled.Error,
-                    contentDescription = "ErrorMessage Icon"
-                )
+            if (isError) Icon(
+                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+            )
         },
         isError = isError,
         visualTransformation = visualTransformation,
@@ -1269,11 +1260,11 @@ fun AppOutlinedTextField(
                     .padding(horizontal = AppTheme.spacing.level1),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
-                if (isError)
-                    CaptionTexts.Level3(errorMessage)
+                if (isError) CaptionTexts.Level3(errorMessage)
 
                 CaptionTexts.Level3(text = stringCounter)
             }
-        }
+        },
+        placeholder = placeholder
     )
 }

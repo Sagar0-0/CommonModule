@@ -5,17 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.OutlinedTextField
 import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -28,7 +22,6 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalTextInputService
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import fit.asta.ccp.R
@@ -39,6 +32,11 @@ import fit.asta.ccp.data.utils.getLibCountries
 import fit.asta.ccp.data.utils.getNumberHint
 import fit.asta.ccp.transformation.PhoneNumberTransformation
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 private var fullNumberState: String by mutableStateOf("")
 private var checkNumberState: Boolean by mutableStateOf(false)
@@ -50,7 +48,7 @@ fun CountryCodePicker(
     modifier: Modifier = Modifier,
     text: String,
     onValueChange: (String) -> Unit,
-    shape: Shape = RoundedCornerShape(24.dp),
+    shape: Shape = AppTheme.shape.level3,
     color: Color = AppTheme.colors.background,
     showCountryCode: Boolean = true,
     showCountryFlag: Boolean = true,
@@ -80,8 +78,8 @@ fun CountryCodePicker(
     countryCodeState = defaultLang
 
 
-    Surface(color = color) {
-        Column(modifier = Modifier.padding(horizontal = 16.dp, vertical = 16.dp)) {
+    AppSurface(color = color) {
+        Column(modifier = Modifier.padding(all = AppTheme.spacing.level2)) {
             if (bottomStyle) {
                 CCPDialog(
                     pickedCountry = {
@@ -98,7 +96,8 @@ fun CountryCodePicker(
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.Center
             ) {
-                OutlinedTextField(modifier = modifier.fillMaxWidth(),
+
+                AppOutlinedTextField(modifier = modifier.fillMaxWidth(),
                     shape = shape,
                     value = textFieldValue,
                     onValueChange = {
@@ -114,7 +113,15 @@ fun CountryCodePicker(
                         unfocusedBorderColor = if (getErrorStatus()) Color.Red else unfocusedBorderColor,
                     ),
                     visualTransformation = PhoneNumberTransformation(getLibCountries.single { it.countryCode == defaultLang }.countryCode.uppercase()),
-                    placeholder = { Text(text = stringResource(id = getNumberHint(getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase()))) },
+                    placeholder = {
+                        BodyTexts.Level3(
+                            text = stringResource(
+                                id = getNumberHint(
+                                    getLibCountries.single { it.countryCode == defaultLang }.countryCode.lowercase()
+                                )
+                            )
+                        )
+                    },
                     keyboardOptions = KeyboardOptions.Default.copy(
                         keyboardType = KeyboardType.NumberPassword,
                         autoCorrect = true,
@@ -138,23 +145,17 @@ fun CountryCodePicker(
                         }
                     },
                     trailingIcon = {
-                        IconButton(onClick = {
-                            textFieldValue = ""
-                            onValueChange("")
-                        }) {
-                            Icon(
-                                imageVector = Icons.Filled.Clear,
-                                contentDescription = "Clear",
-                                tint = if (getErrorStatus()) Color.Red else AppTheme.colors.onSurface
-                            )
-                        }
+                        AppIconButton(imageVector = Icons.Filled.Clear,
+                            iconTint = if (getErrorStatus()) Color.Red else AppTheme.colors.onSurface,
+                            onClick = {
+                                textFieldValue = ""
+                                onValueChange("")
+                            })
                     })
             }
-            if (getErrorStatus()) Text(
+            if (getErrorStatus()) CaptionTexts.Level2(
                 text = stringResource(id = R.string.invalid_number),
                 color = AppTheme.colors.error,
-                style = AppTheme.customTypography.caption.level2,
-                fontWeight = FontWeight.Bold,
                 modifier = Modifier.padding(top = 0.8.dp)
             )
         }

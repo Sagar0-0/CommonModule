@@ -1,23 +1,30 @@
 package fit.asta.ccp.ui
 
 import android.content.Context
-import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.RoundedCornerShape
-import androidx.compose.foundation.text.BasicTextField
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Icon
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.Scaffold
-import androidx.compose.material3.Surface
-import androidx.compose.material3.Text
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -26,20 +33,23 @@ import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.font.FontFamily
-import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
-import androidx.compose.ui.unit.sp
-import androidx.compose.ui.window.Dialog
 import fit.asta.ccp.R
-import fit.asta.ccp.data.utils.getCountryName
-import fit.asta.ccp.data.utils.getLibCountries
 import fit.asta.ccp.data.CountryData
+import fit.asta.ccp.data.utils.getCountryName
 import fit.asta.ccp.data.utils.getFlags
+import fit.asta.ccp.data.utils.getLibCountries
 import fit.asta.ccp.utils.searchCountry
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.dialog.AppDialog
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.textfield.AppBasicTextField
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 @Composable
 fun CCPDialog(
@@ -73,33 +83,24 @@ fun CCPDialog(
             verticalAlignment = Alignment.CenterVertically
         ) {
             if (showFlag) {
-                Image(
-                    modifier = modifier.width(34.dp), painter = painterResource(
-                        id = getFlags(
-                            isPickCountry.countryCode
-                        )
-                    ), contentDescription = null
+                AppLocalImage(
+                    modifier = modifier.width(AppTheme.imageSize.level4),
+                    painter = painterResource(id = getFlags(isPickCountry.countryCode))
                 )
             }
             if (showCountryCode) {
-                Text(
+                BodyTexts.Level1(
                     text = isPickCountry.countryPhoneCode,
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = AppTheme.colors.onSurface
+                    modifier = Modifier.padding(start = AppTheme.spacing.level1)
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                AppIcon(imageVector = Icons.Default.ArrowDropDown)
             }
             if (showCountryName) {
-                Text(
+                BodyTexts.Level1(
                     text = stringResource(id = getCountryName(isPickCountry.countryCode.lowercase())),
-                    fontWeight = FontWeight.Bold,
-                    modifier = Modifier.padding(start = 6.dp),
-                    fontSize = 18.sp,
-                    color = AppTheme.colors.onSurface
+                    modifier = Modifier.padding(start = AppTheme.spacing.level1)
                 )
-                Icon(imageVector = Icons.Default.ArrowDropDown, contentDescription = null)
+                AppIcon(imageVector = Icons.Default.ArrowDropDown)
             }
         }
 
@@ -128,75 +129,63 @@ fun CountryDialog(
     dialogStatus: Boolean,
 ) {
     var searchValue by remember { mutableStateOf("") }
+
     if (!dialogStatus) searchValue = ""
 
-    Dialog(
-        onDismissRequest = onDismissRequest,
-        content = {
-            Surface(
-                color = AppTheme.colors.onSurface,
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .clip(RoundedCornerShape(25.dp))
-            ) {
-                Scaffold { scaffold ->
-                    scaffold.calculateBottomPadding()
-                    Column(modifier = Modifier.fillMaxSize()) {
-                        SearchTextField(
-                            value = searchValue, onValueChange = { searchValue = it },
-                            textColor = AppTheme.colors.onSurface,
-                            fontSize = 16.sp,
-                            leadingIcon = {
-                                Icon(
-                                    imageVector = Icons.Filled.Search,
-                                    contentDescription = "Search",
-                                    tint = AppTheme.colors.onSurface,
-                                    modifier = Modifier.padding(horizontal = 3.dp)
-                                )
-                            },
-                            modifier = Modifier
-                                .clip(RoundedCornerShape(50))
-                                .height(40.dp),
-                        )
-                        Spacer(modifier = Modifier.height(10.dp))
+    AppDialog(onDismissRequest = onDismissRequest, content = {
+        AppSurface(
+            modifier = Modifier
+                .fillMaxWidth()
+                .clip(AppTheme.shape.level3)
+        ) {
+            AppScaffold { scaffold ->
+                scaffold.calculateBottomPadding()
+                Column(modifier = Modifier.fillMaxSize()) {
+                    SearchTextField(
+                        value = searchValue, onValueChange = { searchValue = it },
+                        textColor = AppTheme.colors.onSurface,
+                        leadingIcon = {
+                            AppIcon(
+                                imageVector = Icons.Filled.Search,
+                                contentDescription = "Search",
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level0)
+                            )
+                        },
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(50))
+                            .height(AppTheme.spacing.level5),
+                    )
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
-                        LazyColumn {
-                            items(
-                                if (searchValue.isEmpty()) countryList else countryList.searchCountry(
-                                    searchValue, context
+                    LazyColumn {
+                        items(
+                            if (searchValue.isEmpty()) countryList else countryList.searchCountry(
+                                searchValue, context
+                            )
+                        ) { countryItem ->
+                            Row(
+                                Modifier
+                                    .padding(AppTheme.spacing.level2)
+                                    .fillMaxWidth()
+                                    .clickable(onClick = { onSelected(countryItem) }),
+                                horizontalArrangement = Arrangement.Start,
+                                verticalAlignment = Alignment.CenterVertically
+                            ) {
+                                AppLocalImage(
+                                    modifier = modifier.width(AppTheme.spacing.level4),
+                                    painter = painterResource(id = getFlags(countryItem.countryCode))
                                 )
-                            ) { countryItem ->
-                                Row(
-                                    Modifier
-                                        .padding(18.dp)
-                                        .fillMaxWidth()
-                                        .clickable(onClick = { onSelected(countryItem) }),
-                                    horizontalArrangement = Arrangement.Start,
-                                    verticalAlignment = Alignment.CenterVertically
-                                ) {
-                                    Image(
-                                        modifier = modifier.width(30.dp), painter = painterResource(
-                                            id = getFlags(
-                                                countryItem.countryCode
-                                            )
-                                        ), contentDescription = null
-                                    )
-                                    Text(
-                                        stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
-                                        Modifier.padding(horizontal = 18.dp),
-                                        fontSize = 14.sp,
-                                        fontFamily = FontFamily.Serif,
-                                    )
-                                }
+                                BodyTexts.Level2(
+                                    text = stringResource(id = getCountryName(countryItem.countryCode.lowercase())),
+                                    Modifier.padding(horizontal = AppTheme.spacing.level2),
+                                )
                             }
                         }
                     }
-
                 }
-
             }
-        },
-    )
+        }
+    })
 }
 
 
@@ -206,14 +195,15 @@ private fun SearchTextField(
     leadingIcon: (@Composable () -> Unit)? = null,
     trailingIcon: (@Composable () -> Unit)? = null,
     value: String,
-    textColor: Color = Color.Black,
+    textColor: Color = AppTheme.colors.onSurface,
     onValueChange: (String) -> Unit,
     hint: String = stringResource(id = R.string.search),
     fontSize: TextUnit = AppTheme.customTypography.body.level2.fontSize,
 ) {
-    BasicTextField(modifier = modifier
+
+    AppBasicTextField(modifier = modifier
         .fillMaxWidth()
-        .padding(horizontal = 18.dp),
+        .padding(horizontal = AppTheme.spacing.level2),
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
@@ -227,11 +217,7 @@ private fun SearchTextField(
             ) {
                 if (leadingIcon != null) leadingIcon()
                 Box(Modifier.weight(1f)) {
-                    if (value.isEmpty()) Text(
-                        hint, style = LocalTextStyle.current.copy(
-                            color = textColor, fontSize = fontSize
-                        )
-                    )
+                    if (value.isEmpty()) BodyTexts.Level3(text = hint, color = textColor)
                     innerTextField()
                 }
                 if (trailingIcon != null) trailingIcon()

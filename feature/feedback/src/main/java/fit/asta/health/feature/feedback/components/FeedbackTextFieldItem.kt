@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 fun FeedbackTextFieldItem(
     qn: Qn,
     updatedAns: (An) -> Unit,
-    isValid: (Boolean) -> Unit
+    isValid: (Boolean) -> Unit,
 ) {
 
     val text = rememberSaveable { mutableStateOf("") }
@@ -60,49 +60,44 @@ fun FeedbackTextFieldItem(
 
                 3, 5 -> {
                     qn.opts?.let {
-                        McqCard(
-                            list = it,
-                            updatedAns = { ans ->
-                                opts.value = listOf(ans)
-                                updatedAns(
-                                    An(
-                                        dtlAns = text.value,
-                                        media = null,
-                                        opts = opts.value,
-                                        qid = qn.qno,
-                                        type = qn.type
-                                    )
+                        McqCard(list = it, updatedAns = { ans ->
+                            opts.value = listOf(ans)
+                            updatedAns(
+                                An(
+                                    dtlAns = text.value,
+                                    media = null,
+                                    opts = opts.value,
+                                    qid = qn.qno,
+                                    type = qn.type
                                 )
-                            }
-                        )
+                            )
+                        })
                     }
                 }
             }
 
             // This is the Outlined Text Field for the user to give their Feedbacks
-            AppOutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+            AppOutlinedTextField(modifier = Modifier.fillMaxWidth(),
                 value = text.value,
                 appTextFieldType = AppTextFieldValidator(
                     AppTextFieldType.Custom(
-                        qn.ansType.min,
-                        maxChar
+                        qn.ansType.min, maxChar
                     )
                 ),
                 isValidText = isValid,
-                minLines = 4
-            ) {
-                text.value = it
-                updatedAns(
-                    An(
-                        dtlAns = text.value,
-                        media = null,
-                        opts = opts.value,
-                        qid = qn.qno,
-                        type = qn.type
+                minLines = 4,
+                onValueChange = { it ->
+                    text.value = it
+                    updatedAns(
+                        An(
+                            dtlAns = text.value,
+                            media = null,
+                            opts = opts.value,
+                            qid = qn.qno,
+                            type = qn.type
+                        )
                     )
-                )
-            }
+                })
         }
     }
 }
