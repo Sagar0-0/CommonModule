@@ -14,7 +14,6 @@ import com.smarttoolfactory.ratingbar.RatingBar
 import com.smarttoolfactory.ratingbar.model.GestureStrategy
 import com.smarttoolfactory.ratingbar.model.RateChangeStrategy
 import com.smarttoolfactory.ratingbar.model.RatingInterval
-import com.smarttoolfactory.ratingbar.model.ShimmerEffect
 import fit.asta.health.core.designsystem.R
 import fit.asta.health.designsystem.AppTheme
 
@@ -51,9 +50,6 @@ private fun DefaultPreview1() {
  * @param tintEmpty color for background and foreground items
  * @param itemSize size of the rating item to be displayed. This is intrinsic size of image
  * or vector file by default
- * @param rateChangeStrategy whether rating change should happen instantly or with an animation
- * @param gestureStrategy drag and touch, touch only or no gesture is used to change rating
- * @param shimmerEffect shimmer effect for having a glow
  * @param itemCount maximum number of items
  * @param space space between rating items in dp
  * [RatingInterval.Half] returns multiples of 0.5, and [RatingInterval.Unconstrained] returns
@@ -73,12 +69,8 @@ fun AppRatingBar(
     tintEmpty: Color = AppTheme.colors.primary,
     tintFilled: Color = AppTheme.colors.primary,
     itemSize: Dp = Dp.Unspecified,
-    rateChangeStrategy: RateChangeStrategy = RateChangeStrategy.AnimatedChange(),
-    gestureStrategy: GestureStrategy = GestureStrategy.DragAndPress,
-    shimmerEffect: ShimmerEffect? = null,
     itemCount: Int = 5,
     space: Dp = AppTheme.spacing.level1,
-    ratingInterval: RatingInterval = RatingInterval.Full,
     allowZeroRating: Boolean = true,
     onRatingChangeFinished: ((Float) -> Unit)? = null,
     onRatingChange: (Float) -> Unit
@@ -93,11 +85,11 @@ fun AppRatingBar(
         tintFilled = tintFilled,
         itemCount = itemCount,
         itemSize = itemSize,
-        gestureStrategy = gestureStrategy,
-        rateChangeStrategy = rateChangeStrategy,
-        shimmerEffect = shimmerEffect,
+        gestureStrategy = GestureStrategy.DragAndPress,
+        rateChangeStrategy = RateChangeStrategy.AnimatedChange(),
+        shimmerEffect = null,
         space = space,
-        ratingInterval = ratingInterval,
+        ratingInterval = RatingInterval.Full,
         allowZeroRating = allowZeroRating,
         onRatingChangeFinished = onRatingChangeFinished
     )
