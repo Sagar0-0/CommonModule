@@ -1,132 +1,166 @@
 package fit.asta.health.designsystem.molecular
 
 import android.net.Uri
-import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.CloudUpload
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun UploadFiles(modifier: Modifier = Modifier, updatedUriList: (List<Uri>) -> Unit) {
-    val uriList = remember {
-        mutableStateListOf<Uri>()
-    }
+fun UploadFiles(
+    modifier: Modifier = Modifier,
+    uriList: List<Uri>,
+    isValid: Boolean,
+    uploadLimit: Int,
+    onItemAdded: (List<Uri>) -> Unit,
+    onItemDeleted: (Uri) -> Unit
+//    updatedUriList: (List<Uri>) -> Unit,
+) {
+
     val context = LocalContext.current
-    Column(modifier = modifier) {
-        val resultLauncher =
-            rememberLauncherForActivityResult(contract = ActivityResultContracts.GetMultipleContents()) { list ->
-                if (list.size > 5) {
-                    Toast.makeText(
-                        context, "You can upload maximum 5 files.", Toast.LENGTH_SHORT
-                    ).show()
-                } else {
-                    uriList.addAll(list)
-                    updatedUriList(list.toSet().toList())
-                }
-            }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+    // List Of Files Uploaded from the memory
+//    val uriList = remember { mutableStateListOf<Uri>() }
 
-        Box(
-            modifier = Modifier.dashedBorder(
-                width = 1.dp,
-                radius = AppTheme.customSize.level1,
-                color = MaterialTheme.colorScheme.onSurfaceVariant
-            )
+    // Validity Check
+//    var isValid by remember { mutableStateOf(true) }
+
+    // This code would be executed when the File is selected from the memory
+    val resultLauncher = rememberLauncherForActivityResult(
+        contract = ActivityResultContracts.GetMultipleContents()
+    ) { list ->
+        onItemAdded(list)
+//
+//        uriList.addAll(list)
+//
+//        if (uriList.size > 5) {
+//            isValid = false
+//            onValidityChange(false)
+//        }
+//
+//        updatedUriList(list.toSet().toList())
+    }
+
+    // Parent Composable
+    Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)) {
+
+        // All The Uploaded Uris are here with the upload Button with them
+        Row(
+            modifier
+                .fillMaxWidth()
+                .dashedBorder(
+                    width = 1.dp,
+                    radius = AppTheme.customSize.level1,
+                    color = if (isValid)
+                        AppTheme.colors.onBackground
+                    else
+                        AppTheme.colors.error
+                )
+                .clip(AppTheme.shape.level1)
+                .padding(AppTheme.spacing.level1),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(
-                        horizontal = AppTheme.spacing.level1,
-                        vertical = AppTheme.spacing.level2
-                    ),
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                if (uriList.isEmpty()) {
-                    Text(
-                        text = "Upload Files",
-                        color = MaterialTheme.colorScheme.onSurfaceVariant,
-                        style = MaterialTheme.typography.bodyMedium
-                    )
-                } else {
-                    Column(modifier = Modifier.fillMaxWidth(0.8f)) {
-                        uriList.forEach {
-                            Row(
-                                modifier = Modifier
-                                    .padding(AppTheme.spacing.level4)
-                                    .clip(AppTheme.shape.level1)
-                                    .border(
-                                        width = 0.4.dp,
-                                        color = MaterialTheme.colorScheme.onBackground,
-                                        shape = AppTheme.shape.level0
-                                    )
-                                    .background(MaterialTheme.colorScheme.background)
-                                    .padding(AppTheme.spacing.level2),
-                                verticalAlignment = Alignment.CenterVertically
-                            ) {
-                                TitleTexts.Level2(
-                                    modifier = Modifier.fillMaxWidth(0.7f),
-                                    text = DocumentFile.fromSingleUri(context, it)?.name ?: "",
-                                    maxLines = 1,
-                                    overflow = TextOverflow.Ellipsis
+
+            // Upload Files Text to let the user know that they need to upload
+            if (uriList.isEmpty())
+                BodyTexts.Level2(
+                    modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                    text = "Upload Files"
+                )
+            else {
+
+                // This contains all the URIs uploaded by the User
+                FlowRow(
+                    modifier = Modifier.padding(AppTheme.spacing.level1),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                ) {
+                    uriList.forEach {
+
+                        // Bordered Box for containing the URI and the delete button
+                        Box(
+                            modifier = Modifier
+                                .border(
+                                    width = 0.5.dp,
+                                    color = AppTheme.colors.onSurfaceVariant,
+                                    shape = AppTheme.shape.level0
                                 )
-                                Spacer(modifier = Modifier.width(1.dp))
+                                .clip(AppTheme.shape.level1),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            Row(
+                                modifier = Modifier.padding(AppTheme.spacing.level1),
+                                verticalAlignment = Alignment.CenterVertically,
+                                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                            ) {
+
+                                // URI Text
+                                CaptionTexts.Level3(
+                                    text = DocumentFile.fromSingleUri(context, it)?.name ?: "",
+                                    maxLines = 1
+                                )
+
+                                // Delete Button
                                 AppIconButton(
                                     imageVector = Icons.Default.Close,
+                                    iconDesc = "Delete Icon Button",
                                     modifier = Modifier.size(AppTheme.iconSize.level3)
-                                ) { uriList.remove(it) }
+                                ) {
+//                                    uriList.remove(it)
+//                                    if (uriList.size <= 5) {
+//                                        isValid = true
+//                                        onValidityChange(true)
+//                                    }
+
+                                    onItemDeleted(it)
+                                }
                             }
                         }
                     }
                 }
-
-                AppIconButton(
-                    imageVector = Icons.Rounded.CloudUpload,
-                    enabled = uriList.size < 5,
-                ) {
-                    resultLauncher.launch("*/*")
-                }
             }
+
+            // Upload Button
+            AppIconButton(
+                imageVector = Icons.Rounded.CloudUpload,
+                iconDesc = "Upload Icon Button",
+                iconTint = if (isValid)
+                    AppTheme.colors.primary
+                else
+                    AppTheme.colors.error
+            ) { resultLauncher.launch("*/*") }
         }
 
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-        TitleTexts.Level3(
-            text = "You can upload maximum 5 files*",
-            color = Color.Black
-        )
+        // Error Text to be shown when the User crosses the Amount of Files he can Select
+        if (!isValid)
+            BodyTexts.Level3(
+                text = "You cannot upload more than $uploadLimit files",
+                color = AppTheme.colors.error
+            )
     }
 }
