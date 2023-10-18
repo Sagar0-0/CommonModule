@@ -15,6 +15,7 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.auth.screens.AuthScreen
@@ -56,7 +57,7 @@ fun NavGraphBuilder.authRoute(
         when (isProfileAvailable) {
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
-                    if ((isProfileAvailable as UiState.Success<Boolean>).data) {
+                    if ((isProfileAvailable as UiState.Success<UserProfileAvailableResponse>).data.flag) {
                         Toast.makeText(context, "Welcome back!", Toast.LENGTH_SHORT).show()
                         authViewModel.navigateToHome()
                     } else {

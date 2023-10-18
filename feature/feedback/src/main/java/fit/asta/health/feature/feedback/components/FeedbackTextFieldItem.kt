@@ -5,9 +5,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.Qn
@@ -21,12 +18,10 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun FeedbackTextFieldItem(
     qn: Qn,
+    ans: An,
     updatedAns: (An) -> Unit,
     isValid: (Boolean) -> Unit,
 ) {
-
-    val text = rememberSaveable { mutableStateOf("") }
-    val opts = remember { mutableStateOf(qn.opts) }
     val maxChar = qn.ansType.max
 
     AppElevatedCard(modifier = Modifier.fillMaxWidth()) {
@@ -42,43 +37,37 @@ fun FeedbackTextFieldItem(
 
             // This is either the Rating Stars or the Radio Buttons
             when (qn.type) {
-
                 2 -> {
-                    Rating {
-                        opts.value = listOf(it.toString())
+                    Rating(
+                        if (ans.opts[0].toIntOrNull() == null) {
+                            updatedAns(ans.copy(opts = listOf("0")))
+                            0
+                        } else {
+                            ans.opts[0].toInt()
+                        }
+                    ) {
                         updatedAns(
-                            An(
-                                dtlAns = text.value,
-                                media = null,
-                                opts = opts.value,
-                                qid = qn.qno,
-                                type = qn.type
-                            )
+                            ans.copy(opts = listOf(it.toString()))
                         )
                     }
                 }
 
                 3, 5 -> {
-                    qn.opts?.let {
-                        McqCard(list = it, updatedAns = { ans ->
-                            opts.value = listOf(ans)
+                    McqCard(
+                        ans = ans.opts[0],
+                        list = qn.opts,
+                        updatedAns = { newAns ->
                             updatedAns(
-                                An(
-                                    dtlAns = text.value,
-                                    media = null,
-                                    opts = opts.value,
-                                    qid = qn.qno,
-                                    type = qn.type
-                                )
+                                ans.copy(opts = listOf(newAns))
                             )
-                        })
-                    }
+                        }
+                    )
                 }
             }
 
             // This is the Outlined Text Field for the user to give their Feedbacks
             AppOutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = text.value,
+                value = ans.dtlAns,
                 appTextFieldType = AppTextFieldValidator(
                     AppTextFieldType.Custom(
                         qn.ansType.min, maxChar
@@ -86,18 +75,12 @@ fun FeedbackTextFieldItem(
                 ),
                 isValidText = isValid,
                 minLines = 4,
-                onValueChange = { it ->
-                    text.value = it
+                onValueChange = { newText ->
                     updatedAns(
-                        An(
-                            dtlAns = text.value,
-                            media = null,
-                            opts = opts.value,
-                            qid = qn.qno,
-                            type = qn.type
-                        )
+                        ans.copy(dtlAns = newText)
                     )
-                })
+                }
+            )
         }
     }
 }

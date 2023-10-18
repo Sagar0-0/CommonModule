@@ -3,12 +3,14 @@ package fit.asta.health.data.profile.repo
 import android.content.ContentResolver
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.HealthPropertiesRes
 import fit.asta.health.data.profile.remote.model.UserProfile
+import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.network.data.ApiResponse
@@ -35,10 +37,10 @@ class ProfileRepoImpl
         prefManager.setScreenCode(ScreenCode.Home.code)
     }
 
-    override suspend fun isUserProfileAvailable(userId: String): ResponseState<Boolean> {
+    override suspend fun isUserProfileAvailable(userId: String): ResponseState<UserProfileAvailableResponse> {
         return withContext(coroutineDispatcher) {
-            getResponseState {
-                profileApi.isUserProfileAvailable(userId).flag
+            getApiResponseState {
+                profileApi.isUserProfileAvailable(userId)
             }
         }
     }

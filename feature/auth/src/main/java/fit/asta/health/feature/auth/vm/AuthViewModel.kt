@@ -16,6 +16,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
+import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -37,7 +38,8 @@ internal class AuthViewModel
     @UID private val uid: String
 ) : ViewModel() {
 
-    private val _isProfileAvailable = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _isProfileAvailable =
+        MutableStateFlow<UiState<UserProfileAvailableResponse>>(UiState.Idle)
     val isProfileAvailable = _isProfileAvailable.asStateFlow()
 
     private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)

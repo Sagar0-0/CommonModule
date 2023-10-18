@@ -22,11 +22,12 @@ data class UserFeedbackDTO(
 @Parcelize
 data class An(
     @SerializedName("dtlAns")
-    val dtlAns: String? = null,
+    val dtlAns: String = "",
     @SerializedName("media")
-    val media: List<Media>? = null,
+    val media: List<Media> = emptyList(),
+    val mediaUri: Set<Uri> = emptySet(),
     @SerializedName("opts")
-    val opts: List<String>? = null,
+    val opts: List<String> = listOf(""),
     @SerializedName("qid")
     val qid: Int = 0,
     @SerializedName("type")

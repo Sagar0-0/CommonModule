@@ -38,31 +38,15 @@ fun UploadFiles(
     uploadLimit: Int,
     onItemAdded: (List<Uri>) -> Unit,
     onItemDeleted: (Uri) -> Unit
-//    updatedUriList: (List<Uri>) -> Unit,
 ) {
 
     val context = LocalContext.current
-
-    // List Of Files Uploaded from the memory
-//    val uriList = remember { mutableStateListOf<Uri>() }
-
-    // Validity Check
-//    var isValid by remember { mutableStateOf(true) }
 
     // This code would be executed when the File is selected from the memory
     val resultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { list ->
         onItemAdded(list)
-//
-//        uriList.addAll(list)
-//
-//        if (uriList.size > 5) {
-//            isValid = false
-//            onValidityChange(false)
-//        }
-//
-//        updatedUriList(list.toSet().toList())
     }
 
     // Parent Composable
@@ -131,12 +115,6 @@ fun UploadFiles(
                                     iconDesc = "Delete Icon Button",
                                     modifier = Modifier.size(AppTheme.iconSize.level3)
                                 ) {
-//                                    uriList.remove(it)
-//                                    if (uriList.size <= 5) {
-//                                        isValid = true
-//                                        onValidityChange(true)
-//                                    }
-
                                     onItemDeleted(it)
                                 }
                             }

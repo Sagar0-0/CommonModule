@@ -6,7 +6,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.UserProfileAvailable
+import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.repo.ProfileRepoImpl
 import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
@@ -69,7 +69,7 @@ class BasicProfileApiTest {
 
     @Test
     fun `isUserProfileAvailable, returns Success`() = runTest {
-        val dto = UserProfileAvailable()
+        val dto = UserProfileAvailableResponse()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)

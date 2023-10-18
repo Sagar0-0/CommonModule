@@ -5,7 +5,6 @@ import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.UserProfileAvailable
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
 import io.mockk.Runs
@@ -53,7 +52,7 @@ class ProfileRepoImplTest {
 
     @Test
     fun `isProfileAvailable, returns Success`() = runTest {
-        coEvery { api.isUserProfileAvailable(any()) } returns UserProfileAvailable()
+        coEvery { api.isUserProfileAvailable(any()) } returns mockk()
         val response = repo.isUserProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
         assert(response is ResponseState.Success)

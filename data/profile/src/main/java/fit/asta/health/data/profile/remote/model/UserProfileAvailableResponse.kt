@@ -1,9 +1,7 @@
 package fit.asta.health.data.profile.remote.model
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.network.data.Status
 
-data class UserProfileAvailable(
-    @SerializedName("status") val status: Status = Status(),
+data class UserProfileAvailableResponse(
     @SerializedName("flag") val flag: Boolean = false
 )

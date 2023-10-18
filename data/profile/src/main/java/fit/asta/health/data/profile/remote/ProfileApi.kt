@@ -1,11 +1,12 @@
 package fit.asta.health.data.profile.remote
 
+import fit.asta.health.common.utils.Response
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.HealthPropertiesRes
 import fit.asta.health.data.profile.remote.model.UserProfile
-import fit.asta.health.data.profile.remote.model.UserProfileAvailable
+import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileRes
 import fit.asta.health.network.data.Status
 import okhttp3.MultipartBody
@@ -22,7 +23,7 @@ interface ProfileApi {
     suspend fun checkReferralCode(@Query("refCode") refCode: String): CheckReferralDTO
 
     @GET("userProfile/get/isUserProfileAvailable/?")
-    suspend fun isUserProfileAvailable(@Query("uid") userId: String): UserProfileAvailable
+    suspend fun isUserProfileAvailable(@Query("uid") userId: String): Response<UserProfileAvailableResponse>
 
     @Multipart
     @POST("userProfile/basic/post")

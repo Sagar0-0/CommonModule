@@ -52,7 +52,7 @@ suspend fun <T> getApiResponseState(
                 }
             }
 
-            else -> {//TODO: Define all cases for ErrorMessage and ErrorRetry
+            else -> {
                 errorHandler.fetchStatusMessage(response.status.code)
             }
         }

@@ -21,7 +21,7 @@ data class FeedbackQuesDTO(
 @Parcelize
 data class Qn(
     @SerializedName("opts")
-    val opts: List<String>?,
+    val opts: List<String> = listOf(),
     @SerializedName("qn")
     val qn: String,
     @SerializedName("qno")

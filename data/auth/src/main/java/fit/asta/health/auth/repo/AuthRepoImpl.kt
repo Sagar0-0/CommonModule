@@ -13,6 +13,7 @@ import fit.asta.health.auth.fcm.remote.TokenResponse
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.remote.AuthApi
+import fit.asta.health.auth.remote.DeleteAccountResponse
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
@@ -153,59 +154,54 @@ class AuthRepoImpl @Inject constructor(
                 val currentUser = firebaseAuth.currentUser
                 currentUser?.let {
                     try {
-                        val res = authApi.deleteAccount(it.uid)
-                        val success = res.flag && res.status.code == 200
-                        if (success) {
-                            if (currentUser.providerData[1].providerId == "phone") {
-                                currentUser.delete()
-                                    .addOnCompleteListener { deleteTask ->
-                                        if (deleteTask.isSuccessful) {
-                                            trySend(ResponseState.Success(true))
-                                        } else {
-                                            trySend(
-                                                ResponseState.ErrorMessage(R.string.delete_account_failed)
-                                            )
-                                            Log.d("DeleteAccount", deleteTask.exception?.message!!)
-                                        }
+                        if (currentUser.providerData[1].providerId == "phone") {
+                            currentUser.delete()
+                                .addOnCompleteListener { deleteTask ->
+                                    if (deleteTask.isSuccessful) {
+                                        trySend(ResponseState.Success(true))
+                                    } else {
+                                        trySend(
+                                            ResponseState.ErrorMessage(R.string.delete_account_failed)
+                                        )
+                                        Log.d("DeleteAccount", deleteTask.exception?.message!!)
                                     }
-                            } else {
-                                val fireBaseContext = firebaseAuth.app.applicationContext
-                                val googleAccount =
-                                    GoogleSignIn.getLastSignedInAccount(fireBaseContext)
-                                val credential: AuthCredential =
-                                    GoogleAuthProvider.getCredential(googleAccount?.idToken, null)
-                                reAuthenticateUser(credential)
-                                    .addOnCompleteListener { reAuthTask ->
-                                        if (reAuthTask.isSuccessful) {
-                                            googleSignInClient.signOut()
-                                            currentUser.delete()
-                                                .addOnCompleteListener { deleteTask ->
-                                                    if (deleteTask.isSuccessful) {
-                                                        trySend(ResponseState.Success(true))
-                                                    } else {
-                                                        trySend(
-                                                            ResponseState.ErrorMessage(
-                                                                R.string.delete_account_failed
-                                                            )
-                                                        )
-                                                        Log.d(
-                                                            "DeleteAccount",
-                                                            deleteTask.exception?.message!!
-                                                        )
-                                                    }
-                                                }
-                                        } else { //Handle the exception
-                                            trySend(
-                                                ResponseState.ErrorMessage(
-                                                    R.string.delete_account_failed
-                                                )
-                                            )
-                                        }
-                                    }
-                            }
+                                }
                         } else {
-                            trySend(ResponseState.ErrorMessage(R.string.delete_account_failed))
+                            val fireBaseContext = firebaseAuth.app.applicationContext
+                            val googleAccount =
+                                GoogleSignIn.getLastSignedInAccount(fireBaseContext)
+                            val credential: AuthCredential =
+                                GoogleAuthProvider.getCredential(googleAccount?.idToken, null)
+                            reAuthenticateUser(credential)
+                                .addOnCompleteListener { reAuthTask ->
+                                    if (reAuthTask.isSuccessful) {
+                                        googleSignInClient.signOut()
+                                        currentUser.delete()
+                                            .addOnCompleteListener { deleteTask ->
+                                                if (deleteTask.isSuccessful) {
+                                                    trySend(ResponseState.Success(true))
+                                                } else {
+                                                    trySend(
+                                                        ResponseState.ErrorMessage(
+                                                            R.string.delete_account_failed
+                                                        )
+                                                    )
+                                                    Log.d(
+                                                        "DeleteAccount",
+                                                        deleteTask.exception?.message!!
+                                                    )
+                                                }
+                                            }
+                                    } else { //Handle the exception
+                                        trySend(
+                                            ResponseState.ErrorMessage(
+                                                R.string.delete_account_failed
+                                            )
+                                        )
+                                    }
+                                }
                         }
+                        deleteServerAccount(it.uid)
                     } catch (e: Exception) {
                         trySend(ResponseState.ErrorMessage(R.string.delete_account_failed))
                     }
@@ -214,6 +210,9 @@ class AuthRepoImpl @Inject constructor(
             }
         }
 
+    private suspend fun deleteServerAccount(uid: String): ResponseState<DeleteAccountResponse> {
+        return getApiResponseState { authApi.deleteAccount(uid) }
+    }
 
     private fun reAuthenticateUser(credential: AuthCredential) =
         firebaseAuth.currentUser!!.reauthenticate(credential)

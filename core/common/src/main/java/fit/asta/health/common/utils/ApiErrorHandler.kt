@@ -31,11 +31,11 @@ open class ApiErrorHandler {
 
                 304 -> {
                     R.string.failed_to_update
-            }
+                }
 
-            404 -> {
-                R.string.no_records_found
-            }
+                404 -> {
+                    R.string.no_records_found
+                }
 
                 413 -> {
                     R.string.file_not_found

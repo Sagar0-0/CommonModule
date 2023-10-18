@@ -19,10 +19,12 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.feedback.remote.modal.An
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
+import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.data.feedback.remote.modal.Qn
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
@@ -90,47 +92,47 @@ fun SessionFeedback(
     }
 }
 
-@Composable
-fun FeedbackQuesItem(qn: Qn, updatedAns: (An) -> Unit, isValid: (Boolean) -> Unit) {
-    val context = LocalContext.current
-    if (qn.type == 1) {
+const val UPLOAD_LIMIT = 5
 
+@Composable
+fun FeedbackQuesItem(
+    qn: Qn,
+    ans: An,
+    isValid: Boolean,
+    updatedAns: (An) -> Unit,
+    onValidityChange: (Boolean) -> Unit
+) {
+    if (qn.type == 1) {
         UploadFiles(
             modifier = Modifier.fillMaxWidth(),
-//            updatedUriList = {
-//                val medias = it.map { uri ->
-//                    Media(
-//                        name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
-//                        url = "",
-//                        localUri = uri
-//                    )
-//                }
-//                isValid(!(qn.isMandatory && medias.isEmpty()))
-//                updatedAns(
-//                    An(
-//                        dtlAns = null,
-//                        media = medias,
-//                        opts = qn.opts,
-//                        qid = qn.qno,
-//                        type = qn.type
-//                    )
-//                )
-//            },
-            uriList = listOf(), // TODO :- Add the URI list of the uploaded Files
-            isValid = false, // TODO :- IsValid Variable needs to be made and should be checked everyTime we add or delete from the URI List
-            uploadLimit = 5, // TODO :- To be added from the Backend as said by Sir
+            uriList = ans.mediaUri.toList(),
+            isValid = isValid,
+            uploadLimit = UPLOAD_LIMIT, // TODO :- To be added from the Backend as said by Sir
             onItemAdded = {
-                // TODO :- Add URI Item and Check the isValid boolean which decide the error Text
+                val newSet = ans.mediaUri.plus(it)
+                if (qn.isMandatory && newSet.isEmpty()) {
+                    onValidityChange(false)
+                } else {
+                    onValidityChange(newSet.size <= UPLOAD_LIMIT)
+                }
+                updatedAns(ans.copy(mediaUri = newSet))
             },
-            onItemDeleted = {
-                // TODO :- Delete URI Item and Check the isValid boolean which decide the error Text
+            onItemDeleted = { uri ->
+                val newSet = ans.mediaUri.minus(uri)
+                updatedAns(ans.copy(mediaUri = newSet))
+                if (qn.isMandatory && newSet.isEmpty()) {
+                    onValidityChange(false)
+                } else {
+                    onValidityChange(true)
+                }
             }
         )
     } else {
         FeedbackTextFieldItem(
             qn = qn,
+            ans = ans,
             updatedAns = updatedAns,
-            isValid = isValid
+            isValid = onValidityChange
         )
     }
 }
@@ -142,8 +144,8 @@ private fun FeedbackSuccessScreen(
     onSubmit: (ans: List<An>) -> Unit
 ) {
     val qns = feedbackQuesState.qns
-    val list = remember { qns.map { false }.toMutableStateList() }
-    var isEnabled = list.none { !it }
+    val isValidList = remember { qns.map { false }.toMutableStateList() }
+    var isEnabled = isValidList.none { !it }
     val ansList = remember { qns.map { An() }.toMutableStateList() }
 
     // Parent Composable which overlaps the Whole Screen
@@ -164,18 +166,20 @@ private fun FeedbackSuccessScreen(
         itemsIndexed(qns) { idx, qn ->
             FeedbackQuesItem(
                 qn = qn,
-                updatedAns = { an ->
-                    ansList[idx] = an
+                ans = ansList[idx],
+                isValid = isValidList[idx],
+                updatedAns = { newAns ->
+                    ansList[idx] = newAns
                 },
-                isValid = { valid ->
-                    Log.d("FEE", "SessionFeedback: ${list.toList()}")
-                    list[idx] = valid
+                onValidityChange = { newValidity ->
+                    isValidList[idx] = newValidity
                 }
             )
         }
 
         // Submit Button
         item {
+            val context = LocalContext.current
             AppFilledButton(
                 textToShow = "Submit",
                 modifier = Modifier.fillMaxWidth(),
@@ -184,6 +188,16 @@ private fun FeedbackSuccessScreen(
             ) {
                 isEnabled = false
                 Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
+                ansList.forEachIndexed { idx, ans ->
+                    val medias = ans.mediaUri.map { uri ->
+                        Media(
+                            name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
+                            url = "",
+                            localUri = uri
+                        )
+                    }
+                    ansList[idx] = ansList[idx].copy(media = medias)
+                }
                 onSubmit(ansList.toList())
             }
         }
