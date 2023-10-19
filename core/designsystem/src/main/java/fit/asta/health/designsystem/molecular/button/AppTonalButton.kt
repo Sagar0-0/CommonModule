@@ -113,7 +113,7 @@ fun AppTonalButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable() (RowScope.() -> Unit)
+    content: @Composable (RowScope.() -> Unit)
 ) {
     FilledTonalButton(
         onClick = onClick,

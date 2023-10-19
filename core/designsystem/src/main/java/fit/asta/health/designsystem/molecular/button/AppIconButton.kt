@@ -117,8 +117,11 @@ fun AppIconButton(
         interactionSource = interactionSource
     ) {
         Icon(
-            imageVector = imageVector, contentDescription = iconDesc, tint = if (enabled) iconTint
-            else iconTint.copy(AppTheme.alphaValues.level2)
+            imageVector = imageVector, contentDescription = iconDesc,
+            tint = if (enabled)
+                iconTint
+            else
+                iconTint.copy(AppTheme.alphaValues.level2)
         )
     }
 }
@@ -162,8 +165,11 @@ fun AppIconButton(
         interactionSource = interactionSource
     ) {
         Icon(
-            painter = painter, contentDescription = iconDesc, tint = if (enabled) iconTint
-            else iconTint.copy(AppTheme.alphaValues.level2)
+            painter = painter, contentDescription = iconDesc,
+            tint = if (enabled)
+                iconTint
+            else
+                iconTint.copy(AppTheme.alphaValues.level2)
         )
     }
 }
