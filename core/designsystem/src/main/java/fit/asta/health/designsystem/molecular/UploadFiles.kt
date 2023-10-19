@@ -135,10 +135,9 @@ fun UploadFiles(
         }
 
         // Error Text to be shown when the User crosses the Amount of Files he can Select
-        if (!isValid)
-            BodyTexts.Level3(
-                text = "You cannot upload more than $uploadLimit files",
-                color = AppTheme.colors.error
-            )
+        if (!isValid) BodyTexts.Level3(
+            text = "You cannot upload more than $uploadLimit files",
+            color = AppTheme.colors.error
+        )
     }
 }
