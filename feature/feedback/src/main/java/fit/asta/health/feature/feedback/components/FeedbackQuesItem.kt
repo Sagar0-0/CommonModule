@@ -23,24 +23,22 @@ fun FeedbackQuesItem(
             modifier = Modifier.fillMaxWidth(),
             uriList = ans.mediaUri.toList(),
             isValid = isValid,
-            uploadLimit = UPLOAD_LIMIT, // TODO :- To be added from the Backend as said by Sir
+            errorMessage = "You cannot upload more than $UPLOAD_LIMIT files",
             onItemAdded = {
                 val newSet = ans.mediaUri.plus(it)
                 updatedAns(ans.copy(mediaUri = newSet))
-                if (qn.isMandatory && newSet.isEmpty()) {
+                if (qn.isMandatory && newSet.isEmpty())
                     onValidityChange(false)
-                } else {
+                else
                     onValidityChange(newSet.size <= UPLOAD_LIMIT)
-                }
             },
             onItemDeleted = { uri ->
                 val newSet = ans.mediaUri.minus(uri)
                 updatedAns(ans.copy(mediaUri = newSet))
-                if (qn.isMandatory && newSet.isEmpty()) {
+                if (qn.isMandatory && newSet.isEmpty())
                     onValidityChange(false)
-                } else {
+                else
                     onValidityChange(newSet.size <= UPLOAD_LIMIT)
-                }
             }
         )
     } else {

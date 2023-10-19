@@ -35,10 +35,13 @@ fun UploadFiles(
     modifier: Modifier = Modifier,
     uriList: List<Uri>,
     isValid: Boolean,
-    uploadLimit: Int,
+    errorMessage: String = "Number of Files limit Exceeded",
     onItemAdded: (List<Uri>) -> Unit,
     onItemDeleted: (Uri) -> Unit
 ) {
+
+    // This variable says if the user has inputted some data or not
+    val hasUserInputted = uriList.isNotEmpty()
 
     val context = LocalContext.current
 
@@ -59,10 +62,10 @@ fun UploadFiles(
                 .dashedBorder(
                     width = 1.dp,
                     radius = AppTheme.customSize.level1,
-                    color = if (isValid)
-                        AppTheme.colors.onBackground
-                    else
+                    color = if (hasUserInputted && !isValid)
                         AppTheme.colors.error
+                    else
+                        AppTheme.colors.onBackground
                 )
                 .clip(AppTheme.shape.level1)
                 .padding(AppTheme.spacing.level1),
@@ -127,17 +130,18 @@ fun UploadFiles(
             AppIconButton(
                 imageVector = Icons.Rounded.CloudUpload,
                 iconDesc = "Upload Icon Button",
-                iconTint = if (isValid)
-                    AppTheme.colors.primary
-                else
+                iconTint = if (hasUserInputted && !isValid)
                     AppTheme.colors.error
+                else
+                    AppTheme.colors.primary
             ) { resultLauncher.launch("*/*") }
         }
 
         // Error Text to be shown when the User crosses the Amount of Files he can Select
-        if (!isValid) BodyTexts.Level3(
-            text = "You cannot upload more than $uploadLimit files",
-            color = AppTheme.colors.error
-        )
+        if (hasUserInputted && !isValid)
+            BodyTexts.Level3(
+                text = errorMessage,
+                color = AppTheme.colors.error
+            )
     }
 }
