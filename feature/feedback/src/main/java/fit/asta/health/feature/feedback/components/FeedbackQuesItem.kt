@@ -23,7 +23,7 @@ fun FeedbackQuesItem(
             modifier = Modifier.fillMaxWidth(),
             uriList = ans.mediaUri.toList(),
             isValid = isValid,
-            errorMessage = "You cannot upload more than $UPLOAD_LIMIT files",
+            errorMessage = if(ans.mediaUri.isEmpty()) "You should upload least 1 file" else "You cannot upload more than $UPLOAD_LIMIT files",
             onItemAdded = {
                 val newSet = ans.mediaUri.plus(it)
                 updatedAns(ans.copy(mediaUri = newSet))

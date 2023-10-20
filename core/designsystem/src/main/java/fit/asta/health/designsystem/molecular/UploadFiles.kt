@@ -17,6 +17,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.rounded.CloudUpload
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -41,7 +45,9 @@ fun UploadFiles(
 ) {
 
     // This variable says if the user has inputted some data or not
-    val hasUserInputted = uriList.isNotEmpty()
+    var hasUserInputted by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val context = LocalContext.current
 
@@ -49,6 +55,9 @@ fun UploadFiles(
     val resultLauncher = rememberLauncherForActivityResult(
         contract = ActivityResultContracts.GetMultipleContents()
     ) { list ->
+        if (list.isNotEmpty() && !hasUserInputted) {
+            hasUserInputted = true
+        }
         onItemAdded(list)
     }
 
