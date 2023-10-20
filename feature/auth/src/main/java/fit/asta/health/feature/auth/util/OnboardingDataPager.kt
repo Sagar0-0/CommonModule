@@ -53,59 +53,61 @@ import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 @Composable
 internal fun ColumnScope.OnboardingDataPager(items: List<OnboardingData>) {
     val pagerState = rememberPagerState(pageCount = { items.size })
-    HorizontalPager(
-        modifier = Modifier.weight(1f),
-        state = pagerState,
-        contentPadding = PaddingValues(AppTheme.spacing.level2),
-        pageSpacing = AppTheme.spacing.level3,
-    ) { page ->
-        AppCard(
-            modifier = Modifier
-                .carouselTransition(page, pagerState)
-                .fillMaxHeight()
-                .padding(AppTheme.spacing.level2)
-                .clip(AppTheme.shape.level3)
-        ) {
-            when (items[page].type) {
-                1, 2 -> {
-                    AppGifImage(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .padding(bottom = AppTheme.spacing.level3),
-                        url = getImgUrl(url = items[page].url),
-                        contentScale = ContentScale.FillWidth
-                    )
-                }
-
-                3 -> {
-                    VideoView(
-                        onPlay = page == pagerState.currentPage,
-                        onPause = page != pagerState.currentPage,
-                        mediaItem = MediaItem.Builder()
-                            .setUri(getVideoUrl(url = items[page].url).toUri()).build()
-                    )
-                }
-            }
-
-
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
+    Column(modifier = Modifier.weight(1f)) {
+        HorizontalPager(
+            modifier = Modifier.weight(1f),
+            state = pagerState,
+            contentPadding = PaddingValues(AppTheme.spacing.level2),
+            pageSpacing = AppTheme.spacing.level3,
+        ) { page ->
+            AppCard(
+                modifier = Modifier
+                    .carouselTransition(page, pagerState)
+                    .fillMaxHeight()
+                    .padding(AppTheme.spacing.level2)
+                    .clip(AppTheme.shape.level3)
             ) {
-                TitleTexts.Level2(
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
-                    text = items[page].title,
-                    textAlign = TextAlign.Center
-                )
-                TitleTexts.Level2(
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
-                    text = items[page].desc,
-                    textAlign = TextAlign.Center
-                )
+                when (items[page].type) {
+                    1, 2 -> {
+                        AppGifImage(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(bottom = AppTheme.spacing.level3),
+                            url = getImgUrl(url = items[page].url),
+                            contentScale = ContentScale.FillWidth
+                        )
+                    }
+
+                    3 -> {
+                        VideoView(
+                            onPlay = page == pagerState.currentPage,
+                            onPause = page != pagerState.currentPage,
+                            mediaItem = MediaItem.Builder()
+                                .setUri(getVideoUrl(url = items[page].url).toUri()).build()
+                        )
+                    }
+                }
+
+
+                Column(
+                    verticalArrangement = Arrangement.Center,
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TitleTexts.Level2(
+                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
+                        text = items[page].title,
+                        textAlign = TextAlign.Center
+                    )
+                    TitleTexts.Level2(
+                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
+                        text = items[page].desc,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
+        PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
     }
-    PagerIndicator(size = items.size, currentPage = pagerState.currentPage)
 }
 
 

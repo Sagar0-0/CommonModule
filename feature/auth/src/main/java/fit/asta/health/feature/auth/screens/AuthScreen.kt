@@ -33,6 +33,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.animations.ShimmerAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.OnboardingDataPager
@@ -64,11 +65,7 @@ internal fun AuthScreen(
             }
 
             UiState.Loading -> {
-                AppCircularProgressIndicator(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                )
+                ShimmerAnimation(cardHeight = AppTheme.cardHeight.level3, cardWidth = AppTheme.cardHeight.level2)
             }
 
             is UiState.ErrorMessage -> {
@@ -100,7 +97,7 @@ internal fun AuthScreen(
             }
 
             is UiState.Loading -> {
-                AppCircularProgressIndicator(modifier = Modifier.weight(1f))
+                ShimmerAnimation(cardHeight = AppTheme.cardHeight.level3, cardWidth = AppTheme.cardHeight.level2)
             }
 
             else -> {
