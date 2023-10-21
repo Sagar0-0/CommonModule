@@ -5,7 +5,6 @@ import android.app.Notification
 import android.app.NotificationManager
 import android.app.PendingIntent
 import android.app.Service
-import android.app.TaskStackBuilder
 import android.content.Context
 import android.content.Intent
 import android.graphics.Bitmap
@@ -36,8 +35,6 @@ import coil.request.ImageRequest
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
-import fit.asta.health.common.utils.Constants.deepLinkUrl
-import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
@@ -257,13 +254,7 @@ class AlarmService : Service() {
         )
 
         val alarmName: String = alarm.info.name
-        val intent = Intent(
-            Intent.ACTION_VIEW, Uri.parse("$deepLinkUrl/${goToTool(alarm.info.tag)}")
-        )
-        val pendingIntent = TaskStackBuilder.create(applicationContext).run {
-            addNextIntentWithParentStack(intent)
-            getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE)
-        }
+        val pendingIntent = getMainActivityPendingIntent(applicationContext)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
             .setSound(null)
@@ -387,4 +378,11 @@ class AlarmService : Service() {
                 .setAutoCancel(true)
         notificationManager.notify(nId.plus(1), builder.build())
     }
+}
+
+fun getMainActivityPendingIntent(context: Context): PendingIntent {
+    val intent = Intent(context, Class.forName("fit.asta.health.MainActivity"))
+    return PendingIntent.getActivity(
+        context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
+    )
 }
