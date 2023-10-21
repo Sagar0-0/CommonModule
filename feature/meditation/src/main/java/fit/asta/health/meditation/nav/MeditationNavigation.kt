@@ -1,6 +1,5 @@
 package fit.asta.health.meditation.nav
 
-import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -10,9 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.meditation.view.home.MEvent
 import fit.asta.health.meditation.view.home.MeditationHomeScreen
@@ -30,11 +27,7 @@ fun NavGraphBuilder.meditationNavigation(
 ) {
     navigation(
         route = MEDITATION_GRAPH_ROUTE,
-        startDestination = MeditationScreen.MeditationHomeScreen.route,
-        deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${MEDITATION_GRAPH_ROUTE}"
-            action = Intent.ACTION_VIEW
-        })
+        startDestination = MeditationScreen.MeditationHomeScreen.route
     ) {
         composable(MeditationScreen.MeditationHomeScreen.route) { navBackStackEntry ->
             val viewModel: MeditationViewModel = navBackStackEntry.sharedViewModel(navController)

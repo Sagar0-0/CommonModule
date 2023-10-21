@@ -36,6 +36,8 @@ class AuthViewModelTest : BaseTest() {
         viewModel = spyk(
             AuthViewModel(
                 repo,
+                mockk(),
+                mockk(),
                 mockk()
             )
         )
@@ -53,7 +55,11 @@ class AuthViewModelTest : BaseTest() {
         val user = User()
         every { repo.getUser() } returns user
 
-        viewModel = AuthViewModel(repo, mockk())
+        viewModel = AuthViewModel(
+            repo, mockk(),
+            mockk(),
+            mockk()
+        )
         assertEquals(viewModel.currentUser, user)
         verify { repo.getUser() }
     }
