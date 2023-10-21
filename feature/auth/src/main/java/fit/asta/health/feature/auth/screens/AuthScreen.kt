@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -24,14 +23,12 @@ import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.SpanStyle
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
-import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.animations.ShimmerAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -45,7 +42,7 @@ import fit.asta.health.resources.strings.R as StringR
 
 @Composable
 internal fun AuthScreen(
-    loginState: UiState<User>,
+    loginState: UiState<Unit>,
     onboardingState: UiState<List<OnboardingData>>,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
@@ -60,22 +57,12 @@ internal fun AuthScreen(
         when (loginState) {
             is UiState.ErrorRetry -> {
                 AppRetryCard(text = loginState.resId.toStringFromResId()) {
-                    onUiEvent(AuthUiEvent.ResetLoginState)
+                    onUiEvent(AuthUiEvent.OnLoginFailed)
                 }
             }
 
             UiState.Loading -> {
                 ShimmerAnimation(cardHeight = AppTheme.cardHeight.level3, cardWidth = AppTheme.cardHeight.level2)
-            }
-
-            is UiState.ErrorMessage -> {
-                TitleTexts.Level2(text = loginState.resId.toStringFromResId())
-            }
-
-            is UiState.Success -> {
-                LaunchedEffect(Unit) {
-                    onUiEvent(AuthUiEvent.CheckProfileAndNavigate(loginState.data))
-                }
             }
 
             else -> {}
@@ -115,7 +102,7 @@ internal fun AuthScreen(
         PhoneSignIn(
             failed = loginState is UiState.ErrorMessage,
             resetFailedState = {
-                onUiEvent(AuthUiEvent.ResetLoginState)
+                onUiEvent(AuthUiEvent.OnLoginFailed)
             },
             isPhoneEntered = {
                 isGoogleVisible = !it

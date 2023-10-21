@@ -14,6 +14,9 @@ dependencies {
     implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
 
+    implementation(project(":libs:media"))
+    implementation(project(":libs:ccp"))
+
     implementation(project(":core:datastore"))
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
@@ -22,8 +25,6 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":data:onboarding"))
     implementation(project(":data:profile"))
-
-    implementation(project(":libs:media"))
 
     //Firebase authentication
     implementation(platform(libs.firebase.bom))
