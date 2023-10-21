@@ -69,7 +69,7 @@ class AuthViewModelTest : BaseTest() {
         val cred: AuthCredential = mockk()
         val res = MutableStateFlow(ResponseState.Success(User()))
         every { repo.signInWithCredential(any()) } returns res
-        viewModel.signInWithGoogleCredentials(cred)
+        viewModel.signInAndNavigate(cred)
         verify { repo.signInWithCredential(cred) }
         viewModel.loginState.test {
             val item = awaitItem()
@@ -82,7 +82,7 @@ class AuthViewModelTest : BaseTest() {
         val cred: AuthCredential = mockk()
         val res = MutableStateFlow(ResponseState.ErrorMessage(mockk()))
         every { repo.signInWithCredential(any()) } returns res
-        viewModel.signInWithGoogleCredentials(cred)
+        viewModel.signInAndNavigate(cred)
         verify { repo.signInWithCredential(cred) }
         viewModel.loginState.test {
             val item = awaitItem()

@@ -18,6 +18,7 @@ import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -38,11 +39,7 @@ internal class AuthViewModel
     @UID private val uid: String
 ) : ViewModel() {
 
-    private val _isProfileAvailable =
-        MutableStateFlow<UiState<UserProfileAvailableResponse>>(UiState.Idle)
-    val isProfileAvailable = _isProfileAvailable.asStateFlow()
-
-    private val _loginState = MutableStateFlow<UiState<User>>(UiState.Idle)
+    private val _loginState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
 
     private val _onboardingDataState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)
@@ -53,6 +50,9 @@ internal class AuthViewModel
 
     private val _deleteState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val deleteState = _deleteState.asStateFlow()
+
+    private val _isProfileAvailable =
+        MutableStateFlow<UiState<UserProfileAvailableResponse>>(UiState.Idle)
 
     val currentUser: User?
         get() = authRepo.getUser()
@@ -81,9 +81,7 @@ internal class AuthViewModel
         }.join()
     }
 
-    fun isAuthenticated() = authRepo.isAuthenticated()
-
-    fun isProfileAvailable(userId: String = uid) {
+    private fun isProfileAvailable(userId: String = uid) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
             val res = profileRepo.isUserProfileAvailable(userId)
@@ -91,22 +89,39 @@ internal class AuthViewModel
         }
     }
 
-    fun signInWithGoogleCredentials(authCredential: AuthCredential) {
+    fun signInAndNavigate(authCredential: AuthCredential) {
         _loginState.value = UiState.Loading
         viewModelScope.launch {
             authRepo.signInWithCredential(authCredential).collect {
-                if (it is ResponseState.Success && !isFcmTokenUploaded.value) {
-                    val token = Firebase.messaging.token.await()
-                    uploadFcmToken(
-                        TokenDTO(
-                            deviceId = Build.MANUFACTURER + Build.DEVICE,
-                            timeStamp = System.currentTimeMillis().toString(),
-                            token = token,
-                            uid = authRepo.getUserId() ?: ""
+                if (it is ResponseState.Success) {//Login Success
+                    if (!isFcmTokenUploaded.value) {//Uploading token to our server for notification
+                        val token = Firebase.messaging.token.await()
+                        uploadFcmToken(
+                            TokenDTO(
+                                deviceId = Build.MANUFACTURER + Build.DEVICE,
+                                timeStamp = System.currentTimeMillis().toString(),
+                                token = token,
+                                uid = it.data.uid
+                            )
                         )
-                    )
+                    }
+
+                    val res = profileRepo.isUserProfileAvailable(it.data.uid)
+                        .toUiState()//Check Profile available or not
+                    _isProfileAvailable.value = res
+                    if (res is UiState.Success) {//If profile available request is success then navigate accordingly
+                        _loginState.value = UiState.Success(Unit)
+                        if (res.data.flag) {//Profile available in server
+                            navigateToHome()
+                        } else {//Profile not available in server
+                            navigateToBasicProfile()
+                        }
+                    } else {// isProfileAvailable Request failed
+                        _loginState.value = UiState.ErrorRetry(R.string.server_error)
+                    }
+                } else {// Login failed
+                    _loginState.value = UiState.ErrorRetry(R.string.login_failed)
                 }
-                _loginState.value = it.toUiState()
             }
         }
     }
@@ -137,15 +152,19 @@ internal class AuthViewModel
         _deleteState.value = UiState.Idle
     }
 
-    fun navigateToBasicProfile() = viewModelScope.launch {
+    private fun navigateToBasicProfile() = viewModelScope.launch {
         authRepo.setLoginDone()
     }
 
-    fun navigateToHome() = viewModelScope.launch {
+    private fun navigateToHome() = viewModelScope.launch {
         authRepo.setBasicProfileDone()
     }
 
-    fun resetLoginState() {
-        _loginState.value = UiState.Idle
+    fun onLoginFailed() {
+        if (_isProfileAvailable.value !is UiState.Success) {
+            isProfileAvailable()
+        } else {
+            _loginState.value = UiState.Idle
+        }
     }
 }
