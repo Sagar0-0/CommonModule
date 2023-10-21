@@ -160,7 +160,7 @@ internal fun SearchBottomSheet(
                                         .padding(AppTheme.spacing.level0)
                                 ) {
                                     AppNetworkImage(
-                                        placeholder = painterResource(DrawR.drawable.placeholder_tag),
+                                        errorImage = painterResource(DrawR.drawable.placeholder_tag),
                                         model = it.icon,
                                         contentDescription = null,
                                         modifier = Modifier.padding(end = AppTheme.spacing.level2)

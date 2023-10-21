@@ -194,7 +194,7 @@ fun UserCircleImage(
                         width = 4.dp, color = AppTheme.colors.primary
                     ), shape = CircleShape
                 ),
-            placeholder = rememberVectorPainter(image = Icons.Filled.Person)
+            errorImage = rememberVectorPainter(image = Icons.Filled.Person)
         )
         if (!isImgNotAvail) {
             DeleteImageButton(onProfilePicClear, modifier = Modifier.align(Alignment.TopEnd))

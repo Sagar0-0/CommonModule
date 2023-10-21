@@ -21,7 +21,7 @@ import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
  *
  * @param modifier Modifier used to adjust the layout algorithm or draw decoration content.
  * @param model Either an [ImageRequest] or the [ImageRequest.data] value.
- * @param placeholder A [Painter] that is displayed while the image is loading.
+ * @param errorImage A [Painter] that is displayed while the image request fails.
  * @param contentDescription Text used by accessibility services to describe what this image
  *  represents.
  * @param contentScale Optional scale parameter used to determine the aspect ratio scaling to be
@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
 fun AppNetworkImage(
     modifier: Modifier = Modifier,
     model: Any? = null,
-    placeholder: Painter? = painterResource(id = AppConstImages.placeHolderImg),
+    errorImage: Painter? = painterResource(id = AppConstImages.errorImg),
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.FillBounds,
     colorFilter: ColorFilter? = null,
@@ -62,7 +62,7 @@ fun AppNetworkImage(
             // Loading State is turned to true since the loading is started
             isLoading.value = true
         },
-        error = painterResource(id = AppConstImages.errorImg)
+        error = errorImage
     )
 
     // This is the Fetched image which will be shown when the Image is fetched from the Server
