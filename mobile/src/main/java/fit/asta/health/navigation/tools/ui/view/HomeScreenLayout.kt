@@ -108,7 +108,7 @@ fun HomeScreenLayout(
                         }
 
                         "sleep" -> {
-                            onNav(Graph.SleepTool.route)
+//                            onNav(Graph.SleepTool.route)
                             SleepToolActivity.launch(
                                 context = context, userId = userId
                             )

@@ -1,6 +1,5 @@
 package fit.asta.health.tools.breathing.nav
 
-import android.content.Intent
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -10,9 +9,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.meditation.view.other.SheetDataSelectionScreen
 import fit.asta.health.player.presentation.UiState
@@ -31,11 +28,7 @@ fun NavGraphBuilder.breathingNavigation(
 ) {
     navigation(
         route = BREATHING_GRAPH_ROUTE,
-        startDestination = BreathingScreen.HomeScreen.route,
-        deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${BREATHING_GRAPH_ROUTE}"
-            action = Intent.ACTION_VIEW
-        })
+        startDestination = BreathingScreen.HomeScreen.route
     ) {
         composable(
             route = BreathingScreen.HomeScreen.route,

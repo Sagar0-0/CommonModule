@@ -1,6 +1,5 @@
 package fit.asta.health.tools.water.nav
 
-import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -11,9 +10,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.testimonials.create.view.ServerErrorLayout
@@ -32,11 +29,7 @@ fun NavGraphBuilder.waterToolNavigation(
 ) {
     navigation(
         route = WATER_GRAPH_ROUTE,
-        startDestination = WaterScreen.WaterToolHomeScreen.route,
-        deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${WATER_GRAPH_ROUTE}"
-            action = Intent.ACTION_VIEW
-        })
+        startDestination = WaterScreen.WaterToolHomeScreen.route
     ) {
         composable(WaterScreen.WaterToolHomeScreen.route) {
             val viewModel:WaterViewModel = it.sharedViewModel(navController)
