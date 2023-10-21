@@ -6,7 +6,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.feature.onboarding"
+    namespace = "fit.asta.health.feature.settings"
 }
 
 dependencies {

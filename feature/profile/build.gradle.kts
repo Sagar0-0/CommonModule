@@ -14,6 +14,9 @@ dependencies {
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
 
+    implementation(project(":libs:otpfield"))
+    implementation(project(":libs:ccp"))
+
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
@@ -22,7 +25,6 @@ dependencies {
 
     implementation(project(":data:profile"))
     implementation(project(":data:auth"))
-    implementation(project(":libs:otpfield"))
 
     implementation(project(":feature:auth"))
 
