@@ -1,15 +1,12 @@
 package fit.asta.health.tools.sunlight.nav
 
-import android.content.Intent
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.tools.sunlight.view.*
 import fit.asta.health.tools.sunlight.view.age_selection.AgeRange
@@ -30,11 +27,7 @@ fun NavGraphBuilder.sunlightNavigation(
 ) {
     navigation(
         route = SUNLIGHT_GRAPH_ROUTE,
-        startDestination = SunlightScreen.SunlightHomeScreen.route,
-        deepLinks = listOf(navDeepLink {
-            uriPattern = "$deepLinkUrl/${SUNLIGHT_GRAPH_ROUTE}"
-            action = Intent.ACTION_VIEW
-        })
+        startDestination = SunlightScreen.SunlightHomeScreen.route
     ) {
         composable(route = SunlightScreen.SunlightHomeScreen.route) {
             SunlightHomeScreen(navController = navController, it.sharedViewModel(navController))

@@ -5,19 +5,15 @@
 
     <uses-sdk />
 
-    <uses-feature
-        android:name="android.hardware.telephony"
-        android:required="false" />
-
     <dist:module dist:instant="true" />
 
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.ACTIVITY_RECOGNITION" />
-    <uses-permission
-        android:name="android.permission.BROADCAST_CLOSE_SYSTEM_DIALOGS"
-        tools:ignore="ProtectedPermissions" />
+    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.WAKE_LOCK" />
@@ -25,13 +21,10 @@
     <uses-permission android:name="android.permission.BODY_SENSORS" />
     <uses-permission android:name="android.permission.ACCESS_NOTIFICATION_POLICY" />
     <uses-permission android:name="android.permission.POST_NOTIFICATIONS" />
-    <uses-permission android:name="com.android.alarm.permission.SET_ALARM" />
     <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
     <uses-permission android:name="android.permission.VIBRATE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
-    <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
     <uses-permission android:name="android.permission.USE_FULL_SCREEN_INTENT" />
-    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="com.android.vending.BILLING" />
@@ -86,16 +79,6 @@
             android:name=".tools.sleep.SleepToolActivity"
             android:exported="true"
             android:label="@string/title_activity_sleep_tool">
-            <intent-filter android:autoVerify="true">
-                <data android:scheme="https" />
-                <data android:scheme="http" />
-                <data android:host="www.asta.care" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
         </activity>
         <activity android:name=".BillingActivity" />
         <activity
@@ -111,16 +94,6 @@
         <activity
             android:name=".tools.walking.view.WalkingActivity"
             android:exported="true">
-            <intent-filter android:autoVerify="true">
-                <data android:scheme="https" />
-                <data android:scheme="http" />
-                <data android:host="www.asta.care" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <action android:name="android.intent.action.VIEW" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".feature.spotify.SpotifyLoginActivity"
@@ -152,9 +125,6 @@
                     android:scheme="fit.asta.health" />
             </intent-filter>
         </activity>
-        <!--        <activity-->
-        <!--            android:name="com.spotify.sdk.android.auth.LoginActivity"-->
-        <!--            android:theme="@android:style/Theme.Translucent.NoTitleBar" />-->
         <activity
             android:name=".MainActivity"
             android:exported="true"
@@ -164,16 +134,6 @@
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
-            <intent-filter android:autoVerify="true">
-                <data android:scheme="https" />
-                <data android:scheme="http" />
-                <data android:host="www.asta.care" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-
-                <action android:name="android.intent.action.VIEW" />
             </intent-filter>
         </activity>
 
@@ -190,16 +150,11 @@
 
         <receiver
             android:name=".feature.scheduler.services.AlarmBroadcastReceiver"
-            android:directBootAware="true"
-            android:enabled="true"
-            android:exported="true"
-            tools:targetApi="n">
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
-                <!--                <action android:name="android.intent.action.QUICKBOOT_POWERON" />-->
-                <!--                <action android:name="android.intent.action.LOCKED_BOOT_COMPLETED" />-->
-                <!--                <action android:name="android.intent.action.TIME_SET" />-->
-                <!--                <action android:name="android.intent.action.TIMEZONE_CHANGED" />-->
+                <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
+                <action android:name="android.intent.action.TIMEZONE_CHANGED" />
             </intent-filter>
         </receiver>
 
@@ -210,14 +165,8 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-        <service
-            android:name=".feature.scheduler.services.AlarmService"
-            android:directBootAware="true"
-            tools:targetApi="n" />
-        <service
-            android:name=".feature.scheduler.services.RescheduleAlarmService"
-            android:directBootAware="true"
-            tools:targetApi="n" />
+        <service android:name=".feature.scheduler.services.AlarmService" />
+        <service android:name=".feature.scheduler.services.RescheduleAlarmService" />
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />

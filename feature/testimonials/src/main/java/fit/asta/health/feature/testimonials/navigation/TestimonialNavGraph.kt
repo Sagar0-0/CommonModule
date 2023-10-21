@@ -34,8 +34,7 @@ fun NavGraphBuilder.testimonialNavRoute(
         startDestination = Home.route
     ) {
         composable(route = Home.route) {
-
-            val getViewModel: TestimonialViewModel = it.sharedViewModel(navController)
+//            val getViewModel: TestimonialViewModel = it.sharedViewModel(navController)
             TestimonialsListLayout(
                 onNavigateUp = {
                     navController.navigate(route = Create.route)

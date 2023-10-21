@@ -4,6 +4,8 @@ package fit.asta.health.feature.scheduler.services
 import android.content.BroadcastReceiver
 import android.content.Context
 import android.content.Intent
+import android.content.Intent.ACTION_BOOT_COMPLETED
+import android.content.Intent.ACTION_MY_PACKAGE_REPLACED
 import android.widget.Toast
 import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
@@ -18,39 +20,38 @@ import javax.inject.Inject
 class AlarmBroadcastReceiver : BroadcastReceiver() {
     @Inject
     lateinit var stateManager: StateManager
-    override fun onReceive(context: Context, intent: Intent) {
-        if (Intent.ACTION_BOOT_COMPLETED == intent.action || Intent.ACTION_LOCKED_BOOT_COMPLETED == intent.action
-        ) {
-            val toastText = String.format("Alarm Reboot")
-            Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
-            startRescheduleAlarmsService(context)
-        }
-        when (intent.action) {
+    override fun onReceive(context: Context?, intent: Intent?) {
+        when (intent?.action) {
+            ACTION_MY_PACKAGE_REPLACED -> {
+                startRescheduleAlarmsService(context!!)
+            }
+
+            ACTION_BOOT_COMPLETED -> {
+                startRescheduleAlarmsService(context!!)
+            }
+
             SNOOZE_ACTION -> {
-//                LogUtils.v("AlarmStateManager received SNOOZE_ACTION")
                 intent.getLongExtra("id", -1).let {
-                    stateManager.setSnoozeAlarm(context, it)
+                    stateManager.setSnoozeAlarm(context!!, it)
                     stateManager.stopService(context)
                 }
             }
 
             DISMISS_ACTION -> {
-//                LogUtils.v("AlarmStateManager received DISMISS_ACTION")
                 intent.getLongExtra("id", -1).let {
-                    stateManager.dismissAlarm(context, it)
+                    stateManager.dismissAlarm(context!!, it)
                     stateManager.stopService(context)
                 }
             }
 
             SKIP_ALARM_ACTION -> {
-//                LogUtils.v("AlarmStateManager received SKIP_ALARM_ACTION")
                 intent.getLongExtra("id", -1).let {
-                    stateManager.skipAlarmSetPreEndNotification(context, it)
+                    stateManager.skipAlarmSetPreEndNotification(context!!, it)
                 }
             }
 
             CHANGE_STATE_ACTION -> {
-                stateManager.handleIntent(context, intent)
+                stateManager.handleIntent(context!!, intent)
             }
 
             else -> {}
@@ -58,6 +59,8 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun startRescheduleAlarmsService(context: Context) {
+        val toastText = String.format("Alarm Reboot")
+        Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
         val intentService = Intent(context, RescheduleAlarmService::class.java)
         ContextCompat.startForegroundService(context, intentService)
     }

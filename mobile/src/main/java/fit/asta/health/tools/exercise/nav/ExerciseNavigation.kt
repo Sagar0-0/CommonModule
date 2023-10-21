@@ -1,6 +1,5 @@
 package fit.asta.health.tools.exercise.nav
 
-import android.content.Intent
 import android.util.Log
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -12,9 +11,7 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import androidx.navigation.navDeepLink
 import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.tools.exercise.view.body_parts.ExerciseBodyParts
 import fit.asta.health.tools.exercise.view.body_stretch.ExerciseBodyStretch
@@ -41,10 +38,6 @@ fun NavGraphBuilder.exerciseNavigation(
     navigation(
         route = "$EXERCISE_GRAPH_ROUTE?activity={activity}",
         startDestination = ExerciseScreen.HomeScreen.route,
-        deepLinks = listOf(navDeepLink {
-            uriPattern = "${deepLinkUrl}/${EXERCISE_GRAPH_ROUTE}/{activity}"
-            action = Intent.ACTION_VIEW
-        }),
         arguments = listOf(navArgument("activity") {
             defaultValue = "dance"
             type = NavType.StringType
