@@ -6,6 +6,8 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
+import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
+import fit.asta.health.data.feedback.repo.FeedbackRepoImpl
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -57,7 +59,7 @@ class FeedbackApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val repo = fit.asta.health.data.feedback.repo.FeedbackRepoImpl(api, mockk())
+        val repo = FeedbackRepoImpl(api, mockk())
         val data = repo.getFeedbackQuestions("", "")
         server.takeRequest()
 
@@ -73,7 +75,7 @@ class FeedbackApiTest {
         server.enqueue(res)
 
 
-        val dto = fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO()
+        val dto = UserFeedbackDTO()
         val data = api.postUserFeedback(dto, emptyList())
         server.takeRequest()
 
@@ -82,12 +84,12 @@ class FeedbackApiTest {
 
     @Test
     fun `postUserFeedback, returns Error`() = runTest {
-        val dto = fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO()
+        val dto = UserFeedbackDTO()
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val repo = fit.asta.health.data.feedback.repo.FeedbackRepoImpl(api, mockk())
+        val repo = FeedbackRepoImpl(api, mockk())
         val data = repo.postUserFeedback(dto)
         server.takeRequest()
 

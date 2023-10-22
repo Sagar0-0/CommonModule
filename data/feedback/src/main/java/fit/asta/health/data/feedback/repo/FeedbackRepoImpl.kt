@@ -33,10 +33,17 @@ class FeedbackRepoImpl
     }
 
     override suspend fun postUserFeedback(feedback: UserFeedbackDTO): ResponseState<PostFeedbackDTO> {
+        val parts: ArrayList<MultipartBody.Part> = getMultipartBodyParts(feedback)
+        return withContext(coroutineDispatcher) {
+            getApiResponseState { remoteApi.postUserFeedback(feedback, parts) }
+        }
+    }
+
+    private fun getMultipartBodyParts(feedback: UserFeedbackDTO): ArrayList<MultipartBody.Part> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
 
         feedback.ans.forEach { an ->
-            an.media?.forEach { media ->
+            an.media.forEach { media ->
                 parts.add(
                     MultipartBody.Part.createFormData(
                         name = "file",
@@ -46,8 +53,6 @@ class FeedbackRepoImpl
                 )
             }
         }
-        return withContext(coroutineDispatcher) {
-            getApiResponseState { remoteApi.postUserFeedback(feedback, parts) }
-        }
+        return parts
     }
 }
