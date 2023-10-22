@@ -15,7 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
-import fit.asta.health.designsystem.molecular.background.AppHorizontalPager
+import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
@@ -53,8 +53,10 @@ fun HomeScreenLayout(
         item(span = { GridItemSpan(columns) }) {
             Column {
                 AppHorizontalPager(
-                    bannerList = toolsHome.banners,
-                    modifier = Modifier.aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
+                    itemList = toolsHome.banners,
+                    modifier = Modifier
+                        .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
+                        .fillMaxWidth()
                 ) { page ->
                     ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
                 }
@@ -152,7 +154,8 @@ fun HomeScreenLayout(
         item(span = { GridItemSpan(columns) }) {
             Column {
                 AppHorizontalPager(
-                    bannerList = toolsHome.testimonials
+                    modifier = Modifier.fillMaxWidth(),
+                    itemList = toolsHome.testimonials
                 ) {
                     TstBannerCard(testimonialsData = toolsHome.testimonials[it])
                 }
