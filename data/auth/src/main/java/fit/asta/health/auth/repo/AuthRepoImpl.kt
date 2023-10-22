@@ -39,15 +39,17 @@ class AuthRepoImpl @Inject constructor(
     private val prefManager: PrefManager,
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AuthRepo {
+
     companion object {
         const val TAG = "AuthRepoImpl"
     }
+
+    override val userData: Flow<UserPreferencesData> = prefManager.userData
 
     override suspend fun resetReferralCode() {
         prefManager.setReferralCode("")
     }
 
-    override val userData: Flow<UserPreferencesData> = prefManager.userData
     override suspend fun setLogoutDone() {
         prefManager.setScreenCode(ScreenCode.Auth.code)
     }

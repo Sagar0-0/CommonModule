@@ -5,12 +5,11 @@ import com.google.firebase.auth.FirebaseAuth
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.auth.repo.AuthRepoImpl
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.datastore.UserPreferencesData
 import io.mockk.every
 import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
@@ -45,7 +44,7 @@ class AuthApiTest {
 
     @Test
     fun `deleteAccount, return Success`() = runTest {
-        val dto = DeleteAccountResponse()
+        val dto = Response(data = DeleteAccountResponse())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -63,10 +62,12 @@ class AuthApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val pref: PrefManager = mockk()
         val firebaseAuth: FirebaseAuth = mockk()
         every { firebaseAuth.currentUser } returns mockk()
-        every { pref.userData } returns MutableStateFlow(UserPreferencesData())
+
+        val pref: PrefManager = mockk()
+        every { pref.userData } returns mockk()
+
         val repo = AuthRepoImpl(
             mockk(), api, mockk(), mockk(), firebaseAuth, pref,
             UnconfinedTestDispatcher()
