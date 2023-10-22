@@ -1,8 +1,10 @@
 package fit.asta.health.data.feedback.repo
 
-import android.content.ContentResolver
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.feedback.remote.FeedbackApi
+import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
+import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -20,14 +22,11 @@ class FeedbackRepoImplTest {
     @RelaxedMockK
     lateinit var feedbackApi: FeedbackApi
 
-    @RelaxedMockK
-    lateinit var contentResolver: ContentResolver
-
     @BeforeEach
     fun beforeEach() {
         MockKAnnotations.init(this, relaxed = true)
         feedbackRepoImpl = FeedbackRepoImpl(
-            feedbackApi, contentResolver, UnconfinedTestDispatcher()
+            feedbackApi, mockk(), UnconfinedTestDispatcher()
         )
     }
 
@@ -48,6 +47,28 @@ class FeedbackRepoImplTest {
         val fid = "fid"
         val res = feedbackRepoImpl.getFeedbackQuestions(uid, fid)
         coVerify { feedbackApi.getFeedbackQuestions(uid, fid) }
+        assert(res is ResponseState.ErrorMessage)
+    }
+
+    @Test
+    fun `postUserFeedback, return Success Response`() = runTest {
+        val feedback = UserFeedbackDTO()
+        coEvery {
+            feedbackApi.postUserFeedback(
+                any(),
+                any()
+            )
+        } returns Response(data = PostFeedbackDTO())
+        val res = feedbackRepoImpl.postUserFeedback(feedback)
+//        coVerify { feedbackApi.postUserFeedback(any(),any()) }
+        assert(res is ResponseState.Success)
+    }
+
+    @Test
+    fun `postUserFeedback, return Error Response`() = runTest {
+        coEvery { feedbackApi.postUserFeedback(any(), any()) } throws Exception()
+        val res = feedbackRepoImpl.postUserFeedback(mockk())
+        coVerify { feedbackApi.postUserFeedback(any(), any()) }
         assert(res is ResponseState.ErrorMessage)
     }
 }
