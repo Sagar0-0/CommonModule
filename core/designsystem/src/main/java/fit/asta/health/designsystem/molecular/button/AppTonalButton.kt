@@ -92,7 +92,7 @@ fun AppTonalButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -163,7 +163,7 @@ fun AppTonalButton(
     textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -247,7 +247,7 @@ fun AppTonalButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -345,7 +345,7 @@ fun AppTonalButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -443,7 +443,7 @@ fun AppTonalButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -541,7 +541,7 @@ fun AppTonalButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -643,7 +643,7 @@ fun AppTonalButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -757,7 +757,7 @@ fun AppTonalButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -871,7 +871,7 @@ fun AppTonalButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,
@@ -985,7 +985,7 @@ fun AppTonalButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSecondary,
-    shape: Shape = ButtonDefaults.filledTonalShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.filledTonalButtonColors(
         containerColor = AppTheme.colors.secondary,
         contentColor = AppTheme.colors.onSecondary,

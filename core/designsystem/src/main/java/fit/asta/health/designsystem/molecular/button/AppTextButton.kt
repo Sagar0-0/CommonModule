@@ -94,7 +94,7 @@ fun AppTextButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -160,7 +160,7 @@ fun AppTextButton(
     textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -238,7 +238,7 @@ fun AppTextButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -329,7 +329,7 @@ fun AppTextButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -420,7 +420,7 @@ fun AppTextButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -511,7 +511,7 @@ fun AppTextButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -606,7 +606,7 @@ fun AppTextButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -713,7 +713,7 @@ fun AppTextButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -820,7 +820,7 @@ fun AppTextButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,
@@ -927,7 +927,7 @@ fun AppTextButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.primary,
-    shape: Shape = ButtonDefaults.textShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.textButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.primary,

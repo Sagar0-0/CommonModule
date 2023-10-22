@@ -87,7 +87,7 @@ fun AppOutlinedButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -152,7 +152,7 @@ fun AppOutlinedButton(
     textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -232,7 +232,7 @@ fun AppOutlinedButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -324,7 +324,7 @@ fun AppOutlinedButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -416,7 +416,7 @@ fun AppOutlinedButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -508,7 +508,7 @@ fun AppOutlinedButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -604,7 +604,7 @@ fun AppOutlinedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -712,7 +712,7 @@ fun AppOutlinedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -820,7 +820,7 @@ fun AppOutlinedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
@@ -928,7 +928,7 @@ fun AppOutlinedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onSurface,
-    shape: Shape = AppTheme.shape.level2,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
