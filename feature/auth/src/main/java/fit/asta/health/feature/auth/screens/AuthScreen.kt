@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -21,9 +20,8 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
-import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.animations.ShimmerAnimation
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.auth.components.AuthStringDivider
 import fit.asta.health.feature.auth.components.TermAndPrivacyUI
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.OnboardingDataPager
@@ -91,10 +89,9 @@ internal fun AuthScreen(
         }
 
 
-        var isGoogleVisible by rememberSaveable {
-            mutableStateOf(true)
-        }
-        AuthDivider("Login or Sign up")
+        var isGoogleVisible by rememberSaveable { mutableStateOf(true) }
+
+        AuthStringDivider(textToShow = "Login or Sign up")
         PhoneSignIn(
             failed = loginState is UiState.ErrorMessage,
             resetFailedState = {
@@ -109,7 +106,7 @@ internal fun AuthScreen(
 
         AnimatedVisibility(visible = isGoogleVisible) {
             Column {
-                AuthDivider("or")
+                AuthStringDivider(textToShow = "or")
                 GoogleSignIn(StringR.string.sign_in_with_google) {
                     onUiEvent(AuthUiEvent.SignInWithCredentials(it))
                 }
@@ -126,30 +123,6 @@ internal fun AuthScreen(
             onPrivacyClick = {
                 onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
             }
-        )
-    }
-}
-
-@Composable
-fun AuthDivider(s: String) {
-    Row(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level1),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AppDivider(
-            Modifier
-                .weight(1f)
-                .padding(AppTheme.spacing.level1)
-        )
-
-        TitleTexts.Level3(text = s)
-
-        AppDivider(
-            Modifier
-                .weight(1f)
-                .padding(AppTheme.spacing.level1)
         )
     }
 }
