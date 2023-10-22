@@ -5,7 +5,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.discounts"
+    namespace = "fit.asta.health.data.discounts"
 }
 
 dependencies {

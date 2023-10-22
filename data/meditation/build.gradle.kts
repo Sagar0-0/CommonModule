@@ -8,7 +8,7 @@ plugins {
 }
 
 android {
-    namespace = "fit.asta.health.meditation"
+    namespace = "fit.asta.health.data.meditation"
 }
 dependencies {
 

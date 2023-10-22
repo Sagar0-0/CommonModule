@@ -65,8 +65,7 @@ fun FeedbackQuesScreen(
             AppFilledButton(
                 textToShow = "Submit",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled,
-                shape = AppTheme.shape.level1
+                enabled = isEnabled
             ) {
                 isEnabled = false
                 Log.e("ANS", "SessionFeedback: ${ansList.toList()}")

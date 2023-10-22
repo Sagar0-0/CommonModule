@@ -79,7 +79,7 @@ private fun SwipeAbleArea(text: String, image: String) {
                     .data(getImgUrl(url = image))
                     .crossfade(true)
                     .build(),
-                placeholder = painterResource(DrawR.drawable.placeholder_tag),
+                errorImage = painterResource(DrawR.drawable.placeholder_tag),
                 contentDescription = stringResource(StringR.string.description),
                 contentScale = ContentScale.Crop,
                 modifier = Modifier
@@ -185,7 +185,7 @@ fun CustomTagImage(image: String, onImageSelect: () -> Unit) {
                 .data(image)
                 .crossfade(true)
                 .build(),
-            placeholder = painterResource(DrawR.drawable.placeholder_tag),
+            errorImage = painterResource(DrawR.drawable.placeholder_tag),
             contentDescription = stringResource(StringR.string.description),
             contentScale = ContentScale.Crop,
             modifier = Modifier.fillMaxSize()

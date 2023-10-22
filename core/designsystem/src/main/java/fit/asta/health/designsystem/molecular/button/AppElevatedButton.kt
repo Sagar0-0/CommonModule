@@ -90,7 +90,7 @@ fun AppElevatedButton(
     modifier: Modifier = Modifier,
     onClick: () -> Unit,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -112,7 +112,7 @@ fun AppElevatedButton(
         bottom = AppTheme.spacing.level1
     ),
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    content: @Composable() (RowScope.() -> Unit)
+    content: @Composable (RowScope.() -> Unit)
 ) {
     ElevatedButton(
         onClick,
@@ -162,7 +162,7 @@ fun AppElevatedButton(
     textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -247,7 +247,7 @@ fun AppElevatedButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -346,7 +346,7 @@ fun AppElevatedButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -444,7 +444,7 @@ fun AppElevatedButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -542,7 +542,7 @@ fun AppElevatedButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -644,7 +644,7 @@ fun AppElevatedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -758,7 +758,7 @@ fun AppElevatedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -872,7 +872,7 @@ fun AppElevatedButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -985,7 +985,7 @@ fun AppElevatedButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.elevatedShape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.elevatedButtonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,

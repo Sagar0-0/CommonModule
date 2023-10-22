@@ -87,7 +87,7 @@ fun AppFilledButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -159,7 +159,7 @@ fun AppFilledButton(
     textToShow: String,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -242,7 +242,7 @@ fun AppFilledButton(
     leadingIcon: ImageVector? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -338,7 +338,7 @@ fun AppFilledButton(
     leadingIcon: Painter? = null,
     leadingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -434,7 +434,7 @@ fun AppFilledButton(
     trailingIconDes: String? = null,
     trailingIcon: Painter? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -530,7 +530,7 @@ fun AppFilledButton(
     trailingIconDes: String? = null,
     trailingIcon: ImageVector? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -630,7 +630,7 @@ fun AppFilledButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -742,7 +742,7 @@ fun AppFilledButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -854,7 +854,7 @@ fun AppFilledButton(
     trailingIcon: ImageVector? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
@@ -966,7 +966,7 @@ fun AppFilledButton(
     trailingIcon: Painter? = null,
     trailingIconDes: String? = null,
     iconTint: Color = AppTheme.colors.onPrimary,
-    shape: Shape = ButtonDefaults.shape,
+    shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,
