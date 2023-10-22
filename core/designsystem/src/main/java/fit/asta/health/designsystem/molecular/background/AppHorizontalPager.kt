@@ -7,6 +7,7 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -16,10 +17,11 @@ import androidx.compose.ui.graphics.graphicsLayer
 import androidx.compose.ui.util.lerp
 import com.google.accompanist.pager.ExperimentalPagerApi
 import com.google.accompanist.pager.HorizontalPager
+import com.google.accompanist.pager.HorizontalPagerIndicator
+import com.google.accompanist.pager.PagerState
 import com.google.accompanist.pager.calculateCurrentOffsetForPage
 import com.google.accompanist.pager.rememberPagerState
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.animations.AppHorizontalPagerIndicator
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import kotlin.math.absoluteValue
@@ -83,6 +85,7 @@ fun <T> AppHorizontalPager(
             ) {
                 content(page)
             }
+
             //Horizontal dot indicator
             AppHorizontalPagerIndicator(
                 pagerState = pagerState,
@@ -92,5 +95,29 @@ fun <T> AppHorizontalPager(
             )
         }
     }
+}
 
+/**[AppHorizontalPagerIndicator] function is a Composable function that displays a horizontal pager
+ * indicator.
+ * @param modifier An optional parameter that allows you to apply styling modifications to
+ * the HorizontalPagerIndicator.
+ * @param pagerState A required parameter that represents the state of the pager. It holds
+ * information about the current page, the number of items, and allows controlling the pager's behavior.
+ * */
+@OptIn(ExperimentalPagerApi::class)
+@Composable
+fun AppHorizontalPagerIndicator(
+    pagerState: PagerState,
+    modifier: Modifier = Modifier,
+) {
+    HorizontalPagerIndicator(
+        pagerState = pagerState,
+        modifier = modifier,
+        activeColor = AppTheme.colors.onSurface,
+        inactiveColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3),
+        indicatorWidth = AppTheme.spacing.level1,
+        indicatorHeight = AppTheme.spacing.level1,
+        spacing = AppTheme.spacing.level1,
+        indicatorShape = CircleShape
+    )
 }

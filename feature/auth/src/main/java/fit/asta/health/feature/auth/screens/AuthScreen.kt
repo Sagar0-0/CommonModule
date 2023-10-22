@@ -37,8 +37,8 @@ internal fun AuthScreen(
 ) {
     Column(
         modifier = Modifier
-            .fillMaxSize()
-            .padding(AppTheme.spacing.level2),
+//            .padding(AppTheme.spacing.level2)
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Bottom
     ) {
