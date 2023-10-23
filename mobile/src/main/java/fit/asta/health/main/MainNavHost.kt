@@ -101,7 +101,7 @@ private fun MainNavHost(startDestination: String) {
         route = Graph.ROOT.route,
         startDestination = startDestination
     ) {
-        authRoute(navController::navigateToWebView)
+        authRoute(navController, navController::navigateToWebView)
         basicProfileRoute()
         homeScreen(navController)
 

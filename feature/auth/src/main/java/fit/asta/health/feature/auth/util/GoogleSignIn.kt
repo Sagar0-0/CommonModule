@@ -45,7 +45,7 @@ fun GoogleSignIn(
         textToShow = stringResource(id = textId),
         modifier = Modifier
             .fillMaxWidth()
-            .height(AppTheme.buttonSize.level7),
+            .height(AppTheme.buttonSize.level6),
         leadingIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18)
     ) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
