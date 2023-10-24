@@ -1,14 +1,9 @@
 package fit.asta.health.feature.settings.view
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -31,27 +26,17 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.designsystem.molecular.button.AppRadioButton
-import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
-import fit.asta.health.designsystem.molecular.dialog.AppDialog
-import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.strings.R
 import fit.asta.health.ui.common.AppDialogPopUp
 
@@ -195,95 +180,10 @@ fun SettingsScreenLayout(
                 // Version
                 CardItem(
                     icon = Icons.Default.SettingsPhone,
-                    textToShow = R.string.user_pref_version_title.toStringFromResId()
+                    textToShow = R.string.user_pref_version_title.toStringFromResId() + builtVersion
                 ) { onClickEvent(SettingsUiEvent.VERSION) }
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-        }
-    }
-}
-
-@Composable
-private fun ListPreference(
-    titleId: Int,
-    imageVector: ImageVector,
-    theme: String,
-    entries: Array<String>,
-    values: Array<String>,
-    onValueChange: (String) -> Unit
-) {
-    val title = stringResource(id = titleId)
-    val idx = values.indexOf(theme.ifEmpty { "system" })
-    var showDialog by remember { mutableStateOf(false) }
-    var selectedIndex by remember { mutableIntStateOf(idx) }
-
-    CardItem(icon = imageVector, textToShow = title) {
-        showDialog = true
-    }
-
-    if (showDialog) {
-        AppDialog(onDismissRequest = { showDialog = false }) {
-            AppCard(
-                shape = AppTheme.shape.level2,
-                modifier = Modifier.fillMaxWidth()
-            ) {
-                entries.forEachIndexed { index, entry ->
-                    Row(verticalAlignment = Alignment.CenterVertically) {
-                        AppRadioButton(
-                            selected = selectedIndex == index
-                        ) {
-                            showDialog = false
-                            selectedIndex = index
-                            onValueChange(values[selectedIndex])
-                        }
-                        TitleTexts.Level2(text = entry)
-                    }
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-private fun CardLayout(
-    title: String,
-    content: @Composable ColumnScope.() -> Unit
-) {
-    AppElevatedCard(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
-        TitleTexts.Level2(
-            text = title,
-            modifier = Modifier.padding(
-                start = AppTheme.spacing.level2,
-                top = AppTheme.spacing.level2
-            )
-        )
-        content()
-    }
-}
-
-@Composable
-private fun CardItem(
-    icon: ImageVector,
-    textToShow: String,
-    onClick: () -> Unit
-) {
-    Box(
-        modifier = Modifier
-            .fillMaxWidth()
-            .clickable { onClick() }
-    ) {
-        Row(
-            modifier = Modifier.padding(vertical = AppTheme.spacing.level2),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppIcon(
-                imageVector = icon,
-                modifier = Modifier.padding(start = AppTheme.spacing.level2),
-                tint = AppTheme.colors.primary
-            )
-            CaptionTexts.Level1(text = textToShow)
         }
     }
 }

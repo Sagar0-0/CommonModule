@@ -59,8 +59,8 @@ fun SessionFeedback(
                         feedbackQuesState.resId.toStringFromResId(context),
                         Toast.LENGTH_SHORT
                     ).show()
+                    onBack()
                 }
-                onBack()
             }
 
             is UiState.Success -> {
