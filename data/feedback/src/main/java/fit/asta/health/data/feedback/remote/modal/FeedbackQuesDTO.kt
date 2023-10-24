@@ -23,25 +23,25 @@ data class Qn(
     @SerializedName("opts")
     val opts: List<String> = listOf(),
     @SerializedName("qn")
-    val qn: String,
+    val qn: String = "",
     @SerializedName("qno")
-    val qno: Int,
+    val qno: Int = 0,
     @SerializedName("ttl")
-    val ttl: String,
+    val ttl: String = "",
     @SerializedName("type")
-    val type: Int,
+    val type: Int = 0,
     @SerializedName("isMan")
-    val isMandatory: Boolean,
+    val isMandatory: Boolean = false,
     @SerializedName("ansType")
-    val ansType: AnsType
+    val ansType: AnsType = AnsType()
 ) : Parcelable
 
 @Parcelize
 data class AnsType(
     @SerializedName("isDet")
-    val isDet: Boolean,
+    val isDet: Boolean = false,
     @SerializedName("min")
-    val min: Int,
+    val min: Int = 0,
     @SerializedName("max")
-    val max: Int,
+    val max: Int = 0,
 ) : Parcelable

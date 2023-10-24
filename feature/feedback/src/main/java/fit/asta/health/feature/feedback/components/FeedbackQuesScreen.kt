@@ -26,7 +26,7 @@ fun FeedbackQuesScreen(
     onSubmit: (ans: List<An>) -> Unit
 ) {
     val qns = feedbackQuesState.qns
-    val isValidList = remember { qns.map { it.isMandatory }.toMutableStateList() }
+    val isValidList = remember { qns.map { !it.isMandatory }.toMutableStateList() }
     var isEnabled = isValidList.none { !it }
     val ansList = remember { qns.map { An() }.toMutableStateList() }
 

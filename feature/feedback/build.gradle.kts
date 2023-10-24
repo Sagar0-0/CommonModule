@@ -11,6 +11,16 @@ android {
 
 dependencies {
 
+    androidTestImplementation("androidx.test:rules:1.5.0")
+    androidTestImplementation("androidx.test:runner:1.6.0-alpha04")
+    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
+    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+    // Test rules and transitive dependencies:
+    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
+    // Needed for createAndroidComposeRule, but not createComposeRule:
+    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
+
     implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
 
