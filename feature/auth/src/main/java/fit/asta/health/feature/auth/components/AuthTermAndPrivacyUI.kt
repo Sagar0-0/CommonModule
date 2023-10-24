@@ -22,7 +22,7 @@ import java.nio.charset.StandardCharsets
  * @param onPrivacyClick This function is called when the User clicks on the Privacy Text
  */
 @Composable
-fun TermAndPrivacyUI(
+fun AuthTermAndPrivacyUI(
     modifier: Modifier = Modifier,
     onTermsClick: (String) -> Unit,
     onPrivacyClick: (String) -> Unit

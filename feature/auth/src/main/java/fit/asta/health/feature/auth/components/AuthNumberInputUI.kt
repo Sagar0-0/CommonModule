@@ -20,8 +20,19 @@ import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 
+
+/**
+ * This Function draws the Phone Number Input Text Fields UI which contains the Country Code input,
+ * Phone Number input and the Generate OTP Button
+ *
+ * @param phoneNumber This is the Phone Number inputted By the User
+ * @param countryCode This is the Country Code inputted by the user
+ * @param onPhoneNumberChange This function is invoked when the Phone Number is changed
+ * @param onCountryCodeChange This function is invoked when the Country Code is changed
+ * @param onGenerateOtpClick This function is invoked when the generate code button is clicked
+ */
 @Composable
-fun PhoneSignUI(
+fun AuthNumberInputUI(
     phoneNumber: String,
     countryCode: String,
     onPhoneNumberChange: (String) -> Unit,
@@ -38,6 +49,7 @@ fun PhoneSignUI(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
+        // Contains the Country Code and the Phone Number Text Fields
         Row(
             modifier = Modifier.fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
@@ -68,6 +80,7 @@ fun PhoneSignUI(
                 singleLine = true
             )
 
+            // Phone Number Input Text Field
             AppOutlinedTextField(
                 modifier = Modifier.weight(.73f),
                 value = phoneNumber,
@@ -88,6 +101,7 @@ fun PhoneSignUI(
             )
         }
 
+        // Generate OTP Button
         AppFilledButton(
             modifier = Modifier.fillMaxWidth(),
             textToShow = "Generate OTP",

@@ -11,7 +11,7 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.screens.AuthUiEvent
-import fit.asta.health.feature.auth.screens.OtpVerificationScreen
+import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -68,7 +68,7 @@ fun NavGraphBuilder.authRoute(
 
 
     composable(AUTH_OTP_VERIFICATION_ROUTE) {
-        OtpVerificationScreen()
+        AuthPhoneSignInScreen()
     }
 }
 

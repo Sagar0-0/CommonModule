@@ -23,7 +23,7 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthStringDivider
-import fit.asta.health.feature.auth.components.TermAndPrivacyUI
+import fit.asta.health.feature.auth.components.AuthTermAndPrivacyUI
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.OnboardingDataPager
 import fit.asta.health.resources.drawables.R as DrawR
@@ -118,7 +118,7 @@ internal fun AuthScreen(
             }
 
             // Terms and Policy composable function
-            TermAndPrivacyUI(
+            AuthTermAndPrivacyUI(
                 modifier = Modifier
                     .padding(bottom = AppTheme.spacing.level3)
                     .fillMaxWidth(),
