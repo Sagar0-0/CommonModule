@@ -1,17 +1,16 @@
 package fit.asta.health.feature.auth.screens
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -20,12 +19,13 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppRetryCard
-import fit.asta.health.designsystem.molecular.animations.ShimmerAnimation
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthStringDivider
 import fit.asta.health.feature.auth.components.TermAndPrivacyUI
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.OnboardingDataPager
-import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -33,14 +33,15 @@ import fit.asta.health.resources.strings.R as StringR
 internal fun AuthScreen(
     loginState: UiState<Unit>,
     onboardingState: UiState<List<OnboardingData>>,
+    onNavigate: (String) -> Unit,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
+
+    //Parent Composable
     Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(AppTheme.spacing.level2),
+        modifier = Modifier.fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Bottom
+        verticalArrangement = Arrangement.SpaceBetween
     ) {
         when (loginState) {
             is UiState.ErrorRetry -> {
@@ -50,15 +51,18 @@ internal fun AuthScreen(
             }
 
             UiState.Loading -> {
-                ShimmerAnimation(
-                    cardHeight = AppTheme.cardHeight.level3,
-                    cardWidth = AppTheme.cardHeight.level2
-                )
+                Box(
+                    modifier = Modifier.fillMaxSize(),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppDotTypingAnimation()
+                }
             }
 
             else -> {}
         }
 
+        // Boarding Image State
         when (onboardingState) {
             is UiState.Success -> {
                 OnboardingDataPager(onboardingState.data)
@@ -75,10 +79,7 @@ internal fun AuthScreen(
             }
 
             is UiState.Loading -> {
-                ShimmerAnimation(
-                    cardHeight = AppTheme.cardHeight.level3,
-                    cardWidth = AppTheme.cardHeight.level2
-                )
+                AppDotTypingAnimation()
             }
 
             else -> {
@@ -88,41 +89,46 @@ internal fun AuthScreen(
             }
         }
 
-
-        var isGoogleVisible by rememberSaveable { mutableStateOf(true) }
-
-        AuthStringDivider(textToShow = "Login or Sign up")
-        PhoneSignIn(
-            failed = loginState is UiState.ErrorMessage,
-            resetFailedState = {
-                onUiEvent(AuthUiEvent.OnLoginFailed)
-            },
-            isPhoneEntered = {
-                isGoogleVisible = !it
-            }
-        ) {
-            onUiEvent(AuthUiEvent.SignInWithCredentials(it))
-        }
-
-        AnimatedVisibility(visible = isGoogleVisible) {
-            Column {
-                AuthStringDivider(textToShow = "or")
-                GoogleSignIn(StringR.string.sign_in_with_google) {
-                    onUiEvent(AuthUiEvent.SignInWithCredentials(it))
-                }
-            }
-        }
-
-        TermAndPrivacyUI(
+        // Whole Login and Sign up along with the terms and policy UI
+        Column(
             modifier = Modifier
-                .padding(vertical = AppTheme.spacing.level2)
-                .fillMaxWidth(),
-            onTermsClick = {
-                onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
-            },
-            onPrivacyClick = {
-                onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level3),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+
+            // Login or sign up divider
+            AuthStringDivider(textToShow = "Login or Sign up")
+
+            // Sign in with Phone Button
+            AppFilledButton(
+                textToShow = "Sign in with Phone",
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(AppTheme.buttonSize.level6),
+                leadingIcon = Icons.Default.Phone
+            ) {
+                onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
             }
-        )
+
+            // Google Sign In Button
+            GoogleSignIn(StringR.string.sign_in_with_google) {
+                onUiEvent(AuthUiEvent.SignInWithCredentials(it))
+            }
+
+            // Terms and Policy composable function
+            TermAndPrivacyUI(
+                modifier = Modifier
+                    .padding(bottom = AppTheme.spacing.level3)
+                    .fillMaxWidth(),
+                onTermsClick = {
+                    onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                },
+                onPrivacyClick = {
+                    onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                }
+            )
+        }
     }
 }

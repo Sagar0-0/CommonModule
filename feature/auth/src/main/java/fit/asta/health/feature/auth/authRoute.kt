@@ -11,10 +11,12 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.screens.AuthUiEvent
+import fit.asta.health.feature.auth.screens.OtpVerificationScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val AUTH_GRAPH_ROUTE = "graph_auth"
+const val AUTH_OTP_VERIFICATION_ROUTE = "auth_otp_verification_route"
 fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
     if (navOptions == null) {
         this.navigate(AUTH_GRAPH_ROUTE) {
@@ -27,6 +29,7 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.authRoute(
+    navController: NavController,
     navigateToWebView: (String) -> Unit
 ) {
     composable(AUTH_GRAPH_ROUTE) {
@@ -40,7 +43,8 @@ fun NavGraphBuilder.authRoute(
 
         AuthScreen(
             loginState = loginState,
-            onboardingState = onboardingState
+            onboardingState = onboardingState,
+            onNavigate = { navController.navigate(it) }
         ) {
             when (it) {
                 AuthUiEvent.OnLoginFailed -> {
@@ -60,6 +64,11 @@ fun NavGraphBuilder.authRoute(
                 }
             }
         }
+    }
+
+
+    composable(AUTH_OTP_VERIFICATION_ROUTE) {
+        OtpVerificationScreen()
     }
 }
 

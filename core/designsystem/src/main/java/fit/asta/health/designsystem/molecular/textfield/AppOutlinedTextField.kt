@@ -143,9 +143,7 @@ fun AppOutlinedTextField(
         colors = colors,
         supportingText = {
             Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level1),
+                modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
             ) {
                 if (isError) CaptionTexts.Level3(errorMessage)

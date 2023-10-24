@@ -1,6 +1,5 @@
 package fit.asta.health.designsystem.molecular.animations
 
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.Divider
 import androidx.compose.material3.ProgressIndicatorDefaults
@@ -9,9 +8,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.Dp
-import com.google.accompanist.pager.ExperimentalPagerApi
-import com.google.accompanist.pager.HorizontalPagerIndicator
-import com.google.accompanist.pager.PagerState
 import fit.asta.health.designsystem.AppTheme
 
 
@@ -47,31 +43,3 @@ fun AppCircularProgressIndicator(
         modifier = modifier, color = AppTheme.colors.primary, strokeWidth = strokeWidth
     )
 }
-
-
-/**[AppHorizontalPagerIndicator] function is a Composable function that displays a horizontal pager
- * indicator.
- * @param modifier An optional parameter that allows you to apply styling modifications to
- * the HorizontalPagerIndicator.
- * @param pagerState A required parameter that represents the state of the pager. It holds
- * information about the current page, the number of items, and allows controlling the pager's behavior.
- * */
-@OptIn(ExperimentalPagerApi::class)
-@Composable
-fun AppHorizontalPagerIndicator(
-    pagerState: PagerState,
-    modifier: Modifier = Modifier,
-) {
-    HorizontalPagerIndicator(
-        pagerState = pagerState,
-        modifier = modifier,
-        activeColor = AppTheme.colors.onSurface,
-        inactiveColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3),
-        indicatorWidth = AppTheme.spacing.level1,
-        indicatorHeight = AppTheme.spacing.level1,
-        spacing = AppTheme.spacing.level1,
-        indicatorShape = CircleShape
-    )
-}
-
-
