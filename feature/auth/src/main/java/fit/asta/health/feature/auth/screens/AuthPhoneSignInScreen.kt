@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -26,6 +25,7 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.auth.components.AuthNumberInputUI
@@ -38,6 +38,7 @@ fun AuthPhoneSignInScreen(
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
 
+    val context = LocalContext.current
 
     // phone Number inputted by the User
     var phoneNumber by remember { mutableStateOf("") }
@@ -63,12 +64,10 @@ fun AuthPhoneSignInScreen(
     // This is the Verification ID which would be matched for OTP
     var verificationID by remember { mutableStateOf("") }
 
-    val context = LocalContext.current
-
     // This is the function for sending the OTP
     val onSendOtp = {
         if (phoneNumber.length != 10 || countryCode.length < 2)
-            Toast.makeText(context, "Please enter a valid OTP", Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, "Please enter a valid Number", Toast.LENGTH_SHORT).show()
         else {
             loading = true
 
@@ -122,68 +121,73 @@ fun AuthPhoneSignInScreen(
         }
     }
 
-    if (loading) {
-        CircularProgressIndicator(modifier = Modifier.fillMaxSize())
-    }
-
     AppScreen {
 
         // Contains Both the heading text, Number Input and the Verification Code input Fields
-        Column(
-            modifier = Modifier
-                .padding(
-                    horizontal = AppTheme.spacing.level2,
-                    vertical = AppTheme.spacing.level5
-                )
-                .fillMaxSize(),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
+        Box {
 
-            // heading Text asking user to give his inputs
-            HeadingTexts.Level1(text = textToShow)
+            // If loading is true we show the Loading UI
+            if (loading)
+                AppDotTypingAnimation(modifier = Modifier.align(Alignment.Center))
 
-            // This Contains the Phone Number Input UI
-            Box {
-                this@Column.AnimatedVisibility(
-                    visible = !otpVisible,
-                    enter = fadeIn() + slideInHorizontally(
-                        initialOffsetX = { it * 2 }
-                    ),
-                    exit = fadeOut() + slideOutHorizontally(
-                        targetOffsetX = { it * 2 }
+            Column(
+                modifier = Modifier
+                    .padding(
+                        horizontal = AppTheme.spacing.level2,
+                        vertical = AppTheme.spacing.level5
                     )
-                ) {
-                    AuthNumberInputUI(
-                        phoneNumber = phoneNumber,
-                        countryCode = countryCode,
-                        onPhoneNumberChange = {
-                            phoneNumber = it
-                        },
-                        onCountryCodeChange = {
-                            countryCode = it
-                        },
-                        onGenerateOtpClick = onSendOtp
-                    )
-                }
+                    .fillMaxSize(),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-                // This contains the OTP Verification code Inputs
-                this@Column.AnimatedVisibility(
-                    visible = otpVisible,
-                    enter = fadeIn() + slideInHorizontally(),
-                    exit = fadeOut() + slideOutHorizontally()
-                ) {
-                    AuthOtpVerificationUI(
-                        otp = otp,
-                        onOtpTextChange = {
-                            otp = it
-                        },
-                        onWrongNumberButtonClick = {
-                            otp = ""
-                            otpVisible = false
-                        },
-                        onVerifyOtpClick = onOtpSubmit
-                    )
+                // heading Text asking user to give his inputs
+                HeadingTexts.Level1(text = textToShow)
+
+                // This Contains the Phone Number Input UI
+                Box {
+                    this@Column.AnimatedVisibility(
+                        visible = !otpVisible,
+                        enter = fadeIn() + slideInHorizontally(
+                            initialOffsetX = { it * 2 }
+                        ),
+                        exit = fadeOut() + slideOutHorizontally(
+                            targetOffsetX = { it * 2 }
+                        )
+                    ) {
+                        AuthNumberInputUI(
+                            phoneNumber = phoneNumber,
+                            countryCode = countryCode,
+                            onPhoneNumberChange = {
+                                phoneNumber = it
+                            },
+                            onCountryCodeChange = {
+                                countryCode = it
+                            },
+                            onGenerateOtpClick = onSendOtp
+                        )
+                    }
+
+                    // This contains the OTP Verification code Inputs
+                    this@Column.AnimatedVisibility(
+                        visible = otpVisible,
+                        enter = fadeIn() + slideInHorizontally(),
+                        exit = fadeOut() + slideOutHorizontally()
+                    ) {
+                        AuthOtpVerificationUI(
+                            otp = otp,
+                            onOtpTextChange = {
+                                otp = it
+                            },
+                            onWrongNumberButtonClick = {
+                                otp = ""
+                                otpVisible = false
+                            }
+                        ) {
+                            loading = true
+                            onOtpSubmit()
+                        }
+                    }
                 }
             }
         }

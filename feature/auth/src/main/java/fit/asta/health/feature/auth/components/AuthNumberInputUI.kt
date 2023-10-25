@@ -142,9 +142,11 @@ fun AuthNumberInputUI(
         // Generate OTP Button
         AppFilledButton(
             modifier = Modifier.fillMaxWidth(),
-            textToShow = "Generate OTP",
-            onClick = onGenerateOtpClick
-        )
+            textToShow = "Generate OTP"
+        ) {
+            focusManager.clearFocus()
+            onGenerateOtpClick()
+        }
     }
 }
 

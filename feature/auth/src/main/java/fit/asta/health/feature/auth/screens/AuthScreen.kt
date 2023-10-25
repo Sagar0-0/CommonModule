@@ -94,7 +94,7 @@ internal fun AuthScreen(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = AppTheme.spacing.level3),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
 

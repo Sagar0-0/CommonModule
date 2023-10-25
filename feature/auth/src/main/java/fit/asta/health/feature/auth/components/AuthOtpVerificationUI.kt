@@ -11,14 +11,22 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import com.google.android.gms.auth.api.phone.SmsRetriever
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.feature.auth.screens.OTPReceiver
+import kotlinx.coroutines.delay
+import kotlin.time.Duration.Companion.seconds
 
 /**
  * This Function draws the OTP Verification Whole UI with the Text Field for OTP, The Verify and
@@ -37,11 +45,24 @@ fun AuthOtpVerificationUI(
     onWrongNumberButtonClick: () -> Unit,
     onVerifyOtpClick: () -> Unit
 ) {
+    val focusManager = LocalFocusManager.current
+
+    var ticks by rememberSaveable { mutableIntStateOf(30) }
+    LaunchedEffect(Unit) {
+        while (ticks > 0) {
+            delay(1.seconds)
+            ticks--
+        }
+    }
+
 
     // Starting the Broadcast Receiver
     SmsReceiver(
         onOtpTextChange = onOtpTextChange,
-        onVerifyOtpClick = onVerifyOtpClick
+        onVerifyOtpClick = {
+            focusManager.clearFocus()
+            onVerifyOtpClick()
+        }
     )
 
     Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
@@ -63,14 +84,20 @@ fun AuthOtpVerificationUI(
             // Verify Button
             AppFilledButton(
                 modifier = Modifier.weight(1f),
-                textToShow = "Verify",
-                onClick = onVerifyOtpClick
-            )
+                textToShow = "Verify"
+            ) {
+                focusManager.clearFocus()
+                onVerifyOtpClick()
+            }
 
             // Resend OTP Button
             AppOutlinedButton(
                 modifier = Modifier.weight(1f),
-                textToShow = "Resend in 30 sec"
+                textToShow = if (ticks != 0)
+                    "Resend in $ticks sec"
+                else
+                    "Resend OTP",
+                enabled = (ticks == 0)
             ) {
                 // TODO :- Resend OTP Code
             }
@@ -131,7 +158,6 @@ private fun SmsReceiver(
             },
             onFailure = {
                 Toast.makeText(context, "Failed to retrieve OTP", Toast.LENGTH_SHORT).show()
-//                loading = false
             }
         )
 
