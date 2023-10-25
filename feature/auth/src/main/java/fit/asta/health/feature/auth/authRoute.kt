@@ -9,9 +9,9 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.popUpToTop
+import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
 import fit.asta.health.feature.auth.screens.AuthScreen
 import fit.asta.health.feature.auth.screens.AuthUiEvent
-import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -32,6 +32,7 @@ fun NavGraphBuilder.authRoute(
     navController: NavController,
     navigateToWebView: (String) -> Unit
 ) {
+
     composable(AUTH_GRAPH_ROUTE) {
         val authViewModel: AuthViewModel = hiltViewModel()
         LaunchedEffect(Unit) {
@@ -68,7 +69,30 @@ fun NavGraphBuilder.authRoute(
 
 
     composable(AUTH_OTP_VERIFICATION_ROUTE) {
-        AuthPhoneSignInScreen()
+        val authViewModel: AuthViewModel = hiltViewModel()
+        LaunchedEffect(Unit) {
+            authViewModel.getOnboardingData()
+        }
+        val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
+        AuthPhoneSignInScreen(loginState = loginState) {
+            when (it) {
+                AuthUiEvent.OnLoginFailed -> {
+                    authViewModel.onLoginFailed()
+                }
+
+                is AuthUiEvent.NavigateToWebView -> {
+                    navigateToWebView(it.url)
+                }
+
+                is AuthUiEvent.SignInWithCredentials -> {
+                    authViewModel.signInAndNavigate(it.authCredential)
+                }
+
+                is AuthUiEvent.GetOnboardingData -> {
+                    authViewModel.getOnboardingData()
+                }
+            }
+        }
     }
 }
 
