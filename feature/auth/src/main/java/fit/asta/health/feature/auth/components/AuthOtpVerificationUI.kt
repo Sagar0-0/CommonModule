@@ -14,7 +14,8 @@ import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,6 +37,8 @@ import kotlin.time.Duration.Companion.seconds
  * @param onOtpTextChange This function is invoked when the OTP is changed by the user
  * @param onWrongNumberButtonClick This function is invoked when the user clicks the Wrong Phone
  * Number Button
+ * @param onVerifyOtpClick This function is invoked when the Verify Button is Clicked
+ * @param onResendOtpClick this function is invoked when the Resend Button is Clicked
  */
 @Composable
 fun AuthOtpVerificationUI(
@@ -43,18 +46,27 @@ fun AuthOtpVerificationUI(
     otp: String,
     onOtpTextChange: (String) -> Unit,
     onWrongNumberButtonClick: () -> Unit,
-    onVerifyOtpClick: () -> Unit
+    onVerifyOtpClick: () -> Unit,
+    onResendOtpClick: () -> Unit
 ) {
     val focusManager = LocalFocusManager.current
 
-    var ticks by rememberSaveable { mutableIntStateOf(30) }
-    LaunchedEffect(Unit) {
-        while (ticks > 0) {
-            delay(1.seconds)
-            ticks--
-        }
-    }
+    // This variable contains how much time we have till the user can ask to resend OTP
+    var ticks by remember { mutableIntStateOf(30) }
 
+    // Keeps tab of if we need to restart the Ticking
+    var restartTick by remember { mutableStateOf(false) }
+
+    LaunchedEffect(restartTick) {
+        if (restartTick) {
+            ticks = 30
+            restartTick = false
+        } else
+            while (ticks > 0) {
+                delay(1.seconds)
+                ticks--
+            }
+    }
 
     // Starting the Broadcast Receiver
     SmsReceiver(
@@ -70,7 +82,8 @@ fun AuthOtpVerificationUI(
         // This draws the Custom Text Field for the OTP inputs
         AuthOtpTextField(
             otp = otp,
-            onOtpTextChange = onOtpTextChange
+            onOtpTextChange = onOtpTextChange,
+            onDoneClick = onVerifyOtpClick
         )
 
         // Contains the Verify and the Resend Button
@@ -99,7 +112,8 @@ fun AuthOtpVerificationUI(
                     "Resend OTP",
                 enabled = (ticks == 0)
             ) {
-                // TODO :- Resend OTP Code
+                restartTick = true
+                onResendOtpClick()
             }
         }
 

@@ -2,18 +2,14 @@ package fit.asta.health.feature.auth.screens
 
 import android.app.Activity
 import android.widget.Toast
-import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.animation.fadeIn
-import androidx.compose.animation.fadeOut
-import androidx.compose.animation.slideInHorizontally
-import androidx.compose.animation.slideOutHorizontally
-import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -24,10 +20,12 @@ import androidx.compose.ui.platform.LocalContext
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.components.AuthNumberInputUI
 import fit.asta.health.feature.auth.components.AuthOtpVerificationUI
 import fit.asta.health.feature.auth.util.OtpVerifier
@@ -54,7 +52,7 @@ fun AuthPhoneSignInScreen(
 
     // This is the heading text of the App asking the App for necessary inputs
     val textToShow = when (otpVisible) {
-        true -> "Enter the Otp Sent To phone Number ${countryCode}-$phoneNumber"
+        true -> "Enter the Otp Sent To phone Number ${countryCode}$phoneNumber"
         false -> "Enter your mobile number to get the OTP"
     }
 
@@ -108,53 +106,40 @@ fun AuthPhoneSignInScreen(
     }
 
     // Resetting all the Values once the Login Fails and asks the User to enter and check data again
-    LaunchedEffect(loginState) {
-        if (loginState is UiState.ErrorMessage) {
-            onUiEvent(AuthUiEvent.OnLoginFailed)
-            loading = false
-            otp = ""
-            Toast.makeText(
-                context,
-                "Please check if this number already linked with another account.",
-                Toast.LENGTH_SHORT
-            ).show()
+    when (loginState) {
+        is UiState.ErrorRetry -> {
+            AppRetryCard(text = loginState.resId.toStringFromResId()) {
+                onUiEvent(AuthUiEvent.OnLoginFailed)
+            }
         }
+
+        UiState.Loading -> {
+            loading = true
+        }
+
+        else -> {}
     }
 
     AppScreen {
 
         // Contains Both the heading text, Number Input and the Verification Code input Fields
-        Box {
+        Box(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(horizontal = AppTheme.spacing.level2),
+            contentAlignment = Alignment.Center
+        ) {
 
-            // If loading is true we show the Loading UI
-            if (loading)
-                AppDotTypingAnimation(modifier = Modifier.align(Alignment.Center))
-
-            Column(
-                modifier = Modifier
-                    .padding(
-                        horizontal = AppTheme.spacing.level2,
-                        vertical = AppTheme.spacing.level5
-                    )
-                    .fillMaxSize(),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
+            Column {
 
                 // heading Text asking user to give his inputs
-                HeadingTexts.Level1(text = textToShow)
+                TitleTexts.Level2(text = textToShow)
+
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
                 // This Contains the Phone Number Input UI
-                Box {
-                    this@Column.AnimatedVisibility(
-                        visible = !otpVisible,
-                        enter = fadeIn() + slideInHorizontally(
-                            initialOffsetX = { it * 2 }
-                        ),
-                        exit = fadeOut() + slideOutHorizontally(
-                            targetOffsetX = { it * 2 }
-                        )
-                    ) {
+                Crossfade(targetState = otpVisible, label = "") { visibility ->
+                    if (!visibility)
                         AuthNumberInputUI(
                             phoneNumber = phoneNumber,
                             countryCode = countryCode,
@@ -166,14 +151,7 @@ fun AuthPhoneSignInScreen(
                             },
                             onGenerateOtpClick = onSendOtp
                         )
-                    }
-
-                    // This contains the OTP Verification code Inputs
-                    this@Column.AnimatedVisibility(
-                        visible = otpVisible,
-                        enter = fadeIn() + slideInHorizontally(),
-                        exit = fadeOut() + slideOutHorizontally()
-                    ) {
+                    else
                         AuthOtpVerificationUI(
                             otp = otp,
                             onOtpTextChange = {
@@ -182,14 +160,16 @@ fun AuthPhoneSignInScreen(
                             onWrongNumberButtonClick = {
                                 otp = ""
                                 otpVisible = false
-                            }
-                        ) {
-                            loading = true
-                            onOtpSubmit()
-                        }
-                    }
+                            },
+                            onVerifyOtpClick = onOtpSubmit,
+                            onResendOtpClick = onSendOtp
+                        )
                 }
             }
+
+            // If loading is true we show the Loading UI
+            if (loading)
+                AppDotTypingAnimation(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

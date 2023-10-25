@@ -71,7 +71,7 @@ object DefaultColorTokens {
      * Primary Dark Color
      */
     val md_theme_dark_primary = Color(0xFF2D9DFF)
-    val md_theme_dark_onPrimary = Color(0xFF0D0D0D)
+    val md_theme_dark_onPrimary = Color(0xFFFFFFFF)
     val md_theme_dark_primaryContainer = Color(0xFF001F38)
     val md_theme_dark_onPrimaryContainer = Color(0xFFC6DBEC)
 

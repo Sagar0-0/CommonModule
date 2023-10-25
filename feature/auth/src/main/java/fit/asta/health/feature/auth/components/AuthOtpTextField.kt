@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.style.TextAlign
@@ -28,13 +29,15 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
  * @param otp This is the OTP which would be given as input by the user
  * @param otpCount This is the Maximum number of digits in the OTP
  * @param onOtpTextChange This function will be invoked when the input is changed by the user
+ * @param onDoneClick This function is invoked when the User hits the onDone in the Keyboard
  */
 @Composable
 fun AuthOtpTextField(
     modifier: Modifier = Modifier,
     otp: String,
     otpCount: Int = 6,
-    onOtpTextChange: (String) -> Unit
+    onOtpTextChange: (String) -> Unit,
+    onDoneClick: () -> Unit
 ) {
 
     val focusManager = LocalFocusManager.current
@@ -51,10 +54,14 @@ fun AuthOtpTextField(
         },
 
         // Setting Keyboard Options to only take Number Inputs
-        keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.NumberPassword),
+        keyboardOptions = KeyboardOptions(
+            keyboardType = KeyboardType.NumberPassword,
+            imeAction = ImeAction.Done
+        ),
         keyboardActions = KeyboardActions(
             onDone = {
                 focusManager.clearFocus()
+                onDoneClick()
             }
         ),
         decorationBox = {
