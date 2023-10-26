@@ -58,7 +58,7 @@ fun NavGraphBuilder.settingScreens(
 
                     is UiState.Success -> {
                         settingsViewModel.resetDeleteState()
-                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
+                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuthScreen)
                     }
 
                     is UiState.ErrorMessage -> {
@@ -75,11 +75,11 @@ fun NavGraphBuilder.settingScreens(
                     else -> {}
                 }
 
-                val logoutState by settingsViewModel.logoutState.collectAsStateWithLifecycle()
-                when (logoutState) {
+                val userLogoutState by settingsViewModel.logoutState.collectAsStateWithLifecycle()
+                when (userLogoutState) {
                     is UiState.ErrorRetry -> {
-                        AppRetryCard(text = (logoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
-                            settingsViewModel.logout()
+                        AppRetryCard(text = (userLogoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                            settingsViewModel.logoutUser()
                         }
                     }
 
@@ -89,13 +89,15 @@ fun NavGraphBuilder.settingScreens(
 
                     is UiState.Success -> {
                         settingsViewModel.resetLogoutState()
-                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuth)
+                        onSettingsUiEvent(SettingsUiEvent.NavigateToAuthScreen)
                     }
 
                     is UiState.ErrorMessage -> {
                         Toast.makeText(
                             context,
-                            (logoutState as UiState.ErrorMessage).resId.toStringFromResId(context),
+                            (userLogoutState as UiState.ErrorMessage).resId.toStringFromResId(
+                                context
+                            ),
                             Toast.LENGTH_SHORT
                         ).show()
                         settingsViewModel.resetLogoutState()
@@ -103,19 +105,19 @@ fun NavGraphBuilder.settingScreens(
 
                     else -> {}
                 }
-                val theme by settingsViewModel.theme.collectAsStateWithLifecycle()
+                val selectedTheme by settingsViewModel.selectedTheme.collectAsStateWithLifecycle()
 
                 SettingsScreenLayout(
-                    builtVersion = context.getCurrentBuildVersion(),
-                    theme = theme,
-                    onClickEvent = {
+                    appVersionNumber = context.getCurrentBuildVersion(),
+                    selectedTheme = selectedTheme,
+                    onUiEvent = {
                         when (it) {
                             is SettingsUiEvent.SetTheme -> {
-                                settingsViewModel.setTheme(it.theme)
+                                settingsViewModel.setSelectedTheme(it.theme)
                             }
 
                             SettingsUiEvent.SIGNOUT -> {
-                                settingsViewModel.logout()
+                                settingsViewModel.logoutUser()
                             }
 
                             SettingsUiEvent.DELETE -> {
@@ -134,7 +136,7 @@ fun NavGraphBuilder.settingScreens(
                 )
             }
             composable(route = SettingDestination.Notifications.route) {
-                val status by remember {
+                val notificationPreferenceState by remember {
                     mutableStateOf(
                         SettingsNotificationsStatus(
                             isAllNotificationOn = settingsViewModel.isAllNotificationOn,
@@ -150,7 +152,7 @@ fun NavGraphBuilder.settingScreens(
                     )
                 }
                 SettingsNotificationLayout(
-                    settingsNotificationsStatus = status,
+                    settingsNotificationsStatus = notificationPreferenceState,
                     onBackPress = {
                         onSettingsUiEvent(SettingsUiEvent.BACK)
                     },
@@ -163,5 +165,5 @@ fun NavGraphBuilder.settingScreens(
 
 internal sealed class SettingDestination(val route: String) {
     data object Main : SettingDestination("ss_main")
-    data object Notifications : SettingDestination("ss_notif")
+    data object Notifications : SettingDestination("ss_notification")
 }

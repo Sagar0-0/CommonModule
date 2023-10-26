@@ -43,9 +43,9 @@ import fit.asta.health.ui.common.AppDialogPopUp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsScreenLayout(
-    builtVersion: String,
-    theme: String,
-    onClickEvent: (key: SettingsUiEvent) -> Unit
+    appVersionNumber: String,
+    selectedTheme: String,
+    onUiEvent: (key: SettingsUiEvent) -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
@@ -60,7 +60,7 @@ fun SettingsScreenLayout(
             onDismiss = { showDeleteConfirmationDialog = false }
         ) {
             showDeleteConfirmationDialog = false
-            onClickEvent(SettingsUiEvent.DELETE)
+            onUiEvent(SettingsUiEvent.DELETE)
         }
     }
 
@@ -68,11 +68,10 @@ fun SettingsScreenLayout(
     AppScaffold(
         snackBarHostState = snackBarHostState,
         topBar = {
-
             // Top App Bar
             AppTopBar(
                 title = stringResource(id = R.string.title_settings),
-                onBack = { onClickEvent(SettingsUiEvent.BACK) }
+                onBack = { onUiEvent(SettingsUiEvent.BACK) }
             )
         }
     ) { padding ->
@@ -86,102 +85,102 @@ fun SettingsScreenLayout(
         ) {
 
             // support Us Card Layout Function
-            CardLayout(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
+            SettingsCardLayout(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
 
                 // Share
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.Share,
-                    textToShow = stringResource(R.string.user_pref_share_app_title)
-                ) { onClickEvent(SettingsUiEvent.SHARE) }
+                    text = stringResource(R.string.user_pref_share_app_title)
+                ) { onUiEvent(SettingsUiEvent.SHARE) }
 
                 // Subscribe
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.Subscriptions,
-                    textToShow = R.string.subscribe.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.NavigateToSubscription) }
+                    text = R.string.subscribe.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.NavigateToSubscription) }
 
                 // Orders
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.ShoppingCart,
-                    textToShow = R.string.orders.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.NavigateToOrders) }
+                    text = R.string.orders.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.NavigateToOrders) }
 
                 // Refer and Earn
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.MonetizationOn,
-                    textToShow = R.string.refer_and_earn.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.REFERRAL) }
+                    text = R.string.refer_and_earn.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.REFERRAL) }
 
                 // Saved Addresses
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.LocationOn,
-                    textToShow = R.string.saved_address.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.ADDRESS) }
+                    text = R.string.saved_address.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.ADDRESS) }
 
                 // Wallet
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.AccountBalanceWallet,
-                    textToShow = R.string.wallet.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.WALLET) }
+                    text = R.string.wallet.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.WALLET) }
             }
 
             // This is the Display card section
-            CardLayout(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
+            SettingsCardLayout(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
 
                 // Theme
-                ListPreference(
+                SettingsPreferenceDialog(
                     titleId = R.string.user_pref_theme_title,
                     imageVector = Icons.Default.ColorLens,
-                    theme = theme,
+                    theme = selectedTheme,
                     entries = stringArrayResource(id = R.array.user_pref_theme_entries),
                     values = stringArrayResource(id = R.array.user_pref_theme_values)
                 ) {
-                    onClickEvent(SettingsUiEvent.SetTheme(it))
+                    onUiEvent(SettingsUiEvent.SetTheme(it))
                 }
             }
 
             // This is the Account Section
-            CardLayout(title = R.string.user_pref_account_cat_title.toStringFromResId()) {
+            SettingsCardLayout(title = R.string.user_pref_account_cat_title.toStringFromResId()) {
 
                 // Sign out
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.Logout,
-                    textToShow = R.string.user_pref_sign_out_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.SIGNOUT) }
+                    text = R.string.user_pref_sign_out_title.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.SIGNOUT) }
 
                 // Delete
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.DeleteForever,
-                    textToShow = R.string.user_pref_delete_account_title.toStringFromResId()
+                    text = R.string.user_pref_delete_account_title.toStringFromResId()
                 ) { showDeleteConfirmationDialog = true }
             }
 
             // This is the About Card Section
-            CardLayout(title = R.string.user_pref_about_cat_title.toStringFromResId()) {
+            SettingsCardLayout(title = R.string.user_pref_about_cat_title.toStringFromResId()) {
 
                 // Bug Report
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.BugReport,
-                    textToShow = R.string.user_pref_bug_report_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.BUG) }
+                    text = R.string.user_pref_bug_report_title.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.BUG) }
 
                 // Terms of Use
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.FileCopy,
-                    textToShow = R.string.user_pref_terms_of_use_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.TERMS) }
+                    text = R.string.user_pref_terms_of_use_title.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.TERMS) }
 
                 // Privacy Policy
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.NightShelter,
-                    textToShow = R.string.user_pref_privacy_policy_title.toStringFromResId()
-                ) { onClickEvent(SettingsUiEvent.PRIVACY) }
+                    text = R.string.user_pref_privacy_policy_title.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.PRIVACY) }
 
                 // Version
-                CardItem(
+                SettingsCardItem(
                     icon = Icons.Default.SettingsPhone,
-                    textToShow = R.string.user_pref_version_title.toStringFromResId() + builtVersion
-                ) { onClickEvent(SettingsUiEvent.VERSION) }
+                    text = R.string.user_pref_version_title.toStringFromResId() + appVersionNumber
+                ) { onUiEvent(SettingsUiEvent.VERSION) }
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         }

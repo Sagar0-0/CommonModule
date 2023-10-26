@@ -47,7 +47,7 @@ class SettingsViewModel
     private val _deleteState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val deleteState = _deleteState.asStateFlow()
 
-    val theme = prefManager.userData
+    val selectedTheme = prefManager.userData
         .map { it.theme }
         .stateIn(
             scope = viewModelScope,
@@ -60,11 +60,11 @@ class SettingsViewModel
         getAllNotificationsStatus()
     }
 
-    fun setTheme(newTheme: String) = viewModelScope.launch {
+    fun setSelectedTheme(newTheme: String) = viewModelScope.launch {
         prefManager.setTheme(newTheme)
     }
 
-    fun logout() {
+    fun logoutUser() {
         _logoutState.value = UiState.Loading
         viewModelScope.launch {
             authRepo.signOut().collect {

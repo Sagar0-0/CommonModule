@@ -128,7 +128,7 @@ private fun MainNavHost(startDestination: String) {
                     navController.navigateToOrders()
                 }
 
-                SettingsUiEvent.NavigateToAuth -> {
+                SettingsUiEvent.NavigateToAuthScreen -> {
                     navController.navigateToAuth()
                 }
 

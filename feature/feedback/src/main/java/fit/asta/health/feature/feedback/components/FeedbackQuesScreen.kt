@@ -14,7 +14,7 @@ import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.documentfile.provider.DocumentFile
-import fit.asta.health.data.feedback.remote.modal.An
+import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.designsystem.AppTheme
@@ -23,12 +23,12 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 @Composable
 fun FeedbackQuesScreen(
     feedbackQuesState: FeedbackQuesDTO,
-    onSubmit: (ans: List<An>) -> Unit
+    onSubmit: (answers: List<Answer>) -> Unit
 ) {
-    val qns = feedbackQuesState.qns
-    val isValidList = remember { qns.map { !it.isMandatory }.toMutableStateList() }
-    var isEnabled = isValidList.none { !it }
-    val ansList = remember { qns.map { An() }.toMutableStateList() }
+    val questions = feedbackQuesState.questions
+    val validAnswersList = remember { questions.map { !it.isMandatory }.toMutableStateList() }
+    var isSubmitButtonEnabled = validAnswersList.none { !it }
+    val answersList = remember { questions.map { Answer() }.toMutableStateList() }
 
     // Parent Composable which overlaps the Whole Screen
     LazyColumn(
@@ -45,16 +45,16 @@ fun FeedbackQuesScreen(
         }
 
         // Feedback Question Items and all the Feedback Composable are shown here
-        itemsIndexed(qns) { idx, qn ->
+        itemsIndexed(questions) { idx, qn ->
             FeedbackQuesItem(
-                qn = qn,
-                ans = ansList[idx],
-                isValid = isValidList[idx],
-                updatedAns = { newAns ->
-                    ansList[idx] = newAns
+                question = qn,
+                answer = answersList[idx],
+                isAnswerValid = validAnswersList[idx],
+                updatedAnswer = { newAns ->
+                    answersList[idx] = newAns
                 },
-                onValidityChange = { newValidity ->
-                    isValidList[idx] = newValidity
+                onAnswerValidityChange = { newValidity ->
+                    validAnswersList[idx] = newValidity
                 }
             )
         }
@@ -65,11 +65,11 @@ fun FeedbackQuesScreen(
             AppFilledButton(
                 textToShow = "Submit",
                 modifier = Modifier.fillMaxWidth(),
-                enabled = isEnabled
+                enabled = isSubmitButtonEnabled
             ) {
-                isEnabled = false
-                Log.e("ANS", "SessionFeedback: ${ansList.toList()}")
-                ansList.forEachIndexed { idx, ans ->
+                isSubmitButtonEnabled = false
+                Log.e("ANS", "SessionFeedback: ${answersList.toList()}")
+                answersList.forEachIndexed { idx, ans ->
                     val medias = ans.mediaUri.map { uri ->
                         Media(
                             name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
@@ -77,9 +77,9 @@ fun FeedbackQuesScreen(
                             localUri = uri
                         )
                     }
-                    ansList[idx] = ansList[idx].copy(media = medias)
+                    answersList[idx] = answersList[idx].copy(media = medias)
                 }
-                onSubmit(ansList.toList())
+                onSubmit(answersList.toList())
             }
         }
     }

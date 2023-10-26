@@ -20,7 +20,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 
 @Composable
-internal fun ListPreference(
+internal fun SettingsPreferenceDialog(
     titleId: Int,
     imageVector: ImageVector,
     theme: String,
@@ -33,7 +33,7 @@ internal fun ListPreference(
     var showDialog by remember { mutableStateOf(false) }
     var selectedIndex by remember { mutableIntStateOf(idx) }
 
-    CardItem(icon = imageVector, textToShow = title) {
+    SettingsCardItem(icon = imageVector, text = title) {
         showDialog = true
     }
 

@@ -42,7 +42,7 @@ class FeedbackRepoImpl
     private fun getMultipartBodyParts(feedback: UserFeedbackDTO): ArrayList<MultipartBody.Part> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
 
-        feedback.ans.forEach { an ->
+        feedback.answers.forEach { an ->
             an.media.forEach { media ->
                 parts.add(
                     MultipartBody.Part.createFormData(

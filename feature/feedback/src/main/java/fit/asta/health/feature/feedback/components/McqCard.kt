@@ -9,14 +9,18 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun McqCard(
-    ans: String,
-    list: List<String>,
+    selectedAnswer: String,
+    optionsList: List<String>,
     updatedAns: (String) -> Unit
 ) {
     Column {
-        list.forEach { text ->
-            Row(verticalAlignment = Alignment.CenterVertically) {
-                AppRadioButton(selected = text == ans) {
+        optionsList.forEach { text ->
+            Row(
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AppRadioButton(
+                    selected = text == selectedAnswer
+                ) {
                     updatedAns(text)
                 }
                 TitleTexts.Level4(text = text)

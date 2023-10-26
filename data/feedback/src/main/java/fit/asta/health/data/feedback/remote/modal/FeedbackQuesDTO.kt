@@ -15,19 +15,19 @@ data class FeedbackQuesDTO(
     @SerializedName("name")
     val name: String = "",
     @SerializedName("qns")
-    val qns: List<Qn> = listOf()
+    val questions: List<Question> = listOf()
 ) : Parcelable
 
 @Parcelize
-data class Qn(
+data class Question(
     @SerializedName("opts")
-    val opts: List<String> = listOf(),
+    val options: List<String> = listOf(),
     @SerializedName("qn")
-    val qn: String = "",
+    val questionText: String = "",
     @SerializedName("qno")
-    val qno: Int = 0,
+    val questionNo: Int = 0,
     @SerializedName("ttl")
-    val ttl: String = "",
+    val title: String = "",
     @SerializedName("type")
     val type: Int = 0,
     @SerializedName("isMan")
@@ -39,9 +39,16 @@ data class Qn(
 @Parcelize
 data class AnsType(
     @SerializedName("isDet")
-    val isDet: Boolean = false,
+    val isDetailed: Boolean = false,
     @SerializedName("min")
     val min: Int = 0,
     @SerializedName("max")
     val max: Int = 0,
 ) : Parcelable
+
+sealed class FeedbackQuestionType(val type: Int) {
+    data object UploadFile : FeedbackQuestionType(1)
+    data object Rating : FeedbackQuestionType(2)
+    data object McqCard : FeedbackQuestionType(3)
+    data object McqCard2 : FeedbackQuestionType(5)
+}

@@ -6,8 +6,9 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import fit.asta.health.data.feedback.remote.modal.An
-import fit.asta.health.data.feedback.remote.modal.Qn
+import fit.asta.health.data.feedback.remote.modal.Answer
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionType
+import fit.asta.health.data.feedback.remote.modal.Question
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
@@ -17,12 +18,12 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun FeedbackTextFieldItem(
-    qn: Qn,
-    ans: An,
-    updatedAns: (An) -> Unit,
-    isValid: (Boolean) -> Unit,
+    question: Question,
+    answer: Answer,
+    updatedAnswer: (Answer) -> Unit,
+    isAnswerValid: (Boolean) -> Unit,
 ) {
-    val maxChar = qn.ansType.max
+    val maxCharsAllowed = question.ansType.max
 
     AppElevatedCard(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -33,32 +34,32 @@ fun FeedbackTextFieldItem(
         ) {
 
             // This is the Question of this Card
-            TitleTexts.Level3(text = qn.qn)
+            TitleTexts.Level3(text = question.questionText)
 
             // This is either the Rating Stars or the Radio Buttons
-            when (qn.type) {
-                2 -> {
+            when (question.type) {
+                FeedbackQuestionType.Rating.type -> {
                     Rating(
-                        if (ans.opts[0].toIntOrNull() == null) {
-                            updatedAns(ans.copy(opts = listOf("0")))
+                        if (answer.options[0].toIntOrNull() == null) {
+                            updatedAnswer(answer.copy(options = listOf("0")))
                             0
                         } else {
-                            ans.opts[0].toInt()
+                            answer.options[0].toInt()
                         }
                     ) {
-                        updatedAns(
-                            ans.copy(opts = listOf(it.toString()))
+                        updatedAnswer(
+                            answer.copy(options = listOf(it.toString()))
                         )
                     }
                 }
 
-                3, 5 -> {
+                FeedbackQuestionType.McqCard.type, FeedbackQuestionType.McqCard2.type -> {
                     McqCard(
-                        ans = ans.opts[0],
-                        list = qn.opts,
+                        selectedAnswer = answer.options[0],
+                        optionsList = question.options,
                         updatedAns = { newAns ->
-                            updatedAns(
-                                ans.copy(opts = listOf(newAns))
+                            updatedAnswer(
+                                answer.copy(options = listOf(newAns))
                             )
                         }
                     )
@@ -66,18 +67,19 @@ fun FeedbackTextFieldItem(
             }
 
             // This is the Outlined Text Field for the user to give their Feedbacks
-            AppOutlinedTextField(modifier = Modifier.fillMaxWidth(),
-                value = ans.dtlAns,
+            AppOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = answer.detailedAnswer,
                 appTextFieldType = AppTextFieldValidator(
                     AppTextFieldType.Custom(
-                        qn.ansType.min, maxChar
+                        question.ansType.min, maxCharsAllowed
                     )
                 ),
-                isValidText = isValid,
+                isValidText = isAnswerValid,
                 minLines = 4,
                 onValueChange = { newText ->
-                    updatedAns(
-                        ans.copy(dtlAns = newText)
+                    updatedAnswer(
+                        answer.copy(detailedAnswer = newText)
                     )
                 }
             )

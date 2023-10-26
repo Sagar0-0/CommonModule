@@ -8,7 +8,10 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.molecular.other.AppRatingBar
 
 @Composable
-fun Rating(rating: Int, updatedRating: (Int) -> Unit) {
+fun Rating(
+    rating: Int,
+    updatedRating: (Int) -> Unit
+) {
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center
