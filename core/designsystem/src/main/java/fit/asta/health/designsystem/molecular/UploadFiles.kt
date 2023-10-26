@@ -25,6 +25,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.designsystem.AppTheme
@@ -86,19 +87,22 @@ fun UploadFiles(
             if (uriList.isEmpty())
                 BodyTexts.Level2(
                     modifier = Modifier.padding(start = AppTheme.spacing.level1),
-                    text = "Upload Files"
+                    text = "Upload Files",
+                    overflow = TextOverflow.Ellipsis
                 )
             else {
 
                 // This contains all the URIs uploaded by the User
                 FlowRow(
-                    modifier = Modifier.padding(AppTheme.spacing.level1),
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(AppTheme.spacing.level1),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                 ) {
                     uriList.forEach {
 
-                        // Bordered Box for containing the URI and the delete button
+                        // Bordered Box for containing the URI and the delete icon
                         Box(
                             modifier = Modifier
                                 .border(
@@ -117,8 +121,10 @@ fun UploadFiles(
 
                                 // URI Text
                                 CaptionTexts.Level3(
+                                    modifier = Modifier.weight(1f),
                                     text = DocumentFile.fromSingleUri(context, it)?.name ?: "",
-                                    maxLines = 1
+                                    maxLines = 1,
+                                    overflow = TextOverflow.Ellipsis
                                 )
 
                                 // Delete Button
