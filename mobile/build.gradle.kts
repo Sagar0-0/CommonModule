@@ -135,7 +135,6 @@ dependencies {
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))
     implementation(project(":feature:feedback"))
-    implementation(project(":feature:onboarding"))
     implementation(project(":feature:profile"))
     implementation(project(":feature:settings"))
     implementation(project(":feature:payments:referral"))
