@@ -15,9 +15,9 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 @Composable
-internal fun CardItem(
+internal fun SettingsCardItem(
     icon: ImageVector,
-    textToShow: String,
+    text: String,
     onClick: () -> Unit
 ) {
     Box(
@@ -35,7 +35,7 @@ internal fun CardItem(
                 modifier = Modifier.padding(start = AppTheme.spacing.level2),
                 tint = AppTheme.colors.primary
             )
-            CaptionTexts.Level1(text = textToShow)
+            CaptionTexts.Level1(text = text)
         }
     }
 }

@@ -25,33 +25,33 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val FEEDBACK_GRAPH_ROUTE = "graph_feedback"
 
-fun NavController.navigateToFeedback(feature: String, navOptions: NavOptions? = null) {
-    this.navigate("$FEEDBACK_GRAPH_ROUTE/$feature", navOptions)
+fun NavController.navigateToFeedback(featureId: String, navOptions: NavOptions? = null) {
+    this.navigate("$FEEDBACK_GRAPH_ROUTE/$featureId", navOptions)
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
     composable("$FEEDBACK_GRAPH_ROUTE/{feature}") {
-        val feature = it.arguments?.getString("feature") ?: ""
+        val featureId = it.arguments?.getString("feature") ?: ""
 
         val context = LocalContext.current
         val feedbackViewModel: FeedbackViewModel = hiltViewModel()
 
-        LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(feature) }
+        LaunchedEffect(Unit) { feedbackViewModel.loadFeedbackQuestions(featureId) }
 
-        val quesState by feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
-        val postResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
+        val feedbackQuesState by feedbackViewModel.feedbackQuestions.collectAsStateWithLifecycle()
+        val feedbackPostResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
 
-        when (postResultState) {
+        when (feedbackPostResultState) {
             is UiState.ErrorRetry -> {
-                AppRetryCard(text = (postResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                AppRetryCard(text = (feedbackPostResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
                     feedbackViewModel.resetPostResultState()
                 }
             }
 
             UiState.Idle -> {
                 SessionFeedback(
-                    feedbackQuesState = quesState,
+                    feedbackQuesState = feedbackQuesState,
                     onBack = onBack,
                     onSubmit = feedbackViewModel::postUserFeedback
                 )
@@ -77,8 +77,8 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
 
             else -> {
                 val errorMessage =
-                    (postResultState as? UiState.ErrorMessage)?.resId?.toStringFromResId()
-                LaunchedEffect(postResultState) {
+                    (feedbackPostResultState as? UiState.ErrorMessage)?.resId?.toStringFromResId()
+                LaunchedEffect(feedbackPostResultState) {
                     Toast.makeText(
                         context,
                         "ERROR MSG: $errorMessage",

@@ -12,7 +12,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.feedback.remote.modal.An
+import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -25,7 +25,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 fun SessionFeedback(
     feedbackQuesState: UiState<FeedbackQuesDTO>,
     onBack: () -> Unit,
-    onSubmit: (ans: List<An>) -> Unit
+    onSubmit: (answers: List<Answer>) -> Unit
 ) {
     val context = LocalContext.current
     AppScaffold(

@@ -9,7 +9,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.feedback.remote.modal.An
+import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
 import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
@@ -52,10 +52,10 @@ class FeedbackViewModel
         }
     }
 
-    fun postUserFeedback(data: List<An>) {
+    fun postUserFeedback(data: List<Answer>) {
         _feedbackPostState.value = UiState.Loading
         val feedback = UserFeedbackDTO(
-            ans = data,
+            answers = data,
             fid = _fid,
             qnrId = _qnrId,
             uid = uId

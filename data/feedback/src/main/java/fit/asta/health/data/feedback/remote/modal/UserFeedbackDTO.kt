@@ -8,7 +8,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class UserFeedbackDTO(
     @SerializedName("ans")
-    val ans: List<An> = listOf(),
+    val answers: List<Answer> = listOf(),
     @SerializedName("fid")
     val fid: String = "",
     @SerializedName("id")
@@ -20,14 +20,14 @@ data class UserFeedbackDTO(
 ) : Parcelable
 
 @Parcelize
-data class An(
+data class Answer(
     @SerializedName("dtlAns")
-    val dtlAns: String = "",
+    val detailedAnswer: String = "",
     @SerializedName("media")
     val media: List<Media> = emptyList(),
     val mediaUri: Set<Uri> = emptySet(),
     @SerializedName("opts")
-    val opts: List<String> = listOf(""),
+    val options: List<String> = listOf(""),
     @SerializedName("qid")
     val qid: Int = 0,
     @SerializedName("type")

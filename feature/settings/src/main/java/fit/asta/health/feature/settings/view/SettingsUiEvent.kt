@@ -16,6 +16,6 @@ sealed interface SettingsUiEvent {
     data object TERMS : SettingsUiEvent
     data object PRIVACY : SettingsUiEvent
     data object VERSION : SettingsUiEvent
-    data object NavigateToAuth : SettingsUiEvent
+    data object NavigateToAuthScreen : SettingsUiEvent
     data object NavigateToOrders : SettingsUiEvent
 }

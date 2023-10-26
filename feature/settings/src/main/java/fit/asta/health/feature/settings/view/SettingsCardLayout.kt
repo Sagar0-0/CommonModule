@@ -9,7 +9,7 @@ import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
-internal fun CardLayout(
+internal fun SettingsCardLayout(
     title: String,
     content: @Composable ColumnScope.() -> Unit
 ) {
