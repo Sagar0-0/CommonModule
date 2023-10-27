@@ -17,7 +17,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
@@ -75,10 +74,13 @@ class MainActivity : ComponentActivity(),
     private lateinit var referrerClient: InstallReferrerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        installSplashScreen()
-        // This app draws behind the system bars, so we want to handle fitting system windows
-        WindowCompat.setDecorFitsSystemWindows(window, false)
         super.onCreate(savedInstanceState)
+
+        // This app draws behind the system bars, so we want to handle fitting system windows
+        //https://developer.android.com/develop/ui/views/layout/edge-to-edge
+        //WindowCompat.setDecorFitsSystemWindows(window, true)
+
+        installSplashScreen()
 
         lifecycleScope.launch {
             mainViewModel.isReferralChecked.collect {

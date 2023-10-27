@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
     <style name="AppTheme" parent="Theme.MaterialComponents.Light.NoActionBar">
         <!-- Customize your theme here. -->
         <item name="colorPrimaryDark">@color/colorTransparent</item>
@@ -11,19 +10,7 @@
         <item name="android:windowBackground">@color/colorWindowBackground</item>
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightNavigationBar">true</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
     </style>
-
-    <style name="Theme.App.Starting" parent="Theme.SplashScreen">
-        <item name="windowSplashScreenAnimatedIcon">@drawable/splash_screen</item>
-        <item name="windowSplashScreenBackground">@color/colorSurface</item>
-        <item name="windowSplashScreenAnimationDuration">100</item>
-        <item name="postSplashScreenTheme">@style/AppTheme</item>
-    </style>
-
-    <style name="Theme.MusicPlayer" parent="Theme.MaterialComponents.Light.NoActionBar">
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:navigationBarColor">@android:color/transparent</item>
-    </style>
-
 </resources>
