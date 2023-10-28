@@ -166,7 +166,6 @@
             </intent-filter>
         </service>
         <service android:name=".feature.scheduler.services.AlarmService" />
-        <service android:name=".feature.scheduler.services.RescheduleAlarmService" />
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
