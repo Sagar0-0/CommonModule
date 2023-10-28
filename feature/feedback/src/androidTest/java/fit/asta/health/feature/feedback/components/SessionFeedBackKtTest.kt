@@ -1,15 +1,17 @@
 package fit.asta.health.feature.feedback.components
 
-import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
-import androidx.compose.ui.test.onNodeWithText
+import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.test.ext.junit.runners.AndroidJUnit4
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
 import fit.asta.health.data.feedback.remote.modal.Question
 import fit.asta.health.designsystem.AppTheme
 import org.junit.Rule
 import org.junit.Test
+import org.junit.runner.RunWith
 
+@RunWith(AndroidJUnit4::class)
 class SessionFeedBackTest {
 
     @get:Rule
@@ -36,6 +38,6 @@ class SessionFeedBackTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Submit").assertIsEnabled()
+        composeTestRule.onNodeWithContentDescription("feedback image").assertExists()
     }
 }

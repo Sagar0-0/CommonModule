@@ -6,8 +6,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.Intent.ACTION_BOOT_COMPLETED
 import android.content.Intent.ACTION_MY_PACKAGE_REPLACED
+import android.util.Log
 import android.widget.Toast
-import androidx.core.content.ContextCompat
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.feature.scheduler.util.Utils.CHANGE_STATE_ACTION
@@ -59,9 +59,9 @@ class AlarmBroadcastReceiver : BroadcastReceiver() {
     }
 
     private fun startRescheduleAlarmsService(context: Context) {
+        Log.d("TAG", "startRescheduleAlarmsService: ")
         val toastText = String.format("Alarm Reboot")
         Toast.makeText(context, toastText, Toast.LENGTH_SHORT).show()
-        val intentService = Intent(context, RescheduleAlarmService::class.java)
-        ContextCompat.startForegroundService(context, intentService)
+        stateManager.rescheduleAlarm(context)
     }
 }

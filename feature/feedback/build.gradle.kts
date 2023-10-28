@@ -7,15 +7,30 @@ plugins {
 
 android {
     namespace = "fit.asta.health.feature.feedback"
+    packaging {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/notice.txt"
+            excludes += "META-INF/ASL2.0"
+            excludes += "META-INF/*.kotlin_module"
+        }
+    }
 }
 
 dependencies {
 
-    androidTestImplementation("androidx.test:rules:1.5.0")
-    androidTestImplementation("androidx.test:runner:1.6.0-alpha04")
-    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
-    androidTestImplementation("androidx.test.ext:junit:1.1.5")
-    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
+//    androidTestImplementation("androidx.test:rules:1.5.0")
+//    androidTestImplementation("androidx.test:runner:1.6.0-alpha04")
+//    androidTestImplementation("androidx.test.espresso:espresso-core:3.6.0-alpha01")
+//    androidTestImplementation("androidx.test.ext:junit:1.1.5")
+//    androidTestImplementation("androidx.test.espresso:espresso-intents:3.5.1")
 
     implementation(project(":resources:drawables"))
     implementation(project(":resources:strings"))
@@ -50,14 +65,10 @@ dependencies {
     implementation(libs.accompanist.pager.indicators)
     implementation(libs.accompanist.coil)
 
-
-    // Test rules and transitive dependencies:
-    androidTestImplementation("androidx.compose.ui:ui-test-junit4:1.5.4")
-    // Needed for createAndroidComposeRule, but not createComposeRule:
-    debugImplementation("androidx.compose.ui:ui-test-manifest:1.5.4")
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
 
     // For instrumented tests.
-    androidTestImplementation("com.google.dagger:hilt-android-testing:2.44")
-    // ...with Kotlin.
-    kaptAndroidTest("com.google.dagger:hilt-android-compiler:2.44")
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
 }

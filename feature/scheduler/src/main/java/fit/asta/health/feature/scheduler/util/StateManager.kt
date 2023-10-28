@@ -46,6 +46,15 @@ class StateManager @Inject constructor(
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
+    fun rescheduleAlarm(context: Context) {
+        scope.launch(Dispatchers.IO) {
+            alarmDao.getAllAlarm()?.forEach { alarm ->
+                if (alarm.status) {
+                    registerAlarm(context, alarm, (alarm.skipDate == LocalDate.now().dayOfMonth))
+                }
+            }
+        }
+    }
 
     @Synchronized
     fun registerAlarm(
