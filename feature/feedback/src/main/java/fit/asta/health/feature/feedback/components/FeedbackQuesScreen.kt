@@ -13,6 +13,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.toMutableStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
@@ -63,8 +65,10 @@ fun FeedbackQuesScreen(
         item {
             val context = LocalContext.current
             AppFilledButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = "SubmitButton" },
                 textToShow = "Submit",
-                modifier = Modifier.fillMaxWidth(),
                 enabled = isSubmitButtonEnabled
             ) {
                 isSubmitButtonEnabled = false

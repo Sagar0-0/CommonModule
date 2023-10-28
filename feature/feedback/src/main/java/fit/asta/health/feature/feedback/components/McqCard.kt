@@ -4,6 +4,9 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -13,7 +16,7 @@ fun McqCard(
     optionsList: List<String>,
     updatedAns: (String) -> Unit
 ) {
-    Column {
+    Column(modifier = Modifier.semantics { contentDescription = "McqCard" }) {
         optionsList.forEach { text ->
             Row(
                 verticalAlignment = Alignment.CenterVertically

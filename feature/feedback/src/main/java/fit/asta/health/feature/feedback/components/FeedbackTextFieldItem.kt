@@ -6,6 +6,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.semantics.contentDescription
+import androidx.compose.ui.semantics.semantics
 import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionType
 import fit.asta.health.data.feedback.remote.modal.Question
@@ -68,7 +70,9 @@ fun FeedbackTextFieldItem(
 
             // This is the Outlined Text Field for the user to give their Feedbacks
             AppOutlinedTextField(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .semantics { contentDescription = "AppOutlinedTextField" },
                 value = answer.detailedAnswer,
                 appTextFieldType = AppTextFieldValidator(
                     AppTextFieldType.Custom(
