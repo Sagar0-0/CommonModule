@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -29,12 +28,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.graphics.SolidColor
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.Dp
-import androidx.compose.ui.unit.TextUnit
 import androidx.compose.ui.unit.dp
 import fit.asta.ccp.R
 import fit.asta.ccp.data.CountryData
@@ -197,8 +194,7 @@ private fun SearchTextField(
     value: String,
     textColor: Color = AppTheme.colors.onSurface,
     onValueChange: (String) -> Unit,
-    hint: String = stringResource(id = R.string.search),
-    fontSize: TextUnit = AppTheme.customTypography.body.level2.fontSize,
+    hint: String = stringResource(id = R.string.search)
 ) {
 
     AppBasicTextField(modifier = modifier
@@ -207,10 +203,6 @@ private fun SearchTextField(
         value = value,
         onValueChange = onValueChange,
         singleLine = true,
-        cursorBrush = SolidColor(AppTheme.colors.primary),
-        textStyle = LocalTextStyle.current.copy(
-            color = textColor, fontSize = fontSize
-        ),
         decorationBox = { innerTextField ->
             Row(
                 modifier, verticalAlignment = Alignment.CenterVertically
