@@ -28,7 +28,6 @@ import androidx.compose.ui.input.key.Key
 import androidx.compose.ui.input.key.key
 import androidx.compose.ui.input.key.onPreviewKeyEvent
 import androidx.compose.ui.text.TextRange
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.input.TextFieldValue
@@ -75,9 +74,6 @@ internal fun OTPCell(
         cellConfiguration.textStyle.copy(textAlign = TextAlign.Center)
     }
 
-    val placeHolderTextStyle = remember(cellConfiguration.placeHolderTextStyle) {
-        cellConfiguration.placeHolderTextStyle.copy(textAlign = TextAlign.Center)
-    }
     val textFieldValue = remember(value) {
         TextFieldValue(
             text = value,
@@ -152,9 +148,7 @@ internal fun OTPCell(
                 visualTransformation = VisualTransformation.None,
                 interactionSource = interactionSource,
                 placeholder = {
-                    CellPlaceHolder(
-                        placeHolder = placeHolder, placeHolderTextStyle = placeHolderTextStyle
-                    )
+                    CellPlaceHolder(placeHolder = placeHolder)
                 },
                 contentPadding = PaddingValues(0.dp),
             )
@@ -165,10 +159,10 @@ internal fun OTPCell(
 @Composable
 private fun CellPlaceHolder(
     placeHolder: String,
-    placeHolderTextStyle: TextStyle,
     modifier: Modifier = Modifier,
 ) {
     BodyTexts.Level3(
-        text = placeHolder, modifier = modifier.fillMaxWidth(), style = placeHolderTextStyle
+        text = placeHolder,
+        modifier = modifier.fillMaxWidth()
     )
 }
