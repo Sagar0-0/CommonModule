@@ -37,4 +37,11 @@ dependencies {
 
     //Firebase for notifications
     implementation(libs.firebase.messaging.ktx)
+
+
+    // For instrumented tests.
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
 }

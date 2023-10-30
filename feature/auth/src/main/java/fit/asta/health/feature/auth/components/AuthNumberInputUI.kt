@@ -8,14 +8,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
@@ -47,23 +45,19 @@ fun AuthNumberInputUI(
 ) {
 
     val focusManager = LocalFocusManager.current
+    val context = LocalContext.current
 
     // This Function gets the Phone Number the user may be using when the user taps the Text Fields
-    val getPhoneNumberHint: @Composable () -> Unit = {
-        OtpVerifier.PhoneNumberHintIntentResultLauncher(
+    val getPhoneNumberHint: () -> Unit = {
+        OtpVerifier.phoneNumberHintIntentResultLauncher(
+            context = context,
             onPhoneNumberChange = onPhoneNumberChange,
             onCountryCodeChange = onCountryCodeChange,
             onGenerateOtpClick = onGenerateOtpClick
         )
     }
-
-    // This variable states if we should try to find the Phone Number Hint or not
-    var shouldGetPhoneNumberHint by remember { mutableStateOf(false) }
-
-    // Checking if we need to start an intent for getting the Phone Number Hints
-    if (shouldGetPhoneNumberHint) {
+    LaunchedEffect(key1 = Unit) {
         getPhoneNumberHint()
-        shouldGetPhoneNumberHint = false
     }
 
     Column(
@@ -80,7 +74,7 @@ fun AuthNumberInputUI(
                 .fillMaxWidth()
                 .onFocusChanged {
                     if (it.hasFocus)
-                        shouldGetPhoneNumberHint = true
+                        getPhoneNumberHint()
                 },
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             verticalAlignment = Alignment.CenterVertically

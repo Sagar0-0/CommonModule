@@ -5,6 +5,7 @@ import android.app.PendingIntent
 import android.content.Context
 import android.util.Log
 import android.widget.Toast
+import androidx.activity.ComponentActivity
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.IntentSenderRequest
 import androidx.activity.result.contract.ActivityResultContracts
@@ -85,19 +86,21 @@ object OtpVerifier {
      * @param onCountryCodeChange This function is invoked when the Country Code is changed
      * @param onGenerateOtpClick This function is invoked when the generate code button is clicked
      */
-    @Composable
-    fun PhoneNumberHintIntentResultLauncher(
+//    @Composable
+    fun phoneNumberHintIntentResultLauncher(
+        context: Context,
         onPhoneNumberChange: (String) -> Unit,
         onCountryCodeChange: (String) -> Unit,
         onGenerateOtpClick: () -> Unit
     ) {
 
-        val context = LocalContext.current
+//        val context = LocalContext.current
 
         // This is the request Launcher Variable which launches an Intent and fetches the Phone Number hint
         val phoneNumberHintIntentResultLauncher =
-            rememberLauncherForActivityResult(
-                contract = ActivityResultContracts.StartIntentSenderForResult()
+            (context as ComponentActivity).activityResultRegistry.register(
+                "Key",
+                ActivityResultContracts.StartIntentSenderForResult()
             ) { result ->
                 try {
 
@@ -109,7 +112,7 @@ object OtpVerifier {
                     onCountryCodeChange(phoneNumberHint.dropLast(10))
                     onPhoneNumberChange(phoneNumberHint.takeLast(10))
 
-                    // Automatically Hitting the Generate OTP Button since the OTP is fetched directly
+                    // Automatically Hitting the Generate OTP Button since the Phone is fetched directly
                     onGenerateOtpClick()
                 } catch (e: Exception) {
                     Log.e("Phone Number Hint", e.toString())
