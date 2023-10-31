@@ -19,7 +19,7 @@ import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorMsgCard
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 
@@ -69,9 +69,9 @@ fun TestimonialsList(
             // Refresh error
             testimonials.loadState.refresh is LoadState.Error -> {
                 item {
-                    AppErrorScreen(onTryAgain = {
+                    AppInternetErrorDialog {
                         testimonials.refresh()
-                    })
+                    }
                 }
             }
             // Append error

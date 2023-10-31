@@ -19,7 +19,7 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.orders.remote.model.OrderData
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -72,7 +72,7 @@ fun OrdersScreen(ordersState: UiState<List<OrderData>>, onBack: () -> Unit) {
             }
 
             is UiState.ErrorRetry -> {
-                AppErrorScreen()
+                AppInternetErrorDialog()
             }
 
             else -> {}

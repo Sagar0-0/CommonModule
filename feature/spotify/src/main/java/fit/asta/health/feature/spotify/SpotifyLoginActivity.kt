@@ -23,8 +23,8 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.spotify.navigation.TopTabNavigation
 import fit.asta.health.feature.spotify.utils.SpotifyConstants
@@ -98,7 +98,9 @@ class SpotifyLoginActivity : ComponentActivity() {
                     }
 
                     is UiState.ErrorMessage -> {
-                        AppErrorScreen(desc = loginState.resId.toStringFromResId()) {
+                        AppInternetErrorDialog(
+                            issueDescription = loginState.resId.toStringFromResId()
+                        ) {
 
                             // checking if spotify is installed or not
                             if (isSpotifyInstalled()) {

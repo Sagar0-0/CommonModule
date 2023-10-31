@@ -30,9 +30,9 @@ import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedMode
 import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
 import fit.asta.health.data.spotify.model.search.ArtistList
 import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
@@ -166,12 +166,7 @@ fun ThirdPartyScreen(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
-                        .fillMaxWidth(),
-                    desc = recentlyPlayed.resId.toStringFromResId()
-                ) {
+                AppInternetErrorDialog(issueDescription = recentlyPlayed.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                 }
             }
@@ -231,7 +226,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = recommendedData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(issueDescription = recommendedData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks)
                 }
             }
@@ -291,7 +286,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = topTracksData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(issueDescription = topTracksData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                 }
             }
@@ -351,7 +346,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = topArtistsData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(issueDescription = topArtistsData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopArtists)
                 }
             }

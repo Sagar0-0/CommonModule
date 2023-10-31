@@ -58,7 +58,7 @@ fun AppDialogPopUp(
             dismissOnClickOutside = false
         )
     ) {
-        AppCard(shape = AppTheme.shape.level2) {
+        AppCard {
             Column(
                 modifier = Modifier
                     .fillMaxWidth()

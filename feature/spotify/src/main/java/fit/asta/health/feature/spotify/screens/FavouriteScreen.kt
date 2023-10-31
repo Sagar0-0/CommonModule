@@ -19,7 +19,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Album
 import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
@@ -106,12 +106,7 @@ fun FavouriteScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
-                        .fillMaxWidth(),
-                    desc = tracksData.resId.toStringFromResId()
-                ) {
+                AppInternetErrorDialog(issueDescription = tracksData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                 }
             }
@@ -175,12 +170,7 @@ fun FavouriteScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
-                        .fillMaxWidth(),
-                    desc = albumData.resId.toStringFromResId()
-                ) {
+                AppInternetErrorDialog(issueDescription = albumData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                 }
             }

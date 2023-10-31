@@ -16,7 +16,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
@@ -216,7 +216,7 @@ fun DietContent(
                         AppDotTypingAnimation()
                     }
 
-                    is ProfileSubmitState.NoInternet -> AppErrorScreen(onTryAgain = {})
+                    is ProfileSubmitState.NoInternet -> AppInternetErrorDialog {}
                     is ProfileSubmitState.Success -> {
                         navigateBack()
                     }
@@ -244,7 +244,7 @@ fun DietCreateBottomSheetLayout(
         is HPropState.Empty -> TODO()
         is HPropState.Error -> TODO()
         is HPropState.Loading -> AppDotTypingAnimation()
-        is HPropState.NoInternet -> AppErrorScreen(onTryAgain = {})
+        is HPropState.NoInternet -> AppInternetErrorDialog {}
         is HPropState.Success -> ItemSelectionLayout(
             cardList = (state as HPropState.Success).properties,
             cardList2 = cardList2,

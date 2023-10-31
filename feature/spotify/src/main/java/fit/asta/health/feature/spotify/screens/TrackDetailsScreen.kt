@@ -17,7 +17,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.spotify.components.MusicLargeImageColumn
@@ -77,7 +77,9 @@ fun TrackDetailsScreen(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = trackNetworkState.resId.toStringFromResId()) {
+                AppInternetErrorDialog(
+                    issueDescription = trackNetworkState.resId.toStringFromResId()
+                ) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
                 }
             }
@@ -171,7 +173,7 @@ private fun LocalTrackHandler(
 
         // ErrorMessage State
         is UiState.ErrorMessage -> {
-            AppErrorScreen(desc = trackLocalState.resId.toStringFromResId()) {
+            AppInternetErrorDialog(issueDescription = trackLocalState.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
             }
         }

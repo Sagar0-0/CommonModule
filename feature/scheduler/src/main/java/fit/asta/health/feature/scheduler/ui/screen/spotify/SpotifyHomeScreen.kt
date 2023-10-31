@@ -19,9 +19,9 @@ import fit.asta.health.data.spotify.model.common.Track
 import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
@@ -125,7 +125,9 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppErrorScreen(desc = recentlyData.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(
+                        issueDescription = recentlyData.resId.toStringFromResId()
+                    ) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                     }
                 }
@@ -197,7 +199,7 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppErrorScreen(desc = topMixData.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(issueDescription = topMixData.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                     }
                 }
@@ -268,7 +270,7 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppErrorScreen(desc = likedSongs.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(issueDescription = likedSongs.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
                 }
@@ -339,7 +341,9 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppErrorScreen(desc = favouriteTracks.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(
+                        issueDescription = favouriteTracks.resId.toStringFromResId()
+                    ) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
                 }
@@ -409,7 +413,9 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppErrorScreen(desc = favouriteAlbums.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(
+                        issueDescription = favouriteAlbums.resId.toStringFromResId()
+                    ) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                     }
                 }

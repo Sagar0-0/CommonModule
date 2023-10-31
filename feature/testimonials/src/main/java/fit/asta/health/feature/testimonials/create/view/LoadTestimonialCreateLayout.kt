@@ -6,8 +6,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import fit.asta.health.resources.strings.R
@@ -48,9 +49,9 @@ fun LoadTestimonialCreateLayout(
             getViewModel = getViewModel,
         )
 
-        is TestimonialGetState.NetworkError -> AppErrorScreen(onTryAgain = {
+        is TestimonialGetState.NetworkError -> AppInternetErrorDialog {
             getViewModel.loadTestimonial()
-        })
+        }
 
     }
 }

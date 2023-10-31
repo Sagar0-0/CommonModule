@@ -24,7 +24,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.spotify.components.MusicArtistsUI
@@ -287,7 +287,9 @@ fun SearchScreen(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = spotifySearchState.resId.toStringFromResId()) {
+                AppInternetErrorDialog(
+                    issueDescription = spotifySearchState.resId.toStringFromResId()
+                ) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult)
                 }
             }

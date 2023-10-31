@@ -25,7 +25,7 @@ import com.razorpay.PaymentResultWithDataListener
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
@@ -137,7 +137,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
             }
 
             else -> {
-                AppErrorScreen()
+                AppInternetErrorDialog()
             }
 
         }

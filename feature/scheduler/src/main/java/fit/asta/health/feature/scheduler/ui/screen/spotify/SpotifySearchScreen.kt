@@ -22,9 +22,9 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
@@ -149,7 +149,7 @@ fun SpotifySearchScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppErrorScreen(desc = searchResult.resId.toStringFromResId()) {
+                AppInternetErrorDialog(issueDescription = searchResult.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
                 }
             }

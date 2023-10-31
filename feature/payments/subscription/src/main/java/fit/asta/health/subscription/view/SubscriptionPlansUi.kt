@@ -10,7 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -64,7 +64,7 @@ fun SubscriptionPlansUi(
             }
 
             is UiState.NoInternet -> {
-                AppErrorScreen(
+                AppInternetErrorDialog(
                     modifier = Modifier.padding(paddingValues)
                 ) {
                     onTryAgain()

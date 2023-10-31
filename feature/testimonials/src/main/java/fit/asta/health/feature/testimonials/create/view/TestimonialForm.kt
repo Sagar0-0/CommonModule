@@ -16,13 +16,13 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppTextFieldValidate
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.OnSuccessfulSubmit
 import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.ValidateTxtLength
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -194,11 +194,9 @@ fun TestimonialForm(
                             })
                         }
 
-                        is TestimonialSubmitState.NetworkError -> AppErrorScreen(onTryAgain = {
-                            getViewModel.onEvent(
-                                TestimonialEvent.OnSubmit
-                            )
-                        })
+                        is TestimonialSubmitState.NetworkError -> AppInternetErrorDialog {
+                            getViewModel.onEvent(TestimonialEvent.OnSubmit)
+                        }
                     }
                 }
             }
