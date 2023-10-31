@@ -1,16 +1,14 @@
 package fit.asta.health.payment.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.payment.remote.PaymentsApi
-import fit.asta.health.payment.repo.PaymentsApiErrorHandler
 import fit.asta.health.payment.repo.PaymentsRepo
 import fit.asta.health.payment.repo.PaymentsRepoImpl
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -23,17 +21,11 @@ object PaymentsModule {
     fun providePaymentsApi(client: OkHttpClient): PaymentsApi =
         NetworkUtil.getRetrofit(client).create(PaymentsApi::class.java)
 
-    @Singleton
-    @Provides
-    fun providePaymentsRepo(
-        remoteApi: PaymentsApi,
-        apiErrorHandler: PaymentsApiErrorHandler,
-        @IODispatcher coroutineDispatcher: CoroutineDispatcher
-    ): PaymentsRepo {
-        return PaymentsRepoImpl(
-            remoteApi = remoteApi,
-            apiErrorHandler = apiErrorHandler,
-            coroutineDispatcher = coroutineDispatcher
-        )
-    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class PaymentsBindingModule {
+    @Binds
+    abstract fun providePaymentsRepo(paymentsRepoImpl: PaymentsRepoImpl): PaymentsRepo
 }

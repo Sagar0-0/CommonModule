@@ -3,8 +3,10 @@ package fit.asta.health.payment.repo
 import fit.asta.health.common.utils.ApiErrorHandler
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.resources.strings.R
+import javax.inject.Inject
 
-class PaymentsApiErrorHandler : ApiErrorHandler() {
+class PaymentsApiErrorHandler
+@Inject constructor() : ApiErrorHandler() {
     override fun <T> fetchStatusCodeMessage(code: Int): ResponseState<T> {
         return when (code) {
             8 -> {

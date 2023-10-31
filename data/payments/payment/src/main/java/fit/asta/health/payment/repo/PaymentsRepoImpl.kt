@@ -1,6 +1,6 @@
 package fit.asta.health.payment.repo
 
-import fit.asta.health.common.utils.ApiErrorHandler
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.payment.remote.PaymentsApi
 import fit.asta.health.payment.remote.model.OrderRequest
@@ -12,8 +12,8 @@ import javax.inject.Inject
 class PaymentsRepoImpl
 @Inject constructor(
     private val remoteApi: PaymentsApi,
-    private val apiErrorHandler: ApiErrorHandler,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+    private val apiErrorHandler: PaymentsApiErrorHandler,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PaymentsRepo {
     override suspend fun createOrder(data: OrderRequest) = withContext(coroutineDispatcher) {
         getApiResponseState(errorHandler = apiErrorHandler) {
