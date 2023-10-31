@@ -38,6 +38,10 @@ open class ApiErrorHandler {
                     R.string.conversion_error
                 }
 
+                400 -> {
+                    R.string.bad_request
+                }
+
                 else -> {
                     R.string.unknown_error
                 }
