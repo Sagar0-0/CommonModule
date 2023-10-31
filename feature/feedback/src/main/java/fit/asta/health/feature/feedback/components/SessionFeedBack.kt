@@ -34,12 +34,6 @@ fun SessionFeedback(
         }
     ) {
         when (feedbackQuesState) {
-            is UiState.ErrorRetry -> {
-                AppRetryCard(text = feedbackQuesState.resId.toStringFromResId()) {
-                    onBack()
-                }
-            }
-
             UiState.Loading -> {
                 Box(
                     modifier = Modifier
@@ -48,6 +42,21 @@ fun SessionFeedback(
                     contentAlignment = Alignment.Center
                 ) {
                     AppCircularProgressIndicator()
+                }
+            }
+
+            is UiState.Success -> {
+                Box(modifier = Modifier.padding(it)) {
+                    FeedbackQuesScreen(
+                        feedbackQuesState = feedbackQuesState.data,
+                        onSubmit = onSubmit
+                    )
+                }
+            }
+
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = feedbackQuesState.resId.toStringFromResId()) {
+                    onBack()
                 }
             }
 
@@ -60,15 +69,6 @@ fun SessionFeedback(
                         Toast.LENGTH_SHORT
                     ).show()
                     onBack()
-                }
-            }
-
-            is UiState.Success -> {
-                Box(modifier = Modifier.padding(it)) {
-                    FeedbackQuesScreen(
-                        feedbackQuesState = feedbackQuesState.data,
-                        onSubmit = onSubmit
-                    )
                 }
             }
 

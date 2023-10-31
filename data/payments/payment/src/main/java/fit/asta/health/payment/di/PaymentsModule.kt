@@ -7,6 +7,7 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.payment.remote.PaymentsApi
+import fit.asta.health.payment.repo.PaymentsApiErrorHandler
 import fit.asta.health.payment.repo.PaymentsRepo
 import fit.asta.health.payment.repo.PaymentsRepoImpl
 import kotlinx.coroutines.CoroutineDispatcher
@@ -26,10 +27,12 @@ object PaymentsModule {
     @Provides
     fun providePaymentsRepo(
         remoteApi: PaymentsApi,
+        apiErrorHandler: PaymentsApiErrorHandler,
         @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): PaymentsRepo {
         return PaymentsRepoImpl(
             remoteApi = remoteApi,
+            apiErrorHandler = apiErrorHandler,
             coroutineDispatcher = coroutineDispatcher
         )
     }

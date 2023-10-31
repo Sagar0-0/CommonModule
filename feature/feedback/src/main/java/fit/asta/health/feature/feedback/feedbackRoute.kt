@@ -16,6 +16,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.EndScreenPopup
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -43,12 +44,6 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
         val feedbackPostResultState by feedbackViewModel.feedbackPostState.collectAsStateWithLifecycle()
 
         when (feedbackPostResultState) {
-            is UiState.ErrorRetry -> {
-                AppRetryCard(text = (feedbackPostResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
-                    feedbackViewModel.resetPostResultState()
-                }
-            }
-
             UiState.Idle -> {
                 SessionFeedback(
                     feedbackQuesState = feedbackQuesState,
@@ -75,13 +70,25 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
                 )
             }
 
-            else -> {
+            is UiState.NoInternet -> {
+                AppInternetErrorDialog {
+                    feedbackViewModel.resetPostResultState()
+                }
+            }
+
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = (feedbackPostResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                    feedbackViewModel.resetPostResultState()
+                }
+            }
+
+            is UiState.ErrorMessage -> {
                 val errorMessage =
-                    (feedbackPostResultState as? UiState.ErrorMessage)?.resId?.toStringFromResId()
+                    (feedbackPostResultState as UiState.ErrorMessage).resId.toStringFromResId()
                 LaunchedEffect(feedbackPostResultState) {
                     Toast.makeText(
                         context,
-                        "ERROR MSG: $errorMessage",
+                        errorMessage,
                         Toast.LENGTH_SHORT
                     ).show()
                 }

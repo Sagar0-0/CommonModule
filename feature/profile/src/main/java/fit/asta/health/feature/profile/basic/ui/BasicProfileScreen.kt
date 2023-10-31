@@ -18,7 +18,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material3.Button
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
@@ -43,6 +42,9 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.textfield.AppTextField
@@ -199,40 +201,9 @@ fun BasicProfileScreen(
                 }
             }
 
-            Crossfade(targetState = checkReferralCodeState, label = "") { state ->
-                when (state) {
-                    is UiState.Success -> {
-                        LaunchedEffect(Unit) {
-                            Toast.makeText(
-                                context,
-                                "YAY! You just got referred!",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                        }
-                        Row(Modifier.fillMaxWidth()) {
-                            Image(
-                                modifier = Modifier.clip(CircleShape),
-                                painter = rememberAsyncImagePainter(
-                                    model = state.data.data!!.pic,
-                                    placeholder = painterResource(id = DrawR.drawable.ic_person)
-                                ), contentDescription = "Profile"
-                            )
-                            Text(text = state.data.data!!.name)
-                        }
-                    }
-
-                    is UiState.ErrorMessage -> {
-                        LaunchedEffect(Unit) {
-                            Toast.makeText(
-                                context,
-                                "Invalid Refer code",
-                                Toast.LENGTH_SHORT
-                            ).show()
-                            onEvent(BasicProfileEvent.ResetCodeState)
-                        }
-                    }
-
-                    else -> {
+            Crossfade(targetState = checkReferralCodeState, label = "") { checkReferralCodeState ->
+                when (checkReferralCodeState) {
+                    is UiState.Idle -> {
                         Row {
                             AppTextField(
                                 appTextFieldType = AppTextFieldValidator(
@@ -259,6 +230,53 @@ fun BasicProfileScreen(
                             }
                         }
                     }
+
+                    is UiState.Loading -> {
+                        AppDotTypingAnimation()
+                    }
+
+                    is UiState.Success -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                "YAY! You just got referred!",
+                                Toast.LENGTH_SHORT
+                            ).show()
+                        }
+                        Row(Modifier.fillMaxWidth()) {
+                            Image(
+                                modifier = Modifier.clip(CircleShape),
+                                painter = rememberAsyncImagePainter(
+                                    model = checkReferralCodeState.data.data!!.pic,
+                                    placeholder = painterResource(id = DrawR.drawable.ic_person)
+                                ), contentDescription = "Profile"
+                            )
+                            Text(text = checkReferralCodeState.data.data!!.name)
+                        }
+                    }
+
+                    is UiState.ErrorMessage -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                checkReferralCodeState.resId.toStringFromResId(context),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onEvent(BasicProfileEvent.ResetCodeState)
+                        }
+                    }
+
+                    is UiState.NoInternet -> {
+                        AppInternetErrorDialog {
+                            onEvent(BasicProfileEvent.ResetCodeState)
+                        }
+                    }
+
+                    is UiState.ErrorRetry -> {
+                        AppErrorScreen {
+                            onEvent(BasicProfileEvent.ResetCodeState)
+                        }
+                    }
                 }
             }
 
@@ -281,8 +299,12 @@ fun BasicProfileScreen(
                 }
             ) {
                 when (createBasicProfileState) {
+                    is UiState.Idle -> {
+                        Text(text = "Create")
+                    }
+
                     is UiState.Loading -> {
-                        CircularProgressIndicator()
+                        AppDotTypingAnimation()
                     }
 
                     is UiState.Success -> {
@@ -291,19 +313,27 @@ fun BasicProfileScreen(
                         }
                     }
 
-                    is UiState.ErrorMessage -> {
-                        LaunchedEffect(Unit) {
-                            Toast.makeText(
-                                context,
-                                "Can not create profile, try again!",
-                                Toast.LENGTH_SHORT
-                            ).show()
+                    is UiState.NoInternet -> {
+                        AppInternetErrorDialog {
                             onEvent(BasicProfileEvent.ResetCreateProfileState)
                         }
                     }
 
-                    is UiState.Idle -> {
-                        Text(text = "Create")
+                    is UiState.ErrorRetry -> {
+                        AppErrorScreen {
+                            onEvent(BasicProfileEvent.ResetCreateProfileState)
+                        }
+                    }
+
+                    is UiState.ErrorMessage -> {
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                createBasicProfileState.resId.toStringFromResId(context),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            onEvent(BasicProfileEvent.ResetCreateProfileState)
+                        }
                     }
 
                     else -> {}

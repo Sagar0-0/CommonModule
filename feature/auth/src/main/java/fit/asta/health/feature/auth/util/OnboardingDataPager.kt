@@ -34,6 +34,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
+import fit.asta.health.data.onboarding.model.OnBoardingDataType
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
@@ -68,7 +69,7 @@ internal fun ColumnScope.OnboardingDataPager(items: List<OnboardingData>) {
                     .clip(AppTheme.shape.level3)
             ) {
                 when (items[page].type) {
-                    1, 2 -> {
+                    OnBoardingDataType.Image.type, OnBoardingDataType.GIF.type -> {
                         AppGifImage(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -78,7 +79,7 @@ internal fun ColumnScope.OnboardingDataPager(items: List<OnboardingData>) {
                         )
                     }
 
-                    3 -> {
+                    OnBoardingDataType.Video.type -> {
                         VideoView(
                             onPlay = page == pagerState.currentPage,
                             onPause = page != pagerState.currentPage,

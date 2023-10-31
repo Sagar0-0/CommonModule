@@ -8,7 +8,7 @@ import javax.inject.Singleton
 
 @Singleton
 class ReferralErrorHandler @Inject constructor() : ApiErrorHandler() {
-    override fun <T> fetchStatusMessage(code: Int): ResponseState<T> {
+    override fun <T> fetchStatusCodeMessage(code: Int): ResponseState<T> {
         return ResponseState.ErrorMessage(
             when (code) {
                 101 -> {
@@ -21,16 +21,16 @@ class ReferralErrorHandler @Inject constructor() : ApiErrorHandler() {
 
                 103 -> {
                     R.string.already_referred_error
-            }
+                }
 
-            104 -> {
-                R.string.referring_my_referred
-            }
+                104 -> {
+                    R.string.referring_my_referred
+                }
 
-            else -> {
-                R.string.unknown_error
+                else -> {
+                    R.string.unknown_error
+                }
             }
-        }
         )
     }
 }

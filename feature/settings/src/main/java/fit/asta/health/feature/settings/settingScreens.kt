@@ -1,6 +1,7 @@
 package fit.asta.health.feature.settings
 
 import android.widget.Toast
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -16,6 +17,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.settings.view.SettingsNotificationLayout
@@ -46,12 +48,6 @@ fun NavGraphBuilder.settingScreens(
                 val deleteAccountState by settingsViewModel.deleteState.collectAsStateWithLifecycle()
 
                 when (deleteAccountState) {
-                    is UiState.ErrorRetry -> {
-                        AppRetryCard(text = (deleteAccountState as UiState.ErrorRetry).resId.toStringFromResId()) {
-                            settingsViewModel.deleteAccount()
-                        }
-                    }
-
                     is UiState.Loading -> {
                         AppCircularProgressIndicator()
                     }
@@ -61,15 +57,29 @@ fun NavGraphBuilder.settingScreens(
                         onSettingsUiEvent(SettingsUiEvent.NavigateToAuthScreen)
                     }
 
+                    is UiState.ErrorRetry -> {
+                        AppRetryCard(text = (deleteAccountState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                            settingsViewModel.deleteAccount()
+                        }
+                    }
+
+                    is UiState.NoInternet -> {
+                        AppInternetErrorDialog {
+                            settingsViewModel.deleteAccount()
+                        }
+                    }
+
                     is UiState.ErrorMessage -> {
-                        Toast.makeText(
-                            context,
-                            (deleteAccountState as UiState.ErrorMessage).resId.toStringFromResId(
-                                context
-                            ),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        settingsViewModel.resetDeleteState()
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                (deleteAccountState as UiState.ErrorMessage).resId.toStringFromResId(
+                                    context
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            settingsViewModel.resetDeleteState()
+                        }
                     }
 
                     else -> {}
@@ -77,12 +87,6 @@ fun NavGraphBuilder.settingScreens(
 
                 val userLogoutState by settingsViewModel.logoutState.collectAsStateWithLifecycle()
                 when (userLogoutState) {
-                    is UiState.ErrorRetry -> {
-                        AppRetryCard(text = (userLogoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
-                            settingsViewModel.logoutUser()
-                        }
-                    }
-
                     is UiState.Loading -> {
                         AppCircularProgressIndicator()
                     }
@@ -92,15 +96,30 @@ fun NavGraphBuilder.settingScreens(
                         onSettingsUiEvent(SettingsUiEvent.NavigateToAuthScreen)
                     }
 
+                    is UiState.ErrorRetry -> {
+                        AppRetryCard(text = (userLogoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                            settingsViewModel.logoutUser()
+                        }
+                    }
+
+                    is UiState.NoInternet -> {
+                        AppInternetErrorDialog {
+                            settingsViewModel.logoutUser()
+                        }
+                    }
+
                     is UiState.ErrorMessage -> {
-                        Toast.makeText(
-                            context,
-                            (userLogoutState as UiState.ErrorMessage).resId.toStringFromResId(
-                                context
-                            ),
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        settingsViewModel.resetLogoutState()
+                        LaunchedEffect(Unit) {
+                            Toast.makeText(
+                                context,
+                                (userLogoutState as UiState.ErrorMessage).resId.toStringFromResId(
+                                    context
+                                ),
+                                Toast.LENGTH_SHORT
+                            ).show()
+                            settingsViewModel.resetLogoutState()
+                        }
+
                     }
 
                     else -> {}

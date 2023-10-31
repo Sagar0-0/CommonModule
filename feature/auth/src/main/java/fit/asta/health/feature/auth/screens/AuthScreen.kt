@@ -1,6 +1,6 @@
 package fit.asta.health.feature.auth.screens
 
-import androidx.compose.foundation.Image
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -11,13 +11,15 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -26,7 +28,6 @@ import fit.asta.health.feature.auth.components.AuthStringDivider
 import fit.asta.health.feature.auth.components.AuthTermAndPrivacyUI
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.auth.util.OnboardingDataPager
-import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
@@ -36,6 +37,7 @@ internal fun AuthScreen(
     onNavigate: (String) -> Unit,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
+    val context = LocalContext.current
 
     //Parent Composable
     Column(
@@ -59,34 +61,52 @@ internal fun AuthScreen(
                 }
             }
 
+            is UiState.ErrorMessage -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        loginState.resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
             else -> {}
         }
 
         // Boarding Image State
         when (onboardingState) {
+            is UiState.Loading -> {
+                AppDotTypingAnimation()
+            }
+
             is UiState.Success -> {
                 OnboardingDataPager(onboardingState.data)
             }
 
             is UiState.NoInternet -> {
-                Image(
-                    painter = painterResource(id = DrawR.drawable.ic_launcher),
-                    contentDescription = "",
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .weight(1f)
-                )
-            }
-
-            is UiState.Loading -> {
-                AppDotTypingAnimation()
-            }
-
-            else -> {
-                AppRetryCard(text = "Something Went Wrong") {
+                AppInternetErrorDialog {
                     onUiEvent(AuthUiEvent.GetOnboardingData)
                 }
             }
+
+            is UiState.ErrorRetry -> {
+                AppRetryCard(text = onboardingState.resId.toStringFromResId()) {
+                    onUiEvent(AuthUiEvent.GetOnboardingData)
+                }
+            }
+
+            is UiState.ErrorMessage -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        onboardingState.resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+            }
+
+            else -> {}
         }
 
         // Whole Login and Sign up along with the terms and policy UI

@@ -18,3 +18,9 @@ data class OnboardingData(
     @SerializedName("vis")
     val vis: Boolean = true
 )
+
+sealed class OnBoardingDataType(val type: Int) {
+    data object Image : OnBoardingDataType(1)
+    data object GIF : OnBoardingDataType(2)
+    data object Video : OnBoardingDataType(3)
+}

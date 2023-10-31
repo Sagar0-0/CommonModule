@@ -625,7 +625,7 @@
     <string name="server_error">Server error</string>
     <string name="failed_to_update">Failed to update</string>
     <string name="no_records_found">No records found</string>
-    <string name="refund_extended_error">Refund time extended 7 days</string>
+    <string name="refund_exceeded_error">Refund time exceeded 7 days</string>
     <string name="file_not_found">File not found!</string>
     <string name="null_data_error">Null Data Error</string>
     <string name="sign_in_failed">Sign in Failed</string>
@@ -646,4 +646,10 @@
     <string name="your_feedback_is_important">Your feedback is important to us. We read every feedback we get and take it seriously.</string>
     <string name="enter_your_phone_number">Enter your phone number</string>
     <string name="enter_your_otp">Enter your otp</string>
+    <string name="failed_to_create">Failed to Create!</string>
+    <string name="failed_to_delete">Failed to delete!</string>
+    <string name="failed_to_upload_to_our_server">Failed to upload to our servers!</string>
+    <string name="online_weather_error">Failed to get online weather info!</string>
+    <string name="razorpay_error">RazorPay Error</string>
+    <string name="conversion_error">Conversion Error</string>
 </resources>

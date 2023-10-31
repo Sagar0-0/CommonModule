@@ -53,14 +53,14 @@ suspend fun <T> getApiResponseState(
             }
 
             else -> {
-                errorHandler.fetchStatusMessage(response.status.code)
+                errorHandler.fetchStatusCodeMessage(response.status.code)
             }
         }
     } catch (e: NoInternetException) {
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        errorHandler.fetchExceptionMessage(e.message ?: "")
+        errorHandler.fetchHTTPExceptionMessage(e.message ?: "")
     }
 }
 
@@ -78,7 +78,7 @@ suspend fun <T> getResponseState(
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        errorHandler.fetchExceptionMessage(e.message ?: "")
+        errorHandler.fetchHTTPExceptionMessage(e.message ?: "")
     }
 }
 
