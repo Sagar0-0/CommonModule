@@ -45,7 +45,7 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
@@ -198,9 +198,8 @@ fun TrackSleepScreenControl(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    isInternetError = false,
-                    desc = sleepTrackData.resId.toStringFromResId(),
+                AppNonInternetErrorScreen(
+                    issueDescription = sleepTrackData.resId.toStringFromResId(),
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }

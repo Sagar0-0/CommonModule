@@ -40,7 +40,7 @@ import fit.asta.chart.util.ChartPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
@@ -193,9 +193,8 @@ fun TrackExerciseScreenControl(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    isInternetError = false,
-                    desc = exerciseTrackData.resId.toStringFromResId()
+                AppNonInternetErrorScreen(
+                    issueDescription = exerciseTrackData.resId.toStringFromResId()
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }

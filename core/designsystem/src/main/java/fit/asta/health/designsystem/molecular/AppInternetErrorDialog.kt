@@ -54,6 +54,9 @@ private fun DefaultPreview() {
  * This composable function is used to show the Error Screen to the User when there is a Internet
  * Issues or error during the Backend API Calls
  *
+ * Check [AppNonInternetErrorScreen] - For composable function which should be used during issues
+ * not related to the Internet
+ *
  * @param modifier This is to pass modifications from the Parent Composable to the Child
  * @param issueHeading This is the Heading of the issue/error which would be shown as a Heading below
  * the Image

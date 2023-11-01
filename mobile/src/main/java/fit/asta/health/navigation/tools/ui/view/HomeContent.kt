@@ -5,7 +5,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeState
@@ -32,11 +32,7 @@ fun HomeContent(
         }
 
         is HomeState.Error -> {
-            AppErrorScreen(
-                onTryAgain = {
-                    viewModel.loadHomeData()
-                }, isInternetError = false
-            )
+            AppNonInternetErrorScreen { viewModel.loadHomeData() }
         }
 
         is HomeState.NetworkError -> {

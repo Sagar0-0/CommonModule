@@ -30,7 +30,7 @@ import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -68,10 +68,9 @@ fun ShareReferralUi(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
+                AppNonInternetErrorScreen(
                     modifier = Modifier.padding(paddingValues),
-                    desc = "Something went wrong!",
-                    isInternetError = false
+                    issueDescription = "Something went wrong!",
                 ) {
                     onTryAgain()
                 }

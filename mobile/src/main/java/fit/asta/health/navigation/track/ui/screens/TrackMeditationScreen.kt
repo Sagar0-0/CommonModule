@@ -45,7 +45,7 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
@@ -200,9 +200,8 @@ fun TrackMeditationScreenControl(
             }
 
             is UiState.ErrorMessage -> {
-                AppErrorScreen(
-                    isInternetError = false,
-                    desc = meditationTrackData.resId.toStringFromResId()
+                AppNonInternetErrorScreen(
+                    issueDescription = meditationTrackData.resId.toStringFromResId()
                 ) {
                     setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))
                 }

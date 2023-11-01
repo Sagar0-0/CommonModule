@@ -42,7 +42,6 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -273,7 +272,7 @@ fun BasicProfileScreen(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppErrorScreen {
+                        AppInternetErrorDialog {
                             onEvent(BasicProfileEvent.ResetCodeState)
                         }
                     }
@@ -320,7 +319,7 @@ fun BasicProfileScreen(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppErrorScreen {
+                        AppInternetErrorDialog {
                             onEvent(BasicProfileEvent.ResetCreateProfileState)
                         }
                     }

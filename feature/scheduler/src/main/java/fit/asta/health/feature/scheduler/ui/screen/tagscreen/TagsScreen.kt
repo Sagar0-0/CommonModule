@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -76,9 +76,7 @@ fun TagsScreen(
         snackBarHostState = snackBarHostState,
         content = {
             if (tagsList.isEmpty()) {
-                AppErrorScreen(onTryAgain = {
-                    tagsEvent(TagsEvent.GetTag)
-                }, isInternetError = false)
+                AppNonInternetErrorScreen { tagsEvent(TagsEvent.GetTag) }
             } else {
                 LazyColumn(
                     Modifier
