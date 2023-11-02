@@ -7,12 +7,10 @@ import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Artist
-import fit.asta.health.data.spotify.model.common.ExternalUrls
-import fit.asta.health.data.spotify.model.common.Followers
-import fit.asta.health.data.spotify.model.common.Image
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.screens.AlbumDetailScreen
+import fit.asta.health.feature.spotify.util.SpotifyTestHelper.albumGenerator
+import fit.asta.health.feature.spotify.util.SpotifyTestHelper.multipleAlbumGenerator
 import fit.asta.health.feature.spotify.utils.SpotifyUIHelper
 import fit.asta.health.resources.strings.R
 import org.junit.Rule
@@ -179,50 +177,5 @@ class AlbumDetailScreenTest {
         }
 
         composeTestRule.onNodeWithTag("Album Details Tag").assertExists()
-    }
-
-
-    private fun albumGenerator(): Album {
-        return Album(
-            albumType = "Test Type",
-            artists = listOf(
-                Artist(
-                    externalUrls = ExternalUrls(spotify = ""),
-                    followers = Followers(href = "", total = 10),
-                    genres = listOf(""),
-                    href = "",
-                    id = "",
-                    images = listOf(
-                        Image(height = 10, url = "def.url", width = 20)
-                    ),
-                    name = "",
-                    popularity = 10,
-                    type = "",
-                    uri = ""
-                )
-            ),
-            availableMarkets = listOf(""),
-            externalUrls = ExternalUrls(spotify = ""),
-            href = "",
-            id = "",
-            images = listOf(
-                Image(height = 10, url = "abc.url", width = 20)
-            ),
-            name = "Test Name",
-            releaseDate = "",
-            releaseDatePrecision = "",
-            totalTracks = 10,
-            type = "",
-            uri = "test uri"
-        )
-    }
-
-    private fun multipleAlbumGenerator(): List<Album> {
-        val albumList: MutableList<Album> = mutableListOf()
-
-        for (i in 1..10) {
-            albumList.add(albumGenerator())
-        }
-        return albumList
     }
 }

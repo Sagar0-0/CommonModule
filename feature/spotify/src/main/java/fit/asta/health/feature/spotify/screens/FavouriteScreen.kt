@@ -12,6 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
@@ -75,6 +76,7 @@ fun FavouriteScreen(
                     modifier = Modifier
                         .height(AppTheme.boxSize.level9)
                         .fillMaxWidth()
+                        .testTag("Favourite Screen")
                 )
             }
 
@@ -140,6 +142,7 @@ fun FavouriteScreen(
                     modifier = Modifier
                         .height(AppTheme.boxSize.level9)
                         .fillMaxWidth()
+                        .testTag("Favourite Screen")
                 )
             }
 
