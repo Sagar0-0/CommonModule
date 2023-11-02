@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
@@ -130,7 +131,11 @@ fun SearchScreen(
             is UiState.Idle -> {}
 
             is UiState.Loading -> {
-                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
+                AppDotTypingAnimation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("Search Screen")
+                )
             }
 
             is UiState.Success -> {

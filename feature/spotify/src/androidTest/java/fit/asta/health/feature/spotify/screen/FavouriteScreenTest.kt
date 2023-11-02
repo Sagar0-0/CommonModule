@@ -90,7 +90,7 @@ class FavouriteScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Server Error").assertExists()
+        composeTestRule.onNodeWithText("Server error").assertExists()
     }
 
     @Test
@@ -110,6 +110,6 @@ class FavouriteScreenTest {
             }
         }
 
-        composeTestRule.onNodeWithText("Server Error").assertExists()
+        composeTestRule.onNodeWithText("Server error").assertExists()
     }
 }

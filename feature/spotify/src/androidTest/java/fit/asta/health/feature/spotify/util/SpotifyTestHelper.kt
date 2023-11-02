@@ -7,6 +7,13 @@ import fit.asta.health.data.spotify.model.common.ExternalUrls
 import fit.asta.health.data.spotify.model.common.Followers
 import fit.asta.health.data.spotify.model.common.Image
 import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.model.search.AlbumList
+import fit.asta.health.data.spotify.model.search.ArtistList
+import fit.asta.health.data.spotify.model.search.EpisodeList
+import fit.asta.health.data.spotify.model.search.PlaylistList
+import fit.asta.health.data.spotify.model.search.ShowList
+import fit.asta.health.data.spotify.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.model.search.TrackList
 
 object SpotifyTestHelper {
     fun albumGenerator(): Album {
@@ -82,5 +89,64 @@ object SpotifyTestHelper {
             trackList.add(trackGenerator())
         }
         return trackList
+    }
+
+    fun generateSpotifySearchState(): SpotifySearchModel {
+        return SpotifySearchModel(
+            albums = AlbumList(
+                href = "",
+                albumItems = multipleAlbumGenerator(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            ),
+            artists = ArtistList(
+                href = "",
+                artistList = listOf(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            ),
+            episodes = EpisodeList(
+                href = "",
+                items = listOf(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            ),
+            playlists = PlaylistList(
+                href = "",
+                items = listOf(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            ),
+            shows = ShowList(
+                href = "",
+                items = listOf(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            ),
+            tracks = TrackList(
+                href = "",
+                trackList = multipleTrackGenerator(),
+                limit = 10,
+                next = "",
+                offset = 10,
+                previous = null,
+                total = 10
+            )
+        )
     }
 }
