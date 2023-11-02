@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.wrapContentWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -45,6 +46,7 @@ fun MusicFilterOptions(
 
                     // Check Box
                     AppCheckBoxButton(
+                        modifier = Modifier.testTag(currentOption.key),
                         checked = currentOption.value,
                         onCheckedChange = {
                             onFilterOptionClicked(it, currentOption.key)
