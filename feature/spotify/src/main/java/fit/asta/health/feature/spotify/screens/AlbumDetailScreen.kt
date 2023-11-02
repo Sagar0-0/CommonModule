@@ -12,6 +12,7 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
@@ -61,7 +62,11 @@ fun AlbumDetailScreen(
             }
 
             is UiState.Loading -> {
-                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
+                AppDotTypingAnimation(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .testTag("Album Details Tag")
+                )
             }
 
             is UiState.Success -> {
@@ -105,7 +110,11 @@ private fun LocalAlbumHandler(
 
         // Loading State
         is UiState.Loading -> {
-            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .testTag("Album Details Tag")
+            )
         }
 
         // Success State

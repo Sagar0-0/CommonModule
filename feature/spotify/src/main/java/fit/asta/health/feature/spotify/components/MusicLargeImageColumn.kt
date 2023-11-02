@@ -16,6 +16,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.feature.spotify.utils.SpotifyUIHelper
 
 
 /**
@@ -69,11 +70,7 @@ fun MusicLargeImageColumn(
         )
 
         // Formulating the names of the Artist
-        val artistsNames = secondaryTexts
-            .map { it.name }
-            .toString()
-            .filter { it != '[' }
-            .filter { it != ']' }
+        val artistsNames = SpotifyUIHelper.extractTextFromListOfStrings(secondaryTexts) { it.name }
 
         // Artist Names
         CaptionTexts.Level1(
