@@ -2,9 +2,9 @@ package fit.asta.health.data.testimonials.repo
 
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.network.NetworkHelper
-import fit.asta.health.network.data.ApiResponse
 
 class TestimonialDataSource(
     private val repo: TestimonialRepo,
@@ -24,14 +24,16 @@ class TestimonialDataSource(
 
         return if (networkHelper.isConnected()) {
             when (val result = repo.getTestimonials(index = index, limit = params.loadSize)) {
-                is ApiResponse.Error -> LoadResult.Error(result.exception)
-                is ApiResponse.HttpError -> LoadResult.Error(result.ex)
-                is ApiResponse.Success -> {
+                is ResponseState.Success -> {
                     LoadResult.Page(
                         data = result.data,
                         prevKey = if (index == STARTING_PAGE_INDEX) null else index - 1,
                         nextKey = if (result.data.isEmpty()) null else params.key?.plus(1)
                     )
+                }
+
+                else -> {
+                    LoadResult.Error(Exception())
                 }
             }
         } else {

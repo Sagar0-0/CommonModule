@@ -6,7 +6,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
+import fit.asta.health.data.testimonials.model.InputWrapper
+import fit.asta.health.data.testimonials.model.Media
+import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.model.TestimonialUser
+import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.feature.testimonials.create.vm.MediaType.AfterImage
 import fit.asta.health.feature.testimonials.create.vm.MediaType.BeforeImage
 import fit.asta.health.feature.testimonials.create.vm.MediaType.Video
@@ -18,12 +28,6 @@ import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnSubmit
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTestimonialChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTitleChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Empty
-import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Error
-import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Loading
-import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.NetworkError
-import fit.asta.health.feature.testimonials.create.vm.TestimonialGetState.Success
-import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -32,7 +36,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
-import java.io.IOException
 import javax.inject.Inject
 
 const val TESTIMONIAL_DATA = "testimonialData"
@@ -51,47 +54,47 @@ const val VIDEO = "video"
 @HiltViewModel
 class TestimonialViewModel
 @Inject constructor(
-    private val testimonialRepo: fit.asta.health.data.testimonials.repo.TestimonialRepo,
+    private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
     private val savedState: SavedStateHandle
 ) : ViewModel() {
 
-    private val _mutableState = MutableStateFlow<TestimonialGetState>(Loading)
+    private val _mutableState = MutableStateFlow<UiState<Testimonial>>(UiState.Loading)
     val state = _mutableState.asStateFlow()
 
     private val testimonialData = savedState.getStateFlow(
         TESTIMONIAL_DATA,
-        fit.asta.health.data.testimonials.model.Testimonial()
+        Testimonial()
     )
     val id = savedState.getStateFlow(ID, "")
     val type = savedState.getStateFlow(
         TYPE,
-        fit.asta.health.data.testimonials.model.TestimonialType.from(0)
+        TestimonialType.from(0)
     )
     val title = savedState.getStateFlow(
         TITLE,
-        fit.asta.health.data.testimonials.model.InputWrapper()
+        InputWrapper()
     )
     val testimonial = savedState.getStateFlow(
         TESTIMONIAL,
-        fit.asta.health.data.testimonials.model.InputWrapper()
+        InputWrapper()
     )
-    val org = savedState.getStateFlow(ORG, fit.asta.health.data.testimonials.model.InputWrapper())
-    val role = savedState.getStateFlow(ROLE, fit.asta.health.data.testimonials.model.InputWrapper())
+    val org = savedState.getStateFlow(ORG, InputWrapper())
+    val role = savedState.getStateFlow(ROLE, InputWrapper())
     val imgBefore =
         savedState.getStateFlow(
             IMAGE_BEFORE,
-            fit.asta.health.data.testimonials.model.Media(name = "before", title = "Before Image")
+            Media(name = "before", title = "Before Image")
         )
     val imgAfter =
         savedState.getStateFlow(
             IMAGE_AFTER,
-            fit.asta.health.data.testimonials.model.Media(name = "after", title = "After Image")
+            Media(name = "after", title = "After Image")
         )
     val video =
         savedState.getStateFlow(
             VIDEO,
-            fit.asta.health.data.testimonials.model.Media(
+            Media(
                 name = "journey",
                 title = "Health Transformation"
             )
@@ -100,24 +103,24 @@ class TestimonialViewModel
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
             when (type) {
-                fit.asta.health.data.testimonials.model.TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
-                fit.asta.health.data.testimonials.model.TestimonialType.IMAGE -> true
-                fit.asta.health.data.testimonials.model.TestimonialType.VIDEO -> true
+                TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
+                TestimonialType.IMAGE -> true
+                TestimonialType.VIDEO -> true
             } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
         }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 
     val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
         when (type) {
-            fit.asta.health.data.testimonials.model.TestimonialType.TEXT -> true
-            fit.asta.health.data.testimonials.model.TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
-            fit.asta.health.data.testimonials.model.TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
+            TestimonialType.TEXT -> true
+            TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
+            TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
         }
     }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
 
 
     private val _stateSubmit =
-        MutableStateFlow<TestimonialSubmitState>(TestimonialSubmitState.Loading)
+        MutableStateFlow<UiState<CreateTestimonialResponse>>(UiState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
 
@@ -128,57 +131,48 @@ class TestimonialViewModel
 
     fun loadTestimonial() {
         viewModelScope.launch {
-            try {
-                authRepo.getUser()?.let { uid ->
-                    when (val result = testimonialRepo.getTestimonial(uid.uid)) {
-                        is ApiResponse.Error -> {
-                        }
-                        is ApiResponse.HttpError -> {
-                            _mutableState.value = Empty
-                        }
-                        is ApiResponse.Success -> {
-                            savedState[TESTIMONIAL_DATA] = result.data
-                            savedState[ID] = result.data.id
-                            savedState[TYPE] =
-                                fit.asta.health.data.testimonials.model.TestimonialType.from(result.data.type)
-                            savedState[TITLE] =
-                                fit.asta.health.data.testimonials.model.InputWrapper(value = result.data.title)
-                            savedState[TESTIMONIAL] =
-                                fit.asta.health.data.testimonials.model.InputWrapper(value = result.data.testimonial)
-                            savedState[ORG] =
-                                fit.asta.health.data.testimonials.model.InputWrapper(value = result.data.user.org)
-                            savedState[ROLE] =
-                                fit.asta.health.data.testimonials.model.InputWrapper(value = result.data.user.role)
+            authRepo.getUser()?.let { uid ->
+                when (val result = testimonialRepo.getTestimonial(uid.uid)) {
+                    is ResponseState.Success -> {
+                        savedState[TESTIMONIAL_DATA] = result.data
+                        savedState[ID] = result.data.id
+                        savedState[TYPE] =
+                            TestimonialType.from(result.data.type)
+                        savedState[TITLE] =
+                            InputWrapper(value = result.data.title)
+                        savedState[TESTIMONIAL] =
+                            InputWrapper(value = result.data.testimonial)
+                        savedState[ORG] =
+                            InputWrapper(value = result.data.user.org)
+                        savedState[ROLE] =
+                            InputWrapper(value = result.data.user.role)
 
-                            when (fit.asta.health.data.testimonials.model.TestimonialType.from(
-                                result.data.type
-                            )) {
-                                fit.asta.health.data.testimonials.model.TestimonialType.TEXT -> {
-                                }
-
-                                fit.asta.health.data.testimonials.model.TestimonialType.IMAGE -> {
-                                    savedState[IMAGE_BEFORE] =
-                                        fit.asta.health.data.testimonials.model.Media(url = result.data.media[0].url)
-                                    savedState[IMAGE_AFTER] =
-                                        fit.asta.health.data.testimonials.model.Media(url = result.data.media[1].url)
-                                }
-
-                                fit.asta.health.data.testimonials.model.TestimonialType.VIDEO -> {
-                                    savedState[VIDEO] =
-                                        fit.asta.health.data.testimonials.model.Media(url = result.data.media[0].url)
-                                }
+                        when (TestimonialType.from(
+                            result.data.type
+                        )) {
+                            TestimonialType.TEXT -> {
                             }
-                            _mutableState.value = Success(result.data)
+
+                            TestimonialType.IMAGE -> {
+                                savedState[IMAGE_BEFORE] =
+                                    Media(url = result.data.media[0].url)
+                                savedState[IMAGE_AFTER] =
+                                    Media(url = result.data.media[1].url)
+                            }
+
+                            TestimonialType.VIDEO -> {
+                                savedState[VIDEO] =
+                                    Media(url = result.data.media[0].url)
+                            }
                         }
+                        _mutableState.value = UiState.Success(result.data)
+                    }
+
+                    else -> {
+                        _mutableState.value = result.toUiState()
                     }
                 }
-            } catch (networkException: IOException) {
-                _mutableState.value = NetworkError(networkException)
-            } catch (exception: Exception) {
-                _mutableState.value = Error(exception)
             }
-
-
         }
     }
 
@@ -186,26 +180,26 @@ class TestimonialViewModel
     private fun submit() {
         authRepo.getUser()?.let {
             updateTestimonial(
-                fit.asta.health.data.testimonials.model.Testimonial(
+                Testimonial(
                     id = id.value,
                     type = type.value.value,
                     title = title.value.value.trim(),
                     testimonial = testimonial.value.value.trim(),
                     userId = it.uid,
-                    user = fit.asta.health.data.testimonials.model.TestimonialUser(
+                    user = TestimonialUser(
                         name = it.name!!,
                         role = role.value.value.trim(),
                         org = org.value.value.trim(),
                         url = it.photoUrl.toString()
                     ),
                     media = when (type.value) {
-                        fit.asta.health.data.testimonials.model.TestimonialType.TEXT -> listOf()
-                        fit.asta.health.data.testimonials.model.TestimonialType.IMAGE -> listOf(
+                        TestimonialType.TEXT -> listOf()
+                        TestimonialType.IMAGE -> listOf(
                             imgBefore.value,
                             imgAfter.value
                         )
 
-                        fit.asta.health.data.testimonials.model.TestimonialType.VIDEO -> listOf(
+                        TestimonialType.VIDEO -> listOf(
                             video.value
                         )
                     }
@@ -214,18 +208,9 @@ class TestimonialViewModel
         }
     }
 
-    private fun updateTestimonial(netTestimonial: fit.asta.health.data.testimonials.model.Testimonial) {
+    private fun updateTestimonial(netTestimonial: Testimonial) {
         viewModelScope.launch {
-            try {
-                testimonialRepo.updateTestimonial(netTestimonial).collect {
-                    clearErrors()
-                    _stateSubmit.value = TestimonialSubmitState.Success(it)
-                }
-            } catch (networkException: IOException) {
-                _stateSubmit.value = TestimonialSubmitState.NetworkError(networkException)
-            } catch (exception: Exception) {
-                _stateSubmit.value = TestimonialSubmitState.Error(exception)
-            }
+            _stateSubmit.value = testimonialRepo.updateTestimonial(netTestimonial).toUiState()
         }
     }
 

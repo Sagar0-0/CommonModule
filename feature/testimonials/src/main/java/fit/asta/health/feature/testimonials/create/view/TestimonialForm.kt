@@ -1,6 +1,5 @@
 package fit.asta.health.feature.testimonials.create.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.*
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
@@ -14,6 +13,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -29,7 +29,6 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialSubmitState
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -181,22 +180,22 @@ fun TestimonialForm(
 
                 if (showCustomDialogWithResult) {
                     when (events) {
-                        is TestimonialSubmitState.Error -> {
-                            Log.d("validate", "ErrorMessage -> ${events.error}")
-                        }
 
-                        is TestimonialSubmitState.Loading -> AppDotTypingAnimation()
-                        is TestimonialSubmitState.Success -> {
+                        is UiState.Loading -> AppDotTypingAnimation()
+                        is UiState.Success -> {
                             OnSuccessfulSubmit(onDismiss = {
                                 showCustomDialogWithResult = !showCustomDialogWithResult
                             }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
                                 onNavigateTstHome()
-                            })
+                            }
+                            )
                         }
 
-                        is TestimonialSubmitState.NetworkError -> AppInternetErrorDialog {
+                        is UiState.NoInternet -> AppInternetErrorDialog {
                             getViewModel.onEvent(TestimonialEvent.OnSubmit)
                         }
+
+                        else -> {}
                     }
                 }
             }
