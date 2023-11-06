@@ -4,7 +4,7 @@ import android.net.Uri
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.common.utils.UiString
 
-data class UserProfile(
+data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
     @SerializedName("cont") val contact: Contact = Contact(),
@@ -99,7 +99,7 @@ data class Injury(
 )
 
 /*
-data class UserProfile(
+data class UserProfileResponse(
     val uid: String,
     val contact: Contact,
     val physique: Physique,

@@ -5,11 +5,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.profile.create.CreateProfileLayout
 import fit.asta.health.feature.profile.show.ProfileReadyScreen
-import fit.asta.health.feature.profile.show.vm.ProfileGetState
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -24,22 +24,21 @@ fun ProfileContent(
     val profileState by viewModel.state.collectAsState()
 
     when (profileState) {
-        is ProfileGetState.Loading -> AppDotTypingAnimation()
-        is ProfileGetState.Success -> {
+        is UiState.Loading -> AppDotTypingAnimation()
+        is UiState.Success -> {
             ProfileReadyScreen(
-                userProfile = (profileState as ProfileGetState.Success).userProfile,
+                userProfileResponse = (profileState as UiState.Success).data,
                 onBack = onBack,
                 onEdit = onEdit
             )
         }
 
-        is ProfileGetState.Empty -> CreateProfileLayout(onBack = onBack)
-        is ProfileGetState.NoInternet -> {
+        is UiState.NoInternet -> {
             AppInternetErrorDialog { viewModel.loadUserProfile() }
         }
 
-        is ProfileGetState.Error -> {
-            // Handle error case if needed
+        else -> {
+            CreateProfileLayout(onBack = onBack)
         }
     }
 }
