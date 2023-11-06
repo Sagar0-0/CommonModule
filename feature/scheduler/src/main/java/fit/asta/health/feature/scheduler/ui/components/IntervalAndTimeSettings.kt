@@ -65,6 +65,7 @@ fun SettingsLayout(
         TextSelection(
             imageIcon = Icons.Default.Snooze,
             title = stringResource(id = StringR.string.snooze),
+            testTag = stringResource(id = StringR.string.snooze),
             arrowTitle = "${timeSettingUiState.snoozeTime} Minutes",
             btnEnabled = true,
             onNavigateAction = onNavigateSnooze
@@ -72,6 +73,7 @@ fun SettingsLayout(
         OnlyToggleButton(
             imageIcon = Icons.Default.Notifications,
             title = stringResource(id = StringR.string.advanced_reminder),
+            testTag = stringResource(id = StringR.string.advanced_reminder),
             btnEnabled = true,
             switchTitle = stringResource(
                 StringR.string.minutes,
@@ -84,6 +86,7 @@ fun SettingsLayout(
         OnlyToggleButton(
             imageIcon = Icons.Default.Schedule,
             title = stringResource(id = StringR.string.end_alarm),
+            testTag = stringResource(id = StringR.string.end_alarm),
             switchTitle = "",
             mCheckedState = timeSettingUiState.statusEnd,
             onCheckClicked = { onEndStatus(it) },

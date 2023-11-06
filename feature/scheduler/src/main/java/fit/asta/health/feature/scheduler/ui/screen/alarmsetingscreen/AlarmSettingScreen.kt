@@ -158,12 +158,14 @@ fun AlarmSettingScreen(
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
                     title = stringResource(id = StringR.string.status),
+                    testTag = stringResource(id = StringR.string.status),
                     switchTitle = "",
                     onNavigateToClickText = null,
                     mCheckedState = alarmSettingUiState.status,
                     onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
                 TextSelection(imageIcon = Icons.Default.Tag,
                     title = stringResource(id = StringR.string.tag),
+                    testTag = stringResource(id = StringR.string.tag),
                     arrowTitle = alarmSettingUiState.tagName,
                     btnEnabled = true, color = tagBg,
                     onNavigateAction = {
@@ -171,6 +173,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = Icons.Default.Label,
                     title = stringResource(id = StringR.string.label),
+                    testTag = stringResource(id = StringR.string.label),
                     arrowTitle = alarmSettingUiState.alarmName,
                     btnEnabled = true, color = nameBg,
                     onNavigateAction = {
@@ -179,6 +182,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = Icons.Default.Description,
                     title = stringResource(id = StringR.string.description),
+                    testTag = stringResource(id = StringR.string.description),
                     arrowTitle = alarmSettingUiState.alarmDescription,
                     btnEnabled = true, color = descriptionBg,
                     onNavigateAction = {
@@ -187,6 +191,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = Icons.Default.AddAlarm,
                     title = stringResource(StringR.string.intervals_settings),
+                    testTag = stringResource(StringR.string.intervals_settings),
                     arrowTitle = stringResource(StringR.string.optional),
                     btnEnabled = true,
                     onNavigateAction = {
@@ -198,6 +203,7 @@ fun AlarmSettingScreen(
                     })
                 TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
                     title = stringResource(id = StringR.string.reminder_mode),
+                    testTag = stringResource(id = StringR.string.reminder_mode),
                     arrowTitle = alarmSettingUiState.mode,
                     btnEnabled = true,
                     onNavigateAction = {
@@ -206,6 +212,7 @@ fun AlarmSettingScreen(
                     })
                 OnlyToggleButton(imageIcon = Icons.Default.Vibration,
                     title = stringResource(StringR.string.vibration),
+                    testTag = stringResource(StringR.string.vibration),
                     mCheckedState = alarmSettingUiState.vibrationStatus,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetVibration(it))
@@ -222,6 +229,7 @@ fun AlarmSettingScreen(
                 OnlyToggleButton(
                     imageIcon = Icons.Default.NotificationImportant,
                     title = stringResource(StringR.string.important),
+                    testTag = stringResource(StringR.string.important),
                     mCheckedState = alarmSettingUiState.important,
                     onCheckClicked = {
                         aSEvent(AlarmSettingEvent.SetImportant(it))

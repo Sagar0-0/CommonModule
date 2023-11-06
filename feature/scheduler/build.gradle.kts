@@ -8,22 +8,28 @@ plugins {
 
 android {
     namespace = "fit.asta.health.feature.scheduler"
+    defaultConfig {
+        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
+        manifestPlaceholders["redirectHostName"] = "auth"
+    }
+    packaging {
+        resources {
+            excludes += "META-INF/LICENSE.md"
+            excludes += "META-INF/LICENSE-notice.md"
+            excludes += "META-INF/DEPENDENCIES"
+            excludes += "META-INF/LICENSE"
+            excludes += "META-INF/LICENSE.txt"
+            excludes += "META-INF/license.txt"
+            excludes += "META-INF/NOTICE"
+            excludes += "META-INF/NOTICE.txt"
+            excludes += "META-INF/notice.txt"
+            excludes += "META-INF/ASL2.0"
+            excludes += "META-INF/*.kotlin_module"
+        }
+    }
 }
 
 dependencies {
-
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-//    testImplementation(libs.junit4)
-//    androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.androidx.test.espresso.core)
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material3.window.size)
-    implementation(libs.androidx.material.icons.extended.android)
-    implementation(libs.compose.theme.adapter)
-
     implementation(project(":data:scheduler"))
     implementation(project(":data:auth"))
     implementation(project(":data:spotify"))
@@ -36,14 +42,21 @@ dependencies {
     implementation(project(":resources:drawables"))
 
     api(project(":libs:spotify-app-remote"))
+
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.material)
+    //Jetpack Compose - Material theme components
+    implementation(libs.androidx.material3)
+    implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.material.icons.extended.android)
+    implementation(libs.compose.theme.adapter)
     //Spotify Auth
     implementation(libs.auth)
-
-    //Number Picker
+//    //Number Picker
     implementation(libs.numberpicker)
-
-    //Number Picker
-    implementation(libs.number.picker)
+//    //Number Picker
+//    implementation(libs.number.picker)
     //Swipe
     implementation(libs.swipe)
 
@@ -77,4 +90,14 @@ dependencies {
     implementation(libs.glide)
 
     implementation(libs.androidx.lifecycle.extensions)
+    implementation(libs.androidx.navigation.testing)
+
+    androidTestImplementation(libs.androidx.compose.ui.test.junit4)
+    debugImplementation(libs.androidx.compose.ui.test.manifest)
+
+    // For instrumented tests.
+    androidTestImplementation(libs.hilt.android.testing)
+    kaptAndroidTest(libs.hilt.compiler)
+
+    androidTestImplementation("androidx.test:runner:1.5.2")
 }

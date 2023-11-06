@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
@@ -54,7 +55,10 @@ fun CustomLabelBottomSheetLayout(
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(imageVector = Icons.Default.Check) {
+            AppIconButton(
+                modifier = Modifier.testTag("button"),
+                imageVector = Icons.Default.Check
+            ) {
                 onSave(value)
             }
         }

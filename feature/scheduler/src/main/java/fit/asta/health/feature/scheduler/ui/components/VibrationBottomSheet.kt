@@ -18,6 +18,7 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -55,7 +56,10 @@ fun VibrationBottomSheetLayout(
                 color = AppTheme.colors.onTertiaryContainer,
                 textAlign = TextAlign.Center
             )
-            AppIconButton(imageVector = Icons.Default.Check) { onSave(value) }
+            AppIconButton(
+                modifier = Modifier.testTag("done"),
+                imageVector = Icons.Default.Check
+            ) { onSave(value) }
         }
         FlowRow(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),

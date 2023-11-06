@@ -29,14 +29,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.testTag
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppSwitch
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -51,7 +52,8 @@ fun OnlyToggleButton(
     onNavigateToClickText: (() -> Unit)?,
     onCheckClicked: (Boolean) -> Unit = {},
     mCheckedState: Boolean = false,
-    btnEnabled: Boolean = false
+    btnEnabled: Boolean = false,
+    testTag: String
 ) {
 
     Row(
@@ -87,6 +89,7 @@ fun OnlyToggleButton(
                     arrowTitle = switchTitle,
                     onClick = { onNavigateToClickText?.invoke() })
                 AppSwitch(
+                    modifier = Modifier.testTag(testTag),
                     checked = mCheckedState,
                     colors = SwitchDefaults.colors(
                         checkedThumbColor = AppTheme.colors.primary,
@@ -115,7 +118,9 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
         targetValue = time.minutes, label = "",
         animationSpec = tween(700, easing = FastOutLinearInEasing)
     )
-    AppCard(modifier = Modifier.clickable { open() }, content = {
+    AppCard(modifier = Modifier
+        .testTag("alarmclock")
+        .clickable { open() }, content = {
         Row(
             modifier = Modifier
                 .padding(16.dp),

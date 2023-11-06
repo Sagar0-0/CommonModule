@@ -12,6 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
+import androidx.compose.ui.platform.testTag
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -20,6 +21,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun TextSelection(
     title: String,
+    testTag: String,
     arrowTitle: String = "",
     btnEnabled: Boolean = false,
     imageIcon: ImageVector,
@@ -57,9 +59,13 @@ fun TextSelection(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SelectableText(arrowTitle,btnEnabled,onNavigateAction)
+                SelectableText(arrowTitle, btnEnabled, onNavigateAction)
                 Box(contentAlignment = Alignment.Center) {
-                    IconButton(enabled = btnEnabled, onClick = onNavigateAction) {
+                    IconButton(
+                        modifier = Modifier.testTag(testTag),
+                        enabled = btnEnabled,
+                        onClick = onNavigateAction
+                    ) {
                         AppIcon(
                             imageVector = Icons.Default.ChevronRight,
                             contentDescription = null,
@@ -73,6 +79,6 @@ fun TextSelection(
 }
 
 @Composable
-fun SelectableText(arrowTitle: String,btnEnabled: Boolean=true, onClick: () -> Unit = {}) {
+fun SelectableText(arrowTitle: String, btnEnabled: Boolean = true, onClick: () -> Unit = {}) {
     AppTextButton(textToShow = arrowTitle, enabled = btnEnabled, onClick = onClick)
 }
