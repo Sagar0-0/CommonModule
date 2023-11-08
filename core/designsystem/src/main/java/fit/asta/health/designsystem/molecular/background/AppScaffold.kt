@@ -9,6 +9,8 @@ package fit.asta.health.designsystem.molecular.background
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.BottomSheetScaffoldState
@@ -106,7 +108,9 @@ fun AppBottomSheetScaffold(
 ) {
     BottomSheetScaffold(
         sheetContent = sheetContent,
-        modifier = modifier,
+        modifier = modifier
+            .imePadding()
+            .navigationBarsPadding(),
         scaffoldState = scaffoldState,
         sheetPeekHeight = sheetPeekHeight,
         sheetShape = sheetShape,
