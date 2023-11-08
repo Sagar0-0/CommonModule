@@ -3,6 +3,7 @@ package fit.asta.health.feature.feedback.components
 import androidx.compose.ui.test.assertIsEnabled
 import androidx.compose.ui.test.junit4.createComposeRule
 import androidx.compose.ui.test.onNodeWithContentDescription
+import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
@@ -17,7 +18,6 @@ class SessionFeedBackTest {
 
     @get:Rule
     val composeTestRule = createComposeRule()
-
 
     @Test
     fun feedbackImagePresent() {
@@ -162,6 +162,11 @@ class SessionFeedBackTest {
                 )
             }
         }
-        composeTestRule.onNodeWithContentDescription("SubmitButton").assertIsEnabled()
+        composeTestRule
+            .onNodeWithContentDescription("LazyColumn")
+            .performScrollToIndex(2)
+        composeTestRule
+            .onNodeWithContentDescription("SubmitButton")
+            .assertIsEnabled()
     }
 }

@@ -36,7 +36,8 @@ fun FeedbackQuesScreen(
     LazyColumn(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level2),
+            .padding(AppTheme.spacing.level2)
+            .semantics { contentDescription = "LazyColumn" },
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
 
