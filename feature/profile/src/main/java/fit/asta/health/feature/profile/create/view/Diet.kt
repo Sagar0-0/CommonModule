@@ -10,10 +10,13 @@ import androidx.compose.runtime.*
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -24,9 +27,7 @@ import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.*
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.HPropState
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
-import fit.asta.health.feature.profile.create.vm.ProfileSubmitState
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
 import fit.asta.health.feature.profile.show.view.*
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -202,24 +203,26 @@ fun DietContent(
                 }, titleButton2 = stringResource(R.string.submit)
             )
 
+            val context = LocalContext.current
             if (buttonClicked) {
                 when (events) {
-                    is ProfileSubmitState.Empty -> {}
-                    is ProfileSubmitState.Error -> {
+                    is UiState.ErrorMessage -> {
                         Log.d(
                             "validate",
-                            "ErrorMessage -> ${events.error} and message -> ${events.error.message} and ${events.error.localizedMessage}"
+                            "ErrorMessage -> ${events.resId.toStringFromResId(context)}"
                         )
                     }
 
-                    is ProfileSubmitState.Loading -> {
+                    is UiState.Loading -> {
                         AppDotTypingAnimation()
                     }
 
-                    is ProfileSubmitState.NoInternet -> AppInternetErrorDialog {}
-                    is ProfileSubmitState.Success -> {
+                    is UiState.NoInternet -> AppInternetErrorDialog {}
+                    is UiState.Success -> {
                         navigateBack()
                     }
+
+                    else -> {}
                 }
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -241,17 +244,17 @@ fun DietCreateBottomSheetLayout(
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
 
     when (state) {
-        is HPropState.Empty -> TODO()
-        is HPropState.Error -> TODO()
-        is HPropState.Loading -> AppDotTypingAnimation()
-        is HPropState.NoInternet -> AppInternetErrorDialog {}
-        is HPropState.Success -> ItemSelectionLayout(
-            cardList = (state as HPropState.Success).properties,
+        is UiState.Loading -> AppDotTypingAnimation()
+        is UiState.NoInternet -> AppInternetErrorDialog {}
+        is UiState.Success -> ItemSelectionLayout(
+            cardList = (state as UiState.Success).data,
             cardList2 = cardList2,
             cardIndex = cardIndex,
             composeIndex = ComposeIndex.Third,
             searchQuery = searchQuery
         )
+
+        else -> {}
     }
 }
 

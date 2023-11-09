@@ -1,9 +1,8 @@
 package fit.asta.health.data.testimonials.remote
 
+import fit.asta.health.common.utils.Response
+import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialRes
-import fit.asta.health.data.testimonials.model.TestimonialsRes
-import fit.asta.health.network.data.Status
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
@@ -14,15 +13,15 @@ interface TestimonialApiService {
     suspend fun getTestimonials(
         @Query("index") index: Int,
         @Query("limit") limit: Int,
-    ): TestimonialsRes
+    ): Response<List<Testimonial>>
 
     @PUT("testimonial/put/")
     @Multipart
     suspend fun createTestimonial(
         @Part("json") netTestimonial: Testimonial,
         @Part files: List<MultipartBody.Part>,
-    ): Status
+    ): Response<CreateTestimonialResponse>
 
     @GET("testimonial/get/?")
-    suspend fun getUserTestimonial(@Query("uid") userId: String): TestimonialRes
+    suspend fun getUserTestimonial(@Query("uid") userId: String): Response<Testimonial>
 }

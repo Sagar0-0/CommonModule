@@ -25,7 +25,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.data.profile.remote.model.UserProfile
+import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -41,7 +41,7 @@ import fit.asta.health.resources.strings.R
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProfileReadyScreen(
-    userProfile: UserProfile,
+    userProfileResponse: UserProfileResponse,
     onBack: () -> Unit,
     onEdit: () -> Unit,
 ) {
@@ -126,23 +126,23 @@ fun ProfileReadyScreen(
         Box(modifier = Modifier.padding(padding)) {
             when (content) {
                 1 -> {
-//                    ContactLayout(basicDetails = userProfile.contact)
+//                    ContactLayout(basicDetails = userProfileResponse.contact)
                 }
 
                 2 -> {
-                    PhysiqueLayout(physique = userProfile.physique)
+                    PhysiqueLayout(physique = userProfileResponse.physique)
                 }
 
                 3 -> {
-                    HealthLayout(health = userProfile.health)
+                    HealthLayout(health = userProfileResponse.health)
                 }
 
                 4 -> {
-                    LifeStyleLayout(lifeStyle = userProfile.lifeStyle)
+                    LifeStyleLayout(lifeStyle = userProfileResponse.lifeStyle)
                 }
 
                 5 -> {
-                    DietLayout(diet = userProfile.diet)
+                    DietLayout(diet = userProfileResponse.diet)
                 }
             }
         }

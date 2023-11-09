@@ -1,10 +1,9 @@
 package fit.asta.health.data.testimonials.di
 
-import android.content.Context
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
-import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.data.testimonials.remote.TestimonialApiService
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
@@ -19,18 +18,13 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
-    fun provideTestimonialRepo(
-        @ApplicationContext context: Context,
-        remoteApi: TestimonialApiService
-    ): TestimonialRepo {
-        return TestimonialRepoImpl(
-            context = context,
-            remoteApi = remoteApi
-        )
-    }
-
-    @Singleton
-    @Provides
     fun provideTestimonialService(client: OkHttpClient): TestimonialApiService =
         NetworkUtil.getRetrofit(client).create(TestimonialApiService::class.java)
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class TestimonialBindingModule {
+    @Binds
+    abstract fun provideTestimonialRepo(testimonialRepoImpl: TestimonialRepoImpl): TestimonialRepo
 }

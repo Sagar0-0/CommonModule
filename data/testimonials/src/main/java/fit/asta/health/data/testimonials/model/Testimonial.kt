@@ -4,23 +4,7 @@ import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.common.utils.UiString
-import fit.asta.health.network.data.Status
 import kotlinx.parcelize.Parcelize
-
-
-data class TestimonialsRes(
-    @SerializedName("status")
-    val status: Status,
-    @SerializedName("data")
-    val testimonials: List<Testimonial>
-)
-
-data class TestimonialRes(
-    @SerializedName("data")
-    val testimonial: Testimonial,
-    @SerializedName("status")
-    val status: Status
-)
 
 @Parcelize
 data class Testimonial(

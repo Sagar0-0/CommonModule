@@ -10,9 +10,9 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.repo.ProfileRepo
-import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -28,7 +28,8 @@ class BasicProfileViewModel
     private val authRepo: AuthRepo
 ) : ViewModel() {
 
-    private val _createBasicProfileState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _createBasicProfileState =
+        MutableStateFlow<UiState<BasicProfileResponse>>(UiState.Idle)
     val createBasicProfileState = _createBasicProfileState.asStateFlow()
 
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)
@@ -66,11 +67,7 @@ class BasicProfileViewModel
         _checkReferralCodeState.value = UiState.Loading
         viewModelScope.launch {
             val res = profileRepo.checkReferralCode(code)
-            if ((res as? ResponseState.Success)?.data?.data == null) {
-                _checkReferralCodeState.value = UiState.ErrorMessage(R.string.unknown_error)
-            } else {
-                _checkReferralCodeState.value = res.toUiState()
-            }
+            _checkReferralCodeState.value = res.toUiState()
         }
     }
 

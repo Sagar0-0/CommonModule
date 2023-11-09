@@ -39,6 +39,7 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -57,7 +58,6 @@ import fit.asta.health.feature.profile.create.view.LifeStyleCreateBottomSheetTyp
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.HPropState
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
@@ -319,17 +319,17 @@ fun LifeStyleCreateBottomSheetLayout(
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
 
     when (state) {
-        is HPropState.Empty -> TODO()
-        is HPropState.Error -> TODO()
-        is HPropState.Loading -> AppDotTypingAnimation()
-        is HPropState.NoInternet -> AppInternetErrorDialog {}
-        is HPropState.Success -> ItemSelectionLayout(
-            cardList = (state as HPropState.Success).properties,
+        is UiState.Loading -> AppDotTypingAnimation()
+        is UiState.NoInternet -> AppInternetErrorDialog {}
+        is UiState.Success -> ItemSelectionLayout(
+            cardList = (state as UiState.Success).data,
             cardList2 = cardList2,
             cardIndex = cardIndex,
             composeIndex = ComposeIndex.Second,
             searchQuery = searchQuery
         )
+
+        else -> {}
     }
 }
 

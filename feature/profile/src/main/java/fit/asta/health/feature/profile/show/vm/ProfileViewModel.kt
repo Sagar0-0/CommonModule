@@ -10,7 +10,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.InputWrapper
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.Health
@@ -18,7 +21,8 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import fit.asta.health.data.profile.remote.model.UserProfile
+import fit.asta.health.data.profile.remote.model.UpdateProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.feature.profile.ProfileConstants.ADDRESS
 import fit.asta.health.feature.profile.ProfileConstants.AGE
@@ -42,24 +46,16 @@ import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.GENDER
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.ISONPERIOD
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys.ISPREG
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.HPropState
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
-import fit.asta.health.feature.profile.create.vm.ProfileSubmitState
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.feature.profile.show.vm.ProfileGetState.Empty
-import fit.asta.health.feature.profile.show.vm.ProfileGetState.Loading
-import fit.asta.health.feature.profile.show.vm.ProfileGetState.NoInternet
-import fit.asta.health.feature.profile.show.vm.ProfileGetState.Success
 import fit.asta.health.network.NetworkHelper
-import fit.asta.health.network.data.ApiResponse
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
@@ -76,13 +72,14 @@ class ProfileViewModel
 ) : ViewModel() {
 
     //States
-    private val _stateSubmit = MutableStateFlow<ProfileSubmitState>(ProfileSubmitState.Loading)
+    private val _stateSubmit = MutableStateFlow<UiState<UpdateProfileResponse>>(UiState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
-    private val mutableHPropState = MutableStateFlow<HPropState>(HPropState.Loading)
+    private val mutableHPropState =
+        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Loading)
     val stateHp = mutableHPropState.asStateFlow()
 
-    private val _mutableState = MutableStateFlow<ProfileGetState>(Loading)
+    private val _mutableState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val state = _mutableState.asStateFlow()
 
     //Details
@@ -256,37 +253,20 @@ class ProfileViewModel
     }
 
     fun loadUserProfile() {
-
-        if (networkHelper.isConnected()) {
-            authRepo.getUser()?.let {
-                loadUserProfileResponse(userId = it.uid)
-            }
-        } else {
-            _mutableState.value = NoInternet
+        authRepo.getUser()?.let {
+            loadUserProfileResponse(userId = it.uid)
         }
-
     }
 
     private fun loadUserProfileResponse(userId: String) {
         viewModelScope.launch {
-
-            when (val result = profileRepo.getUserProfile(userId)) {
-                is ApiResponse.Error -> {
-                    // Handle error
-                }
-
-                is ApiResponse.HttpError -> {
-                    _mutableState.value = Empty
-                }
-
-                is ApiResponse.Success -> {
-                    handleSuccessResponse(result.data)
-                }
-            }
+            val result = profileRepo.getUserProfile(userId)
+            if (result is ResponseState.Success) handleSuccessResponse(result.data)
+            _mutableState.value = result.toUiState()
         }
     }
 
-    private fun handleSuccessResponse(data: UserProfile) {
+    private fun handleSuccessResponse(data: UserProfileResponse) {
 
         //Profile Data Replica
 //        savedState[PROFILE_DATA] = data
@@ -301,9 +281,6 @@ class ProfileViewModel
         handleHealthData(data.health)
         handleLifeStyleData(data.lifeStyle)
         handleDietData(data.diet)
-
-        //Profile Data
-        _mutableState.value = Success(data)
     }
 
     private fun handleContactData(contact: Contact, id: String) {
@@ -491,14 +468,14 @@ class ProfileViewModel
     }
 
 
-    private fun createUserProfile(user: User): UserProfile {
+    private fun createUserProfile(user: User): UserProfileResponse {
         val contact = createContact()
         val physique = createPhysique()
         val health = createHealth()
         val lifeStyle = createLifeStyle()
         val diet = createDiet()
 
-        return UserProfile(
+        return UserProfileResponse(
             uid = user.uid, id = userID.value, contact, physique, health, lifeStyle, diet
         )
     }
@@ -604,36 +581,17 @@ class ProfileViewModel
     }
 
     //create+edit+update after edit
-    private fun updateProfile(userProfile: UserProfile) {
-
-        if (networkHelper.isConnected()) {
-            viewModelScope.launch {
-                profileRepo.updateUserProfile(userProfile).catch { exception ->
-                    _stateSubmit.value = ProfileSubmitState.Error(exception)
-                }.collect { profile ->
-                    _stateSubmit.value = ProfileSubmitState.Success(profile)
-                }
-            }
-        } else {
-            _stateSubmit.value = ProfileSubmitState.NoInternet
+    private fun updateProfile(userProfileResponse: UserProfileResponse) {
+        viewModelScope.launch {
+            _stateSubmit.value = profileRepo.updateUserProfile(userProfileResponse).toUiState()
         }
 
     }
 
     private fun getHealthProperties(propertyType: String) {
-
-        if (networkHelper.isConnected()) {
-            viewModelScope.launch {
-                profileRepo.getHealthProperties(propertyType).catch { exception ->
-                    mutableHPropState.value = HPropState.Error(exception)
-                }.collect {
-                    mutableHPropState.value = HPropState.Success(it.healthProperties)
-                }
-            }
-        } else {
-            mutableHPropState.value = HPropState.NoInternet
+        viewModelScope.launch {
+            mutableHPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
         }
-
     }
 
     private fun onValidateDetailsText(value: String, min: Int = 1, max: Int): UiString {

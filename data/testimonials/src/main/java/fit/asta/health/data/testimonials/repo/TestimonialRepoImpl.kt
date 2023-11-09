@@ -1,47 +1,43 @@
 package fit.asta.health.data.testimonials.repo
 
 import android.content.Context
+import dagger.hilt.android.qualifiers.ApplicationContext
+import fit.asta.health.common.utils.IODispatcher
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getApiResponseState
+import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.remote.TestimonialApiService
-import fit.asta.health.network.data.ApiResponse
-import fit.asta.health.network.data.Status
 import fit.asta.health.network.utils.InputStreamRequestBody
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
-import retrofit2.HttpException
-import java.io.IOException
+import javax.inject.Inject
 
-class TestimonialRepoImpl(
-    private val context: Context,
-    private val remoteApi: TestimonialApiService
+class TestimonialRepoImpl
+@Inject constructor(
+    @ApplicationContext private val context: Context,
+    private val remoteApi: TestimonialApiService,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher
 ) : TestimonialRepo {
 
-    override suspend fun getTestimonials(index: Int, limit: Int): ApiResponse<List<Testimonial>> {
-
-        return try {
-            val response = remoteApi.getTestimonials(index = index, limit = limit)
-            ApiResponse.Success(data = response.testimonials)
-        } catch (e: HttpException) {
-            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
-        } catch (e: IOException) {
-            ApiResponse.Error(exception = e)
+    override suspend fun getTestimonials(index: Int, limit: Int): ResponseState<List<Testimonial>> {
+        return withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.getTestimonials(index = index, limit = limit)
+            }
         }
     }
 
-    override suspend fun getTestimonial(userId: String): ApiResponse<Testimonial> {
-        return try {
-            val response = remoteApi.getUserTestimonial(userId)
-            ApiResponse.Success(data = response.testimonial)
-        } catch (e: HttpException) {
-            ApiResponse.HttpError(code = e.code(), msg = e.message(), ex = e)
-        } catch (e: IOException) {
-            ApiResponse.Error(exception = e)
+    override suspend fun getTestimonial(userId: String): ResponseState<Testimonial> {
+        return withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.getUserTestimonial(userId)
+            }
         }
     }
 
-    override suspend fun updateTestimonial(testimonial: Testimonial): Flow<Status> {
-
+    override suspend fun updateTestimonial(testimonial: Testimonial): ResponseState<CreateTestimonialResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         testimonial.media.forEach {
             if (it.localUrl != null) {
@@ -56,8 +52,10 @@ class TestimonialRepoImpl(
             }
         }
 
-        return flow {
-            emit(remoteApi.createTestimonial(testimonial, parts))
+        return withContext(coroutineDispatcher) {
+            getApiResponseState {
+                remoteApi.createTestimonial(testimonial, parts)
+            }
         }
     }
 }

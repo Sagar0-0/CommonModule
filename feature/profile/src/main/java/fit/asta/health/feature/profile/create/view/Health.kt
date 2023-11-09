@@ -34,6 +34,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.InputWrapper
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -50,7 +51,6 @@ import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.HPropState
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
 import fit.asta.health.feature.profile.show.view.ButtonListTypes
@@ -244,13 +244,13 @@ private fun HealthCreateBtmSheetLayout(
     val state by viewModel.stateHp.collectAsStateWithLifecycle()
     when (state) {
 
-        is HPropState.NoInternet -> {
+        is UiState.NoInternet -> {
             AppInternetErrorDialog {}
         }
 
-        is HPropState.Success -> {
+        is UiState.Success -> {
             ItemSelectionLayout(
-                cardList = (state as HPropState.Success).properties,
+                cardList = (state as UiState.Success).data,
                 cardIndex = cardIndex,
                 composeIndex = ComposeIndex.First,
                 cardList2 = cardList2,
@@ -258,15 +258,8 @@ private fun HealthCreateBtmSheetLayout(
             )
         }
 
-        is HPropState.Empty -> {
-            TODO()
-        }
-
-        is HPropState.Error -> {
-            TODO()
-        }
-
-        is HPropState.Loading -> AppDotTypingAnimation()
+        is UiState.Loading -> AppDotTypingAnimation()
+        else -> {}
     }
 }
 

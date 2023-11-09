@@ -40,6 +40,7 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -61,7 +62,7 @@ fun BasicProfileScreen(
     user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
     linkAccountState: UiState<User>,
-    createBasicProfileState: UiState<Boolean>,
+    createBasicProfileState: UiState<BasicProfileResponse>,
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
 ) {
@@ -246,11 +247,11 @@ fun BasicProfileScreen(
                             Image(
                                 modifier = Modifier.clip(CircleShape),
                                 painter = rememberAsyncImagePainter(
-                                    model = checkReferralCodeState.data.data!!.pic,
+                                    model = checkReferralCodeState.data.pic,
                                     placeholder = painterResource(id = DrawR.drawable.ic_person)
                                 ), contentDescription = "Profile"
                             )
-                            Text(text = checkReferralCodeState.data.data!!.name)
+                            Text(text = checkReferralCodeState.data.name)
                         }
                     }
 

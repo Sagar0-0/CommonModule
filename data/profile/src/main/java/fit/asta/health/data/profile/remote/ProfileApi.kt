@@ -4,11 +4,10 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.HealthPropertiesRes
-import fit.asta.health.data.profile.remote.model.UserProfile
+import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UpdateProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
-import fit.asta.health.data.profile.remote.model.UserProfileRes
-import fit.asta.health.network.data.Status
+import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import okhttp3.MultipartBody
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -20,28 +19,28 @@ import retrofit2.http.Query
 interface ProfileApi {
 
     @GET("payment/referral/code/check/?")
-    suspend fun checkReferralCode(@Query("refCode") refCode: String): CheckReferralDTO
+    suspend fun checkReferralCode(@Query("refCode") refCode: String): Response<CheckReferralDTO>
 
-    @GET("userProfile/get/isUserProfileAvailable/?")
+    @GET("userProfileResponse/get/isUserProfileAvailable/?")
     suspend fun isUserProfileAvailable(@Query("uid") userId: String): Response<UserProfileAvailableResponse>
 
     @Multipart
-    @POST("userProfile/basic/post")
+    @POST("userProfileResponse/basic/post")
     suspend fun createBasicProfile(
         @Part("json") basicProfileDTO: BasicProfileDTO,
         @Part files: List<MultipartBody.Part>
-    ): BasicProfileResponse
+    ): Response<BasicProfileResponse>
 
-    @PUT("userProfile/put/")
+    @PUT("userProfileResponse/put/")
     @Multipart
     suspend fun updateUserProfile(
-        @Part("json") userProfile: UserProfile,
+        @Part("json") userProfileResponse: UserProfileResponse,
         @Part files: List<MultipartBody.Part>,
-    ): Status
+    ): Response<UpdateProfileResponse>
 
-    @GET("userProfile/get/?")
-    suspend fun getUserProfile(@Query("uid") userId: String): UserProfileRes
+    @GET("userProfileResponse/get/?")
+    suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
     @GET("health/property/get/all/?")
-    suspend fun getHealthProperties(@Query("property") propertyType: String): HealthPropertiesRes
+    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<ArrayList<HealthProperties>>
 }
