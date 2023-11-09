@@ -4,13 +4,13 @@
         <trust-anchors>
             <certificates src="system" />
             <!-- TODO Make sure its deleted in production release -->
-            <!--<certificates src="@raw/server" />-->
+            <certificates src="@raw/server" />
         </trust-anchors>
     </base-config>
     <debug-overrides>
         <trust-anchors>
             <!-- Trust user added CAs while debuggable only -->
-            <!--<certificates src="@raw/server" />-->
+            <certificates src="@raw/server" />
         </trust-anchors>
     </debug-overrides>
 </network-security-config>
