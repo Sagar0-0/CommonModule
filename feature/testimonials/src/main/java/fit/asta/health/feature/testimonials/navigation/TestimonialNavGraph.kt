@@ -1,15 +1,18 @@
 package fit.asta.health.feature.testimonials.navigation
 
+import androidx.compose.runtime.LaunchedEffect
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.feature.testimonials.create.view.LoadTestimonialCreateLayout
+import androidx.paging.compose.collectAsLazyPagingItems
+import fit.asta.health.feature.testimonials.create.view.CreateTestimonialLayout
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import fit.asta.health.feature.testimonials.list.view.TestimonialsListLayout
+import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes.Create
 import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes.Home
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -34,24 +37,29 @@ fun NavGraphBuilder.testimonialNavRoute(
         startDestination = Home.route
     ) {
         composable(route = Home.route) {
-//            val getViewModel: TestimonialViewModel = it.sharedViewModel(navController)
+            val testimonialListViewModel: TestimonialListViewModel = hiltViewModel()
+            val testimonials = testimonialListViewModel.testimonialPager.collectAsLazyPagingItems()
+
             TestimonialsListLayout(
-                onNavigateUp = {
+                testimonials = testimonials,
+                navigateToCreate = {
                     navController.navigate(route = Create.route)
-                }, onNavigateBack = {
+                },
+                onBack = {
                     navController.popBackStack()
-                })
+                }
+            )
         }
 
         composable(route = Create.route) {
+            val testimonialViewModel: TestimonialViewModel = hiltViewModel()
+            LaunchedEffect(key1 = Unit, block = { testimonialViewModel.loadUserTestimonialData() })
 
-            val getViewModel: TestimonialViewModel = it.sharedViewModel(navController)
-            LoadTestimonialCreateLayout(
-                onNavigateTstCreate = { navController.popBackStack() },
-                onNavigateTstHome = {
-                    navController.navigate(route = Home.route)
-                },
-                getViewModel = getViewModel,
+            CreateTestimonialLayout(
+                testimonialViewModel = testimonialViewModel,
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
     }

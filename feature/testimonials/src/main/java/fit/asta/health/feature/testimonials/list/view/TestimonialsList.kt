@@ -14,30 +14,31 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.paging.LoadState
-import androidx.paging.compose.collectAsLazyPagingItems
+import androidx.paging.compose.LazyPagingItems
+import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.AppErrorMsgCard
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
-import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.cards.AppCard
 
 @Composable
 fun TestimonialsList(
     paddingValues: PaddingValues,
-    viewModel: TestimonialListViewModel,
+    testimonials: LazyPagingItems<Testimonial>,
 ) {
-    val testimonials = viewModel.testimonialPager.collectAsLazyPagingItems()
 
     LazyColumn(Modifier.padding(paddingValues)) {
         items(testimonials.itemCount) { index ->
             val testimonial = testimonials[index]
             testimonial?.let { item ->
 
-                fit.asta.health.designsystem.molecular.cards.AppCard(modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2),
+                AppCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(AppTheme.spacing.level2),
                     colors = CardDefaults.cardColors(containerColor = AppTheme.colors.onPrimary),
                     content = {
                         when (TestimonialType.from(item.type)) {
@@ -45,7 +46,8 @@ fun TestimonialsList(
                             is TestimonialType.IMAGE -> TstViewImgLayout(item)
                             is TestimonialType.VIDEO -> TstViewVideoLayout(item)
                         }
-                    })
+                    }
+                )
             }
         }
 
@@ -92,7 +94,8 @@ fun LoadingItem() {
     Box(
         modifier = Modifier
             .fillMaxWidth()
-            .wrapContentHeight(), contentAlignment = Alignment.Center
+            .wrapContentHeight(),
+        contentAlignment = Alignment.Center
     ) {
         AppCircularProgressIndicator(
             modifier = Modifier

@@ -1,5 +1,6 @@
 package fit.asta.health.data.profile.repo
 
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
@@ -68,7 +69,12 @@ class ProfileRepoImplTest {
 
     @Test
     fun `createBasicProfile, returns Success`() = runTest {
-        coEvery { api.createBasicProfile(any(), any()) } returns BasicProfileResponse()
+        coEvery {
+            api.createBasicProfile(
+                any(),
+                any()
+            )
+        } returns Response(data = BasicProfileResponse())
         val response = repo.createBasicProfile(BasicProfileDTO())
         coVerify { api.createBasicProfile(BasicProfileDTO(), any()) }
         assert(response is ResponseState.Success)
@@ -84,7 +90,7 @@ class ProfileRepoImplTest {
 
     @Test
     fun `checkReferralCode, returns Success`() = runTest {
-        coEvery { api.checkReferralCode(any()) } returns CheckReferralDTO()
+        coEvery { api.checkReferralCode(any()) } returns Response(data = CheckReferralDTO())
         val response = repo.checkReferralCode("")
         coVerify { api.checkReferralCode("") }
         assert(response is ResponseState.Success)

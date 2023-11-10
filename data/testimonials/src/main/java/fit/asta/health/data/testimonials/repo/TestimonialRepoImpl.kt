@@ -1,35 +1,38 @@
 package fit.asta.health.data.testimonials.repo
 
-import android.content.Context
-import dagger.hilt.android.qualifiers.ApplicationContext
+import android.content.ContentResolver
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
-import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
+import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.remote.TestimonialApiService
+import fit.asta.health.data.testimonials.remote.TestimonialApi
 import fit.asta.health.network.utils.InputStreamRequestBody
 import kotlinx.coroutines.CoroutineDispatcher
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
 class TestimonialRepoImpl
 @Inject constructor(
-    @ApplicationContext private val context: Context,
-    private val remoteApi: TestimonialApiService,
-    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher
+    private val contentResolver: ContentResolver,
+    private val remoteApi: TestimonialApi,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : TestimonialRepo {
 
-    override suspend fun getTestimonials(index: Int, limit: Int): ResponseState<List<Testimonial>> {
+    override suspend fun getAllTestimonials(
+        index: Int,
+        limit: Int
+    ): ResponseState<List<Testimonial>> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
-                remoteApi.getTestimonials(index = index, limit = limit)
+                remoteApi.getAllTestimonials(index = index, limit = limit)
             }
         }
     }
 
-    override suspend fun getTestimonial(userId: String): ResponseState<Testimonial> {
+    override suspend fun getUserTestimonial(userId: String): ResponseState<Testimonial> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
                 remoteApi.getUserTestimonial(userId)
@@ -37,7 +40,7 @@ class TestimonialRepoImpl
         }
     }
 
-    override suspend fun updateTestimonial(testimonial: Testimonial): ResponseState<CreateTestimonialResponse> {
+    override suspend fun saveTestimonial(testimonial: Testimonial): ResponseState<SaveTestimonialResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         testimonial.media.forEach {
             if (it.localUrl != null) {
@@ -46,7 +49,7 @@ class TestimonialRepoImpl
                     MultipartBody.Part.createFormData(
                         name = "file",
                         filename = it.name,
-                        body = InputStreamRequestBody(context.contentResolver, it.localUrl!!)
+                        body = InputStreamRequestBody(contentResolver, it.localUrl!!)
                     )
                 )
             }

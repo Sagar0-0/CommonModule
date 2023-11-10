@@ -15,6 +15,8 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
+import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppTextFieldValidate
@@ -30,30 +32,76 @@ import fit.asta.health.designsystem.molecular.other.HandleBackPress
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+
+@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+@Composable
+fun CreateTestimonialScreen(
+    testimonialViewModel: TestimonialViewModel,
+    onBack: () -> Unit
+) {
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
+
+    AppScaffold(
+        topBar = {
+            AppTopBar(
+                title = R.string.testimonial_title_edit.toStringFromResId(),
+                onBack = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                })
+        }
+    ) {
+        TestimonialForm(
+            paddingValues = it,
+            onNavigateTstHome = onBack,
+            testimonialViewModel = testimonialViewModel,
+        )
+    }
+    HandleBackPress {
+        showCustomDialogWithResult = !showCustomDialogWithResult
+    }
+    if (showCustomDialogWithResult) {
+        ShowCustomConfirmationDialog(
+            onDismiss = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
+            onNegativeClick = onBack,
+            onPositiveClick = {
+                showCustomDialogWithResult = !showCustomDialogWithResult
+            },
+            dialogData = DialogData(
+                dialogTitle = "Discard Testimonial",
+                dialogDesc = "Allow Permission to send you notifications when new art styles added.",
+                negTitle = "Discard Testimonials",
+                posTitle = "Cancel"
+            )
+        )
+    }
+}
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun TestimonialForm(
     paddingValues: PaddingValues,
     onNavigateTstHome: () -> Unit,
-    getViewModel: TestimonialViewModel,
+    testimonialViewModel: TestimonialViewModel,
 ) {
 
-    val type by getViewModel.type.collectAsStateWithLifecycle()
-    val title by getViewModel.title.collectAsStateWithLifecycle()
-    val testimonial by getViewModel.testimonial.collectAsStateWithLifecycle()
-    val organization by getViewModel.org.collectAsStateWithLifecycle()
-    val role by getViewModel.role.collectAsStateWithLifecycle()
-    val areInputsValid by getViewModel.areInputsValid.collectAsStateWithLifecycle()
-    val areMediaValid by getViewModel.areMediaValid.collectAsStateWithLifecycle()
+    val type by testimonialViewModel.type.collectAsStateWithLifecycle()
+    val title by testimonialViewModel.title.collectAsStateWithLifecycle()
+    val testimonial by testimonialViewModel.testimonial.collectAsStateWithLifecycle()
+    val organization by testimonialViewModel.org.collectAsStateWithLifecycle()
+    val role by testimonialViewModel.role.collectAsStateWithLifecycle()
+    val areInputsValid by testimonialViewModel.areInputsValid.collectAsStateWithLifecycle()
+    val areMediaValid by testimonialViewModel.areMediaValid.collectAsStateWithLifecycle()
 
     val focusRequester = remember { FocusRequester() }
 
     val radioButtonList = listOf(
-        fit.asta.health.data.testimonials.model.TestimonialType.TEXT,
-        fit.asta.health.data.testimonials.model.TestimonialType.IMAGE,
-        fit.asta.health.data.testimonials.model.TestimonialType.VIDEO
+        TestimonialType.TEXT,
+        TestimonialType.IMAGE,
+        TestimonialType.VIDEO
     )
 
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
@@ -65,7 +113,7 @@ fun TestimonialForm(
     val focusManager = LocalFocusManager.current
     val scrollState = rememberScrollState()
 
-    val event = getViewModel.stateSubmit.collectAsState()
+    val event = testimonialViewModel.saveTestimonialState.collectAsState()
     val events = event.value
 
     Box(
@@ -84,7 +132,7 @@ fun TestimonialForm(
                 radioButtonList = radioButtonList,
                 selectedOption = selectedOption,
                 onOptionSelected = {
-                    getViewModel.onEvent(OnTypeChange(it))
+                    testimonialViewModel.onEvent(OnTypeChange(it))
                 })
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -102,7 +150,7 @@ fun TestimonialForm(
                     keyboardActions = KeyboardActions(onNext = {
                         focusManager.moveFocus(FocusDirection.Down)
                     }),
-                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
+                    onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
                     errorMessage = title.error,
                 )
 
@@ -116,7 +164,7 @@ fun TestimonialForm(
                             focusManager.clearFocus()
                         }),
                         onValueChange = {
-                            getViewModel.onEvent(
+                            testimonialViewModel.onEvent(
                                 TestimonialEvent.OnTestimonialChange(
                                     it
                                 )
@@ -137,7 +185,7 @@ fun TestimonialForm(
 
                 AppTextFieldValidate(
                     value = organization.value,
-                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
+                    onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) },
                     label = "Organisation",
                     isError = organization.error !is UiString.Empty,
                     errorMessage = organization.error,
@@ -150,7 +198,7 @@ fun TestimonialForm(
 
                 AppTextFieldValidate(
                     value = role.value,
-                    onValueChange = { getViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
+                    onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
                     label = "Role",
                     isError = role.error !is UiString.Empty,
                     errorMessage = role.error,
@@ -162,7 +210,7 @@ fun TestimonialForm(
                 if (selectedOption == radioButtonList[1]) {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                     ImageLayout(
-                        getViewModel = getViewModel,
+                        getViewModel = testimonialViewModel,
                     )
                 } else if (selectedOption == radioButtonList[2]) {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -175,7 +223,7 @@ fun TestimonialForm(
                     enabled = areInputsValid && areMediaValid
                 ) {
                     showCustomDialogWithResult = !showCustomDialogWithResult
-                    getViewModel.onEvent(TestimonialEvent.OnSubmit)
+                    testimonialViewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
                 }
 
                 if (showCustomDialogWithResult) {
@@ -183,16 +231,17 @@ fun TestimonialForm(
 
                         is UiState.Loading -> AppDotTypingAnimation()
                         is UiState.Success -> {
-                            OnSuccessfulSubmit(onDismiss = {
-                                showCustomDialogWithResult = !showCustomDialogWithResult
-                            }, onNavigateTstHome = onNavigateTstHome, onPositiveClick = {
-                                onNavigateTstHome()
-                            }
+                            OnSuccessfulSubmit(
+                                onDismiss = {
+                                    showCustomDialogWithResult = !showCustomDialogWithResult
+                                },
+                                onNavigateTstHome = onNavigateTstHome,
+                                onPositiveClick = onNavigateTstHome
                             )
                         }
 
                         is UiState.NoInternet -> AppInternetErrorDialog {
-                            getViewModel.onEvent(TestimonialEvent.OnSubmit)
+                            testimonialViewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
                         }
 
                         else -> {}
@@ -200,45 +249,5 @@ fun TestimonialForm(
                 }
             }
         }
-    }
-}
-
-
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
-@Composable
-fun CreateTstScreen(
-    title: String,
-    onNavigateTstCreate: () -> Unit,
-    onNavigateTstHome: () -> Unit,
-    getViewModel: TestimonialViewModel,
-) {
-    var showCustomDialogWithResult by remember { mutableStateOf(false) }
-
-    AppScaffold(topBar = {
-        AppTopBar(title = title, onBack = {
-            showCustomDialogWithResult = !showCustomDialogWithResult
-        })
-    }) {
-        TestimonialForm(
-            paddingValues = it,
-            onNavigateTstHome = onNavigateTstHome,
-            getViewModel = getViewModel,
-        )
-    }
-    HandleBackPress {
-        showCustomDialogWithResult = !showCustomDialogWithResult
-    }
-    if (showCustomDialogWithResult) {
-        ShowCustomConfirmationDialog(onDismiss = {
-            showCustomDialogWithResult = !showCustomDialogWithResult
-        }, onNegativeClick = onNavigateTstCreate, onPositiveClick = {
-            showCustomDialogWithResult = !showCustomDialogWithResult
-        }, dialogData = DialogData(
-            dialogTitle = "Discard Testimonial",
-            dialogDesc = "Allow Permission to send you notifications when new art styles added.",
-            negTitle = "Discard Testimonials",
-            posTitle = "Cancel"
-        )
-        )
     }
 }

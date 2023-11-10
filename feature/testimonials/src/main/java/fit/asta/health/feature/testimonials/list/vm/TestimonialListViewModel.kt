@@ -9,8 +9,9 @@ import androidx.paging.cachedIn
 import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.repo.TestimonialDataSource
+import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListEvent.Remove
-import fit.asta.health.network.NetworkHelper
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -19,17 +20,15 @@ import javax.inject.Inject
 @HiltViewModel
 class TestimonialListViewModel
 @Inject constructor(
-    private val testimonialRepo: fit.asta.health.data.testimonials.repo.TestimonialRepo,
-    private val networkHelper: NetworkHelper,
+    private val testimonialRepo: TestimonialRepo
 ) : ViewModel() {
 
     private val modificationEvents = MutableStateFlow<List<TestimonialListEvent>>(emptyList())
 
     val testimonialPager =
-        Pager(PagingConfig(pageSize = fit.asta.health.data.testimonials.repo.TestimonialDataSource.PAGE_SIZE)) {
-            fit.asta.health.data.testimonials.repo.TestimonialDataSource(
-                testimonialRepo,
-                networkHelper
+        Pager(PagingConfig(pageSize = TestimonialDataSource.PAGE_SIZE)) {
+            TestimonialDataSource(
+                testimonialRepo
             )
         }.flow
             .cachedIn(viewModelScope)

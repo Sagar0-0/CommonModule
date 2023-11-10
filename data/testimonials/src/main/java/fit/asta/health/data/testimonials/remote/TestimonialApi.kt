@@ -1,16 +1,16 @@
 package fit.asta.health.data.testimonials.remote
 
 import fit.asta.health.common.utils.Response
-import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
+import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
 //Testimonial Endpoints
-interface TestimonialApiService {
+interface TestimonialApi {
 
     @GET("testimonial/list/get?")
-    suspend fun getTestimonials(
+    suspend fun getAllTestimonials(
         @Query("index") index: Int,
         @Query("limit") limit: Int,
     ): Response<List<Testimonial>>
@@ -20,7 +20,7 @@ interface TestimonialApiService {
     suspend fun createTestimonial(
         @Part("json") netTestimonial: Testimonial,
         @Part files: List<MultipartBody.Part>,
-    ): Response<CreateTestimonialResponse>
+    ): Response<SaveTestimonialResponse>
 
     @GET("testimonial/get/?")
     suspend fun getUserTestimonial(@Query("uid") userId: String): Response<Testimonial>

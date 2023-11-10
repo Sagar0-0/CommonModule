@@ -5,7 +5,7 @@ import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.data.testimonials.remote.TestimonialApiService
+import fit.asta.health.data.testimonials.remote.TestimonialApi
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.data.testimonials.repo.TestimonialRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
@@ -18,8 +18,8 @@ object TestimonialsModule {
 
     @Singleton
     @Provides
-    fun provideTestimonialService(client: OkHttpClient): TestimonialApiService =
-        NetworkUtil.getRetrofit(client).create(TestimonialApiService::class.java)
+    fun provideTestimonialService(client: OkHttpClient): TestimonialApi =
+        NetworkUtil.getRetrofit(client).create(TestimonialApi::class.java)
 }
 
 @Module

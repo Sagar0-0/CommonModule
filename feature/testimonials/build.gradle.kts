@@ -17,6 +17,7 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:network"))
+    implementation(project(":core:test"))
 
     implementation(project(":data:auth"))
     implementation(project(":data:testimonials"))

@@ -8,27 +8,41 @@ import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.paging.compose.LazyPagingItems
+import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
-import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestimonialsListLayout(
-    onNavigateUp: () -> Unit,
-    onNavigateBack: () -> Unit,
-    viewModel: TestimonialListViewModel = hiltViewModel(),
+    testimonials: LazyPagingItems<Testimonial>,
+    navigateToCreate: () -> Unit,
+    onBack: () -> Unit
 ) {
 
     val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
-    AppScaffold(content = {
-        TestimonialsList(paddingValues = it, viewModel = viewModel)
-    }, floatingActionButton = {
-        AppFloatingActionButton(imageVector = Icons.Filled.Edit, onClick = onNavigateUp)
-    }, topBar = {
-        AppTopBar(title = "Testimonials", onBack = onNavigateBack, scrollBehavior = scrollBehavior)
-    }, modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection))
+    AppScaffold(
+        content = {
+            TestimonialsList(
+                paddingValues = it,
+                testimonials = testimonials
+            )
+        },
+        floatingActionButton = {
+            AppFloatingActionButton(
+                imageVector = Icons.Filled.Edit,
+                onClick = navigateToCreate
+            )
+        }, topBar = {
+            AppTopBar(
+                title = "Testimonials",
+                onBack = onBack,
+                scrollBehavior = scrollBehavior
+            )
+        },
+        modifier = Modifier.nestedScroll(scrollBehavior.nestedScrollConnection)
+    )
 }

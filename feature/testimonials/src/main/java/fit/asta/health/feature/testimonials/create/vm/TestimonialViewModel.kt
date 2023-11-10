@@ -10,9 +10,9 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.testimonials.model.CreateTestimonialResponse
 import fit.asta.health.data.testimonials.model.InputWrapper
 import fit.asta.health.data.testimonials.model.Media
+import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.data.testimonials.model.TestimonialUser
@@ -24,7 +24,7 @@ import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaCl
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaSelect
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnOrgChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnRoleChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnSubmit
+import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnSubmitTestimonial
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTestimonialChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTitleChange
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
@@ -59,10 +59,10 @@ class TestimonialViewModel
     private val savedState: SavedStateHandle
 ) : ViewModel() {
 
-    private val _mutableState = MutableStateFlow<UiState<Testimonial>>(UiState.Loading)
-    val state = _mutableState.asStateFlow()
+    private val _userTestimonialState = MutableStateFlow<UiState<Testimonial>>(UiState.Loading)
+    val userTestimonialState = _userTestimonialState.asStateFlow()
 
-    private val testimonialData = savedState.getStateFlow(
+    private val userTestimonialData = savedState.getStateFlow(
         TESTIMONIAL_DATA,
         Testimonial()
     )
@@ -100,14 +100,20 @@ class TestimonialViewModel
             )
         )
 
+    //TODO: FIND A REPLACEMENT TO REMOVE THESE SOLO FLOWS
     val areInputsValid =
         combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
             when (type) {
                 TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
                 TestimonialType.IMAGE -> true
                 TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialDirty()
-        }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
+            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialInvalid()
+        }
+            .stateIn(
+                viewModelScope,
+                SharingStarted.WhileSubscribed(1000),
+                false
+            )
 
 
     val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
@@ -116,23 +122,22 @@ class TestimonialViewModel
             TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
             TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
         }
-    }.stateIn(viewModelScope, SharingStarted.WhileSubscribed(1000), false)
-
-
-    private val _stateSubmit =
-        MutableStateFlow<UiState<CreateTestimonialResponse>>(UiState.Loading)
-    val stateSubmit = _stateSubmit.asStateFlow()
-
-
-    init {
-        loadTestimonial()
     }
+        .stateIn(
+            viewModelScope,
+            SharingStarted.WhileSubscribed(1000),
+            false
+        )
 
 
-    fun loadTestimonial() {
+    private val _saveTestimonialState =
+        MutableStateFlow<UiState<SaveTestimonialResponse>>(UiState.Loading)
+    val saveTestimonialState = _saveTestimonialState.asStateFlow()
+
+    fun loadUserTestimonialData() {
         viewModelScope.launch {
-            authRepo.getUser()?.let { uid ->
-                when (val result = testimonialRepo.getTestimonial(uid.uid)) {
+            authRepo.getUser()?.let { user ->
+                when (val result = testimonialRepo.getUserTestimonial(user.uid)) {
                     is ResponseState.Success -> {
                         savedState[TESTIMONIAL_DATA] = result.data
                         savedState[ID] = result.data.id
@@ -147,9 +152,10 @@ class TestimonialViewModel
                         savedState[ROLE] =
                             InputWrapper(value = result.data.user.role)
 
-                        when (TestimonialType.from(
-                            result.data.type
-                        )) {
+                        when (
+                            TestimonialType
+                                .from(result.data.type)
+                        ) {
                             TestimonialType.TEXT -> {
                             }
 
@@ -165,11 +171,11 @@ class TestimonialViewModel
                                     Media(url = result.data.media[0].url)
                             }
                         }
-                        _mutableState.value = UiState.Success(result.data)
+                        _userTestimonialState.value = UiState.Success(result.data)
                     }
 
                     else -> {
-                        _mutableState.value = result.toUiState()
+                        _userTestimonialState.value = result.toUiState()
                     }
                 }
             }
@@ -177,40 +183,36 @@ class TestimonialViewModel
     }
 
 
-    private fun submit() {
+    private fun saveUserTestimonial() {
         authRepo.getUser()?.let {
-            updateTestimonial(
-                Testimonial(
-                    id = id.value,
-                    type = type.value.value,
-                    title = title.value.value.trim(),
-                    testimonial = testimonial.value.value.trim(),
-                    userId = it.uid,
-                    user = TestimonialUser(
-                        name = it.name!!,
-                        role = role.value.value.trim(),
-                        org = org.value.value.trim(),
-                        url = it.photoUrl.toString()
-                    ),
-                    media = when (type.value) {
-                        TestimonialType.TEXT -> listOf()
-                        TestimonialType.IMAGE -> listOf(
-                            imgBefore.value,
-                            imgAfter.value
-                        )
+            val testimonial = Testimonial(
+                id = id.value,
+                type = type.value.value,
+                title = title.value.value.trim(),
+                testimonial = testimonial.value.value.trim(),
+                userId = it.uid,
+                user = TestimonialUser(
+                    name = it.name!!,
+                    role = role.value.value.trim(),
+                    org = org.value.value.trim(),
+                    url = it.photoUrl.toString()
+                ),
+                media = when (type.value) {
+                    TestimonialType.TEXT -> listOf()
+                    TestimonialType.IMAGE -> listOf(
+                        imgBefore.value,
+                        imgAfter.value
+                    )
 
-                        TestimonialType.VIDEO -> listOf(
-                            video.value
-                        )
-                    }
-                )
+                    TestimonialType.VIDEO -> listOf(
+                        video.value
+                    )
+                }
             )
-        }
-    }
-
-    private fun updateTestimonial(netTestimonial: Testimonial) {
-        viewModelScope.launch {
-            _stateSubmit.value = testimonialRepo.updateTestimonial(netTestimonial).toUiState()
+            viewModelScope.launch {
+                _saveTestimonialState.value =
+                    testimonialRepo.saveTestimonial(testimonial).toUiState()
+            }
         }
     }
 
@@ -298,8 +300,8 @@ class TestimonialViewModel
                 }
             }
 
-            is OnSubmit -> {
-                submit()
+            is OnSubmitTestimonial -> {
+                saveUserTestimonial()
             }
         }
     }
@@ -331,8 +333,11 @@ class TestimonialViewModel
         else UiString.Resource(R.string.the_media_can_not_be_blank)
     }
 
-    private fun isTestimonialDirty(): Boolean {
-        return testimonialData.value.title != title.value.value || testimonialData.value.testimonial != testimonial.value.value || testimonialData.value.user.org != org.value.value || testimonialData.value.user.role != role.value.value
+    private fun isTestimonialInvalid(): Boolean {
+        return userTestimonialData.value.title != title.value.value
+                || userTestimonialData.value.testimonial != testimonial.value.value
+                || userTestimonialData.value.user.org != org.value.value
+                || userTestimonialData.value.user.role != role.value.value
     }
 
 
