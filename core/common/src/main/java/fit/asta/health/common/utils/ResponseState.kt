@@ -21,7 +21,11 @@ data class Response<T>(
         @SerializedName("code")
         val code: Int = SUCCESS_STATUS_CODE,
         @SerializedName("msg")
-        val msg: String = ""
+        val msg: String = "",
+        @SerializedName("retry")
+        val retry: Boolean = false,
+        @SerializedName("err")
+        val error: String = "",
     ) : Parcelable
 }
 
@@ -53,7 +57,7 @@ suspend fun <T> getApiResponseState(
             }
 
             else -> {
-                errorHandler.fetchStatusCodeMessage(response.status.code)
+                errorHandler.fetchStatusCodeMessage(response.status)
             }
         }
     } catch (e: NoInternetException) {

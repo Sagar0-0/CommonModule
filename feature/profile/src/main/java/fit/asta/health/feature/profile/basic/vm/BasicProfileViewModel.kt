@@ -6,11 +6,11 @@ import com.google.firebase.auth.AuthCredential
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
-import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.repo.ProfileRepo
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -29,7 +29,7 @@ class BasicProfileViewModel
 ) : ViewModel() {
 
     private val _createBasicProfileState =
-        MutableStateFlow<UiState<BasicProfileResponse>>(UiState.Idle)
+        MutableStateFlow<UiState<PutResponse>>(UiState.Idle)
     val createBasicProfileState = _createBasicProfileState.asStateFlow()
 
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)

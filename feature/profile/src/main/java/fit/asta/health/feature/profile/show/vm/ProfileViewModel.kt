@@ -10,6 +10,7 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.InputWrapper
+import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
@@ -21,7 +22,6 @@ import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import fit.asta.health.data.profile.remote.model.UpdateProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.feature.profile.ProfileConstants.ADDRESS
@@ -72,7 +72,7 @@ class ProfileViewModel
 ) : ViewModel() {
 
     //States
-    private val _stateSubmit = MutableStateFlow<UiState<UpdateProfileResponse>>(UiState.Loading)
+    private val _stateSubmit = MutableStateFlow<UiState<PutResponse>>(UiState.Loading)
     val stateSubmit = _stateSubmit.asStateFlow()
 
     private val mutableHPropState =

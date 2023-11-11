@@ -145,8 +145,7 @@ fun DietContent(
     navigateBack: () -> Unit,
 ) {
 
-    val event = viewModel.stateSubmit.collectAsState()
-    val events = event.value
+    val events = viewModel.stateSubmit.collectAsStateWithLifecycle().value
 
     var buttonClicked by remember { mutableStateOf(false) }
 

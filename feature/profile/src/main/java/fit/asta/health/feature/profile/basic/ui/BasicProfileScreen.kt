@@ -1,7 +1,6 @@
 package fit.asta.health.feature.profile.basic.ui
 
 import android.net.Uri
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -37,13 +36,14 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.auth.model.domain.User
+import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
-import fit.asta.health.data.profile.remote.model.BasicProfileResponse
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -62,11 +62,10 @@ fun BasicProfileScreen(
     user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
     linkAccountState: UiState<User>,
-    createBasicProfileState: UiState<BasicProfileResponse>,
+    createBasicProfileState: UiState<PutResponse>,
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
 ) {
-    Log.d("TAG", "BasicProfileScreen: $user")
     val context = LocalContext.current
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -320,7 +319,7 @@ fun BasicProfileScreen(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppInternetErrorDialog {
+                        AppNonInternetErrorScreen(issueDescription = createBasicProfileState.resId.toStringFromResId()) {
                             onEvent(BasicProfileEvent.ResetCreateProfileState)
                         }
                     }

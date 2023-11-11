@@ -1,14 +1,15 @@
 package fit.asta.health.payment.repo
 
 import fit.asta.health.common.utils.ApiErrorHandler
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.resources.strings.R
 import javax.inject.Inject
 
 class PaymentsApiErrorHandler
 @Inject constructor() : ApiErrorHandler() {
-    override fun <T> fetchStatusCodeMessage(code: Int): ResponseState<T> {
-        return when (code) {
+    override fun <T> fetchStatusCodeMessage(status: Response.Status): ResponseState<T> {
+        return when (status.code) {
             8 -> {
                 ResponseState.ErrorMessage(R.string.razorpay_error)
             }
@@ -18,7 +19,7 @@ class PaymentsApiErrorHandler
             }
 
             else -> {
-                super.fetchStatusCodeMessage(code)
+                super.fetchStatusCodeMessage(status)
             }
         }
     }
