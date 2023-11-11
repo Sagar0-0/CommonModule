@@ -52,7 +52,7 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.data.address.remote.modal.mapToMyAddress
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
@@ -250,9 +250,9 @@ internal fun SavedAddressesScreen(
                             }
 
                             is UiState.ErrorRetry -> {
-                                AppRetryCard(
+                                AppErrorScreen(
                                     text = currentAddressState.resId.toStringFromResId(),
-                                    onRetry = {
+                                    onTryAgain = {
                                         onUiEvent(SavedAddressUiEvent.UpdateCurrentLocation)
                                     }
                                 )
@@ -408,8 +408,8 @@ internal fun SavedAddressesScreen(
                 }
 
                 is UiState.ErrorRetry -> {
-                    AppRetryCard(
-                        onRetry = {
+                    AppErrorScreen(
+                        onTryAgain = {
                             onUiEvent(SavedAddressUiEvent.GetSavedAddress)
                         },
                         text = savedAddressListState.resId.toStringFromResId()

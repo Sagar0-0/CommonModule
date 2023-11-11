@@ -38,7 +38,7 @@ import fit.asta.health.resources.drawables.R
 @Composable
 private fun DefaultPreview() {
     AppScreen {
-        AppNonInternetErrorScreen()
+        AppErrorScreen()
     }
 }
 
@@ -51,25 +51,25 @@ private fun DefaultPreview() {
  * error use
  *
  * @param modifier This is to pass modifications from the Parent Composable to the Child
- * @param issueHeading This is the Heading of the issue/error which would be shown as a Heading below
+ * @param title This is the Heading of the issue/error which would be shown as a Heading below
  * the Image
- * @param issueDescription This is the description of the Issue/Error which would be shown as a
- * description below the [issueHeading]
+ * @param text This is the description of the Issue/Error which would be shown as a
+ * description below the [title]
  * @param imageId This is the Image Id which would be shown in the Dialog
  * @param onTryAgain This function would be executed when the retry button would be clicked
  */
 @Composable
-fun AppNonInternetErrorScreen(
+fun AppErrorScreen(
     modifier: Modifier = Modifier,
-    issueHeading: String = "Whoops !!",
-    issueDescription: String = "Second Internet connection was found. Check your connection or try again.",
+    title: String = "Whoops !!",
+    text: String = "Some Unknown Error occurred. Please try again !!",
     imageId: Int = R.drawable.server_error,
     onTryAgain: () -> Unit = {}
 ) {
     ErrorContent(
         imageId = imageId,
-        issueHeading = issueHeading,
-        issueDescription = issueDescription,
+        title = title,
+        text = text,
         onTryAgain = onTryAgain,
         modifier = modifier
     )
@@ -77,21 +77,21 @@ fun AppNonInternetErrorScreen(
 
 
 /**
- * This function provides the Contents inside the [AppNonInternetErrorScreen] Composable
+ * This function provides the Contents inside the [AppErrorScreen] Composable
  *
  * @param modifier This is for the parent function to pass modifications to the child
- * @param issueHeading This is the Heading of the issue/error which would be shown as a Heading below
+ * @param title This is the Heading of the issue/error which would be shown as a Heading below
  * the Image
- * @param issueDescription This is the description of the Issue/Error which would be shown as a
- * description below the [issueHeading]
+ * @param text This is the description of the Issue/Error which would be shown as a
+ * description below the [title]
  * @param imageId This is the Image Id which would be shown in the Dialog
  * @param onTryAgain This function would be executed when the retry button would be clicked
  */
 @Composable
-fun ErrorContent(
+private fun ErrorContent(
     modifier: Modifier = Modifier,
-    issueHeading: String,
-    issueDescription: String,
+    title: String,
+    text: String,
     imageId: Int,
     onTryAgain: () -> Unit
 ) {
@@ -123,14 +123,14 @@ fun ErrorContent(
 
                 // Issues Heading Text
                 TitleTexts.Level1(
-                    text = issueHeading,
+                    text = title,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )
 
                 // Issues Description Text
                 BodyTexts.Level3(
-                    text = issueDescription,
+                    text = text,
                     textAlign = TextAlign.Center,
                     modifier = Modifier.fillMaxWidth()
                 )

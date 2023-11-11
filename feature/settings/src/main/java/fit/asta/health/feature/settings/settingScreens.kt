@@ -18,7 +18,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.settings.view.SettingsNotificationLayout
 import fit.asta.health.feature.settings.view.SettingsNotificationsStatus
@@ -58,7 +58,7 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppRetryCard(text = (deleteAccountState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                        AppErrorScreen(text = (deleteAccountState as UiState.ErrorRetry).resId.toStringFromResId()) {
                             settingsViewModel.deleteAccount()
                         }
                     }
@@ -97,7 +97,7 @@ fun NavGraphBuilder.settingScreens(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppRetryCard(text = (userLogoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                        AppErrorScreen(text = (userLogoutState as UiState.ErrorRetry).resId.toStringFromResId()) {
                             settingsViewModel.logoutUser()
                         }
                     }

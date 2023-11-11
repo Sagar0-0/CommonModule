@@ -126,7 +126,7 @@ fun SpotifyHomeScreen(
             is UiState.ErrorMessage -> {
                 item {
                     AppInternetErrorDialog(
-                        issueDescription = recentlyData.resId.toStringFromResId()
+                        text = recentlyData.resId.toStringFromResId()
                     ) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                     }
@@ -199,7 +199,7 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppInternetErrorDialog(issueDescription = topMixData.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(text = topMixData.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                     }
                 }
@@ -270,7 +270,7 @@ fun SpotifyHomeScreen(
             // ErrorMessage State
             is UiState.ErrorMessage -> {
                 item {
-                    AppInternetErrorDialog(issueDescription = likedSongs.resId.toStringFromResId()) {
+                    AppInternetErrorDialog(text = likedSongs.resId.toStringFromResId()) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
                 }
@@ -342,7 +342,7 @@ fun SpotifyHomeScreen(
             is UiState.ErrorMessage -> {
                 item {
                     AppInternetErrorDialog(
-                        issueDescription = favouriteTracks.resId.toStringFromResId()
+                        text = favouriteTracks.resId.toStringFromResId()
                     ) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                     }
@@ -414,7 +414,7 @@ fun SpotifyHomeScreen(
             is UiState.ErrorMessage -> {
                 item {
                     AppInternetErrorDialog(
-                        issueDescription = favouriteAlbums.resId.toStringFromResId()
+                        text = favouriteAlbums.resId.toStringFromResId()
                     ) {
                         setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                     }

@@ -293,7 +293,7 @@ fun SearchScreen(
 
             is UiState.ErrorMessage -> {
                 AppInternetErrorDialog(
-                    issueDescription = spotifySearchState.resId.toStringFromResId()
+                    text = spotifySearchState.resId.toStringFromResId()
                 ) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadSpotifySearchResult)
                 }

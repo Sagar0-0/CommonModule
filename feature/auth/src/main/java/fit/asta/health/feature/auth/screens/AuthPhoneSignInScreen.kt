@@ -22,7 +22,7 @@ import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -108,7 +108,7 @@ fun AuthPhoneSignInScreen(
     // Resetting all the Values once the Login Fails and asks the User to enter and check data again
     when (loginState) {
         is UiState.ErrorRetry -> {
-            AppRetryCard(text = loginState.resId.toStringFromResId()) {
+            AppErrorScreen(text = loginState.resId.toStringFromResId()) {
                 onUiEvent(AuthUiEvent.OnLoginFailed)
             }
         }

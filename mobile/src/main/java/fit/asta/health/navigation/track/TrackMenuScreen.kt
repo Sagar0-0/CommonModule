@@ -46,7 +46,7 @@ import fit.asta.health.R
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
@@ -226,8 +226,8 @@ fun TrackMenuScreenControl() {
 
                 // failure State
                 is UiState.ErrorMessage -> {
-                    AppNonInternetErrorScreen(
-                        issueDescription = homeMenuState.resId.toStringFromResId()
+                    AppErrorScreen(
+                        text = homeMenuState.resId.toStringFromResId()
                     ) {
                         setUiEvent(TrackUiEvent.SetTrackOption(TrackOption.HomeMenuOption))
                         setUiEvent(TrackUiEvent.SetTrackStatus(selectedItem.intValue))

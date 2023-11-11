@@ -30,7 +30,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -67,9 +67,9 @@ fun WalletScreenUi(
             }
 
             is UiState.ErrorMessage -> {
-                AppNonInternetErrorScreen(
+                AppErrorScreen(
                     modifier = Modifier.padding(paddingValues),
-                    issueDescription = walletDataState.resId.toStringFromResId()
+                    text = walletDataState.resId.toStringFromResId()
                 ) {
                     onTryAgain()
                 }

@@ -108,7 +108,7 @@ fun FavouriteScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = tracksData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = tracksData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
                 }
             }
@@ -173,7 +173,7 @@ fun FavouriteScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = albumData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = albumData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
                 }
             }

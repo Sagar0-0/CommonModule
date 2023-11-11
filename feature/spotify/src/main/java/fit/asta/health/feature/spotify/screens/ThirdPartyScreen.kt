@@ -166,7 +166,7 @@ fun ThirdPartyScreen(
             }
 
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = recentlyPlayed.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = recentlyPlayed.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
                 }
             }
@@ -226,7 +226,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = recommendedData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = recommendedData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadRecommendationTracks)
                 }
             }
@@ -286,7 +286,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = topTracksData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = topTracksData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
                 }
             }
@@ -346,7 +346,7 @@ fun ThirdPartyScreen(
 
             // ErrorMessage State
             is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(issueDescription = topArtistsData.resId.toStringFromResId()) {
+                AppInternetErrorDialog(text = topArtistsData.resId.toStringFromResId()) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopArtists)
                 }
             }

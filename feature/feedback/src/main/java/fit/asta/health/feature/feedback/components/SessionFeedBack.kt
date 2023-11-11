@@ -14,7 +14,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.feedback.remote.modal.Answer
 import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -55,7 +55,7 @@ fun SessionFeedback(
             }
 
             is UiState.ErrorRetry -> {
-                AppRetryCard(text = feedbackQuesState.resId.toStringFromResId()) {
+                AppErrorScreen(text = feedbackQuesState.resId.toStringFromResId()) {
                     onBack()
                 }
             }

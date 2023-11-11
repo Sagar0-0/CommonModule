@@ -43,7 +43,7 @@ import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -319,7 +319,7 @@ fun BasicProfileScreen(
                     }
 
                     is UiState.ErrorRetry -> {
-                        AppNonInternetErrorScreen(issueDescription = createBasicProfileState.resId.toStringFromResId()) {
+                        AppErrorScreen(text = createBasicProfileState.resId.toStringFromResId()) {
                             onEvent(BasicProfileEvent.ResetCreateProfileState)
                         }
                     }

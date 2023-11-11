@@ -16,8 +16,8 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.AppRetryCard
 import fit.asta.health.designsystem.molecular.EndScreenPopup
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.feature.feedback.components.SessionFeedback
@@ -77,7 +77,7 @@ fun NavGraphBuilder.feedbackRoute(onBack: () -> Unit) {
             }
 
             is UiState.ErrorRetry -> {
-                AppRetryCard(text = (feedbackPostResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
+                AppErrorScreen(text = (feedbackPostResultState as UiState.ErrorRetry).resId.toStringFromResId()) {
                     feedbackViewModel.resetPostResultState()
                 }
             }

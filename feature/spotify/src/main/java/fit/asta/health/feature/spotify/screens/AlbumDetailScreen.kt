@@ -80,7 +80,7 @@ fun AlbumDetailScreen(
 
             is UiState.ErrorMessage -> {
                 AppInternetErrorDialog(
-                    issueDescription = albumNetworkResponse.resId.toStringFromResId()
+                    text = albumNetworkResponse.resId.toStringFromResId()
                 ) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadAlbumDetails)
                 }
@@ -184,7 +184,7 @@ private fun LocalAlbumHandler(
 
         // ErrorMessage State
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = albumLocalResponse.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = albumLocalResponse.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
             }
         }

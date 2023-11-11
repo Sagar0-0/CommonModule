@@ -54,22 +54,22 @@ private fun DefaultPreview() {
  * This composable function is used to show the Error Screen to the User when there is a Internet
  * Issues or error during the Backend API Calls
  *
- * Check [AppNonInternetErrorScreen] - For composable function which should be used during issues
+ * Check [AppErrorScreen] - For composable function which should be used during issues
  * not related to the Internet
  *
  * @param modifier This is to pass modifications from the Parent Composable to the Child
- * @param issueHeading This is the Heading of the issue/error which would be shown as a Heading below
+ * @param title This is the Heading of the issue/error which would be shown as a Heading below
  * the Image
- * @param issueDescription This is the description of the Issue/Error which would be shown as a
- * description below the [issueHeading]
+ * @param text This is the description of the Issue/Error which would be shown as a
+ * description below the [title]
  * @param imageId This is the Image Id which would be shown in the Dialog
  * @param onTryAgain This function would be executed when the retry button would be clicked
  */
 @Composable
 fun AppInternetErrorDialog(
     modifier: Modifier = Modifier,
-    issueHeading: String = "Whoops !!",
-    issueDescription: String = "Second Internet connection was found. Check your connection or try again.",
+    title: String = "Whoops !!",
+    text: String = "Second Internet connection was found. Check your connection or try again.",
     imageId: Int = R.drawable.server_error,
     onTryAgain: () -> Unit = {}
 ) {
@@ -96,8 +96,8 @@ fun AppInternetErrorDialog(
                 DialogContent(
                     modifier = modifier,
                     imageId = imageId,
-                    issueHeading = issueHeading,
-                    issueDescription = issueDescription,
+                    title = title,
+                    text = text,
                     onTryAgain = onTryAgain
                 ) { isDialogVisible = false }
             }
@@ -110,10 +110,10 @@ fun AppInternetErrorDialog(
  * This function provides the Contents inside the [AppInternetErrorDialog] Composable
  *
  * @param modifier This is for the parent function to pass modifications to the child
- * @param issueHeading This is the Heading of the issue/error which would be shown as a Heading below
+ * @param title This is the Heading of the issue/error which would be shown as a Heading below
  * the Image
- * @param issueDescription This is the description of the Issue/Error which would be shown as a
- * description below the [issueHeading]
+ * @param text This is the description of the Issue/Error which would be shown as a
+ * description below the [title]
  * @param imageId This is the Image Id which would be shown in the Dialog
  * @param onTryAgain This function would be executed when the retry button would be clicked
  * @param onDismiss This function would be called when the user hits the dismiss Button and it would
@@ -122,8 +122,8 @@ fun AppInternetErrorDialog(
 @Composable
 private fun DialogContent(
     modifier: Modifier = Modifier,
-    issueHeading: String,
-    issueDescription: String,
+    title: String,
+    text: String,
     imageId: Int,
     onTryAgain: () -> Unit,
     onDismiss: () -> Unit
@@ -146,14 +146,14 @@ private fun DialogContent(
 
         // Issues Heading Text
         TitleTexts.Level1(
-            text = issueHeading,
+            text = title,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )
 
         // Issues Description Text
         BodyTexts.Level3(
-            text = issueDescription,
+            text = text,
             textAlign = TextAlign.Center,
             modifier = Modifier.fillMaxWidth()
         )

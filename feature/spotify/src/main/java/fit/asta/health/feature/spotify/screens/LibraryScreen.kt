@@ -123,7 +123,7 @@ private fun LikedSongsUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = likedSongs.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = likedSongs.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
             }
         }
@@ -188,7 +188,7 @@ private fun TracksUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserTracks.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserTracks.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserTracks)
             }
         }
@@ -247,7 +247,7 @@ private fun PlaylistUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserPlaylist.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserPlaylist.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserPlaylist)
             }
         }
@@ -304,7 +304,7 @@ private fun ArtistsUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserArtists.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserArtists.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserArtists)
             }
         }
@@ -362,7 +362,7 @@ private fun AlbumsUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserAlbums.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserAlbums.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserAlbum)
             }
         }
@@ -420,7 +420,7 @@ private fun ShowUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserShows.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserShows.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserShows)
             }
         }
@@ -477,7 +477,7 @@ private fun EpisodeUI(
         }
 
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = currentUserEpisodes.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = currentUserEpisodes.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserEpisode)
             }
         }

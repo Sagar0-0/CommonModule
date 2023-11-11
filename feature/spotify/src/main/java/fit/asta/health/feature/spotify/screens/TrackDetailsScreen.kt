@@ -78,7 +78,7 @@ fun TrackDetailsScreen(
 
             is UiState.ErrorMessage -> {
                 AppInternetErrorDialog(
-                    issueDescription = trackNetworkState.resId.toStringFromResId()
+                    text = trackNetworkState.resId.toStringFromResId()
                 ) {
                     setEvent(SpotifyUiEvent.NetworkIO.LoadTrackDetails)
                 }
@@ -173,7 +173,7 @@ private fun LocalTrackHandler(
 
         // ErrorMessage State
         is UiState.ErrorMessage -> {
-            AppInternetErrorDialog(issueDescription = trackLocalState.resId.toStringFromResId()) {
+            AppInternetErrorDialog(text = trackLocalState.resId.toStringFromResId()) {
                 setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
             }
         }

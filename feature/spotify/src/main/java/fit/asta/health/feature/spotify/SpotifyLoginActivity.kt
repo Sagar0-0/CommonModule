@@ -99,7 +99,7 @@ class SpotifyLoginActivity : ComponentActivity() {
 
                     is UiState.ErrorMessage -> {
                         AppInternetErrorDialog(
-                            issueDescription = loginState.resId.toStringFromResId()
+                            text = loginState.resId.toStringFromResId()
                         ) {
 
                             // checking if spotify is installed or not

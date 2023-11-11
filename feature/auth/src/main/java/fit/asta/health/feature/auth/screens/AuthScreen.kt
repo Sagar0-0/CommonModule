@@ -20,7 +20,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
@@ -47,7 +47,7 @@ internal fun AuthScreen(
     ) {
         when (loginState) {
             is UiState.ErrorRetry -> {
-                AppRetryCard(text = loginState.resId.toStringFromResId()) {
+                AppErrorScreen(text = loginState.resId.toStringFromResId()) {
                     onUiEvent(AuthUiEvent.OnLoginFailed)
                 }
             }
@@ -91,7 +91,7 @@ internal fun AuthScreen(
             }
 
             is UiState.ErrorRetry -> {
-                AppRetryCard(text = onboardingState.resId.toStringFromResId()) {
+                AppErrorScreen(text = onboardingState.resId.toStringFromResId()) {
                     onUiEvent(AuthUiEvent.GetOnboardingData)
                 }
             }

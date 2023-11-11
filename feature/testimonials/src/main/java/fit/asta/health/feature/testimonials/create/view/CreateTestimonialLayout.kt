@@ -7,8 +7,8 @@ import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.AppNonInternetErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -35,7 +35,7 @@ fun CreateTestimonialLayout(
         }
 
         is UiState.ErrorRetry -> {
-            AppNonInternetErrorScreen {
+            AppErrorScreen {
                 testimonialViewModel.loadUserTestimonialData()
             }
         }

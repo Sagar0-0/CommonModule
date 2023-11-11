@@ -37,7 +37,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppRetryCard
+import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -127,7 +127,7 @@ internal fun SearchBottomSheet(
 
             when (searchResponseState) {
                 is UiState.ErrorRetry -> {
-                    AppRetryCard(text = searchResponseState.resId.toStringFromResId()) {
+                    AppErrorScreen(text = searchResponseState.resId.toStringFromResId()) {
                         onUiEvent(SearchSheetUiEvent.Search(searchQuery))
                     }
                 }
