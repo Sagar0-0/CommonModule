@@ -50,26 +50,26 @@ open class ApiErrorHandler {
     }
 
     open fun <T> fetchHTTPExceptionMessage(msg: String): ResponseState<T> {
-        val errors = listOf(400, 500, 304, 404, 413)
+        val errors = listOf("400", "500", "304", "404", "413")
         return ResponseState.ErrorMessage(
-            when (errors.find { it.toString() in msg }) {
-                400 -> {
+            when (errors.find { it in msg }) {
+                "400" -> {
                     R.string.bad_request
                 }
 
-                500 -> {
+                "500" -> {
                     R.string.server_error
                 }
 
-                304 -> {
+                "304" -> {
                     R.string.failed_to_update
                 }
 
-                404 -> {
+                "404" -> {
                     R.string.no_records_found
                 }
 
-                413 -> {
+                "413" -> {
                     R.string.file_not_found
                 }
 

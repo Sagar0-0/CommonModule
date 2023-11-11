@@ -20,9 +20,5 @@ class OnboardingRepoImpl(
     override suspend fun getData() = withContext(coroutineDispatcher) {
         getApiResponseState { remoteApi.getData() }
     }
-
-    override suspend fun setOnboardingDone() {
-        //TODO: TO BE REMOVED
-    }
 }
 

@@ -13,12 +13,12 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.map
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
-import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
@@ -106,10 +106,10 @@ internal class AuthViewModel
                         )
                     }
 
-                    val res = profileRepo.isUserProfileAvailable(it.data.uid)
-                        .toUiState()//Check Profile available or not
-                    _isProfileAvailable.value = res
-                    if (res is UiState.Success) {//If profile available request is success then navigate accordingly
+                    val res =
+                        profileRepo.isUserProfileAvailable(it.data.uid) //Check Profile available or not
+                    _isProfileAvailable.value = res.toUiState()
+                    if (res is ResponseState.Success) {//If profile available request is success then navigate accordingly
                         _loginState.value = UiState.Success(Unit)
                         if (res.data.flag) {//Profile available in server
                             navigateToHome()
@@ -117,10 +117,10 @@ internal class AuthViewModel
                             navigateToBasicProfile()
                         }
                     } else {// isProfileAvailable Request failed
-                        _loginState.value = UiState.ErrorRetry(R.string.server_error)
+                        _loginState.value = res.map { Unit }.toUiState()
                     }
                 } else {// Login failed
-                    _loginState.value = UiState.ErrorRetry(R.string.login_failed)
+                    _loginState.value = it.map { Unit }.toUiState()
                 }
             }
         }

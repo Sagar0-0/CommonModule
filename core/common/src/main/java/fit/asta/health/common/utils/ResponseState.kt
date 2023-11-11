@@ -60,6 +60,7 @@ suspend fun <T> getApiResponseState(
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
+        Log.e(TAG, "getApiResponseState: ${e.message}")
         errorHandler.fetchHTTPExceptionMessage(e.message ?: "")
     }
 }
@@ -99,6 +100,26 @@ fun <T> ResponseState<T>.toUiState(): UiState<T> {
 
         else -> {
             UiState.NoInternet
+        }
+    }
+}
+
+fun <T, R> ResponseState<T>.map(mapper: (T) -> R): ResponseState<R> {
+    return when (this) {
+        is ResponseState.Success -> {
+            ResponseState.Success(mapper(this.data))
+        }
+
+        is ResponseState.NoInternet -> {
+            ResponseState.NoInternet
+        }
+
+        is ResponseState.ErrorMessage -> {
+            ResponseState.ErrorMessage(this.resId)
+        }
+
+        is ResponseState.ErrorRetry -> {
+            ResponseState.ErrorRetry(this.resId)
         }
     }
 }
