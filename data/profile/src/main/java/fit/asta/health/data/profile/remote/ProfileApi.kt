@@ -21,24 +21,24 @@ interface ProfileApi {
     @GET("payment/referral/code/check/?")
     suspend fun checkReferralCode(@Query("refCode") refCode: String): Response<CheckReferralDTO>
 
-    @GET("userProfileResponse/get/isUserProfileAvailable/?")
+    @GET("userProfile/get/isUserProfileAvailable/?")
     suspend fun isUserProfileAvailable(@Query("uid") userId: String): Response<UserProfileAvailableResponse>
 
     @Multipart
-    @POST("userProfileResponse/basic/post")
+    @POST("userProfile/basic/post")
     suspend fun createBasicProfile(
         @Part("json") basicProfileDTO: BasicProfileDTO,
         @Part files: List<MultipartBody.Part>
     ): Response<BasicProfileResponse>
 
-    @PUT("userProfileResponse/put/")
+    @PUT("userProfile/put/")
     @Multipart
     suspend fun updateUserProfile(
         @Part("json") userProfileResponse: UserProfileResponse,
         @Part files: List<MultipartBody.Part>,
     ): Response<UpdateProfileResponse>
 
-    @GET("userProfileResponse/get/?")
+    @GET("userProfile/get/?")
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
     @GET("health/property/get/all/?")
