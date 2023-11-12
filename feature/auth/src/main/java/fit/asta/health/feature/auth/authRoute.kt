@@ -10,7 +10,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
-import fit.asta.health.feature.auth.screens.AuthScreen
+import fit.asta.health.feature.auth.screens.AuthScreenControl
 import fit.asta.health.feature.auth.screens.AuthUiEvent
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -42,7 +42,7 @@ fun NavGraphBuilder.authRoute(
         val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
         val onboardingState by authViewModel.onboardingDatState.collectAsStateWithLifecycle()
 
-        AuthScreen(
+        AuthScreenControl(
             loginState = loginState,
             onboardingState = onboardingState,
             onNavigate = { navController.navigate(it) }
