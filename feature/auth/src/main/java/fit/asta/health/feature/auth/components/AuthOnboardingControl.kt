@@ -4,6 +4,7 @@ import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
@@ -35,7 +36,8 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
 
 
@@ -47,7 +49,7 @@ import fit.asta.health.feature.auth.screens.AuthUiEvent
  * @param onUiEvent This is the event variable to set UI Events for the View Model Layers
  */
 @Composable
-fun AuthOnboardingControl(
+fun BoxScope.AuthOnboardingControl(
     onboardingState: UiState<List<OnboardingData>>,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
@@ -60,7 +62,9 @@ fun AuthOnboardingControl(
         is UiState.Loading -> {
             Box(
                 modifier = Modifier
+                    .padding(horizontal = AppTheme.spacing.level3)
                     .fillMaxSize()
+                    .clip(AppTheme.shape.level1)
                     .appShimmerAnimation(isVisible = true)
             )
         }
@@ -104,29 +108,29 @@ fun AuthOnboardingControl(
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OnBoardingSuccess(items: List<OnboardingData>) {
+private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
 
-    val pagerState = rememberPagerState(pageCount = { items.size })
-    Column(modifier = Modifier.fillMaxSize()) {
-        HorizontalPager(
-            modifier = Modifier.weight(1f),
-            state = pagerState,
-            contentPadding = PaddingValues(AppTheme.spacing.level2),
-            pageSpacing = AppTheme.spacing.level3,
-        ) { page ->
-            AppCard(
-                modifier = Modifier
-                    .carouselTransition(page, pagerState)
-                    .fillMaxHeight()
-                    .padding(AppTheme.spacing.level2)
-                    .clip(AppTheme.shape.level3)
+    val pagerState = rememberPagerState { items.size }
+    HorizontalPager(
+        state = pagerState,
+        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+        pageSpacing = AppTheme.spacing.level2,
+    ) { page ->
+        AppCard(
+            modifier = Modifier
+                .carouselTransition(page, pagerState)
+                .fillMaxHeight(),
+            shape = AppTheme.shape.level1
+        ) {
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
             ) {
                 when (items[page].type) {
                     OnBoardingDataType.Image.type, OnBoardingDataType.GIF.type -> {
                         AppGifImage(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(bottom = AppTheme.spacing.level3),
+                            modifier = Modifier.fillMaxWidth(),
                             url = getImgUrl(url = items[page].url),
                             contentScale = ContentScale.FillWidth
                         )
@@ -142,28 +146,26 @@ fun OnBoardingSuccess(items: List<OnboardingData>) {
                     }
                 }
 
+                val textModifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
 
-                Column(
-                    verticalArrangement = Arrangement.Center,
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    TitleTexts.Level2(
-                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
-                        text = items[page].title,
-                        textAlign = TextAlign.Center
-                    )
-                    TitleTexts.Level2(
-                        modifier = Modifier.padding(horizontal = AppTheme.spacing.level3),
-                        text = items[page].desc,
-                        textAlign = TextAlign.Center
-                    )
-                }
+                HeadingTexts.Level2(
+                    modifier = textModifier,
+                    text = items[page].title,
+                    textAlign = TextAlign.Center
+                )
+                BodyTexts.Level1(
+                    modifier = textModifier,
+                    text = items[page].desc,
+                    textAlign = TextAlign.Center
+                )
             }
         }
-        PagerIndicator(
-            modifier = Modifier.padding(vertical = AppTheme.spacing.level6),
-            size = items.size,
-            currentPage = pagerState.currentPage
-        )
     }
+    PagerIndicator(
+        modifier = Modifier
+            .align(Alignment.BottomCenter)
+            .padding(vertical = AppTheme.spacing.level6),
+        size = items.size,
+        currentPage = pagerState.currentPage
+    )
 }
