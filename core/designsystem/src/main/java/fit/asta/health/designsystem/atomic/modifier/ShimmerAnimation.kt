@@ -62,34 +62,64 @@ fun Modifier.appShimmerAnimation(isVisible: Boolean) = if (isVisible) composed {
     // Transition Key points
     val transition = rememberInfiniteTransition(label = "")
 
-    // This is the Animation logic which creates animation points for the shimmer effect
-    val startOffsetX by transition.animateFloat(
-        label = "",
-        initialValue = -2 * size.width.toFloat(),
-        targetValue = 2 * size.width.toFloat(),
-        animationSpec = infiniteRepeatable(
-            animation = tween(
-                1000
+    if (size.width > size.height) {
+        val startOffsetX by transition.animateFloat(
+            label = "",
+            initialValue = -2 * size.width.toFloat(),
+            targetValue = 2 * size.width.toFloat(),
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    1000
+                )
             )
         )
-    )
 
-    // This is the Background which would be the actual shimmer Effect
-    background(
+        // This is the Background which would be the actual shimmer Effect
+        background(
 
-        // Linear Gradient with its Colors
-        brush = Brush.linearGradient(
-            colors = listOf(
-                AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3),
-                AppTheme.colors.onSurfaceVariant,
-                AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3)
+            // Linear Gradient with its Colors
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3),
+                    AppTheme.colors.onSurfaceVariant,
+                    AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3)
+                ),
+                start = Offset(x = startOffsetX, y = 0f),
+                end = Offset(
+                    x = startOffsetX + size.width.toFloat(),
+                    y = size.height.toFloat()
+                )
             ),
-            start = Offset(x = startOffsetX, y = 0f),
-            end = Offset(
-                x = startOffsetX + size.width.toFloat(),
-                y = size.height.toFloat()
-            )
-        ),
-    ).onGloballyPositioned { size = it.size }
+        ).onGloballyPositioned { size = it.size }
+    } else {
 
+        val startOffsetY by transition.animateFloat(
+            label = "",
+            initialValue = -2 * size.height.toFloat(),
+            targetValue = 2 * size.height.toFloat(),
+            animationSpec = infiniteRepeatable(
+                animation = tween(
+                    1000
+                )
+            )
+        )
+
+        // This is the Background which would be the actual shimmer Effect
+        background(
+
+            // Linear Gradient with its Colors
+            brush = Brush.linearGradient(
+                colors = listOf(
+                    AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3),
+                    AppTheme.colors.onSurfaceVariant,
+                    AppTheme.colors.onSurfaceVariant.copy(alpha = AppTheme.alphaValues.level3)
+                ),
+                start = Offset(x = 0f, y = startOffsetY),
+                end = Offset(
+                    x = size.width.toFloat(),
+                    y = startOffsetY + size.height.toFloat()
+                )
+            ),
+        ).onGloballyPositioned { size = it.size }
+    }
 } else this
