@@ -36,6 +36,7 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
+import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
@@ -161,11 +162,12 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
             }
         }
     }
-    PagerIndicator(
+
+    // This function draws the Dot Indicator for the Pager
+    AppExpandingDotIndicator(
         modifier = Modifier
-            .align(Alignment.BottomCenter)
-            .padding(vertical = AppTheme.spacing.level6),
-        size = items.size,
-        currentPage = pagerState.currentPage
+            .padding(bottom = AppTheme.spacing.level1)
+            .align(Alignment.BottomCenter),
+        pagerState = pagerState
     )
 }
