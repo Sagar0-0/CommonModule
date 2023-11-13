@@ -58,8 +58,8 @@ fun AuthScreenControl(
             // On Boarding UI
             Box(
                 modifier = Modifier
-                    .weight(1f)
-                    .padding(AppTheme.spacing.level2)
+                    .weight(.65f)
+                    .padding(vertical = AppTheme.spacing.level2)
             ) {
 
                 // This handles and shows UI of On Boarding Data Pager
@@ -70,43 +70,48 @@ fun AuthScreenControl(
             }
 
             // Whole Login and Sign up along with the terms and policy UI
-            Column(
-                modifier = Modifier
+            Box(
+                Modifier
                     .fillMaxWidth()
+                    .weight(.35f)
                     .padding(horizontal = AppTheme.spacing.level3),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
-                horizontalAlignment = Alignment.CenterHorizontally
+                contentAlignment = Alignment.BottomCenter
             ) {
-
-                // Login or sign up divider
-                AuthStringDivider(textToShow = "Login or Sign up")
-
-                // Sign in with Phone Button
-                AppFilledButton(
-                    textToShow = "Sign in with Phone",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .height(AppTheme.buttonSize.level6),
-                    leadingIcon = Icons.Default.Phone
+                Column(
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
-                }
 
-                // Google Sign In Button
-                GoogleSignIn(R.string.sign_in_with_google) {
-                    onUiEvent(AuthUiEvent.SignInWithCredentials(it))
-                }
+                    // Login or sign up divider
+                    AuthStringDivider(textToShow = "Login or Sign up")
 
-                // Terms and Policy composable function
-                AuthTermAndPrivacyUI(
-                    modifier = Modifier.fillMaxWidth(),
-                    onTermsClick = {
-                        onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
-                    },
-                    onPrivacyClick = {
-                        onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                    // Sign in with Phone Button
+                    AppFilledButton(
+                        textToShow = "Sign in with Phone",
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(AppTheme.buttonSize.level6),
+                        leadingIcon = Icons.Default.Phone
+                    ) {
+                        onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
                     }
-                )
+
+                    // Google Sign In Button
+                    GoogleSignIn(R.string.sign_in_with_google) {
+                        onUiEvent(AuthUiEvent.SignInWithCredentials(it))
+                    }
+
+                    // Terms and Policy composable function
+                    AuthTermAndPrivacyUI(
+                        modifier = Modifier.fillMaxWidth(),
+                        onTermsClick = {
+                            onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                        },
+                        onPrivacyClick = {
+                            onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                        }
+                    )
+                }
             }
         }
 

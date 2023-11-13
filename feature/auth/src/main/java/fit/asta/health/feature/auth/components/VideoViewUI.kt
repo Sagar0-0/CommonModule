@@ -1,17 +1,13 @@
 package fit.asta.health.feature.auth.components
 
 import android.util.Log
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import fit.asta.health.designsystem.AppTheme
@@ -26,6 +22,7 @@ import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 
 @Composable
 fun VideoViewUI(
+    modifier: Modifier = Modifier,
     mediaItem: MediaItem,
     uiState: VideoState = VideoState(
         controllerType = ControllerType.None,
@@ -58,33 +55,26 @@ fun VideoViewUI(
         }
     }
 
-    Box(
-        modifier = Modifier.background(Color.Black), contentAlignment = Alignment.Center
-    ) {
-        Media(
-            state = state,
-            modifier = Modifier
-                .fillMaxWidth()
-                .aspectRatio(AppTheme.aspectRatio.wideScreen)
-                .background(Color.Black),
-            surfaceType = uiState.surfaceType,
-            resizeMode = uiState.resizeMode,
-            keepContentOnPlayerReset = uiState.keepContentOnPlayerReset,
-            useArtwork = uiState.useArtwork,
-            showBuffering = uiState.showBuffering,
-            buffering = {
-                Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    AppCircularProgressIndicator()
-                }
-            },
-            errorMessage = { error ->
-                Box(Modifier.fillMaxSize(), Alignment.Center) {
-                    BodyTexts.Level1(text = error.message ?: "", color = AppTheme.colors.error)
-                }
-            },
-            controllerHideOnTouch = uiState.controllerHideOnTouchType,
-            controllerAutoShow = uiState.controllerAutoShow,
-            controller = null
-        )
-    }
+    Media(
+        modifier = modifier,
+        state = state,
+        surfaceType = uiState.surfaceType,
+        resizeMode = uiState.resizeMode,
+        keepContentOnPlayerReset = uiState.keepContentOnPlayerReset,
+        useArtwork = uiState.useArtwork,
+        showBuffering = uiState.showBuffering,
+        buffering = {
+            Box(Modifier.fillMaxSize(), Alignment.Center) {
+                AppCircularProgressIndicator()
+            }
+        },
+        errorMessage = { error ->
+            Box(Modifier.fillMaxSize(), Alignment.Center) {
+                BodyTexts.Level1(text = error.message ?: "", color = AppTheme.colors.error)
+            }
+        },
+        controllerHideOnTouch = uiState.controllerHideOnTouchType,
+        controllerAutoShow = uiState.controllerAutoShow,
+        controller = null
+    )
 }
