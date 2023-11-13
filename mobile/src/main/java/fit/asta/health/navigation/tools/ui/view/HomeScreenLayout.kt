@@ -53,17 +53,19 @@ fun HomeScreenLayout(
     ) {
 
         // Top Sliding Images
-        item(span = { GridItemSpan(columns) }) {
-            Column {
-                AppHorizontalPager(
-                    pagerState = rememberPagerState { toolsHome.banners.size },
-                    modifier = Modifier
-                        .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
-                        .fillMaxWidth()
-                ) { page ->
-                    ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+        toolsHome.banners?.let {
+            item(span = { GridItemSpan(columns) }) {
+                Column {
+                    AppHorizontalPager(
+                        pagerState = rememberPagerState { toolsHome.banners.size },
+                        modifier = Modifier
+                            .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
+                            .fillMaxWidth()
+                    ) { page ->
+                        ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+                    }
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
             }
         }
 
@@ -76,61 +78,64 @@ fun HomeScreenLayout(
         }
 
         // All The Tools Composable cards
-        items(toolsHome.tools) { tool ->
-            Column {
-                ToolsCardLayout(
-                    cardTitle = tool.title,
-                    type = tool.name,
-                    imgUrl = tool.url
-                ) { type ->
-                    when (type.lowercase(Locale.getDefault())) {
-                        "water" -> {
-                            onNav(Graph.WaterTool.route)
-                        }
+        toolsHome.tools?.let {
+            items(toolsHome.tools) { tool ->
+                Column {
+                    ToolsCardLayout(
+                        cardTitle = tool.title,
+                        type = tool.name,
+                        imgUrl = tool.url
+                    ) { type ->
+                        when (type.lowercase(Locale.getDefault())) {
+                            "water" -> {
+                                onNav(Graph.WaterTool.route)
+                            }
 
-                        "steps" -> {
-                            WalkingActivity.launch(context = context)
-                        }
+                            "steps" -> {
+                                WalkingActivity.launch(context = context)
+                            }
 
-                        "workout" -> {
-                            onNav(Graph.ExerciseTool.route + "?activity=workout")
-                        }
+                            "workout" -> {
+                                onNav(Graph.ExerciseTool.route + "?activity=workout")
+                            }
 
-                        "yoga" -> {
-                            onNav(Graph.ExerciseTool.route + "?activity=yoga")
-                        }
+                            "yoga" -> {
+                                onNav(Graph.ExerciseTool.route + "?activity=yoga")
+                            }
 
-                        "hiit" -> {
-                            onNav(Graph.ExerciseTool.route + "?activity=HIIT")
-                        }
+                            "hiit" -> {
+                                onNav(Graph.ExerciseTool.route + "?activity=HIIT")
+                            }
 
-                        "dance" -> {
-                            onNav(Graph.ExerciseTool.route + "?activity=dance")
-                        }
+                            "dance" -> {
+                                onNav(Graph.ExerciseTool.route + "?activity=dance")
+                            }
 
-                        "meditation" -> {
-                            onNav(Graph.MeditationTool.route)
-                        }
+                            "meditation" -> {
+                                onNav(Graph.MeditationTool.route)
+                            }
 
-                        "sleep" -> {
+                            "sleep" -> {
 //                            onNav(Graph.SleepTool.route)
-                            SleepToolActivity.launch(
-                                context = context, userId = userId
-                            )
-                        }
+                                SleepToolActivity.launch(
+                                    context = context, userId = userId
+                                )
+                            }
 
-                        "breathing" -> {
-                            onNav(Graph.BreathingTool.route)
-                        }
+                            "breathing" -> {
+                                onNav(Graph.BreathingTool.route)
+                            }
 
-                        "sunlight" -> {
-                            onNav(Graph.SunlightTool.route)
+                            "sunlight" -> {
+                                onNav(Graph.SunlightTool.route)
+                            }
                         }
                     }
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
+
 
         // Testimonials Text and View All Button
         item(span = { GridItemSpan(columns) }) {
@@ -154,15 +159,17 @@ fun HomeScreenLayout(
         }
 
         // Testimonials Banners in a Horizontal Pager
-        item(span = { GridItemSpan(columns) }) {
-            Column {
-                AppHorizontalPager(
-                    modifier = Modifier.fillMaxWidth(),
-                    pagerState = rememberPagerState { toolsHome.testimonials.size }
-                ) {
-                    TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+        toolsHome.testimonials?.let {
+            item(span = { GridItemSpan(columns) }) {
+                Column {
+                    AppHorizontalPager(
+                        modifier = Modifier.fillMaxWidth(),
+                        pagerState = rememberPagerState { toolsHome.testimonials.size }
+                    ) {
+                        TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+                    }
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 

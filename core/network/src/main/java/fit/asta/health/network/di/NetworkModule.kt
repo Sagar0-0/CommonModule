@@ -58,7 +58,7 @@ object NetworkModule {
             .setApiKey(token)
             .setCache(cache = cache)
             .setBaseUrl(BuildConfig.BASE_URL)
-            .addInterceptor(LanguageInterceptor(languageProvider))
+            .addNetworkInterceptor(LanguageInterceptor(languageProvider))
             .addInterceptor(OfflineInterceptor(networkHelper))
 
         if (BuildConfig.DEBUG) {

@@ -2,7 +2,7 @@ package fit.asta.health.network
 
 class LanguageProvider {
 
-    private var language: String = ""
+    private var language: String = "en"
 
     fun get() = language
 

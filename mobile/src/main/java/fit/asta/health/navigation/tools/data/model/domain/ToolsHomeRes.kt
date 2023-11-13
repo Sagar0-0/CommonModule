@@ -8,10 +8,10 @@ data class ToolsHomeRes(
     @SerializedName("status") val status: Status,
 ) {
     data class ToolsHome(
-        @SerializedName("bnr") val banners: List<Banner>,
+        @SerializedName("bnr") val banners: List<Banner>?,
         @SerializedName("tml")
-        val testimonials: List<Testimonial>,
-        @SerializedName("tool") val tools: List<HealthTool>,
+        val testimonials: List<Testimonial>?,
+        @SerializedName("tool") val tools: List<HealthTool>?,
         @SerializedName("ust") val userTools: UserSelectedTool,
     ) {
 
