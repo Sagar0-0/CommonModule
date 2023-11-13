@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
-import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.rememberCoroutineScope
@@ -24,10 +23,11 @@ import kotlinx.coroutines.launch
  * with animation and dot indicators. It takes a list of items (bannerList) and displays them
  * one by one, allowing users to swipe horizontally to view different items.
  *
- * @param itemList: A list of items (List<T>) that you want to display in the banner. Replace
- * <T> with the type of items you are using in the list.
- * @param modifier: (Optional) A Compose Modifier that allows you to customize the appearance and
+ * @param pagerState The state to control this pager
+ * @param modifier (Optional) A Compose Modifier that allows you to customize the appearance and
  * behavior of the AppBanner component.
+ * @param enableAutoAnimation This determines whether the animation to the next pages should happen
+ * or not.
  * @param animationDelay This is the Delay between each animation
  * @param contentPadding a padding around the whole content. This will add padding for the
  * content after it has been clipped, which is not possible via [modifier] param. You can use it
@@ -45,9 +45,10 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun <T> AppHorizontalPager(
-    itemList: List<T>,
+fun AppHorizontalPager(
+    pagerState: PagerState,
     modifier: Modifier = Modifier,
+    enableAutoAnimation: Boolean = true,
     animationDelay: Long = 2500L,
     contentPadding: PaddingValues = PaddingValues(horizontal = AppTheme.spacing.level4),
     pageSpacing: Dp = AppTheme.spacing.level2,
@@ -56,19 +57,20 @@ fun <T> AppHorizontalPager(
     content: @Composable BoxScope.(page: Int) -> Unit,
 ) {
 
-    // This is the Pager State which keeps the state of the Pager
-    val pagerState = rememberPagerState { itemList.size }
+    // Animating to the next Pages if it is enabled
+    if (enableAutoAnimation) {
 
-    // Coroutine Scope State
-    val scope = rememberCoroutineScope()
+        // Coroutine Scope State
+        val scope = rememberCoroutineScope()
 
-    LaunchedEffect(pagerState.currentPage) {
-        scope.launch {
-            delay(animationDelay)
+        LaunchedEffect(pagerState.currentPage) {
+            scope.launch {
+                delay(animationDelay)
 
-            // Calculating the next Page to be shown and transiting to it
-            val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
-            pagerState.animateScrollToPage(newPosition)
+                // Calculating the next Page to be shown and transiting to it
+                val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
+                pagerState.animateScrollToPage(newPosition)
+            }
         }
     }
 

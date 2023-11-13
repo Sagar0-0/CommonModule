@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -31,12 +30,12 @@ import fit.asta.health.data.onboarding.model.OnBoardingDataType
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
-import fit.asta.health.designsystem.atomic.modifier.carouselTransition
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
+import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
@@ -112,15 +111,15 @@ fun BoxScope.AuthOnboardingControl(
 private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
 
     val pagerState = rememberPagerState { items.size }
-    HorizontalPager(
-        state = pagerState,
+    AppHorizontalPager(
+        pagerState = pagerState,
         contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
         pageSpacing = AppTheme.spacing.level2,
+        enableAutoAnimation = false,
+        userScrollEnabled = true
     ) { page ->
         AppCard(
-            modifier = Modifier
-                .carouselTransition(page, pagerState)
-                .fillMaxHeight(),
+            modifier = Modifier.fillMaxHeight(),
             shape = AppTheme.shape.level1
         ) {
             Column(

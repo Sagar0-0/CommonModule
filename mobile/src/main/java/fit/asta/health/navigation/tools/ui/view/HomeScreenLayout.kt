@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.tools.ui.view
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -9,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,6 +35,7 @@ import fit.asta.health.tools.walking.view.WalkingActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalCoroutinesApi
 @Composable
 fun HomeScreenLayout(
@@ -53,7 +56,7 @@ fun HomeScreenLayout(
         item(span = { GridItemSpan(columns) }) {
             Column {
                 AppHorizontalPager(
-                    itemList = toolsHome.banners,
+                    pagerState = rememberPagerState { toolsHome.banners.size },
                     modifier = Modifier
                         .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
                         .fillMaxWidth()
@@ -155,7 +158,7 @@ fun HomeScreenLayout(
             Column {
                 AppHorizontalPager(
                     modifier = Modifier.fillMaxWidth(),
-                    itemList = toolsHome.testimonials
+                    pagerState = rememberPagerState { toolsHome.testimonials.size }
                 ) {
                     TstBannerCard(testimonialsData = toolsHome.testimonials[it])
                 }
