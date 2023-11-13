@@ -2,7 +2,7 @@ package fit.asta.health.navigation.track.data.repo
 
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.getResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.navigation.track.data.remote.TrackingApiService
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
@@ -29,7 +29,7 @@ class TrackingRepoImpl(
     ): ResponseState<HomeMenuResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getHomeDetails(
                     uid = uid,
                     date = date,
@@ -48,7 +48,7 @@ class TrackingRepoImpl(
     ): ResponseState<WaterResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getWaterDetails(
                     uid = uid,
                     date = date,
@@ -67,7 +67,7 @@ class TrackingRepoImpl(
     ): ResponseState<StepsResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getStepsDetails(
                     uid = uid,
                     date = date,
@@ -86,7 +86,7 @@ class TrackingRepoImpl(
     ): ResponseState<MeditationResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getMeditationDetails(
                     uid = uid,
                     date = date,
@@ -105,7 +105,7 @@ class TrackingRepoImpl(
     ): ResponseState<BreathingResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getBreathingDetails(
                     uid = uid,
                     date = date,
@@ -124,7 +124,7 @@ class TrackingRepoImpl(
     ): ResponseState<SleepResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getSleepDetails(
                     uid = uid,
                     date = date,
@@ -143,7 +143,7 @@ class TrackingRepoImpl(
     ): ResponseState<SunlightResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getSunlightDetails(
                     uid = uid,
                     date = date,
@@ -163,7 +163,7 @@ class TrackingRepoImpl(
     ): ResponseState<ExerciseResponse> {
 
         return withContext(dispatcher) {
-            getResponseState {
+            getApiResponseState {
                 trackingApiService.getExerciseDetails(
                     uid = uid,
                     date = date,

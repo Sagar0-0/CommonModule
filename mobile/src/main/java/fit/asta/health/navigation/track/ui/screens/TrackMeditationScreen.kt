@@ -196,7 +196,7 @@ fun TrackMeditationScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(meditationData = meditationTrackData.data.meditationData)
+                TrackSuccessScreen(meditationData = meditationTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -213,7 +213,7 @@ fun TrackMeditationScreenControl(
 }
 
 @Composable
-private fun TrackSuccessScreen(meditationData: MeditationResponse.MeditationData) {
+private fun TrackSuccessScreen(meditationData: MeditationResponse) {
 
     val context = LocalContext.current
 

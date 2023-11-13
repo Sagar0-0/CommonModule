@@ -191,7 +191,7 @@ fun TrackWaterScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(waterTrackData.data.waterData)
+                TrackSuccessScreen(waterTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -208,7 +208,7 @@ fun TrackWaterScreenControl(
 }
 
 @Composable
-private fun TrackSuccessScreen(waterTrackData: WaterResponse.WaterData) {
+private fun TrackSuccessScreen(waterTrackData: WaterResponse) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

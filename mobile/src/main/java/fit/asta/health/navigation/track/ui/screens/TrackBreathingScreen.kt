@@ -196,7 +196,7 @@ fun TrackBreathingScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(breathingData = breathingTrackData.data.breathingData)
+                TrackSuccessScreen(breathingData = breathingTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -213,7 +213,7 @@ fun TrackBreathingScreenControl(
 }
 
 @Composable
-private fun TrackSuccessScreen(breathingData: BreathingResponse.BreathingData) {
+private fun TrackSuccessScreen(breathingData: BreathingResponse) {
 
     val context = LocalContext.current
 

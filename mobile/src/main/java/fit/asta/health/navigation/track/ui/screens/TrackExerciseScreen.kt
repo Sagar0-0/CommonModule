@@ -189,7 +189,7 @@ fun TrackExerciseScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(exerciseTrackData = exerciseTrackData.data.exerciseData)
+                TrackSuccessScreen(exerciseTrackData = exerciseTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -206,7 +206,7 @@ fun TrackExerciseScreenControl(
 }
 
 @Composable
-private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse.ExerciseData) {
+private fun TrackSuccessScreen(exerciseTrackData: ExerciseResponse) {
     LazyColumn(
         modifier = Modifier
             .fillMaxSize()

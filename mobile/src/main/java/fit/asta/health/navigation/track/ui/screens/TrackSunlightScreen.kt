@@ -192,7 +192,7 @@ fun TrackSunlightScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(sunlightTrackData.data.sunlightData)
+                TrackSuccessScreen(sunlightTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -209,7 +209,7 @@ fun TrackSunlightScreenControl(
 }
 
 @Composable
-fun TrackSuccessScreen(sunlightData: SunlightResponse.SunlightData) {
+fun TrackSuccessScreen(sunlightData: SunlightResponse) {
 
     val context = LocalContext.current
 

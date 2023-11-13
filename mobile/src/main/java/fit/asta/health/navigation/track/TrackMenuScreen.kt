@@ -219,7 +219,7 @@ fun TrackMenuScreenControl() {
                 // Success State
                 is UiState.Success -> {
                     TrackMenuSuccessScreen(
-                        homeMenuData = homeMenuState.data.homeMenuData,
+                        homeMenuData = homeMenuState.data,
                         localDate = localDate
                     )
                 }
@@ -250,7 +250,7 @@ fun TrackMenuScreenControl() {
  */
 @Composable
 private fun TrackMenuSuccessScreen(
-    homeMenuData: HomeMenuResponse.HomeMenuData,
+    homeMenuData: HomeMenuResponse,
     localDate: LocalDate
 ) {
 

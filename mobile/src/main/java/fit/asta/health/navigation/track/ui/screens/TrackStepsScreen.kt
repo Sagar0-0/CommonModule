@@ -200,7 +200,7 @@ fun TrackStepsScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(stepsTrackData = stepsTrackData.data.stepsData)
+                TrackSuccessScreen(stepsTrackData = stepsTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -217,7 +217,7 @@ fun TrackStepsScreenControl(
 }
 
 @Composable
-private fun TrackSuccessScreen(stepsTrackData: StepsResponse.StepsData) {
+private fun TrackSuccessScreen(stepsTrackData: StepsResponse) {
 
     val context = LocalContext.current
 

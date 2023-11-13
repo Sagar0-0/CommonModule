@@ -194,7 +194,7 @@ fun TrackSleepScreenControl(
 
             is UiState.Success -> {
                 Spacer(modifier = Modifier.height(8.dp))
-                TrackSuccessScreen(sleepData = sleepTrackData.data.sleepData)
+                TrackSuccessScreen(sleepData = sleepTrackData.data)
             }
 
             is UiState.ErrorMessage -> {
@@ -211,7 +211,7 @@ fun TrackSleepScreenControl(
 }
 
 @Composable
-fun TrackSuccessScreen(sleepData: SleepResponse.SleepData) {
+fun TrackSuccessScreen(sleepData: SleepResponse) {
 
     val context = LocalContext.current
 

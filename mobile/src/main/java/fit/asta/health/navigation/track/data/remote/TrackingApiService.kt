@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.track.data.remote
 
+import fit.asta.health.common.utils.Response
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
@@ -19,7 +20,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): HomeMenuResponse
+    ): Response<HomeMenuResponse>
 
     @GET("tracking/water/get/")
     suspend fun getWaterDetails(
@@ -27,7 +28,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): WaterResponse
+    ): Response<WaterResponse>
 
     @GET("tracking/steps/get/")
     suspend fun getStepsDetails(
@@ -35,7 +36,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): StepsResponse
+    ): Response<StepsResponse>
 
     @GET("tracking/meditation/get/")
     suspend fun getMeditationDetails(
@@ -43,7 +44,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): MeditationResponse
+    ): Response<MeditationResponse>
 
     @GET("tracking/breathing/get/")
     suspend fun getBreathingDetails(
@@ -51,7 +52,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): BreathingResponse
+    ): Response<BreathingResponse>
 
     @GET("tracking/sleep/get/")
     suspend fun getSleepDetails(
@@ -59,7 +60,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): SleepResponse
+    ): Response<SleepResponse>
 
     @GET("tracking/sunlight/get/")
     suspend fun getSunlightDetails(
@@ -67,7 +68,7 @@ interface TrackingApiService {
         @Query("date") date: String,
         @Query("loc") location: String,
         @Query("sts") status: String
-    ): SunlightResponse
+    ): Response<SunlightResponse>
 
     @GET("tracking/exercise/get/")
     suspend fun getExerciseDetails(
@@ -76,5 +77,5 @@ interface TrackingApiService {
         @Query("loc") location: String,
         @Query("exe") exercise: String,
         @Query("sts") status: String
-    ): ExerciseResponse
+    ): Response<ExerciseResponse>
 }
