@@ -8,11 +8,13 @@ import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.core.network.BuildConfig
 import fit.asta.health.network.AstaNetwork
+import fit.asta.health.network.LanguageProvider
 import fit.asta.health.network.NetworkHelper
 import fit.asta.health.network.NetworkHelperImpl
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.api.Api
 import fit.asta.health.network.api.ApiService
+import fit.asta.health.network.interceptor.LanguageInterceptor
 import fit.asta.health.network.interceptor.OfflineInterceptor
 import fit.asta.health.network.repo.FileUploadRepo
 import fit.asta.health.network.utils.NetworkUtil
@@ -39,19 +41,24 @@ object NetworkModule {
     @Singleton
     fun provideTokenProvider() = TokenProvider()
 
+    @Provides
+    @Singleton
+    fun provideLanguageProvider() = LanguageProvider()
+
     @Singleton
     @Provides
     fun provideOkHttpClient(
         networkHelper: NetworkHelper,
         cache: Cache,
-        token: TokenProvider
+        token: TokenProvider,
+        languageProvider: LanguageProvider
     ): OkHttpClient {
 
         val builder = AstaNetwork.Builder()
             .setApiKey(token)
             .setCache(cache = cache)
             .setBaseUrl(BuildConfig.BASE_URL)
-//            .addInterceptor(OnlineInterceptor(networkHelper))
+            .addInterceptor(LanguageInterceptor(languageProvider))
             .addInterceptor(OfflineInterceptor(networkHelper))
 
         if (BuildConfig.DEBUG) {
