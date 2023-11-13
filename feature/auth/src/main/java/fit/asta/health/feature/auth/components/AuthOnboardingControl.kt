@@ -7,9 +7,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -119,45 +117,50 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
         userScrollEnabled = true
     ) { page ->
         AppCard(
-            modifier = Modifier.fillMaxHeight(),
+            modifier = Modifier.fillMaxSize(),
             shape = AppTheme.shape.level1
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
-            ) {
+            Box(modifier = Modifier.fillMaxSize()) {
                 when (items[page].type) {
                     OnBoardingDataType.Image.type, OnBoardingDataType.GIF.type -> {
                         AppGifImage(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier.fillMaxSize(),
                             url = getImgUrl(url = items[page].url),
-                            contentScale = ContentScale.FillWidth
+                            contentScale = ContentScale.FillBounds
                         )
                     }
 
                     OnBoardingDataType.Video.type -> {
                         VideoViewUI(
+                            modifier = Modifier.fillMaxSize(),
                             onPlay = page == pagerState.currentPage,
                             onPause = page != pagerState.currentPage,
-                            mediaItem = MediaItem.Builder()
+                            mediaItem = MediaItem
+                                .Builder()
                                 .setUri(getVideoUrl(url = items[page].url).toUri()).build()
                         )
                     }
                 }
 
-                val textModifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
-
-                HeadingTexts.Level2(
-                    modifier = textModifier,
-                    text = items[page].title,
-                    textAlign = TextAlign.Center
-                )
-                BodyTexts.Level1(
-                    modifier = textModifier,
-                    text = items[page].desc,
-                    textAlign = TextAlign.Center
-                )
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            horizontal = AppTheme.spacing.level2,
+                            vertical = AppTheme.spacing.level6
+                        )
+                        .align(Alignment.BottomCenter),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
+                    HeadingTexts.Level2(
+                        text = items[page].title,
+                        textAlign = TextAlign.Center
+                    )
+                    BodyTexts.Level1(
+                        text = items[page].desc,
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
@@ -165,7 +168,7 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
     // This function draws the Dot Indicator for the Pager
     AppExpandingDotIndicator(
         modifier = Modifier
-            .padding(bottom = AppTheme.spacing.level1)
+            .padding(bottom = AppTheme.spacing.level2)
             .align(Alignment.BottomCenter),
         pagerState = pagerState
     )
