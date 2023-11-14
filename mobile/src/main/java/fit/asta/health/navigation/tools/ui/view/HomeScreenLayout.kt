@@ -68,17 +68,16 @@ fun HomeScreenLayout(
                 }
             }
         }
-
-        // My Tools text and View All button
-        item(span = { GridItemSpan(columns) }) {
-            Column {
-                ViewAllLayout(title = "My Tools")
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            }
-        }
-
-        // All The Tools Composable cards
         toolsHome.tools?.let {
+            // My Tools text and View All button
+            item(span = { GridItemSpan(columns) }) {
+                Column {
+                    ViewAllLayout(title = "My Tools")
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                }
+            }
+
+            // All The Tools Composable cards
             items(toolsHome.tools) { tool ->
                 Column {
                     ToolsCardLayout(
@@ -136,30 +135,29 @@ fun HomeScreenLayout(
             }
         }
 
-
-        // Testimonials Text and View All Button
-        item(span = { GridItemSpan(columns) }) {
-            ViewAllLayout(
-                title = "Testimonials",
-                clickString = "View All"
-            ) { onNav(Graph.Testimonials.route) }
-        }
-
-        // Why our Customers text
-        item(span = { GridItemSpan(columns) }) {
-            Column(
-                Modifier.fillMaxWidth(),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                TitleTexts.Level3(text = "Why our customers love ASTA?")
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AppDivider(modifier = Modifier.width(AppTheme.customSize.level9))
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            }
-        }
-
-        // Testimonials Banners in a Horizontal Pager
         toolsHome.testimonials?.let {
+            // Testimonials Text and View All Button
+            item(span = { GridItemSpan(columns) }) {
+                ViewAllLayout(
+                    title = "Testimonials",
+                    clickString = "View All"
+                ) { onNav(Graph.Testimonials.route) }
+            }
+
+            // Why our Customers text
+            item(span = { GridItemSpan(columns) }) {
+                Column(
+                    Modifier.fillMaxWidth(),
+                    horizontalAlignment = Alignment.CenterHorizontally
+                ) {
+                    TitleTexts.Level3(text = "Why our customers love ASTA?")
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                    AppDivider(modifier = Modifier.width(AppTheme.customSize.level9))
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                }
+            }
+
+            // Testimonials Banners in a Horizontal Pager
             item(span = { GridItemSpan(columns) }) {
                 Column {
                     AppHorizontalPager(
