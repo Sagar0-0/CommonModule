@@ -1,4 +1,4 @@
-package fit.asta.health.referral.remote
+package fit.asta.health.referral.repo
 
 import fit.asta.health.common.utils.ApiErrorHandler
 import fit.asta.health.common.utils.Response

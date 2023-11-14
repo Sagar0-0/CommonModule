@@ -3,7 +3,6 @@ package fit.asta.health.referral.repo
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.referral.remote.ReferralApi
-import fit.asta.health.referral.remote.ReferralErrorHandler
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
