@@ -84,11 +84,11 @@ private fun NewRefDialogContent(
             Spacer(modifier = Modifier.height(16.dp))
             ReferralCodeSection(copyRefCode = copyRefCode)
         }
-        ShareRefBtn(
+        /*ShareRefBtn(
             Modifier
                 .fillMaxWidth()
                 .height(AppTheme.spacing.level6), shareRefLink = shareRefLink
-        )
+        )*/
     }
 }
 
