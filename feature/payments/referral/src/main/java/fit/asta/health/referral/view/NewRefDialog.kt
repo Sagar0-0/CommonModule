@@ -55,33 +55,21 @@ private fun NewRefDialogContent(
     closeDialog: () -> Unit = {},
 ) {
     AppCard {
+        HeaderIconBtn(closeDialog = closeDialog)
         Column(
             Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderIconBtn(closeDialog = closeDialog)
             ReferralImg()
             Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TitleTexts.Level4(text = "Refer Friends & Earn")
-            }
+            TitleTexts.Level4(text = "Refer Friends & Earn")
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BodyTexts.Level3(
-                    text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
-                    textAlign = TextAlign.Center,
-                    color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
-                )
-            }
+            BodyTexts.Level3(
+                text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
+                textAlign = TextAlign.Center,
+                color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
+            )
             Spacer(modifier = Modifier.height(16.dp))
             ReferralCodeSection(refCode = refCode)
         }
