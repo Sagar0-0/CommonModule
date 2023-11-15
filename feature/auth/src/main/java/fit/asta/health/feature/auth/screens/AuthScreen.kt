@@ -97,7 +97,12 @@ fun AuthScreenControl(
                     }
 
                     // Google Sign In Button
-                    GoogleSignIn(R.string.sign_in_with_google) {
+                    GoogleSignIn(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .height(AppTheme.buttonSize.level6),
+                        textId = R.string.sign_in_with_google
+                    ) {
                         onUiEvent(AuthUiEvent.SignInWithCredentials(it))
                     }
 

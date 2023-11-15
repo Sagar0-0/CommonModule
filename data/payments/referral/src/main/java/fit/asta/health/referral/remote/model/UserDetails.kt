@@ -9,6 +9,7 @@ data class UserDetails(
     val name: String = "",
     @SerializedName("pic")
     val pic: String = "",
+    val phone: String = "",
     @SerializedName("prime")
     val prime: Boolean = false,
     val phone:String = ""
