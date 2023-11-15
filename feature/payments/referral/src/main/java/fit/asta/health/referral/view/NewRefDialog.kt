@@ -41,7 +41,7 @@ fun NewRefDialog() {
             NewRefDialogContent(
                 shareRefLink = {},
                 closeDialog = {},
-                copyRefCode = {},
+                refCode = "DemoCode",
             )
         }
     }
@@ -50,9 +50,9 @@ fun NewRefDialog() {
 
 @Composable
 private fun NewRefDialogContent(
-    shareRefLink: () -> Unit = {},
+    refCode: String = "",
+    shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},
-    copyRefCode: () -> Unit = {},
 ) {
     AppCard {
         Column(
@@ -83,18 +83,18 @@ private fun NewRefDialogContent(
                 )
             }
             Spacer(modifier = Modifier.height(16.dp))
-            ReferralCodeSection(copyRefCode = copyRefCode)
+            ReferralCodeSection(refCode = refCode)
         }
         ShareRefBtn(
             Modifier
                 .fillMaxWidth()
-                .height(AppTheme.spacing.level6), shareRefLink = shareRefLink
+                .height(AppTheme.spacing.level6), shareRefLink = { shareRefLink(refCode) }
         )
     }
 }
 
 @Composable
-private fun ReferralCodeSection(copyRefCode: () -> Unit = {}) {
+private fun ReferralCodeSection(refCode: String = "") {
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -110,7 +110,7 @@ private fun ReferralCodeSection(copyRefCode: () -> Unit = {}) {
             containerColor = AppTheme.colors.primary.copy(
                 alpha = 0.2f
             )
-        ), copyRefCode = copyRefCode
+        ), refCode = refCode
     )
 }
 
