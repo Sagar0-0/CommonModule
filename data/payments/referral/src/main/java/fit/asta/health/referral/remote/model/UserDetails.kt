@@ -12,5 +12,4 @@ data class UserDetails(
     val phone: String = "",
     @SerializedName("prime")
     val prime: Boolean = false,
-    val phone:String = ""
 )
