@@ -22,7 +22,6 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
-import fit.asta.health.referral.view.NewReferralDesign
 import fit.asta.health.referral.view.ReferralDestination
 import fit.asta.health.referral.vm.ReferralViewModel
 
@@ -81,12 +80,12 @@ fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit, shareReferralCode: (S
                     }
 
                     is UiState.Success -> {
-                        NewReferralDesign(
+                        /*NewReferralDesign(
                             modifier = Modifier.padding(paddingValues),
                             refCode = referralDataState.data.referralCode.refCode,
                             referredUsers = referralDataState.data.referredUsers,
                             shareReferralCode = shareReferralCode,
-                        )
+                        )*/
                     }
 
                     else -> {}

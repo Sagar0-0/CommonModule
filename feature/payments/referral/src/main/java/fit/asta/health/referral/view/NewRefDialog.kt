@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,13 +104,13 @@ private fun ReferralCodeSection(copyRefCode: () -> Unit = {}) {
             color = Color.LightGray
         )
     }
-    CopyRefCodeCard(
+    /*CopyRefCodeCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.colors.primary.copy(
                 alpha = 0.2f
             )
         ), copyRefCode = copyRefCode
-    )
+    )*/
 }
 
 @Composable
