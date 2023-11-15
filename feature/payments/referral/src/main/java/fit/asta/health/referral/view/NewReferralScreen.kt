@@ -16,7 +16,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBackIosNew
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.GroupAdd
@@ -27,23 +26,26 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
+import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -57,41 +59,42 @@ import fit.asta.health.resources.drawables.R
     heightDp = 1100
 )
 @Composable
-fun NewReferralDesign(shareRefLink: () -> Unit = {}, copyRefCode: () -> Unit = {}) {
-
-    AppTheme {
-        AppSurface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                AppTopBar(
-                    title = "Refer and Earn",
-                    backIcon = Icons.Filled.ArrowBackIosNew,
-                    onBack = {})
-                Spacer(modifier = Modifier.height(16.dp))
-                ReferralImg()
-                Spacer(modifier = Modifier.height(16.dp))
-                ShareRefBtn(shareRefLink)
-                LargeTexts.Level2(
-                    text = "OR",
-                    color = AppTheme.colors.onSurfaceVariant,
-                )
-                CopyRefCodeCard(copyRefCode)
-                Spacer(modifier = Modifier.height(16.dp))
-                InvitationReport()
-                Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = 16.dp)
-                ) {
-                    HeadingTexts.Level2(text = "You've invited...")
-                }
+fun NewReferralDesign(
+    modifier: Modifier = Modifier,
+    refCode: String = "",
+    referredUsers: List<UserDetails>? = null,
+    shareReferralCode: (String) -> Unit = {},
+) {
+    AppSurface(
+        modifier = modifier
+            .fillMaxSize()
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(16.dp))
+            ReferralImg()
+            Spacer(modifier = Modifier.height(16.dp))
+            ShareRefBtn {
+                shareReferralCode(refCode)
+            }
+            LargeTexts.Level2(
+                text = "OR",
+                color = AppTheme.colors.onSurfaceVariant,
+            )
+            CopyRefCodeCard(refCode)
+            Spacer(modifier = Modifier.height(16.dp))
+            InvitationReport()
+            Spacer(modifier = Modifier.height(16.dp))
+            referredUsers?.let {
+                HeadingTexts.Level2(text = "You've invited...")
                 Spacer(modifier = Modifier.height(24.dp))
-                InvitedUserList()
+                referredUsers.forEach { user ->
+                    InvitedUserList(user)
+                }
             }
         }
     }
@@ -122,7 +125,8 @@ fun ShareRefBtn(shareRefLink: () -> Unit) {
 }
 
 @Composable
-fun CopyRefCodeCard(copyRefCode: () -> Unit) {
+fun CopyRefCodeCard(refCode: String) {
+    val context = LocalContext.current
     Row(
         Modifier
             .fillMaxWidth()
@@ -135,7 +139,7 @@ fun CopyRefCodeCard(copyRefCode: () -> Unit) {
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 HeadingTexts.Level1(
-                    text = "QWE123",
+                    text = refCode,
                     modifier = Modifier.padding(AppTheme.spacing.level2),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.primary
@@ -143,7 +147,11 @@ fun CopyRefCodeCard(copyRefCode: () -> Unit) {
                 AppTextButton(
                     textToShow = "Copy",
                     leadingIcon = Icons.Filled.ContentCopy,
-                    onClick = copyRefCode
+                    onClick = {
+                        context.copyTextToClipboard(
+                            refCode
+                        )
+                    }
                 )
             }
         }
@@ -152,11 +160,7 @@ fun CopyRefCodeCard(copyRefCode: () -> Unit) {
 
 @Composable
 fun InvitedUserList(
-    userPofImg: Int = R.drawable.ic_person,
-    userName: String = "Demo Name",
-    userPhone: String = "1000000000",
-    userEmail: String = "demo@gmail.com",
-    isProMember: Boolean = true,
+    userDetails: UserDetails,
     addToCommunity: () -> Unit = {}
 ) {
     AppCard(modifier = Modifier.padding(horizontal = 16.dp)) {
@@ -168,8 +172,8 @@ fun InvitedUserList(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             Row {
-                AppLocalImage(
-                    painter = painterResource(id = userPofImg),
+                AppNetworkImage(
+                    model = userDetails.pic,
                     contentDescription = "Profile",
                     modifier = Modifier
                         .size(AppTheme.boxSize.level6)
@@ -177,18 +181,18 @@ fun InvitedUserList(
                 )
                 Spacer(modifier = Modifier.width(8.dp))
                 Column {
-                    HeadingTexts.Level3(text = userName)
+                    HeadingTexts.Level3(text = userDetails.name)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     BodyTexts.Level3(
-                        text = userPhone.ifEmpty {
-                            userEmail
+                        text = userDetails.phone.ifEmpty {
+                            userDetails.mail
                         },
                         color = AppTheme.colors.onBackground.copy(alpha = 0.4f)
                     )
                 }
             }
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
-                if (isProMember) {
+                if (userDetails.prime) {
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -209,7 +213,7 @@ fun InvitationReport() {
     Column(Modifier.padding(horizontal = 16.dp)) {
         HeadingTexts.Level2(text = "Invite Report")
         Row(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(vertical = 16.dp),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
