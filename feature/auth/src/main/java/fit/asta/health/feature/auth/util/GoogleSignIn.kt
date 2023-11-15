@@ -4,8 +4,6 @@ import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.annotation.StringRes
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -16,12 +14,12 @@ import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.GoogleAuthProvider
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
 fun GoogleSignIn(
+    modifier: Modifier = Modifier,
     @StringRes textId: Int,
     signInWithCredentials: (AuthCredential) -> Unit
 ) {
@@ -42,10 +40,8 @@ fun GoogleSignIn(
     }
 
     AppOutlinedButton(
+        modifier = modifier,
         textToShow = stringResource(id = textId),
-        modifier = Modifier
-            .fillMaxWidth()
-            .height(AppTheme.buttonSize.level6),
         leadingIcon = painterResource(id = com.firebase.ui.auth.R.drawable.googleg_standard_color_18)
     ) {
         val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
