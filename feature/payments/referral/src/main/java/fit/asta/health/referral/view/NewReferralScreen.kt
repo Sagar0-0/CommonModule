@@ -85,7 +85,7 @@ fun NewReferralDesign(shareRefLink: () -> Unit = {}, referredUsers: List<UserDet
                     text = "OR",
                     color = AppTheme.colors.onSurfaceVariant,
                 )
-                CopyRefCodeCard(copyRefCode)
+                //CopyRefCodeCard(copyRefCode)
                 Spacer(modifier = Modifier.height(16.dp))
                 InvitationReport()
                 Spacer(modifier = Modifier.height(16.dp))
@@ -97,7 +97,7 @@ fun NewReferralDesign(shareRefLink: () -> Unit = {}, referredUsers: List<UserDet
                     HeadingTexts.Level2(text = "You've invited...")
                 }
                 Spacer(modifier = Modifier.height(24.dp))
-                referredUsers.forEach { user ->
+                referredUsers?.forEach { user ->
                     InvitedUserList(user)
                 }
             }
@@ -132,7 +132,8 @@ fun ShareRefBtn(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
 @Composable
 fun CopyRefCodeCard(
     refCode: String,
-    copyRefCode: () -> Unit = {}, colors: CardColors = CardDefaults.cardColors(),
+    copyRefCode: () -> Unit = {},
+    colors: CardColors = CardDefaults.cardColors(),
 ) {
     val context = LocalContext.current
     Row(
