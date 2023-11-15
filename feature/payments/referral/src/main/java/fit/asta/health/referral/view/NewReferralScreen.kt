@@ -72,49 +72,14 @@ fun NewReferralDesign(shareRefLink: () -> Unit = {}, copyRefCode: () -> Unit = {
                     backIcon = Icons.Filled.ArrowBackIosNew,
                     onBack = {})
                 Spacer(modifier = Modifier.height(16.dp))
-                AppLocalImage(
-                    painter = painterResource(id = R.drawable.ref_ed_2),
-                    modifier = Modifier.aspectRatio(AppTheme.aspectRatio.wideScreen),
-                    contentScale = ContentScale.Fit
-                )
+                ReferralImg()
                 Spacer(modifier = Modifier.height(16.dp))
-                Row(
-                    modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
-                ) {
-                    AppFilledButton(
-                        textToShow = "Share your link",
-                        trailingIcon = Icons.Filled.Link, onClick = shareRefLink
-                    )
-                }
+                ShareRefBtn(shareRefLink)
                 LargeTexts.Level2(
                     text = "OR",
                     color = AppTheme.colors.onSurfaceVariant,
                 )
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(vertical = AppTheme.spacing.level2),
-                    horizontalArrangement = Arrangement.Center
-                ) {
-                    AppCard {
-                        Row(
-                            horizontalArrangement = Arrangement.SpaceBetween,
-                            verticalAlignment = Alignment.CenterVertically
-                        ) {
-                            HeadingTexts.Level1(
-                                text = "QWE123",
-                                modifier = Modifier.padding(AppTheme.spacing.level2),
-                                textAlign = TextAlign.Center,
-                                color = AppTheme.colors.primary
-                            )
-                            AppTextButton(
-                                textToShow = "Copy",
-                                leadingIcon = Icons.Filled.ContentCopy,
-                                onClick = copyRefCode
-                            )
-                        }
-                    }
-                }
+                CopyRefCodeCard(copyRefCode)
                 Spacer(modifier = Modifier.height(16.dp))
                 InvitationReport()
                 Spacer(modifier = Modifier.height(16.dp))
@@ -127,6 +92,59 @@ fun NewReferralDesign(shareRefLink: () -> Unit = {}, copyRefCode: () -> Unit = {
                 }
                 Spacer(modifier = Modifier.height(24.dp))
                 InvitedUserList()
+            }
+        }
+    }
+}
+
+@Composable
+fun ReferralImg(
+    refImg: Int = R.drawable.ref_ed_2,
+    aspectRatio: Float = AppTheme.aspectRatio.wideScreen
+) {
+    AppLocalImage(
+        painter = painterResource(id = refImg),
+        modifier = Modifier.aspectRatio(aspectRatio),
+        contentScale = ContentScale.Fit
+    )
+}
+
+@Composable
+fun ShareRefBtn(shareRefLink: () -> Unit) {
+    Row(
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+    ) {
+        AppFilledButton(
+            textToShow = "Share your link",
+            trailingIcon = Icons.Filled.Link, onClick = shareRefLink
+        )
+    }
+}
+
+@Composable
+fun CopyRefCodeCard(copyRefCode: () -> Unit) {
+    Row(
+        Modifier
+            .fillMaxWidth()
+            .padding(vertical = AppTheme.spacing.level2),
+        horizontalArrangement = Arrangement.Center
+    ) {
+        AppCard {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                HeadingTexts.Level1(
+                    text = "QWE123",
+                    modifier = Modifier.padding(AppTheme.spacing.level2),
+                    textAlign = TextAlign.Center,
+                    color = AppTheme.colors.primary
+                )
+                AppTextButton(
+                    textToShow = "Copy",
+                    leadingIcon = Icons.Filled.ContentCopy,
+                    onClick = copyRefCode
+                )
             }
         }
     }
