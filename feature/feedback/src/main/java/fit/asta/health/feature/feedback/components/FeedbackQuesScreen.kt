@@ -24,10 +24,10 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 
 @Composable
 fun FeedbackQuesScreen(
-    feedbackQuesState: FeedbackQuesDTO,
+    feedbackQues: FeedbackQuesDTO,
     onSubmit: (answers: List<Answer>) -> Unit
 ) {
-    val questions = feedbackQuesState.questions
+    val questions = feedbackQues.questions
     val validAnswersList = remember { questions.map { !it.isMandatory }.toMutableStateList() }
     var isSubmitButtonEnabled = validAnswersList.none { !it }
     val answersList = remember { questions.map { Answer() }.toMutableStateList() }
@@ -74,15 +74,19 @@ fun FeedbackQuesScreen(
             ) {
                 isSubmitButtonEnabled = false
                 Log.e("ANS", "SessionFeedback: ${answersList.toList()}")
-                answersList.forEachIndexed { idx, ans ->
-                    val medias = ans.mediaUri.map { uri ->
+                feedbackQues.questions.forEachIndexed { idx, ques ->
+                    val medias = answersList[idx].mediaUri.map { uri ->
                         Media(
                             name = DocumentFile.fromSingleUri(context, uri)?.name ?: "",
                             url = "",
                             localUri = uri
                         )
                     }
-                    answersList[idx] = answersList[idx].copy(media = medias)
+                    answersList[idx] = answersList[idx].copy(
+                        media = medias,
+                        qid = ques.questionNo,
+                        type = ques.type
+                    )
                 }
                 onSubmit(answersList.toList())
             }

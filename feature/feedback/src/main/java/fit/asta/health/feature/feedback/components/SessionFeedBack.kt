@@ -48,7 +48,7 @@ fun SessionFeedback(
             is UiState.Success -> {
                 Box(modifier = Modifier.padding(it)) {
                     FeedbackQuesScreen(
-                        feedbackQuesState = feedbackQuesState.data,
+                        feedbackQues = feedbackQuesState.data,
                         onSubmit = onSubmit
                     )
                 }
