@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +41,7 @@ fun NewRefDialog() {
             NewRefDialogContent(
                 shareRefLink = {},
                 closeDialog = {},
-                copyRefCode = {},
+                refCode = "DemoCode",
             )
         }
     }
@@ -49,51 +50,39 @@ fun NewRefDialog() {
 
 @Composable
 private fun NewRefDialogContent(
-    shareRefLink: () -> Unit = {},
+    refCode: String = "",
+    shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},
-    copyRefCode: () -> Unit = {},
 ) {
     AppCard {
+        HeaderIconBtn(closeDialog = closeDialog)
         Column(
             Modifier
                 .padding(horizontal = 16.dp)
-                .fillMaxWidth()
+                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            HeaderIconBtn(closeDialog = closeDialog)
             ReferralImg()
             Spacer(modifier = Modifier.height(16.dp))
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                TitleTexts.Level4(text = "Refer Friends & Earn")
-            }
+            TitleTexts.Level4(text = "Refer Friends & Earn")
             Spacer(modifier = Modifier.height(8.dp))
-            Row(
-                Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                BodyTexts.Level3(
-                    text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
-                    textAlign = TextAlign.Center,
-                    color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
-                )
-            }
+            BodyTexts.Level3(
+                text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
+                textAlign = TextAlign.Center,
+                color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
+            )
             Spacer(modifier = Modifier.height(16.dp))
-            ReferralCodeSection(copyRefCode = copyRefCode)
+            ReferralCodeSection(refCode = refCode)
         }
-        /*ShareRefBtn(
+        ShareRefBtn(
             Modifier
                 .fillMaxWidth()
-                .height(AppTheme.spacing.level6), shareRefLink = shareRefLink
-        )*/
+                .height(AppTheme.spacing.level6), shareRefLink = { shareRefLink(refCode) }
+        )
     }
 }
 
 @Composable
-private fun ReferralCodeSection(copyRefCode: () -> Unit = {}) {
+private fun ReferralCodeSection(refCode: String = "") {
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -104,13 +93,13 @@ private fun ReferralCodeSection(copyRefCode: () -> Unit = {}) {
             color = Color.LightGray
         )
     }
-    /*CopyRefCodeCard(
+    CopyRefCodeCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.colors.primary.copy(
                 alpha = 0.2f
             )
-        ), copyRefCode = copyRefCode
-    )*/
+        ), refCode = refCode
+    )
 }
 
 @Composable

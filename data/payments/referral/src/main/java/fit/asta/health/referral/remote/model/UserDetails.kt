@@ -11,5 +11,5 @@ data class UserDetails(
     val pic: String = "",
     val phone: String = "",
     @SerializedName("prime")
-    val prime: Boolean = false
+    val prime: Boolean = false,
 )

@@ -3,6 +3,7 @@ package fit.asta.health.referral.view
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -20,7 +21,8 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.Link
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -30,13 +32,11 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
@@ -48,7 +48,7 @@ import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R
 
-@OptIn(ExperimentalMaterial3Api::class)
+
 @Preview(
     "Light Referral", heightDp = 1100
 )
@@ -61,39 +61,36 @@ import fit.asta.health.resources.drawables.R
 @Composable
 fun NewReferralDesign(
     modifier: Modifier = Modifier,
+    shareRefLink: (String) -> Unit = {},
     refCode: String = "",
-    referredUsers: List<UserDetails>? = null,
-    shareReferralCode: (String) -> Unit = {},
+    referredUserList: List<UserDetails>? = null,
 ) {
-    AppSurface(
-        modifier = modifier
-            .fillMaxSize()
-    ) {
-        Column(
-            modifier = Modifier
-                .fillMaxSize()
-                .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
-        ) {
-            Spacer(modifier = Modifier.height(16.dp))
-            ReferralImg()
-            Spacer(modifier = Modifier.height(16.dp))
-            ShareRefBtn {
-                shareReferralCode(refCode)
-            }
-            LargeTexts.Level2(
-                text = "OR",
-                color = AppTheme.colors.onSurfaceVariant,
-            )
-            CopyRefCodeCard(refCode)
-            Spacer(modifier = Modifier.height(16.dp))
-            InvitationReport()
-            Spacer(modifier = Modifier.height(16.dp))
-            referredUsers?.let {
-                HeadingTexts.Level2(text = "You've invited...")
-                Spacer(modifier = Modifier.height(24.dp))
-                referredUsers.forEach { user ->
-                    InvitedUserList(user)
+    AppTheme {
+        AppSurface(modifier = Modifier.fillMaxSize()) {
+            Column(
+                modifier = Modifier
+                    .fillMaxSize()
+                    .verticalScroll(rememberScrollState()),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                ReferralImg()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                ShareRefBtn(shareRefLink = { shareRefLink(refCode) })
+                LargeTexts.Level2(
+                    text = "OR",
+                    color = AppTheme.colors.onSurfaceVariant,
+                )
+                CopyRefCodeCard(refCode = refCode)
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                InvitationReport()
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                referredUserList?.let {
+                    HeadingTexts.Level2(text = "You've invited...")
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                    referredUserList.forEach { user ->
+                        InvitedUserList(user)
+                    }
                 }
             }
         }
@@ -113,46 +110,55 @@ fun ReferralImg(
 }
 
 @Composable
-fun ShareRefBtn(shareRefLink: () -> Unit) {
+fun ShareRefBtn(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
     ) {
         AppFilledButton(
             textToShow = "Share your link",
-            trailingIcon = Icons.Filled.Link, onClick = shareRefLink
+            trailingIcon = Icons.Filled.Link, onClick = shareRefLink, modifier = modifier
         )
     }
 }
 
 @Composable
-fun CopyRefCodeCard(refCode: String) {
+fun CopyRefCodeCard(
+    refCode: String = "",
+    colors: CardColors = CardDefaults.cardColors(),
+) {
+
     val context = LocalContext.current
+
     Row(
         Modifier
             .fillMaxWidth()
             .padding(vertical = AppTheme.spacing.level2),
         horizontalArrangement = Arrangement.Center
     ) {
-        AppCard {
+        AppCard(colors = colors, onClick = { context.copyTextToClipboard(refCode) }) {
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically
+                verticalAlignment = Alignment.CenterVertically,
+                modifier = Modifier.padding(
+                    PaddingValues(
+                        start = AppTheme.spacing.level3,
+                        top = AppTheme.spacing.level1,
+                        end = AppTheme.spacing.level3,
+                        bottom = AppTheme.spacing.level1
+                    )
+                )
             ) {
                 HeadingTexts.Level1(
-                    text = refCode,
+                    text = "QWE123",
                     modifier = Modifier.padding(AppTheme.spacing.level2),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.primary
                 )
-                AppTextButton(
-                    textToShow = "Copy",
-                    leadingIcon = Icons.Filled.ContentCopy,
-                    onClick = {
-                        context.copyTextToClipboard(
-                            refCode
-                        )
-                    }
-                )
+                Row(verticalAlignment = Alignment.CenterVertically) {
+                    AppIcon(imageVector = Icons.Filled.ContentCopy, tint = AppTheme.colors.primary)
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
+                    CaptionTexts.Level1(text = "Copy", color = AppTheme.colors.primary)
+                }
             }
         }
     }
@@ -163,11 +169,11 @@ fun InvitedUserList(
     userDetails: UserDetails,
     addToCommunity: () -> Unit = {}
 ) {
-    AppCard(modifier = Modifier.padding(horizontal = 16.dp)) {
+    AppCard(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp, horizontal = 16.dp),
+                .padding(vertical = AppTheme.spacing.level2, horizontal = AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
@@ -179,7 +185,7 @@ fun InvitedUserList(
                         .size(AppTheme.boxSize.level6)
                         .clip(CircleShape)
                 )
-                Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
                 Column {
                     HeadingTexts.Level3(text = userDetails.name)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -200,7 +206,7 @@ fun InvitedUserList(
             }
         }
     }
-    Spacer(modifier = Modifier.height(16.dp))
+    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 }
 
 @Composable
@@ -210,12 +216,12 @@ fun AddToCommunityBtn(addToCommunity: () -> Unit = {}) {
 
 @Composable
 fun InvitationReport() {
-    Column(Modifier.padding(horizontal = 16.dp)) {
+    Column(Modifier.padding(horizontal = AppTheme.spacing.level2)) {
         HeadingTexts.Level2(text = "Invite Report")
         Row(
-            modifier = Modifier
+            Modifier
                 .fillMaxWidth()
-                .padding(vertical = 16.dp),
+                .padding(vertical = AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -235,7 +241,7 @@ fun InvRepCard(
     AppCard(modifier = modifier) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(AppTheme.spacing.level2)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
