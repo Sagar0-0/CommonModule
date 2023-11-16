@@ -49,7 +49,7 @@ fun NewRefDialog() {
 
 
 @Composable
-private fun NewReferralDialogContent(
+fun NewReferralDialogContent(
     refCode: String = "",
     shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},

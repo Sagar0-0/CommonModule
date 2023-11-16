@@ -59,38 +59,43 @@ import fit.asta.health.resources.drawables.R
     heightDp = 1100
 )
 @Composable
+fun ReferralScreenPreview() {
+    AppTheme {
+        NewReferralDesign(refCode = "0000")
+    }
+}
+
+@Composable
 fun NewReferralDesign(
     modifier: Modifier = Modifier,
     shareRefLink: (String) -> Unit = {},
     refCode: String = "",
     referredUserList: List<UserDetails>? = null,
 ) {
-    AppTheme {
-        AppSurface(modifier = Modifier.fillMaxSize()) {
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                ReferralImage()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
-                LargeTexts.Level2(
-                    text = "OR",
-                    color = AppTheme.colors.onSurfaceVariant,
-                )
-                CopyReferralCodeCard(refCode = refCode)
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                InvitationReport()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                referredUserList?.let {
-                    HeadingTexts.Level2(text = "You've invited...")
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                    referredUserList.forEach { user ->
-                        InvitedUserList(user)
-                    }
+    AppSurface(modifier = modifier.fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            ReferralImage()
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
+            LargeTexts.Level2(
+                text = "OR",
+                color = AppTheme.colors.onSurfaceVariant,
+            )
+            CopyReferralCodeCard(refCode = refCode)
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            InvitationReport()
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            referredUserList?.let {
+                HeadingTexts.Level2(text = "You've invited...")
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                referredUserList.forEach { user ->
+                    InvitedUserList(user)
                 }
             }
         }

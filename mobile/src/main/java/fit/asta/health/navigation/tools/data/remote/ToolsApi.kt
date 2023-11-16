@@ -1,10 +1,11 @@
-package fit.asta.health.navigation.tools.data.model.api
+package fit.asta.health.navigation.tools.data.remote
 
-import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
+import fit.asta.health.common.utils.Response
+import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 import retrofit2.http.*
 
 //Tools Endpoints
-interface ToolsApiService {
+interface ToolsApi {
 
     @GET("tool/home/get/?")
     suspend fun getHomeData(
@@ -13,5 +14,5 @@ interface ToolsApiService {
         @Query("lon") longitude: String,
         @Query("loc") location: String,
         @Query("start") startDate: String
-    ): ToolsHomeRes
+    ): Response<ToolsHome>
 }

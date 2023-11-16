@@ -23,7 +23,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TstBannerCard
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
 import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
 import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
@@ -39,7 +39,7 @@ import java.util.Locale
 @ExperimentalCoroutinesApi
 @Composable
 fun HomeScreenLayout(
-    toolsHome: ToolsHomeRes.ToolsHome,
+    toolsHome: ToolsHome,
     userId: String,
     onNav: (String) -> Unit,
 ) {

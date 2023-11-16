@@ -1,14 +1,17 @@
 package fit.asta.health.navigation.tools.ui.view
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
-import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.navigation.tools.ui.viewmodel.HomeState
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -16,29 +19,38 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @ExperimentalCoroutinesApi
 @Composable
 fun HomeContent(
-    viewModel: HomeViewModel = hiltViewModel(),
+    homeViewModel: HomeViewModel,
     onNav: (String) -> Unit,
 ) {
-
-    when (val state = viewModel.state.collectAsState().value) {
-        is HomeState.Loading -> {
+    val context = LocalContext.current
+    when (val state = homeViewModel.toolsHomeDataState.collectAsState().value) {
+        is UiState.Loading -> {
             AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
         }
 
-        is HomeState.Success -> {
+        is UiState.Success -> {
             HomeScreenLayout(
-                toolsHome = state.toolsHome, userId = viewModel.userId, onNav = onNav
+                toolsHome = state.data, userId = homeViewModel.userId, onNav = onNav
             )
         }
 
-        is HomeState.Error -> {
-            AppErrorScreen { viewModel.loadHomeData() }
+        is UiState.ErrorRetry -> {
+            AppErrorScreen(text = state.resId.toStringFromResId(context)) { homeViewModel.loadHomeData() }
         }
 
-        is HomeState.NetworkError -> {
+        is UiState.ErrorMessage -> {
+            LaunchedEffect(key1 = Unit, block = {
+                Toast.makeText(context, state.resId.toStringFromResId(context), Toast.LENGTH_SHORT)
+                    .show()
+            })
+        }
+
+        is UiState.NoInternet -> {
             AppInternetErrorDialog {
-                viewModel.loadHomeData()
+                homeViewModel.loadHomeData()
             }
         }
+
+        else -> {}
     }
 }
