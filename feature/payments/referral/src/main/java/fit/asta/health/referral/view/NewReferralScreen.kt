@@ -49,6 +49,13 @@ import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R
 
 
+/**
+ * Composable function for the overall design of the new referral screen.
+ * @param modifier Modifier for the Compose UI elements.
+ * @param shareRefLink Callback to handle sharing the referral link.
+ * @param refCode Referral code associated with the user.
+ * @param referredUserList List of UserDetails representing users referred by the current user.
+ */
 @Preview(
     "Light Referral", heightDp = 1100
 )
@@ -65,26 +72,48 @@ fun NewReferralDesign(
     refCode: String = "",
     referredUserList: List<UserDetails>? = null,
 ) {
+    // Apply the AppTheme to the entire screen
     AppTheme {
+        // Use AppSurface as the root layout
         AppSurface(modifier = Modifier.fillMaxSize()) {
+            // Column layout to organize UI elements vertically
             Column(
                 modifier = Modifier
                     .fillMaxSize()
                     .verticalScroll(rememberScrollState()),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                // Add spacing
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                // Display referral image
                 ReferralImage()
+
+                // Add spacing
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                // Button to share referral link
                 ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
+
+                // Display OR text
                 LargeTexts.Level2(
                     text = "OR",
                     color = AppTheme.colors.onSurfaceVariant,
                 )
+
+                // Display referral code with a copy button
                 CopyReferralCodeCard(refCode = refCode)
+
+                // Add spacing
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                // Display invitation report
                 InvitationReport()
+
+                // Add spacing
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                // Display the list of referred users, if available
                 referredUserList?.let {
                     HeadingTexts.Level2(text = "You've invited...")
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
@@ -97,12 +126,17 @@ fun NewReferralDesign(
     }
 }
 
-
+/**
+ * Composable function to display the referral image.
+ * @param refImg Resource ID of the referral image.
+ * @param aspectRatio Aspect ratio of the image.
+ */
 @Composable
 fun ReferralImage(
     refImg: Int = R.drawable.ref_ed_2,
     aspectRatio: Float = AppTheme.aspectRatio.wideScreen
 ) {
+    // Use AppLocalImage to display the referral image
     AppLocalImage(
         painter = painterResource(id = refImg),
         modifier = Modifier.aspectRatio(aspectRatio),
@@ -110,12 +144,18 @@ fun ReferralImage(
     )
 }
 
-
+/**
+ * Composable function to display the button for sharing the referral link.
+ * @param modifier Modifier for the Compose UI elements.
+ * @param shareRefLink Callback to handle sharing the referral link.
+ */
 @Composable
 fun ShareReferralButton(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
+    // Row layout to organize UI elements horizontally
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
     ) {
+        // Use AppFilledButton to create the share button
         AppFilledButton(
             textToShow = "Share your link",
             trailingIcon = Icons.Filled.Link, onClick = shareRefLink, modifier = modifier
@@ -123,22 +163,29 @@ fun ShareReferralButton(modifier: Modifier = Modifier, shareRefLink: () -> Unit 
     }
 }
 
-
+/**
+ * Composable function to display a card with the referral code and a copy button.
+ * @param refCode Referral code to be displayed.
+ * @param colors Card colors.
+ */
 @Composable
 fun CopyReferralCodeCard(
     refCode: String = "",
     colors: CardColors = CardDefaults.cardColors(),
 ) {
-
+    // Access the current context
     val context = LocalContext.current
 
+    // Row layout to organize UI elements horizontally
     Row(
         Modifier
             .fillMaxWidth()
             .padding(vertical = AppTheme.spacing.level2),
         horizontalArrangement = Arrangement.Center
     ) {
+        // Use AppCard to create a card containing the referral code and copy button
         AppCard(colors = colors, onClick = { context.copyTextToClipboard(refCode) }) {
+            // Row layout to organize UI elements horizontally
             Row(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically,
@@ -151,15 +198,21 @@ fun CopyReferralCodeCard(
                     )
                 )
             ) {
+                // Display the referral code
                 HeadingTexts.Level1(
                     text = refCode,
                     modifier = Modifier.padding(AppTheme.spacing.level2),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.primary
                 )
+
+                // Row layout to organize UI elements horizontally
                 Row(verticalAlignment = Alignment.CenterVertically) {
+                    // Display copy icon
                     AppIcon(imageVector = Icons.Filled.ContentCopy, tint = AppTheme.colors.primary)
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
+
+                    // Display copy text
                     CaptionTexts.Level1(text = "Copy", color = AppTheme.colors.primary)
                 }
             }
@@ -167,13 +220,19 @@ fun CopyReferralCodeCard(
     }
 }
 
-
+/**
+ * Composable function to display details of an invited user.
+ * @param userDetails Details of the invited user.
+ * @param addToCommunity Callback to handle adding the user to the community.
+ */
 @Composable
 fun InvitedUserList(
     userDetails: UserDetails,
     addToCommunity: () -> Unit = {}
 ) {
+    // Use AppCard to create a card for each invited user
     AppCard(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+        // Row layout to organize UI elements horizontally
         Row(
             modifier = Modifier
                 .fillMaxWidth()
@@ -181,6 +240,7 @@ fun InvitedUserList(
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
+            // Display user details including profile picture, name, and contact information
             Row {
                 AppNetworkImage(
                     model = userDetails.pic,
@@ -201,29 +261,47 @@ fun InvitedUserList(
                     )
                 }
             }
+
+            // Column layout to organize UI elements vertically
             Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
+                // Display prime icon if the user is prime
                 if (userDetails.prime) {
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+
+                // Display button to add the user to the community
                 AddToCommunityButton(addToCommunity = addToCommunity)
             }
         }
     }
+
+    // Add spacing
     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 }
 
-
+/**
+ * Composable function to display a button for adding a user to the community.
+ *
+ * @param addToCommunity Callback to handle adding the user to the community.
+ */
 @Composable
 fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
+    // Use AppIconButton to create a button for adding to the community
     AppIconButton(imageVector = Icons.Filled.GroupAdd, onClick = addToCommunity)
 }
 
-
+/**
+ * Composable function to display the invitation report.
+ */
 @Composable
 fun InvitationReport() {
+    // Column layout to organize UI elements vertically
     Column(Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+        // Display the heading for the invitation report
         HeadingTexts.Level2(text = "Invite Report")
+
+        // Row layout to organize UI elements horizontally
         Row(
             Modifier
                 .fillMaxWidth()
@@ -231,6 +309,7 @@ fun InvitationReport() {
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically
         ) {
+            // Display three invitation report cards
             InvitationReportCard(modifier = Modifier.weight(1f))
             InvitationReportCard(modifier = Modifier.weight(1f))
             InvitationReportCard(modifier = Modifier.weight(1f))
@@ -238,14 +317,22 @@ fun InvitationReport() {
     }
 }
 
-
+/**
+ * Composable function to display an invitation report card.
+ *
+ * @param modifier Modifier for the Compose UI elements.
+ * @param cardTitle Title of the report card.
+ * @param cardValue Value of the report card.
+ */
 @Composable
 fun InvitationReportCard(
     modifier: Modifier = Modifier,
     cardTitle: String = "Demo",
     cardValue: String = "$500"
 ) {
+    // Use AppCard to create a card for the invitation report
     AppCard(modifier = modifier) {
+        // Column layout to organize UI elements vertically
         Column(
             modifier = Modifier
                 .padding(AppTheme.spacing.level2)
@@ -253,8 +340,13 @@ fun InvitationReportCard(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
+            // Display the value of the report card
             LargeTexts.Level3(text = cardValue)
+
+            // Add spacing
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+
+            // Display the title of the report card
             CaptionTexts.Level2(text = cardTitle)
         }
     }

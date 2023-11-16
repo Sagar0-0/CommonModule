@@ -17,7 +17,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -34,10 +33,13 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
     showBackground = true,
     heightDp = 1100
 )
+// Composable function for displaying a new referral dialog
 @Composable
 fun NewRefDialog() {
     AppTheme {
+        // TODO: Add a proper onDismissRequest implementation
         AppDialog(onDismissRequest = { /*TODO*/ }) {
+            // Content of the new referral dialog
             NewReferralDialogContent(
                 shareRefLink = {},
                 closeDialog = {},
@@ -47,7 +49,7 @@ fun NewRefDialog() {
     }
 }
 
-
+// Composable function for the content of the new referral dialog
 @Composable
 private fun NewReferralDialogContent(
     refCode: String = "",
@@ -55,24 +57,31 @@ private fun NewReferralDialogContent(
     closeDialog: () -> Unit = {},
 ) {
     AppCard {
+        // Header section with a close button
         HeaderIconButton(closeDialog = closeDialog)
+
+        // Main content of the dialog
         Column(
             Modifier
-                .padding(horizontal = 16.dp)
+                .padding(horizontal = AppTheme.spacing.level2)
                 .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
+            //Referral Image
             ReferralImage()
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             TitleTexts.Level4(text = "Refer Friends & Earn")
-            Spacer(modifier = Modifier.height(8.dp))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             BodyTexts.Level3(
                 text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
                 textAlign = TextAlign.Center,
                 color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
             )
-            Spacer(modifier = Modifier.height(16.dp))
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            // Composable function for displaying the referral code section
             ReferralCodeSection(refCode = refCode)
         }
+
+        // Button for sharing the referral code
         ShareReferralButton(
             Modifier
                 .fillMaxWidth()
@@ -81,8 +90,10 @@ private fun NewReferralDialogContent(
     }
 }
 
+// Composable function for displaying the referral code section
 @Composable
 private fun ReferralCodeSection(refCode: String = "") {
+    // Display the title for the referral code section
     Row(
         Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.Center,
@@ -93,6 +104,8 @@ private fun ReferralCodeSection(refCode: String = "") {
             color = Color.LightGray
         )
     }
+
+    // Display the referral code and provide an option to copy it
     CopyReferralCodeCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.colors.primary.copy(
@@ -102,6 +115,7 @@ private fun ReferralCodeSection(refCode: String = "") {
     )
 }
 
+// Composable function for displaying the close button in the header
 @Composable
 private fun HeaderIconButton(closeDialog: () -> Unit = {}) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
