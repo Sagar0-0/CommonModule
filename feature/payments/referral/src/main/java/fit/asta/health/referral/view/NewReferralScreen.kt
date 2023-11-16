@@ -74,14 +74,14 @@ fun NewReferralDesign(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                ReferralImg()
+                ReferralImage()
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                ShareRefBtn(shareRefLink = { shareRefLink(refCode) })
+                ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
                 LargeTexts.Level2(
                     text = "OR",
                     color = AppTheme.colors.onSurfaceVariant,
                 )
-                CopyRefCodeCard(refCode = refCode)
+                CopyReferralCodeCard(refCode = refCode)
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 InvitationReport()
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -97,8 +97,9 @@ fun NewReferralDesign(
     }
 }
 
+
 @Composable
-fun ReferralImg(
+fun ReferralImage(
     refImg: Int = R.drawable.ref_ed_2,
     aspectRatio: Float = AppTheme.aspectRatio.wideScreen
 ) {
@@ -109,8 +110,9 @@ fun ReferralImg(
     )
 }
 
+
 @Composable
-fun ShareRefBtn(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
+fun ShareReferralButton(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
     Row(
         modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
     ) {
@@ -121,8 +123,9 @@ fun ShareRefBtn(modifier: Modifier = Modifier, shareRefLink: () -> Unit = {}) {
     }
 }
 
+
 @Composable
-fun CopyRefCodeCard(
+fun CopyReferralCodeCard(
     refCode: String = "",
     colors: CardColors = CardDefaults.cardColors(),
 ) {
@@ -149,7 +152,7 @@ fun CopyRefCodeCard(
                 )
             ) {
                 HeadingTexts.Level1(
-                    text = "QWE123",
+                    text = refCode,
                     modifier = Modifier.padding(AppTheme.spacing.level2),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.primary
@@ -163,6 +166,7 @@ fun CopyRefCodeCard(
         }
     }
 }
+
 
 @Composable
 fun InvitedUserList(
@@ -202,17 +206,19 @@ fun InvitedUserList(
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-                AddToCommunityBtn(addToCommunity = addToCommunity)
+                AddToCommunityButton(addToCommunity = addToCommunity)
             }
         }
     }
     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 }
 
+
 @Composable
-fun AddToCommunityBtn(addToCommunity: () -> Unit = {}) {
+fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
     AppIconButton(imageVector = Icons.Filled.GroupAdd, onClick = addToCommunity)
 }
+
 
 @Composable
 fun InvitationReport() {
@@ -225,15 +231,16 @@ fun InvitationReport() {
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            InvRepCard(modifier = Modifier.weight(1f))
-            InvRepCard(modifier = Modifier.weight(1f))
-            InvRepCard(modifier = Modifier.weight(1f))
+            InvitationReportCard(modifier = Modifier.weight(1f))
+            InvitationReportCard(modifier = Modifier.weight(1f))
+            InvitationReportCard(modifier = Modifier.weight(1f))
         }
     }
 }
 
+
 @Composable
-fun InvRepCard(
+fun InvitationReportCard(
     modifier: Modifier = Modifier,
     cardTitle: String = "Demo",
     cardValue: String = "$500"

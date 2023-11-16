@@ -32,4 +32,5 @@ dependencies {
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
     implementation(libs.accompanist.coil)
+    implementation(libs.ui.tooling.preview.android)
 }

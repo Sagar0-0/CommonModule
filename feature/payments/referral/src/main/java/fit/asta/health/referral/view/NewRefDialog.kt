@@ -38,10 +38,10 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 fun NewRefDialog() {
     AppTheme {
         AppDialog(onDismissRequest = { /*TODO*/ }) {
-            NewRefDialogContent(
+            NewReferralDialogContent(
                 shareRefLink = {},
                 closeDialog = {},
-                refCode = "DemoCode",
+                refCode = "0000",
             )
         }
     }
@@ -49,19 +49,19 @@ fun NewRefDialog() {
 
 
 @Composable
-private fun NewRefDialogContent(
+private fun NewReferralDialogContent(
     refCode: String = "",
     shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},
 ) {
     AppCard {
-        HeaderIconBtn(closeDialog = closeDialog)
+        HeaderIconButton(closeDialog = closeDialog)
         Column(
             Modifier
                 .padding(horizontal = 16.dp)
                 .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            ReferralImg()
+            ReferralImage()
             Spacer(modifier = Modifier.height(16.dp))
             TitleTexts.Level4(text = "Refer Friends & Earn")
             Spacer(modifier = Modifier.height(8.dp))
@@ -73,7 +73,7 @@ private fun NewRefDialogContent(
             Spacer(modifier = Modifier.height(16.dp))
             ReferralCodeSection(refCode = refCode)
         }
-        ShareRefBtn(
+        ShareReferralButton(
             Modifier
                 .fillMaxWidth()
                 .height(AppTheme.spacing.level6), shareRefLink = { shareRefLink(refCode) }
@@ -93,7 +93,7 @@ private fun ReferralCodeSection(refCode: String = "") {
             color = Color.LightGray
         )
     }
-    CopyRefCodeCard(
+    CopyReferralCodeCard(
         colors = CardDefaults.cardColors(
             containerColor = AppTheme.colors.primary.copy(
                 alpha = 0.2f
@@ -103,7 +103,7 @@ private fun ReferralCodeSection(refCode: String = "") {
 }
 
 @Composable
-private fun HeaderIconBtn(closeDialog: () -> Unit = {}) {
+private fun HeaderIconButton(closeDialog: () -> Unit = {}) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         AppIconButton(
             imageVector = Icons.Filled.Close,
