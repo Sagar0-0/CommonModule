@@ -33,6 +33,11 @@ fun TstTxtLayout(
         Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
             HeadingTexts.Level1(text = "❞")
         }
-        ArtistCard(testimonialsData)
+        TestimonialArtistCard(
+            imageUrl = testimonialsData.user.url,
+            name = testimonialsData.user.name,
+            organization = testimonialsData.user.org,
+            role = testimonialsData.user.role
+        )
     }
 }

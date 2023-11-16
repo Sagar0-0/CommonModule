@@ -29,7 +29,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.feature.testimonials.components.ArtistCard
+import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
 import fit.asta.health.player.media.rememberMediaState
@@ -50,8 +50,13 @@ fun TstViewVideoLayout(
     ) {
         PlayVideoLayout(tstVideoMedia.media)
         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-        ArtistCard(tstVideoMedia)
 
+        TestimonialArtistCard(
+            imageUrl = tstVideoMedia.user.url,
+            name = tstVideoMedia.user.name,
+            organization = tstVideoMedia.user.org,
+            role = tstVideoMedia.user.role
+        )
     }
 }
 
