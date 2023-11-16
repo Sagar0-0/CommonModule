@@ -12,11 +12,11 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
+import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 
 @Composable
 fun ToolsHmScreenTopBanner(
-    bannerDataPages: ToolsHomeRes.ToolsHome.Banner,
+    bannerDataPages: ToolsHome.Banner,
 ) {
     Box(
         modifier = Modifier

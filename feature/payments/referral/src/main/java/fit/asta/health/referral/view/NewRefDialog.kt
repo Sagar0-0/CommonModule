@@ -51,7 +51,7 @@ fun NewRefDialog() {
 
 // Composable function for the content of the new referral dialog
 @Composable
-private fun NewReferralDialogContent(
+fun NewReferralDialogContent(
     refCode: String = "",
     shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},

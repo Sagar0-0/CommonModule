@@ -49,13 +49,6 @@ import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R
 
 
-/**
- * Composable function for the overall design of the new referral screen.
- * @param modifier Modifier for the Compose UI elements.
- * @param shareRefLink Callback to handle sharing the referral link.
- * @param refCode Referral code associated with the user.
- * @param referredUserList List of UserDetails representing users referred by the current user.
- */
 @Preview(
     "Light Referral", heightDp = 1100
 )
@@ -65,6 +58,20 @@ import fit.asta.health.resources.drawables.R
     showBackground = true,
     heightDp = 1100
 )
+@Composable
+fun ReferralScreenPreview() {
+    AppTheme {
+        NewReferralDesign(refCode = "0000")
+    }
+}
+
+/**
+ * Composable function for the overall design of the new referral screen.
+ * @param modifier Modifier for the Compose UI elements.
+ * @param shareRefLink Callback to handle sharing the referral link.
+ * @param refCode Referral code associated with the user.
+ * @param referredUserList List of UserDetails representing users referred by the current user.
+ */
 @Composable
 fun NewReferralDesign(
     modifier: Modifier = Modifier,

@@ -1,7 +1,7 @@
-package fit.asta.health.navigation.tools.data.model
+package fit.asta.health.navigation.tools.data.repo
 
-import fit.asta.health.navigation.tools.data.model.domain.ToolsHomeRes
-import kotlinx.coroutines.flow.Flow
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 
 
 interface ToolsHomeRepo {
@@ -13,5 +13,5 @@ interface ToolsHomeRepo {
         startDate: String,
         endDate: String,
         time: String
-    ): Flow<ToolsHomeRes.ToolsHome>
+    ): ResponseState<ToolsHome>
 }

@@ -48,6 +48,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -79,6 +80,7 @@ import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeContent
+import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -307,7 +309,9 @@ private fun MainNavHost(
         modifier = modifier.padding(innerPadding)
     ) {
         composable(BottomBarDestination.Tools.route) {
-            HomeContent(onNav = onNav)
+            val homeViewModel: HomeViewModel = hiltViewModel()
+            LaunchedEffect(key1 = Unit, block = { homeViewModel.loadHomeData() })
+            HomeContent(homeViewModel = homeViewModel, onNav = onNav)
         }
 
         composable(BottomBarDestination.Today.route) {
