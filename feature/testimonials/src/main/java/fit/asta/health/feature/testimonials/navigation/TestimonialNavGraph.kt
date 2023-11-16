@@ -11,10 +11,10 @@ import androidx.navigation.compose.navigation
 import androidx.paging.compose.collectAsLazyPagingItems
 import fit.asta.health.feature.testimonials.create.view.CreateTestimonialLayout
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
-import fit.asta.health.feature.testimonials.list.view.TestimonialsListLayout
 import fit.asta.health.feature.testimonials.list.vm.TestimonialListViewModel
 import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes.Create
 import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes.Home
+import fit.asta.health.feature.testimonials.screens.TestimonialHomeScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 const val TESTIMONIALS_GRAPH_ROUTE = "graph_testimonials_tool"
@@ -40,7 +40,7 @@ fun NavGraphBuilder.testimonialNavRoute(
             val testimonialListViewModel: TestimonialListViewModel = hiltViewModel()
             val testimonials = testimonialListViewModel.testimonialPager.collectAsLazyPagingItems()
 
-            TestimonialsListLayout(
+            TestimonialHomeScreenControl(
                 testimonials = testimonials,
                 navigateToCreate = {
                     navController.navigate(route = Create.route)
