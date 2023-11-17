@@ -131,6 +131,7 @@ dependencies {
     implementation(project(":data:scheduler"))
     implementation(project(":data:testimonials"))
     implementation(project(":data:meditation"))
+    implementation(project(":data:home"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))

@@ -9,8 +9,8 @@ import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.getNextDate
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
-import fit.asta.health.navigation.tools.data.repo.ToolsHomeRepo
+import fit.asta.health.home.remote.model.ToolsHome
+import fit.asta.health.home.repo.ToolsHomeRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow

@@ -1,7 +1,7 @@
-package fit.asta.health.navigation.tools.data.repo
+package fit.asta.health.home.repo
 
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
+import fit.asta.health.home.remote.model.ToolsHome
 
 
 interface ToolsHomeRepo {

@@ -64,7 +64,6 @@ suspend fun <T> getApiResponseState(
         ResponseState.NoInternet
     } catch (e: Exception) {
         onFailure(e)
-        Log.e(TAG, "getApiResponseState: ${e.message}")
         errorHandler.fetchHTTPExceptionMessage(e.message ?: "")
     }
 }

@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.tools.data.di
+package fit.asta.health.home.di
 
 import android.content.Context
 import com.google.android.play.core.review.ReviewManager
@@ -8,9 +8,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.navigation.tools.data.remote.ToolsApi
-import fit.asta.health.navigation.tools.data.repo.ToolsHomeRepo
-import fit.asta.health.navigation.tools.data.repo.ToolsHomeRepoImpl
+import fit.asta.health.home.remote.ToolsApi
+import fit.asta.health.home.repo.ToolsHomeRepo
+import fit.asta.health.home.repo.ToolsHomeRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton

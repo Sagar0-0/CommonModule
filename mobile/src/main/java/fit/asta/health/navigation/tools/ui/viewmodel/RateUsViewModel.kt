@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.tools.ui.viewmodel
 
-import android.content.SharedPreferences
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
@@ -17,8 +16,7 @@ private const val SESSION = "session"
 @HiltViewModel
 class RateUsViewModel
 @Inject constructor(
-    val reviewManager: ReviewManager,
-    private val sharedPreferences: SharedPreferences
+    val reviewManager: ReviewManager
 ) : ViewModel() {
 
     var state by mutableStateOf(RateUsState())

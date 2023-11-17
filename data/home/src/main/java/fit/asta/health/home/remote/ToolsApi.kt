@@ -1,7 +1,7 @@
-package fit.asta.health.navigation.tools.data.remote
+package fit.asta.health.home.remote
 
 import fit.asta.health.common.utils.Response
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
+import fit.asta.health.home.remote.model.ToolsHome
 import retrofit2.http.*
 
 //Tools Endpoints

@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.tools.data.remote.model
+package fit.asta.health.home.remote.model
 
 import com.google.gson.annotations.SerializedName
 import fit.asta.health.data.testimonials.model.Testimonial

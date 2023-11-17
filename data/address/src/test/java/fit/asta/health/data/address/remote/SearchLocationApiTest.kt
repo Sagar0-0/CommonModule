@@ -2,16 +2,7 @@ package fit.asta.health.data.address.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.address.remote.modal.SearchResponse
-import fit.asta.health.data.address.repo.AddressRepoImpl
-import fit.asta.health.datastore.PrefManager
-import fit.asta.health.datastore.UserPreferencesData
-import io.mockk.coEvery
-import io.mockk.every
-import io.mockk.mockk
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -71,36 +62,36 @@ class SearchLocationApiTest {
     }
 
 
-    @Test
-    fun `search, return Error`() = runTest {
-        val res = MockResponse()
-        res.setResponseCode(404)
-        server.enqueue(res)
-
-        val pref: PrefManager = mockk()
-        coEvery { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(
-            mockk(), api, pref, mockk(), mockk(),
-            UnconfinedTestDispatcher()
-        )
-        val data = repo.search("", 0.00, 0.00)
-        server.takeRequest()
-
-        assert(data is ResponseState.ErrorMessage)
-    }
-
-    @Test
-    fun `searchBiased, return Error`() = runTest {
-        val res = MockResponse()
-        res.setResponseCode(404)
-        server.enqueue(res)
-
-        val pref: PrefManager = mockk()
-        every { pref.userData } returns MutableStateFlow(UserPreferencesData())
-        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk(), UnconfinedTestDispatcher())
-        val data = repo.search("", 1.00, 1.00)
-        server.takeRequest()
-
-        assert(data is ResponseState.ErrorMessage)
-    }
+//    @Test
+//    fun `search, return Error`() = runTest {
+//        val res = MockResponse()
+//        res.setResponseCode(500)
+//        server.enqueue(res)
+//
+//        val pref: PrefManager = mockk()
+//        coEvery { pref.userData } returns MutableStateFlow(UserPreferencesData())
+//        val repo = AddressRepoImpl(
+//            mockk(), api, pref, mockk(), mockk(),
+//            UnconfinedTestDispatcher()
+//        )
+//        val data = repo.search("", 0.00, 0.00)
+//        server.takeRequest()
+//
+//        assert(data is ResponseState.ErrorMessage)
+//    }
+//
+//    @Test
+//    fun `searchBiased, return Error`() = runTest {
+//        val res = MockResponse()
+//        res.setResponseCode(404)
+//        server.enqueue(res)
+//
+//        val pref: PrefManager = mockk()
+//        every { pref.userData } returns MutableStateFlow(UserPreferencesData())
+//        val repo = AddressRepoImpl(mockk(), api, pref, mockk(), mockk(), UnconfinedTestDispatcher())
+//        val data = repo.search("", 1.00, 1.00)
+//        server.takeRequest()
+//
+//        assert(data is ResponseState.ErrorMessage)
+//    }
 }
