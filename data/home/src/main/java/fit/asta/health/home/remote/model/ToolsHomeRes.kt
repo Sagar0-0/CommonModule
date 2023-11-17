@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 import fit.asta.health.data.testimonials.model.Testimonial
 
 data class ToolsHome(
-    @SerializedName("bnr") val banners: List<Banner>?,
+    @SerializedName("bnr") val banners: List<Banner>? = null,
     @SerializedName("tml")
-    val testimonials: List<Testimonial>?,
-    @SerializedName("tool") val tools: List<HealthTool>?,
-    @SerializedName("ust") val userTools: UserSelectedTool,
+    val testimonials: List<Testimonial>? = null,
+    @SerializedName("tool") val tools: List<HealthTool>? = null,
+    @SerializedName("ust") val userTools: UserSelectedTool = UserSelectedTool(),
 ) {
 
     data class Banner(
@@ -30,8 +30,8 @@ data class ToolsHome(
     )
 
     data class UserSelectedTool(
-        @SerializedName("id") val id: String,
-        @SerializedName("tid") val tid: List<String>,
-        @SerializedName("uid") val uid: String,
+        @SerializedName("id") val id: String = "",
+        @SerializedName("tid") val tid: List<String> = emptyList(),
+        @SerializedName("uid") val uid: String = "",
     )
 }
