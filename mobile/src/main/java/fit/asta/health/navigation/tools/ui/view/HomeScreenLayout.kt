@@ -22,8 +22,8 @@ import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TstBannerCard
+import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
 import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
 import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
@@ -53,16 +53,16 @@ fun HomeScreenLayout(
     ) {
 
         // Top Sliding Images
-        toolsHome.banners?.let {
+        toolsHome.banners?.let { banners ->
             item(span = { GridItemSpan(columns) }) {
                 Column {
                     AppHorizontalPager(
-                        pagerState = rememberPagerState { toolsHome.banners.size },
+                        pagerState = rememberPagerState { banners.size },
                         modifier = Modifier
                             .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
                             .fillMaxWidth()
                     ) { page ->
-                        ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+                        ToolsHmScreenTopBanner(bannerDataPages = banners[page])
                     }
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
@@ -78,7 +78,7 @@ fun HomeScreenLayout(
             }
 
             // All The Tools Composable cards
-            items(toolsHome.tools) { tool ->
+            items(it) { tool ->
                 Column {
                     ToolsCardLayout(
                         cardTitle = tool.title,
@@ -135,7 +135,7 @@ fun HomeScreenLayout(
             }
         }
 
-        toolsHome.testimonials?.let {
+        toolsHome.testimonials?.let { testimonials ->
             // Testimonials Text and View All Button
             item(span = { GridItemSpan(columns) }) {
                 ViewAllLayout(
@@ -162,9 +162,9 @@ fun HomeScreenLayout(
                 Column {
                     AppHorizontalPager(
                         modifier = Modifier.fillMaxWidth(),
-                        pagerState = rememberPagerState { toolsHome.testimonials.size }
+                        pagerState = rememberPagerState { testimonials.size }
                     ) {
-                        TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+                        TstBannerCard(testimonialsData = testimonials[it])
                     }
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
