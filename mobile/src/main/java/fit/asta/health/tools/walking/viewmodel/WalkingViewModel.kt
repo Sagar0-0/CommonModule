@@ -10,7 +10,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.network.utils.NetworkResult
-import fit.asta.health.tools.walking.db.StepsData
+import fit.asta.health.tools.walking.core.data.source.StepsData
 import fit.asta.health.tools.walking.model.LocalRepo
 import fit.asta.health.tools.walking.model.WalkingToolRepo
 import fit.asta.health.tools.walking.model.domain.WalkingTool

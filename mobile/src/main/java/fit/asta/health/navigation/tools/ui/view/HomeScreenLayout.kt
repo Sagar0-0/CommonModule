@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -31,7 +30,7 @@ import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.tools.sleep.SleepToolActivity
-import fit.asta.health.tools.walking.view.WalkingActivity
+import fit.asta.health.tools.walking.nav.STEPS_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -91,7 +90,7 @@ fun HomeScreenLayout(
                             }
 
                             "steps" -> {
-                                WalkingActivity.launch(context = context)
+                                onNav(STEPS_GRAPH_ROUTE)
                             }
 
                             "workout" -> {

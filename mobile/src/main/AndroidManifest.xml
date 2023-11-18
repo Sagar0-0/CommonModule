@@ -6,6 +6,9 @@
     <uses-sdk />
 
     <dist:module dist:instant="true" />
+    <uses-feature
+        android:name="android.hardware.sensor.stepcounter"
+        android:required="true" />
 
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
@@ -169,6 +172,7 @@
         <service
             android:name=".tools.walking.work.CountStepsService"
             android:foregroundServiceType="location" />
+        <service android:name=".tools.walking.service.StepCounterService" />
     </application>
 
 </manifest>

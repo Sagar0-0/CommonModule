@@ -151,6 +151,7 @@ dependencies {
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
     implementation(project(":feature:meditation"))
+    implementation(libs.play.services.fitness)
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)

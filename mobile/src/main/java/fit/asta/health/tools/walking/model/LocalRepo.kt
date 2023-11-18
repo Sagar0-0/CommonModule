@@ -1,6 +1,6 @@
 package fit.asta.health.tools.walking.model
 
-import fit.asta.health.tools.walking.db.StepsData
+import fit.asta.health.tools.walking.core.data.source.StepsData
 
 interface LocalRepo {
     suspend fun getStepsData(date: Int): StepsData?

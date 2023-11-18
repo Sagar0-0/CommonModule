@@ -47,6 +47,8 @@ import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.tools.breathing.nav.navigateToBreathing
 import fit.asta.health.tools.exercise.nav.navigateToExercise
 import fit.asta.health.tools.sunlight.nav.navigateToSunlight
+import fit.asta.health.tools.walking.nav.STEPS_GRAPH_ROUTE
+import fit.asta.health.tools.walking.nav.navigateToStepsCounter
 import fit.asta.health.tools.water.nav.navigateToWater
 
 const val HOME_GRAPH_ROUTE = "graph_home"
@@ -188,6 +190,10 @@ fun NavGraphBuilder.homeScreen(
 
                         EXERCISE_GRAPH_ROUTE -> {
                             navController.navigateToExercise()
+                        }
+
+                        STEPS_GRAPH_ROUTE -> {
+                            navController.navigateToStepsCounter()
                         }
 
                         else -> {

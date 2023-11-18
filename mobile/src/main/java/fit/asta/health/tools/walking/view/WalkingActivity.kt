@@ -16,13 +16,10 @@ import androidx.compose.foundation.layout.*
 import androidx.compose.runtime.Composable
 import androidx.core.app.ActivityCompat
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.lifecycleScope
-import androidx.navigation.compose.rememberNavController
 import androidx.work.*
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.tools.walking.nav.StepsCounterNavigation
 import fit.asta.health.tools.walking.view.home.HomeUIState
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import fit.asta.health.tools.walking.work.CountStepsService
@@ -92,12 +89,12 @@ class WalkingActivity : ComponentActivity() {
 
         super.onCreate(savedInstanceState)
         setContent {
-            MyApp {
-                StepsCounterNavigation(
-                    navController = rememberNavController(),
-                    hiltViewModel<WalkingViewModel>()
-                )
-            }
+//            MyApp {
+//                StepsCounterNavigation(
+//                    navController = rememberNavController(),
+//                    hiltViewModel<WalkingViewModel>()
+//                )
+//            }
         }
 //        setupWorker(this)
     }
