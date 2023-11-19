@@ -2,8 +2,11 @@ package fit.asta.health.feature.testimonials.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
@@ -16,8 +19,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.input.nestedscroll.nestedScroll
+import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
+import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
@@ -25,12 +30,16 @@ import fit.asta.health.designsystem.molecular.AppErrorMsgCard
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
-import fit.asta.health.feature.testimonials.list.view.TstViewImgLayout
-import fit.asta.health.feature.testimonials.list.view.TstViewTxtLayout
-import fit.asta.health.feature.testimonials.list.view.TstViewVideoLayout
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
+import fit.asta.health.feature.testimonials.components.newx.UserTestimonialUI
+import fit.asta.health.feature.testimonials.list.view.TestimonialCardImage
+import fit.asta.health.feature.testimonials.list.view.TestimonialsVideoView
 
 /**
  * This function controls the Testimonial Feature UI and it decides which UI it needs to show for
@@ -91,11 +100,71 @@ fun TestimonialHomeScreenControl(
                     // Checking if we have a testimonial in the Current Testimonial
                     testimonials[index]?.let { item ->
 
-                        AppElevatedCard(modifier = Modifier.fillMaxWidth()) {
-                            when (TestimonialType.from(item.type)) {
-                                is TestimonialType.TEXT -> TstViewTxtLayout(item)
-                                is TestimonialType.IMAGE -> TstViewImgLayout(item)
-                                is TestimonialType.VIDEO -> TstViewVideoLayout(item)
+                        AppElevatedCard {
+                            Column(
+                                Modifier
+                                    .fillMaxWidth()
+                                    .padding(AppTheme.spacing.level2)
+                            ) {
+                                when (TestimonialType.from(item.type)) {
+
+                                    // Testimonial Type is of Text Type
+                                    is TestimonialType.TEXT -> {
+
+                                        // Title of the Testimonial
+                                        TitleTexts.Level2(text = item.title)
+
+                                        Spacer(modifier = Modifier.height(16.dp))
+
+                                        UserTestimonialUI(userTestimonial = item.testimonial)
+
+                                        TestimonialArtistCard(
+                                            imageUrl = item.user.url,
+                                            name = item.user.name,
+                                            organization = item.user.org,
+                                            role = item.user.role
+                                        )
+                                    }
+
+                                    // Testimonial Api which is of type image.
+                                    is TestimonialType.IMAGE -> {
+
+                                        // App Horizontal Pager to show all the images of the User
+                                        TestimonialCardImage(item.media)
+
+                                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                                        // This function makes the user testimonial in the "" Quotes
+                                        UserTestimonialUI(userTestimonial = item.testimonial)
+                                    }
+
+                                    // Testimonial Api which is of type video
+                                    is TestimonialType.VIDEO -> {
+
+                                        if (item.media.isNotEmpty()) {
+                                            AppSurface(modifier = Modifier.fillMaxWidth()) {
+                                                TestimonialsVideoView(
+                                                    videoUri = getVideoUrlTools(
+                                                        url = item.media.first().url
+                                                    )
+                                                )
+                                            }
+                                        } else
+                                            BodyTexts.Level1(
+                                                text = "MEDIA FILE NOT FOUND",
+                                                color = AppTheme.colors.error
+                                            )
+
+                                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                                        TestimonialArtistCard(
+                                            imageUrl = item.user.url,
+                                            name = item.user.name,
+                                            organization = item.user.org,
+                                            role = item.user.role
+                                        )
+                                    }
+                                }
                             }
                         }
                     }

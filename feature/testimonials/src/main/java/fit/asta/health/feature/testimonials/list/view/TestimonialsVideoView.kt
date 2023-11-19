@@ -2,14 +2,9 @@ package fit.asta.health.feature.testimonials.list.view
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -20,16 +15,10 @@ import androidx.compose.ui.graphics.Color
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import androidx.media3.common.util.UnstableApi
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.getVideoUrlTools
-import fit.asta.health.data.testimonials.model.Media
-import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
-import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
 import fit.asta.health.player.media.rememberMediaState
@@ -39,53 +28,9 @@ import fit.asta.health.player.presentation.component.SimpleController
 import fit.asta.health.player.presentation.component.VideoState
 import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 
-@Composable
-fun TstViewVideoLayout(
-    tstVideoMedia: Testimonial,
-) {
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level2)
-    ) {
-        PlayVideoLayout(tstVideoMedia.media)
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-        TestimonialArtistCard(
-            imageUrl = tstVideoMedia.user.url,
-            name = tstVideoMedia.user.name,
-            organization = tstVideoMedia.user.org,
-            role = tstVideoMedia.user.role
-        )
-    }
-}
 
 @Composable
-@androidx.annotation.OptIn(UnstableApi::class)
-fun PlayVideoLayout(
-    tstVideoMedia: List<Media>,
-) {
-
-    Row(
-        Modifier.fillMaxWidth()
-    ) {
-        if (tstVideoMedia.isNotEmpty()) {
-            tstVideoMedia.first().let {
-                AppSurface(modifier = Modifier.fillMaxWidth()) {
-                    VideoView(
-                        videoUri = getVideoUrlTools(url = it.url)
-                    )
-                }
-            }
-        } else {
-            BodyTexts.Level1(text = "MEDIA FILE NOT FOUND", color = AppTheme.colors.error)
-        }
-    }
-}
-
-
-@Composable
-fun VideoView(
+fun TestimonialsVideoView(
     videoUri: String,
     uiState: VideoState = VideoState(
         controllerType = ControllerType.Simple,
@@ -111,7 +56,8 @@ fun VideoView(
     }
 
     Box(
-        modifier = Modifier.background(Color.Black), contentAlignment = Alignment.Center
+        modifier = Modifier.background(Color.Black),
+        contentAlignment = Alignment.Center
     ) {
         Media(
             state,
