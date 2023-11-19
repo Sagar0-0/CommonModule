@@ -37,9 +37,9 @@ import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
-import fit.asta.health.feature.testimonials.components.newx.UserTestimonialUI
-import fit.asta.health.feature.testimonials.list.view.TestimonialCardImage
-import fit.asta.health.feature.testimonials.list.view.TestimonialsVideoView
+import fit.asta.health.feature.testimonials.components.TestimonialCardImage
+import fit.asta.health.feature.testimonials.components.TestimonialsVideoView
+import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 
 /**
  * This function controls the Testimonial Feature UI and it decides which UI it needs to show for
@@ -90,86 +90,8 @@ fun TestimonialHomeScreenControl(
                 .padding(paddingValues)
         ) {
 
-            // Testimonial list is being shown by this composable
-            LazyColumn(
-                modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-            ) {
-                items(testimonials.itemCount) { index ->
-
-                    // Checking if we have a testimonial in the Current Testimonial
-                    testimonials[index]?.let { item ->
-
-                        AppElevatedCard {
-                            Column(
-                                Modifier
-                                    .fillMaxWidth()
-                                    .padding(AppTheme.spacing.level2)
-                            ) {
-                                when (TestimonialType.from(item.type)) {
-
-                                    // Testimonial Type is of Text Type
-                                    is TestimonialType.TEXT -> {
-
-                                        // Title of the Testimonial
-                                        TitleTexts.Level2(text = item.title)
-
-                                        Spacer(modifier = Modifier.height(16.dp))
-
-                                        UserTestimonialUI(userTestimonial = item.testimonial)
-
-                                        TestimonialArtistCard(
-                                            imageUrl = item.user.url,
-                                            name = item.user.name,
-                                            organization = item.user.org,
-                                            role = item.user.role
-                                        )
-                                    }
-
-                                    // Testimonial Api which is of type image.
-                                    is TestimonialType.IMAGE -> {
-
-                                        // App Horizontal Pager to show all the images of the User
-                                        TestimonialCardImage(item.media)
-
-                                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-                                        // This function makes the user testimonial in the "" Quotes
-                                        UserTestimonialUI(userTestimonial = item.testimonial)
-                                    }
-
-                                    // Testimonial Api which is of type video
-                                    is TestimonialType.VIDEO -> {
-
-                                        if (item.media.isNotEmpty()) {
-                                            AppSurface(modifier = Modifier.fillMaxWidth()) {
-                                                TestimonialsVideoView(
-                                                    videoUri = getVideoUrlTools(
-                                                        url = item.media.first().url
-                                                    )
-                                                )
-                                            }
-                                        } else
-                                            BodyTexts.Level1(
-                                                text = "MEDIA FILE NOT FOUND",
-                                                color = AppTheme.colors.error
-                                            )
-
-                                        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-                                        TestimonialArtistCard(
-                                            imageUrl = item.user.url,
-                                            name = item.user.name,
-                                            organization = item.user.org,
-                                            role = item.user.role
-                                        )
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
+            // This function shows the Testimonial's List
+            TestimonialListUI(testimonials = testimonials)
 
             when {
 
@@ -198,6 +120,92 @@ fun TestimonialHomeScreenControl(
                         message = "Some error occurred",
                         imageVector = Icons.Filled.Help
                     )
+                }
+            }
+        }
+    }
+}
+
+
+@Composable
+private fun TestimonialListUI(testimonials: LazyPagingItems<Testimonial>) {
+
+    // Testimonial list is being shown by this composable
+    LazyColumn(
+        modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+    ) {
+        items(testimonials.itemCount) { index ->
+
+            // Checking if we have a testimonial in the Current Testimonial
+            testimonials[index]?.let { item ->
+
+                AppElevatedCard {
+                    Column(
+                        Modifier
+                            .fillMaxWidth()
+                            .padding(AppTheme.spacing.level2)
+                    ) {
+                        when (TestimonialType.from(item.type)) {
+
+                            // Testimonial Type is of Text Type
+                            is TestimonialType.TEXT -> {
+
+                                // Title of the Testimonial
+                                TitleTexts.Level2(text = item.title)
+
+                                Spacer(modifier = Modifier.height(16.dp))
+
+                                UserTestimonialUI(userTestimonial = item.testimonial)
+
+                                TestimonialArtistCard(
+                                    imageUrl = item.user.url,
+                                    name = item.user.name,
+                                    organization = item.user.org,
+                                    role = item.user.role
+                                )
+                            }
+
+                            // Testimonial Api which is of type image.
+                            is TestimonialType.IMAGE -> {
+
+                                // App Horizontal Pager to show all the images of the User
+                                TestimonialCardImage(item.media)
+
+                                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                                // This function makes the user testimonial in the "" Quotes
+                                UserTestimonialUI(userTestimonial = item.testimonial)
+                            }
+
+                            // Testimonial Api which is of type video
+                            is TestimonialType.VIDEO -> {
+
+                                if (item.media.isNotEmpty()) {
+                                    AppSurface(modifier = Modifier.fillMaxWidth()) {
+                                        TestimonialsVideoView(
+                                            videoUri = getVideoUrlTools(
+                                                url = item.media.first().url
+                                            )
+                                        )
+                                    }
+                                } else
+                                    BodyTexts.Level1(
+                                        text = "MEDIA FILE NOT FOUND",
+                                        color = AppTheme.colors.error
+                                    )
+
+                                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                                TestimonialArtistCard(
+                                    imageUrl = item.user.url,
+                                    name = item.user.name,
+                                    organization = item.user.org,
+                                    role = item.user.role
+                                )
+                            }
+                        }
+                    }
                 }
             }
         }

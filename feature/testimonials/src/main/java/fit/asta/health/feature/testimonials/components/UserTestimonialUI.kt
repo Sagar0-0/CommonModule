@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.components.newx
+package fit.asta.health.feature.testimonials.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Row
@@ -9,6 +9,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -33,7 +34,8 @@ fun UserTestimonialUI(
         // First Starting Quote
         TitleTexts.Level2(
             modifier = Modifier.align(Alignment.Top),
-            text = "❝"
+            text = "❝",
+            color = AppTheme.colors.primary
         )
 
         // User's Testimonials
@@ -50,7 +52,7 @@ fun UserTestimonialUI(
         TitleTexts.Level2(
             text = "❞",
             modifier = Modifier.align(Alignment.Bottom),
-            textAlign = TextAlign.Right
+            color = AppTheme.colors.primary
         )
     }
 }

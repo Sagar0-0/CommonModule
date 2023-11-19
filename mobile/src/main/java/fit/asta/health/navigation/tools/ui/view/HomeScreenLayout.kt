@@ -27,7 +27,7 @@ import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
-import fit.asta.health.feature.testimonials.components.newx.UserTestimonialUI
+import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard

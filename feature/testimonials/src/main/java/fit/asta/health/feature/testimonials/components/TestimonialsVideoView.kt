@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.list.view
+package fit.asta.health.feature.testimonials.components
 
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
