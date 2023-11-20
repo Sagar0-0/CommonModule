@@ -2,11 +2,15 @@ package fit.asta.health.navigation.tools.ui.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
@@ -17,11 +21,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
-import fit.asta.health.feature.testimonials.components.TstBannerCard
+import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
@@ -159,14 +165,32 @@ fun HomeScreenLayout(
 
             // Testimonials Banners in a Horizontal Pager
             item(span = { GridItemSpan(columns) }) {
-                Column {
+
+                val pagerState = rememberPagerState { testimonials.size }
+
+                Box(modifier = Modifier.padding(bottom = AppTheme.spacing.level1)) {
                     AppHorizontalPager(
-                        modifier = Modifier.fillMaxWidth(),
-                        pagerState = rememberPagerState { testimonials.size }
-                    ) {
-                        TstBannerCard(testimonialsData = testimonials[it])
+                        modifier = Modifier
+                            .padding(bottom = AppTheme.spacing.level2)
+                            .fillMaxWidth(),
+                        pagerState = pagerState,
+                        contentPadding = PaddingValues(AppTheme.spacing.level2)
+                    ) { page ->
+                        AppCard(modifier = Modifier.fillMaxSize()) {
+                            UserTestimonialUI(
+                                modifier = Modifier.padding(AppTheme.spacing.level2),
+                                userTestimonial = testimonials[page].testimonial
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                    // This function draws the Dot Indicator for the Pager
+                    AppExpandingDotIndicator(
+                        modifier = Modifier
+                            .padding(bottom = AppTheme.spacing.level2)
+                            .align(Alignment.BottomCenter),
+                        pagerState = pagerState
+                    )
                 }
             }
         }
