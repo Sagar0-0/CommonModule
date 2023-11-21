@@ -15,7 +15,8 @@ data class AppBoxSize(
     val level6: Dp = 56.dp,
     val level7: Dp = 100.dp,
     val level8: Dp = 120.dp,
-    val level9: Dp = 210.dp
+    val level9: Dp = 180.dp,
+    val level10: Dp = 210.dp
 )
 
 internal val LocalAppBoxSize = compositionLocalOf { AppBoxSize() }

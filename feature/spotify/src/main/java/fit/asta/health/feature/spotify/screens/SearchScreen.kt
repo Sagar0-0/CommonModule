@@ -160,7 +160,7 @@ fun SearchScreen(
                         item {
                             LazyRow(
                                 modifier = Modifier
-                                    .height(AppTheme.boxSize.level9)
+                                    .height(AppTheme.boxSize.level10)
                                     .width(LocalConfiguration.current.screenWidthDp.dp)
                             ) {
                                 items(trackList.size) {
@@ -196,7 +196,7 @@ fun SearchScreen(
                         item {
                             LazyRow(
                                 modifier = Modifier
-                                    .height(AppTheme.boxSize.level9)
+                                    .height(AppTheme.boxSize.level10)
                                     .width(LocalConfiguration.current.screenWidthDp.dp)
                             ) {
 
@@ -231,7 +231,7 @@ fun SearchScreen(
                         item {
                             LazyRow(
                                 modifier = Modifier
-                                    .height(AppTheme.boxSize.level9)
+                                    .height(AppTheme.boxSize.level10)
                                     .width(LocalConfiguration.current.screenWidthDp.dp)
                             ) {
                                 items(albumList.size) {
