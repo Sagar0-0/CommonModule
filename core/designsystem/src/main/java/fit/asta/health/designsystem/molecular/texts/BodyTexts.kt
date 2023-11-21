@@ -13,6 +13,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.TextUnit
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.AppTypography
 
@@ -48,7 +49,8 @@ object BodyTexts {
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
-        overflow: TextOverflow = TextOverflow.Ellipsis
+        overflow: TextOverflow = TextOverflow.Ellipsis,
+        lineHeight: TextUnit = TextUnit.Unspecified,
     ) {
         Text(
             text = text,
@@ -57,7 +59,8 @@ object BodyTexts {
             color = color,
             textAlign = textAlign,
             maxLines = maxLines,
-            overflow = overflow
+            overflow = overflow,
+            lineHeight = lineHeight,
         )
     }
 
