@@ -15,6 +15,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import fit.asta.health.BuildConfig
+import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
@@ -22,14 +24,14 @@ import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TstBannerCard
+import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
 import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
-import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
 import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
+import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.tools.sleep.SleepToolActivity
 import fit.asta.health.tools.walking.view.WalkingActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -40,6 +42,7 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHome,
+    refCode: String,
     userId: String,
     onNav: (String) -> Unit,
 ) {
@@ -57,12 +60,12 @@ fun HomeScreenLayout(
             item(span = { GridItemSpan(columns) }) {
                 Column {
                     AppHorizontalPager(
-                        pagerState = rememberPagerState { toolsHome.banners.size },
+                        pagerState = rememberPagerState { it.size },
                         modifier = Modifier
                             .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
                             .fillMaxWidth()
                     ) { page ->
-                        ToolsHmScreenTopBanner(bannerDataPages = toolsHome.banners[page])
+                        ToolsHmScreenTopBanner(bannerDataPages = it[page])
                     }
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
@@ -78,7 +81,7 @@ fun HomeScreenLayout(
             }
 
             // All The Tools Composable cards
-            items(toolsHome.tools) { tool ->
+            items(it) { tool ->
                 Column {
                     ToolsCardLayout(
                         cardTitle = tool.title,
@@ -135,7 +138,7 @@ fun HomeScreenLayout(
             }
         }
 
-        toolsHome.testimonials?.let {
+        toolsHome.testimonials?.let { testimonials ->
             // Testimonials Text and View All Button
             item(span = { GridItemSpan(columns) }) {
                 ViewAllLayout(
@@ -162,9 +165,9 @@ fun HomeScreenLayout(
                 Column {
                     AppHorizontalPager(
                         modifier = Modifier.fillMaxWidth(),
-                        pagerState = rememberPagerState { toolsHome.testimonials.size }
-                    ) {
-                        TstBannerCard(testimonialsData = toolsHome.testimonials[it])
+                        pagerState = rememberPagerState { testimonials.size }
+                    ) { idx ->
+                        TstBannerCard(testimonialsData = testimonials[idx])
                     }
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
@@ -191,7 +194,12 @@ fun HomeScreenLayout(
 
         // Refer and Earn Card
         item(span = { GridItemSpan(columns) }) {
-            ReferAndEarn()
+            NewReferralDialogContent(
+                refCode = refCode,
+                shareRefLink = {
+                    context.shareReferralCode(it, BuildConfig.APPLICATION_ID)
+                }
+            )
         }
     }
 }

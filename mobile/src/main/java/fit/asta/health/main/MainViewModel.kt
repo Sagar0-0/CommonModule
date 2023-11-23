@@ -5,13 +5,17 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
+import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getShortAddressName
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.repo.AddressRepo
 import fit.asta.health.datastore.PrefManager
+import fit.asta.health.referral.remote.model.ReferralDataResponse
+import fit.asta.health.referral.repo.ReferralRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,11 +30,24 @@ class MainViewModel
 @Inject constructor(
     private val prefManager: PrefManager,
     private val authRepo: AuthRepo,
-    private val addressRepo: AddressRepo
+    private val addressRepo: AddressRepo,
+    @UID private val uid: String,
+    private val referralRepo: ReferralRepo
 ) : ViewModel() {
 
     private val _isLocationEnabled = MutableStateFlow(false)
     val isLocationEnabled = _isLocationEnabled.asStateFlow()
+
+    private val _referralDataState =
+        MutableStateFlow<UiState<ReferralDataResponse>>(UiState.Loading)
+    val referralDataState = _referralDataState.asStateFlow()
+
+    fun getReferralData() {
+        _referralDataState.value = UiState.Loading
+        viewModelScope.launch {
+            _referralDataState.value = referralRepo.getData(uid).toUiState()
+        }
+    }
 
     fun setReferralChecked() = viewModelScope.launch {
         prefManager.setReferralChecked()

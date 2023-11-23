@@ -88,6 +88,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun MainActivityLayout(
     currentAddressState: UiState<String>,
+    refCode: String,
     profileImageUri: String?,
     notificationState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
@@ -111,6 +112,7 @@ fun MainActivityLayout(
         content = {
             MainNavHost(
                 navController = navController,
+                refCode = refCode,
                 onNav = onNav,
                 onSchedule = onSchedule,
                 onLocation = onLocation,
@@ -297,6 +299,7 @@ private fun onNavigate(
 private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
+    refCode: String,
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
@@ -310,8 +313,17 @@ private fun MainNavHost(
     ) {
         composable(BottomBarDestination.Tools.route) {
             val homeViewModel: HomeViewModel = hiltViewModel()
-            LaunchedEffect(key1 = Unit, block = { homeViewModel.loadHomeData() })
-            HomeContent(homeViewModel = homeViewModel, onNav = onNav)
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    homeViewModel.loadHomeData()
+                }
+            )
+            HomeContent(
+                homeViewModel = homeViewModel,
+                refCode = refCode,
+                onNav = onNav
+            )
         }
 
         composable(BottomBarDestination.Today.route) {

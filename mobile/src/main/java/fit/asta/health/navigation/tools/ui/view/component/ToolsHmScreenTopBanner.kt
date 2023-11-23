@@ -12,7 +12,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.navigation.tools.data.remote.model.ToolsHome
+import fit.asta.health.home.remote.model.ToolsHome
 
 @Composable
 fun ToolsHmScreenTopBanner(

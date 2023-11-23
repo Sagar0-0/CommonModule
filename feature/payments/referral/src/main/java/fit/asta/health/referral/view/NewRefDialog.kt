@@ -35,7 +35,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 )
 // Composable function for displaying a new referral dialog
 @Composable
-fun NewRefDialog() {
+private fun NewRefDialog() {
     AppTheme {
         // TODO: Add a proper onDismissRequest implementation
         AppDialog(onDismissRequest = { /*TODO*/ }) {
@@ -62,7 +62,7 @@ fun NewReferralDialogContent(
 
         // Main content of the dialog
         Column(
-            Modifier
+            modifier = Modifier
                 .padding(horizontal = AppTheme.spacing.level2)
                 .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
         ) {

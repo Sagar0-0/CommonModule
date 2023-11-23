@@ -13,6 +13,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
@@ -23,6 +24,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
@@ -33,8 +35,9 @@ import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
-import fit.asta.health.common.utils.shareApp
+import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
@@ -74,11 +77,17 @@ fun NavGraphBuilder.homeScreen(
             val context = LocalContext.current
 
             val mainViewModel: MainViewModel = hiltViewModel()
+            LaunchedEffect(key1 = Unit, block = {
+                mainViewModel.getReferralData()
+            })
 
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
+            val referralDataState =
+                mainViewModel.referralDataState.collectAsStateWithLifecycle().value
+            val refCode = (referralDataState as? UiState.Success)?.data?.referralCode?.refCode ?: ""
 
             val permissionResultLauncher =
                 rememberLauncherForActivityResult(
@@ -161,6 +170,7 @@ fun NavGraphBuilder.homeScreen(
 
             MainActivityLayout(
                 currentAddressState = currentAddressName,
+                refCode = refCode,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 notificationState = notificationState,
                 onLocation = { enableLocationAndUpdateAddress() },
@@ -220,7 +230,7 @@ fun NavGraphBuilder.homeScreen(
                         }
 
                         MainTopBarActions.Share -> {
-                            context.shareApp(context.packageName)
+                            context.shareReferralCode(refCode, BuildConfig.APPLICATION_ID)
                         }
                     }
                 }
