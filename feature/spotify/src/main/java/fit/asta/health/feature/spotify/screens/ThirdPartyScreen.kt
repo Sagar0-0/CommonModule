@@ -120,7 +120,7 @@ fun ThirdPartyScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .fillMaxWidth()
                 )
             }
@@ -142,7 +142,7 @@ fun ThirdPartyScreen(
                     LazyHorizontalGrid(
                         rows = GridCells.Adaptive(AppTheme.boxSize.level6),
                         modifier = Modifier
-                            .height(AppTheme.boxSize.level9)
+                            .height(AppTheme.boxSize.level10)
                             .padding(start = AppTheme.spacing.level1)
                             .width(LocalConfiguration.current.screenWidthDp.dp),
                         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -193,7 +193,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                 )
             }
 
@@ -203,7 +203,7 @@ fun ThirdPartyScreen(
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(recommendedData.data.trackList.size) {
@@ -253,7 +253,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                 )
             }
 
@@ -263,7 +263,7 @@ fun ThirdPartyScreen(
                 // Showing the Tracks List UI inside a Lazy Row
                 LazyRow(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(topTracksData.data.trackList.size) {
@@ -313,7 +313,7 @@ fun ThirdPartyScreen(
                 AppDotTypingAnimation(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                 )
             }
 
@@ -322,7 +322,7 @@ fun ThirdPartyScreen(
 
                 LazyRow(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
 

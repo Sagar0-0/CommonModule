@@ -74,7 +74,7 @@ fun FavouriteScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .fillMaxWidth()
                         .testTag("Favourite Screen")
                 )
@@ -84,7 +84,7 @@ fun FavouriteScreen(
             is UiState.Success -> {
                 LazyRow(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(tracksData.data.size) {
@@ -140,7 +140,7 @@ fun FavouriteScreen(
             is UiState.Loading -> {
                 AppDotTypingAnimation(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .fillMaxWidth()
                         .testTag("Favourite Screen")
                 )
@@ -150,7 +150,7 @@ fun FavouriteScreen(
             is UiState.Success -> {
                 LazyRow(
                     modifier = Modifier
-                        .height(AppTheme.boxSize.level9)
+                        .height(AppTheme.boxSize.level10)
                         .width(LocalConfiguration.current.screenWidthDp.dp)
                 ) {
                     items(albumData.data.size) {

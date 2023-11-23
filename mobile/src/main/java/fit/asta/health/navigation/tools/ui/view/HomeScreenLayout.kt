@@ -19,21 +19,24 @@ import fit.asta.health.BuildConfig
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
-import fit.asta.health.feature.testimonials.components.TstBannerCard
+import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
 import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
+import fit.asta.health.navigation.tools.ui.view.component.ReferAndEarn
 import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.tools.sleep.SleepToolActivity
-import fit.asta.health.tools.walking.view.WalkingActivity
+import fit.asta.health.tools.walking.nav.STEPS_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -56,16 +59,16 @@ fun HomeScreenLayout(
     ) {
 
         // Top Sliding Images
-        toolsHome.banners?.let {
+        toolsHome.banners?.let { banners ->
             item(span = { GridItemSpan(columns) }) {
                 Column {
                     AppHorizontalPager(
-                        pagerState = rememberPagerState { it.size },
+                        pagerState = rememberPagerState { banners.size },
                         modifier = Modifier
                             .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
                             .fillMaxWidth()
                     ) { page ->
-                        ToolsHmScreenTopBanner(bannerDataPages = it[page])
+                        ToolsHmScreenTopBanner(bannerDataPages = banners[page])
                     }
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
@@ -94,7 +97,7 @@ fun HomeScreenLayout(
                             }
 
                             "steps" -> {
-                                WalkingActivity.launch(context = context)
+                                onNav(STEPS_GRAPH_ROUTE)
                             }
 
                             "workout" -> {
@@ -162,14 +165,32 @@ fun HomeScreenLayout(
 
             // Testimonials Banners in a Horizontal Pager
             item(span = { GridItemSpan(columns) }) {
-                Column {
+
+                val pagerState = rememberPagerState { testimonials.size }
+
+                Box(modifier = Modifier.padding(bottom = AppTheme.spacing.level1)) {
                     AppHorizontalPager(
-                        modifier = Modifier.fillMaxWidth(),
-                        pagerState = rememberPagerState { testimonials.size }
-                    ) { idx ->
-                        TstBannerCard(testimonialsData = testimonials[idx])
+                        modifier = Modifier
+                            .padding(bottom = AppTheme.spacing.level2)
+                            .fillMaxWidth(),
+                        pagerState = pagerState,
+                        contentPadding = PaddingValues(AppTheme.spacing.level2)
+                    ) { page ->
+                        AppCard(modifier = Modifier.fillMaxSize()) {
+                            UserTestimonialUI(
+                                modifier = Modifier.padding(AppTheme.spacing.level2),
+                                userTestimonial = testimonials[page].testimonial
+                            )
+                        }
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+                    // This function draws the Dot Indicator for the Pager
+                    AppExpandingDotIndicator(
+                        modifier = Modifier
+                            .padding(bottom = AppTheme.spacing.level2)
+                            .align(Alignment.BottomCenter),
+                        pagerState = pagerState
+                    )
                 }
             }
         }

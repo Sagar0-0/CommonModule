@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.db
+package fit.asta.health.tools.walking.core.data.source
 
 import androidx.room.Dao
 import androidx.room.Insert

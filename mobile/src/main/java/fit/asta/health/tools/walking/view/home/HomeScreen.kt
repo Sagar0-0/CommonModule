@@ -41,7 +41,6 @@ import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.tools.walking.model.domain.WalkingTool
-import fit.asta.health.tools.walking.nav.StepsCounterScreen
 import fit.asta.health.tools.walking.view.component.*
 import fit.asta.health.tools.walking.viewmodel.WalkingViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -205,7 +204,7 @@ fun WalkingBottomSheetView(
                         it.ifBlank { apiState.valuesType }
                     },
                     id = R.drawable.baseline_merge_type_24,
-                    onClick = { navController.navigate(route = StepsCounterScreen.TypesScreen.route) }
+                    onClick = { navController.navigate(route = "StepsCounterScreen.TypesScreen.route") }
                 )
             }
         }
@@ -229,7 +228,7 @@ fun WalkingBottomSheetView(
                                 apiState.valuesGoal[0]
                             },
                             id = R.drawable.round_filter_vintage_24,
-                            onClick = { navController.navigate(route = StepsCounterScreen.GoalScreen.route) })
+                            onClick = { navController.navigate(route = "StepsCounterScreen.GoalScreen.route") })
                     }
                 }
 
@@ -261,7 +260,7 @@ fun WalkingBottomSheetView(
                 if (startWorking.value) {
                     homeViewModel.onUIEvent(StepCounterUIEvent.StopButtonClicked)
                     homeViewModel.stopService(activity)
-                    navController.navigate(route = StepsCounterScreen.DistanceScreen.route)
+                    navController.navigate(route = "StepsCounterScreen.DistanceScreen.route")
                 } else {
                     homeViewModel.onUIEvent(StepCounterUIEvent.StartButtonClicked)
                     homeViewModel.startService(activity)

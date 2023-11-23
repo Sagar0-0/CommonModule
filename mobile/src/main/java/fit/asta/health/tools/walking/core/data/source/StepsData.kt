@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.db
+package fit.asta.health.tools.walking.core.data.source
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity

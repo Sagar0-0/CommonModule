@@ -1,7 +1,7 @@
 package fit.asta.health.tools.walking.model
 
-import fit.asta.health.tools.walking.db.StepsData
-import fit.asta.health.tools.walking.db.StepsDataDao
+import fit.asta.health.tools.walking.core.data.source.StepsData
+import fit.asta.health.tools.walking.core.data.source.StepsDataDao
 
 class LocalRepoImpl(private val stepsDataDao: StepsDataDao):LocalRepo {
     override suspend fun getStepsData(date: Int): StepsData? {

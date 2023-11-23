@@ -52,6 +52,7 @@ import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
 import fit.asta.health.tools.sunlight.nav.sunlightNavigation
+import fit.asta.health.tools.walking.nav.stepsCounterNavigation
 import fit.asta.health.tools.water.nav.waterToolNavigation
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
@@ -121,6 +122,7 @@ private fun MainNavHost(startDestination: String) {
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
         testimonialNavRoute(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
+        stepsCounterNavigation(navController, onBack = { navController.navigateUp() })
 
         settingScreens { key ->
             when (key) {

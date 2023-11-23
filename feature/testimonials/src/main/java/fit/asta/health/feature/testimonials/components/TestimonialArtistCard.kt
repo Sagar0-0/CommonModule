@@ -75,7 +75,7 @@ fun TestimonialArtistCard(
         Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)) {
 
             // Artist Name
-            TitleTexts.Level1(text = name)
+            TitleTexts.Level3(text = name)
 
             // Artist Role and Organization
             CaptionTexts.Level3(text = "$role, $organization")

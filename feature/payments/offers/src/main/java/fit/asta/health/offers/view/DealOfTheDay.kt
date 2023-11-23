@@ -1,6 +1,6 @@
 package fit.asta.health.offers.view
 
-import androidx.compose.foundation.Image
+import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,7 +14,8 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.material3.Text
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,35 +23,42 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
 
+/**
+ * Composable function to display the "Deal of the Day" section.
+ */
 @Preview
 @Composable
 fun DealOfTheDay() {
-
+    // Remember the LazyListState for scroll position persistence
     val state = rememberLazyListState()
 
+    // Apply the AppTheme to the entire composable
     AppTheme {
-
         Box(modifier = Modifier.fillMaxSize()) {
-
+            // Column to arrange child composable vertically
             Column(
                 modifier = Modifier
-                    .padding(16.dp)
+                    .padding(AppTheme.spacing.level2)
                     .fillMaxWidth(),
-                verticalArrangement = Arrangement.spacedBy(16.dp)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
+                // Display the title for the "Deal of the Day" section
                 TitleTexts.Level1(text = "Deal of the Day")
 
+                // LazyRow composable to horizontally scroll through deal items
                 LazyRow(state = state) {
                     items(DealRepository.deals) { deal ->
+                        // Display each deal item using the DealItem composable
                         DealItem(deal = deal)
                     }
                 }
@@ -59,68 +67,81 @@ fun DealOfTheDay() {
     }
 }
 
+/**
+ * Composable function to display an individual deal item.
+ * @param deal The deal object containing information about the deal.
+ */
 @Composable
 fun DealItem(deal: Deal) {
-    Column(
+    // Box composable to create a container for the deal item
+    Box(
         modifier = Modifier
-            .padding(8.dp)
+            .fillMaxWidth()
+            .size(AppTheme.boxSize.level9),
+        contentAlignment = Alignment.Center
     ) {
-        Box(
-            modifier = Modifier
-                .size(120.dp)
-                .fillMaxWidth()
-                .clip(shape = CircleShape), contentAlignment = Alignment.BottomCenter
-        ) {
-            Image(
-                painter = painterResource(id = deal.imageRes),
-                contentDescription = null,
-                modifier = Modifier.fillMaxSize(),
-                contentScale = ContentScale.Crop
-            )
 
+        // Use AppLocalImage to display the deal image
+        AppLocalImage(
+            painter = painterResource(id = deal.imageRes),
+            contentDescription = null,
+            modifier = Modifier
+                .size(AppTheme.imageSize.level12)
+                .clip(CircleShape)
+                .border(
+                    5.dp,
+                    Color.White, CircleShape
+                ),
+            contentScale = ContentScale.Crop
+        )
+
+        // Box composable to create a container for the deal details
+        Box(Modifier.fillMaxSize(), contentAlignment = Alignment.BottomCenter) {
+            // Column to arrange child composable vertically for deal details
             Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(8.dp),
-                verticalArrangement = Arrangement.Bottom,
+                modifier = Modifier,
+                verticalArrangement = Arrangement.Center,
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Text(
-                    text = deal.title,
-                    color = Color.White,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
+                // Display favorite icon
+                AppIcon(
+                    imageVector = Icons.Rounded.Favorite,
+                    tint = Color.Red
                 )
-
-                Spacer(modifier = Modifier.height(4.dp))
-
-                Text(
-                    text = deal.shortInfo,
-                    color = Color.White,
-                    maxLines = 2,
-                    overflow = TextOverflow.Ellipsis,
-                    textAlign = TextAlign.Center
-                )
+                // Display the title of the deal
+                TitleTexts.Level1(text = deal.title)
+                // Add spacing
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
+                // Display the month and discount details of the deal
+                BodyTexts.Level3(text = deal.month)
+                BodyTexts.Level3(text = deal.discount)
             }
         }
-
-        Spacer(modifier = Modifier.height(8.dp))
     }
 }
 
-
+/**
+ * Data class representing a deal item.
+ * @property title The title of the deal.
+ * @property month The duration of the deal.
+ * @property discount The discount details of the deal.
+ * @property imageRes The resource ID of the deal image.
+ */
 data class Deal(
     val title: String,
-    val shortInfo: String,
-    val imageRes: Int // Assuming you have image resources for each deal
+    val month: String,
+    val discount: String,
+    val imageRes: Int
 )
 
+/**
+ * Object containing a list of predefined deals.
+ */
 object DealRepository {
     val deals = listOf(
-        Deal("Deal 1", "50% off on electronics", R.drawable.weatherimage),
-        Deal("Deal 2", "30% off on fashion", R.drawable.weatherimage),
-        Deal("Deal 3", "Buy one get one free on books", R.drawable.weatherimage),
-        // Add more deals as needed
+        Deal("ELITE", "FREE 3 months", "+ Extra $1,500 OFF", R.drawable.weatherimage),
+        Deal("PRO", "FREE 2 months", "+ Extra $1,500 OFF", R.drawable.weatherimage),
+        Deal("PLAY", "FREE 1-month", "+ Extra $5,000 OFF", R.drawable.weatherimage),
     )
 }
+

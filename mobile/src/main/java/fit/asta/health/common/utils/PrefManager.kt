@@ -125,6 +125,16 @@ class PrefManager
             preferences.edit().putInt("notification", newCount).apply()
         }
 
+        fun getStepsPermissionRejectedCount(context: Context): Int {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            return preferences.getInt("steps", 0)
+        }
+
+        fun setStepsPermissionRejectedCount(context: Context, newCount: Int) {
+            val preferences = PreferenceManager.getDefaultSharedPreferences(context)
+            preferences.edit().putInt("steps", newCount).apply()
+        }
+
         fun getUnitHeight(context: Context): String {
 
             val preferences = PreferenceManager.getDefaultSharedPreferences(context)
