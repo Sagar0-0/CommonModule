@@ -204,7 +204,10 @@ private fun MainNavHost(startDestination: String) {
         referralRoute(navController::popBackStack) {
             context.shareReferralCode(it, BuildConfig.APPLICATION_ID)
         }
-        walletRoute(navController::popBackStack)
+        walletRoute(
+            onProceedToAdd = PaymentActivity::launch,
+            onBackPress = navController::popBackStack
+        )
         webView()
     }
 }

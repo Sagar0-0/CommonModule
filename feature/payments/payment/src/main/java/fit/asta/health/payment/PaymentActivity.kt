@@ -49,6 +49,18 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                     context.startActivity(this)
                 }
         }
+
+        fun launch(context: Context, amount: String, onSuccess: () -> Unit) {
+            this.onSuccess = onSuccess
+            val orderRequest = OrderRequest(
+                amount = amount
+            )
+            Intent(context, PaymentActivity::class.java)
+                .apply {
+                    putExtra(DATA_KEY, orderRequest)
+                    context.startActivity(this)
+                }
+        }
     }
 
     @RequiresApi(Build.VERSION_CODES.TIRAMISU)

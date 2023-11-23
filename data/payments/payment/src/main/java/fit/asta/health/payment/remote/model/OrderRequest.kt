@@ -8,6 +8,8 @@ import kotlinx.parcelize.Parcelize
 data class OrderRequest(
     @SerializedName("id")
     val id: String = "",
+    @SerializedName("amt")
+    val amount: String = "",
     @SerializedName("uid")
     val uId: String = "",
     @SerializedName("subType")
