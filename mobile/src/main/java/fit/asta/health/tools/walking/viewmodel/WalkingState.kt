@@ -1,6 +1,6 @@
 package fit.asta.health.tools.walking.viewmodel
 
-import fit.asta.health.tools.walking.model.domain.WalkingTool
+import fit.asta.health.tools.walking.core.domain.model.WalkingTool
 
 sealed class WalkingState {
     object Loading : WalkingState()

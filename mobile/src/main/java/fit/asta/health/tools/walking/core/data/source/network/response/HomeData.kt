@@ -1,22 +1,10 @@
-package fit.asta.health.tools.walking.model.network.response
+package fit.asta.health.tools.walking.core.data.source.network.response
 
 
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.Prc
 
 data class HomeData(
-    @SerializedName("data")
-    val `data`: Data,
-    @SerializedName("status")
-    val status: Status
-)
-
-data class Status(
-    @SerializedName("code")
-    val code: Int,
-    @SerializedName("msg")
-    val msg: String
-)
-data class Data(
     @SerializedName("WalkingRecommendation")
     val walkingRecommendation: WalkingRecommendation,
     @SerializedName("WalkingTool")
@@ -31,13 +19,13 @@ data class WalkingRecommendation(
 
 data class WalkingTool(
     @SerializedName("code")
-    val code: Int,
+    val code: String,
+    @SerializedName("type")
+    val type: Int,
     @SerializedName("id")
     val id: String,
-    @SerializedName("name")
-    val name: String,
     @SerializedName("prc")
-    val prc: List<PrcActivity>,
+    val prc: List<Prc>,
     @SerializedName("sType")
     val sType: Int,
     @SerializedName("tgt")
@@ -46,16 +34,6 @@ data class WalkingTool(
     val uid: String,
     @SerializedName("wea")
     val wea: Boolean
-)
-data class PrcActivity(
-    @SerializedName("dsc")
-    val dsc: String,
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("ttl")
-    val ttl: String,
-    @SerializedName("values")
-    val values: List<ValueData>
 )
 data class Target(
     @SerializedName("dis")
@@ -90,12 +68,4 @@ data class Steps(
     val steps: Int,
     @SerializedName("unit")
     val unit: String
-)
-data class ValueData(
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("name")
-    val name: String,
-    @SerializedName("value")
-    val value: String
 )

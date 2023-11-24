@@ -16,6 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.MainActivity
 import fit.asta.health.R
+import fit.asta.health.common.utils.Constants.NOTIFICATION_TAG
 import fit.asta.health.tools.walking.core.domain.usecase.DayUseCases
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import kotlinx.coroutines.launch
@@ -80,7 +81,7 @@ class StepCounterService : LifecycleService() {
 
     private fun createNotification(state: StepCounterState): Notification = state.run {
         val title = resources.getQuantityString(StringR.plurals.step_count, steps, steps)
-        val progress = if (goal == 0) 0 else steps * 100 / goal
+        val progress = if (steps == 0) 0 else (distanceTravelled * 100 / goalDistance).toInt()
         val content = getString(
             StringR.string.step_counter_stats, calorieBurned, distanceTravelled, progress
         )
@@ -100,6 +101,7 @@ class StepCounterService : LifecycleService() {
     private val launchApplicationPendingIntent
         get(): PendingIntent {
             val intent = Intent(applicationContext, MainActivity::class.java)
+            intent.putExtra(NOTIFICATION_TAG, "walking")
             val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             return PendingIntent.getActivity(this, PENDING_INTENT_ID, intent, flags)
         }

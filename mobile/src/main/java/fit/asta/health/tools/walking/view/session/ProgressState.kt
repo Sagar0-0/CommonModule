@@ -1,11 +1,12 @@
-package fit.asta.health.tools.walking.progress
+package fit.asta.health.tools.walking.view.session
 
 import java.time.LocalDate
 
 data class ProgressState(
     val date: LocalDate,
     val stepsTaken: Int,
-    val dailyGoal: Int,
+    val targetDistance: Float,
+    val targetDuration: Int,
     val duration: Int,
     val calorieBurned: Int,
     val distanceTravelled: Double,

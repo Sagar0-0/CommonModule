@@ -24,6 +24,13 @@ fun getCurrentTime(format: String = "yyyy-MM-dd HH:mm:ss"): String {
     }
 }
 
+fun formatTime(timeMillis: Long, format: String = "hh:mm a"): String {
+    val sdf = SimpleDateFormat(format, Locale.getDefault())
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = timeMillis
+    return sdf.format(calendar.time)
+}
+
 fun getCurrentDate(format: String = "yyyy-MM-dd"): String {
 
     return if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

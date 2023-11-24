@@ -12,16 +12,21 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.tools.walking.progress.ProgressViewModel
-import fit.asta.health.tools.walking.progress.StepsActivityScreen
-import fit.asta.health.tools.walking.progress.StepsPermissionScreen
-import fit.asta.health.tools.walking.progress.StepsScreen
+import fit.asta.health.meditation.view.other.SheetDataSelectionScreen
 import fit.asta.health.tools.walking.service.StepCounterService
+import fit.asta.health.tools.walking.view.home.StepsScreen
+import fit.asta.health.tools.walking.view.permission.StepsPermissionScreen
+import fit.asta.health.tools.walking.view.session.StepsActivityScreen
+import fit.asta.health.tools.walking.vm.ProgressViewModel
 
 const val STEPS_GRAPH_ROUTE = "steps_graph_address"
 
 fun NavController.navigateToStepsCounter(navOptions: NavOptions? = null) {
     this.navigate(STEPS_GRAPH_ROUTE, navOptions)
+}
+
+fun NavController.navigateToStepsCounterProgress(navOptions: NavOptions? = null) {
+    this.navigate(StepsCounterScreen.StepsProgressScreen.route, navOptions)
 }
 
 fun NavGraphBuilder.stepsCounterNavigation(
@@ -39,21 +44,31 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
             }
         }
-        composable(route = StepsCounterScreen.StepsCounterHomeScreen.route) {
-            val progressViewModel: ProgressViewModel = it.sharedViewModel(navController)
-            val state by progressViewModel.progressHome.collectAsStateWithLifecycle()
-            val list by progressViewModel.sheetDataList.collectAsStateWithLifecycle()
+        composable(route = StepsCounterScreen.StepsCounterHomeScreen.route) { navBackStackEntry ->
+            val progressViewModel: ProgressViewModel =
+                navBackStackEntry.sharedViewModel(navController)
+            val state by progressViewModel.state.collectAsStateWithLifecycle()
+            val list by progressViewModel.sessionList.collectAsStateWithLifecycle()
+            val selectedData by progressViewModel.selectedData.collectAsStateWithLifecycle()
             val context = LocalContext.current
             LaunchedEffect(key1 = Unit, block = {
                 progressViewModel.startProgressHome(context)
             })
-            StepsScreen(state = state, list = list, onStart = {
-                progressViewModel.startSession()
-                context.startService(Intent(context, StepCounterService::class.java))
-                navController.navigate(StepsCounterScreen.StepsProgressScreen.route)
-            }) {
-                onBack()
-            }
+            StepsScreen(
+                state = state, list = list,
+                onStart = {
+                    progressViewModel.startSession()
+                    context.startService(Intent(context, StepCounterService::class.java))
+                    navController.navigate(StepsCounterScreen.StepsProgressScreen.route)
+                },
+                selectedData = selectedData,
+                goToList = { int, str ->
+                    progressViewModel.getSheetItemValue(str)
+                    navController.navigate(route = StepsCounterScreen.StepsSheetScreen.route + "/$int")
+                },
+                setTarget = { dis, dur -> progressViewModel.setTarget(dis, dur) },
+                onBack = onBack,
+            )
         }
         composable(route = StepsCounterScreen.StepsProgressScreen.route) {
             val progressViewModel: ProgressViewModel = it.sharedViewModel(navController)
@@ -68,6 +83,21 @@ fun NavGraphBuilder.stepsCounterNavigation(
                     context.stopService(Intent(context, StepCounterService::class.java))
                     navController.popBackStack()
                 })
+        }
+
+        composable(StepsCounterScreen.StepsSheetScreen.route + "/{id}") { navBackStack ->
+            val index = navBackStack.arguments?.getString("id")?.toInt()
+            val viewModel: ProgressViewModel = navBackStack.sharedViewModel(navController)
+            val list by viewModel.sheetDataList.collectAsStateWithLifecycle()
+            val selectedData by viewModel.selectedData.collectAsStateWithLifecycle()
+
+            SheetDataSelectionScreen(
+                prc = selectedData[index ?: 1],
+                list = list,
+                onMClick = { viewModel.setMultiple(index ?: 1, it) },
+                onSClick = { viewModel.setSingle(index ?: 1, it) },
+                onBack = { navController.popBackStack() }
+            )
         }
     }
 }

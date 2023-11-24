@@ -21,7 +21,7 @@ class StepCounterController(
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val _stats = MutableStateFlow(StepCounterState(LocalDate.now(), 0, 0, 0.0, 0, 0))
+    private val _stats = MutableStateFlow(StepCounterState(LocalDate.now(), 0, 0f, 0, 0.0, 0, 0))
     val stats: StateFlow<StepCounterState> = _stats.asStateFlow()
 
     private var getStatsJob: Job? = null
@@ -43,7 +43,8 @@ class StepCounterController(
             _stats.value = _stats.value.copy(
                 date = date,
                 steps = day.steps,
-                goal = day.goal,
+                goalDistance = day.targetDistance,
+                goalDuration = day.targetDuration,
                 distanceTravelled = day.distanceTravelled,
                 calorieBurned = day.calorieBurned.roundToInt(),
                 duration = day.duration

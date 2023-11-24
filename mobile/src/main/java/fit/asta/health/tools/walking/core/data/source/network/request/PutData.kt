@@ -1,7 +1,8 @@
-package fit.asta.health.tools.walking.model.network.request
+package fit.asta.health.tools.walking.core.data.source.network.request
 
 
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.common.utils.Prc
 
 
 data class PutData(
@@ -23,18 +24,6 @@ data class PutData(
     val wea: Boolean
 )
 
-data class Prc(
-    @SerializedName("code")
-    val code: String?=null,
-    @SerializedName("dsc")
-    val dsc: String,
-    @SerializedName("id")
-    val id: String,
-    @SerializedName("ttl")
-    val ttl: String,
-    @SerializedName("values")
-    val values: List<Value>
-)
 data class Value(
     @SerializedName("id")
     val id: String,

@@ -3,7 +3,7 @@ package fit.asta.health.tools.walking.core.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fit.asta.health.tools.walking.core.data.Settings
-import fit.asta.health.tools.walking.nav.DailyFitnessModel
+import fit.asta.health.tools.walking.service.DailyFitnessModel
 import java.time.LocalDate
 
 @Entity(tableName = "day")
@@ -15,7 +15,9 @@ data class Day(
 
     val steps: Int = 0,
 
-    val goal: Int,
+    val targetDistance: Float,
+
+    val targetDuration: Int,
 
     val duration: Int,
 
@@ -53,16 +55,17 @@ data class Day(
 fun Settings.toDay(
     startupTime: Long,
     date: LocalDate,
-    steps: Int = 0,
-    duration: Int = 0,
+    targetDistance: Float,
+    targetDuration: Int,
     state: Boolean = true
 ) = Day(
     startupTime = startupTime,
     date = date,
-    steps = steps,
-    duration = duration,
+    steps = 0,
+    duration = 0,
     state = state,
-    goal = dailyGoal,
+    targetDistance = targetDistance,
+    targetDuration = targetDuration,
     height = height,
     weight = weight,
     stepLength = stepLength,

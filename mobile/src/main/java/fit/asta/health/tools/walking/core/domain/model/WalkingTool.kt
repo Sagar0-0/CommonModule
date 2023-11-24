@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.model.domain
+package fit.asta.health.tools.walking.core.domain.model
 
 
 data class WalkingTool(

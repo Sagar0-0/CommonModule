@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.nav
+package fit.asta.health.tools.walking.service
 
 import android.app.Activity
 import android.content.Context

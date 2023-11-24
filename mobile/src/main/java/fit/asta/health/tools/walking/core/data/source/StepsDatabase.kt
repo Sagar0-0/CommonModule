@@ -6,9 +6,8 @@ import androidx.room.TypeConverters
 import fit.asta.health.tools.walking.core.data.source.util.Converters
 import fit.asta.health.tools.walking.core.domain.model.Day
 
-@Database(entities = [StepsData::class, Day::class], version = 1)
+@Database(entities = [Day::class], version = 1)
 @TypeConverters(Converters::class)
 abstract class StepsDatabase : RoomDatabase() {
-    abstract fun stepsDataDAO(): StepsDataDao
     abstract fun dayDao(): DayDao
 }

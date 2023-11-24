@@ -8,9 +8,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
+import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.tools.walking.core.data.repository.DayRepositoryImpl
+import fit.asta.health.tools.walking.core.data.repository.WalkingToolRepoImpl
 import fit.asta.health.tools.walking.core.data.source.StepsDatabase
+import fit.asta.health.tools.walking.core.data.source.api.WalkingApi
 import fit.asta.health.tools.walking.core.domain.repository.DayRepository
+import fit.asta.health.tools.walking.core.domain.repository.WalkingToolRepo
 import fit.asta.health.tools.walking.core.domain.usecase.ActiveStateOfSteps
 import fit.asta.health.tools.walking.core.domain.usecase.DayUseCases
 import fit.asta.health.tools.walking.core.domain.usecase.GetDay
@@ -18,14 +23,9 @@ import fit.asta.health.tools.walking.core.domain.usecase.GetTodayData
 import fit.asta.health.tools.walking.core.domain.usecase.IncrementStepCount
 import fit.asta.health.tools.walking.core.domain.usecase.IncrementStepDuration
 import fit.asta.health.tools.walking.core.domain.usecase.SetDay
-import fit.asta.health.tools.walking.model.LocalRepo
-import fit.asta.health.tools.walking.model.LocalRepoImpl
-import fit.asta.health.tools.walking.model.WalkingToolRepo
-import fit.asta.health.tools.walking.model.WalkingToolRepoImpl
-import fit.asta.health.tools.walking.model.api.WalkingApi
-import fit.asta.health.tools.walking.model.api.WalkingRestApi
 import fit.asta.health.tools.walking.sensor.MeasurableSensor
 import fit.asta.health.tools.walking.sensor.StepsSensor
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -41,17 +41,17 @@ object WalkingModule {
 
     @Singleton
     @Provides
-    fun provideWalkingApi(client: OkHttpClient): WalkingApi {
-        return WalkingRestApi(client)
-    }
+    fun provideWalkingApi(client: OkHttpClient): WalkingApi =
+        NetworkUtil.getRetrofit(client).create(WalkingApi::class.java)
 
     @Singleton
     @Provides
     fun provideWalkingToolRepo(
-        remoteApi: WalkingApi
+        remoteApi: WalkingApi,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
     ): WalkingToolRepo {
         return WalkingToolRepoImpl(
-            remoteApi = remoteApi
+            api = remoteApi, coroutineDispatcher = coroutineDispatcher
         )
     }
 
@@ -65,11 +65,6 @@ object WalkingModule {
         "steps-database"
     ).build()
 
-    @Singleton
-    @Provides
-    fun provideRepo(db: StepsDatabase): LocalRepo {
-        return LocalRepoImpl(db.stepsDataDAO())
-    }
 
     @Singleton
     @Provides

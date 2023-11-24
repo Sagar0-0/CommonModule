@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.progress
+package fit.asta.health.tools.walking.view.permission
 
 import android.Manifest
 import android.app.Activity
@@ -22,6 +22,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
@@ -30,7 +31,7 @@ import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.walking.nav.FitManager
+import fit.asta.health.tools.walking.service.FitManager
 
 
 @Composable
@@ -148,10 +149,22 @@ fun StepsPermissionScreen(goToSteps: () -> Unit) {
 
 @Composable
 fun PermissionScreen(modifier: Modifier, text: String, buttonText: String, onClick: () -> Unit) {
-    Column(modifier = modifier, verticalArrangement = Arrangement.Center) {
-        TitleTexts.Level2(text = text, maxLines = 3)
-        AppFilledButton(textToShow = buttonText) {
-            onClick()
+    Column(modifier = modifier, horizontalAlignment = Alignment.CenterHorizontally) {
+        Column(
+            modifier = Modifier.weight(.5f),
+            verticalArrangement = Arrangement.Top,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            TitleTexts.Level2(text = text, maxLines = 3)
+        }
+        Column(
+            modifier = Modifier.weight(.5f),
+            verticalArrangement = Arrangement.Bottom,
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            AppFilledButton(textToShow = buttonText) {
+                onClick()
+            }
         }
     }
 }

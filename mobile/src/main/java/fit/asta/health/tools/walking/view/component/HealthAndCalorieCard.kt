@@ -1,5 +1,6 @@
 package fit.asta.health.tools.walking.view.component
 
+import androidx.annotation.DrawableRes
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -17,6 +18,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -42,7 +44,8 @@ fun HealthComponentLayout() {
         Modifier
             .fillMaxWidth()
             .padding(vertical = 16.dp),
-        horizontalArrangement = Arrangement.SpaceEvenly) {
+        horizontalArrangement = Arrangement.SpaceEvenly
+    ) {
         HealthComponent(title = "Distance", titleValue = "5 Km")
         HealthComponent(title = "Calories", titleValue = "400 kal")
         HealthComponent(title = "Heart Rate", titleValue = "72 bpm")
@@ -58,8 +61,10 @@ fun HealthComponent(
     titleValue: String,
 ) {
 
-    Column(horizontalAlignment = Alignment.CenterHorizontally,
-        verticalArrangement = Arrangement.Center) {
+    Column(
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.Center
+    ) {
         AppIcon(
             painter = painterResource(id = R.drawable.ic_baseline_favorite_24),
             contentDescription = null,
@@ -71,4 +76,33 @@ fun HealthComponent(
         CaptionTexts.Level2(text = titleValue)
     }
 
+}
+
+@Composable
+fun StepsProgressCard(
+    modifier: Modifier = Modifier,
+    title: String,
+    titleValue: String,
+    @DrawableRes id: Int = R.drawable.ic_baseline_favorite_24
+) {
+
+    AppElevatedCard(modifier = modifier) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(vertical = 16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            AppIcon(
+                painter = painterResource(id),
+                contentDescription = null,
+                modifier = Modifier.size(24.dp)
+            )
+            Spacer(modifier = Modifier.height(8.dp))
+            BodyTexts.Level2(text = titleValue)
+            Spacer(modifier = Modifier.height(8.dp))
+            CaptionTexts.Level2(text = title)
+        }
+    }
 }

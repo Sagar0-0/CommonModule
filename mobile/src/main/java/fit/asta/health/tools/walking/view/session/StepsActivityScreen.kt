@@ -1,8 +1,10 @@
-package fit.asta.health.tools.walking.progress
+package fit.asta.health.tools.walking.view.session
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -13,15 +15,22 @@ import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
+import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
+import fit.asta.health.designsystem.molecular.ProgressBarInt
 import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.resources.drawables.R
+import fit.asta.health.tools.walking.core.domain.formatDuration
+import fit.asta.health.tools.walking.view.component.StepsProgressCard
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable
@@ -34,11 +43,19 @@ fun StepsActivityScreen(
     var showPauseCustomDialogWithResult by remember { mutableStateOf(false) }
     var showStopCustomDialogWithResult by remember { mutableStateOf(false) }
 
-    Column(
+    AppCard(
         modifier = Modifier.fillMaxSize(),
-        verticalArrangement = Arrangement.Bottom,
-        horizontalAlignment = Alignment.CenterHorizontally
+        shape = AppTheme.shape.level1
     ) {
+        Box {
+            AppNetworkImage(
+                modifier = Modifier
+                    .aspectRatio(AppTheme.aspectRatio.square)
+                    .clip(AppTheme.shape.level1),
+                model = getImgUrl(url = "/tags/Walking+Tag.png"), contentDescription = "cardTitle",
+                contentScale = ContentScale.Crop,
+            )
+        }
         AppCard(modifier = Modifier.fillMaxWidth()) {
             Column(
                 modifier = Modifier
@@ -47,30 +64,37 @@ fun StepsActivityScreen(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Row(horizontalArrangement = Arrangement.SpaceAround) {
-                    Column {
-                        TitleTexts.Level2(text = state.stepsTaken.toString())
-                        TitleTexts.Level2(text = "steps")
-                    }
-                    Column {
-                        TitleTexts.Level2(text = state.calorieBurned.toString())
-                        TitleTexts.Level2(text = "calorie")
-                    }
+                ProgressBarInt(
+                    modifier = Modifier.fillMaxWidth(),
+                    targetDistance = state.targetDistance,
+                    progress = (state.distanceTravelled.toFloat() / state.targetDistance),
+                    name = "Progress",
+                    postfix = "Km"
+                )
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    StepsProgressCard(
+                        modifier = Modifier.weight(.3f),
+                        title = "Steps",
+                        titleValue = "${state.stepsTaken}",
+                        id = R.drawable.runing
+                    )
 
-                    Column {
-                        TitleTexts.Level2(text = state.dailyGoal.toString())
-                        TitleTexts.Level2(text = "dailyGoal")
-                    }
-                }
-                Row(horizontalArrangement = Arrangement.SpaceAround) {
-                    Column {
-                        TitleTexts.Level2(text = state.distanceTravelled.toString())
-                        TitleTexts.Level2(text = "distance")
-                    }
-                    Column {
-                        TitleTexts.Level2(text = state.duration.toString())
-                        TitleTexts.Level2(text = "duration")
-                    }
+                    StepsProgressCard(
+                        modifier = Modifier.weight(.3f),
+                        title = "H:Min",
+                        titleValue = formatDuration(state.duration),
+                        id = R.drawable.clock
+                    )
+                    StepsProgressCard(
+                        modifier = Modifier.weight(.3f),
+                        title = "Calories",
+                        titleValue = "${state.calorieBurned}",
+                        id = R.drawable.calories
+                    )
                 }
                 Row {
                     val str = if (state.state) {
@@ -99,7 +123,6 @@ fun StepsActivityScreen(
                 }
             }
         }
-
     }
     HandleBackPress {
         showStopCustomDialogWithResult = !showStopCustomDialogWithResult

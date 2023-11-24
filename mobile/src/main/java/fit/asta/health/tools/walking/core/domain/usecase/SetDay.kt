@@ -6,11 +6,13 @@ import fit.asta.health.tools.walking.core.domain.repository.DayRepository
 import java.time.LocalDate
 
 class SetDay(private val repository: DayRepository) {
-    suspend operator fun invoke(setting: Settings) {
+    suspend operator fun invoke(setting: Settings, targetDistance: Float, targetDuration: Int) {
         repository.upsertDay(
             setting.toDay(
                 startupTime = System.currentTimeMillis(),
-                date = LocalDate.now()
+                date = LocalDate.now(),
+                targetDistance = targetDistance,
+                targetDuration = targetDuration
             )
         )
     }
