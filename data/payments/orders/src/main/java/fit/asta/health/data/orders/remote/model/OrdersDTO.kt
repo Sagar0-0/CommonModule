@@ -18,5 +18,15 @@ data class OrderData(
     @SerializedName("subType")
     val subType: String = "",
     @SerializedName("type")
-    val type: Int = 0
+    val type: Int = 0,
+
+    val title: String = "",//Title for the Order
+    val status: String = "",//Status for the Order(Pending/Success/Failed)
+    val imgUrl: String = "",//Thumbnail Image for the Order
+    val paymentMode: String = "",//PaymentMode for the Order
+    val mrp: String = "",//mrp for the Order
+    val discount: String = "",//Discount for the Order
+    val taxes: String = "",//Taxes for the Order
+    val totalAmount: String = "",//Total amount for the Order
+    val offersApplied: List<String> = emptyList(),//Applied offers for the Order
 )

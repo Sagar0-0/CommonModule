@@ -45,6 +45,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
+import fit.asta.health.referral.remote.model.ReferralDataResponse
 import fit.asta.health.referral.remote.model.UserDetails
 import fit.asta.health.resources.drawables.R
 
@@ -77,56 +78,58 @@ fun NewReferralDesign(
     modifier: Modifier = Modifier,
     shareRefLink: (String) -> Unit = {},
     refCode: String = "",
+    referralStats: ReferralDataResponse.ReferralStats = ReferralDataResponse.ReferralStats(),
     referredUserList: List<UserDetails>? = null,
 ) {
-    // Apply the AppTheme to the entire screen
-    AppTheme {
-        // Use AppSurface as the root layout
-        AppSurface(modifier = Modifier.fillMaxSize()) {
-            // Column layout to organize UI elements vertically
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .verticalScroll(rememberScrollState()),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                // Add spacing
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+    // Use AppSurface as the root layout
+    AppSurface(modifier = modifier.fillMaxSize()) {
+        // Column layout to organize UI elements vertically
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            // Add spacing
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
-                // Display referral image
-                ReferralImage()
+            // Display referral image
+            ReferralImage()
 
-                // Add spacing
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            // Add spacing
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
-                // Button to share referral link
-                ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
+            // Button to share referral link
+            ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
 
-                // Display OR text
-                LargeTexts.Level2(
-                    text = "OR",
-                    color = AppTheme.colors.onSurfaceVariant,
-                )
+            // Display OR text
+            LargeTexts.Level2(
+                text = "OR",
+                color = AppTheme.colors.onSurfaceVariant,
+            )
 
-                // Display referral code with a copy button
-                CopyReferralCodeCard(refCode = refCode)
+            // Display referral code with a copy button
+            CopyReferralCodeCard(refCode = refCode)
 
-                // Add spacing
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            // Add spacing
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
-                // Display invitation report
-                InvitationReport()
+            // Display invitation report
+            InvitationReport(
+                referralStats.totalIncome,
+                referralStats.totalReferredUsers,
+                referralStats.premiumUsers
+            )
 
-                // Add spacing
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            // Add spacing
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
-                // Display the list of referred users, if available
-                referredUserList?.let {
-                    HeadingTexts.Level2(text = "You've invited...")
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                    referredUserList.forEach { user ->
-                        InvitedUserList(user)
-                    }
+            // Display the list of referred users, if available
+            referredUserList?.let {
+                HeadingTexts.Level2(text = "You've invited...")
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
+                referredUserList.forEach { user ->
+                    InvitedUserList(user)
                 }
             }
         }
@@ -302,11 +305,11 @@ fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
  * Composable function to display the invitation report.
  */
 @Composable
-fun InvitationReport() {
+fun InvitationReport(totalIncome: String, totalReferredUsers: String, premiumUsers: String) {
     // Column layout to organize UI elements vertically
     Column(Modifier.padding(horizontal = AppTheme.spacing.level2)) {
         // Display the heading for the invitation report
-        HeadingTexts.Level2(text = "Invite Report")
+        HeadingTexts.Level2(text = "Invitation Report")
 
         // Row layout to organize UI elements horizontally
         Row(
@@ -317,9 +320,21 @@ fun InvitationReport() {
             verticalAlignment = Alignment.CenterVertically
         ) {
             // Display three invitation report cards
-            InvitationReportCard(modifier = Modifier.weight(1f))
-            InvitationReportCard(modifier = Modifier.weight(1f))
-            InvitationReportCard(modifier = Modifier.weight(1f))
+            InvitationReportCard(
+                modifier = Modifier.weight(1f),
+                title = "Total Earnings",
+                text = totalIncome
+            )
+            InvitationReportCard(
+                modifier = Modifier.weight(1f),
+                title = "Referred Users",
+                text = totalReferredUsers
+            )
+            InvitationReportCard(
+                modifier = Modifier.weight(1f),
+                title = "Premium Users",
+                text = premiumUsers
+            )
         }
     }
 }
@@ -328,14 +343,14 @@ fun InvitationReport() {
  * Composable function to display an invitation report card.
  *
  * @param modifier Modifier for the Compose UI elements.
- * @param cardTitle Title of the report card.
- * @param cardValue Value of the report card.
+ * @param title Title of the report card.
+ * @param text Value of the report card.
  */
 @Composable
 fun InvitationReportCard(
     modifier: Modifier = Modifier,
-    cardTitle: String = "Demo",
-    cardValue: String = "$500"
+    title: String = "Demo",
+    text: String = "$500"
 ) {
     // Use AppCard to create a card for the invitation report
     AppCard(modifier = modifier) {
@@ -348,13 +363,13 @@ fun InvitationReportCard(
             verticalArrangement = Arrangement.Center
         ) {
             // Display the value of the report card
-            LargeTexts.Level3(text = cardValue)
+            LargeTexts.Level3(text = text)
 
             // Add spacing
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
             // Display the title of the report card
-            CaptionTexts.Level2(text = cardTitle)
+            CaptionTexts.Level2(text = title)
         }
     }
 }

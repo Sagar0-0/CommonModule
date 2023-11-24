@@ -49,7 +49,7 @@ fun AppHorizontalPager(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     enableAutoAnimation: Boolean = true,
-    animationDelay: Long = 2500L,
+    animationDelay: Long = 3500L,
     contentPadding: PaddingValues = PaddingValues(horizontal = AppTheme.spacing.level4),
     pageSpacing: Dp = AppTheme.spacing.level2,
     userScrollEnabled: Boolean = false,
