@@ -16,6 +16,7 @@ import java.time.format.DateTimeFormatter
 object Constants {
     const val DATA_LIMIT = 20L
     const val REQUEST_CODE = 100
+    const val NOTIFICATION_TAG = "notification_tag"
     const val HourMinAmPmKey = "hourMinAmPmKey"
     const val deepLinkUrl: String = "https://www.asta.com"
     const val CHANNEL_ID = "ALARM_SERVICE_CHANNEL"
