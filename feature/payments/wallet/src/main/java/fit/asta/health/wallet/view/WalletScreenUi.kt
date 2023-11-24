@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -66,7 +65,7 @@ fun WalletScreenUi(
         mutableStateOf(false)
     }
     val scope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(true)
+    val bottomSheetState = rememberModalBottomSheetState()
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {
@@ -81,30 +80,36 @@ fun WalletScreenUi(
             closeSheet()
         }
     ) {
-        var amount by rememberSaveable { mutableStateOf("0") }
-        AppTextField(
-            modifier = Modifier.padding(AppTheme.spacing.level2),
-            value = amount,
-            onValueChange = {
-                amount = it
-            },
-            keyboardOptions = KeyboardOptions(
-                keyboardType = KeyboardType.Number,
-                imeAction = ImeAction.Done
-            ),
-            keyboardActions = KeyboardActions(
-                onDone = {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.Center
+        ) {
+            var amount by rememberSaveable { mutableStateOf("0") }
+            AppTextField(
+                modifier = Modifier.padding(AppTheme.spacing.level2),
+                value = amount,
+                onValueChange = {
+                    amount = it
+                },
+                keyboardOptions = KeyboardOptions(
+                    keyboardType = KeyboardType.Number,
+                    imeAction = ImeAction.Done
+                ),
+                keyboardActions = KeyboardActions(
+                    onDone = {
+                        onProceedToAdd(amount)
+                    }
+                )
+            )
+            AppTextButton(
+                modifier = Modifier.padding(AppTheme.spacing.level2),
+                textToShow = "Proceed to add",
+                onClick = {
                     onProceedToAdd(amount)
                 }
             )
-        )
-        AppTextButton(
-            modifier = Modifier.padding(AppTheme.spacing.level2),
-            textToShow = "Proceed to add",
-            onClick = {
-                onProceedToAdd(amount)
-            }
-        )
+        }
+
     }
 
     Column(
@@ -190,6 +195,7 @@ fun OffersCarousal(offersList: List<String>, onOfferClick: (String) -> Unit) {
     val pagerState = rememberPagerState { offersList.size }
     Box {
         AppHorizontalPager(
+            modifier = Modifier.padding(AppTheme.spacing.level2),
             pagerState = pagerState,
             contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
             pageSpacing = AppTheme.spacing.level2,
@@ -197,13 +203,16 @@ fun OffersCarousal(offersList: List<String>, onOfferClick: (String) -> Unit) {
             userScrollEnabled = true
         ) { page ->
             AppCard(
-                modifier = Modifier.fillMaxSize(),
                 shape = AppTheme.shape.level1,
                 onClick = {
                     onOfferClick(offersList[page])
                 }
             ) {
-                Box(modifier = Modifier.fillMaxSize()) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(150.dp)
+                ) {
                     BodyTexts.Level2(text = offersList[page])
                 }
             }
