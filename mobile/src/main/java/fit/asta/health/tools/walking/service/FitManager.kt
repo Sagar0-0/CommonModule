@@ -10,11 +10,12 @@ import com.google.android.gms.fitness.FitnessOptions
 import com.google.android.gms.fitness.data.DataType
 import com.google.android.gms.fitness.data.Field
 import com.google.android.gms.fitness.request.DataReadRequest
+import dagger.hilt.android.qualifiers.ApplicationContext
 import kotlinx.coroutines.channels.awaitClose
 import kotlinx.coroutines.flow.callbackFlow
 import java.util.Calendar
 import java.util.concurrent.TimeUnit
-import javax.inject.Singleton
+import javax.inject.Inject
 
 
 data class DailyFitnessModel(
@@ -27,8 +28,8 @@ data class WeeklyFitnessModel(
     val dailyFitnessList: List<DailyFitnessModel>
 )
 
-@Singleton
-object FitManager {
+
+class FitManager @Inject constructor(@ApplicationContext private val context: Context) {
 
     private val fitnessOptions = FitnessOptions.builder()
         .addDataType(DataType.TYPE_STEP_COUNT_DELTA, FitnessOptions.ACCESS_READ)
@@ -39,7 +40,7 @@ object FitManager {
         .addDataType(DataType.AGGREGATE_DISTANCE_DELTA, FitnessOptions.ACCESS_READ)
         .build()
 
-    fun getDailyFitnessData(context: Context) = callbackFlow {
+    fun getDailyFitnessData() = callbackFlow {
         val calendar = Calendar.getInstance()
         calendar.set(Calendar.HOUR_OF_DAY, 0)
         calendar.set(Calendar.MINUTE, 0)
@@ -160,16 +161,16 @@ object FitManager {
 
     val GOOGLE_FIT_PERMISSIONS_REQUEST_CODE = 1
 
-    fun requestPermissions(context: Activity) {
+    fun requestPermissions() {
         GoogleSignIn.requestPermissions(
-            context, // your activity
+            context as Activity, // your activity
             GOOGLE_FIT_PERMISSIONS_REQUEST_CODE,
             getGoogleAccount(context),
             fitnessOptions
         )
     }
 
-    fun checkFitPermission(context: Activity) =
+    fun checkFitPermission() =
         GoogleSignIn.hasPermissions(getGoogleAccount(context), fitnessOptions)
 
 }

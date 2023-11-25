@@ -31,11 +31,14 @@ import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.walking.service.FitManager
 
 
 @Composable
-fun StepsPermissionScreen(goToSteps: () -> Unit) {
+fun StepsPermissionScreen(
+    goToSteps: () -> Unit,
+    checkPermission: () -> Boolean,
+    setPermission: () -> Unit
+) {
     var state by remember {
         mutableStateOf(true)
     }
@@ -47,7 +50,7 @@ fun StepsPermissionScreen(goToSteps: () -> Unit) {
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
-            if (FitManager.checkFitPermission(context)) {
+            if (checkPermission()) {
                 goToSteps()
             }
         }
@@ -136,8 +139,8 @@ fun StepsPermissionScreen(goToSteps: () -> Unit) {
                     buttonText = "Enable GoogleFit"
                 ) {
                     //ask googleFit permission
-                    if (!FitManager.checkFitPermission(context)) {
-                        FitManager.requestPermissions(context)
+                    if (!checkPermission()) {
+                        setPermission()
                     } else {
                         goToSteps()
                     }
