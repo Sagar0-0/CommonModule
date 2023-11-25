@@ -10,9 +10,9 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
-import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
@@ -60,7 +60,11 @@ import java.net.URLEncoder
 import java.nio.charset.StandardCharsets
 
 @Composable
-fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
+fun MainNavHost(
+    isConnected: Boolean,
+    mainViewModel: MainViewModel,
+    navController: NavHostController
+) {
 
     if (!isConnected) {
         Box(modifier = Modifier.fillMaxSize()) {
@@ -84,7 +88,7 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
                 }
             }
             Log.d("TAG", "MainNavHost: $startDestination")
-            MainNavHost(startDestination)
+            MainNavHost(startDestination, navController)
         }
 
         else -> {}
@@ -93,8 +97,7 @@ fun MainNavHost(isConnected: Boolean, mainViewModel: MainViewModel) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-private fun MainNavHost(startDestination: String) {
-    val navController = rememberNavController()
+private fun MainNavHost(startDestination: String, navController: NavHostController) {
     val context = LocalContext.current
 
     NavHost(

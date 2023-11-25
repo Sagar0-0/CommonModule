@@ -20,6 +20,8 @@ import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.media3.common.util.UnstableApi
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.rememberNavController
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -37,6 +39,7 @@ import fit.asta.health.main.MainViewModel
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
 import fit.asta.health.player.audio.MusicService
+import fit.asta.health.tools.walking.nav.navigateToStepsCounterProgress
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
@@ -56,6 +59,7 @@ class MainActivity : ComponentActivity(),
     private lateinit var networkConnectivity: NetworkConnectivity
     private val isConnected = mutableStateOf(true)
     private val mainViewModel: MainViewModel by viewModels()
+    private lateinit var navController: NavHostController
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -81,7 +85,6 @@ class MainActivity : ComponentActivity(),
         //WindowCompat.setDecorFitsSystemWindows(window, true)
 
         installSplashScreen()
-
         lifecycleScope.launch {
             mainViewModel.isReferralChecked.collect {
                 if (it is UiState.Success && !it.data) {
@@ -103,6 +106,16 @@ class MainActivity : ComponentActivity(),
         registerConnectivityReceiver()
         startMainNavHost()
         FirebaseAuth.getInstance().addIdTokenListener(this)
+    }
+
+    private fun handleIntent(intent: Intent?) {
+        intent?.let {
+            if (it.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
+                if (::navController.isInitialized) {
+                    navController.navigateToStepsCounterProgress()
+                }
+            }
+        }
     }
 
     private fun initReferralTracking() {
@@ -210,8 +223,11 @@ class MainActivity : ComponentActivity(),
                         isSystemInDarkTheme()
                     }
                 }
+                navController = rememberNavController()
+
                 AppTheme(darkTheme = isDarkMode) {
-                    MainNavHost(isConnected.value, mainViewModel)
+                    MainNavHost(isConnected.value, mainViewModel, navController)
+                    handleIntent(intent)
                 }
             }
         }
