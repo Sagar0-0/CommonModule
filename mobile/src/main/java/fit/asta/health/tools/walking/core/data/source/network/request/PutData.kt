@@ -7,7 +7,7 @@ import fit.asta.health.common.utils.Prc
 
 data class PutData(
     @SerializedName("code")
-    val code: Int,
+    val code: String,
     @SerializedName("id")
     val id: String,
     @SerializedName("name")
@@ -16,6 +16,8 @@ data class PutData(
     val prc: List<Prc>,
     @SerializedName("sType")
     val sType: Int,
+    @SerializedName("type")
+    val type: Int,
     @SerializedName("tgt")
     val tgt: Target,
     @SerializedName("uid")

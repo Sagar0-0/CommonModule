@@ -1,10 +1,10 @@
 package fit.asta.health.tools.walking.vm
 
-import android.content.Context
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import com.smarttoolfactory.colorpicker.util.roundToTwoDigits
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
@@ -23,44 +23,27 @@ import fit.asta.health.tools.walking.core.domain.usecase.DayUseCases
 import fit.asta.health.tools.walking.service.FitManager
 import fit.asta.health.tools.walking.view.home.StepsUiState
 import fit.asta.health.tools.walking.view.home.TargetData
-import fit.asta.health.tools.walking.view.session.ProgressState
 import kotlinx.coroutines.Job
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-import kotlin.math.roundToInt
 
 @HiltViewModel
 class ProgressViewModel @Inject constructor(
     private val dayUseCases: DayUseCases,
-    private val repo: WalkingToolRepo
+    private val repo: WalkingToolRepo,
+    private val fitManager: FitManager
 ) : ViewModel() {
 
-    private val _progress = MutableStateFlow(
-        ProgressState(
-            date = LocalDate.MIN,
-            stepsTaken = 0,
-            targetDistance = 0f,
-            targetDuration = 0,
-            calorieBurned = 0,
-            duration = 0,
-            distanceTravelled = 0.0,
-            carbonDioxideSaved = 0.0,
-            state = true
-        )
-    )
-    val progress: StateFlow<ProgressState> = _progress.asStateFlow()
 
     private val _sessionList = mutableStateListOf<Day>()
     val sessionList = MutableStateFlow(_sessionList)
 
-    private var getProgressJob: Job? = null
+
     private var getTodayProgressJob: Job? = null
 
     private val _mutableState = MutableStateFlow<UiState<StepsUiState>>(UiState.Idle)
@@ -73,13 +56,14 @@ class ProgressViewModel @Inject constructor(
     val sheetDataList = MutableStateFlow(_sheetDataList)
 
     init {
+        startProgressHome()
         getTodayProgressList(LocalDate.now())
     }
 
-    fun startProgressHome(context: Context) {
+    private fun startProgressHome() {
         _mutableState.value = UiState.Loading
         viewModelScope.launch {
-            FitManager.getDailyFitnessData(context).collect { dailyFit ->
+            fitManager.getDailyFitnessData().collect { dailyFit ->
                 val result = repo.getHomeData("6309a9379af54f142c65fbfe")
                 _mutableState.value = when (result) {
                     is ResponseState.Success -> {
@@ -124,10 +108,7 @@ class ProgressViewModel @Inject constructor(
                 targetDuration = target.value.targetDuration,
                 targetDistance = target.value.targetDistance
             )
-        }
-        viewModelScope.launch {
-            delay(1000)
-            getProgress(LocalDate.now())
+            putData()
         }
     }
 
@@ -140,23 +121,6 @@ class ProgressViewModel @Inject constructor(
         }
     }
 
-    private fun getProgress(date: LocalDate) {
-        getProgressJob?.cancel()
-
-        getProgressJob = dayUseCases.getDay(date).onEach { day ->
-            _progress.value = progress.value.copy(
-                date = day.date,
-                stepsTaken = day.steps,
-                targetDuration = day.targetDuration,
-                targetDistance = day.targetDistance,
-                calorieBurned = day.calorieBurned.roundToInt(),
-                distanceTravelled = day.distanceTravelled,
-                carbonDioxideSaved = day.carbonDioxideSaved,
-                duration = day.duration,
-                state = day.state
-            )
-        }.launchIn(viewModelScope)
-    }
 
     private fun getTodayProgressList(date: LocalDate) {
         getTodayProgressJob?.cancel()
@@ -168,31 +132,59 @@ class ProgressViewModel @Inject constructor(
         }.launchIn(viewModelScope)
     }
 
-    fun pause() {
-        _progress.value = progress.value.copy(state = false)
-        viewModelScope.launch { dayUseCases.changeStepsState(LocalDate.now(), false) }
-    }
-
-    fun resume() {
-        _progress.value = progress.value.copy(state = true)
-        viewModelScope.launch { dayUseCases.changeStepsState(LocalDate.now(), true) }
-    }
-
-    fun stop() {
-        viewModelScope.launch { dayUseCases.changeStepsState(LocalDate.now(), false) }
-    }
 
     fun getSheetItemValue(code: String) {
-//        viewModelScope.launch {
-//            when (val result = meditationRepo.getSheetData(code)) {
-//                is ResponseState.Success -> {
-//                    _sheetDataList.clear()
-//                    _sheetDataList.addAll(result.data)
-//                }
-//
-//                else -> {}
-//            }
-//        }
+        _sheetDataList.clear()
+        viewModelScope.launch {
+            when (code) {
+                "goal" -> {
+                    when (val result = repo.getSheetGoalsData("walk")) {
+                        is ResponseState.Success -> {
+                            _sheetDataList.addAll(result.data)
+                        }
+
+                        else -> {}
+                    }
+                }
+
+                "mode" -> {
+                    _sheetDataList.addAll(
+                        listOf(
+                            NetSheetData(
+                                id = "",
+                                code = "indoor",
+                                name = "Indoor",
+                                dsc = "",
+                                since = 1,
+                                type = 1,
+                                url = "",
+                                isSelected = false
+                            ),
+                            NetSheetData(
+                                id = "",
+                                code = "outdoor",
+                                name = "Outdoor",
+                                dsc = "",
+                                since = 1,
+                                type = 1,
+                                url = "",
+                                isSelected = false
+                            )
+                        )
+                    )
+                }
+
+                else -> {
+                    when (val result = repo.getSheetData(code)) {
+                        is ResponseState.Success -> {
+                            _sheetDataList.addAll(result.data)
+                        }
+
+                        else -> {}
+                    }
+                }
+            }
+        }
     }
 
     fun setMultiple(index: Int, itemIndex: Int) {
@@ -216,31 +208,35 @@ class ProgressViewModel @Inject constructor(
         viewModelScope.launch {
             repo.putData(
                 PutData(
-                    code = 3,
+                    code = "walking",
                     id = "",
                     name = "walking",
                     sType = 1,
-                    uid = "",
+                    type = 6,
+                    uid = "6309a9379af54f142c65fbfe",
                     wea = true,
                     tgt = Target(
                         dis = Distance(
-                            dis = 0f,
+                            dis = target.value.targetDistance.roundToTwoDigits(),
                             unit = "km"
                         ),
                         dur = Duration(
-                            dur = 0f,
+                            dur = target.value.targetDuration.toFloat().roundToTwoDigits(),
                             unit = "mins"
                         ),
                         steps = Steps(
-                            steps = 0,
+                            steps = target.value.targetDistance.times(100_000).div(72).toInt(),
                             unit = "steps"
                         )
                     ),
                     prc = _selectedData.toList()
-
                 )
             )
         }
     }
 
+    fun checkPermission() = fitManager.checkFitPermission()
+    fun requestPermission() {
+        fitManager.requestPermissions()
+    }
 }

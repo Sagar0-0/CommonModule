@@ -17,6 +17,6 @@ data class NetSheetData(
     @SerializedName("type")
     val type: Int,
     @SerializedName("url")
-    val url: String,
+    val url: String?,
     var isSelected: Boolean = false,
 )

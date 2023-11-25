@@ -1,5 +1,6 @@
 package fit.asta.health.tools.walking.core.data.source.api
 
+import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
 import fit.asta.health.tools.walking.core.data.source.network.request.PutData
@@ -23,5 +24,15 @@ interface WalkingApi {
 
     @POST("tools/walking/day/post/")
     suspend fun putDayData(@Body putDayData: PutDayData): Response<PutResponse>
+
+    @GET("tools/health/list/get/?")
+    suspend fun getSheetData(
+        @Query("screenName") code: String
+    ): Response<List<NetSheetData>>
+
+    @GET("health/property/goals/get/all/?")
+    suspend fun getSheetGoalsData(
+        @Query("tool") tool: String
+    ): Response<List<NetSheetData>>
 
 }
