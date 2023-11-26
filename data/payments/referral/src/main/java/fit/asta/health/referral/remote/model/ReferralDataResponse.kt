@@ -22,8 +22,11 @@ data class ReferralDataResponse(
     )
 
     data class ReferralStats(
-        val totalIncome: String = "0",
-        val totalReferredUsers: String = "0",
-        val premiumUsers: String = "0",
+        @SerializedName("refAmt")
+        val totalIncome: Int = 0,
+        @SerializedName("nonSubReferee")
+        val nonPremiumUsers: Int = 0,
+        @SerializedName("subReferee")
+        val premiumUsers: Int = 0
     )
 }

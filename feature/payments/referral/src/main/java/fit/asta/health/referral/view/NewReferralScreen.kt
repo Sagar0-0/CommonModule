@@ -116,9 +116,9 @@ fun NewReferralDesign(
 
             // Display invitation report
             InvitationReport(
-                referralStats.totalIncome,
-                referralStats.totalReferredUsers,
-                referralStats.premiumUsers
+                referralStats.totalIncome.toString(),
+                referralStats.nonPremiumUsers.toString(),
+                referralStats.premiumUsers.toString()
             )
 
             // Add spacing
@@ -305,7 +305,7 @@ fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
  * Composable function to display the invitation report.
  */
 @Composable
-fun InvitationReport(totalIncome: String, totalReferredUsers: String, premiumUsers: String) {
+fun InvitationReport(totalIncome: String, nonPremiumUsers: String, premiumUsers: String) {
     // Column layout to organize UI elements vertically
     Column(Modifier.padding(horizontal = AppTheme.spacing.level2)) {
         // Display the heading for the invitation report
@@ -328,7 +328,7 @@ fun InvitationReport(totalIncome: String, totalReferredUsers: String, premiumUse
             InvitationReportCard(
                 modifier = Modifier.weight(1f),
                 title = "Referred Users",
-                text = totalReferredUsers
+                text = nonPremiumUsers
             )
             InvitationReportCard(
                 modifier = Modifier.weight(1f),
