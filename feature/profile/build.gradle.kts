@@ -92,14 +92,12 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
-    implementation(libs.hilt.android)
 
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
-//    implementation(libs.androidx.hilt.common)
+    //Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.hilt.ext.work)
+
     //Work Manager
+    implementation(libs.hilt.ext.work)
     implementation(libs.androidx.work.ktx)
 
     implementation(libs.gson)

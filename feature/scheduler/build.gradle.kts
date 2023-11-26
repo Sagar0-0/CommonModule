@@ -93,7 +93,5 @@ dependencies {
 
     // For instrumented tests.
     androidTestImplementation(libs.hilt.android.testing)
-    kaptAndroidTest(libs.hilt.compiler)
-
     androidTestImplementation("androidx.test:runner:1.5.2")
 }

@@ -272,14 +272,9 @@ dependencies {
     implementation(libs.room.ktx)
     androidTestImplementation(libs.androidx.room.testing)
 
-    //Dagger Hilt
-    implementation(libs.hilt.android)
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
-//    implementation(libs.androidx.hilt.common)
+    //Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.ext.work)
-    //kspAndroidTest(libs.hilt.compiler)
 
     // Retrofit and OkHttp
     implementation(libs.okhttp)
