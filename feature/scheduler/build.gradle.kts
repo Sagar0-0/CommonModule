@@ -70,10 +70,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
     implementation(libs.hilt.android)
-
-    kapt(libs.hilt.compiler)
-    kapt(libs.hilt.ext.compiler)
-//    implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.ext.work)
     //Work Manager
@@ -93,7 +89,7 @@ dependencies {
     implementation(libs.androidx.navigation.testing)
 
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
 
     // For instrumented tests.
     androidTestImplementation(libs.hilt.android.testing)

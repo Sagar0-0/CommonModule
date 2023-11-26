@@ -159,8 +159,6 @@ dependencies {
 
     //multidex support
     //implementation("androidx.multidex:multidex:2.0.1")
-
-    implementation(libs.kotlin.stdlib)
     // Coroutines
     implementation(libs.kotlinx.coroutines.core)
     //Androidx
@@ -177,7 +175,7 @@ dependencies {
 
     //Jetpack Compose
     debugImplementation(libs.androidx.compose.ui.tooling)
-    debugImplementation(libs.androidx.compose.ui.test.manifest)
+    debugImplementation(libs.androidx.compose.ui.testManifest)
     implementation(libs.androidx.compose.ui)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.compose.ui.tooling)
@@ -281,6 +279,7 @@ dependencies {
 //    implementation(libs.androidx.hilt.common)
     implementation(libs.androidx.hilt.navigation.compose)
     implementation(libs.hilt.ext.work)
+    //kspAndroidTest(libs.hilt.compiler)
 
     // Retrofit and OkHttp
     implementation(libs.okhttp)

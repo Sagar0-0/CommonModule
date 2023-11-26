@@ -7,11 +7,12 @@ accompanistNavigationMaterial = "0.27.1"
 accompanistPager = "0.13.0"
 androidDesugarJdkLibs = "2.0.4"
 androidGradlePlugin = "8.1.4"
+androidTools = "31.1.4"
 androidxActivity = "1.8.1"
 androidxAppCompat = "1.6.1"
 androidxBrowser = "1.7.0"
 androidxComposeBom = "2023.10.01"
-androidxComposeCompiler = "1.5.0"
+androidxComposeCompiler = "1.5.3"
 androidxComposeRuntimeTracing = "1.5.0"
 androidxCore = "1.12.0"
 androidxCoreSplashscreen = "1.0.1"
@@ -84,8 +85,8 @@ junit = "1.1.5"
 junit4 = "4.13.2"
 junitJupiter = "5.9.3"
 junitVintageEngine = "5.9.3"
-kotlin = "1.9.0"
-kotlinBom = "1.9.0"
+kotlin = "1.9.10"
+kotlinBom = "1.9.10"
 kotlinxCoroutines = "1.7.3"
 kotlinxCoroutinesCore = "1.7.3"
 kotlinxCoroutinesPlayServices = "1.7.3"
@@ -127,6 +128,8 @@ protobufPlugin = "0.9.4"
 retrofit = "2.9.0"
 retrofitKotlinxSerializationJson = "1.0.0"
 reviewKtx = "2.0.1"
+robolectric = "4.11.1"
+roborazzi = "1.6.0"
 room = "2.6.0"
 roomTesting = "2.6.0"
 secrets = "2.0.1"
@@ -141,7 +144,7 @@ uiTestManifest = "1.5.4"
 uiToolingPreview = "1.5.4"
 workRuntimeKtx = "2.8.1"
 mockwebserver = "4.11.0"
-org-jetbrains-kotlin-android = "1.9.0"
+org-jetbrains-kotlin-android = "1.9.10"
 material = "1.10.0"
 
 [libraries]
@@ -174,7 +177,7 @@ androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = 
 androidx-compose-ui = { group = "androidx.compose.ui", name = "ui", version.ref = "ui" }
 androidx-compose-ui-graphics = { group = "androidx.compose.ui", name = "ui-graphics", version.ref = "uiGraphics" }
 androidx-compose-ui-test = { group = "androidx.compose.ui", name = "ui-test-junit4" }
-androidx-compose-ui-test-manifest = { group = "androidx.compose.ui", name = "ui-test-manifest", version.ref = "uiTestManifest" }
+androidx-compose-ui-testManifest = { group = "androidx.compose.ui", name = "ui-test-manifest" }
 androidx-compose-ui-tooling = { group = "androidx.compose.ui", name = "ui-tooling" }
 androidx-compose-ui-tooling-preview = { group = "androidx.compose.ui", name = "ui-tooling-preview", version.ref = "uiToolingPreview" }
 androidx-compose-ui-util = { group = "androidx.compose.ui", name = "ui-util" }
@@ -289,6 +292,8 @@ kotlinx-coroutines-test = { group = "org.jetbrains.kotlinx", name = "kotlinx-cor
 kotlinx-datetime = { group = "org.jetbrains.kotlinx", name = "kotlinx-datetime", version.ref = "kotlinxDatetime" }
 kotlinx-serialization-json = { group = "org.jetbrains.kotlinx", name = "kotlinx-serialization-json", version.ref = "kotlinxSerializationJson" }
 lint-api = { group = "com.android.tools.lint", name = "lint-api", version.ref = "lint" }
+lint-checks = { group = "com.android.tools.lint", name = "lint-checks", version.ref = "lint" }
+lint-tests = { group = "com.android.tools.lint", name = "lint-tests", version.ref = "lint" }
 lottie-compose = { module = "com.airbnb.android:lottie-compose", version.ref = "lottieCompose" }
 maps-compose = { module = "com.google.maps.android:maps-compose", version.ref = "mapsCompose" }
 mockk-android = { module = "io.mockk:mockk-android", version.ref = "mockkAndroid" }
@@ -307,6 +312,9 @@ protobuf-kotlin-lite = { group = "com.google.protobuf", name = "protobuf-kotlin-
 protobuf-protoc = { group = "com.google.protobuf", name = "protoc", version.ref = "protobuf" }
 retrofit-core = { group = "com.squareup.retrofit2", name = "retrofit", version.ref = "retrofit" }
 retrofit-kotlin-serialization = { group = "com.jakewharton.retrofit", name = "retrofit2-kotlinx-serialization-converter", version.ref = "retrofitKotlinxSerializationJson" }
+robolectric = { group = "org.robolectric", name = "robolectric", version.ref = "robolectric" }
+robolectric-shadows = { group = "org.robolectric", name = "shadows-framework", version.ref = "robolectric" }
+roborazzi = { group = "io.github.takahirom.roborazzi", name = "roborazzi", version.ref = "roborazzi" }
 review-ktx = { module = "com.google.android.play:review-ktx", version.ref = "reviewKtx" }
 room-compiler = { group = "androidx.room", name = "room-compiler", version.ref = "room" }
 room-ktx = { group = "androidx.room", name = "room-ktx", version.ref = "room" }
@@ -319,6 +327,7 @@ mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", versio
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
+android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
 firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
 firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
