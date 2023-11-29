@@ -11,7 +11,8 @@ data class UserPreferencesData(
     val isFcmTokenUploaded: Boolean = false,
     val isReferralChecked: Boolean = false,
     val referralCode: String = "",
-    val trackLanguage: String = ""
+    val trackLanguage: String = "",
+    val stepsPermissionRejectedCount: Int = 0,
 )
 
 data class UserPreferencesDataAddress(
