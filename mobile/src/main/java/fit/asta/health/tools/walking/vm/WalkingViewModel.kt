@@ -33,7 +33,7 @@ import java.time.LocalDate
 import javax.inject.Inject
 
 @HiltViewModel
-class ProgressViewModel @Inject constructor(
+class WalkingViewModel @Inject constructor(
     private val dayUseCases: DayUseCases,
     private val repo: WalkingToolRepo,
     private val fitManager: FitManager

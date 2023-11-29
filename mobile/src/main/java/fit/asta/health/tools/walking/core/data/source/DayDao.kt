@@ -18,8 +18,8 @@ interface DayDao {
     @Query("SELECT * FROM day")
     suspend fun getAllDays(): List<Day>
 
-    @Query("SELECT * FROM day")
-    fun getDays(): Flow<List<Day>>
+    @Query("SELECT * FROM day WHERE date = :date")
+    fun getDays(date: LocalDate): Flow<List<Day>>
 
     @Upsert
     suspend fun upsertDay(day: Day)

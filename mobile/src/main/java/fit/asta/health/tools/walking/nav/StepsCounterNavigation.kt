@@ -17,8 +17,8 @@ import fit.asta.health.tools.walking.service.StepCounterService
 import fit.asta.health.tools.walking.view.home.StepsScreen
 import fit.asta.health.tools.walking.view.permission.StepsPermissionScreen
 import fit.asta.health.tools.walking.view.session.StepsActivityScreen
-import fit.asta.health.tools.walking.vm.ProgressViewModel
 import fit.asta.health.tools.walking.vm.StepsSessionViewModel
+import fit.asta.health.tools.walking.vm.WalkingViewModel
 
 const val STEPS_GRAPH_ROUTE = "steps_graph_address"
 
@@ -39,36 +39,36 @@ fun NavGraphBuilder.stepsCounterNavigation(
         startDestination = StepsCounterScreen.StepsPermissionScreen.route
     ) {
         composable(route = StepsCounterScreen.StepsPermissionScreen.route) {
-            val progressViewModel: ProgressViewModel = it.sharedViewModel(navController)
+            val walkingViewModel: WalkingViewModel = it.sharedViewModel(navController)
             StepsPermissionScreen(checkPermission = {
-                progressViewModel.checkPermission()
+                walkingViewModel.checkPermission()
             }, setPermission = {
-                progressViewModel.requestPermission()
+                walkingViewModel.requestPermission()
             }, goToSteps = {
                 navController.popBackStack()
                 navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
             })
         }
         composable(route = StepsCounterScreen.StepsCounterHomeScreen.route) { navBackStackEntry ->
-            val progressViewModel: ProgressViewModel =
+            val walkingViewModel: WalkingViewModel =
                 navBackStackEntry.sharedViewModel(navController)
-            val state by progressViewModel.state.collectAsStateWithLifecycle()
-            val list by progressViewModel.sessionList.collectAsStateWithLifecycle()
-            val selectedData by progressViewModel.selectedData.collectAsStateWithLifecycle()
+            val state by walkingViewModel.state.collectAsStateWithLifecycle()
+            val list by walkingViewModel.sessionList.collectAsStateWithLifecycle()
+            val selectedData by walkingViewModel.selectedData.collectAsStateWithLifecycle()
             val context = LocalContext.current
             StepsScreen(
                 state = state, list = list,
                 onStart = {
-                    progressViewModel.startSession()
+                    walkingViewModel.startSession()
                     context.startService(Intent(context, StepCounterService::class.java))
                     navController.navigate(StepsCounterScreen.StepsProgressScreen.route)
                 },
                 selectedData = selectedData,
                 goToList = { int, str ->
-                    progressViewModel.getSheetItemValue(str)
+                    walkingViewModel.getSheetItemValue(str)
                     navController.navigate(route = StepsCounterScreen.StepsSheetScreen.route + "/$int")
                 },
-                setTarget = { dis, dur -> progressViewModel.setTarget(dis, dur) },
+                setTarget = { dis, dur -> walkingViewModel.setTarget(dis, dur) },
                 onBack = onBack,
             )
         }
@@ -89,7 +89,7 @@ fun NavGraphBuilder.stepsCounterNavigation(
 
         composable(StepsCounterScreen.StepsSheetScreen.route + "/{id}") { navBackStack ->
             val index = navBackStack.arguments?.getString("id")?.toInt()
-            val viewModel: ProgressViewModel = navBackStack.sharedViewModel(navController)
+            val viewModel: WalkingViewModel = navBackStack.sharedViewModel(navController)
             val list by viewModel.sheetDataList.collectAsStateWithLifecycle()
             val selectedData by viewModel.selectedData.collectAsStateWithLifecycle()
 

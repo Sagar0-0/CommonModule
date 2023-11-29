@@ -1,6 +1,7 @@
 package fit.asta.health.tools.walking.view.home
 
 import android.widget.Toast
+import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -15,6 +16,12 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
+import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AccessTime
+import androidx.compose.material.icons.filled.DirectionsRun
+import androidx.compose.material.icons.filled.LocalFireDepartment
 import androidx.compose.material3.BottomSheetScaffoldState
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.CardDefaults
@@ -142,7 +149,7 @@ fun StepsScreen(
                             CircularSliderInt(
                                 modifier = Modifier.size(200.dp),
                                 isStarted = true,
-                                appliedAngleDistanceValue = 1500f,
+                                appliedAngleDistanceValue = 3500f,
                                 indicatorValue = state.data.stepCount.toFloat(),
                                 maxIndicatorValue = 10000f,
                                 bigTextSuffix = "Steps",
@@ -181,45 +188,16 @@ fun StepsScreen(
 
 
                     item {
-                        AppCard(modifier = Modifier.fillMaxWidth()) {
-                            Column(
-                                modifier = Modifier
-                                    .fillMaxWidth()
-                                    .padding(16.dp)
-                            ) {
+                        AnimatedContent(targetState = list.isNotEmpty(), label = "") {
+                            if (it) {
                                 TitleTexts.Level2(text = "Today Session Data ")
-                                Row(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp),
-                                    horizontalArrangement = Arrangement.SpaceBetween
-                                ) {
-                                    TitleTexts.Level2(text = "on")
-                                    TitleTexts.Level2(text = "steps")
-                                    TitleTexts.Level2(text = "cal")
-                                    TitleTexts.Level2(text = "dis")
-                                    TitleTexts.Level2(text = "dur")
-                                }
-                                list.forEach {
-                                    Row(
-                                        modifier = Modifier.fillMaxWidth(),
-                                        horizontalArrangement = Arrangement.SpaceBetween
-                                    ) {
-                                        TitleTexts.Level2(text = formatTime(it.startupTime))
-                                        TitleTexts.Level2(text = it.steps.toString())
-                                        TitleTexts.Level2(
-                                            text = it.calorieBurned.toFloat().roundToTwoDigits()
-                                                .toString()
-                                        )
-                                        TitleTexts.Level2(
-                                            text = it.distanceTravelled.toFloat().roundToTwoDigits()
-                                                .toString()
-                                        )
-                                        TitleTexts.Level2(text = it.duration.toString())
-                                    }
-                                }
+                            } else {
+                                TitleTexts.Level2(text = "Start today session ")
                             }
                         }
+                    }
+                    items(list) {
+                        DayItem(item = it)
                     }
                     item {
                         Spacer(modifier = Modifier.height(200.dp))
@@ -389,18 +367,15 @@ fun ShowTargetDialog(
             ) {
                 TitleTexts.Level2(
                     text = "Select Distance and Duration",
-                    modifier = Modifier.padding(top = AppTheme.spacing.level0),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.onSurface
                 )
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 BodyTexts.Level2(
                     text = "Recommend distance ${dialogData.recommendDistance} Recommend duration ${dialogData.recommendDuration}",
-                    modifier = Modifier.padding(top = AppTheme.spacing.level0),
                     textAlign = TextAlign.Center,
                     color = AppTheme.colors.onSurface
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 CircularSliderInt(
                     modifier = Modifier.size(200.dp),
                     isStarted = false,
@@ -411,7 +386,6 @@ fun ShowTargetDialog(
                     onChangeDistance = { duration = it },
                     onChangeAngleDistance = {}
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 CircularSliderFloat(
                     modifier = Modifier.size(200.dp),
                     isStarted = false,
@@ -422,7 +396,6 @@ fun ShowTargetDialog(
                     onChangeDistance = { distance = it },
                     onChangeAngleDistance = {}
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
@@ -458,7 +431,69 @@ fun ShowTargetDialog(
                         }
                     }
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            }
+        }
+    }
+}
+
+@Composable
+fun DayItem(item: Day) {
+    AppCard(modifier = Modifier.fillMaxWidth()) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Column(
+                modifier = Modifier.weight(.7f),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                horizontalAlignment = Alignment.Start
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppIcon(imageVector = Icons.Default.AccessTime)
+                    CaptionTexts.Level2(text = formatTime(item.startupTime))
+                }
+                TitleTexts.Level2(
+                    text = "${
+                        item.distanceTravelled.toFloat().roundToTwoDigits()
+                    } km in ${item.duration} min"
+                )
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppIcon(imageVector = Icons.Default.DirectionsRun)
+                        CaptionTexts.Level2(text = "${item.steps} steps")
+                    }
+                    Row(
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppIcon(imageVector = Icons.Default.LocalFireDepartment)
+                        CaptionTexts.Level2(text = "${item.calorieBurned} calories")
+                    }
+                }
+            }
+            AppSurface(
+                modifier = Modifier.size(50.dp),
+                shape = CircleShape,
+                color = AppTheme.colors.inverseOnSurface
+            ) {
+                Box(contentAlignment = Alignment.Center) {
+                    AppIcon(
+                        modifier = Modifier.size(35.dp),
+                        imageVector = Icons.Default.DirectionsRun
+                    )
+                }
             }
         }
     }

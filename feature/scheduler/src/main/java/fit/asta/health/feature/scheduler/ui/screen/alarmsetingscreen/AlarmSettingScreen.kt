@@ -106,7 +106,9 @@ fun AlarmSettingScreen(
     val snackBarHostState = remember { SnackbarHostState() }
 
     AppScaffold(
-        modifier = Modifier.fillMaxSize(), snackBarHostState = snackBarHostState,
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(), snackBarHostState = snackBarHostState,
         topBar = {
             AppTopBar(
                 title = stringResource(StringR.string.alarm_setting),
