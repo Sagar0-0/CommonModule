@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.session
+package fit.asta.health.feature.walking.view.session
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -20,6 +20,7 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.walking.domain.formatDuration
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ProgressBarInt
@@ -28,9 +29,8 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
+import fit.asta.health.feature.walking.view.component.StepsProgressCard
 import fit.asta.health.resources.drawables.R
-import fit.asta.health.tools.walking.core.domain.formatDuration
-import fit.asta.health.tools.walking.view.component.StepsProgressCard
 import fit.asta.health.resources.strings.R as StringR
 
 @Composable

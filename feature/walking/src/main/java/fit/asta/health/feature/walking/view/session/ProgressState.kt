@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.session
+package fit.asta.health.feature.walking.view.session
 
 import java.time.LocalDate
 

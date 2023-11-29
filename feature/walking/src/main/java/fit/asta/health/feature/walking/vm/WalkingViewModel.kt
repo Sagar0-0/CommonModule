@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.vm
+package fit.asta.health.feature.walking.vm
 
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
@@ -10,24 +10,27 @@ import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.data.walking.data.Settings
+import fit.asta.health.data.walking.data.source.network.request.Distance
+import fit.asta.health.data.walking.data.source.network.request.Duration
+import fit.asta.health.data.walking.data.source.network.request.PutData
+import fit.asta.health.data.walking.data.source.network.request.Steps
+import fit.asta.health.data.walking.data.source.network.request.Target
+import fit.asta.health.data.walking.domain.model.Day
+import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
+import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.service.FitManager
+import fit.asta.health.feature.walking.view.home.StepsUiState
+import fit.asta.health.feature.walking.view.home.TargetData
 import fit.asta.health.network.utils.toValue
-import fit.asta.health.tools.walking.core.data.Settings
-import fit.asta.health.tools.walking.core.data.source.network.request.Distance
-import fit.asta.health.tools.walking.core.data.source.network.request.Duration
-import fit.asta.health.tools.walking.core.data.source.network.request.PutData
-import fit.asta.health.tools.walking.core.data.source.network.request.Steps
-import fit.asta.health.tools.walking.core.data.source.network.request.Target
-import fit.asta.health.tools.walking.core.domain.model.Day
-import fit.asta.health.tools.walking.core.domain.repository.WalkingToolRepo
-import fit.asta.health.tools.walking.core.domain.usecase.DayUseCases
-import fit.asta.health.tools.walking.service.FitManager
-import fit.asta.health.tools.walking.view.home.StepsUiState
-import fit.asta.health.tools.walking.view.home.TargetData
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.launchIn
+import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
@@ -55,9 +58,24 @@ class WalkingViewModel @Inject constructor(
     private val _sheetDataList = mutableStateListOf<NetSheetData>()
     val sheetDataList = MutableStateFlow(_sheetDataList)
 
+    val stepsPermissionRejectedCount = repo.userPreferences
+        .map {
+            it.stepsPermissionRejectedCount
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = 0,
+        )
+
     init {
         startProgressHome()
         getTodayProgressList(LocalDate.now())
+    }
+
+
+    fun setStepsPermissionRejectedCount(count: Int) {
+        viewModelScope.launch { repo.updateStepsPermissionRejectedCount(count) }
     }
 
     private fun startProgressHome() {

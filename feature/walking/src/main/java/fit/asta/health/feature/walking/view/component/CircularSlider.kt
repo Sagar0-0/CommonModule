@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.component
+package fit.asta.health.feature.walking.view.component
 
 
 import android.view.MotionEvent

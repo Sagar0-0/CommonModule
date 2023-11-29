@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.home
+package fit.asta.health.feature.walking.view.home
 
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
@@ -50,6 +50,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.formatTime
 import fit.asta.health.common.utils.toDraw
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.walking.domain.model.Day
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CardItem
@@ -67,9 +68,8 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.walking.view.component.StepsProgressCard
 import fit.asta.health.resources.drawables.R
-import fit.asta.health.tools.walking.core.domain.model.Day
-import fit.asta.health.tools.walking.view.component.StepsProgressCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -149,7 +149,7 @@ fun StepsScreen(
                             CircularSliderInt(
                                 modifier = Modifier.size(200.dp),
                                 isStarted = true,
-                                appliedAngleDistanceValue = 3500f,
+                                appliedAngleDistanceValue = 110f,
                                 indicatorValue = state.data.stepCount.toFloat(),
                                 maxIndicatorValue = 10000f,
                                 bigTextSuffix = "Steps",

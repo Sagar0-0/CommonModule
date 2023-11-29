@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.home
+package fit.asta.health.feature.walking.view.home
 
 data class StepsUiState(
     val stepCount: Int = 0,

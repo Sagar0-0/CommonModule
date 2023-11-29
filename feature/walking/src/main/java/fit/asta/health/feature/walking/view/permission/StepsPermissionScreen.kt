@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.view.permission
+package fit.asta.health.feature.walking.view.permission
 
 import android.Manifest
 import android.app.Activity
@@ -27,7 +27,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
-import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -35,9 +34,11 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun StepsPermissionScreen(
+    stepsPermissionCount: Int,
     goToSteps: () -> Unit,
     checkPermission: () -> Boolean,
-    setPermission: () -> Unit
+    setPermission: () -> Unit,
+    setPermissionCount: (Int) -> Unit
 ) {
     var state by remember {
         mutableStateOf(true)
@@ -66,7 +67,7 @@ fun StepsPermissionScreen(
                     "This permission is recommended for better functionality.",
                     Toast.LENGTH_SHORT
                 ).show()
-                PrefManager.setStepsPermissionRejectedCount(context, 0)
+                setPermissionCount(0)
                 state = false
             } else {
                 Toast.makeText(
@@ -74,10 +75,7 @@ fun StepsPermissionScreen(
                     "Please allow Steps permission access.",
                     Toast.LENGTH_SHORT
                 ).show()
-                PrefManager.setStepsPermissionRejectedCount(
-                    context,
-                    PrefManager.getStepsPermissionRejectedCount(context) + 1
-                )
+                setPermissionCount(stepsPermissionCount + 1)
             }
         }
 
@@ -88,10 +86,10 @@ fun StepsPermissionScreen(
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
-            PrefManager.setStepsPermissionRejectedCount(context, 0)
+            setPermissionCount(0)
             state = false
         } else {
-            if (PrefManager.getStepsPermissionRejectedCount(context) > 2) {
+            if (stepsPermissionCount > 2) {
                 Toast.makeText(
                     context,
                     "Please allow Steps permission access.",

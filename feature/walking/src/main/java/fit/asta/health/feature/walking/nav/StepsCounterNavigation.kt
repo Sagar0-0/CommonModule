@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.nav
+package fit.asta.health.feature.walking.nav
 
 import android.content.Intent
 import androidx.compose.runtime.getValue
@@ -12,13 +12,13 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.sharedViewModel
-import fit.asta.health.meditation.view.other.SheetDataSelectionScreen
-import fit.asta.health.tools.walking.service.StepCounterService
-import fit.asta.health.tools.walking.view.home.StepsScreen
-import fit.asta.health.tools.walking.view.permission.StepsPermissionScreen
-import fit.asta.health.tools.walking.view.session.StepsActivityScreen
-import fit.asta.health.tools.walking.vm.StepsSessionViewModel
-import fit.asta.health.tools.walking.vm.WalkingViewModel
+import fit.asta.health.data.walking.service.StepCounterService
+import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
+import fit.asta.health.feature.walking.view.home.StepsScreen
+import fit.asta.health.feature.walking.view.permission.StepsPermissionScreen
+import fit.asta.health.feature.walking.view.session.StepsActivityScreen
+import fit.asta.health.feature.walking.vm.StepsSessionViewModel
+import fit.asta.health.feature.walking.vm.WalkingViewModel
 
 const val STEPS_GRAPH_ROUTE = "steps_graph_address"
 
@@ -38,15 +38,19 @@ fun NavGraphBuilder.stepsCounterNavigation(
         route = STEPS_GRAPH_ROUTE,
         startDestination = StepsCounterScreen.StepsPermissionScreen.route
     ) {
-        composable(route = StepsCounterScreen.StepsPermissionScreen.route) {
-            val walkingViewModel: WalkingViewModel = it.sharedViewModel(navController)
-            StepsPermissionScreen(checkPermission = {
+        composable(route = StepsCounterScreen.StepsPermissionScreen.route) { navBackStackEntry ->
+            val walkingViewModel: WalkingViewModel =
+                navBackStackEntry.sharedViewModel(navController)
+            val stepsPermissionCount by walkingViewModel.stepsPermissionRejectedCount.collectAsStateWithLifecycle()
+            StepsPermissionScreen(stepsPermissionCount = stepsPermissionCount, checkPermission = {
                 walkingViewModel.checkPermission()
             }, setPermission = {
                 walkingViewModel.requestPermission()
             }, goToSteps = {
                 navController.popBackStack()
                 navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
+            }, setPermissionCount = {
+                walkingViewModel.setStepsPermissionRejectedCount(it)
             })
         }
         composable(route = StepsCounterScreen.StepsCounterHomeScreen.route) { navBackStackEntry ->

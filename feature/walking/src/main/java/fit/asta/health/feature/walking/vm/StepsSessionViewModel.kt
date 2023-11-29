@@ -1,10 +1,10 @@
-package fit.asta.health.tools.walking.vm
+package fit.asta.health.feature.walking.vm
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.tools.walking.core.domain.usecase.DayUseCases
-import fit.asta.health.tools.walking.view.session.ProgressState
+import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.feature.walking.view.session.ProgressState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
