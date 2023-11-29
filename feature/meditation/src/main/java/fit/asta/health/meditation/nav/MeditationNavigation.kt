@@ -11,9 +11,9 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
+import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
 import fit.asta.health.meditation.view.home.MEvent
 import fit.asta.health.meditation.view.home.MeditationHomeScreen
-import fit.asta.health.meditation.view.other.SheetDataSelectionScreen
 import fit.asta.health.meditation.viewmodel.MeditationViewModel
 import fit.asta.health.player.presentation.UiState
 import fit.asta.health.player.presentation.screens.player.PlayerScreen
