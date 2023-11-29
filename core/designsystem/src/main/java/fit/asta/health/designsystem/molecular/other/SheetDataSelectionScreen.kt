@@ -1,4 +1,4 @@
-package fit.asta.health.meditation.view.other
+package fit.asta.health.designsystem.molecular.other
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
@@ -19,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -48,12 +49,14 @@ fun SheetDataSelectionScreen(
             MultipleTypeScreen(
                 modifier = Modifier.padding(it),
                 list = list,
+                title = prc.ttl,
                 onClick = onMClick
             )
         } else { //single
             SingleTypeScreen(
                 modifier = Modifier.padding(it),
                 list = list,
+                title = prc.ttl,
                 onClick = onSClick
             )
         }
@@ -65,17 +68,18 @@ fun SheetDataSelectionScreen(
 fun SingleTypeScreen(
     modifier: Modifier,
     list: SnapshotStateList<NetSheetData>,
+    title: String,
     onClick: (Int) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         item {
             BodyTexts.Level1(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Select the Goals"
+                text = "Select the $title"
             )
         }
         items(list.size) { i ->
-            AppSurface(
+            AppCard(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth()
@@ -83,11 +87,13 @@ fun SingleTypeScreen(
                     .clickable {
                         onClick(i)
                     },
-                color = if (!list[i].isSelected) {
-                    Color(0xFFE9D7F7)
-                } else {
-                    Color(0xFF7415BD)
-                }
+                colors = CardDefaults.cardColors(
+                    contentColor = if (!list[i].isSelected) {
+                        Color(0xFFE9D7F7)
+                    } else {
+                        Color(0xFF7415BD)
+                    }
+                )
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
@@ -117,17 +123,18 @@ fun SingleTypeScreen(
 fun MultipleTypeScreen(
     modifier: Modifier,
     list: SnapshotStateList<NetSheetData>,
+    title: String,
     onClick: (Int) -> Unit
 ) {
     LazyColumn(modifier = modifier) {
         item {
             BodyTexts.Level1(
                 modifier = Modifier.padding(horizontal = 16.dp),
-                text = "Select the Goals"
+                text = "Select the $title"
             )
         }
         items(list.size) { i ->
-            AppSurface(
+            AppCard(
                 modifier = Modifier
                     .padding(start = 16.dp, end = 16.dp, top = 8.dp, bottom = 8.dp)
                     .fillMaxWidth()
@@ -135,11 +142,13 @@ fun MultipleTypeScreen(
                     .clickable {
                         onClick(i)
                     },
-                color = if (!list[i].isSelected) {
-                    Color(0xFFE9D7F7)
-                } else {
-                    Color(0xFF7415BD)
-                }
+                colors = CardDefaults.cardColors(
+                    containerColor = if (!list[i].isSelected) {
+                        Color(0xFFE9D7F7)
+                    } else {
+                        Color(0xFF7415BD)
+                    }
+                )
             ) {
                 Row(
                     modifier = Modifier.fillMaxWidth(),
