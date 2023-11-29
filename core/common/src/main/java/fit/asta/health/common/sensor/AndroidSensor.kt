@@ -1,4 +1,4 @@
-package fit.asta.health.tools.walking.sensor
+package fit.asta.health.common.sensor
 
 import android.content.Context
 import android.hardware.Sensor
