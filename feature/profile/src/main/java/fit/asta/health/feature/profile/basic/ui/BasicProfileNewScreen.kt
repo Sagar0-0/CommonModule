@@ -2,8 +2,10 @@ package fit.asta.health.feature.profile.basic.ui
 
 import android.content.res.Configuration
 import android.net.Uri
+import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
+import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -17,16 +19,14 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.ClickableText
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
-import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.Email
-import androidx.compose.material.icons.rounded.Link
-import androidx.compose.material.icons.rounded.Person
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -34,35 +34,51 @@ import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
-import androidx.compose.ui.focus.onFocusChanged
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
-import androidx.compose.ui.text.AnnotatedString
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
+import com.google.firebase.auth.AuthCredential
+import fit.asta.health.auth.model.domain.User
+import fit.asta.health.common.utils.PutResponse
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.profile.remote.model.BasicProfileDTO
+import fit.asta.health.data.profile.remote.model.CheckReferralDTO
+import fit.asta.health.data.profile.remote.model.GenderCode
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.auth.util.GoogleSignIn
+import fit.asta.health.feature.auth.util.PhoneSignIn
+import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
 import fit.asta.otpfield.OTPInput
 import fit.asta.otpfield.configuration.OTPCellConfiguration
@@ -72,9 +88,43 @@ import fit.asta.otpfield.configuration.OTPConfigurations
 @Preview(
     name = "Dark Button", uiMode = Configuration.UI_MODE_NIGHT_YES, showBackground = true
 )
+@Composable
+fun BasicProfilePreview() {
+    AppTheme {
+        BasicProfileNewScreen(
+            checkReferralCodeState = UiState.Success(CheckReferralDTO()),
+            linkAccountState = UiState.Success(User()),
+            createBasicProfileState = UiState.Success(PutResponse()),
+            autoFetchedReferralCode = "",
+            onEvent = {}
+        )
+    }
+}
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicProfileNewScreen() {
+fun BasicProfileNewScreen(
+    user: User = User(),
+    checkReferralCodeState: UiState<CheckReferralDTO>,
+    linkAccountState: UiState<User>,
+    createBasicProfileState: UiState<PutResponse>,
+    autoFetchedReferralCode: String,
+    onEvent: (BasicProfileEvent) -> Unit,
+) {
+    val context = LocalContext.current
+    var name by rememberSaveable { mutableStateOf(user.name ?: "") }
+    var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
+    var isReferralChanged by rememberSaveable { mutableStateOf(false) }
+    var genderCode by rememberSaveable { mutableIntStateOf(GenderCode.Other.gender) }
+    val phone by rememberSaveable { mutableStateOf(user.phoneNumber ?: "") }
+    val email by rememberSaveable { mutableStateOf(user.email ?: "") }
+
+    LaunchedEffect(referralCode) {
+        if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
+            isReferralChanged = false
+            onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
+        }
+    }
 
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -87,40 +137,181 @@ fun BasicProfileNewScreen() {
             }
         }
 
-    AppTheme {
-        AppScaffold(topBar = {
-            AppTopBar(title = "Create Basic Profile")
-        }, content = { paddingValues ->
+    AppScaffold(
+        topBar = {
+            AppTopBar(title = "Create Basic Profile", backIcon = null)
+        }
+    ) { paddingValues ->
+        when (createBasicProfileState) {
+            is UiState.Loading -> {
+                AppDotTypingAnimation()
+            }
 
-            Column(
-                modifier = Modifier
-                    .fillMaxSize()
-                    .padding(paddingValues)
-                    .verticalScroll(rememberScrollState()),
+            is UiState.Success -> {
+                LaunchedEffect(Unit) {
+                    onEvent(BasicProfileEvent.NavigateToHome)
+                }
+            }
+
+            is UiState.NoInternet -> {
+                AppInternetErrorDialog {
+                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                    onEvent(
+                        BasicProfileEvent.CreateBasicProfile(
+                            BasicProfileDTO(
+                                uid = user.uid,
+                                gmailPic = user.photoUrl,
+                                name = name,
+                                gen = genderCode,
+                                mail = email,
+                                ph = phone,
+                                refCode = referralCode
+                            )
+                        )
+                    )
+                }
+            }
+
+            is UiState.ErrorRetry -> {
+                AppErrorScreen(
+                    text = createBasicProfileState.resId.toStringFromResId()
+                ) {
+                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                }
+            }
+
+            is UiState.ErrorMessage -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        createBasicProfileState.resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                }
+            }
+
+            else -> {}
+        }
+        Column(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(paddingValues)
+                .verticalScroll(rememberScrollState()),
+        ) {
+            ProfileImageUi(
+                profileImageUri = profileImageUri,
+                googlePicUrl = user.photoUrl,
+                onClick = { imagePickerLauncher.launch("image/*") }
+            )
+
+            UsernameUi(name) { newName ->
+                name = newName
+            }
+
+            GenderUi(genderCode) { newGender ->
+                genderCode = newGender
+            }
+
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+            EmailUi(user.email) { cred ->
+                onEvent(BasicProfileEvent.Link(cred))
+            }
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+            PhoneUi(
+                phoneNumber = phone,
+                isFailed = linkAccountState is UiState.ErrorMessage,
+                onResetLinkState = {
+                    onEvent(BasicProfileEvent.ResetLinkAccountState)
+                },
+                onLinkAccount = { cred ->
+                    onEvent(BasicProfileEvent.Link(cred))
+                }
+            )
+
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+            ReferralUi(
+                refCode = referralCode,
+                checkReferralState = checkReferralCodeState,
+                onApplyReferralCode = {
+                    if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
+                        isReferralChanged = false
+                        onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
+                    }
+                },
+                resetCodeState = {
+                    onEvent(BasicProfileEvent.ResetCodeState)
+                }
             ) {
-                CircularImageWithIconButton(onClick = { imagePickerLauncher.launch("image/*") })
-                TextBlock()
-                EmailBlock()
-                PhoneBlock()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                OTPBlock()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                ReferBlock()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                GenerateButton(
-                    textToShow = "Create your Profile",
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2)
+                referralCode = it
+                isReferralChanged = true
+            }
+
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+
+            CreateButton(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2),
+                enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
+                text = "Create your Profile",
+            ) {
+                onEvent(
+                    BasicProfileEvent.CreateBasicProfile(
+                        BasicProfileDTO(
+                            uid = user.uid,
+                            gmailPic = user.photoUrl,
+                            name = name,
+                            gen = genderCode.toInt(),
+                            mail = email,
+                            ph = phone,
+                            refCode = referralCode
+                        )
+                    )
                 )
             }
-        })
+
+            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        }
     }
 
 }
 
 @Composable
-fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Unit = {}) {
+fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
+    val genders = linkedMapOf(
+        "Male" to GenderCode.Male.gender,
+        "Female" to GenderCode.Female.gender,
+        "Prefer not to say" to GenderCode.Other.gender
+    )
+    Row(
+        modifier = Modifier.fillMaxWidth(),
+        horizontalArrangement = Arrangement.SpaceEvenly,
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        genders.entries.forEach { entry ->
+            Column(horizontalAlignment = Alignment.CenterHorizontally) {
+                AppRadioButton(selected = gender == entry.value) {
+                    onValueChange(entry.value)
+                }
+                Spacer(modifier = Modifier.padding(AppTheme.spacing.level0))
+                TitleTexts.Level2(text = entry.key)
+            }
+        }
+
+    }
+}
+
+@Composable
+fun ProfileImageUi(
+    modifier: Modifier = Modifier,
+    profileImageUri: Uri? = null,
+    googlePicUrl: String? = null,
+    onClick: () -> Unit = {}
+) {
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
@@ -128,16 +319,46 @@ fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Un
     ) {
         val (image, button) = createRefs()
 
-        AppLocalImage(painter = painterResource(id = R.drawable.ic_person),
-            contentDescription = "Profile",
-            modifier = Modifier
-                .size(AppTheme.boxSize.level8)
-                .clip(CircleShape)
-                .constrainAs(image) {
-                    top.linkTo(parent.top)
-                    start.linkTo(parent.start)
-                    end.linkTo(parent.end)
-                })
+        if (profileImageUri == null && googlePicUrl == null) {
+            AppLocalImage(
+                modifier = Modifier
+                    .size(AppTheme.boxSize.level8)
+                    .clip(CircleShape)
+                    .constrainAs(image) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                painter = painterResource(id = R.drawable.ic_person),
+                contentDescription = "Profile"
+            )
+        } else if (profileImageUri != null) {
+            AppNetworkImage(
+                modifier = Modifier
+                    .size(AppTheme.boxSize.level8)
+                    .clip(CircleShape)
+                    .constrainAs(image) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                model = profileImageUri,
+                contentDescription = "Profile"
+            )
+        } else {
+            AppNetworkImage(
+                modifier = Modifier
+                    .size(AppTheme.boxSize.level8)
+                    .clip(CircleShape)
+                    .constrainAs(image) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                model = googlePicUrl,
+                contentDescription = "Profile"
+            )
+        }
 
         AppIconButton(
             imageVector = Icons.Rounded.CameraEnhance,
@@ -153,274 +374,196 @@ fun CircularImageWithIconButton(modifier: Modifier = Modifier, onClick: () -> Un
 }
 
 @Composable
-fun TextBlock() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    var isEditing by remember { mutableStateOf(false) }
+fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
     val focusRequester = remember { FocusRequester() }
 
-    Column(
+    AppTextField(
         modifier = Modifier
+            .padding(AppTheme.spacing.level2)
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
-    ) {
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceBetween
-        ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppIcon(imageVector = Icons.Rounded.Person)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                Column {
-                    TitleTexts.Level4(text = "Name", color = AppTheme.colors.onSurface)
-                    if (text.text.isNotEmpty() && !isEditing) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                        BodyTexts.Level2(text = text.text)
-                    }
-                }
+            .focusRequester(focusRequester),
+        value = name,
+        singleLine = true,
+        leadingIcon = Icons.Default.Person,
+        onValueChange = onValueChange,
+        label = "Name",
+        keyboardActions = KeyboardActions(
+            onDone = {
+                focusRequester.freeFocus()
             }
-            if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit) {
-                    isEditing = true
-                }
-            }
-        }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-        if (text.text.isEmpty() || isEditing) {
-            LaunchedEffect(isEditing) {
-                if (isEditing) {
-                    focusRequester.requestFocus()
-                }
-            }
-
-            TextField(value = text,
-                onValueChange = {
-                    text = it
-                    isEditing = it.text.isNotEmpty()
-                },
-                placeholder = {
-                    CaptionTexts.Level4(text = "Enter your full name")
-                },
-                keyboardActions = KeyboardActions(onDone = {
-                    isEditing = false
-                }),
-                keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isEditing = true
-                        }
-                    })
-        }
-    }
+        ),
+        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
+        appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(maxSize = 20))
+    )
 }
 
 @Composable
-fun EmailBlock() {
-
-    val userEmail by remember { mutableStateOf(TextFieldValue("")) }
-
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
-    ) {
+fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
+    if (gmail.isNullOrEmpty()) {
+        GoogleSignIn(
+            modifier = Modifier
+                .padding(AppTheme.spacing.level2)
+                .fillMaxWidth()
+                .height(AppTheme.buttonSize.level6),
+            textId = fit.asta.health.resources.strings.R.string.link_with_google_account
+        ) { cred ->
+            onClick(cred)
+        }
+    } else {
         Row(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceBetween,
+                .padding(AppTheme.spacing.level2)
+                .fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppIcon(imageVector = Icons.Rounded.Email)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                Column {
-                    TitleTexts.Level4(
-                        text = "Link your Google Account", color = AppTheme.colors.onSurface
-                    )
-                    if (userEmail.text.isNotEmpty()) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                        BodyTexts.Level2(text = userEmail.text)
-                    }
-                }
-            }
-            AppIconButton(
-                imageVector = Icons.Rounded.Link,
-                iconTint = AppTheme.colors.primary,
-                onClick = {})
+            AppIcon(imageVector = Icons.Rounded.Email)
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
+            TitleTexts.Level4(
+                modifier = Modifier.weight(1f),
+                text = gmail,
+                color = AppTheme.colors.onSurface
+            )
+            AppIcon(imageVector = Icons.Default.Verified)
         }
     }
 }
 
 @Composable
-fun PhoneBlock() {
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    var phone by remember { mutableStateOf("") }
-    var isEditing by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
+fun PhoneUi(
+    phoneNumber: String?,
+    isFailed: Boolean,
+    onResetLinkState: () -> Unit,
+    onLinkAccount: (AuthCredential) -> Unit
+) {
+    if (phoneNumber.isNullOrEmpty()) {
+        PhoneSignIn(
+            failed = isFailed,
+            resetFailedState = {
+                onResetLinkState()
 
-    Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
-    ) {
+            }) { cred ->
+            onLinkAccount(cred)
+        }
+    } else {
         Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                AppIcon(imageVector = Icons.Rounded.Phone)
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                Column {
-                    TitleTexts.Level4(text = "Phone", color = AppTheme.colors.onSurface)
-                    if (text.text.isNotEmpty() && !isEditing) {
-                        Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                        BodyTexts.Level2(text = text.text)
+            AppIcon(imageVector = Icons.Rounded.Phone)
+            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
+            TitleTexts.Level4(
+                modifier = Modifier.weight(1f),
+                text = phoneNumber, color = AppTheme.colors.onSurface
+            )
+            AppIcon(imageVector = Icons.Default.Verified)
+        }
+    }
+}
+
+@Composable
+fun ReferralUi(
+    refCode: String,
+    checkReferralState: UiState<CheckReferralDTO>,
+    onApplyReferralCode: () -> Unit,
+    resetCodeState: () -> Unit,
+    onValueChange: (String) -> Unit
+) {
+    val context = LocalContext.current
+    Crossfade(targetState = checkReferralState, label = "") { checkReferralCodeState ->
+        when (checkReferralCodeState) {
+            is UiState.Idle -> {
+                val focusRequester = remember { FocusRequester() }
+
+                Column(
+                    Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2)
+                ) {
+                    TextField(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .focusRequester(focusRequester),
+                        value = refCode,
+                        onValueChange = onValueChange,
+                        placeholder = {
+                            CaptionTexts.Level4(text = "Enter your Referral Code")
+                        },
+                        keyboardActions = KeyboardActions(onDone = {
+                            focusRequester.freeFocus()
+                        }),
+                        keyboardOptions = KeyboardOptions.Default.copy(
+                            imeAction = ImeAction.Done,
+                        )
+                    )
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                    VerifyButton(text = "Apply Referral Code") {
+                        onApplyReferralCode()
                     }
                 }
             }
-            if (text.text.isNotEmpty() && !isEditing) {
-                AppIconButton(imageVector = Icons.Rounded.Edit) {
-                    isEditing = true
-                }
+
+            is UiState.Loading -> {
+                AppDotTypingAnimation()
             }
-        }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-        if (text.text.isEmpty() || isEditing) {
-            LaunchedEffect(isEditing) {
-                if (isEditing) {
-                    focusRequester.requestFocus()
+
+            is UiState.Success -> {
+
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        "YAY! You just got referred!",
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
+                Row(Modifier.fillMaxWidth()) {
+                    AppNetworkImage(
+                        modifier = Modifier.clip(CircleShape),
+                        model = checkReferralCodeState.data.pic,
+                    )
+                    TitleTexts.Level2(text = checkReferralCodeState.data.name)
                 }
             }
 
-            Row(Modifier.fillMaxWidth()) {
-                TextField(
-                    value = phone,
-                    onValueChange = {
-                        phone = it
-//                        isEditing = it.isNotEmpty()
-                    },
-                    placeholder = {
-                        CaptionTexts.Level4(text = "+91")
-                    },
-                    keyboardActions = KeyboardActions(onDone = {
-//                        isEditing = false
-                    }),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth(0.2f)
-                        .focusRequester(focusRequester)
-                        .onFocusChanged {
-                            if (it.isFocused) {
-                                isEditing = true
-                            }
-                        },
-                )
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
-                TextField(value = text,
-                    onValueChange = {
-                        text = it
-                        isEditing = it.text.isNotEmpty()
-                    },
-                    placeholder = {
-                        CaptionTexts.Level4(text = "Enter your phone number")
-                    },
-                    keyboardActions = KeyboardActions(onDone = {
-                        isEditing = false
-                    }),
-                    keyboardOptions = KeyboardOptions.Default.copy(
-                        imeAction = ImeAction.Done, keyboardType = KeyboardType.Number
-                    ),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .focusRequester(focusRequester)
-                        .onFocusChanged {
-                            if (it.isFocused) {
-                                isEditing = true
-                            }
-                        })
+            is UiState.ErrorMessage -> {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        checkReferralCodeState.resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+
+                }
             }
-        } else {
-            VerifyButton(textToShow = "Verify your Phone")
+
+            is UiState.NoInternet -> {
+                AppInternetErrorDialog {
+                    resetCodeState()
+                }
+            }
+
+            is UiState.ErrorRetry -> {
+                AppInternetErrorDialog {
+                    resetCodeState()
+                }
+            }
         }
     }
 }
 
 @Composable
-fun ReferBlock() {
-
-    var text by remember { mutableStateOf(TextFieldValue("")) }
-    var isEditing by remember { mutableStateOf(false) }
-    val focusRequester = remember { FocusRequester() }
-
-    Column(
-        Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
-    ) {
-        ClickableText(
-            text = AnnotatedString(text = "Have you got any Referral Code?"),
-            onClick = { isEditing = true },
-            style = TextStyle.Default.copy(color = AppTheme.colors.primary)
-        )
-        if (isEditing) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-            TextField(value = text,
-                onValueChange = {
-                    text = it
-                    isEditing = it.text.isNotEmpty()
-                },
-                placeholder = {
-                    CaptionTexts.Level4(text = "Enter your Referral Code")
-                },
-                keyboardActions = KeyboardActions(onDone = {
-                    isEditing = false
-                }),
-                keyboardOptions = KeyboardOptions.Default.copy(
-                    imeAction = ImeAction.Done,
-                ),
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .focusRequester(focusRequester)
-                    .onFocusChanged {
-                        if (it.isFocused) {
-                            isEditing = true
-                        }
-                    })
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            VerifyButton(textToShow = "Apply Referral Code")
-        }
-    }
-}
-
-@Composable
-fun GenerateButton(
+fun CreateButton(
     modifier: Modifier = Modifier,
-    textToShow: String = "",
+    enabled: Boolean,
+    text: String = "",
     onClick: () -> Unit = {},
 ) {
-    AppFilledButton(textToShow = textToShow, modifier = modifier, onClick = onClick)
+    AppFilledButton(enabled = enabled, textToShow = text, modifier = modifier, onClick = onClick)
 }
 
 @Composable
-fun VerifyButton(textToShow: String, onClick: () -> Unit = {}) {
+fun VerifyButton(text: String, onClick: () -> Unit = {}) {
     Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
         AppOutlinedButton(
-            textToShow = textToShow,
+            textToShow = text,
             onClick = onClick,
             colors = ButtonDefaults.outlinedButtonColors(contentColor = AppTheme.colors.primary),
             border = BorderStroke(color = AppTheme.colors.primary, width = 2.dp)
@@ -437,7 +580,7 @@ fun OTPBlock() {
     val defaultConfig = OTPCellConfiguration.withDefaults()
 
     Row(
-        Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
+        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
     ) {
         OTPInput(
             value = otpValue,

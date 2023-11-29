@@ -21,6 +21,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
@@ -55,6 +56,9 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.feature.auth.screens.OTPReceiver
+import fit.asta.otpfield.OTPInput
+import fit.asta.otpfield.configuration.OTPCellConfiguration
+import fit.asta.otpfield.configuration.OTPConfigurations
 import kotlinx.coroutines.delay
 import java.util.concurrent.TimeUnit
 import kotlin.time.Duration.Companion.seconds
@@ -75,7 +79,7 @@ fun PhoneSignIn(
         mutableStateOf("+91")
     }
 
-    var otp by rememberSaveable {
+    var otpValue by rememberSaveable {
         mutableStateOf("")
     }
 
@@ -98,7 +102,7 @@ fun PhoneSignIn(
             loading = false
             codeSent = false
             isPhoneEntered(codeSent)
-            otp = ""
+            otpValue = ""
             resetFailedState()
             Toast.makeText(
                 context,
@@ -136,7 +140,7 @@ fun PhoneSignIn(
     }
 
     val onOtpSubmit = {
-        if (TextUtils.isEmpty(otp) || otp.length < 6) {
+        if (TextUtils.isEmpty(otpValue) || otpValue.length < 6) {
             Toast.makeText(
                 context,
                 "Please enter a valid OTP",
@@ -146,7 +150,8 @@ fun PhoneSignIn(
         } else {
             loading = true
             shouldStartSMSRetrieval = false
-            val credential: AuthCredential = PhoneAuthProvider.getCredential(verificationID, otp)
+            val credential: AuthCredential =
+                PhoneAuthProvider.getCredential(verificationID, otpValue)
             signInWithCredentials(credential)
         }
     }
@@ -159,7 +164,7 @@ fun PhoneSignIn(
                 val message = result.data!!.getStringExtra(SmsRetriever.EXTRA_SMS_MESSAGE)
                 val smsCode = message?.let { "[0-9]{6}".toRegex().find(it) }
                 smsCode?.value?.let {
-                    otp = it
+                    otpValue = it
                 }
                 Log.d("OTP", "PhoneLoginScreen: $message")
                 onOtpSubmit()
@@ -336,16 +341,38 @@ fun PhoneSignIn(
             )
         ) {
             Column {
-                AppTextField(
-                    appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(6, 6)),
-                    enabled = !loading,
-                    value = otp,
-                    keyboardOptions = KeyboardOptions(keyboardType = KeyboardType.Number),
-                    onValueChange = { if (it.length <= 6) otp = it },
+                val defaultConfig = OTPCellConfiguration.withDefaults()
+                OTPInput(
                     modifier = Modifier
                         .padding(AppTheme.spacing.level1)
                         .fillMaxWidth(),
-                    singleLine = true
+                    enabled = !loading,
+                    value = otpValue,
+                    onValueChange = { newValue, isValid ->
+                        otpValue = newValue
+                        if (isValid) {
+                            // Validate the value here...
+                        }
+                    },
+                    /* when the value is 1111, all cells will use errorCellConfig */
+                    isValueInvalid = otpValue == "111111",
+                    configurations = OTPConfigurations.withDefaults(
+                        cellsCount = 6,
+                        emptyCellConfig = defaultConfig,
+                        filledCellConfig = defaultConfig,
+                        activeCellConfig = defaultConfig.copy(
+                            borderColor = AppTheme.colors.onSurface,
+                            borderWidth = AppTheme.elevation.level1
+                        ),
+                        errorCellConfig = defaultConfig.copy(
+                            borderColor = AppTheme.colors.error,
+                            borderWidth = AppTheme.elevation.level1
+                        ),
+                        placeHolder = "*",
+                        cellModifier = Modifier
+                            .padding(horizontal = AppTheme.spacing.level0)
+                            .size(AppTheme.customSize.level6),
+                    ),
                 )
 
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))

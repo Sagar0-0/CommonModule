@@ -160,7 +160,6 @@ fun BasicProfileScreen(
             }
 
 
-
             AppTextField(
                 label = StringR.string.name.toStringFromResId(),
                 value = name.ifEmpty { user.name ?: "" },
@@ -290,7 +289,7 @@ fun BasicProfileScreen(
                         BasicProfileEvent.CreateBasicProfile(
                             BasicProfileDTO(
                                 uid = user.uid,
-                                mailUrl = user.photoUrl,
+                                gmailPic = user.photoUrl,
                                 name = name,
                                 gen = gender.toInt(),
                                 mail = email,

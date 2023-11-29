@@ -29,6 +29,7 @@ import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderRequestType
 import fit.asta.health.payment.remote.model.OrderResponse
 import fit.asta.health.payment.vm.PaymentsViewModel
 import fit.asta.health.resources.drawables.R
@@ -53,7 +54,10 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         fun launch(context: Context, amount: String, onSuccess: () -> Unit) {
             this.onSuccess = onSuccess
             val orderRequest = OrderRequest(
-                amount = amount
+                amtDetails = OrderRequest.AmtDetails(
+                    amt = amount.toInt()
+                ),
+                type = OrderRequestType.AddInWallet.code
             )
             Intent(context, PaymentActivity::class.java)
                 .apply {

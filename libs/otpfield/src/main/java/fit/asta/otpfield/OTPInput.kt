@@ -24,7 +24,7 @@ import fit.asta.otpfield.utils.requestFocusSafely
 private const val NOT_ENTERED_VALUE = '₺'
 
 /**
- * OhTeePeeInput is a composable that can be used to get OTP/Pin from user.
+ * OTPInput is a composable that can be used to get OTP/Pin from user.
  *
  * Whenever the user edits the text, [onValueChange] is called with the most up to date state
  * including the empty values that represented by [OTPConfigurations.placeHolder].

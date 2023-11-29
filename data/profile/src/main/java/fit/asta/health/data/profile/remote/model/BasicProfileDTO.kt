@@ -6,11 +6,17 @@ import com.google.gson.annotations.SerializedName
 data class BasicProfileDTO(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("url") val url: String = "",
-    @SerializedName("mailUrl") val mailUrl: String? = null,
+    @SerializedName("mailUrl") val gmailPic: String? = null,
     val imageLocalUri: Uri? = null,
     @SerializedName("name") val name: String = "",
-    @SerializedName("gen") val gen: Int = 0,
+    @SerializedName("gen") val gen: Int = GenderCode.Other.gender,
     @SerializedName("mail") val mail: String = "",
     @SerializedName("ph") val ph: String = "",
     @SerializedName("refCode") val refCode: String = "",
 )
+
+sealed class GenderCode(val gender: Int) {
+    data object Male : GenderCode(1)
+    data object Female : GenderCode(2)
+    data object Other : GenderCode(3)
+}

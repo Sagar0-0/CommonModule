@@ -33,8 +33,10 @@ data class WalletResponse(
     )
 
     data class WalletData(
-        @SerializedName("credits")
-        val credits: Int = 0,
+        @SerializedName("money")
+        val money: Int = 0,
+        @SerializedName("points")
+        val points: Int = 0,
         @SerializedName("id")
         val id: String = "",
         @SerializedName("uid")

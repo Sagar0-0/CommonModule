@@ -210,8 +210,10 @@ private fun SubPlanItem(
                 if (fullScreen) {
                     onPayClick(
                         OrderRequest(
-                            subType = item.id,
-                            durType = item.durations[selectedDurationIndex].id
+                            subscriptionDetail = OrderRequest.SubscriptionDetail(
+                                subType = item.id,
+                                durType = item.durations[selectedDurationIndex].id
+                            )
                         )
                     )
                 } else {

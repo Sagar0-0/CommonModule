@@ -121,13 +121,16 @@ fun AppTextField(
         textStyle = AppTheme.customTypography.caption.level2,
         label = { BodyTexts.Level3(text = label) },
         leadingIcon = leadingIcon,
-        trailingIcon = {
-            if (trailingIcon != null && !isError) {
-                trailingIcon()
+        trailingIcon = trailingIcon?.let {
+            {
+                if (!isError) {
+                    trailingIcon()
+                } else {
+                    Icon(
+                        imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+                    )
+                }
             }
-            if (isError) Icon(
-                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
-            )
         },
         isError = isError,
         visualTransformation = visualTransformation,

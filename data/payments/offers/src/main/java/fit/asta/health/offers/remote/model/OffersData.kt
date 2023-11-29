@@ -3,18 +3,22 @@ package fit.asta.health.offers.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class OffersData(
-    @SerializedName("dsc")
+    @SerializedName("desc")
     val desc: String = "",
     @SerializedName("id")
     val id: String = "",
     @SerializedName("ttl")
     val title: String = "",
-    @SerializedName("type")
-    val type: Int = 0,
     @SerializedName("url")
     val url: String = "",
-    @SerializedName("ver")
-    val ver: Int = 0,
-    @SerializedName("vis")
-    val vis: Boolean = true
+    @SerializedName("status")
+    val status: Int = 0,
+    @SerializedName("discount")
+    val discount: Int = 0,
+    @SerializedName("code")
+    val code: String = "",
+    @SerializedName("startDate")
+    val startDate: String = "",
+    @SerializedName("endDate")
+    val endDate: String = ""
 )

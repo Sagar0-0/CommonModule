@@ -10,21 +10,18 @@ import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
 import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import androidx.media3.common.util.UnstableApi
-import androidx.navigation.NavHostController
 import com.android.installreferrer.api.InstallReferrerClient
 import com.android.installreferrer.api.InstallReferrerStateListener
 import com.android.installreferrer.api.ReferrerDetails
@@ -65,7 +62,6 @@ class MainActivity : ComponentActivity(),
     private lateinit var networkConnectivity: NetworkConnectivity
     private val isConnected = mutableStateOf(true)
     private val mainViewModel: MainViewModel by viewModels()
-    private lateinit var navController: NavHostController
 
     // Declare the launcher at the top of your Activity/Fragment:
     private val requestPermissionLauncher = registerForActivityResult(
@@ -84,10 +80,10 @@ class MainActivity : ComponentActivity(),
     private lateinit var referrerClient: InstallReferrerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        enableEdgeToEdge()
-        val splashScreen = installSplashScreen()
-        super.onCreate(savedInstanceState)
+//        enableEdgeToEdge()
 
+        super.onCreate(savedInstanceState)
+        val splashScreen = installSplashScreen()
         // This app draws behind the system bars, so we want to handle fitting system windows
         //https://developer.android.com/develop/ui/views/layout/edge-to-edge
         //WindowCompat.setDecorFitsSystemWindows(window, true)
@@ -120,55 +116,48 @@ class MainActivity : ComponentActivity(),
     }
 
     private fun checkUiStateAndStartApp(splashScreen: SplashScreen) {
-        var theme: UiState<String> by mutableStateOf(UiState.Loading)
-        var startDestinationCode: UiState<Int> by mutableStateOf(UiState.Loading)
-
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.theme.collect {
-                    theme = it
-                }
+        setContent {
+            val theme = mainViewModel.theme.collectAsStateWithLifecycle().value
+            val startDestinationCode = mainViewModel.screenCode.collectAsStateWithLifecycle().value
+            splashScreen.setKeepOnScreenCondition {
+                !((theme is UiState.Success) && (startDestinationCode is UiState.Success))
             }
-        }
+            if ((theme is UiState.Success) && (startDestinationCode is UiState.Success)) {
+                val startDestination = when (startDestinationCode.data) {
+                    ScreenCode.Auth.code -> {
+                        AUTH_GRAPH_ROUTE
+                    }
 
-        lifecycleScope.launch {
-            lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
-                mainViewModel.screenCode.collect {
-                    startDestinationCode = it
-                }
-            }
-        }
+                    ScreenCode.BasicProfile.code -> {
+                        BASIC_PROFILE_GRAPH_ROUTE
+                    }
 
-        splashScreen.setKeepOnScreenCondition {
-            !((theme is UiState.Success) && (startDestinationCode is UiState.Success))
-        }
-
-        if (theme is UiState.Success && startDestinationCode is UiState.Success) {
-            val startDestination = when ((startDestinationCode as UiState.Success<Int>).data) {
-                ScreenCode.Auth.code -> {
-                    AUTH_GRAPH_ROUTE
-                }
-
-                ScreenCode.BasicProfile.code -> {
-                    BASIC_PROFILE_GRAPH_ROUTE
-                }
-
-                ScreenCode.Home.code -> {
-                    if (intent != null && intent.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
-                        "walking"
-                    } else {
-                        HOME_GRAPH_ROUTE
+                    else -> {
+                        if (intent != null && intent.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
+                            "walking"
+                        } else {
+                            HOME_GRAPH_ROUTE
+                        }
                     }
                 }
 
-                else -> {
-                    ""
+                val isDarkMode = when (theme.data) {
+                    "dark" -> {
+                        true
+                    }
+
+                    "light" -> {
+                        false
+                    }
+
+                    else -> {
+                        isSystemInDarkTheme()
+                    }
+                }
+                AppTheme(darkTheme = isDarkMode) {
+                    MainNavHost(isConnected.value, startDestination)
                 }
             }
-            startMainNavHost(
-                theme = (theme as UiState.Success<String>).data,
-                startDestination = startDestination
-            )
         }
     }
 
@@ -256,28 +245,6 @@ class MainActivity : ComponentActivity(),
         networkConnectivity = NetworkConnectivity(this)
         networkConnectivity.observe(this) { status ->
             isConnected.value = status
-        }
-    }
-
-
-    private fun startMainNavHost(theme: String, startDestination: String) {
-        setContent {
-            val isDarkMode = when (theme) {
-                "dark" -> {
-                    true
-                }
-
-                "light" -> {
-                    false
-                }
-
-                else -> {
-                    isSystemInDarkTheme()
-                }
-            }
-            AppTheme(darkTheme = isDarkMode) {
-                MainNavHost(isConnected.value, startDestination)
-            }
         }
     }
 

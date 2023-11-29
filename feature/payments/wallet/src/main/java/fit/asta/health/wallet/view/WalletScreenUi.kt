@@ -126,7 +126,8 @@ fun WalletScreenUi(
         Spacer(modifier = Modifier.padding(AppTheme.spacing.level2))
 
         WalletBalance(
-            amount = walletData.walletData.credits,
+            points = walletData.walletData.points,
+            money = walletData.walletData.money,
             onAddMoneyClick = {
                 isAddMoneySheetVisible = true
             }
@@ -279,7 +280,7 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
 }
 
 @Composable
-fun WalletBalance(amount: Int, onAddMoneyClick: () -> Unit) {
+fun WalletBalance(points: Int, money: Int, onAddMoneyClick: () -> Unit) {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
@@ -296,9 +297,9 @@ fun WalletBalance(amount: Int, onAddMoneyClick: () -> Unit) {
                 modifier = Modifier
                     .padding(AppTheme.spacing.level1)
             ) {
-                TitleTexts.Level2(text = amount.toString())
+                TitleTexts.Level2(text = "$money/$points")
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                TitleTexts.Level2(text = "Available balance")
+                TitleTexts.Level2(text = "Money/Points")
             }
             AppTextButton(
                 textToShow = "Add money",
