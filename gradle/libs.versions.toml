@@ -68,6 +68,11 @@ firebaseStorageKtx = "20.3.0"
 firebaseUiAuth = "8.0.2"
 flexbox = "3.0.0"
 fluidSlider = "0.3.1"
+github-composeAnimatedlist = "0.5.1"
+github-composeColorfulSliders = "1.2.0"
+github-composeRatingbar = "2.1.1"
+github-composeExtendedGestures = "3.0.0"
+github-composeColorPickerBundle = "1.0.0"
 glide = "4.15.1"
 gmsPlugin = "4.3.14"
 googleOss = "17.0.1"
@@ -242,6 +247,11 @@ coil-gif = { module = "io.coil-kt:coil-gif", version.ref = "coilGif" }
 coil-kt = { group = "io.coil-kt", name = "coil", version.ref = "coil" }
 coil-kt-compose = { group = "io.coil-kt", name = "coil-compose", version.ref = "coil" }
 coil-kt-svg = { group = "io.coil-kt", name = "coil-svg", version.ref = "coil" }
+smarttoolfactory-compose-ratingbar = { module = "com.github.SmartToolFactory:Compose-RatingBar", version.ref = "github-composeRatingbar" }
+smarttoolfactory-animatedlist = { module = "com.github.SmartToolFactory:Compose-AnimatedList", version.ref = "github-composeAnimatedlist" }
+smarttoolfactory-color-picker-bundle = { module = "com.github.SmartToolFactory:Compose-Color-Picker-Bundle", version.ref = "github-composeColorPickerBundle" }
+smarttoolfactory-colorful-sliders = { module = "com.github.SmartToolFactory:Compose-Colorful-Sliders", version.ref = "github-composeColorfulSliders" }
+smarttoolfactory-extended-gestures = { module = "com.github.SmartToolFactory:Compose-Extended-Gestures", version.ref = "github-composeExtendedGestures" }
 compose-theme-adapter = { module = "com.google.android.material:compose-theme-adapter-3", version.ref = "composeThemeAdapter3" }
 converter-gson = { module = "com.squareup.retrofit2:converter-gson", version.ref = "converterGson" }
 exoplayer = { module = "com.google.android.exoplayer:exoplayer", version.ref = "exo" }

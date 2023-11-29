@@ -41,6 +41,8 @@ import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
+import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.nav.navigateToStepsCounter
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
@@ -50,8 +52,6 @@ import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.tools.breathing.nav.navigateToBreathing
 import fit.asta.health.tools.exercise.nav.navigateToExercise
 import fit.asta.health.tools.sunlight.nav.navigateToSunlight
-import fit.asta.health.tools.walking.nav.STEPS_GRAPH_ROUTE
-import fit.asta.health.tools.walking.nav.navigateToStepsCounter
 import fit.asta.health.tools.water.nav.navigateToWater
 
 const val HOME_GRAPH_ROUTE = "graph_home"
