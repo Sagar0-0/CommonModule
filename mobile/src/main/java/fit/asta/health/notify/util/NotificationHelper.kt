@@ -312,14 +312,15 @@ fun Context.sendNotification(
         this,
         NOTIFICATION_ID,
         intentNotify,
-        PendingIntent.FLAG_UPDATE_CURRENT
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
+
 
     val intSnooze = Intent(this, AlarmBroadcastReceiver::class.java)
     val intSnoozePending = PendingIntent.getBroadcast(
         this,
         REQUEST_CODE, intSnooze,
-        PendingIntent.FLAG_UPDATE_CURRENT
+        PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )
 
     val strSnooze = this.getString(StringR.string.title_snooze)

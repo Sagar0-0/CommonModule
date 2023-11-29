@@ -19,7 +19,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Diamond
-import androidx.compose.material.icons.filled.GroupAdd
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
@@ -36,7 +35,6 @@ import fit.asta.health.common.utils.copyTextToClipboard
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
-import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
@@ -260,7 +258,7 @@ fun InvitedUserList(
                         .clip(CircleShape)
                 )
                 Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
-                Column {
+                Column(modifier = Modifier.weight(1f)) {
                     HeadingTexts.Level3(text = userDetails.name)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     BodyTexts.Level3(
@@ -270,18 +268,11 @@ fun InvitedUserList(
                         color = AppTheme.colors.onBackground.copy(alpha = 0.4f)
                     )
                 }
-            }
 
-            // Column layout to organize UI elements vertically
-            Column(verticalArrangement = Arrangement.Center, horizontalAlignment = Alignment.End) {
-                // Display prime icon if the user is prime
                 if (userDetails.prime) {
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
+                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-
-                // Display button to add the user to the community
-                AddToCommunityButton(addToCommunity = addToCommunity)
             }
         }
     }
@@ -290,16 +281,16 @@ fun InvitedUserList(
     Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 }
 
-/**
- * Composable function to display a button for adding a user to the community.
- *
- * @param addToCommunity Callback to handle adding the user to the community.
- */
-@Composable
-fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
-    // Use AppIconButton to create a button for adding to the community
-    AppIconButton(imageVector = Icons.Filled.GroupAdd, onClick = addToCommunity)
-}
+///**
+// * Composable function to display a button for adding a user to the community.
+// *
+// * @param addToCommunity Callback to handle adding the user to the community.
+// */
+//@Composable
+//fun AddToCommunityButton(addToCommunity: () -> Unit = {}) {
+//    // Use AppIconButton to create a button for adding to the community
+//    AppIconButton(imageVector = Icons.Filled.GroupAdd, onClick = addToCommunity)
+//}
 
 /**
  * Composable function to display the invitation report.
