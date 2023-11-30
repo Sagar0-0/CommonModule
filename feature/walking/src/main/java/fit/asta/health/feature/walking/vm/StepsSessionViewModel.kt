@@ -4,6 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.walking.view.session.ProgressState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -18,7 +19,8 @@ import kotlin.math.roundToInt
 
 @HiltViewModel
 class StepsSessionViewModel @Inject constructor(
-    private val dayUseCases: DayUseCases
+    private val dayUseCases: DayUseCases,
+    private val prefManager: PrefManager,
 ) : ViewModel() {
     private val _progress = MutableStateFlow(
         ProgressState(
@@ -69,6 +71,9 @@ class StepsSessionViewModel @Inject constructor(
     }
 
     fun stop() {
-        viewModelScope.launch { dayUseCases.changeStepsState(LocalDate.now(), false) }
+        viewModelScope.launch {
+            dayUseCases.changeStepsState(LocalDate.now(), false)
+            prefManager.setSessionStatus(false)
+        }
     }
 }

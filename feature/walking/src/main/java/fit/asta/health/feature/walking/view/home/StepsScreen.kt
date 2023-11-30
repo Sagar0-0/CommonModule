@@ -80,6 +80,7 @@ fun StepsScreen(
     onStart: () -> Unit,
     setTarget: (Float, Int) -> Unit,
     goToList: (Int, String) -> Unit,
+    onScheduler: () -> Unit,
     onBack: () -> Unit,
 ) {
     val sheetState = rememberStandardBottomSheetState(
@@ -131,7 +132,8 @@ fun StepsScreen(
                         scaffoldState = scaffoldState,
                         goToList = goToList,
                         onTarget = { showTargetDialogWithResult = true },
-                        onStart = onStart
+                        onStart = onStart,
+                        onScheduler = onScheduler
                     )
                 }
             ) {
@@ -230,6 +232,7 @@ fun WalkingBottomSheet(
     goToList: (Int, String) -> Unit,
     onTarget: () -> Unit,
     onStart: () -> Unit,
+    onScheduler: () -> Unit
 ) {
 
     if (selectedData.isNotEmpty()) {
@@ -295,15 +298,17 @@ fun WalkingBottomSheet(
 
             Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
-                    modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
-                ) { }
+                    modifier = Modifier.weight(0.5f),
+                    color = Color.Green,
+                    text = "SCHEDULE",
+                    onClick = onScheduler
+                )
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f),
                     color = Color.Blue,
-                    text = "START"
-                ) {
-                    onStart()
-                }
+                    text = "START",
+                    onClick = onStart
+                )
             }
         }
     }

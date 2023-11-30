@@ -20,6 +20,7 @@ import fit.asta.health.data.walking.domain.model.Day
 import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
 import fit.asta.health.data.walking.domain.usecase.DayUseCases
 import fit.asta.health.data.walking.service.FitManager
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.walking.view.home.StepsUiState
 import fit.asta.health.feature.walking.view.home.TargetData
 import fit.asta.health.network.utils.toValue
@@ -39,7 +40,8 @@ import javax.inject.Inject
 class WalkingViewModel @Inject constructor(
     private val dayUseCases: DayUseCases,
     private val repo: WalkingToolRepo,
-    private val fitManager: FitManager
+    private val fitManager: FitManager,
+    private val prefManager: PrefManager,
 ) : ViewModel() {
 
 
@@ -126,6 +128,7 @@ class WalkingViewModel @Inject constructor(
                 targetDuration = target.value.targetDuration,
                 targetDistance = target.value.targetDistance
             )
+            prefManager.setSessionStatus(true)
             putData()
         }
     }

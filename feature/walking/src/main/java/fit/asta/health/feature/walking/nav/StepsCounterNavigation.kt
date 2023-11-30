@@ -31,12 +31,19 @@ fun NavController.navigateToStepsCounterProgress(navOptions: NavOptions? = null)
 }
 
 fun NavGraphBuilder.stepsCounterNavigation(
-    navController: NavHostController, onBack: () -> Unit
+    navController: NavHostController,
+    sessionState: Boolean,
+    onScheduler: () -> Unit,
+    onBack: () -> Unit
 ) {
 
     navigation(
         route = STEPS_GRAPH_ROUTE,
-        startDestination = StepsCounterScreen.StepsPermissionScreen.route
+        startDestination = if (sessionState) {
+            StepsCounterScreen.StepsProgressScreen.route
+        } else {
+            StepsCounterScreen.StepsPermissionScreen.route
+        }
     ) {
         composable(route = StepsCounterScreen.StepsPermissionScreen.route) { navBackStackEntry ->
             val walkingViewModel: WalkingViewModel =
@@ -74,6 +81,7 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 },
                 setTarget = { dis, dur -> walkingViewModel.setTarget(dis, dur) },
                 onBack = onBack,
+                onScheduler = onScheduler
             )
         }
         composable(route = StepsCounterScreen.StepsProgressScreen.route) {
