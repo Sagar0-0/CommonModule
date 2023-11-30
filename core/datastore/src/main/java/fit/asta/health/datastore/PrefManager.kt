@@ -29,7 +29,8 @@ class PrefManager
             isReferralChecked = it.isReferralChecked,
             referralCode = it.referralCode,
             trackLanguage = it.trackLanguage,
-            stepsPermissionRejectedCount = it.stepsPermissionRejectedCount
+            stepsPermissionRejectedCount = it.stepsPermissionRejectedCount,
+            sessionState = it.sessionState
         )
     }
     val address: Flow<UserPreferencesDataAddress> = userPreferences.data.map {
@@ -193,6 +194,18 @@ class PrefManager
             userPreferences.updateData {
                 it.copy {
                     this.stepsPermissionRejectedCount = value
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
+    suspend fun setSessionStatus(value: Boolean) {
+        try {
+            userPreferences.updateData {
+                it.copy {
+                    this.sessionState = value
                 }
             }
         } catch (ioException: IOException) {

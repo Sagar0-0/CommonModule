@@ -18,4 +18,5 @@ message UserPreferences {
   double long = 12;
   string trackLanguage = 13;
   int32 stepsPermissionRejectedCount = 14;
+  bool sessionState = 15;
 }

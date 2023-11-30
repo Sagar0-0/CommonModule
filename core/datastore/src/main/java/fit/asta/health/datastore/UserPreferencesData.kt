@@ -13,6 +13,7 @@ data class UserPreferencesData(
     val referralCode: String = "",
     val trackLanguage: String = "",
     val stepsPermissionRejectedCount: Int = 0,
+    val sessionState: Boolean = false,
 )
 
 data class UserPreferencesDataAddress(
