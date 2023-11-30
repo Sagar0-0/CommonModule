@@ -2,6 +2,7 @@ package fit.asta.health.data.scheduler.remote
 
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
+import fit.asta.health.common.utils.Response
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerDeleteResponse
 import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerGetListResponse
@@ -10,6 +11,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutRespo
 import fit.asta.health.data.scheduler.remote.net.scheduler.Status
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
+import fit.asta.health.network.data.ServerRes
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.MultipartBody
@@ -134,7 +136,7 @@ class SchedulerApiServiceTest {
 
     @Test
     fun `getTagListFromBackend,return Success`() = runTest {
-        val dto = TagsListResponse()
+        val dto: Response<TagsListResponse> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -143,12 +145,12 @@ class SchedulerApiServiceTest {
         val data = api.getTagListFromBackend("")
         server.takeRequest()
 
-        assertEquals(data.data, dto)
+        assertEquals(data, dto)
     }
 
     @Test
     fun `deleteTagFromBackend,return Success`() = runTest {
-        val dto = fit.asta.health.network.data.Status()
+        val dto: Response<ServerRes> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -157,12 +159,12 @@ class SchedulerApiServiceTest {
         val data = api.deleteTagFromBackend("", "")
         server.takeRequest()
 
-        assertEquals(data.status.code, dto.code)
+        assertEquals(data, dto)
     }
 
     @Test
     fun `updateScheduleTag,return Success`() = runTest {
-        val dto = fit.asta.health.network.data.Status()
+        val dto: Response<ServerRes> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -174,6 +176,6 @@ class SchedulerApiServiceTest {
         val requestReceived = server.takeRequest()
         assertEquals(requestReceived.method, "PUT")
         assertEquals(requestReceived.path, "/tag/put")
-        assertEquals(data.status.code, dto.code)
+        assertEquals(data, dto)
     }
 }
