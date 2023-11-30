@@ -69,6 +69,15 @@ class MainViewModel
             started = SharingStarted.Eagerly,
             initialValue = true,
         )
+    val sessionState = prefManager.userData
+        .map {
+            it.sessionState
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Eagerly,
+            initialValue = false,
+        )
 
     val isReferralChecked = prefManager.userData
         .map {

@@ -165,7 +165,7 @@
             </intent-filter>
         </service>
         <service android:name=".feature.scheduler.services.AlarmService" />
-        <service android:name=".tools.walking.service.StepCounterService" />
+        <service android:name=".data.walking.service.StepCounterService" />
     </application>
 
 </manifest>

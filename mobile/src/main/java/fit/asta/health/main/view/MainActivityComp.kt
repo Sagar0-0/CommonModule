@@ -43,6 +43,7 @@ import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.navigateToStepsCounter
+import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
@@ -84,6 +85,7 @@ fun NavGraphBuilder.homeScreen(
             })
 
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
+            val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
@@ -175,6 +177,7 @@ fun NavGraphBuilder.homeScreen(
                 refCode = refCode,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 notificationState = notificationState,
+                sessionState = sessionState,
                 onLocation = { enableLocationAndUpdateAddress() },
                 onNav = {
                     when (it) {
@@ -211,6 +214,7 @@ fun NavGraphBuilder.homeScreen(
                         }
                     }
                 },
+                onWalkingTool = { navController.navigateToStepsCounterProgress() },
                 onSchedule = { hourMinAmPm ->
                     navController.currentBackStackEntry?.savedStateHandle?.set(
                         key = HourMinAmPmKey,

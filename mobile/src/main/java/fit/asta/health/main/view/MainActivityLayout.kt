@@ -26,6 +26,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
+import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.NotificationsActive
@@ -91,10 +92,12 @@ fun MainActivityLayout(
     refCode: String,
     profileImageUri: String?,
     notificationState: Boolean,
+    sessionState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
-    onLocation: () -> Unit
+    onLocation: () -> Unit,
+    onWalkingTool: () -> Unit
 ) {
 
     val navController = rememberNavController()
@@ -127,7 +130,9 @@ fun MainActivityLayout(
                         onClick = onClick,
                         notificationState = notificationState,
                         profileImageUri = profileImageUri,
-                        currentAddressState = currentAddressState
+                        currentAddressState = currentAddressState,
+                        sessionState = sessionState,
+                        onSession = onWalkingTool
                     )
                 }
             )
@@ -162,78 +167,113 @@ private fun BottomAppBarLayout(
 }
 
 @Composable
+private fun RowScope.SessionTopBarActions(
+    onClick: () -> Unit,
+) {
+
+}
+
+@Composable
 private fun RowScope.NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     notificationState: Boolean,
     profileImageUri: String?,
     currentAddressState: UiState<String>,
+    sessionState: Boolean,
+    onSession: () -> Unit
 ) {
-    Row(
-        modifier = Modifier
-            .weight(1f)
-            .clickable { onClick(MainTopBarActions.Location) },
-        horizontalArrangement = Arrangement.Start,
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        AppIcon(
-            modifier = Modifier.padding(start = AppTheme.spacing.level1),
-            imageVector = Icons.Default.LocationOn,
-            contentDescription = "Location"
-        )
-
-        TitleTexts.Level2(
-            text =
-            when (currentAddressState) {
-                UiState.Idle -> {
-                    R.string.select_location.toStringFromResId()
-                }
-
-                UiState.Loading -> {
-                    R.string.fetching_location.toStringFromResId()
-                }
-
-                is UiState.Success -> {
-                    currentAddressState.data
-                }
-
-                is UiState.ErrorMessage -> {
-                    currentAddressState.resId.toStringFromResId()
-                }
-
-                else -> {
-                    ""
-                }
-            },
-            textAlign = TextAlign.Start,
+    if (sessionState) {
+        Row(
             modifier = Modifier
                 .weight(1f)
-                .padding(AppTheme.spacing.level0),
-            overflow = TextOverflow.Ellipsis,
-            maxLines = 1,
-        )
-    }
+                .clickable { onSession() },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AppIcon(
+                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                imageVector = Icons.Default.DirectionsWalk,
+                contentDescription = "walking"
+            )
 
-    Row(horizontalArrangement = Arrangement.End) {
-        AppIconButton(
-            imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
-        ) { onClick(MainTopBarActions.Notification) }
-        AppIconButton(
-            imageVector = Icons.Default.Share
-        ) { onClick(MainTopBarActions.Share) }
-        if (profileImageUri != null) {
-            AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
-                Image(
-                    modifier = Modifier.clip(CircleShape),
-                    painter = rememberAsyncImagePainter(
-                        model = profileImageUri,
-                        placeholder = painterResource(id = R.drawable.ic_person)
-                    ), contentDescription = "Profile"
-                )
-            }
+            TitleTexts.Level2(
+                text = "Tap to open Walking Session",
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(AppTheme.spacing.level0),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
         }
-        AppIconButton(
-            imageVector = Icons.Default.Settings
-        ) { onClick(MainTopBarActions.Settings) }
+    } else {
+        Row(
+            modifier = Modifier
+                .weight(1f)
+                .clickable { onClick(MainTopBarActions.Location) },
+            horizontalArrangement = Arrangement.Start,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            AppIcon(
+                modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                imageVector = Icons.Default.LocationOn,
+                contentDescription = "Location"
+            )
+
+            TitleTexts.Level2(
+                text =
+                when (currentAddressState) {
+                    UiState.Idle -> {
+                        R.string.select_location.toStringFromResId()
+                    }
+
+                    UiState.Loading -> {
+                        R.string.fetching_location.toStringFromResId()
+                    }
+
+                    is UiState.Success -> {
+                        currentAddressState.data
+                    }
+
+                    is UiState.ErrorMessage -> {
+                        currentAddressState.resId.toStringFromResId()
+                    }
+
+                    else -> {
+                        ""
+                    }
+                },
+                textAlign = TextAlign.Start,
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(AppTheme.spacing.level0),
+                overflow = TextOverflow.Ellipsis,
+                maxLines = 1,
+            )
+        }
+
+        Row(horizontalArrangement = Arrangement.End) {
+            AppIconButton(
+                imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
+            ) { onClick(MainTopBarActions.Notification) }
+            AppIconButton(
+                imageVector = Icons.Default.Share
+            ) { onClick(MainTopBarActions.Share) }
+            if (profileImageUri != null) {
+                AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
+                    Image(
+                        modifier = Modifier.clip(CircleShape),
+                        painter = rememberAsyncImagePainter(
+                            model = profileImageUri,
+                            placeholder = painterResource(id = R.drawable.ic_person)
+                        ), contentDescription = "Profile"
+                    )
+                }
+            }
+            AppIconButton(
+                imageVector = Icons.Default.Settings
+            ) { onClick(MainTopBarActions.Settings) }
+        }
     }
 }
 
