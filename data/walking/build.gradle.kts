@@ -14,6 +14,7 @@ dependencies {
 
     implementation(project(":core:network"))
     implementation(project(":core:common"))
+    implementation(project(":core:datastore"))
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
 
@@ -26,7 +27,6 @@ dependencies {
     implementation(libs.androidx.lifecycle.extensions)
     // Room Library
     implementation(libs.room.runtime)
-    implementation(project(mapOf("path" to ":core:datastore")))
     ksp(libs.room.compiler)
     implementation(libs.room.ktx)
     androidTestImplementation(libs.androidx.room.testing)
