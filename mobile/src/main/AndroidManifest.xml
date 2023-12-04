@@ -95,10 +95,6 @@
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="o_mr1" />
         <activity
-            android:name=".tools.walking.view.WalkingActivity"
-            android:exported="true">
-        </activity>
-        <activity
             android:name=".feature.spotify.SpotifyLoginActivity"
             android:exported="true"
             android:launchMode="singleInstance">
@@ -169,10 +165,7 @@
             </intent-filter>
         </service>
         <service android:name=".feature.scheduler.services.AlarmService" />
-        <service
-            android:name=".tools.walking.work.CountStepsService"
-            android:foregroundServiceType="location" />
-        <service android:name=".tools.walking.service.StepCounterService" />
+        <service android:name=".data.walking.service.StepCounterService" />
     </application>
 
 </manifest>

@@ -31,7 +31,7 @@ import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.walking.view.home.SunlightCard
+import fit.asta.health.feature.walking.view.home.SunlightCard
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable

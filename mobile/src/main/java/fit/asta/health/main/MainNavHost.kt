@@ -29,10 +29,13 @@ import fit.asta.health.feature.orders.ordersRoute
 import fit.asta.health.feature.profile.ProfileContent
 import fit.asta.health.feature.profile.basicProfileRoute
 import fit.asta.health.feature.profile.create.CreateProfileLayout
+import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.feature.testimonials.navigation.testimonialNavRoute
+import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.nav.stepsCounterNavigation
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.meditation.nav.meditationNavigation
 import fit.asta.health.payment.PaymentActivity
@@ -44,7 +47,6 @@ import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.tools.breathing.nav.breathingNavigation
 import fit.asta.health.tools.exercise.nav.exerciseNavigation
 import fit.asta.health.tools.sunlight.nav.sunlightNavigation
-import fit.asta.health.tools.walking.nav.stepsCounterNavigation
 import fit.asta.health.tools.water.nav.waterToolNavigation
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
@@ -95,7 +97,10 @@ private fun MainNavHost(startDestination: String) {
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
         testimonialNavRoute(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
-        stepsCounterNavigation(navController, onBack = { navController.navigateUp() })
+        stepsCounterNavigation(
+            navController = navController, sessionState = startDestination == STEPS_GRAPH_ROUTE,
+            onScheduler = { navController.navigateToScheduler() },
+            onBack = { navController.navigateUp() })
 
         settingScreens { key ->
             when (key) {

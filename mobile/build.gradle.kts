@@ -134,6 +134,7 @@ dependencies {
     implementation(project(":data:testimonials"))
     implementation(project(":data:meditation"))
     implementation(project(":data:home"))
+    implementation(project(":data:walking"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))
@@ -153,7 +154,8 @@ dependencies {
     implementation(project(":feature:scheduler"))
     implementation(project(":feature:testimonials"))
     implementation(project(":feature:meditation"))
-    implementation(libs.play.services.fitness)
+    implementation(project(":feature:walking"))
+
 
     //De-sugaring
     coreLibraryDesugaring(libs.android.desugarJdkLibs)
@@ -350,7 +352,7 @@ dependencies {
 
     //Rating-Bar
     implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
-    implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
+    implementation(libs.smarttoolfactory.compose.ratingbar)
 
     //Recyclerview swipe decorator
     implementation("com.github.xabaras:RecyclerViewSwipeDecorator:1.4")
@@ -366,13 +368,13 @@ dependencies {
 
     //Image Cropper Dependencies
     // Colorful Customizable Sliders
-    implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0")
+    implementation(libs.smarttoolfactory.colorful.sliders)
     // Color picker
-    implementation("com.github.SmartToolFactory:Compose-Color-Picker-Bundle:1.0.0")
-    // Gestures
-    implementation("com.github.SmartToolFactory:Compose-Extended-Gestures:3.0.0")
-    // Animated List
-    implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
+    implementation(libs.smarttoolfactory.color.picker.bundle)
+//    // Gestures
+    implementation(libs.smarttoolfactory.extended.gestures)
+//    // Animated List
+    implementation(libs.smarttoolfactory.animatedlist)
     //TODO-------------------Low standard libraries - consider removing later---------------------//
 
     //test
