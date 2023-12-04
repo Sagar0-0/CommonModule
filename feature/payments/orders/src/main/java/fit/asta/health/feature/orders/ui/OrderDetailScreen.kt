@@ -15,7 +15,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.data.orders.remote.model.OrderData
+import fit.asta.health.data.orders.remote.model.OrderDetailData
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -24,7 +24,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> Unit) {
+fun OrderDetailScreen(orderData: OrderDetailData, onUiEvent: (OrderDetailUiEvent) -> Unit) {
     AppScaffold(
         topBar = {
             AppTopBar(
@@ -38,9 +38,9 @@ fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> U
         Column(modifier = Modifier.verticalScroll(rememberScrollState())) {
             Card(modifier = Modifier.fillMaxWidth()) {
                 Row(modifier = Modifier.fillMaxWidth()) {
-                    TitleTexts.Level2(text = orderData.title)
+                    TitleTexts.Level2(text = orderData.ttl)
                     AppNetworkImage(
-                        model = getImgUrl(orderData.imgUrl)
+                        model = getImgUrl(orderData.url)
                     )
                 }
             }
@@ -73,7 +73,7 @@ fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> U
 
             Card(modifier = Modifier.fillMaxWidth()) {
                 TitleTexts.Level2(text = "Status")
-                TitleTexts.Level2(text = orderData.status)
+                TitleTexts.Level2(text = orderData.sts)
             }
 
             Card(modifier = Modifier.fillMaxWidth()) {
@@ -82,7 +82,7 @@ fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> U
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TitleTexts.Level2(text = "MRP")
-                    TitleTexts.Level2(text = orderData.mrp)
+                    TitleTexts.Level2(text = orderData.amt.toString())
                 }
 
                 Row(
@@ -90,15 +90,7 @@ fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> U
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TitleTexts.Level2(text = "Discount")
-                    TitleTexts.Level2(text = orderData.discount)
-                }
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TitleTexts.Level2(text = "Taxes")
-                    TitleTexts.Level2(text = orderData.taxes)
+                    TitleTexts.Level2(text = orderData.discount.toString())
                 }
 
                 Divider()
@@ -108,19 +100,17 @@ fun OrderDetailScreen(orderData: OrderData, onUiEvent: (OrderDetailUiEvent) -> U
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TitleTexts.Level2(text = "Total Payable Amount")
-                    TitleTexts.Level2(text = orderData.totalAmount)
+                    TitleTexts.Level2(text = orderData.amt.toString())
                 }
 
             }
 
             Card(modifier = Modifier.fillMaxWidth()) {
                 TitleTexts.Level2(text = "Offers you get")
-                orderData.offersApplied.forEach { offer ->
-                    Row(modifier = Modifier.fillMaxWidth()) {
-                        AppIcon(imageVector = Icons.Default.ArrowForward)
-                        TitleTexts.Level2(modifier = Modifier.weight(1f), text = offer)
-                        AppIcon(imageVector = Icons.Default.Check)
-                    }
+                Row(modifier = Modifier.fillMaxWidth()) {
+                    AppIcon(imageVector = Icons.Default.ArrowForward)
+                    TitleTexts.Level2(modifier = Modifier.weight(1f), text = orderData.offer)
+                    AppIcon(imageVector = Icons.Default.Check)
                 }
             }
 

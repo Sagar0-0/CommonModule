@@ -7,7 +7,9 @@ data class SubscriptionResponse(
     @SerializedName("subscriptionPlans")
     val subscriptionPlans: SubscriptionPlans = SubscriptionPlans(),
     @SerializedName("userSubscribedPlan")
-    val userSubscribedPlan: UserSubscribedPlan? = null
+    val userSubscribedPlan: UserSubscribedPlan? = null,
+    @SerializedName("offers")
+    val offers: List<Offer> = listOf()
 ) {
     data class SubscriptionPlans(
         @SerializedName("dsc")
@@ -19,17 +21,17 @@ data class SubscriptionResponse(
         @SerializedName("ttl")
         val ttl: String = "",
         @SerializedName("types")
-        val categories: List<Category> = listOf()
+        val categories: List<SubscriptionPlanCategory> = listOf()
     ) {
-        data class Category(
+        data class SubscriptionPlanCategory(
             @SerializedName("fea")
             val feature: List<Feature> = listOf(),
             @SerializedName("id")
-            val id: String = "",
+            val subscriptionType: String = "",
             @SerializedName("plans")
             val durations: List<Duration> = listOf(),
             @SerializedName("ttl")
-            val ttl: String = "",
+            val title: String = "",
             @SerializedName("type")
             val type: Int = 0,
             @SerializedName("url")
@@ -50,7 +52,7 @@ data class SubscriptionResponse(
                 @SerializedName("dsc")
                 val dsc: String = "",
                 @SerializedName("id")
-                val id: String = "",
+                val durationType: String = "",
                 @SerializedName("price")
                 val price: String = "",
                 @SerializedName("cur")
@@ -62,7 +64,10 @@ data class SubscriptionResponse(
                 @SerializedName("tag")
                 val tag: String = "",
                 @SerializedName("ttl")
-                val ttl: String = ""
+                val ttl: String = "",
+                val discount: String = "",//TODO
+                val tax: String = "",//TODO
+                val emi: String? = null,//TODO
             )
         }
     }

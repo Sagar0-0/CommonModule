@@ -80,6 +80,7 @@ import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeContent
+import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -93,6 +94,7 @@ fun MainActivityLayout(
     notificationState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
+    onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit
 ) {
@@ -114,6 +116,7 @@ fun MainActivityLayout(
                 navController = navController,
                 refCode = refCode,
                 onNav = onNav,
+                onEvent = onEvent,
                 onSchedule = onSchedule,
                 onLocation = onLocation,
                 innerPadding = it
@@ -301,6 +304,7 @@ private fun MainNavHost(
     modifier: Modifier = Modifier,
     refCode: String,
     onNav: (String) -> Unit,
+    onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
     innerPadding: PaddingValues,
@@ -317,13 +321,17 @@ private fun MainNavHost(
                 key1 = Unit,
                 block = {
                     homeViewModel.loadHomeData()
+                    homeViewModel.getSubscriptionData()
                 }
             )
+
             HomeContent(
                 homeViewModel = homeViewModel,
                 refCode = refCode,
-                onNav = onNav
+                onNav = onNav,
+                onEvent = onEvent
             )
+
         }
 
         composable(BottomBarDestination.Today.route) {

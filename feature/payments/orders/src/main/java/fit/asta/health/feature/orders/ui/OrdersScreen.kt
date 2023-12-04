@@ -17,6 +17,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.data.orders.remote.OrderId
 import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -29,7 +30,7 @@ import fit.asta.health.resources.strings.R as StringR
 fun OrdersScreen(
     modifier: Modifier = Modifier,
     orders: List<OrderData>,
-    onOrderClick: (OrderData) -> Unit
+    onOrderClick: (OrderId) -> Unit
 ) {
     if (orders.isEmpty()) {
         Column(
@@ -53,7 +54,7 @@ fun OrdersScreen(
         LazyColumn(modifier = modifier) {
             items(orders) { order ->
                 OrderItem(order) {
-                    onOrderClick(order)
+                    onOrderClick(order.orderId)
                 }
             }
         }
@@ -79,7 +80,7 @@ private fun OrderItem(order: OrderData, onClick: () -> Unit) {
             }
 
             AppNetworkImage(
-                model = getImgUrl(order.imgUrl)
+                model = getImgUrl(order.url)
             )
         }
     }

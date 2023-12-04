@@ -88,7 +88,7 @@ fun PendingPlanUI(data: SubscriptionResponse) {
 
 @Composable
 private fun ShowUserActivePlan(data: SubscriptionResponse) {
-    TitleTexts.Level2(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].ttl)
+    TitleTexts.Level2(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].title)
 }
 
 

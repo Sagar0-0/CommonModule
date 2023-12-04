@@ -10,6 +10,11 @@ android {
 }
 
 dependencies {
+    implementation(project(":resources:drawables"))
+    implementation(project(":resources:strings"))
+
+    implementation(project(":libs:media"))
+
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
@@ -30,4 +35,13 @@ dependencies {
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.material3)
+    implementation(libs.androidx.ui.tooling.preview.android)
+
+
+    //Media 3
+    implementation(libs.androidx.media3.exoplayer)
+    implementation(libs.androidx.media3.exoplayer.dash)
+    implementation(libs.androidx.media3.ui)
+    implementation(libs.androidx.media3.common)
+    implementation(libs.androidx.media3.session)
 }

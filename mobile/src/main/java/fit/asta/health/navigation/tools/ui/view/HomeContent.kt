@@ -21,20 +21,29 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun HomeContent(
     homeViewModel: HomeViewModel,
     refCode: String,
+    onEvent: (HomeScreenUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
     val context = LocalContext.current
-    when (val state = homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle().value) {
+    val state = homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle().value
+    val subscriptionResponse =
+        homeViewModel.subscriptionResponse.collectAsStateWithLifecycle().value
+    when (state) {
         is UiState.Loading -> {
-            AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
+            AppDotTypingAnimation(
+                modifier = Modifier.fillMaxSize()
+            )
         }
 
         is UiState.Success -> {
             HomeScreenLayout(
                 toolsHome = state.data,
+                subscriptionPlans = (subscriptionResponse as UiState.Success).data.subscriptionPlans.categories,
+                offers = subscriptionResponse.data.offers,
                 refCode = refCode,
                 userId = homeViewModel.userId,
-                onNav = onNav
+                onNav = onNav,
+                onEvent = onEvent
             )
         }
 

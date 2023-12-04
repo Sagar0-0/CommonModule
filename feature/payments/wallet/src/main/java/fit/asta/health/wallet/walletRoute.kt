@@ -45,7 +45,9 @@ fun NavGraphBuilder.walletRoute(
         }
 
         val walletDataState = walletViewModel.state.collectAsStateWithLifecycle().value
-        val offersList = listOf("ABC", "XYZ", "EFG")
+        val subscriptionResponse =
+            walletViewModel.subscriptionData.collectAsStateWithLifecycle().value
+        val offersList = (subscriptionResponse as UiState.Success).data.offers
 
         val scaffoldState = rememberBottomSheetScaffoldState()
         AppBottomSheetScaffold(
@@ -82,7 +84,10 @@ fun NavGraphBuilder.walletRoute(
                     WalletScreenUi(
                         modifier = Modifier.padding(paddingValues),
                         walletData = walletDataState.data,
-                        offersList = offersList
+                        offersList = offersList,
+                        onNavigateWithOffer = {
+
+                        }
                     ) { amount ->
                         if (amount != "0") {
                             onProceedToAdd(

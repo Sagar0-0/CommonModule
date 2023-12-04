@@ -38,6 +38,10 @@ import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.referral.view.NewReferralDialogContent
+import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.view.OfferBanner
+import fit.asta.health.subscription.view.SubscriptionList
 import fit.asta.health.tools.sleep.SleepToolActivity
 import fit.asta.health.tools.walking.nav.STEPS_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -48,8 +52,11 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHome,
+    subscriptionPlans: List<SubscriptionPlanCategory>,
+    offers: List<Offer>,
     refCode: String,
     userId: String,
+    onEvent: (HomeScreenUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
 
@@ -60,6 +67,33 @@ fun HomeScreenLayout(
         count = columns,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
+        item {
+            val pagerState = rememberPagerState { offers.size }
+            Box {
+                AppHorizontalPager(
+                    modifier = Modifier.padding(AppTheme.spacing.level2),
+                    pagerState = pagerState,
+                    contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+                    pageSpacing = AppTheme.spacing.level2,
+                    enableAutoAnimation = true,
+                    userScrollEnabled = true
+                ) { page ->
+                    OfferBanner(
+                        offer = offers[page]
+                    ) {
+                        onEvent(HomeScreenUiEvent.NavigateWithOffer(it))
+                    }
+                }
+
+                // This function draws the Dot Indicator for the Pager
+                AppExpandingDotIndicator(
+                    modifier = Modifier
+                        .padding(bottom = AppTheme.spacing.level2)
+                        .align(Alignment.BottomCenter),
+                    pagerState = pagerState
+                )
+            }
+        }
 
         // Top Sliding Images
         toolsHome.banners?.let { banners ->
@@ -77,6 +111,15 @@ fun HomeScreenLayout(
                 }
             }
         }
+
+        item {
+            SubscriptionList(
+                subscriptionPlans = subscriptionPlans
+            ) {
+                onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+            }
+        }
+
         toolsHome.tools?.let {
             // My Tools text and View All button
             item(span = { GridItemSpan(columns) }) {
@@ -226,4 +269,9 @@ fun HomeScreenLayout(
             )
         }
     }
+}
+
+sealed interface HomeScreenUiEvent {
+    data class NavigateToSubscriptionDurations(val subType: String) : HomeScreenUiEvent
+    data class NavigateWithOffer(val offer: Offer) : HomeScreenUiEvent
 }

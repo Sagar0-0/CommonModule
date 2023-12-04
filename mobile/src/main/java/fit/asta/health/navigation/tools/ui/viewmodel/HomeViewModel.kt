@@ -11,6 +11,8 @@ import fit.asta.health.common.utils.getNextDate
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.home.repo.ToolsHomeRepo
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.repo.SubscriptionRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -21,14 +23,30 @@ import javax.inject.Inject
 @HiltViewModel
 class HomeViewModel @Inject constructor(
     private val toolsHomeRepo: ToolsHomeRepo,
+    private val subscriptionRepo: SubscriptionRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
     private val _toolsHomeDataState = MutableStateFlow<UiState<ToolsHome>>(UiState.Loading)
     val toolsHomeDataState = _toolsHomeDataState.asStateFlow()
 
+    private val _subscriptionResponse =
+        MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Idle)
+    val subscriptionResponse = _subscriptionResponse.asStateFlow()
+
     var userId = ""
         private set
+
+
+    fun getSubscriptionData() {
+        _subscriptionResponse.value = UiState.Loading
+        viewModelScope.launch {
+            _subscriptionResponse.value = subscriptionRepo.getData(
+                uid = uid,
+                country = "india"
+            ).toUiState()
+        }
+    }
 
     fun loadHomeData() {
         viewModelScope.launch {

@@ -1,4 +1,4 @@
-package fit.asta.health.offers.view
+package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement

@@ -44,6 +44,6 @@ data class OrderRequest(
 }
 
 sealed class OrderRequestType(val code: Int) {
-    data object Subscription : OrderRequestType(0)
-    data object AddInWallet : OrderRequestType(1)
+    data object Subscription : OrderRequestType(1)
+    data object AddInWallet : OrderRequestType(2)
 }

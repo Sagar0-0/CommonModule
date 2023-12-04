@@ -47,6 +47,9 @@ import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
+import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
+import fit.asta.health.subscription.navigateToSubscriptionDurations
+import fit.asta.health.subscription.navigateWithOffer
 import fit.asta.health.tools.breathing.nav.navigateToBreathing
 import fit.asta.health.tools.exercise.nav.navigateToExercise
 import fit.asta.health.tools.sunlight.nav.navigateToSunlight
@@ -81,7 +84,8 @@ fun NavGraphBuilder.homeScreen(
             val mainViewModel: MainViewModel = hiltViewModel()
             LaunchedEffect(key1 = Unit, block = {
                 mainViewModel.getReferralData()
-            })
+            }
+            )
 
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
@@ -176,6 +180,17 @@ fun NavGraphBuilder.homeScreen(
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 notificationState = notificationState,
                 onLocation = { enableLocationAndUpdateAddress() },
+                onEvent = { event ->
+                    when (event) {
+                        is HomeScreenUiEvent.NavigateToSubscriptionDurations -> {
+                            navController.navigateToSubscriptionDurations(event.subType)
+                        }
+
+                        is HomeScreenUiEvent.NavigateWithOffer -> {
+                            navController.navigateWithOffer(event.offer)
+                        }
+                    }
+                },
                 onNav = {
                     when (it) {
                         SCHEDULER_GRAPH_ROUTE -> {
@@ -280,7 +295,8 @@ fun NavGraphBuilder.homeScreen(
                             navController.popBackStack()
                         }
                     }
-                })
+                }
+            )
         }
     }
 }

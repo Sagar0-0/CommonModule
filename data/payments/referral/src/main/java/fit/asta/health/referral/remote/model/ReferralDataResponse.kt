@@ -10,6 +10,7 @@ data class ReferralDataResponse(
     val referredByUsersDetails: UserDetails? = null,
     @SerializedName("ReferredUsers")
     val referredUsers: List<UserDetails>? = null,
+    @SerializedName("statsData")
     val referralStats: ReferralStats = ReferralStats()
 ) {
     data class ReferralCode(

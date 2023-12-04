@@ -1,4 +1,4 @@
-package fit.asta.health.offers.view
+package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -6,24 +6,24 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
+import androidx.core.net.toUri
+import androidx.media3.common.MediaItem
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.image.AppGifImage
-import fit.asta.health.designsystem.molecular.image.AppLocalImage
-import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.resources.drawables.R
+import fit.asta.health.subscription.remote.model.Offer
 
 /**
  * Sealed class representing different types of content for offers banners.
@@ -42,24 +42,9 @@ sealed class OffersBannerContentType(val type: Int) {
 @Preview
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OffersBanner() {
-    // Sample data for offer banners
-    val banners = listOf(
-        OffersBannerData(
-            imgID = R.drawable.weatherimage,
-            type = OffersBannerContentType.Image.type
-        ),
-        OffersBannerData(
-            imgID = R.drawable.weatherimage,
-            type = OffersBannerContentType.Image.type
-        ),
-        OffersBannerData(
-            imgID = R.drawable.weatherimage,
-            type = OffersBannerContentType.Image.type
-        ),
-    )
+private fun OffersBannerPreview() {
 
-    val pagerState = rememberPagerState { banners.size }
+    val pagerState = rememberPagerState { 3 }
 
     // Wrapping the banner in an AppTheme
     AppTheme {
@@ -77,11 +62,11 @@ fun OffersBanner() {
                 enableAutoAnimation = false,
                 userScrollEnabled = true
             ) { page ->
-                OfferBannerContent(
-                    bannerDataPages = banners[page].imgID,
-                    contentType = banners[page].type,
-                    pagerState = pagerState
-                )
+                OfferBanner(
+                    Offer()
+                ) {
+
+                }
             }
         }
     }
@@ -92,11 +77,9 @@ fun OffersBanner() {
  *
  * @param bannerDataPages The resource ID of the banner image.
  * @param contentType The type of content for the banner (image, GIF, video).
- * @param pagerState The state of the pager to control navigation.
  */
-@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OfferBannerContent(bannerDataPages: Int, contentType: Int, pagerState: PagerState) {
+fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
     // Container box for the banner content
     Box(
         modifier = Modifier
@@ -105,12 +88,12 @@ fun OfferBannerContent(bannerDataPages: Int, contentType: Int, pagerState: Pager
         contentAlignment = Alignment.BottomCenter
     ) {
         // Displaying content based on content type
-        when (contentType) {
+        when (offer.type) {
             OffersBannerContentType.Image.type -> {
                 // Image content
-                AppLocalImage(
-                    painter = painterResource(id = bannerDataPages),
-                    contentDescription = "ToolsHm Banner",
+                AppNetworkImage(
+                    model = getImgUrl(offer.url),
+                    contentDescription = "Offers Banner",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.FillBounds
                 )
@@ -120,21 +103,20 @@ fun OfferBannerContent(bannerDataPages: Int, contentType: Int, pagerState: Pager
                 // GIF content
                 AppGifImage(
                     modifier = Modifier.fillMaxSize(),
-                    url = getImgUrl(url = ""),
+                    url = getImgUrl(offer.url),
                     contentScale = ContentScale.FillBounds
                 )
             }
 
             OffersBannerContentType.Video.type -> {
-                // Uncomment the following lines once VideoViewUI is implemented
-                /*VideoViewUI(
+                VideoViewUI(
                     modifier = Modifier.fillMaxSize(),
-                    onPlay = page == pagerState.currentPage,
-                    onPause = page != pagerState.currentPage,
+                    onPlay = true,
+                    onPause = false,
                     mediaItem = MediaItem
                         .Builder()
-                        .setUri(getVideoUrl(url = items[page].url).toUri()).build()
-                )*/
+                        .setUri(getVideoUrl(url = offer.url).toUri()).build()
+                )
             }
         }
 
@@ -142,27 +124,12 @@ fun OfferBannerContent(bannerDataPages: Int, contentType: Int, pagerState: Pager
         Column(horizontalAlignment = Alignment.CenterHorizontally) {
             // Button to explore the section
             AppOutlinedButton(
-                textToShow = "Explore this Section",
-                onClick = {},
+                textToShow = "Explore this Offer",
+                onClick = {
+                    onClick(offer)
+                },
                 modifier = Modifier.padding(AppTheme.spacing.level2)
-            )
-
-            // Pager indicator
-            AppExpandingDotIndicator(
-                modifier = Modifier.padding(bottom = AppTheme.spacing.level2),
-                pagerState = pagerState
             )
         }
     }
 }
-
-/**
- * Data class representing the data for an offer banner.
- *
- * @property imgID The resource ID of the banner image.
- * @property type The type of content for the banner (image, GIF, video).
- */
-data class OffersBannerData(
-    val imgID: Int,
-    val type: Int,
-)

@@ -1,4 +1,4 @@
-package fit.asta.health.offers.view
+package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -35,6 +35,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
 
 /**
@@ -42,14 +43,13 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
  */
 @Preview
 @Composable
-fun SubPlanScreen() {
+private fun SubPlanScreenPreview() {
     AppTheme {
-        Box(
-            modifier = Modifier
-                .fillMaxSize(),
-            contentAlignment = Alignment.Center
-        ) {
-            SubPlanContent()
+        SubPlanContent(
+            subPlanSubscriptionPlanCategory = SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory(),
+            0
+        ) { _, _ ->
+
         }
     }
 }
@@ -58,27 +58,42 @@ fun SubPlanScreen() {
  * Composable function for the content of the subscription plan screen.
  */
 @Composable
-fun SubPlanContent() {
-    AppSurface(
+fun SubPlanContent(
+    subPlanSubscriptionPlanCategory: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory,
+    durIdx: Int,
+    onClick: (subType: String, durType: String) -> Unit
+) {
+    Box(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level2),
-        shape = AppTheme.shape.level3,
-        color = AppTheme.colors.onSurface.copy(0.1f)
+            .fillMaxSize(),
+        contentAlignment = Alignment.Center
     ) {
-        Column(
-            Modifier
+        AppSurface(
+            modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
+                .padding(AppTheme.spacing.level2),
+            shape = AppTheme.shape.level3,
+            color = AppTheme.colors.onSurface.copy(0.1f)
         ) {
-            // Header Section
-            SubPlanHeader()
+            Column(
+                Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2)
+            ) {
+                // Header Section
+                SubPlanHeader()
 
-            // Details Section
-            SubPlanDetails()
+                // Details Section
+                SubPlanDetails()
 
-            // Buy Now Button
-            BuyNowButton()
+                // Buy Now Button
+                BuyNowButton {
+                    onClick(
+                        subPlanSubscriptionPlanCategory.subscriptionType,
+                        subPlanSubscriptionPlanCategory.durations[durIdx].durationType
+                    )
+                }
+            }
         }
     }
 }
@@ -228,10 +243,10 @@ fun CurrentPriceContent(modifier: Modifier = Modifier) {
  * Composable function for the "BUY NOW" button.
  */
 @Composable
-fun BuyNowButton() {
+fun BuyNowButton(onClick: () -> Unit) {
     AppFilledButton(
         textToShow = "BUY NOW",
-        onClick = {},
+        onClick = onClick,
         modifier = Modifier
             .fillMaxWidth()
             .padding(horizontal = AppTheme.spacing.level4)

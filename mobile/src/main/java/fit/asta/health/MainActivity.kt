@@ -80,10 +80,8 @@ class MainActivity : ComponentActivity(),
     private lateinit var referrerClient: InstallReferrerClient
 
     override fun onCreate(savedInstanceState: Bundle?) {
-//        enableEdgeToEdge()
-
-        super.onCreate(savedInstanceState)
         val splashScreen = installSplashScreen()
+        super.onCreate(savedInstanceState)
         // This app draws behind the system bars, so we want to handle fitting system windows
         //https://developer.android.com/develop/ui/views/layout/edge-to-edge
         //WindowCompat.setDecorFitsSystemWindows(window, true)

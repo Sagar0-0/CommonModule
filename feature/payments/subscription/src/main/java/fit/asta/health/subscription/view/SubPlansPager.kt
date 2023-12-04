@@ -46,6 +46,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
+import fit.asta.health.payment.remote.model.OrderRequestType
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 
 @OptIn(ExperimentalFoundationApi::class)
@@ -89,7 +90,7 @@ internal fun SubPlansPager(
 
 @Composable
 private fun SubPlanItem(
-    item: SubscriptionResponse.SubscriptionPlans.Category,
+    item: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory,
     modifier: Modifier,
     fullScreen: Boolean,
     onFullScreenChange: (Boolean) -> Unit,
@@ -125,7 +126,7 @@ private fun SubPlanItem(
         if (selectedDurationIndex == -1) {
             "Select a plan duration"
         } else {
-            "Join ${item.ttl} plan for ${item.durations[selectedDurationIndex].ttl}"
+            "Join ${item.title} plan for ${item.durations[selectedDurationIndex].ttl}"
         }
     } else {
         "Get Started"
@@ -161,14 +162,14 @@ private fun SubPlanItem(
                     Column {
                         HeadingTexts.Level1(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = item.ttl
+                            text = item.title
                         )
 
                     }
                 } else {
                     HeadingTexts.Level2(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = item.ttl
+                        text = item.title
                     )
                 }
             }
@@ -211,9 +212,10 @@ private fun SubPlanItem(
                     onPayClick(
                         OrderRequest(
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
-                                subType = item.id,
-                                durType = item.durations[selectedDurationIndex].id
-                            )
+                                subType = item.subscriptionType,
+                                durType = item.durations[selectedDurationIndex].durationType
+                            ),
+                            type = OrderRequestType.Subscription.code
                         )
                     )
                 } else {

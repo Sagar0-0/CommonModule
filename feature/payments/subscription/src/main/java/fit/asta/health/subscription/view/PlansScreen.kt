@@ -1,7 +1,6 @@
-package fit.asta.health.offers.view
+package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
@@ -11,23 +10,27 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
+import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
+import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.sp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
 
 /**
  * Preview function for the PlanScreen.
@@ -36,12 +39,8 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun PlanScreen() {
     AppTheme {
-        // The main container for the PlanScreen
-        Box(
-            modifier = Modifier
-                .fillMaxSize()
-        ) {
-            PlanScreenContent()
+        SubscriptionDurationsScreen(SubscriptionPlanCategory(), {}) { _, _ ->
+
         }
     }
 }
@@ -49,22 +48,45 @@ fun PlanScreen() {
 /**
  * Main content of the PlanScreen.
  */
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun PlanScreenContent() {
-    LazyColumn(
-        modifier = Modifier
-            .fillMaxSize()
-            .padding(AppTheme.spacing.level2),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-    ) {
-        item {
-            // Title section
-            TitleTexts.Level1(text = "Explore Subscriptions")
+fun SubscriptionDurationsScreen(
+    planSubscriptionPlanCategory: SubscriptionPlanCategory,
+    onBack: () -> Unit,
+    onClick: (subType: String, durType: String) -> Unit
+) {
+    val plansList: List<PlansData> = planSubscriptionPlanCategory.durations.map { duration ->
+        PlansData(
+            month = duration.ttl,
+            discount = duration.discount,
+            price = duration.price,
+            tax = duration.tax,
+            desc = duration.dsc,
+            emi = duration.emi
+        )
+    }
+    AppScaffold(
+        topBar = {
+            AppTopBar(title = "Explore ${planSubscriptionPlanCategory.title} plans") {
+                onBack()
+            }
         }
-
-        items(PlansDataManager.plansList) { plansData ->
-            // Display each plan as a card
-            PlansCard(plansData = plansData)
+    ) {
+        LazyColumn(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
+            itemsIndexed(plansList) { idx, plansData ->
+                // Display each plan as a card
+                PlansCard(plansData = plansData) {
+                    onClick(
+                        planSubscriptionPlanCategory.subscriptionType,
+                        planSubscriptionPlanCategory.durations[idx].durationType
+                    )
+                }
+            }
         }
     }
 }
@@ -75,16 +97,16 @@ fun PlanScreenContent() {
  * @param plansData Data for a specific plan.
  */
 @Composable
-fun PlansCard(plansData: PlansData) {
+fun PlansCard(plansData: PlansData, onClick: () -> Unit) {
     // Card container with plan details
-    AppCard(Modifier.fillMaxWidth()) {
+    AppCard(Modifier.fillMaxWidth(), onClick = onClick) {
         Column(
             Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2)
         ) {
             Row(
-                Modifier.fillMaxWidth(),
+                modifier = Modifier.fillMaxWidth(),
                 verticalAlignment = Alignment.Top,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -97,6 +119,7 @@ fun PlansCard(plansData: PlansData) {
                 // Display arrow button for more actions
                 DisplayArrowButton()
             }
+
             Row(
                 Modifier
                     .fillMaxWidth()
@@ -173,10 +196,12 @@ private fun DisplayPlanPriceEmiTax(plansData: PlansData) {
     ) {
         TitleTexts.Level1(text = plansData.price)
         Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
-        BodyTexts.Level3(
-            text = plansData.emi,
-            color = AppTheme.colors.onSurface.copy(0.3f)
-        )
+        plansData.emi?.let {
+            BodyTexts.Level3(
+                text = it,
+                color = AppTheme.colors.onSurface.copy(0.3f)
+            )
+        }
     }
     TitleTexts.Level4(
         text = plansData.tax,
@@ -227,55 +252,8 @@ data class PlansData(
     val price: String = "",
     val tax: String = "",
     val desc: String = "",
-    val emi: String = "",
+    val emi: String? = null
 )
-
-/**
- * Object managing the list of subscription plans.
- */
-object PlansDataManager {
-    val plansList = listOf(
-        PlansData("7"),
-        PlansData(
-            "24",
-            addStrikethrough("$3999"),
-            "$2457",
-            "+ $442 GST",
-            generateOfferText(),
-            "($102/month)"
-        ),
-        PlansData(
-            "12",
-            addStrikethrough("$2400"),
-            "$2457",
-            "+ $442 GST",
-            generateOfferText(),
-            "($102/month)"
-        ),
-        PlansData(
-            "6",
-            addStrikethrough("$1749"),
-            "$2457",
-            "+ $442 GST",
-            generateOfferText(),
-            "($102/month)"
-        ),
-        PlansData(
-            "3",
-            addStrikethrough("$1099"),
-            "$2457",
-            "+ $442 GST",
-            generateOfferText(),
-            "($102/month)"
-        ),
-    )
-
-    private fun generateOfferText() = """
-        + Extra $500 OFF applied
-        + Only Today: Free Amazon voucher worth $250
-        + Get FREE 4 Months extension
-    """.trimIndent()
-}
 
 /**
  * Function to add a strikethrough effect to the input string.
