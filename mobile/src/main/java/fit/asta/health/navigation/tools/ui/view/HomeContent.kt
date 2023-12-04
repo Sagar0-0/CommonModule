@@ -13,6 +13,7 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -21,14 +22,13 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun HomeContent(
     homeViewModel: HomeViewModel,
     refCode: String,
+    subscriptionResponse: SubscriptionResponse?,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
+
     val context = LocalContext.current
-    val state = homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle().value
-    val subscriptionResponse =
-        homeViewModel.subscriptionResponse.collectAsStateWithLifecycle().value
-    when (state) {
+    when (val state = homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle().value) {
         is UiState.Loading -> {
             AppDotTypingAnimation(
                 modifier = Modifier.fillMaxSize()
@@ -38,8 +38,7 @@ fun HomeContent(
         is UiState.Success -> {
             HomeScreenLayout(
                 toolsHome = state.data,
-                subscriptionPlans = (subscriptionResponse as UiState.Success).data.subscriptionPlans.categories,
-                offers = subscriptionResponse.data.offers,
+                subscriptionResponse = subscriptionResponse,
                 refCode = refCode,
                 userId = homeViewModel.userId,
                 onNav = onNav,

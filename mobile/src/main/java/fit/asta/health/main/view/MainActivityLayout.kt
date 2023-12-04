@@ -84,6 +84,7 @@ import fit.asta.health.navigation.tools.ui.view.HomeContent
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -96,6 +97,7 @@ fun MainActivityLayout(
     sessionState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
+    subscriptionResponse: SubscriptionResponse?,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
@@ -119,6 +121,7 @@ fun MainActivityLayout(
                 navController = navController,
                 refCode = refCode,
                 onNav = onNav,
+                subscriptionResponse = subscriptionResponse,
                 onEvent = onEvent,
                 onSchedule = onSchedule,
                 onLocation = onLocation,
@@ -343,6 +346,7 @@ private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     refCode: String,
+    subscriptionResponse: SubscriptionResponse?,
     onNav: (String) -> Unit,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
@@ -361,13 +365,13 @@ private fun MainNavHost(
                 key1 = Unit,
                 block = {
                     homeViewModel.loadHomeData()
-                    homeViewModel.getSubscriptionData()
                 }
             )
 
             HomeContent(
                 homeViewModel = homeViewModel,
                 refCode = refCode,
+                subscriptionResponse = subscriptionResponse,
                 onNav = onNav,
                 onEvent = onEvent
             )

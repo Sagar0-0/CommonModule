@@ -55,7 +55,7 @@ private fun BuyPlanScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProceedToBuyScreen(SubscriptionPlanCategory(), 0, null, {}, {})
+            ProceedToBuyScreen(SubscriptionPlanCategory(), "0", null, {}, {})
         }
     }
 }
@@ -67,7 +67,7 @@ private fun BuyPlanScreen() {
 @Composable
 fun ProceedToBuyScreen(
     subscriptionPlanCategory: SubscriptionPlanCategory,
-    durationIndex: Int,
+    durationType: String,
     offer: Offer? = null,
     onBack: () -> Unit,
     onProceedToBuy: (OrderRequest) -> Unit
@@ -100,11 +100,16 @@ fun ProceedToBuyScreen(
                         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
                     ) {
                         // Various card composable and layouts are included.
-                        ProMembershipCard(subscriptionPlanCategory, durationIndex)
+                        ProMembershipCard(
+                            subscriptionPlanCategory,
+                            durationType
+                        )
                         offer?.let {
                             OffersSection(it)
                         }
-                        subscriptionPlanCategory.durations[durationIndex].emi?.let {
+                        subscriptionPlanCategory.durations.find {
+                            it.durationType == durationType
+                        }?.emi?.let {
                             EMISection(it)
                         }
                         HowItWorksSection(subscriptionPlanCategory.feature)
@@ -131,7 +136,7 @@ fun ProceedToBuyScreen(
                         OrderRequest(
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
                                 subType = subscriptionPlanCategory.subscriptionType,
-                                durType = subscriptionPlanCategory.durations[durationIndex].durationType
+                                durType = durationType
                             ),
                             type = OrderRequestType.Subscription.code
                         )
@@ -152,7 +157,7 @@ fun ProceedToBuyScreen(
  * Composable function for displaying a professional plan card.
  */
 @Composable
-fun ProMembershipCard(subscriptionPlanCategory: SubscriptionPlanCategory, durationIndex: Int) {
+fun ProMembershipCard(subscriptionPlanCategory: SubscriptionPlanCategory, durationType: String) {
     // AppCard is a custom composable for displaying cards with padding and rounded corners.
     AppCard(
         modifier = Modifier
@@ -168,7 +173,10 @@ fun ProMembershipCard(subscriptionPlanCategory: SubscriptionPlanCategory, durati
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
                 TitleTexts.Level1(text = subscriptionPlanCategory.title)
                 Column(horizontalAlignment = Alignment.End) {
-                    HeadingTexts.Level4(text = subscriptionPlanCategory.durations[durationIndex].price)
+                    HeadingTexts.Level4(
+                        text = subscriptionPlanCategory.durations.find { it.durationType == durationType }?.price
+                            ?: ""
+                    )
                 }
             }
 

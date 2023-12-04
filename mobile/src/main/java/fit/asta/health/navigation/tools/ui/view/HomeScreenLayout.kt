@@ -40,7 +40,7 @@ import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.subscription.remote.model.Offer
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionList
 import fit.asta.health.tools.sleep.SleepToolActivity
@@ -52,8 +52,7 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHome,
-    subscriptionPlans: List<SubscriptionPlanCategory>,
-    offers: List<Offer>,
+    subscriptionResponse: SubscriptionResponse?,
     refCode: String,
     userId: String,
     onEvent: (HomeScreenUiEvent) -> Unit,
@@ -67,31 +66,33 @@ fun HomeScreenLayout(
         count = columns,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        item {
-            val pagerState = rememberPagerState { offers.size }
-            Box {
-                AppHorizontalPager(
-                    modifier = Modifier.padding(AppTheme.spacing.level2),
-                    pagerState = pagerState,
-                    contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
-                    pageSpacing = AppTheme.spacing.level2,
-                    enableAutoAnimation = true,
-                    userScrollEnabled = true
-                ) { page ->
-                    OfferBanner(
-                        offer = offers[page]
-                    ) {
-                        onEvent(HomeScreenUiEvent.NavigateWithOffer(it))
+        subscriptionResponse?.let {
+            item {
+                val pagerState = rememberPagerState { it.offers.size }
+                Box {
+                    AppHorizontalPager(
+                        modifier = Modifier.padding(AppTheme.spacing.level2),
+                        pagerState = pagerState,
+                        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+                        pageSpacing = AppTheme.spacing.level2,
+                        enableAutoAnimation = true,
+                        userScrollEnabled = true
+                    ) { page ->
+                        OfferBanner(
+                            offer = it.offers[page]
+                        ) {
+                            onEvent(HomeScreenUiEvent.NavigateWithOffer(it))
+                        }
                     }
-                }
 
-                // This function draws the Dot Indicator for the Pager
-                AppExpandingDotIndicator(
-                    modifier = Modifier
-                        .padding(bottom = AppTheme.spacing.level2)
-                        .align(Alignment.BottomCenter),
-                    pagerState = pagerState
-                )
+                    // This function draws the Dot Indicator for the Pager
+                    AppExpandingDotIndicator(
+                        modifier = Modifier
+                            .padding(bottom = AppTheme.spacing.level2)
+                            .align(Alignment.BottomCenter),
+                        pagerState = pagerState
+                    )
+                }
             }
         }
 
@@ -112,11 +113,13 @@ fun HomeScreenLayout(
             }
         }
 
-        item {
-            SubscriptionList(
-                subscriptionPlans = subscriptionPlans
-            ) {
-                onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+        subscriptionResponse?.let {
+            item {
+                SubscriptionList(
+                    subscriptionPlans = it.subscriptionPlans.categories
+                ) {
+                    onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+                }
             }
         }
 
