@@ -11,11 +11,11 @@ import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
 fun TodaySchedules.getTodayData(): TodayData {
     return TodayData(
-        temperature = this.data.weather.currentWeather.temperature.toString(),
-        location = this.data.weather.loc,
-        date = this.data.weather.date,
-        weatherCode = this.data.weather.currentWeather.weatherCode,
-        slots = this.data.slot?.slot?.sortedBy { it.time }?.map {
+        temperature = this.weather.currentWeather.temperature.toString(),
+        location = this.weather.loc,
+        date = this.weather.date,
+        weatherCode = this.weather.currentWeather.weatherCode,
+        slots = this.slot?.slot?.sortedBy { it.time }?.map {
             val dayAndTime = Constants.getDayAndTime(it.time)
             WeatherData(
                 time = dayAndTime.time,

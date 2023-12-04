@@ -2,7 +2,6 @@ package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.common.utils.Response
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.remote.model.TodayDefaultSchedule
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
@@ -26,7 +25,7 @@ interface SchedulerApiService {
     @GET("schedule/home/today/events/get/?")
     suspend fun getDefaultSchedule(
         @Query("uid") userID: String
-    ): Response<TodayDefaultSchedule>
+    ): Response<List<AlarmEntity>>
 
     @PUT("schedule/put/")
     suspend fun updateScheduleDataOnBackend(
