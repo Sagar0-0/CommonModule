@@ -12,6 +12,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
+import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.Weekdays
@@ -22,6 +23,8 @@ import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
+import fit.asta.health.navigation.today.ui.view.CalendarDataSource
+import fit.asta.health.navigation.today.ui.view.CalendarUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
@@ -59,8 +62,27 @@ class TodayPlanViewModel @Inject constructor(
 
     private val currentTime: LocalTime = LocalTime.now()
 
+    private val dataSource = CalendarDataSource()
+
+    private val _calendarUiModel =
+        MutableStateFlow(dataSource.getData(lastSelectedDate = dataSource.today))
+    val calendarUiModel = _calendarUiModel.asStateFlow()
+
+    private val _alarmList = mutableStateListOf<AlarmEntity>()
+    val alarmList = MutableStateFlow(_alarmList)
+
     init {
         getWeatherSunSlots()
+        getAlarms()
+    }
+
+
+    fun setWeekDate(date: CalendarUiModel.Date) {
+        _calendarUiModel.value = _calendarUiModel.value.copy(selectedDate = date,
+            visibleDates = _calendarUiModel.value.visibleDates.map {
+                it.copy(isSelected = it.date.isEqual(date.date))
+            }
+        )
         getAlarms()
     }
 
@@ -78,7 +100,7 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = alarmBackendRepo.getDefaultSchedule(uId)) {
                 is ResponseState.Success -> {
-                    result.data.schedule.forEach { alarmEntity ->
+                    result.data.forEach { alarmEntity ->
                         val alarm = alarmEntity.copy(
                             meta = Meta(
                                 cBy = alarmEntity.meta.cBy,
@@ -96,6 +118,10 @@ class TodayPlanViewModel @Inject constructor(
                             alarmLocalRepo.insertAlarm(alarm)
                         }
                     }
+                }
+
+                is ResponseState.ErrorMessage -> {
+                    Log.d("TAG", "getDefaultSchedule: ${result.resId.toStringFromResId(context)}")
                 }
 
                 else -> {}
@@ -141,8 +167,9 @@ class TodayPlanViewModel @Inject constructor(
 
     private fun getAlarms() {
         viewModelScope.launch {
-            alarmLocalRepo.getAllAlarm().collect { list ->
+            alarmLocalRepo.getAllAlarm().collectLatest { list ->
                 _defaultScheduleVisibility.value = list.isEmpty()
+                _alarmList.clear()
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
@@ -152,51 +179,67 @@ class TodayPlanViewModel @Inject constructor(
                 alarmList.addAll(list.filter {
                     currentTime.isBefore(LocalTime.of(it.time.hours, it.time.minutes))
                 })
-                alarmList.forEach {
-                    if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
-                        val today = if (it.daysOfWeek.isRepeating) {
-                            it.daysOfWeek.isBitOn(today)
-                        } else true
-                        if (today) {
-                            when (it.time.hours) {
-                                in 0..2 -> {
-                                    if (it.time.minutes > 0) _alarmListMorning.add(it)
-                                    else _alarmListEvening.add(it)
-                                }
-
-                                in 3..12 -> {
-                                    if (it.time.minutes > 0) _alarmListAfternoon.add(it)
-                                    else _alarmListMorning.add(it)
-                                }
-
-                                in 13..16 -> {
-                                    if (it.time.minutes > 0) _alarmListEvening.add(it)
-                                    else _alarmListAfternoon.add(it)
-                                }
-
-                                in 17..23 -> {
-                                    _alarmListEvening.add(it)
-                                }
+                Log.d(
+                    "TAG",
+                    "getAlarms: ${calendarUiModel.value.selectedDate.date.dayOfWeek.value}"
+                )
+                Log.d("TAG", "getAlarms: ${calendarUiModel.value.selectedDate.date.dayOfWeek}")
+                list.forEach {
+                    if (it.status) {
+                        if (it.daysOfWeek.isRepeating) {
+                            if (it.daysOfWeek.isBitOn(calendarUiModel.value.selectedDate.date.dayOfWeek.value)) {
+                                _alarmList.add(it)
+                            }
+                        } else {
+                            if (calendarUiModel.value.selectedDate.isToday) {
+                                _alarmList.add(it)
                             }
                         }
                     }
+//                    if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
+//                        val today = if (it.daysOfWeek.isRepeating) {
+//                            it.daysOfWeek.isBitOn(today)
+//                        } else true
+//                        if (today) {
+//                            when (it.time.hours) {
+//                                in 0..2 -> {
+//                                    if (it.time.minutes > 0) _alarmListMorning.add(it)
+//                                    else _alarmListEvening.add(it)
+//                                }
+//
+//                                in 3..12 -> {
+//                                    if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+//                                    else _alarmListMorning.add(it)
+//                                }
+//
+//                                in 13..16 -> {
+//                                    if (it.time.minutes > 0) _alarmListEvening.add(it)
+//                                    else _alarmListAfternoon.add(it)
+//                                }
+//
+//                                in 17..23 -> {
+//                                    _alarmListEvening.add(it)
+//                                }
+//                            }
+//                        }
+//                    }
                 }
 
-                val alarmTime = LocalTime.of(21, 0)
-                if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
-                    _alarmListNextDay.clear()
-                    var nextDay = today + 1
-                    if (nextDay > Calendar.SATURDAY) {
-                        nextDay = Calendar.SUNDAY
-                    }
-                    list.forEach {
-                        if (it.status && it.daysOfWeek.isRepeating &&
-                            it.daysOfWeek.isBitOn(nextDay)
-                        ) {
-                            _alarmListNextDay.add(it)
-                        }
-                    }
-                }
+//                val alarmTime = LocalTime.of(21, 0)
+//                if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
+//                    _alarmListNextDay.clear()
+//                    var nextDay = today + 1
+//                    if (nextDay > Calendar.SATURDAY) {
+//                        nextDay = Calendar.SUNDAY
+//                    }
+//                    list.forEach {
+//                        if (it.status && it.daysOfWeek.isRepeating &&
+//                            it.daysOfWeek.isBitOn(nextDay)
+//                        ) {
+//                            _alarmListNextDay.add(it)
+//                        }
+//                    }
+//                }
             }
         }
     }

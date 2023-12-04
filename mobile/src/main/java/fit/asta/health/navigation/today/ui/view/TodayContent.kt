@@ -72,10 +72,13 @@ fun TodayContent(
     state: UiState<TodayData>,
     userName: String,
     defaultScheduleVisibility: Boolean,
+    calendarUiModel: CalendarUiModel,
+    list: SnapshotStateList<AlarmEntity>,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
     listNextDay: SnapshotStateList<AlarmEntity>,
+    onDateClickListener: (CalendarUiModel.Date) -> Unit,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
@@ -85,6 +88,7 @@ fun TodayContent(
     var skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
     var evenType by remember { mutableStateOf(Event.Morning) }
     val context = LocalContext.current
+
 
     if (deleteDialog) {
         AppDialogPopUp(
@@ -120,10 +124,18 @@ fun TodayContent(
         ) {
 
             // Heading Name, show Alarms and What's your mood composable
+
             item {
                 NameAndMoodHomeScreenHeader(
                     userName = userName,
                     onAlarm = { onNav(ALL_ALARMS_ROUTE) }
+                )
+            }
+            item {
+                WeekScreen(
+                    modifier = Modifier.fillMaxWidth(),
+                    data = calendarUiModel,
+                    onDateClickListener = onDateClickListener
                 )
             }
             when (state) {
@@ -190,6 +202,11 @@ fun TodayContent(
                             textToShow = stringResource(R.string.default_schedule)
                         ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
                     }
+                }
+            }
+            if (list.isNotEmpty()) {
+                items(list) { item ->
+                    TodayItem(item)
                 }
             }
             if (listMorning.isNotEmpty()) {

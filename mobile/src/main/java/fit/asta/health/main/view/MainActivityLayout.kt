@@ -374,9 +374,11 @@ private fun MainNavHost(
 
         }
 
-        composable(BottomBarDestination.Today.route) {
+        composable(BottomBarDestination.Today.route) { navBackStackEntry ->
             val todayPlanViewModel: TodayPlanViewModel =
-                it.sharedViewModel(navController = navController)
+                navBackStackEntry.sharedViewModel(navController = navController)
+            val calendarUiModel by todayPlanViewModel.calendarUiModel.collectAsStateWithLifecycle()
+            val alarmList by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
             val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
@@ -453,6 +455,9 @@ private fun MainNavHost(
             }
             TodayContent(
                 state = state,
+                calendarUiModel = calendarUiModel,
+                list = alarmList,
+                onDateClickListener = { todayPlanViewModel.setWeekDate(it) },
                 userName = todayPlanViewModel.getUserName(),
                 defaultScheduleVisibility = defaultScheduleVisibility,
                 listMorning = listMorning,
