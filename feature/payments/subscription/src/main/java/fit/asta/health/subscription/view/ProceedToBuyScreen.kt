@@ -107,7 +107,7 @@ fun ProceedToBuyScreen(
                         offer?.let {
                             OffersSection(it)
                         }
-                        subscriptionPlanCategory.durations.find {
+                        subscriptionPlanCategory.durations.firstOrNull {
                             it.durationType == durationType
                         }?.emi?.let {
                             EMISection(it)

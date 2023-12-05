@@ -21,7 +21,7 @@ class SubscriptionViewModel
 ) : ViewModel() {
 
     private val _state =
-        MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Loading)
+        MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Idle)
     val state = _state.asStateFlow()
 
     init {
@@ -31,7 +31,7 @@ class SubscriptionViewModel
     fun getData() {
         _state.value = UiState.Loading
         viewModelScope.launch {
-            _state.value = subscriptionRepo.getData(uid, "india").toUiState()
+            _state.value = subscriptionRepo.getData(uid, "IND").toUiState()
         }
     }
 

@@ -59,7 +59,7 @@ import fit.asta.health.resources.strings.R as StringR
 fun WalletScreenUi(
     modifier: Modifier,
     walletData: WalletResponse,
-    offersList: List<Offer>,
+    offersList: List<Offer>?,
     onNavigateWithOffer: (Offer) -> Unit,
     onProceedToAdd: (String) -> Unit
 ) {
@@ -119,10 +119,12 @@ fun WalletScreenUi(
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        OffersCarousal(
-            offersList = offersList
-        ) {
-            onNavigateWithOffer(it)
+        offersList?.let {
+            OffersCarousal(
+                offersList = offersList
+            ) {
+                onNavigateWithOffer(it)
+            }
         }
 
         Spacer(modifier = Modifier.padding(AppTheme.spacing.level2))

@@ -128,8 +128,7 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
                                 context,
                                 orderDetailDataState.resId.toStringFromResId(),
                                 Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            ).show()
                         }
 
                         is UiState.ErrorRetry -> {

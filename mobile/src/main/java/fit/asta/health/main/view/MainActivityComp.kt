@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -70,19 +71,21 @@ const val HOME_GRAPH_ROUTE = "graph_home"
 const val HOME_ROUTE = "home_route"
 const val ALL_ALARMS_ROUTE = "all_alarms"
 private const val SUBSCRIPTION_DURATION_ROUTE = "graph_duration_route/{subType}"
-private const val SUBSCRIPTION_FINAL_SCREEN = "graph_final_route/subType/durType?offer={offer}"
+private const val SUBSCRIPTION_FINAL_SCREEN = "graph_final_route/{subType}/{durType}?offer={offer}"
 fun NavController.navigateToSubscriptionDurations(subType: String) {
+    Log.d("Main", "navigateToSubscriptionDurations: subtype = $subType")
     this.navigate(SUBSCRIPTION_DURATION_ROUTE.replace("subType", subType))
 }
 
-fun NavController.navigateWithOffer(offer: Offer) {
+fun NavController.navigateToPaymentWithOffer(offer: Offer) {
     val gson: Gson = GsonBuilder().create()
     val offerJson = gson.toJson(offer).replace("/", "|")
     this.navigate(
         SUBSCRIPTION_FINAL_SCREEN
             .replace("subType", offer.sub.subType)
             .replace("durType", offer.sub.durType)
-            .replace("offer", offerJson)
+            .removeSuffix("{offer}")
+                + "{$offerJson}"
     )
 }
 
@@ -127,6 +130,7 @@ fun NavGraphBuilder.homeScreen(
 
             val subscriptionResponse =
                 subscriptionViewModel.state.collectAsStateWithLifecycle().value
+            Log.d("Main", "homeScreen: subscriptionResponse $subscriptionResponse")
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
@@ -230,7 +234,7 @@ fun NavGraphBuilder.homeScreen(
                         }
 
                         is HomeScreenUiEvent.NavigateWithOffer -> {
-                            navController.navigateWithOffer(event.offer)
+                            navController.navigateToPaymentWithOffer(event.offer)
                         }
                     }
                 },
@@ -352,7 +356,7 @@ fun NavGraphBuilder.homeScreen(
             when (subscriptionResponse) {
                 is UiState.Success -> {
                     val category =
-                        subscriptionResponse.data.subscriptionPlans.categories.find { cat ->
+                        subscriptionResponse.data.subscriptionPlans.categories.firstOrNull { cat ->
                             cat.subscriptionType == subType
                         }
                     category?.let {
@@ -364,12 +368,11 @@ fun NavGraphBuilder.homeScreen(
                             }
                         )
                     }
-
                 }
 
                 else -> {
                     LaunchedEffect(Unit) {
-                        android.widget.Toast.makeText(
+                        Toast.makeText(
                             context,
                             "Something went wrong!",
                             Toast.LENGTH_SHORT
@@ -386,8 +389,9 @@ fun NavGraphBuilder.homeScreen(
             route = SUBSCRIPTION_FINAL_SCREEN,
             arguments = listOf(
                 navArgument("offer") {
-                    defaultValue = 0
+                    defaultValue = null
                     type = NavType.StringType
+                    nullable = true
                 }
             )
         ) {
@@ -396,8 +400,11 @@ fun NavGraphBuilder.homeScreen(
             val subType = it.arguments?.getString("subType")!!
             val durType = it.arguments?.getString("durType")!!
             val offerJson = it.arguments?.getString("offer")?.replace("|", "/")
+            Log.d("Main", "homeScreen: offerJson: $offerJson")
             val gson = GsonBuilder().create()
-            val offer = gson.fromJson(offerJson, Offer::class.java)
+            val offer = offerJson?.let {
+                gson.fromJson(offerJson, Offer::class.java)
+            }
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
             val subscriptionResponse =
@@ -405,7 +412,7 @@ fun NavGraphBuilder.homeScreen(
             when (subscriptionResponse) {
                 is UiState.Success -> {
                     val category =
-                        subscriptionResponse.data.subscriptionPlans.categories.find { cat ->
+                        subscriptionResponse.data.subscriptionPlans.categories.firstOrNull { cat ->
                             cat.subscriptionType == subType
                         }
                     category?.let {
@@ -426,7 +433,7 @@ fun NavGraphBuilder.homeScreen(
 
                 else -> {
                     LaunchedEffect(Unit) {
-                        android.widget.Toast.makeText(
+                        Toast.makeText(
                             context,
                             "Something went wrong!",
                             Toast.LENGTH_SHORT

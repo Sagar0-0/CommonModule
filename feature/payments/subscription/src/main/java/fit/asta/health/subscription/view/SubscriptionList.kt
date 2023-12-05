@@ -11,8 +11,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
@@ -76,20 +74,17 @@ fun SubscriptionList(
             subType = it.subscriptionType
         )
     }
-    // Use LazyColumn to efficiently render a scrolling list of items
-    LazyColumn(
+    Column(
         modifier = Modifier
             .fillMaxSize()
             .padding(AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         // Display a title for the subscription list
-        item {
-            TitleTexts.Level1(text = "Explore Premium Plans")
-        }
+        TitleTexts.Level1(text = "Explore Premium Plans")
 
         // Display SubscriptionPassCard for each item in the subscription list
-        items(subPlans) { plan ->
+        subPlans.forEach { plan ->
             SubscriptionPassCard(subscriptionData = plan) {
                 onClick(it)
             }

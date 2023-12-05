@@ -67,7 +67,7 @@ fun HomeScreenLayout(
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         subscriptionResponse?.let {
-            item {
+            item(span = { GridItemSpan(columns) }) {
                 val pagerState = rememberPagerState { it.offers.size }
                 Box {
                     AppHorizontalPager(
@@ -114,7 +114,7 @@ fun HomeScreenLayout(
         }
 
         subscriptionResponse?.let {
-            item {
+            item(span = { GridItemSpan(columns) }) {
                 SubscriptionList(
                     subscriptionPlans = it.subscriptionPlans.categories
                 ) {

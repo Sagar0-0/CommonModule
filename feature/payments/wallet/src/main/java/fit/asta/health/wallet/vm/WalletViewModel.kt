@@ -39,7 +39,7 @@ class WalletViewModel
     fun getSubscriptionData() {
         _subscriptionData.value = UiState.Loading
         viewModelScope.launch {
-            _subscriptionData.value = subscriptionRepo.getData(uid, "india").toUiState()
+            _subscriptionData.value = subscriptionRepo.getData(uid, "IND").toUiState()
         }
     }
 }

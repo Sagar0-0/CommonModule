@@ -102,7 +102,6 @@ fun OrderDetailScreen(orderData: OrderDetailData, onUiEvent: (OrderDetailUiEvent
                     TitleTexts.Level2(text = "Total Payable Amount")
                     TitleTexts.Level2(text = orderData.amt.toString())
                 }
-
             }
 
             Card(modifier = Modifier.fillMaxWidth()) {
