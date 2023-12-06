@@ -296,7 +296,7 @@
     <string name="validate_emptyList">The %s list should not be empty</string>
     <string name="validate_max_phy">The %s should not be more than %s</string>
     <string name="testimonial_title_create">Create your Testimonial</string>
-    <string name="testimonial_title_edit">Edit your Testimonial?</string>
+    <string name="testimonial_title_edit">Edit your Testimonial</string>
 
     <string name="current_user_top_track_s_image">Current User Top Track\'s Image</string>
     <string name="current_user_s_top_artists">Current User\'s Top Artists</string>
