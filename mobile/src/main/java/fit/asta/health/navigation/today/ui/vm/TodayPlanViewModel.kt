@@ -68,9 +68,6 @@ class TodayPlanViewModel @Inject constructor(
         MutableStateFlow(dataSource.getData(lastSelectedDate = dataSource.today))
     val calendarUiModel = _calendarUiModel.asStateFlow()
 
-    private val _alarmList = mutableStateListOf<AlarmEntity>()
-    val alarmList = MutableStateFlow(_alarmList)
-
     init {
         getWeatherSunSlots()
         getAlarms()
@@ -169,30 +166,62 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collectLatest { list ->
                 _defaultScheduleVisibility.value = list.isEmpty()
-                _alarmList.clear()
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
-                Log.d("alarm", "getAlarms: $list,day ${today}")
-                val alarmList = mutableStateListOf<AlarmEntity>()
-                alarmList.clear()
-                alarmList.addAll(list.filter {
-                    currentTime.isBefore(LocalTime.of(it.time.hours, it.time.minutes))
-                })
-                Log.d(
-                    "TAG",
-                    "getAlarms: ${calendarUiModel.value.selectedDate.date.dayOfWeek.value}"
-                )
+//                val alarmList = mutableStateListOf<AlarmEntity>()
+//                alarmList.clear()
+//                alarmList.addAll(list.filter {
+//                    currentTime.isBefore(LocalTime.of(it.time.hours, it.time.minutes))
+//                })
                 Log.d("TAG", "getAlarms: ${calendarUiModel.value.selectedDate.date.dayOfWeek}")
                 list.forEach {
                     if (it.status) {
                         if (it.daysOfWeek.isRepeating) {
                             if (it.daysOfWeek.isBitOn(calendarUiModel.value.selectedDate.date.dayOfWeek.value)) {
-                                _alarmList.add(it)
+                                when (it.time.hours) {
+                                    in 0..2 -> {
+                                        if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                        else _alarmListEvening.add(it)
+                                    }
+
+                                    in 3..12 -> {
+                                        if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                        else _alarmListMorning.add(it)
+                                    }
+
+                                    in 13..16 -> {
+                                        if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                        else _alarmListAfternoon.add(it)
+                                    }
+
+                                    in 17..23 -> {
+                                        _alarmListEvening.add(it)
+                                    }
+                                }
                             }
                         } else {
                             if (calendarUiModel.value.selectedDate.isToday) {
-                                _alarmList.add(it)
+                                when (it.time.hours) {
+                                    in 0..2 -> {
+                                        if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                        else _alarmListEvening.add(it)
+                                    }
+
+                                    in 3..12 -> {
+                                        if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                        else _alarmListMorning.add(it)
+                                    }
+
+                                    in 13..16 -> {
+                                        if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                        else _alarmListAfternoon.add(it)
+                                    }
+
+                                    in 17..23 -> {
+                                        _alarmListEvening.add(it)
+                                    }
+                                }
                             }
                         }
                     }

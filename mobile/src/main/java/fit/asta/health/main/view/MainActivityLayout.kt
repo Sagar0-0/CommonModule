@@ -22,13 +22,16 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Handyman
 import androidx.compose.material.icons.filled.LocationOn
+import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.NotificationsOff
 import androidx.compose.material.icons.filled.Settings
@@ -36,10 +39,15 @@ import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.outlined.BarChart
 import androidx.compose.material.icons.outlined.Celebration
 import androidx.compose.material.icons.outlined.Handyman
+import androidx.compose.material3.DropdownMenu
+import androidx.compose.material3.DropdownMenuItem
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -48,6 +56,9 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.unit.DpOffset
+import androidx.compose.ui.unit.dp
+import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -75,6 +86,7 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.services.SchedulerWorker
 import fit.asta.health.navigation.today.ui.view.HomeEvent
@@ -172,12 +184,6 @@ private fun BottomAppBarLayout(
     }
 }
 
-@Composable
-private fun RowScope.SessionTopBarActions(
-    onClick: () -> Unit,
-) {
-
-}
 
 @Composable
 private fun RowScope.NewMainTopBarActions(
@@ -188,6 +194,11 @@ private fun RowScope.NewMainTopBarActions(
     sessionState: Boolean,
     onSession: () -> Unit
 ) {
+
+    // state of the menu
+    var expanded by remember {
+        mutableStateOf(false)
+    }
     if (sessionState) {
         Row(
             modifier = Modifier
@@ -263,8 +274,8 @@ private fun RowScope.NewMainTopBarActions(
                 imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
             ) { onClick(MainTopBarActions.Notification) }
             AppIconButton(
-                imageVector = Icons.Default.Share
-            ) { onClick(MainTopBarActions.Share) }
+                imageVector = Icons.Default.Alarm
+            ) { onClick(MainTopBarActions.Schedule) }
             if (profileImageUri != null) {
                 AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
                     Image(
@@ -276,9 +287,53 @@ private fun RowScope.NewMainTopBarActions(
                     )
                 }
             }
+
+            // 3 vertical dots icon
             AppIconButton(
-                imageVector = Icons.Default.Settings
-            ) { onClick(MainTopBarActions.Settings) }
+                onClick = { expanded = true },
+                imageVector = Icons.Default.MoreVert
+            )
+
+            // drop down menu
+            DropdownMenu(
+                modifier = Modifier.width(width = 150.dp),
+                expanded = expanded,
+                onDismissRequest = {
+                    expanded = false
+                },
+                // adjust the position
+                offset = DpOffset(x = (-202).dp, y = 0.dp),
+                properties = PopupProperties()
+            ) {
+
+                // adding each menu item
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        onClick(MainTopBarActions.Settings)
+                    },
+                    enabled = true,
+                    text = {
+                        BodyTexts.Level2(text = "Setting")
+                    },
+                    leadingIcon = {
+                        AppIcon(imageVector = Icons.Default.Settings)
+                    }
+                )
+                DropdownMenuItem(
+                    onClick = {
+                        expanded = false
+                        onClick(MainTopBarActions.Share)
+                    },
+                    enabled = true,
+                    text = {
+                        BodyTexts.Level2(text = "Share")
+                    },
+                    leadingIcon = {
+                        AppIcon(imageVector = Icons.Default.Share)
+                    }
+                )
+            }
         }
     }
 }
@@ -382,7 +437,6 @@ private fun MainNavHost(
             val todayPlanViewModel: TodayPlanViewModel =
                 navBackStackEntry.sharedViewModel(navController = navController)
             val calendarUiModel by todayPlanViewModel.calendarUiModel.collectAsStateWithLifecycle()
-            val alarmList by todayPlanViewModel.alarmList.collectAsStateWithLifecycle()
             val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
@@ -460,7 +514,6 @@ private fun MainNavHost(
             TodayContent(
                 state = state,
                 calendarUiModel = calendarUiModel,
-                list = alarmList,
                 onDateClickListener = { todayPlanViewModel.setWeekDate(it) },
                 userName = todayPlanViewModel.getUserName(),
                 defaultScheduleVisibility = defaultScheduleVisibility,

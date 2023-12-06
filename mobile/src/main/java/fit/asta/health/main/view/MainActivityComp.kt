@@ -301,6 +301,10 @@ fun NavGraphBuilder.homeScreen(
                         MainTopBarActions.Share -> {
                             context.shareReferralCode(refCode, BuildConfig.APPLICATION_ID)
                         }
+
+                        MainTopBarActions.Schedule -> {
+                            navController.navigate(ALL_ALARMS_ROUTE)
+                        }
                     }
                 }
             )

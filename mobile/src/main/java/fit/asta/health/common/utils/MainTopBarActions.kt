@@ -1,9 +1,10 @@
 package fit.asta.health.common.utils
 
 sealed class MainTopBarActions(val route: String) {
-    object Location : MainTopBarActions("Location")
-    object Notification : MainTopBarActions("Notification")
-    object Settings : MainTopBarActions("Settings")
-    object Profile : MainTopBarActions("Profile")
-    object Share : MainTopBarActions("Share")
+    data object Location : MainTopBarActions("Location")
+    data object Notification : MainTopBarActions("Notification")
+    data object Settings : MainTopBarActions("Settings")
+    data object Profile : MainTopBarActions("Profile")
+    data object Share : MainTopBarActions("Share")
+    data object Schedule : MainTopBarActions("Schedule")
 }

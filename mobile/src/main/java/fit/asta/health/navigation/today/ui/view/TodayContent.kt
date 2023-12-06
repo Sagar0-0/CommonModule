@@ -43,13 +43,11 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
-import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.WeatherCardImage
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.background.AppSurface
@@ -60,9 +58,9 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.scheduler.ui.components.WeatherCard
+import fit.asta.health.feature.scheduler.ui.components.SunSlotsProgressCard
+import fit.asta.health.feature.scheduler.ui.components.WeatherCardHome
 import fit.asta.health.main.Graph
-import fit.asta.health.main.view.ALL_ALARMS_ROUTE
 import fit.asta.health.ui.common.AppDialogPopUp
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -73,7 +71,6 @@ fun TodayContent(
     userName: String,
     defaultScheduleVisibility: Boolean,
     calendarUiModel: CalendarUiModel,
-    list: SnapshotStateList<AlarmEntity>,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -125,12 +122,12 @@ fun TodayContent(
 
             // Heading Name, show Alarms and What's your mood composable
 
-            item {
-                NameAndMoodHomeScreenHeader(
-                    userName = userName,
-                    onAlarm = { onNav(ALL_ALARMS_ROUTE) }
-                )
-            }
+//            item {
+//                NameAndMoodHomeScreenHeader(
+//                    userName = userName,
+//                    onAlarm = { onNav(ALL_ALARMS_ROUTE) }
+//                )
+//            }
             item {
                 WeekScreen(
                     modifier = Modifier.fillMaxWidth(),
@@ -165,36 +162,39 @@ fun TodayContent(
 
                 is UiState.Success -> {
                     item {
-                        WeatherCardImage(
+                        WeatherCardHome(
+                            modifier = Modifier.fillMaxWidth(),
                             temperature = state.data.temperature,
-                            location = state.data.location,
-                            date = state.data.date
                         )
                     }
+                    item { TitleTexts.Level2(text = "SunSlots") }
                     item {
                         LazyRow(
-                            modifier = Modifier.fillMaxWidth()
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                         ) {
                             items(items = state.data.slots) { slot ->
-                                WeatherCard(weatherData = slot, onSchedule = {
-                                    hSEvent(
-                                        HomeEvent.NavSchedule(
-                                            getHourMinAmPm(
-                                                slot.time, slot.title
+                                SunSlotsProgressCard(
+                                    title = slot.temperature,
+                                    titleValue = slot.time,
+                                    onSchedule = {
+                                        hSEvent(
+                                            HomeEvent.NavSchedule(
+                                                getHourMinAmPm(
+                                                    slot.time, slot.title
+                                                )
                                             )
                                         )
-                                    )
-                                    onNav(Graph.Scheduler.route)
-                                })
+                                        onNav(Graph.Scheduler.route)
+                                    }
+                                )
                             }
                         }
                     }
-
                 }
 
                 else -> {}
             }
-
             if (defaultScheduleVisibility) {
                 item {
                     AnimatedVisibility(visible = true) {
@@ -204,32 +204,29 @@ fun TodayContent(
                     }
                 }
             }
-            if (list.isNotEmpty()) {
-                items(list) { item ->
-                    TodayItem(item)
-                }
-            }
             if (listMorning.isNotEmpty()) {
                 item {
                     AnimatedVisibility(visible = listMorning.isNotEmpty()) {
                         TitleTexts.Level2(text = stringResource(R.string.morning_events))
                     }
                 }
+
                 items(listMorning) { data ->
-                    SwipeDemoToday(data = data, onSwipeRight = {
-                        evenType = Event.Morning
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {
-                        evenType = Event.Morning
-                        skipDialog = true
-                        skipItem = data
-                    }, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
+                    TodayItem(data)
+//                    SwipeDemoToday(data = data, onSwipeRight = {
+//                        evenType = Event.Morning
+//                        deleteDialog = true
+//                        deletedItem = data
+//                    }, onSwipeLeft = {
+//                        evenType = Event.Morning
+//                        skipDialog = true
+//                        skipItem = data
+//                    }, onDone = {
+//                        onNav(goToTool(data.info.tag))
+//                    }, onReschedule = {
+//                        onNav(Graph.Scheduler.route)
+//                        hSEvent(HomeEvent.EditAlarm(data))
+//                    })
                 }
             }
             if (listAfternoon.isNotEmpty()) {
@@ -239,20 +236,7 @@ fun TodayContent(
                     }
                 }
                 items(listAfternoon) { data ->
-                    SwipeDemoToday(data = data, onSwipeRight = {
-                        evenType = Event.Afternoon
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {
-                        evenType = Event.Afternoon
-                        skipDialog = true
-                        skipItem = data
-                    }, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
+                    TodayItem1(data)
                 }
             }
             if (listEvening.isNotEmpty()) {
@@ -262,39 +246,7 @@ fun TodayContent(
                     }
                 }
                 items(listEvening) { data ->
-                    SwipeDemoToday(data = data, onSwipeRight = {
-                        evenType = Event.Evening
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {
-                        evenType = Event.Evening
-                        skipDialog = true
-                        skipItem = data
-                    }, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
-                }
-            }
-            if (listNextDay.isNotEmpty()) {
-                item {
-                    AnimatedVisibility(visible = listNextDay.isNotEmpty()) {
-                        TitleTexts.Level2(text = stringResource(R.string.tomorrow_events))
-                    }
-                }
-                items(listNextDay) { data ->
-                    SwipeDemoToday(data = data, skipEnable = false, onSwipeRight = {
-                        evenType = Event.NextDay
-                        deleteDialog = true
-                        deletedItem = data
-                    }, onSwipeLeft = {}, onDone = {
-                        onNav(goToTool(data.info.tag))
-                    }, onReschedule = {
-                        onNav(Graph.Scheduler.route)
-                        hSEvent(HomeEvent.EditAlarm(data))
-                    })
+                    TodayItem2(data)
                 }
             }
         }

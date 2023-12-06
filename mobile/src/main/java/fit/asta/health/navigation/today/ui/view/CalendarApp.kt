@@ -9,6 +9,7 @@ import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -22,10 +23,18 @@ fun WeekScreen(
     onDateClickListener: (CalendarUiModel.Date) -> Unit,
 ) {
     Row(modifier = modifier) {
-        data.visibleDates.forEach { date ->
+        data.visibleDates.forEachIndexed { index, date ->
             ContentItem(
                 date = date,
-                onDateClickListener
+                containerColor = if (date.isSelected) {
+                    if (date.isToday) Color.Green
+                    else AppTheme.colors.primary
+                } else {
+                    if (date.isToday) Color.Green.copy(alpha = .5f)
+                    else if (index == 0) Color.LightGray
+                    else AppTheme.colors.primaryContainer
+                },
+                onClickListener = onDateClickListener
             )
         }
     }
@@ -34,16 +43,13 @@ fun WeekScreen(
 @Composable
 fun ContentItem(
     date: CalendarUiModel.Date,
+    containerColor: Color,
     onClickListener: (CalendarUiModel.Date) -> Unit,
 ) {
     AppCard(
         modifier = Modifier,
         colors = CardDefaults.cardColors(
-            containerColor = if (date.isSelected) {
-                AppTheme.colors.primary
-            } else {
-                AppTheme.colors.primaryContainer
-            }
+            containerColor = containerColor
         ),
         onClick = { onClickListener(date) }
     ) {
