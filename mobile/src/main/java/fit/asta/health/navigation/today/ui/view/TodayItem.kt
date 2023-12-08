@@ -6,7 +6,6 @@ import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -15,7 +14,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowDropDown
@@ -42,7 +40,6 @@ import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -84,31 +81,25 @@ fun TodayItem(
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            AppIcon(
+            AppIconButton(
                 modifier = Modifier
-                    .clickable { expandedState = !expandedState }
-                    .clip(CircleShape)
-                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.TopEnd)
                     .rotate(rotationState),
-                imageVector = Icons.Default.ArrowDropDown
+                imageVector = Icons.Default.ArrowDropDown,
+                onClick = { expandedState = !expandedState }
             )
-            AppIcon(
+            AppIconButton(
                 modifier = Modifier
-                    .clickable { onReschedule() }
-                    .clip(CircleShape)
-                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.BottomEnd),
-                imageVector = Icons.Default.Alarm
+                imageVector = Icons.Default.Alarm,
+                onClick = { onReschedule() }
             )
             if (expandedState) {
-                AppIcon(
+                AppIconButton(
                     modifier = Modifier
-                        .clickable { onDelete() }
-                        .clip(CircleShape)
-                        .padding(AppTheme.spacing.level2)
                         .align(Alignment.CenterEnd),
-                    imageVector = Icons.Default.Delete
+                    imageVector = Icons.Default.Delete,
+                    onClick = onDelete
                 )
             }
             Row(
@@ -213,22 +204,18 @@ fun TodayItem1(
                 onClick = { expandedState = !expandedState }
             )
 
-            AppIcon(
+            AppIconButton(
                 modifier = Modifier
-                    .clickable { onReschedule() }
-                    .clip(CircleShape)
-                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.BottomEnd),
-                imageVector = Icons.Default.Alarm
+                imageVector = Icons.Default.Alarm,
+                onClick = { onReschedule() }
             )
             if (expandedState) {
-                AppIcon(
+                AppIconButton(
                     modifier = Modifier
-                        .clickable { onDelete() }
-                        .clip(CircleShape)
-                        .padding(AppTheme.spacing.level2)
                         .align(Alignment.CenterEnd),
-                    imageVector = Icons.Default.Delete
+                    imageVector = Icons.Default.Delete,
+                    onClick = { onDelete() }
                 )
             }
             TitleTexts.Level2(
@@ -308,31 +295,25 @@ fun TodayItem2(
             modifier = Modifier.fillMaxWidth()
         ) {
 
-            AppIcon(
+            AppIconButton(
                 modifier = Modifier
-                    .clickable { expandedState = !expandedState }
-                    .clip(CircleShape)
-                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.TopEnd)
                     .rotate(rotationState),
-                imageVector = Icons.Default.ArrowDropDown
+                imageVector = Icons.Default.ArrowDropDown,
+                onClick = { expandedState = !expandedState }
             )
-            AppIcon(
+            AppIconButton(
                 modifier = Modifier
-                    .clickable { onReschedule() }
-                    .clip(CircleShape)
-                    .padding(AppTheme.spacing.level2)
                     .align(Alignment.BottomEnd),
-                imageVector = Icons.Default.Alarm
+                imageVector = Icons.Default.Alarm,
+                onClick = { onReschedule() }
             )
             if (expandedState) {
-                AppIcon(
+                AppIconButton(
                     modifier = Modifier
-                        .clickable { onDelete() }
-                        .clip(CircleShape)
-                        .padding(AppTheme.spacing.level2)
                         .align(Alignment.CenterEnd),
-                    imageVector = Icons.Default.Delete
+                    imageVector = Icons.Default.Delete,
+                    onClick = onDelete
                 )
             }
             Column(

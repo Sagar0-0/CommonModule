@@ -99,7 +99,10 @@ fun NavGraphBuilder.schedulerNavigation(
                 navTimeSetting = {
                     navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
                 },
-                navBack = onBack,
+                navBack = {
+                    schedulerViewModel.resetUi()
+                    onBack()
+                },
             )
         }
 
