@@ -7,6 +7,7 @@ import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.remote.TestimonialApi
+import fit.asta.health.data.testimonials.util.TestimonialApiHandler
 import fit.asta.health.network.utils.InputStreamRequestBody
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
@@ -34,7 +35,7 @@ class TestimonialRepoImpl
 
     override suspend fun getUserTestimonial(userId: String): ResponseState<Testimonial> {
         return withContext(coroutineDispatcher) {
-            getApiResponseState {
+            getApiResponseState(errorHandler = TestimonialApiHandler()) {
                 remoteApi.getUserTestimonial(userId)
             }
         }
