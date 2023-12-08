@@ -1,6 +1,8 @@
 package fit.asta.health.feature.testimonialsx.navigation
 
+import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
@@ -43,7 +45,25 @@ fun NavGraphBuilder.testimonialNavGraphX(
 
             val viewModel: TestimonialViewModelX = hiltViewModel()
 
-            TestimonialCreateScreenControl()
+            LaunchedEffect(key1 = Unit) {
+                viewModel.getUserTestimonial()
+            }
+
+            val userTestimonialApiState = viewModel.userTestimonial
+                .collectAsStateWithLifecycle().value
+            val testimonialData = viewModel.testimonialData.collectAsStateWithLifecycle().value
+
+            val testimonialSubmitApi = viewModel.testimonialSubmitApiState
+                .collectAsStateWithLifecycle().value
+
+            TestimonialCreateScreenControl(
+                userTestimonialState = userTestimonialApiState,
+                userTestimonialData = testimonialData,
+                testimonialSubmitApiState = testimonialSubmitApi,
+                onBack = onBack,
+                navigate = { navController.navigate(it) },
+                setEvent = viewModel::onEvent
+            )
         }
     }
 }

@@ -27,7 +27,7 @@ class TestimonialViewModelX @Inject constructor(
      * This variable fetches and stores the user's Testimonial Details from the server and shows the
      * state of the Api call
      */
-    private val _userTestimonial = MutableStateFlow<UiState<Testimonial>>(UiState.Loading)
+    private val _userTestimonial = MutableStateFlow<UiState<Testimonial>>(UiState.Idle)
     val userTestimonial = _userTestimonial.asStateFlow()
 
     /**
