@@ -145,6 +145,26 @@ fun TestimonialCreateSuccessScreen(
         )
 
         // TODO :- Image and Video Input are left
+        when (selectedOption) {
+            TestimonialType.TEXT -> {
+                // Does Nothing
+            }
+
+            TestimonialType.IMAGE -> {
+                TestimonialUploadImage(
+                    media = userTestimonialData.media,
+                    onImageSelected = { mediaType, uri ->
+                        setEvent(TestimonialEvent.OnMediaSelect(mediaType, uri))
+                    },
+                    onImageDelete = { setEvent(TestimonialEvent.OnMediaClear(it)) }
+                )
+            }
+
+            TestimonialType.VIDEO -> {
+                // TODO :- Yet to be implemented
+            }
+        }
+
 
         // Submit Button
         AppFilledButton(

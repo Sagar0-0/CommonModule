@@ -9,6 +9,7 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
+import fit.asta.health.feature.testimonials.create.vm.MediaType
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -83,24 +84,72 @@ class TestimonialViewModelX @Inject constructor(
                 testimonialData.value = testimonialData.value.copy(testimonial = event.testimonial)
             }
 
-            is TestimonialEvent.OnOrgChange -> {
-
-                val user = testimonialData.value.user.copy(org = event.org)
-                testimonialData.value = testimonialData.value.copy(user = user)
-            }
-
             is TestimonialEvent.OnRoleChange -> {
-
                 val user = testimonialData.value.user.copy(role = event.role)
                 testimonialData.value = testimonialData.value.copy(user = user)
             }
 
-            is TestimonialEvent.OnSubmitTestimonial -> {
-                postUserTestimonial()
+            is TestimonialEvent.OnOrgChange -> {
+                val user = testimonialData.value.user.copy(org = event.org)
+                testimonialData.value = testimonialData.value.copy(user = user)
             }
 
-            else -> {
+            is TestimonialEvent.OnMediaSelect -> {
+                if (event.url == null)
+                    return
 
+                when (event.mediaType) {
+                    MediaType.BeforeImage -> {
+                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia, testimonialData.value.media[1])
+                        )
+                    }
+
+                    MediaType.AfterImage -> {
+                        val newMedia = testimonialData.value.media[1].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(testimonialData.value.media[0], newMedia)
+                        )
+                    }
+
+                    MediaType.Video -> {
+                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(media = listOf(newMedia))
+                    }
+                }
+            }
+
+            is TestimonialEvent.OnMediaClear -> {
+                when (event.mediaType) {
+                    MediaType.BeforeImage -> {
+                        val newMedia =
+                            testimonialData.value.media[0].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia, testimonialData.value.media[1])
+                        )
+                    }
+
+                    MediaType.AfterImage -> {
+                        val newMedia =
+                            testimonialData.value.media[1].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(testimonialData.value.media[0], newMedia)
+                        )
+                    }
+
+                    MediaType.Video -> {
+                        val newMedia =
+                            testimonialData.value.media[0].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia)
+                        )
+                    }
+                }
+            }
+
+            is TestimonialEvent.OnSubmitTestimonial -> {
+                postUserTestimonial()
             }
         }
     }
