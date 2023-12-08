@@ -21,7 +21,7 @@ import fit.asta.health.feature.testimonials.create.vm.MediaType.BeforeImage
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaClear
 import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
-import fit.asta.health.feature.testimonials.utils.getOneUrl
+import fit.asta.health.feature.testimonialsx.utils.getOneUrlX
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -94,7 +94,7 @@ private fun ImageSelectionView(
             UploadTstMediaView(title = img.title, onUploadClick = { launcher.launch("image/*") })
         } else {
             SelectedImageView(title = img.title,
-                url = getOneUrl(img.localUrl, img.url),
+                url = getOneUrlX(img.localUrl, img.url),
                 onImageClick = { launcher.launch("image/*") },
                 onImageClear = { getViewModel.onEvent(OnMediaClear(mediaType)) })
         }

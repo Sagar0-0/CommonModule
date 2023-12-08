@@ -33,7 +33,7 @@ import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
-import fit.asta.health.feature.testimonials.navigation.testimonialNavRoute
+import fit.asta.health.feature.testimonialsx.navigation.testimonialNavGraphX
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.stepsCounterNavigation
 import fit.asta.health.main.view.homeScreen
@@ -95,7 +95,7 @@ private fun MainNavHost(startDestination: String) {
         sunlightNavigation(navController, onBack = { navController.navigateUp() })
         //sleepNavGraph(navController,  onBack = { navController.navigateUp() })
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
-        testimonialNavRoute(navController, onBack = { navController.navigateUp() })
+        testimonialNavGraphX(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
         stepsCounterNavigation(
             navController = navController, sessionState = startDestination == STEPS_GRAPH_ROUTE,
