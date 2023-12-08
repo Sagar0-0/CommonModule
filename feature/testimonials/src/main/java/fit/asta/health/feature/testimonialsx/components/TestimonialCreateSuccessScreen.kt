@@ -30,6 +30,7 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
+import fit.asta.health.feature.testimonials.create.vm.MediaType
 import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
 import fit.asta.health.feature.testimonialsx.navigation.TestimonialNavRoutesX
 
@@ -161,7 +162,15 @@ fun TestimonialCreateSuccessScreen(
             }
 
             TestimonialType.VIDEO -> {
-                // TODO :- Yet to be implemented
+                TestimonialUploadVideo(
+                    media = userTestimonialData.media,
+                    onVideoSelected = {
+                        setEvent(TestimonialEvent.OnMediaSelect(MediaType.Video, it))
+                    },
+                    onVideoDeleted = {
+                        setEvent(TestimonialEvent.OnMediaClear(MediaType.Video))
+                    }
+                )
             }
         }
 
