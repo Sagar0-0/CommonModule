@@ -440,7 +440,6 @@ private fun MainNavHost(
             val listMorning by todayPlanViewModel.alarmListMorning.collectAsStateWithLifecycle()
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
-            val listNextDay by todayPlanViewModel.alarmListNextDay.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
             val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
             val context = LocalContext.current
@@ -520,7 +519,6 @@ private fun MainNavHost(
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,
-                listNextDay = listNextDay,
                 onNav = onNav,
                 hSEvent = { uiEvent ->
                     when (uiEvent) {

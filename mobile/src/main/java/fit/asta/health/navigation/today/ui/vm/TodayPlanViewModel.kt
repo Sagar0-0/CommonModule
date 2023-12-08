@@ -50,8 +50,6 @@ class TodayPlanViewModel @Inject constructor(
     val alarmListAfternoon = MutableStateFlow(_alarmListAfternoon)
     private val _alarmListEvening = mutableStateListOf<AlarmEntity>()
     val alarmListEvening = MutableStateFlow(_alarmListEvening)
-    private val _alarmListNextDay = mutableStateListOf<AlarmEntity>()
-    val alarmListNextDay = MutableStateFlow(_alarmListNextDay)
     private val _defaultScheduleVisibility = MutableStateFlow(false)
     val defaultScheduleVisibility = _defaultScheduleVisibility.asStateFlow()
     private val calendar: Calendar = Calendar.getInstance()

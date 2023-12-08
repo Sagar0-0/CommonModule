@@ -1,6 +1,7 @@
 package fit.asta.health.navigation.today.ui.view
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
@@ -37,8 +38,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppSwitch
+import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -90,7 +91,7 @@ fun AllAlarms(
             contentPadding = PaddingValues(16.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
-            items(list) { alarm ->
+            items(items = list) { alarm ->
                 val time = AMPMHoursMin(
                     hours = if (alarm.time.hours > 12) {
                         alarm.time.hours - 12
@@ -100,6 +101,7 @@ fun AllAlarms(
                     dayTime = if (alarm.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 )
                 AlarmItem(
+                    title = alarm.info.name,
                     image = alarm.info.url,
                     description = alarm.info.description,
                     time = "${if (time.hours < 10) "0" else ""}${time.hours}:${if (time.minutes < 10) "0" else ""}${time.minutes} ${time.dayTime.name}",
@@ -132,7 +134,7 @@ fun AlarmItem(
                 .padding(16.dp)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
+            verticalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level0)
         ) {
             Row(
                 modifier = Modifier
@@ -147,10 +149,11 @@ fun AlarmItem(
                     contentScale = ContentScale.Crop,
                     modifier = Modifier
                         .clip(AppTheme.shape.level2)
-                        .height(120.dp)
-                        .width(80.dp)
+                        .height(110.dp)
+                        .width(90.dp)
                 )
                 Column(
+                    modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                     horizontalAlignment = Alignment.Start
                 ) {
@@ -165,11 +168,16 @@ fun AlarmItem(
                     modifier = Modifier.weight(.5f),
                     onClick = onSchedule
                 )
-                AppSwitch(
-                    checked = state,
+                Box(
                     modifier = Modifier.weight(.5f),
-                    onCheckedChange = onStateChange
-                )
+                    contentAlignment = Alignment.CenterEnd
+                ) {
+                    AppSwitch(
+                        checked = state,
+                        onCheckedChange = onStateChange
+                    )
+                }
+
             }
         }
     }

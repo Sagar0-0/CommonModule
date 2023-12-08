@@ -4,7 +4,9 @@ import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.animateDpAsState
+import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.animation.core.tween
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -16,8 +18,8 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
+import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
-import androidx.compose.material.icons.filled.SkipNext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -26,6 +28,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
@@ -37,8 +40,8 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.cards.AppOutlinedCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -47,7 +50,13 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
 @Composable
-fun TodayItem(item: AlarmEntity) {
+fun TodayItem(
+    modifier: Modifier = Modifier,
+    item: AlarmEntity,
+    onDone: () -> Unit = {},
+    onDelete: () -> Unit = {},
+    onReschedule: () -> Unit = {},
+) {
     val time = AMPMHoursMin(
         hours = if (item.time.hours > 12) {
             item.time.hours - 12
@@ -57,8 +66,11 @@ fun TodayItem(item: AlarmEntity) {
         dayTime = if (item.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
     )
     var expandedState by remember { mutableStateOf(false) }
+    val rotationState by animateFloatAsState(
+        targetValue = if (expandedState) 180f else 0f, label = ""
+    )
     AppCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(
@@ -66,15 +78,43 @@ fun TodayItem(item: AlarmEntity) {
                     easing = LinearOutSlowInEasing
                 )
             ),
-        onClick = { expandedState = !expandedState }
+        onClick = onDone
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
+        Box(
+            modifier = Modifier.fillMaxWidth()
         ) {
+
+            AppIcon(
+                modifier = Modifier
+                    .clickable { expandedState = !expandedState }
+                    .clip(CircleShape)
+                    .padding(AppTheme.spacing.level2)
+                    .align(Alignment.TopEnd)
+                    .rotate(rotationState),
+                imageVector = Icons.Default.ArrowDropDown
+            )
+            AppIcon(
+                modifier = Modifier
+                    .clickable { onReschedule() }
+                    .clip(CircleShape)
+                    .padding(AppTheme.spacing.level2)
+                    .align(Alignment.BottomEnd),
+                imageVector = Icons.Default.Alarm
+            )
+            if (expandedState) {
+                AppIcon(
+                    modifier = Modifier
+                        .clickable { onDelete() }
+                        .clip(CircleShape)
+                        .padding(AppTheme.spacing.level2)
+                        .align(Alignment.CenterEnd),
+                    imageVector = Icons.Default.Delete
+                )
+            }
             Row(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2),
                 verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceEvenly
             ) {
@@ -93,6 +133,7 @@ fun TodayItem(item: AlarmEntity) {
                 )
                 Column(
                     modifier = Modifier
+                        .animateContentSize()
                         .weight(.65f)
                         .padding(start = 16.dp),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
@@ -111,38 +152,18 @@ fun TodayItem(item: AlarmEntity) {
                     )
                 }
             }
-            if (expandedState) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.Delete
-                        )
-                    }
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.Alarm
-                        )
-                    }
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.SkipNext
-                        )
-                    }
-                }
-            }
         }
     }
 }
 
 @Composable
-fun TodayItem1(item: AlarmEntity) {
+fun TodayItem1(
+    modifier: Modifier = Modifier,
+    item: AlarmEntity,
+    onDone: () -> Unit = {},
+    onDelete: () -> Unit = {},
+    onReschedule: () -> Unit = {},
+) {
     val time = AMPMHoursMin(
         hours = if (item.time.hours > 12) {
             item.time.hours - 12
@@ -154,10 +175,13 @@ fun TodayItem1(item: AlarmEntity) {
     var expandedState by remember { mutableStateOf(false) }
     val imgSize: Dp by animateDpAsState(
         if (expandedState) 180.dp else 110.dp,
-        tween(800, easing = CubicBezierEasing(0.4f, 0.0f, 0.8f, 0.8f)), label = ""
+        tween(300, easing = CubicBezierEasing(0.4f, 0.0f, 0.8f, 0.8f)), label = ""
+    )
+    val rotationState by animateFloatAsState(
+        targetValue = if (expandedState) 180f else 0f, label = ""
     )
     AppCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(
@@ -165,7 +189,7 @@ fun TodayItem1(item: AlarmEntity) {
                     easing = LinearOutSlowInEasing
                 )
             ),
-        onClick = { expandedState = !expandedState }
+        onClick = onDone
     ) {
         Box(modifier = Modifier.fillMaxWidth()) {
             AppNetworkImage(
@@ -181,75 +205,62 @@ fun TodayItem1(item: AlarmEntity) {
                     .clip(AppTheme.shape.level2)
                     .height(imgSize)
             )
-            Box(
+            AppIconButton(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .height(imgSize)
+                    .align(Alignment.TopEnd)
+                    .rotate(rotationState),
+                imageVector = Icons.Default.ArrowDropDown,
+                onClick = { expandedState = !expandedState }
+            )
+
+            AppIcon(
+                modifier = Modifier
+                    .clickable { onReschedule() }
+                    .clip(CircleShape)
                     .padding(AppTheme.spacing.level2)
-            ) {
-
-                CaptionTexts.Level2(
-                    modifier = Modifier.align(Alignment.TopStart),
-                    text = item.info.tag,
-                    color = Color.White
+                    .align(Alignment.BottomEnd),
+                imageVector = Icons.Default.Alarm
+            )
+            if (expandedState) {
+                AppIcon(
+                    modifier = Modifier
+                        .clickable { onDelete() }
+                        .clip(CircleShape)
+                        .padding(AppTheme.spacing.level2)
+                        .align(Alignment.CenterEnd),
+                    imageVector = Icons.Default.Delete
                 )
-
+            }
+            TitleTexts.Level2(
+                modifier = Modifier
+                    .align(Alignment.TopCenter)
+                    .padding(top = 16.dp),
+                text = "${if (time.hours < 10) "0" else ""}${time.hours}:${
+                    if (time.minutes < 10) "0" else ""
+                }${time.minutes} ${time.dayTime.name}",
+                color = Color.White
+            )
+            CaptionTexts.Level2(
+                modifier = Modifier
+                    .align(Alignment.TopStart)
+                    .padding(start = 16.dp, top = 16.dp),
+                text = item.info.tag,
+                color = Color.White
+            )
+            Column(
+                modifier = Modifier
+                    .padding(start = 16.dp, bottom = 16.dp)
+                    .animateContentSize()
+                    .align(Alignment.BottomStart),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
+            ) {
                 TitleTexts.Level2(
-                    modifier = Modifier.align(Alignment.TopEnd),
-                    text = "${if (time.hours < 10) "0" else ""}${time.hours}:${
-                        if (time.minutes < 10) "0" else ""
-                    }${time.minutes} ${time.dayTime.name}",
+                    text = item.info.name,
                     color = Color.White
                 )
                 if (expandedState) {
-                    TitleTexts.Level2(
-                        modifier = Modifier.align(Alignment.TopCenter),
-                        text = item.info.name,
-                        color = Color.White
-                    )
-                    Column(
-                        modifier = Modifier
-                            .align(Alignment.BottomStart),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
-                    ) {
-                        AppOutlinedCard(shape = CircleShape) {
-                            AppIcon(
-                                modifier = Modifier.padding(8.dp),
-                                imageVector = Icons.Default.Delete
-                            )
-                        }
-                        AppOutlinedCard(shape = CircleShape) {
-                            AppIcon(
-                                modifier = Modifier.padding(8.dp),
-                                imageVector = Icons.Default.Alarm
-                            )
-                        }
-                        AppOutlinedCard(shape = CircleShape) {
-                            AppIcon(
-                                modifier = Modifier.padding(8.dp),
-                                imageVector = Icons.Default.SkipNext
-                            )
-                        }
-                    }
-                    Column(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .align(Alignment.BottomCenter),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                        horizontalAlignment = Alignment.CenterHorizontally
-                    ) {
-
-                        BodyTexts.Level2(
-                            text = item.info.description,
-                            color = Color.White
-                        )
-
-                    }
-
-                } else {
-                    TitleTexts.Level2(
-                        modifier = Modifier.align(Alignment.BottomStart),
-                        text = item.info.name,
+                    BodyTexts.Level2(
+                        text = item.info.description,
                         color = Color.White
                     )
                 }
@@ -259,7 +270,13 @@ fun TodayItem1(item: AlarmEntity) {
 }
 
 @Composable
-fun TodayItem2(item: AlarmEntity) {
+fun TodayItem2(
+    modifier: Modifier = Modifier,
+    item: AlarmEntity,
+    onDone: () -> Unit = {},
+    onDelete: () -> Unit = {},
+    onReschedule: () -> Unit = {},
+) {
     val time = AMPMHoursMin(
         hours = if (item.time.hours > 12) {
             item.time.hours - 12
@@ -271,10 +288,13 @@ fun TodayItem2(item: AlarmEntity) {
     var expandedState by remember { mutableStateOf(false) }
     val imgSize: Dp by animateDpAsState(
         if (expandedState) 110.dp else 70.dp,
-        tween(800, easing = CubicBezierEasing(0.4f, 0.0f, 0.8f, 0.8f)), label = ""
+        tween(300, easing = CubicBezierEasing(0.4f, 0.0f, 0.8f, 0.8f)), label = ""
+    )
+    val rotationState by animateFloatAsState(
+        targetValue = if (expandedState) 180f else 0f, label = ""
     )
     AppCard(
-        modifier = Modifier
+        modifier = modifier
             .fillMaxWidth()
             .animateContentSize(
                 animationSpec = tween(
@@ -282,77 +302,95 @@ fun TodayItem2(item: AlarmEntity) {
                     easing = LinearOutSlowInEasing
                 )
             ),
-        onClick = { expandedState = !expandedState }
+        onClick = onDone
     ) {
-        Column(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
+        Box(
+            modifier = Modifier.fillMaxWidth()
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-            ) {
-                AppNetworkImage(
-                    errorImage = painterResource(R.drawable.placeholder_tag),
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(getImgUrl(url = item.info.url))
-                        .crossfade(true)
-                        .build(),
-                    contentDescription = null,
-                    contentScale = ContentScale.Crop,
+
+            AppIcon(
+                modifier = Modifier
+                    .clickable { expandedState = !expandedState }
+                    .clip(CircleShape)
+                    .padding(AppTheme.spacing.level2)
+                    .align(Alignment.TopEnd)
+                    .rotate(rotationState),
+                imageVector = Icons.Default.ArrowDropDown
+            )
+            AppIcon(
+                modifier = Modifier
+                    .clickable { onReschedule() }
+                    .clip(CircleShape)
+                    .padding(AppTheme.spacing.level2)
+                    .align(Alignment.BottomEnd),
+                imageVector = Icons.Default.Alarm
+            )
+            if (expandedState) {
+                AppIcon(
                     modifier = Modifier
-                        .clip(AppTheme.shape.level2)
-                        .size(imgSize)
+                        .clickable { onDelete() }
+                        .clip(CircleShape)
+                        .padding(AppTheme.spacing.level2)
+                        .align(Alignment.CenterEnd),
+                    imageVector = Icons.Default.Delete
                 )
-                if (expandedState) {
-                    Column(
-                        modifier = Modifier,
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-                        horizontalAlignment = Alignment.Start
-                    ) {
-                        CaptionTexts.Level2(text = item.info.tag)
+            }
+            Column(
+                modifier = Modifier
+                    .animateContentSize(
+                        animationSpec = tween(
+                            durationMillis = 300,
+                            easing = LinearOutSlowInEasing
+                        )
+                    )
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2)
+            ) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .animateContentSize(
+                            animationSpec = tween(
+                                durationMillis = 300,
+                                easing = LinearOutSlowInEasing
+                            )
+                        ),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
+                    AppNetworkImage(
+                        errorImage = painterResource(R.drawable.placeholder_tag),
+                        model = ImageRequest.Builder(LocalContext.current)
+                            .data(getImgUrl(url = item.info.url))
+                            .crossfade(true)
+                            .build(),
+                        contentDescription = null,
+                        contentScale = ContentScale.Crop,
+                        modifier = Modifier
+                            .clip(AppTheme.shape.level2)
+                            .size(imgSize)
+                    )
+                    if (expandedState) {
+                        Column(
+                            modifier = Modifier,
+                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                            horizontalAlignment = Alignment.Start
+                        ) {
+                            CaptionTexts.Level2(text = item.info.tag)
+                            TitleTexts.Level2(text = item.info.name)
+                            BodyTexts.Level2(text = item.info.description)
+                            TitleTexts.Level2(
+                                text = "${if (time.hours < 10) "0" else ""}${time.hours}:${
+                                    if (time.minutes < 10) "0" else ""
+                                }${time.minutes} ${time.dayTime.name}"
+                            )
+                        }
+                    } else {
                         TitleTexts.Level2(text = item.info.name)
-                        BodyTexts.Level2(text = item.info.description)
                         TitleTexts.Level2(
                             text = "${if (time.hours < 10) "0" else ""}${time.hours}:${
                                 if (time.minutes < 10) "0" else ""
                             }${time.minutes} ${time.dayTime.name}"
-                        )
-                    }
-                } else {
-                    TitleTexts.Level2(text = item.info.name)
-                    TitleTexts.Level2(
-                        text = "${if (time.hours < 10) "0" else ""}${time.hours}:${
-                            if (time.minutes < 10) "0" else ""
-                        }${time.minutes} ${time.dayTime.name}"
-                    )
-                }
-
-            }
-            if (expandedState) {
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.SpaceEvenly
-                ) {
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.Delete
-                        )
-                    }
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.Alarm
-                        )
-                    }
-                    AppOutlinedCard(shape = CircleShape) {
-                        AppIcon(
-                            modifier = Modifier.padding(8.dp),
-                            imageVector = Icons.Default.SkipNext
                         )
                     }
                 }
