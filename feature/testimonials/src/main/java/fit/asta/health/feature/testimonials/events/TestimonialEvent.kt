@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.create.vm
+package fit.asta.health.feature.testimonials.events
 
 import android.net.Uri
 import fit.asta.health.data.testimonials.model.TestimonialType

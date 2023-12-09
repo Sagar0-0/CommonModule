@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.navigation
+package fit.asta.health.feature.testimonials.navigation
 
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -8,9 +8,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import fit.asta.health.feature.testimonialsx.screens.TestimonialCreateScreenControl
-import fit.asta.health.feature.testimonialsx.screens.TestimonialHomeScreenControl
-import fit.asta.health.feature.testimonialsx.viewmodel.TestimonialViewModelX
+import androidx.paging.compose.collectAsLazyPagingItems
+import fit.asta.health.feature.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.feature.testimonials.screens.TestimonialHomeScreenControl
+import fit.asta.health.feature.testimonials.screens.TestimonialCreateScreenControl
+import fit.asta.health.feature.testimonials.viewmodel.TestimonialViewModelX
 
 const val TESTIMONIALS_GRAPH_ROUTE = "graph_testimonials_tool"
 
@@ -34,9 +36,17 @@ fun NavGraphBuilder.testimonialNavGraphX(
         startDestination = TestimonialNavRoutesX.Home.route
     ) {
         composable(route = TestimonialNavRoutesX.Home.route) {
+            val testimonialListViewModel: TestimonialListViewModel = hiltViewModel()
+            val testimonials = testimonialListViewModel.testimonialPager.collectAsLazyPagingItems()
+
             TestimonialHomeScreenControl(
-                navigate = { navController.navigate(it) },
-                onBack = onBack
+                testimonials = testimonials,
+                navigateToCreate = {
+                    navController.navigate(route = TestimonialNavRoutesX.Create.route)
+                },
+                onBack = {
+                    navController.popBackStack()
+                }
             )
         }
 

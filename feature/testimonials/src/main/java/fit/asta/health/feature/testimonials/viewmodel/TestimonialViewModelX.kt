@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.viewmodel
+package fit.asta.health.feature.testimonials.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -9,8 +9,8 @@ import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
-import fit.asta.health.feature.testimonials.create.vm.MediaType
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
+import fit.asta.health.feature.testimonials.events.MediaType
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch

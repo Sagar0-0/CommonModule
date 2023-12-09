@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.components
+package fit.asta.health.feature.testimonials.components
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -30,8 +30,8 @@ import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.testimonials.create.vm.MediaType
-import fit.asta.health.feature.testimonialsx.utils.getOneUrlX
+import fit.asta.health.feature.testimonials.events.MediaType
+import fit.asta.health.feature.testimonials.utils.getOneUrlX
 
 
 /**

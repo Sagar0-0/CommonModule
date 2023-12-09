@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.create.view
+package fit.asta.health.feature.testimonials.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -29,7 +29,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TestimonialsRadioButtonCard(
+fun TestimonialsRadioButtonCardX(
     modifier: Modifier = Modifier,
     cardTitle: String,
     radioButtonList: List<TestimonialType>,

@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.navigation
+package fit.asta.health.feature.testimonials.navigation
 
 
 sealed class TestimonialNavRoutesX(val route: String) {

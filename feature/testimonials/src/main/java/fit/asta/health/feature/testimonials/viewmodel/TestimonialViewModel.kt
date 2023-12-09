@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.create.vm
+package fit.asta.health.feature.testimonials.viewmodel
 
 import android.net.Uri
 import androidx.lifecycle.SavedStateHandle
@@ -17,17 +17,18 @@ import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.data.testimonials.model.TestimonialUser
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
-import fit.asta.health.feature.testimonials.create.vm.MediaType.AfterImage
-import fit.asta.health.feature.testimonials.create.vm.MediaType.BeforeImage
-import fit.asta.health.feature.testimonials.create.vm.MediaType.Video
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaClear
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnMediaSelect
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnOrgChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnRoleChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnSubmitTestimonial
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTestimonialChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTitleChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
+import fit.asta.health.feature.testimonials.events.MediaType.AfterImage
+import fit.asta.health.feature.testimonials.events.MediaType.BeforeImage
+import fit.asta.health.feature.testimonials.events.MediaType.Video
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnMediaClear
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnMediaSelect
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnOrgChange
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnRoleChange
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnSubmitTestimonial
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTestimonialChange
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTitleChange
+import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTypeChange
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow

@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.screens
+package fit.asta.health.feature.testimonials.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -23,8 +23,8 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
-import fit.asta.health.feature.testimonialsx.components.TestimonialCreateSuccessScreen
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
+import fit.asta.health.feature.testimonials.components.TestimonialCreateSuccessScreen
 import fit.asta.health.resources.strings.R
 
 

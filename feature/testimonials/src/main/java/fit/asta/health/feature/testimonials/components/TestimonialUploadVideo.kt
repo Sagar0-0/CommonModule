@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.components
+package fit.asta.health.feature.testimonials.components
 
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
@@ -31,7 +31,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.testimonialsx.utils.getOneUrlX
+import fit.asta.health.feature.testimonials.utils.getOneUrlX
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
 import fit.asta.health.player.media.rememberMediaState

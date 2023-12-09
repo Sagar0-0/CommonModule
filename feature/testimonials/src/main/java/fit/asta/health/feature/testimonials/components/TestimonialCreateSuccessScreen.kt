@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonialsx.components
+package fit.asta.health.feature.testimonials.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -30,9 +30,9 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
-import fit.asta.health.feature.testimonials.create.vm.MediaType
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
-import fit.asta.health.feature.testimonialsx.navigation.TestimonialNavRoutesX
+import fit.asta.health.feature.testimonials.events.MediaType
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
+import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutesX
 
 
 @Composable

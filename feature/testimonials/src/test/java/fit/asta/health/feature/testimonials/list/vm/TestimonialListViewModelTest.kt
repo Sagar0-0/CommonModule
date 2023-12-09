@@ -2,6 +2,7 @@ package fit.asta.health.feature.testimonials.list.vm
 
 import fit.asta.health.core.test.BaseTest
 import fit.asta.health.data.testimonials.repo.TestimonialRepoImpl
+import fit.asta.health.feature.testimonials.viewmodel.TestimonialListViewModel
 import io.mockk.clearAllMocks
 import io.mockk.mockk
 import io.mockk.spyk
