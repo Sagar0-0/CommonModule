@@ -32,7 +32,6 @@ import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.utils.getOneUrl
 import fit.asta.health.player.media.Media
@@ -54,7 +53,7 @@ import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 private fun DefaultPreview1() {
     AppTheme {
         AppSurface {
-            TestimonialUploadVideo(media = listOf(), onVideoSelected = {}) {
+            TestimonialUploadVideo(media = null, onVideoSelected = {}) {
 
             }
         }
@@ -71,7 +70,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun TestimonialUploadVideo(
-    media: List<Media>,
+    media: Media?,
     onVideoSelected: (Uri?) -> Unit,
     onVideoDeleted: () -> Unit
 ) {
@@ -101,7 +100,7 @@ fun TestimonialUploadVideo(
                 .clip(AppTheme.shape.level1),
             contentAlignment = Alignment.Center
         ) {
-            if (media[0].url.isEmpty() && media[0].localUrl == null) {
+            if (media == null) {
 
                 Column(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
@@ -120,9 +119,6 @@ fun TestimonialUploadVideo(
                         text = "Browse to Choose",
                         color = AppTheme.colors.onTertiaryContainer
                     )
-
-                    // Says the type of the File
-                    HeadingTexts.Level3(text = media[0].title)
                 }
 
             } else {
@@ -132,7 +128,7 @@ fun TestimonialUploadVideo(
                     modifier = Modifier.align(Alignment.Center),
                     mediaItem = MediaItem
                         .Builder()
-                        .setUri(getOneUrl(media[0].localUrl, media[0].url))
+                        .setUri(getOneUrl(media.localUrl, media.url))
                         .build()
                 )
 

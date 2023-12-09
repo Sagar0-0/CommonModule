@@ -156,7 +156,7 @@ fun TestimonialCreateSuccessScreen(
 
             TestimonialType.IMAGE -> {
                 TestimonialUploadImage(
-                    media = userTestimonialData.media,
+                    media = listOf(userTestimonialData.beforeImage, userTestimonialData.afterImage),
                     onImageSelected = { mediaType, uri ->
                         setEvent(TestimonialEvent.OnMediaSelect(mediaType, uri))
                     },
@@ -166,7 +166,7 @@ fun TestimonialCreateSuccessScreen(
 
             TestimonialType.VIDEO -> {
                 TestimonialUploadVideo(
-                    media = userTestimonialData.media,
+                    media = userTestimonialData.videoMedia,
                     onVideoSelected = {
                         setEvent(TestimonialEvent.OnMediaSelect(MediaType.Video, it))
                     },

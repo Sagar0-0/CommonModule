@@ -15,15 +15,11 @@ fun checkInputValidity(testimonial: Testimonial): Boolean {
         TestimonialType.TEXT -> true
 
         TestimonialType.IMAGE -> {
-            val beforeData = testimonial.media[0]
-            val afterData = testimonial.media[1]
-            ((beforeData.localUrl != null || beforeData.url.isNotBlank())
-                    && (afterData.localUrl != null || afterData.url.isNotBlank()))
+            testimonial.beforeImage != null && testimonial.afterImage != null
         }
 
         TestimonialType.VIDEO -> {
-            testimonial.media[0].localUrl != null
-                    || testimonial.media[0].url.isNotBlank()
+            testimonial.videoMedia != null
         }
     }
 

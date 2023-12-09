@@ -6,8 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
@@ -65,6 +67,29 @@ class TestimonialViewModel @Inject constructor(
         viewModelScope.launch {
             authRepo.getUser()?.let {
 
+                when (TestimonialType.from(testimonialData.value.type)) {
+                    TestimonialType.TEXT -> {
+                        testimonialData.value = testimonialData.value.copy(
+                            afterImage = null,
+                            beforeImage = null,
+                            videoMedia = null
+                        )
+                    }
+
+                    TestimonialType.IMAGE -> {
+                        testimonialData.value = testimonialData.value.copy(
+                            videoMedia = null
+                        )
+                    }
+
+                    TestimonialType.VIDEO -> {
+                        testimonialData.value = testimonialData.value.copy(
+                            afterImage = null,
+                            beforeImage = null
+                        )
+                    }
+                }
+
                 testimonialData.value = testimonialData.value.copy(
                     user = testimonialData.value.user.copy(
                         name = it.name!!,
@@ -115,22 +140,27 @@ class TestimonialViewModel @Inject constructor(
 
                 when (event.mediaType) {
                     MediaType.BeforeImage -> {
-                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
                         testimonialData.value = testimonialData.value.copy(
-                            media = listOf(newMedia, testimonialData.value.media[1])
+                            beforeImage = testimonialData.value.beforeImage?.copy(
+                                localUrl = event.url
+                            ) ?: Media(localUrl = event.url)
                         )
                     }
 
                     MediaType.AfterImage -> {
-                        val newMedia = testimonialData.value.media[1].copy(localUrl = event.url)
                         testimonialData.value = testimonialData.value.copy(
-                            media = listOf(testimonialData.value.media[0], newMedia)
+                            afterImage = testimonialData.value.afterImage?.copy(
+                                localUrl = event.url
+                            ) ?: Media(localUrl = event.url)
                         )
                     }
 
                     MediaType.Video -> {
-                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
-                        testimonialData.value = testimonialData.value.copy(media = listOf(newMedia))
+                        testimonialData.value = testimonialData.value.copy(
+                            videoMedia = testimonialData.value.videoMedia?.copy(
+                                localUrl = event.url
+                            ) ?: Media(localUrl = event.url)
+                        )
                     }
                 }
             }
@@ -138,27 +168,15 @@ class TestimonialViewModel @Inject constructor(
             is TestimonialEvent.OnMediaClear -> {
                 when (event.mediaType) {
                     MediaType.BeforeImage -> {
-                        val newMedia =
-                            testimonialData.value.media[0].copy(localUrl = null, url = "")
-                        testimonialData.value = testimonialData.value.copy(
-                            media = listOf(newMedia, testimonialData.value.media[1])
-                        )
+                        testimonialData.value = testimonialData.value.copy(beforeImage = null)
                     }
 
                     MediaType.AfterImage -> {
-                        val newMedia =
-                            testimonialData.value.media[1].copy(localUrl = null, url = "")
-                        testimonialData.value = testimonialData.value.copy(
-                            media = listOf(testimonialData.value.media[0], newMedia)
-                        )
+                        testimonialData.value = testimonialData.value.copy(afterImage = null)
                     }
 
                     MediaType.Video -> {
-                        val newMedia =
-                            testimonialData.value.media[0].copy(localUrl = null, url = "")
-                        testimonialData.value = testimonialData.value.copy(
-                            media = listOf(newMedia)
-                        )
+                        testimonialData.value = testimonialData.value.copy(videoMedia = null)
                     }
                 }
             }

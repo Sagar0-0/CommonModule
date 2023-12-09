@@ -43,9 +43,13 @@ class TestimonialRepoImpl
 
     override suspend fun saveTestimonial(testimonial: Testimonial): ResponseState<SaveTestimonialResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        testimonial.media.forEach {
-            if (it.localUrl != null) {
-                //val body = RequestBody.create("image/jpg".toMediaTypeOrNull(), file)
+
+        listOf(
+            testimonial.afterImage,
+            testimonial.beforeImage,
+            testimonial.videoMedia
+        ).forEach {
+            if (it != null) {
                 parts.add(
                     MultipartBody.Part.createFormData(
                         name = "file",

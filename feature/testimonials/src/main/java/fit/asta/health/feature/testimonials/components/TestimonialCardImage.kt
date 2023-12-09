@@ -40,7 +40,7 @@ private fun DefaultPreview1() {
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun TestimonialCardImage(tstImageMedia: List<Media>) {
+fun TestimonialCardImage(tstImageMedia: List<Media?>) {
 
     if (tstImageMedia.isNotEmpty()) {
         val pagerState = rememberPagerState { tstImageMedia.size }
@@ -58,7 +58,7 @@ fun TestimonialCardImage(tstImageMedia: List<Media>) {
                         .clip(AppTheme.shape.level1)
                 ) {
                     AppNetworkImage(
-                        model = getImgUrl(url = tstImageMedia[page].url),
+                        model = getImgUrl(url = tstImageMedia[page]!!.url),
                         contentDescription = "Before and After Images",
                         modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square)
                     )

@@ -31,7 +31,6 @@ import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.utils.getOneUrl
@@ -68,7 +67,7 @@ private fun DefaultPreview1() {
  */
 @Composable
 fun TestimonialUploadImage(
-    media: List<Media>,
+    media: List<Media?>,
     onImageSelected: (MediaType, Uri?) -> Unit,
     onImageDelete: (MediaType) -> Unit
 ) {
@@ -123,7 +122,7 @@ fun TestimonialUploadImage(
  */
 @Composable
 private fun RowScope.ImageSlotsUI(
-    media: Media,
+    media: Media?,
     onSelectImageClick: () -> Unit,
     onDeleteImageClick: () -> Unit
 ) {
@@ -145,7 +144,7 @@ private fun RowScope.ImageSlotsUI(
     ) {
 
         // Checking if the media objects already have some images or not
-        if (media.url.isEmpty() && media.localUrl == null) {
+        if (media == null) {
 
             Column(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
@@ -164,9 +163,6 @@ private fun RowScope.ImageSlotsUI(
                     text = "Browse to Choose",
                     color = AppTheme.colors.onTertiaryContainer
                 )
-
-                // Says what type this file is of
-                HeadingTexts.Level3(text = media.title)
             }
         } else {
 
