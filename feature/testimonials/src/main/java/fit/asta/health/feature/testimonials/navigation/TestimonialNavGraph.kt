@@ -66,7 +66,6 @@ fun NavGraphBuilder.testimonialNavGraph(
                 userTestimonialData = testimonialData,
                 testimonialSubmitApiState = testimonialSubmitApi,
                 onBack = onBack,
-                navigate = { navController.navigate(it) },
                 setEvent = viewModel::onEvent
             )
         }

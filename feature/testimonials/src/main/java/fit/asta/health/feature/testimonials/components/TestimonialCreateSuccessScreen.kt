@@ -32,7 +32,6 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
-import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes
 import fit.asta.health.feature.testimonials.utils.checkInputValidity
 
 
@@ -41,7 +40,7 @@ fun TestimonialCreateSuccessScreen(
     paddingValues: PaddingValues,
     userTestimonialData: Testimonial,
     testimonialSubmitApiState: UiState<SaveTestimonialResponse>,
-    navigate: (String) -> Unit,
+    onBack: () -> Unit,
     setEvent: (TestimonialEvent) -> Unit
 ) {
 
@@ -197,9 +196,10 @@ fun TestimonialCreateSuccessScreen(
                     OnSuccessfulSubmit(
                         onDismiss = {
                             showCustomDialogWithResult = !showCustomDialogWithResult
+                            onBack()
                         },
-                        onNavigateTstHome = { navigate(TestimonialNavRoutes.Home.route) },
-                        onPositiveClick = { navigate(TestimonialNavRoutes.Home.route) }
+                        onNavigateTstHome = onBack,
+                        onPositiveClick = onBack
                     )
                 }
 

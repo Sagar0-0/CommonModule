@@ -23,8 +23,8 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.other.HandleBackPress
-import fit.asta.health.feature.testimonials.events.TestimonialEvent
 import fit.asta.health.feature.testimonials.components.TestimonialCreateSuccessScreen
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
 import fit.asta.health.resources.strings.R
 
 
@@ -35,7 +35,6 @@ fun TestimonialCreateScreenControl(
     userTestimonialData: Testimonial,
     testimonialSubmitApiState: UiState<SaveTestimonialResponse>,
     onBack: () -> Unit,
-    navigate: (String) -> Unit,
     setEvent: (TestimonialEvent) -> Unit
 ) {
 
@@ -79,7 +78,7 @@ fun TestimonialCreateScreenControl(
                     paddingValues = paddingValues,
                     userTestimonialData = userTestimonialData,
                     testimonialSubmitApiState = testimonialSubmitApiState,
-                    navigate = navigate,
+                    onBack = onBack,
                     setEvent = setEvent
                 )
             }
