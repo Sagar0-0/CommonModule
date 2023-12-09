@@ -54,7 +54,7 @@ fun NavGraphBuilder.testimonialNavGraph(
 
             val viewModel: TestimonialViewModel = hiltViewModel()
 
-            val userTestimonialApiState = viewModel.userTestimonial
+            val userTestimonialApiState = viewModel.userTestimonialApiState
                 .collectAsStateWithLifecycle().value
             val testimonialData = viewModel.testimonialData.collectAsStateWithLifecycle().value
 

@@ -1,6 +1,5 @@
 package fit.asta.health.feature.testimonials.create.vm
 
-import androidx.lifecycle.SavedStateHandle
 import app.cash.turbine.test
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepoImpl
@@ -28,19 +27,11 @@ class TestimonialViewModelTest : BaseTest() {
 
     private val repo: TestimonialRepoImpl = mockk(relaxed = true)
     private val authRepo: AuthRepoImpl = mockk(relaxed = true)
-    private val savedStateHandle: SavedStateHandle = mockk(relaxed = true)
-
 
     @BeforeEach
     override fun beforeEach() {
         super.beforeEach()
-        viewModel = spyk(
-            TestimonialViewModel(
-                repo,
-                authRepo,
-                savedStateHandle
-            )
-        )
+        viewModel = spyk(TestimonialViewModel(repo, authRepo))
     }
 
     @AfterEach
@@ -51,59 +42,66 @@ class TestimonialViewModelTest : BaseTest() {
 
     @Test
     fun `loadTestimonial with valid uid and Success, updates MutableState`() = runTest {
+
         coEvery { authRepo.getUser() } returns User()
-        coEvery { savedStateHandle.getStateFlow(any(), Testimonial()) } returns mockk()
-        coEvery { repo.getUserTestimonial(any()) } returns ResponseState.Success(
-            Testimonial()
-        )
-        viewModel.loadUserTestimonialData()
+        coEvery { repo.getUserTestimonial(any()) } returns ResponseState.Success(Testimonial())
+
+        viewModel.onEvent(TestimonialEvent.GetUserTestimonial)
+
         coVerify { authRepo.getUser() }
         coVerify { repo.getUserTestimonial("") }
-        viewModel.userTestimonialState.test {
+
+        viewModel.userTestimonialApiState.test {
             assert(awaitItem() is UiState.Success)
         }
     }
 
     @Test
     fun `loadTestimonial with valid uid and Error, updates MutableState`() = runTest {
+
         coEvery { authRepo.getUser() } returns User()
-        coEvery { savedStateHandle.getStateFlow(any(), Testimonial()) } returns mockk()
-        coEvery { repo.getUserTestimonial(any()) } returns ResponseState.ErrorMessage(
-            0
-        )
-        viewModel.loadUserTestimonialData()
+        coEvery { repo.getUserTestimonial(any()) } returns ResponseState.ErrorMessage(0)
+
+        viewModel.onEvent(TestimonialEvent.GetUserTestimonial)
+
         coVerify { authRepo.getUser() }
         coVerify { repo.getUserTestimonial("") }
-        viewModel.userTestimonialState.test {
+
+        viewModel.userTestimonialApiState.test {
             assert(awaitItem() is UiState.ErrorMessage)
         }
     }
 
     @Test
     fun `onEvent onSubmit Success, updates submitSate`() = runTest {
-        coEvery { authRepo.getUser() } returns User()
+
+        coEvery { authRepo.getUser() } returns User(uid = "", name = "", photoUrl = "")
         coEvery { repo.saveTestimonial(any()) } returns ResponseState.Success(
             SaveTestimonialResponse()
         )
+
         viewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
+
         coVerify { authRepo.getUser() }
         coVerify { repo.saveTestimonial(any()) }
-//        viewModel.stateSubmit.test {
-//            assert(awaitItem() is UiState.Success)
-//        }
+
+        viewModel.testimonialSubmitApiState.test {
+            assert(awaitItem() is UiState.Success)
+        }
     }
 
     @Test
     fun `onEvent onSubmit Error, updates submitSate`() = runTest {
-        coEvery { authRepo.getUser() } returns User()
-        coEvery { savedStateHandle.getStateFlow(any(), Testimonial()) } returns mockk()
-        coEvery { repo.saveTestimonial(any()) } returns ResponseState.ErrorMessage(
-            0
-        )
+
+        coEvery { authRepo.getUser() } returns User(uid = "", name = "", photoUrl = "")
+        coEvery { repo.saveTestimonial(any()) } returns ResponseState.ErrorMessage(0)
+
         viewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
+
         coVerify { authRepo.getUser() }
         coVerify { repo.saveTestimonial(any()) }
-        viewModel.saveTestimonialState.test {
+
+        viewModel.testimonialSubmitApiState.test {
             assert(awaitItem() is UiState.ErrorMessage)
         }
     }

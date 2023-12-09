@@ -28,8 +28,8 @@ class TestimonialViewModel @Inject constructor(
      * This variable fetches and stores the user's Testimonial Details from the server and shows the
      * state of the Api call
      */
-    private val _userTestimonial = MutableStateFlow<UiState<Testimonial>>(UiState.Idle)
-    val userTestimonial = _userTestimonial.asStateFlow()
+    private val _userTestimonialApiState = MutableStateFlow<UiState<Testimonial>>(UiState.Idle)
+    val userTestimonialApiState = _userTestimonialApiState.asStateFlow()
 
     /**
      * This variable contains the testimonial data for the UI changes and so
@@ -46,13 +46,13 @@ class TestimonialViewModel @Inject constructor(
             authRepo.getUser()?.let { user ->
 
                 // Fetching the testimonial from the server
-                _userTestimonial.value = testimonialRepo
+                _userTestimonialApiState.value = testimonialRepo
                     .getUserTestimonial(user.uid)
                     .toUiState()
 
-                if (_userTestimonial.value is UiState.Success)
+                if (_userTestimonialApiState.value is UiState.Success)
                     testimonialData.value =
-                        (_userTestimonial.value as UiState.Success<Testimonial>).data
+                        (_userTestimonialApiState.value as UiState.Success<Testimonial>).data
             }
         }
     }
