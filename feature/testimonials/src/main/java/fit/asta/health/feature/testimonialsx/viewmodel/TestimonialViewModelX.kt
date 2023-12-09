@@ -63,9 +63,20 @@ class TestimonialViewModelX @Inject constructor(
 
     private fun postUserTestimonial() {
         viewModelScope.launch {
-            _testimonialSubmitApiState.value = testimonialRepo
-                .saveTestimonial(testimonialData.value)
-                .toUiState()
+            authRepo.getUser()?.let {
+
+                testimonialData.value = testimonialData.value.copy(
+                    user = testimonialData.value.user.copy(
+                        name = it.name!!,
+                        url = it.photoUrl.toString()
+                    ),
+                    userId = it.uid
+                )
+
+                _testimonialSubmitApiState.value = testimonialRepo
+                    .saveTestimonial(testimonialData.value)
+                    .toUiState()
+            }
         }
     }
 
