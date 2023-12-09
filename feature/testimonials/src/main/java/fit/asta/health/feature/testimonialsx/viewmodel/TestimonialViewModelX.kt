@@ -39,7 +39,7 @@ class TestimonialViewModelX @Inject constructor(
     /**
      * This function fetches the user testimonial from the server
      */
-    fun getUserTestimonial() {
+    private fun getUserTestimonial() {
         viewModelScope.launch {
 
             // Fetching the user's Uid from the firebase to refer from the backend Server
@@ -72,6 +72,10 @@ class TestimonialViewModelX @Inject constructor(
 
     fun onEvent(event: TestimonialEvent) {
         when (event) {
+            is TestimonialEvent.GetUserTestimonial -> {
+                getUserTestimonial()
+            }
+
             is TestimonialEvent.OnTypeChange -> {
                 testimonialData.value = testimonialData.value.copy(type = event.type.value)
             }

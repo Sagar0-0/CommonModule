@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -38,6 +39,10 @@ fun TestimonialCreateScreenControl(
     setEvent: (TestimonialEvent) -> Unit
 ) {
 
+    LaunchedEffect(key1 = Unit) {
+        setEvent(TestimonialEvent.GetUserTestimonial)
+    }
+
     // This variable is used to prompt when to show the Custom Dialog Bar
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
@@ -55,7 +60,7 @@ fun TestimonialCreateScreenControl(
 
             // Idle State
             is UiState.Idle -> {
-                // TODO : -- Calling the View Model for user's testimonial data
+                setEvent(TestimonialEvent.GetUserTestimonial)
             }
 
             // Loading State
@@ -82,16 +87,14 @@ fun TestimonialCreateScreenControl(
             // Error Retry State
             is UiState.ErrorRetry -> {
                 AppErrorScreen {
-                    // TODO : -- Calling the View Model for user's testimonial data
-//                testimonialViewModel.loadUserTestimonialData()
+                    setEvent(TestimonialEvent.GetUserTestimonial)
                 }
             }
 
             // No Internet State
             is UiState.NoInternet -> {
                 AppInternetErrorDialog {
-                    // TODO : -- Calling the View Model for user's testimonial data
-//                testimonialViewModel.loadUserTestimonialData()
+                    setEvent(TestimonialEvent.GetUserTestimonial)
                 }
             }
 

@@ -1,6 +1,5 @@
 package fit.asta.health.feature.testimonialsx.navigation
 
-import androidx.compose.runtime.LaunchedEffect
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -44,10 +43,6 @@ fun NavGraphBuilder.testimonialNavGraphX(
         composable(route = TestimonialNavRoutesX.Create.route) {
 
             val viewModel: TestimonialViewModelX = hiltViewModel()
-
-            LaunchedEffect(key1 = Unit) {
-                viewModel.getUserTestimonial()
-            }
 
             val userTestimonialApiState = viewModel.userTestimonial
                 .collectAsStateWithLifecycle().value

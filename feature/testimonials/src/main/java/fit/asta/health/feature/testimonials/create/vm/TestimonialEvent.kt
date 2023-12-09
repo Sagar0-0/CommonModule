@@ -10,9 +10,9 @@ sealed class MediaType {
 }
 
 sealed class TestimonialEvent {
-    data class OnTypeChange(val type: TestimonialType) :
-        TestimonialEvent()
 
+    data object GetUserTestimonial : TestimonialEvent()
+    data class OnTypeChange(val type: TestimonialType) : TestimonialEvent()
     data class OnTitleChange(val title: String) : TestimonialEvent()
     data class OnTestimonialChange(val testimonial: String) : TestimonialEvent()
     data class OnRoleChange(val role: String) : TestimonialEvent()

@@ -218,6 +218,10 @@ class TestimonialViewModel
 
     fun onEvent(event: TestimonialEvent) {
         when (event) {
+            is TestimonialEvent.GetUserTestimonial -> {
+                loadUserTestimonialData()
+            }
+
             is OnTypeChange -> {
                 savedState[TYPE] = event.type
             }
