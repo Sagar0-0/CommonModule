@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.create.vm
+package fit.asta.health.feature.testimonials.viewmodel
 
 import app.cash.turbine.test
 import fit.asta.health.auth.model.domain.User
@@ -10,7 +10,6 @@ import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialRepoImpl
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
-import fit.asta.health.feature.testimonials.viewmodel.TestimonialViewModel
 import io.mockk.clearAllMocks
 import io.mockk.coEvery
 import io.mockk.coVerify
