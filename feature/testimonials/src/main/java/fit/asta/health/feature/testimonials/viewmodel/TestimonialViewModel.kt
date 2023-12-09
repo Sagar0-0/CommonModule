@@ -1,349 +1,171 @@
 package fit.asta.health.feature.testimonials.viewmodel
 
-import android.net.Uri
-import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.testimonials.model.InputWrapper
-import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
 import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialType
-import fit.asta.health.data.testimonials.model.TestimonialUser
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
-import fit.asta.health.feature.testimonials.events.MediaType.AfterImage
-import fit.asta.health.feature.testimonials.events.MediaType.BeforeImage
-import fit.asta.health.feature.testimonials.events.MediaType.Video
+import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnMediaClear
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnMediaSelect
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnOrgChange
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnRoleChange
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnSubmitTestimonial
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTestimonialChange
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTitleChange
-import fit.asta.health.feature.testimonials.events.TestimonialEvent.OnTypeChange
-import fit.asta.health.resources.strings.R
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.combine
-import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-const val TESTIMONIAL_DATA = "testimonialData"
-const val ID = "id"
-const val TYPE = "type"
-const val TITLE = "title"
-const val TESTIMONIAL = "testimonial"
-const val ORG = "org"
-const val ROLE = "role"
-const val IMAGE_BEFORE = "img_before"
-const val IMAGE_AFTER = "img_after"
-const val VIDEO = "video"
 
-
-@ExperimentalCoroutinesApi
 @HiltViewModel
-class TestimonialViewModel
-@Inject constructor(
+class TestimonialViewModel @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
-    private val savedState: SavedStateHandle
 ) : ViewModel() {
 
-    private val _userTestimonialState = MutableStateFlow<UiState<Testimonial>>(UiState.Loading)
-    val userTestimonialState = _userTestimonialState.asStateFlow()
 
-    private val userTestimonialData = savedState.getStateFlow(
-        TESTIMONIAL_DATA,
-        Testimonial()
-    )
-    val id = savedState.getStateFlow(ID, "")
-    val type = savedState.getStateFlow(
-        TYPE,
-        TestimonialType.from(0)
-    )
-    val title = savedState.getStateFlow(
-        TITLE,
-        InputWrapper()
-    )
-    val testimonial = savedState.getStateFlow(
-        TESTIMONIAL,
-        InputWrapper()
-    )
-    val org = savedState.getStateFlow(ORG, InputWrapper())
-    val role = savedState.getStateFlow(ROLE, InputWrapper())
-    val imgBefore =
-        savedState.getStateFlow(
-            IMAGE_BEFORE,
-            Media(name = "before", title = "Before Image")
-        )
-    val imgAfter =
-        savedState.getStateFlow(
-            IMAGE_AFTER,
-            Media(name = "after", title = "After Image")
-        )
-    val video =
-        savedState.getStateFlow(
-            VIDEO,
-            Media(
-                name = "journey",
-                title = "Health Transformation"
-            )
-        )
+    /**
+     * This variable fetches and stores the user's Testimonial Details from the server and shows the
+     * state of the Api call
+     */
+    private val _userTestimonial = MutableStateFlow<UiState<Testimonial>>(UiState.Idle)
+    val userTestimonial = _userTestimonial.asStateFlow()
 
-    //TODO: FIND A REPLACEMENT TO REMOVE THESE SOLO FLOWS
-    val areInputsValid =
-        combine(type, title, testimonial, org, role) { type, title, testimonial, org, role ->
-            when (type) {
-                TestimonialType.TEXT -> testimonial.value.isNotBlank() && testimonial.error is UiString.Empty
-                TestimonialType.IMAGE -> true
-                TestimonialType.VIDEO -> true
-            } && title.value.isNotEmpty() && title.error is UiString.Empty && org.value.isNotEmpty() && org.error is UiString.Empty && role.value.isNotEmpty() && role.error is UiString.Empty && isTestimonialInvalid()
-        }
-            .stateIn(
-                viewModelScope,
-                SharingStarted.WhileSubscribed(1000),
-                false
-            )
+    /**
+     * This variable contains the testimonial data for the UI changes and so
+     */
+    val testimonialData: MutableStateFlow<Testimonial> = MutableStateFlow(Testimonial())
 
-
-    val areMediaValid = combine(type, imgBefore, imgAfter, video) { type, before, after, video ->
-        when (type) {
-            TestimonialType.TEXT -> true
-            TestimonialType.IMAGE -> (before.localUrl != null || before.url.isNotBlank()) && (after.localUrl != null || after.url.isNotBlank())
-            TestimonialType.VIDEO -> video.localUrl != null || video.url.isNotBlank()
-        }
-    }
-        .stateIn(
-            viewModelScope,
-            SharingStarted.WhileSubscribed(1000),
-            false
-        )
-
-
-    private val _saveTestimonialState =
-        MutableStateFlow<UiState<SaveTestimonialResponse>>(UiState.Loading)
-    val saveTestimonialState = _saveTestimonialState.asStateFlow()
-
-    fun loadUserTestimonialData() {
+    /**
+     * This function fetches the user testimonial from the server
+     */
+    private fun getUserTestimonial() {
         viewModelScope.launch {
+
+            // Fetching the user's Uid from the firebase to refer from the backend Server
             authRepo.getUser()?.let { user ->
-                when (val result = testimonialRepo.getUserTestimonial(user.uid)) {
-                    is ResponseState.Success -> {
-                        savedState[TESTIMONIAL_DATA] = result.data
-                        savedState[ID] = result.data.id
-                        savedState[TYPE] =
-                            TestimonialType.from(result.data.type)
-                        savedState[TITLE] =
-                            InputWrapper(value = result.data.title)
-                        savedState[TESTIMONIAL] =
-                            InputWrapper(value = result.data.testimonial)
-                        savedState[ORG] =
-                            InputWrapper(value = result.data.user.org)
-                        savedState[ROLE] =
-                            InputWrapper(value = result.data.user.role)
 
-                        when (
-                            TestimonialType
-                                .from(result.data.type)
-                        ) {
-                            TestimonialType.TEXT -> {
-                            }
+                // Fetching the testimonial from the server
+                _userTestimonial.value = testimonialRepo
+                    .getUserTestimonial(user.uid)
+                    .toUiState()
 
-                            TestimonialType.IMAGE -> {
-                                savedState[IMAGE_BEFORE] =
-                                    Media(url = result.data.media[0].url)
-                                savedState[IMAGE_AFTER] =
-                                    Media(url = result.data.media[1].url)
-                            }
-
-                            TestimonialType.VIDEO -> {
-                                savedState[VIDEO] =
-                                    Media(url = result.data.media[0].url)
-                            }
-                        }
-                        _userTestimonialState.value = UiState.Success(result.data)
-                    }
-
-                    else -> {
-                        _userTestimonialState.value = result.toUiState()
-                    }
-                }
+                if (_userTestimonial.value is UiState.Success)
+                    testimonialData.value =
+                        (_userTestimonial.value as UiState.Success<Testimonial>).data
             }
         }
     }
 
+    private val _testimonialSubmitApiState =
+        MutableStateFlow<UiState<SaveTestimonialResponse>>(UiState.Loading)
+    val testimonialSubmitApiState = _testimonialSubmitApiState.asStateFlow()
 
-    private fun saveUserTestimonial() {
-        authRepo.getUser()?.let {
-            val testimonial = Testimonial(
-                id = id.value,
-                type = type.value.value,
-                title = title.value.value.trim(),
-                testimonial = testimonial.value.value.trim(),
-                userId = it.uid,
-                user = TestimonialUser(
-                    name = it.name!!,
-                    role = role.value.value.trim(),
-                    org = org.value.value.trim(),
-                    url = it.photoUrl.toString()
-                ),
-                media = when (type.value) {
-                    TestimonialType.TEXT -> listOf()
-                    TestimonialType.IMAGE -> listOf(
-                        imgBefore.value,
-                        imgAfter.value
-                    )
+    private fun postUserTestimonial() {
+        viewModelScope.launch {
+            authRepo.getUser()?.let {
 
-                    TestimonialType.VIDEO -> listOf(
-                        video.value
-                    )
-                }
-            )
-            viewModelScope.launch {
-                _saveTestimonialState.value =
-                    testimonialRepo.saveTestimonial(testimonial).toUiState()
+                testimonialData.value = testimonialData.value.copy(
+                    user = testimonialData.value.user.copy(
+                        name = it.name!!,
+                        url = it.photoUrl.toString()
+                    ),
+                    userId = it.uid
+                )
+
+                _testimonialSubmitApiState.value = testimonialRepo
+                    .saveTestimonial(testimonialData.value)
+                    .toUiState()
             }
         }
     }
+
 
     fun onEvent(event: TestimonialEvent) {
         when (event) {
             is TestimonialEvent.GetUserTestimonial -> {
-                loadUserTestimonialData()
+                getUserTestimonial()
             }
 
-            is OnTypeChange -> {
-                savedState[TYPE] = event.type
+            is TestimonialEvent.OnTypeChange -> {
+                testimonialData.value = testimonialData.value.copy(type = event.type.value)
             }
 
-            is OnTitleChange -> {
-                savedState[TITLE] = title.value.copy(
-                    value = event.title, error = onValidateText(event.title, 4, 64)
-                )
+            is TestimonialEvent.OnTitleChange -> {
+                testimonialData.value = testimonialData.value.copy(title = event.title)
             }
 
-            is OnTestimonialChange -> {
-                savedState[TESTIMONIAL] = testimonial.value.copy(
-                    value = event.testimonial, error = onValidateText(event.testimonial, 32, 256)
-                )
+            is TestimonialEvent.OnTestimonialChange -> {
+                testimonialData.value = testimonialData.value.copy(testimonial = event.testimonial)
             }
 
-            is OnOrgChange -> {
-                savedState[ORG] =
-                    title.value.copy(value = event.org, error = onValidateText(event.org, 4, 32))
+            is TestimonialEvent.OnRoleChange -> {
+                val user = testimonialData.value.user.copy(role = event.role)
+                testimonialData.value = testimonialData.value.copy(user = user)
             }
 
-            is OnRoleChange -> {
-                savedState[ROLE] =
-                    title.value.copy(value = event.role, error = onValidateText(event.role, 2, 32))
+            is TestimonialEvent.OnOrgChange -> {
+                val user = testimonialData.value.user.copy(org = event.org)
+                testimonialData.value = testimonialData.value.copy(user = user)
             }
 
-            is OnMediaSelect -> {
-                if (event.url == null) {
+            is TestimonialEvent.OnMediaSelect -> {
+                if (event.url == null)
                     return
-                }
+
                 when (event.mediaType) {
-                    AfterImage -> {
-                        savedState[IMAGE_AFTER] = imgAfter.value.copy(
-                            localUrl = event.url,
-                            error = onValidateMedia(imgAfter.value.localUrl, imgAfter.value.url)
+                    MediaType.BeforeImage -> {
+                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia, testimonialData.value.media[1])
                         )
                     }
 
-                    BeforeImage -> {
-                        savedState[IMAGE_BEFORE] = imgBefore.value.copy(
-                            localUrl = event.url,
-                            error = onValidateMedia(imgBefore.value.localUrl, imgBefore.value.url)
+                    MediaType.AfterImage -> {
+                        val newMedia = testimonialData.value.media[1].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(testimonialData.value.media[0], newMedia)
                         )
                     }
 
-                    Video -> {
-                        savedState[VIDEO] = video.value.copy(
-                            localUrl = event.url,
-                            error = onValidateMedia(video.value.localUrl, video.value.url)
+                    MediaType.Video -> {
+                        val newMedia = testimonialData.value.media[0].copy(localUrl = event.url)
+                        testimonialData.value = testimonialData.value.copy(media = listOf(newMedia))
+                    }
+                }
+            }
+
+            is TestimonialEvent.OnMediaClear -> {
+                when (event.mediaType) {
+                    MediaType.BeforeImage -> {
+                        val newMedia =
+                            testimonialData.value.media[0].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia, testimonialData.value.media[1])
+                        )
+                    }
+
+                    MediaType.AfterImage -> {
+                        val newMedia =
+                            testimonialData.value.media[1].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(testimonialData.value.media[0], newMedia)
+                        )
+                    }
+
+                    MediaType.Video -> {
+                        val newMedia =
+                            testimonialData.value.media[0].copy(localUrl = null, url = "")
+                        testimonialData.value = testimonialData.value.copy(
+                            media = listOf(newMedia)
                         )
                     }
                 }
             }
 
-            is OnMediaClear -> {
-                when (event.mediaType) {
-                    AfterImage -> {
-                        savedState[IMAGE_AFTER] = imgAfter.value.copy(
-                            localUrl = null,
-                            url = "",
-                            error = UiString.Resource(R.string.the_media_can_not_be_blank)
-                        )
-                    }
-
-                    BeforeImage -> {
-                        savedState[IMAGE_BEFORE] = imgBefore.value.copy(
-                            localUrl = null,
-                            url = "",
-                            error = UiString.Resource(R.string.the_media_can_not_be_blank)
-                        )
-                    }
-
-                    Video -> {
-                        savedState[VIDEO] = video.value.copy(
-                            localUrl = null,
-                            url = "",
-                            error = UiString.Resource(R.string.the_media_can_not_be_blank)
-                        )
-                    }
-                }
-            }
-
-            is OnSubmitTestimonial -> {
-                saveUserTestimonial()
+            is TestimonialEvent.OnSubmitTestimonial -> {
+                postUserTestimonial()
             }
         }
     }
-
-    private fun clearErrors() {
-        savedState[TITLE] = title.value.copy(error = UiString.Empty)
-        savedState[TESTIMONIAL] = testimonial.value.copy(error = UiString.Empty)
-        savedState[ORG] = org.value.copy(error = UiString.Empty)
-        savedState[ROLE] = role.value.copy(error = UiString.Empty)
-        savedState[IMAGE_BEFORE] = imgBefore.value.copy(error = UiString.Empty)
-        savedState[IMAGE_AFTER] = imgAfter.value.copy(error = UiString.Empty)
-        savedState[VIDEO] = video.value.copy(error = UiString.Empty)
-    }
-
-    private fun onValidateText(value: String, min: Int, max: Int): UiString {
-        return when {
-            value.isBlank() -> UiString.Resource(R.string.the_field_can_not_be_blank)
-            value.length > max -> UiString.Resource(R.string.data_length_more, max.toString())
-            value.length in 1 until min -> UiString.Resource(
-                R.string.data_length_less, min.toString()
-            )
-
-            else -> UiString.Empty
-        }
-    }
-
-    private fun onValidateMedia(localUrl: Uri?, url: String): UiString {
-        return if (localUrl != null || url.isNotBlank()) UiString.Empty
-        else UiString.Resource(R.string.the_media_can_not_be_blank)
-    }
-
-    private fun isTestimonialInvalid(): Boolean {
-        return userTestimonialData.value.title != title.value.value
-                || userTestimonialData.value.testimonial != testimonial.value.value
-                || userTestimonialData.value.user.org != org.value.value
-                || userTestimonialData.value.user.role != role.value.value
-    }
-
-
 }

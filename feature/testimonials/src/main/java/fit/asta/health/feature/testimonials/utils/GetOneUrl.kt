@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.compose.runtime.Composable
 import fit.asta.health.common.utils.getImgUrl
 
-/**[getOneUrlX] function is a utility function used in Jetpack Compose for Android development. It is
+/**[getOneUrl] function is a utility function used in Jetpack Compose for Android development. It is
  *  designed to retrieve a single URL as a String based on the provided localUrl and remoteUrl parameters.
  *  If the localUrl is not null, the function will return the String representation of the localUrl.
  *  If the localUrl is null, the function will call getImgUrl(remoteUrl) to obtain the URL as a String from the remoteUrl.
@@ -14,6 +14,6 @@ import fit.asta.health.common.utils.getImgUrl
  */
 
 @Composable
-fun getOneUrlX(localUrl: Uri?, remoteUrl: String): String {
+fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
     return localUrl?.toString() ?: getImgUrl(remoteUrl)
 }

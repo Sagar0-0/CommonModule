@@ -32,7 +32,8 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
-import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutesX
+import fit.asta.health.feature.testimonials.navigation.TestimonialNavRoutes
+import fit.asta.health.feature.testimonials.utils.checkInputValidity
 
 
 @Composable
@@ -77,7 +78,7 @@ fun TestimonialCreateSuccessScreen(
     ) {
 
         // This function draws the testimonial radio buttons Card
-        TestimonialsRadioButtonCardX(
+        TestimonialsRadioButtonCard(
             cardTitle = "Testimonial Type",
             radioButtonList = radioButtonList,
             selectedOption = selectedOption
@@ -197,8 +198,8 @@ fun TestimonialCreateSuccessScreen(
                         onDismiss = {
                             showCustomDialogWithResult = !showCustomDialogWithResult
                         },
-                        onNavigateTstHome = { navigate(TestimonialNavRoutesX.Home.route) },
-                        onPositiveClick = { navigate(TestimonialNavRoutesX.Home.route) }
+                        onNavigateTstHome = { navigate(TestimonialNavRoutes.Home.route) },
+                        onPositiveClick = { navigate(TestimonialNavRoutes.Home.route) }
                     )
                 }
 
@@ -210,35 +211,4 @@ fun TestimonialCreateSuccessScreen(
             }
         }
     }
-}
-
-/**
- * This Function checks if the inputs are valid so that the Submit Button can be Enabled
- *
- * @param testimonial This contains the user's Testimonials which we need to check for validity
- */
-fun checkInputValidity(testimonial: Testimonial): Boolean {
-
-    val mediaValidity = when (TestimonialType.from(testimonial.type)) {
-        TestimonialType.TEXT -> true
-
-        TestimonialType.IMAGE -> {
-            val beforeData = testimonial.media[0]
-            val afterData = testimonial.media[1]
-            ((beforeData.localUrl != null || beforeData.url.isNotBlank())
-                    && (afterData.localUrl != null || afterData.url.isNotBlank()))
-        }
-
-        TestimonialType.VIDEO -> {
-            testimonial.media[0].localUrl != null
-                    || testimonial.media[0].url.isNotBlank()
-        }
-    }
-
-    val titleValidity = (testimonial.title.length in 4..32)
-    val testimonialValidity = testimonial.testimonial.length in 4..256
-    val orgValidity = testimonial.testimonial.length in 4..32
-    val roleValidity = testimonial.user.role.length in 4..32
-
-    return mediaValidity && titleValidity && testimonialValidity && orgValidity && roleValidity
 }

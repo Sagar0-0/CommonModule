@@ -1,5 +1,6 @@
 package fit.asta.health.feature.testimonials.components
 
+import android.content.res.Configuration
 import android.net.Uri
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -20,10 +21,12 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -31,8 +34,28 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.testimonials.events.MediaType
-import fit.asta.health.feature.testimonials.utils.getOneUrlX
+import fit.asta.health.feature.testimonials.utils.getOneUrl
 
+
+// Preview Function
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun DefaultPreview1() {
+    AppTheme {
+        AppSurface {
+            TestimonialUploadImage(
+                media = listOf(),
+                onImageSelected = { _, _ -> },
+                onImageDelete = {}
+            )
+        }
+    }
+}
 
 /**
  * This function creates the UI to show the Images Upload Options and also helps to fetch the images
@@ -149,7 +172,7 @@ private fun RowScope.ImageSlotsUI(
 
             // Image chosen by the user
             AppNetworkImage(
-                model = getOneUrlX(media.localUrl, media.url),
+                model = getOneUrl(media.localUrl, media.url),
                 contentDescription = "Selected Testimonial Image",
                 modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square),
                 contentScale = ContentScale.Crop

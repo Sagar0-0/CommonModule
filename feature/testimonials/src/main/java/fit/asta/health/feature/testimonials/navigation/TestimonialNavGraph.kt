@@ -9,10 +9,10 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.paging.compose.collectAsLazyPagingItems
-import fit.asta.health.feature.testimonials.viewmodel.TestimonialListViewModel
-import fit.asta.health.feature.testimonials.screens.TestimonialHomeScreenControl
 import fit.asta.health.feature.testimonials.screens.TestimonialCreateScreenControl
-import fit.asta.health.feature.testimonials.viewmodel.TestimonialViewModelX
+import fit.asta.health.feature.testimonials.screens.TestimonialHomeScreenControl
+import fit.asta.health.feature.testimonials.viewmodel.TestimonialListViewModel
+import fit.asta.health.feature.testimonials.viewmodel.TestimonialViewModel
 
 const val TESTIMONIALS_GRAPH_ROUTE = "graph_testimonials_tool"
 
@@ -26,23 +26,23 @@ fun NavController.navigateToTestimonials(navOptions: NavOptions? = null) {
  *
  * @param navController This is the navController for the Tracking Screens
  */
-fun NavGraphBuilder.testimonialNavGraphX(
+fun NavGraphBuilder.testimonialNavGraph(
     navController: NavHostController,
     onBack: () -> Unit
 ) {
 
     navigation(
         route = TESTIMONIALS_GRAPH_ROUTE,
-        startDestination = TestimonialNavRoutesX.Home.route
+        startDestination = TestimonialNavRoutes.Home.route
     ) {
-        composable(route = TestimonialNavRoutesX.Home.route) {
+        composable(route = TestimonialNavRoutes.Home.route) {
             val testimonialListViewModel: TestimonialListViewModel = hiltViewModel()
             val testimonials = testimonialListViewModel.testimonialPager.collectAsLazyPagingItems()
 
             TestimonialHomeScreenControl(
                 testimonials = testimonials,
                 navigateToCreate = {
-                    navController.navigate(route = TestimonialNavRoutesX.Create.route)
+                    navController.navigate(route = TestimonialNavRoutes.Create.route)
                 },
                 onBack = {
                     navController.popBackStack()
@@ -50,9 +50,9 @@ fun NavGraphBuilder.testimonialNavGraphX(
             )
         }
 
-        composable(route = TestimonialNavRoutesX.Create.route) {
+        composable(route = TestimonialNavRoutes.Create.route) {
 
-            val viewModel: TestimonialViewModelX = hiltViewModel()
+            val viewModel: TestimonialViewModel = hiltViewModel()
 
             val userTestimonialApiState = viewModel.userTestimonial
                 .collectAsStateWithLifecycle().value

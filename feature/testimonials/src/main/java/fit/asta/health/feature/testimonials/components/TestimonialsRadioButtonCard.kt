@@ -1,5 +1,6 @@
 package fit.asta.health.feature.testimonials.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
@@ -10,12 +11,40 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+
+
+// Preview Function
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun DefaultPreview1() {
+    AppTheme {
+        AppSurface {
+            TestimonialsRadioButtonCard(
+                cardTitle = "Testimonial Type",
+                radioButtonList = listOf(
+                    TestimonialType.TEXT,
+                    TestimonialType.IMAGE,
+                    TestimonialType.VIDEO
+                ),
+                selectedOption = TestimonialType.IMAGE,
+                onOptionSelected = {}
+            )
+        }
+    }
+}
 
 
 /**
@@ -29,7 +58,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
  */
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-fun TestimonialsRadioButtonCardX(
+fun TestimonialsRadioButtonCard(
     modifier: Modifier = Modifier,
     cardTitle: String,
     radioButtonList: List<TestimonialType>,
