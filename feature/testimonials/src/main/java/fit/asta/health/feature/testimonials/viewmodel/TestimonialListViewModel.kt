@@ -1,4 +1,4 @@
-package fit.asta.health.feature.testimonials.list.vm
+package fit.asta.health.feature.testimonials.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -11,7 +11,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialDataSource
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
-import fit.asta.health.feature.testimonials.list.vm.TestimonialListEvent.Remove
+import fit.asta.health.feature.testimonials.events.TestimonialListEvent
+import fit.asta.health.feature.testimonials.events.TestimonialListEvent.Remove
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.combine
 import javax.inject.Inject
@@ -37,11 +38,6 @@ class TestimonialListViewModel
                     applyEvents(acc, event)
                 }
             }
-
-    //val testimonialViewState: LiveData<PagingData<NetTestimonial>> = testimonialPager.asLiveData()
-    fun onViewEvent(event: TestimonialListEvent) {
-        modificationEvents.value += event
-    }
 
     private fun applyEvents(
         paging: PagingData<Testimonial>,
