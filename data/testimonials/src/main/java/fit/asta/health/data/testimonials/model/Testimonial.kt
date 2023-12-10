@@ -24,8 +24,12 @@ data class Testimonial(
     val userId: String = "",
     @SerializedName("user")
     val user: TestimonialUser = TestimonialUser(),
-    @SerializedName("mda")
-    val media: List<Media> = listOf()
+    @SerializedName("beforeImg")
+    val beforeImage: Media? = null,
+    @SerializedName("afterImg")
+    val afterImage: Media? = null,
+    @SerializedName("video")
+    val videoMedia: Media? = null
 ) : Parcelable
 
 @Parcelize

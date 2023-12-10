@@ -1,5 +1,6 @@
 package fit.asta.health.feature.testimonials.components
 
+import android.content.res.Configuration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.aspectRatio
@@ -12,12 +13,14 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.player.media.Media
 import fit.asta.health.player.media.ResizeMode
@@ -28,6 +31,21 @@ import fit.asta.health.player.presentation.component.SimpleController
 import fit.asta.health.player.presentation.component.VideoState
 import fit.asta.health.player.presentation.component.rememberManagedExoPlayer
 
+// Preview Function
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun DefaultPreview1() {
+    AppTheme {
+        AppSurface {
+            TestimonialsVideoView(videoUri = "")
+        }
+    }
+}
 
 @Composable
 fun TestimonialsVideoView(

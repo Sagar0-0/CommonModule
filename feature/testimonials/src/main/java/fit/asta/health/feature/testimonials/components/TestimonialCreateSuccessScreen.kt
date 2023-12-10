@@ -1,115 +1,66 @@
-package fit.asta.health.feature.testimonials.create.view
+package fit.asta.health.feature.testimonials.components
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.OnSuccessfulSubmit
-import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
-import fit.asta.health.designsystem.molecular.other.HandleBackPress
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent
-import fit.asta.health.feature.testimonials.create.vm.TestimonialEvent.OnTypeChange
-import fit.asta.health.feature.testimonials.create.vm.TestimonialViewModel
-import fit.asta.health.resources.strings.R
-import kotlinx.coroutines.ExperimentalCoroutinesApi
+import fit.asta.health.feature.testimonials.events.MediaType
+import fit.asta.health.feature.testimonials.events.TestimonialEvent
+import fit.asta.health.feature.testimonials.utils.checkInputValidity
 
-@OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
+
 @Composable
-fun CreateTestimonialScreen(
-    testimonialViewModel: TestimonialViewModel,
-    onBack: () -> Unit
-) {
-    var showCustomDialogWithResult by remember { mutableStateOf(false) }
-
-    AppScaffold(
-        topBar = {
-            AppTopBar(
-                title = R.string.testimonial_title_edit.toStringFromResId(),
-                onBack = { showCustomDialogWithResult = !showCustomDialogWithResult }
-            )
-        }
-    ) {
-        TestimonialForm(
-            paddingValues = it,
-            onNavigateTstHome = onBack,
-            testimonialViewModel = testimonialViewModel,
-        )
-    }
-    HandleBackPress {
-        showCustomDialogWithResult = !showCustomDialogWithResult
-    }
-    if (showCustomDialogWithResult) {
-        ShowCustomConfirmationDialog(
-            onDismiss = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            },
-            onNegativeClick = onBack,
-            onPositiveClick = {
-                showCustomDialogWithResult = !showCustomDialogWithResult
-            },
-            dialogData = DialogData(
-                dialogTitle = "Discard Testimonial",
-                dialogDesc = "Allow Permission to send you notifications when new art styles added.",
-                negTitle = "Discard Testimonials",
-                posTitle = "Cancel"
-            )
-        )
-    }
-}
-
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun TestimonialForm(
+fun TestimonialCreateSuccessScreen(
     paddingValues: PaddingValues,
-    onNavigateTstHome: () -> Unit,
-    testimonialViewModel: TestimonialViewModel,
+    userTestimonialData: Testimonial,
+    testimonialSubmitApiState: UiState<SaveTestimonialResponse>,
+    onBack: () -> Unit,
+    setEvent: (TestimonialEvent) -> Unit
 ) {
 
-    val type by testimonialViewModel.type.collectAsStateWithLifecycle()
-    val title by testimonialViewModel.title.collectAsStateWithLifecycle()
-    val testimonial by testimonialViewModel.testimonial.collectAsStateWithLifecycle()
-    val organization by testimonialViewModel.org.collectAsStateWithLifecycle()
-    val role by testimonialViewModel.role.collectAsStateWithLifecycle()
-    val areInputsValid by testimonialViewModel.areInputsValid.collectAsStateWithLifecycle()
-    val areMediaValid by testimonialViewModel.areMediaValid.collectAsStateWithLifecycle()
-
+    // This variable contains the list of available Testimonial Types
     val radioButtonList = listOf(
         TestimonialType.TEXT,
         TestimonialType.IMAGE,
         TestimonialType.VIDEO
     )
 
+    // This variable states when to show the feedback popup when the submit button is clicked
     var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
+    // This contains the selected Testimonial type
     val selectedOption = radioButtonList.find {
-        it == type
+        it.value == userTestimonialData.type
     } ?: radioButtonList[0]
 
+    // FocusManager Object
     val focusManager = LocalFocusManager.current
-
-    val event = testimonialViewModel.saveTestimonialState.collectAsState()
-    val events = event.value
 
     // Parent Composable Function
     Column(
@@ -130,19 +81,19 @@ fun TestimonialForm(
             cardTitle = "Testimonial Type",
             radioButtonList = radioButtonList,
             selectedOption = selectedOption
-        ) { testimonialViewModel.onEvent(OnTypeChange(it)) }
+        ) { setEvent(TestimonialEvent.OnTypeChange(it)) }
 
 
         // Text Field to enter the title of the Testimonial
         AppOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = title.value,
+            value = userTestimonialData.title,
             label = "Title",
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
                 onNext = { focusManager.moveFocus(FocusDirection.Down) }
             ),
-            onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnTitleChange(it)) },
+            onValueChange = { setEvent(TestimonialEvent.OnTitleChange(it)) },
             appTextFieldType = AppTextFieldValidator(
                 AppTextFieldType.Custom(minSize = 4, maxSize = 32)
             )
@@ -152,24 +103,27 @@ fun TestimonialForm(
         if (selectedOption == radioButtonList[0] || selectedOption == radioButtonList[1]) {
             AppOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = testimonial.value,
+                value = userTestimonialData.testimonial,
                 label = "Testimonial",
                 keyboardActions = KeyboardActions(
                     onNext = { focusManager.clearFocus() }
                 ),
                 onValueChange = {
-                    testimonialViewModel.onEvent(TestimonialEvent.OnTestimonialChange(it))
+                    setEvent(TestimonialEvent.OnTestimonialChange(it))
                 },
                 keyboardOptions = KeyboardOptions(imeAction = ImeAction.Default),
                 minLines = 4,
-                maxLines = 4
+                maxLines = 4,
+                appTextFieldType = AppTextFieldValidator(
+                    AppTextFieldType.Custom(minSize = 4, maxSize = 256)
+                )
             )
         }
 
         // Organisation Text Field
         AppOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = organization.value,
+            value = userTestimonialData.user.org,
             label = "Organisation",
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Next),
             keyboardActions = KeyboardActions(
@@ -178,69 +132,79 @@ fun TestimonialForm(
             appTextFieldType = AppTextFieldValidator(
                 AppTextFieldType.Custom(minSize = 4, maxSize = 32)
             ),
-            onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnOrgChange(it)) }
+            onValueChange = { setEvent(TestimonialEvent.OnOrgChange(it)) }
         )
 
         // Role Text Field
         AppOutlinedTextField(
             modifier = Modifier.fillMaxWidth(),
-            value = role.value,
+            value = userTestimonialData.user.role,
             label = "Role",
             keyboardOptions = KeyboardOptions(imeAction = ImeAction.Done),
             keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
             appTextFieldType = AppTextFieldValidator(
                 AppTextFieldType.Custom(minSize = 4, maxSize = 32)
             ),
-            onValueChange = { testimonialViewModel.onEvent(TestimonialEvent.OnRoleChange(it)) },
+            onValueChange = { setEvent(TestimonialEvent.OnRoleChange(it)) },
         )
 
-        // Checking which testimonial Type is selected by the user
+        // TODO :- Image and Video Input are left
         when (selectedOption) {
-
-            // Text Testimonial
-            radioButtonList[0] -> {
-                // No extra UI needed
+            TestimonialType.TEXT -> {
+                // Does Nothing
             }
 
-            // Image Testimonial
-            radioButtonList[1] -> {
-                ImageLayout(getViewModel = testimonialViewModel)
+            TestimonialType.IMAGE -> {
+                TestimonialUploadImage(
+                    media = listOf(userTestimonialData.beforeImage, userTestimonialData.afterImage),
+                    onImageSelected = { mediaType, uri ->
+                        setEvent(TestimonialEvent.OnMediaSelect(mediaType, uri))
+                    },
+                    onImageDelete = { setEvent(TestimonialEvent.OnMediaClear(it)) }
+                )
             }
 
-            // Video Testimonial
-            radioButtonList[2] -> {
-                TstGetVideo()
+            TestimonialType.VIDEO -> {
+                TestimonialUploadVideo(
+                    media = userTestimonialData.videoMedia,
+                    onVideoSelected = {
+                        setEvent(TestimonialEvent.OnMediaSelect(MediaType.Video, it))
+                    },
+                    onVideoDeleted = {
+                        setEvent(TestimonialEvent.OnMediaClear(MediaType.Video))
+                    }
+                )
             }
-
-            else -> {}
         }
+
 
         // Submit Button
         AppFilledButton(
-            textToShow = "Submit",
             modifier = Modifier.fillMaxWidth(),
-            enabled = areInputsValid && areMediaValid
+            textToShow = "Submit",
+            enabled = checkInputValidity(userTestimonialData)
         ) {
             showCustomDialogWithResult = !showCustomDialogWithResult
-            testimonialViewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
+            setEvent(TestimonialEvent.OnSubmitTestimonial)
         }
 
         if (showCustomDialogWithResult) {
-            when (events) {
+            when (testimonialSubmitApiState) {
 
                 is UiState.Loading -> AppDotTypingAnimation()
                 is UiState.Success -> {
                     OnSuccessfulSubmit(
                         onDismiss = {
                             showCustomDialogWithResult = !showCustomDialogWithResult
+                            onBack()
                         },
-                        onNavigateTstHome = onNavigateTstHome,
-                        onPositiveClick = onNavigateTstHome
+                        onNavigateTstHome = onBack,
+                        onPositiveClick = onBack
                     )
                 }
 
                 is UiState.NoInternet -> AppInternetErrorDialog {
-                    testimonialViewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
+                    setEvent(TestimonialEvent.OnSubmitTestimonial)
                 }
 
                 else -> {}

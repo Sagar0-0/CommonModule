@@ -91,7 +91,7 @@ fun TestimonialHomeScreenControl(
         ) {
 
             // This function shows the Testimonial's List
-            TestimonialListUI(testimonials = testimonials)
+            TestimonialListUI(testimonialList = testimonials)
 
             when {
 
@@ -128,17 +128,17 @@ fun TestimonialHomeScreenControl(
 
 
 @Composable
-private fun TestimonialListUI(testimonials: LazyPagingItems<Testimonial>) {
+private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
 
     // Testimonial list is being shown by this composable
     LazyColumn(
         modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        items(testimonials.itemCount) { index ->
+        items(testimonialList.itemCount) { index ->
 
             // Checking if we have a testimonial in the Current Testimonial
-            testimonials[index]?.let { item ->
+            testimonialList[index]?.let { testimonial ->
 
                 AppElevatedCard {
                     Column(
@@ -146,23 +146,23 @@ private fun TestimonialListUI(testimonials: LazyPagingItems<Testimonial>) {
                             .fillMaxWidth()
                             .padding(AppTheme.spacing.level2)
                     ) {
-                        when (TestimonialType.from(item.type)) {
+                        when (TestimonialType.from(testimonial.type)) {
 
                             // Testimonial Type is of Text Type
                             is TestimonialType.TEXT -> {
 
                                 // Title of the Testimonial
-                                TitleTexts.Level2(text = item.title)
+                                TitleTexts.Level2(text = testimonial.title)
 
                                 Spacer(modifier = Modifier.height(16.dp))
 
-                                UserTestimonialUI(userTestimonial = item.testimonial)
+                                UserTestimonialUI(userTestimonial = testimonial.testimonial)
 
                                 TestimonialArtistCard(
-                                    imageUrl = item.user.url,
-                                    name = item.user.name,
-                                    organization = item.user.org,
-                                    role = item.user.role
+                                    imageUrl = testimonial.user.url,
+                                    name = testimonial.user.name,
+                                    organization = testimonial.user.org,
+                                    role = testimonial.user.role
                                 )
                             }
 
@@ -170,22 +170,27 @@ private fun TestimonialListUI(testimonials: LazyPagingItems<Testimonial>) {
                             is TestimonialType.IMAGE -> {
 
                                 // App Horizontal Pager to show all the images of the User
-                                TestimonialCardImage(item.media)
+                                TestimonialCardImage(
+                                    listOf(
+                                        testimonial.beforeImage,
+                                        testimonial.afterImage
+                                    )
+                                )
 
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
                                 // This function makes the user testimonial in the "" Quotes
-                                UserTestimonialUI(userTestimonial = item.testimonial)
+                                UserTestimonialUI(userTestimonial = testimonial.testimonial)
                             }
 
                             // Testimonial Api which is of type video
                             is TestimonialType.VIDEO -> {
 
-                                if (item.media.isNotEmpty()) {
+                                if (testimonial.videoMedia != null) {
                                     AppSurface(modifier = Modifier.fillMaxWidth()) {
                                         TestimonialsVideoView(
                                             videoUri = getVideoUrlTools(
-                                                url = item.media.first().url
+                                                url = testimonial.videoMedia!!.url
                                             )
                                         )
                                     }
@@ -198,10 +203,10 @@ private fun TestimonialListUI(testimonials: LazyPagingItems<Testimonial>) {
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
                                 TestimonialArtistCard(
-                                    imageUrl = item.user.url,
-                                    name = item.user.name,
-                                    organization = item.user.org,
-                                    role = item.user.role
+                                    imageUrl = testimonial.user.url,
+                                    name = testimonial.user.name,
+                                    organization = testimonial.user.org,
+                                    role = testimonial.user.role
                                 )
                             }
                         }
