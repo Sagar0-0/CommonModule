@@ -1,5 +1,6 @@
 package fit.asta.health.subscription.view
 
+import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -30,7 +31,9 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.subscription.remote.model.DurationType
 import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionType
 
 /**
  * Preview function for the PlanScreen.
@@ -53,8 +56,9 @@ fun PlanScreen() {
 fun SubscriptionDurationsScreen(
     planSubscriptionPlanCategory: SubscriptionPlanCategory,
     onBack: () -> Unit,
-    onClick: (subType: String, durType: String) -> Unit
+    onClick: (subType: SubscriptionType, durType: DurationType) -> Unit
 ) {
+    Log.d("HOME", "SubscriptionDurationsScreen: $planSubscriptionPlanCategory")
     val plansList: List<PlansData> = planSubscriptionPlanCategory.durations.map { duration ->
         PlansData(
             month = duration.ttl,

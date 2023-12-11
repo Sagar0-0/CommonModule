@@ -211,6 +211,10 @@ private fun SubPlanItem(
                 if (fullScreen) {
                     onPayClick(
                         OrderRequest(
+                            amtDetails = OrderRequest.AmtDetails(
+                                amt = item.durations[selectedDurationIndex].price.toInt(),
+                                //TODO: OTHER FIELDS SHOULD BE THERE
+                            ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
                                 subType = item.subscriptionType,
                                 durType = item.durations[selectedDurationIndex].durationType

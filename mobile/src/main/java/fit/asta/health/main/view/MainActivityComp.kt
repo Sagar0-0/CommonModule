@@ -27,8 +27,6 @@ import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
-import com.google.gson.Gson
-import com.google.gson.GsonBuilder
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
@@ -58,7 +56,8 @@ import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.payment.PaymentActivity
-import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.subscription.remote.model.DurationType
+import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.ProceedToBuyScreen
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
 import fit.asta.health.subscription.vm.SubscriptionViewModel
@@ -70,30 +69,22 @@ import fit.asta.health.tools.water.nav.navigateToWater
 const val HOME_GRAPH_ROUTE = "graph_home"
 const val HOME_ROUTE = "home_route"
 const val ALL_ALARMS_ROUTE = "all_alarms"
-private const val SUBSCRIPTION_DURATION_ROUTE = "graph_duration_route/{subType}"
-private const val SUBSCRIPTION_FINAL_SCREEN = "graph_final_route/{subType}/{durType}?offer={offer}"
-fun NavController.navigateToSubscriptionDurations(subType: String) {
-    Log.d("Main", "navigateToSubscriptionDurations: subtype = $subType")
-    this.navigate(SUBSCRIPTION_DURATION_ROUTE.replace("subType", subType))
+private const val SUBSCRIPTION_DURATION_ROUTE = "graph_duration_route"
+private const val SUBSCRIPTION_FINAL_SCREEN = "graph_final_route"
+
+fun NavController.navigateToSubscriptionDurations(subType: SubscriptionType) {
+    this.navigate("$SUBSCRIPTION_DURATION_ROUTE?subType=$subType")
 }
 
-fun NavController.navigateToPaymentWithOffer(offer: Offer) {
-    val gson: Gson = GsonBuilder().create()
-    val offerJson = gson.toJson(offer).replace("/", "|")
+fun NavController.navigateToFinalPaymentScreen(offerIndex: Int) {
     this.navigate(
-        SUBSCRIPTION_FINAL_SCREEN
-            .replace("subType", offer.sub.subType)
-            .replace("durType", offer.sub.durType)
-            .removeSuffix("{offer}")
-                + "{$offerJson}"
+        "$SUBSCRIPTION_FINAL_SCREEN?offerIndex=$offerIndex"
     )
 }
 
-fun NavController.navigateToFinalPaymentScreen(subType: String, durType: String) {
+fun NavController.navigateToFinalPaymentScreen(subType: SubscriptionType, durType: DurationType) {
     this.navigate(
-        SUBSCRIPTION_FINAL_SCREEN
-            .replace("subType", subType)
-            .replace("durType", durType)
+        SUBSCRIPTION_FINAL_SCREEN + "?subType=${subType}&durType=${durType}"
     )
 }
 
@@ -106,6 +97,7 @@ fun NavController.navigateToHome(navOptions: NavOptions? = null) {
         this.navigate(HOME_GRAPH_ROUTE, navOptions)
     }
 }
+
 
 fun NavGraphBuilder.homeScreen(
     navController: NavController,
@@ -233,8 +225,8 @@ fun NavGraphBuilder.homeScreen(
                             navController.navigateToSubscriptionDurations(event.subType)
                         }
 
-                        is HomeScreenUiEvent.NavigateWithOffer -> {
-                            navController.navigateToPaymentWithOffer(event.offer)
+                        is HomeScreenUiEvent.NavigateWithOfferIndex -> {
+                            navController.navigateToFinalPaymentScreen(event.offerIndex)
                         }
                     }
                 },
@@ -350,28 +342,37 @@ fun NavGraphBuilder.homeScreen(
                 }
             )
         }
-        composable(SUBSCRIPTION_DURATION_ROUTE) {
+
+        composable(
+            route = "$SUBSCRIPTION_DURATION_ROUTE?subType={subType}",
+            arguments = listOf(
+                navArgument("subType") {
+                    type = NavType.StringType
+                },
+            )
+        ) {
             val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
             val subscriptionResponse =
                 subscriptionViewModel.state.collectAsStateWithLifecycle().value
+
             val subType = it.arguments?.getString("subType")!!
+
             when (subscriptionResponse) {
                 is UiState.Success -> {
                     val category =
-                        subscriptionResponse.data.subscriptionPlans.categories.firstOrNull { cat ->
+                        subscriptionResponse.data.subscriptionPlans.categories.first { cat ->
                             cat.subscriptionType == subType
                         }
-                    category?.let {
-                        SubscriptionDurationsScreen(
-                            planSubscriptionPlanCategory = category,
-                            onBack = { navController.popBackStack() },
-                            onClick = { subType, durType ->
-                                navController.navigateToFinalPaymentScreen(subType, durType)
-                            }
-                        )
-                    }
+
+                    SubscriptionDurationsScreen(
+                        planSubscriptionPlanCategory = category,
+                        onBack = navController::popBackStack,
+                        onClick = { _, durType ->
+                            navController.navigateToFinalPaymentScreen(subType, durType)
+                        }
+                    )
                 }
 
                 else -> {
@@ -390,9 +391,19 @@ fun NavGraphBuilder.homeScreen(
         }
 
         composable(
-            route = SUBSCRIPTION_FINAL_SCREEN,
+            route = "$SUBSCRIPTION_FINAL_SCREEN?subType={subType}&durType={durType}&offerIndex={offerIndex}",
             arguments = listOf(
-                navArgument("offer") {
+                navArgument("offerIndex") {
+                    defaultValue = null
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("subType") {
+                    defaultValue = null
+                    type = NavType.StringType
+                    nullable = true
+                },
+                navArgument("durType") {
                     defaultValue = null
                     type = NavType.StringType
                     nullable = true
@@ -401,29 +412,31 @@ fun NavGraphBuilder.homeScreen(
         ) {
             val context = LocalContext.current
 
-            val subType = it.arguments?.getString("subType")!!
-            val durType = it.arguments?.getString("durType")!!
-            val offerJson = it.arguments?.getString("offer")?.replace("|", "/")
-            Log.d("Main", "homeScreen: offerJson: $offerJson")
-            val gson = GsonBuilder().create()
-            val offer = offerJson?.let {
-                gson.fromJson(offerJson, Offer::class.java)
-            }
+            var subType = it.arguments?.getString("subType")
+            var durType = it.arguments?.getString("durType")
+            val offerIndex = it.arguments?.getString("offerIndex")
+
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
-            val subscriptionResponse =
-                subscriptionViewModel.state.collectAsStateWithLifecycle().value
-            when (subscriptionResponse) {
+
+            when (val subscriptionResponse =
+                subscriptionViewModel.state.collectAsStateWithLifecycle().value) {
                 is UiState.Success -> {
+                    if (offerIndex != null) {
+                        durType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.durType
+                        subType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.subType
+                    }
                     val category =
                         subscriptionResponse.data.subscriptionPlans.categories.firstOrNull { cat ->
                             cat.subscriptionType == subType
                         }
                     category?.let {
                         ProceedToBuyScreen(
-                            offer = offer,
+                            offer = offerIndex?.let {
+                                subscriptionResponse.data.offers[offerIndex.toInt()]
+                            },
                             subscriptionPlanCategory = category,
-                            durationType = durType,
+                            durationType = durType!!,
                             onBack = { navController.popBackStack() },
                             onProceedToBuy = { order ->
                                 PaymentActivity.launch(context, order) {

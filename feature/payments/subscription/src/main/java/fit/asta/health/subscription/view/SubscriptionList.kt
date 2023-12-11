@@ -28,6 +28,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionType
 
 
 /**
@@ -60,10 +61,11 @@ private fun SubscriptionListPreview() {
 /**
  * Composable function to render the list of subscriptions using LazyColumn.
  */
+
 @Composable
 fun SubscriptionList(
     subscriptionPlans: List<SubscriptionPlanCategory>,
-    onClick: (subType: String) -> Unit
+    onClick: (subType: SubscriptionType) -> Unit
 ) {
     val subPlans = subscriptionPlans.map {
         SubscriptionData(
@@ -98,7 +100,10 @@ fun SubscriptionList(
  * @param subscriptionData Data class containing information about a subscription.
  */
 @Composable
-fun SubscriptionPassCard(subscriptionData: SubscriptionData, onClick: (subType: String) -> Unit) {
+fun SubscriptionPassCard(
+    subscriptionData: SubscriptionData,
+    onClick: (subType: SubscriptionType) -> Unit
+) {
     // Use AppCard to create a card with a click listener
     AppCard(
         modifier = Modifier.fillMaxWidth(),

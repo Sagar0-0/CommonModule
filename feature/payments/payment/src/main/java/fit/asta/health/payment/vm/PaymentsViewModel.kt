@@ -38,7 +38,7 @@ class PaymentsViewModel
         _orderResponseState.value = paymentRepo.createOrder(
             data.copy(
                 uId = uid,
-                country = "india"
+                country = "IND"
             )
         ).toUiState()
     }

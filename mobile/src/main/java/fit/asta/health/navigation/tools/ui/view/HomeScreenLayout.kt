@@ -39,8 +39,8 @@ import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.referral.view.NewReferralDialogContent
-import fit.asta.health.subscription.remote.model.Offer
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionList
 import fit.asta.health.tools.sleep.SleepToolActivity
@@ -81,7 +81,7 @@ fun HomeScreenLayout(
                         OfferBanner(
                             offer = it.offers[page]
                         ) {
-                            onEvent(HomeScreenUiEvent.NavigateWithOffer(it))
+                            onEvent(HomeScreenUiEvent.NavigateWithOfferIndex(page))
                         }
                     }
 
@@ -275,6 +275,6 @@ fun HomeScreenLayout(
 }
 
 sealed interface HomeScreenUiEvent {
-    data class NavigateToSubscriptionDurations(val subType: String) : HomeScreenUiEvent
-    data class NavigateWithOffer(val offer: Offer) : HomeScreenUiEvent
+    data class NavigateToSubscriptionDurations(val subType: SubscriptionType) : HomeScreenUiEvent
+    data class NavigateWithOfferIndex(val offerIndex: Int) : HomeScreenUiEvent
 }

@@ -19,6 +19,10 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -72,6 +76,16 @@ fun ProceedToBuyScreen(
     onBack: () -> Unit,
     onProceedToBuy: (OrderRequest) -> Unit
 ) {
+    val discountCode by rememberSaveable {
+        mutableStateOf("")
+    }
+    val walletPoints by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+    val walletMoney by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+
     // AppSurface is a custom composable providing a themed surface for the content.
     AppSurface(
         modifier = Modifier.fillMaxSize()
@@ -134,6 +148,16 @@ fun ProceedToBuyScreen(
                 onClick = {
                     onProceedToBuy(
                         OrderRequest(
+                            amtDetails = OrderRequest.AmtDetails(
+                                amt = subscriptionPlanCategory.durations.first {
+                                    it.durationType == durationType
+                                }.price.toInt() - (offer?.offer
+                                    ?: 0),//TODO: WE SHOULD PASS THE FINAL AMOUNT
+                                discountCode = discountCode,
+                                walletMoney = walletMoney,
+                                walletPoints = walletPoints,
+                                offerCode = offer?.code ?: ""
+                            ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
                                 subType = subscriptionPlanCategory.subscriptionType,
                                 durType = durationType
