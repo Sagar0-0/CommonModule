@@ -67,6 +67,7 @@ fun SubscriptionDurationsScreen(
             emi = duration.emi
         )
     }
+
     AppScaffold(
         topBar = {
             AppTopBar(
@@ -74,9 +75,10 @@ fun SubscriptionDurationsScreen(
                 onBack = onBack
             )
         }
-    ) {
+    ) { padd ->
         LazyColumn(
             modifier = Modifier
+                .padding(padd)
                 .fillMaxSize()
                 .padding(AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)

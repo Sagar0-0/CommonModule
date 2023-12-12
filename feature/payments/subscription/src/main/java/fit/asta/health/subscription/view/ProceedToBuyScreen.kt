@@ -85,6 +85,9 @@ fun ProceedToBuyScreen(
     val walletMoney by rememberSaveable {
         mutableIntStateOf(0)
     }
+    val discountMoney by rememberSaveable {
+        mutableIntStateOf(0)
+    }
 
     // AppSurface is a custom composable providing a themed surface for the content.
     AppSurface(
@@ -151,8 +154,9 @@ fun ProceedToBuyScreen(
                             amtDetails = OrderRequest.AmtDetails(
                                 amt = subscriptionPlanCategory.durations.first {
                                     it.durationType == durationType
-                                }.price.toInt() - (offer?.offer
-                                    ?: 0),//TODO: WE SHOULD PASS THE FINAL AMOUNT
+                                }.price.toInt()
+                                        - (offer?.offer
+                                    ?: 0) - walletPoints - walletMoney - discountMoney,
                                 discountCode = discountCode,
                                 walletMoney = walletMoney,
                                 walletPoints = walletPoints,
