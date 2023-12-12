@@ -1,6 +1,5 @@
 package fit.asta.health.subscription.view
 
-import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -58,7 +57,6 @@ fun SubscriptionDurationsScreen(
     onBack: () -> Unit,
     onClick: (subType: SubscriptionType, durType: DurationType) -> Unit
 ) {
-    Log.d("HOME", "SubscriptionDurationsScreen: $planSubscriptionPlanCategory")
     val plansList: List<PlansData> = planSubscriptionPlanCategory.durations.map { duration ->
         PlansData(
             month = duration.ttl,
@@ -71,9 +69,10 @@ fun SubscriptionDurationsScreen(
     }
     AppScaffold(
         topBar = {
-            AppTopBar(title = "Explore ${planSubscriptionPlanCategory.title} plans") {
-                onBack()
-            }
+            AppTopBar(
+                title = "Explore ${planSubscriptionPlanCategory.title} plans",
+                onBack = onBack
+            )
         }
     ) {
         LazyColumn(
