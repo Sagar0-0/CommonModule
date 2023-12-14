@@ -50,6 +50,7 @@ import fit.asta.health.feature.walking.nav.navigateToStepsCounter
 import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
+import fit.asta.health.main.SubscriptionViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
@@ -60,7 +61,6 @@ import fit.asta.health.subscription.remote.model.DurationType
 import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.ProceedToBuyScreen
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
-import fit.asta.health.subscription.vm.SubscriptionViewModel
 import fit.asta.health.tools.breathing.nav.navigateToBreathing
 import fit.asta.health.tools.exercise.nav.navigateToExercise
 import fit.asta.health.tools.sunlight.nav.navigateToSunlight
@@ -121,7 +121,7 @@ fun NavGraphBuilder.homeScreen(
             )
 
             val subscriptionResponse =
-                subscriptionViewModel.state.collectAsStateWithLifecycle().value
+                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value
             Log.d("Main", "homeScreen: subscriptionResponse $subscriptionResponse")
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
@@ -355,7 +355,7 @@ fun NavGraphBuilder.homeScreen(
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
             val subscriptionResponse =
-                subscriptionViewModel.state.collectAsStateWithLifecycle().value
+                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value
 
             val subType = it.arguments?.getString("subType")!!
 
@@ -419,8 +419,10 @@ fun NavGraphBuilder.homeScreen(
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
 
+            val walletResponseState by subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle()
+
             when (val subscriptionResponse =
-                subscriptionViewModel.state.collectAsStateWithLifecycle().value) {
+                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value) {
                 is UiState.Success -> {
                     if (offerIndex != null) {
                         durType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.durType
@@ -435,6 +437,7 @@ fun NavGraphBuilder.homeScreen(
                             offer = offerIndex?.let {
                                 subscriptionResponse.data.offers[offerIndex.toInt()]
                             },
+                            walletData = (walletResponseState as? UiState.Success)?.data?.walletData,
                             subscriptionPlanCategory = category,
                             durationType = durType!!,
                             onBack = { navController.popBackStack() },

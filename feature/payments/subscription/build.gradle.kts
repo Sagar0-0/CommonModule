@@ -44,4 +44,5 @@ dependencies {
     implementation(libs.androidx.media3.ui)
     implementation(libs.androidx.media3.common)
     implementation(libs.androidx.media3.session)
+    implementation(project(mapOf("path" to ":data:payments:wallet")))
 }

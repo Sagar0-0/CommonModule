@@ -22,7 +22,9 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
@@ -32,6 +34,7 @@ import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -44,7 +47,9 @@ import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderRequestType
 import fit.asta.health.resources.drawables.R
 import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.subscription.remote.model.OfferUnitType
 import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.wallet.remote.model.WalletResponse
 
 /**
  * Composable function for the Buy Plan Screen. It sets up the UI using the AppTheme and a Box layout.
@@ -59,7 +64,7 @@ private fun BuyPlanScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProceedToBuyScreen(SubscriptionPlanCategory(), "0", null, {}, {})
+            ProceedToBuyScreen(SubscriptionPlanCategory(), "0", null, null, {}, {})
         }
     }
 }
@@ -73,20 +78,50 @@ fun ProceedToBuyScreen(
     subscriptionPlanCategory: SubscriptionPlanCategory,
     durationType: String,
     offer: Offer? = null,
+    walletData: WalletResponse.WalletData? = null,
     onBack: () -> Unit,
     onProceedToBuy: (OrderRequest) -> Unit
 ) {
-    val discountCode by rememberSaveable {
+    val totalPrice = remember {
+        (subscriptionPlanCategory.durations.first {
+            it.durationType == durationType
+        }.price.toInt())
+    }
+
+    var discountCode by rememberSaveable {
         mutableStateOf("")
     }
-    val walletPoints by rememberSaveable {
+
+    var walletPoints by rememberSaveable {
         mutableIntStateOf(0)
     }
-    val walletMoney by rememberSaveable {
+
+    var walletMoney by rememberSaveable {
         mutableIntStateOf(0)
     }
-    val discountMoney by rememberSaveable {
+
+    var discountMoney by rememberSaveable {
         mutableIntStateOf(0)
+    }
+
+    val offerDiscount = remember {
+        if (offer == null) {
+            0
+        } else {
+            if (offer.unit == OfferUnitType.Percentage.type) {
+                totalPrice * offer.discount / 100
+            } else {
+                if (totalPrice < offer.discount || offer.discount < 0) {
+                    0
+                } else {
+                    totalPrice - offer.discount
+                }
+            }
+        }
+    }
+
+    val finalPayableAmount = remember {
+        totalPrice - offerDiscount - walletPoints - walletMoney - discountMoney
     }
 
     // AppSurface is a custom composable providing a themed surface for the content.
@@ -100,6 +135,15 @@ fun ProceedToBuyScreen(
                 .padding(bottom = AppTheme.spacing.level8),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
         ) {
+            // Top bar with a back button.
+            Box(
+                contentAlignment = Alignment.TopStart,
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                AppTopBar(backIcon = Icons.Filled.ArrowBack, onBack = onBack)
+            }
+
             // Image and various card composable are arranged vertically within a Box layout.
             Box {
                 // AppLocalImage is a custom composable to load and display local images.
@@ -130,33 +174,36 @@ fun ProceedToBuyScreen(
                             EMISection(it)
                         }
                         HowItWorksSection(subscriptionPlanCategory.feature)
+                        walletData?.let {
+                            WalletApplyingSection(walletData, finalPayableAmount) { points, money ->
+                                walletPoints = points
+                                walletMoney = money
+                            }
+                        }
+                        DiscountSection(
+                            subscriptionPlanCategory,
+                            finalPayableAmount
+                        ) { discountCodeApplied, discountGot ->
+                            discountMoney = discountGot
+                            discountCode = discountCodeApplied
+                        }
                     }
-                }
-
-                // Top bar with a back button.
-                Box(
-                    contentAlignment = Alignment.TopStart,
-                    modifier = Modifier
-                        .fillMaxWidth()
-                ) {
-                    AppTopBar(backIcon = Icons.Filled.ArrowBack, onBack = onBack)
                 }
             }
         }
 
         // Bottom button in a separate Box at the bottom of the screen.
-        Box(contentAlignment = Alignment.BottomCenter, modifier = Modifier.fillMaxSize()) {
+        Box(
+            modifier = Modifier.fillMaxSize(),
+            contentAlignment = Alignment.BottomCenter
+        ) {
             AppFilledButton(
                 textToShow = "Continue to Buy",
                 onClick = {
                     onProceedToBuy(
                         OrderRequest(
                             amtDetails = OrderRequest.AmtDetails(
-                                amt = subscriptionPlanCategory.durations.first {
-                                    it.durationType == durationType
-                                }.price.toInt()
-                                        - (offer?.offer
-                                    ?: 0) - walletPoints - walletMoney - discountMoney,
+                                amt = finalPayableAmount,
                                 discountCode = discountCode,
                                 walletMoney = walletMoney,
                                 walletPoints = walletPoints,
@@ -179,6 +226,76 @@ fun ProceedToBuyScreen(
             )
         }
     }
+}
+
+@Composable
+fun DiscountSection(
+    subscriptionPlanCategory: SubscriptionPlanCategory,
+    finalPayableAmount: Int,
+    onChange: (discountCode: String, discountMoney: Int) -> Unit
+) {
+
+}
+
+@Composable
+fun WalletApplyingSection(
+    walletData: WalletResponse.WalletData,
+    finalPayableAmount: Int,
+    onApplyWallet: (pointsApplied: Int, moneyApplied: Int) -> Unit
+) {
+    var pointsApplied by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+    var moneyApplied by rememberSaveable {
+        mutableIntStateOf(0)
+    }
+
+    val pointsChecked by rememberSaveable {
+        mutableStateOf(false)
+    }
+
+    val moneyChecked by rememberSaveable {
+        mutableStateOf(false)
+    }
+    Column {
+        Row {
+            TitleTexts.Level2(text = "Wallet Points: ${walletData.points - pointsApplied}")
+            if (walletData.points > 0) {
+                AppCheckBoxButton(checked = pointsChecked) { checked ->
+                    pointsApplied = if (checked) {
+                        if (finalPayableAmount > walletData.points) {
+                            walletData.points
+                        } else {
+                            finalPayableAmount
+                        }
+                    } else {
+                        0
+
+                    }
+                    onApplyWallet(0, moneyApplied)
+                }
+            }
+        }
+
+        Row {
+            TitleTexts.Level2(text = "Wallet Money: ${walletData.money - moneyApplied}")
+            if (walletData.money > 0) {
+                AppCheckBoxButton(checked = moneyChecked) { checked ->
+                    moneyApplied = if (checked) {
+                        if (finalPayableAmount > walletData.money) {
+                            walletData.money
+                        } else {
+                            finalPayableAmount
+                        }
+                    } else {
+                        0
+                    }
+                    onApplyWallet(pointsApplied, moneyApplied)
+                }
+            }
+        }
+    }
+
 }
 
 /**
