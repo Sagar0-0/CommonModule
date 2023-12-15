@@ -43,6 +43,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionList
+import fit.asta.health.subscription.view.UserSubscribedPlanSection
 import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
@@ -66,9 +67,9 @@ fun HomeScreenLayout(
         count = columns,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        subscriptionResponse?.let {
+        if (subscriptionResponse != null && subscriptionResponse.userSubscribedPlan == null) {
             item(span = { GridItemSpan(columns) }) {
-                val pagerState = rememberPagerState { it.offers.size }
+                val pagerState = rememberPagerState { subscriptionResponse.offers.size }
                 Box {
                     AppHorizontalPager(
                         modifier = Modifier.padding(AppTheme.spacing.level2),
@@ -79,7 +80,7 @@ fun HomeScreenLayout(
                         userScrollEnabled = true
                     ) { page ->
                         OfferBanner(
-                            offer = it.offers[page]
+                            offer = subscriptionResponse.offers[page]
                         ) {
                             onEvent(HomeScreenUiEvent.NavigateWithOfferIndex(page))
                         }
@@ -113,13 +114,19 @@ fun HomeScreenLayout(
             }
         }
 
-        subscriptionResponse?.let {
+        if (subscriptionResponse != null && subscriptionResponse.userSubscribedPlan == null) {
             item(span = { GridItemSpan(columns) }) {
                 SubscriptionList(
-                    subscriptionPlans = it.subscriptionPlans.categories
+                    subscriptionPlans = subscriptionResponse.subscriptionPlans.categories
                 ) {
                     onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
                 }
+            }
+        }
+
+        if (subscriptionResponse?.userSubscribedPlan != null) {
+            item(span = { GridItemSpan(columns) }) {
+                UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
             }
         }
 

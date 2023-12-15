@@ -212,7 +212,7 @@ private fun SubPlanItem(
                     onPayClick(
                         OrderRequest(
                             amtDetails = OrderRequest.AmtDetails(
-                                amt = item.durations[selectedDurationIndex].price.toInt(),
+                                amt = item.durations[selectedDurationIndex].price.toDouble(),
                                 //TODO: OTHER FIELDS SHOULD BE THERE
                             ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(

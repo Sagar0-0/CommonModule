@@ -104,25 +104,25 @@ fun ProceedToBuyScreen(
         mutableIntStateOf(0)
     }
 
-    val offerDiscount = remember {
+    val offerDiscount: Double = remember {
         if (offer == null) {
-            0
+            0.0
         } else {
             if (offer.unit == OfferUnitType.Percentage.type) {
-                totalPrice * offer.discount / 100
+                (totalPrice * offer.discount).toDouble() / 100
             } else {
                 if (totalPrice < offer.discount || offer.discount < 0) {
-                    0
+                    0.0
                 } else {
-                    totalPrice - offer.discount
+                    (totalPrice - offer.discount).toDouble()
                 }
             }
         }
     }
 
-    val finalPayableAmount = remember {
+    val finalPayableAmount: Double = remember {
         totalPrice - offerDiscount - walletPoints - walletMoney - discountMoney
-    }
+    }.toDouble()
 
     // AppSurface is a custom composable providing a themed surface for the content.
     AppSurface(
@@ -175,14 +175,17 @@ fun ProceedToBuyScreen(
                         }
                         HowItWorksSection(subscriptionPlanCategory.feature)
                         walletData?.let {
-                            WalletApplyingSection(walletData, finalPayableAmount) { points, money ->
+                            WalletApplyingSection(
+                                walletData = walletData,
+                                finalPayableAmount = finalPayableAmount
+                            ) { points, money ->
                                 walletPoints = points
                                 walletMoney = money
                             }
                         }
                         DiscountSection(
-                            subscriptionPlanCategory,
-                            finalPayableAmount
+                            subscriptionPlanCategory = subscriptionPlanCategory,
+                            finalPayableAmount = finalPayableAmount
                         ) { discountCodeApplied, discountGot ->
                             discountMoney = discountGot
                             discountCode = discountCodeApplied
@@ -231,7 +234,7 @@ fun ProceedToBuyScreen(
 @Composable
 fun DiscountSection(
     subscriptionPlanCategory: SubscriptionPlanCategory,
-    finalPayableAmount: Int,
+    finalPayableAmount: Double,
     onChange: (discountCode: String, discountMoney: Int) -> Unit
 ) {
 
@@ -240,7 +243,7 @@ fun DiscountSection(
 @Composable
 fun WalletApplyingSection(
     walletData: WalletResponse.WalletData,
-    finalPayableAmount: Int,
+    finalPayableAmount: Double,
     onApplyWallet: (pointsApplied: Int, moneyApplied: Int) -> Unit
 ) {
     var pointsApplied by rememberSaveable {
@@ -266,7 +269,7 @@ fun WalletApplyingSection(
                         if (finalPayableAmount > walletData.points) {
                             walletData.points
                         } else {
-                            finalPayableAmount
+                            finalPayableAmount.toInt()
                         }
                     } else {
                         0
@@ -285,7 +288,7 @@ fun WalletApplyingSection(
                         if (finalPayableAmount > walletData.money) {
                             walletData.money
                         } else {
-                            finalPayableAmount
+                            finalPayableAmount.toInt()
                         }
                     } else {
                         0

@@ -55,7 +55,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
             this.onSuccess = onSuccess
             val orderRequest = OrderRequest(
                 amtDetails = OrderRequest.AmtDetails(
-                    amt = amount.toInt()
+                    amt = amount.toDouble()
                 ),
                 type = OrderRequestType.AddInWallet.code
             )

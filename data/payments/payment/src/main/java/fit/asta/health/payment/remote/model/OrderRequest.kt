@@ -23,7 +23,7 @@ data class OrderRequest(
     @Parcelize
     data class AmtDetails(
         @SerializedName("amt")
-        val amt: Int = 0,
+        val amt: Double = 0.0,
         @SerializedName("discountCode")
         val discountCode: String = "",
         @SerializedName("offerCode")
