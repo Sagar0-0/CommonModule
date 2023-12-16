@@ -58,7 +58,8 @@ internal fun SubPlansPager(
     val fullScreen = rememberSaveable { mutableStateOf(false) }
     val transition = updateTransition(targetState = fullScreen.value, label = "")
 
-    val pagerState = rememberPagerState(pageCount = { subscriptionPlans.categories.size })
+    val pagerState =
+        rememberPagerState(pageCount = { subscriptionPlans.subscriptionPlanTypes.size })
     val pageSpacing by transition.animateDp(label = "") {
         if (!it) AppTheme.spacing.level1 else 0.dp
     }
@@ -80,7 +81,7 @@ internal fun SubPlansPager(
             fullScreen = fullScreen.value,
             onFullScreenChange = { fullScreen.value = it },
             transition = transition,
-            item = subscriptionPlans.categories[page],
+            item = subscriptionPlans.subscriptionPlanTypes[page],
             modifier = Modifier
                 .carouselTransition(page, pagerState),
             onPayClick = onClick
@@ -90,7 +91,7 @@ internal fun SubPlansPager(
 
 @Composable
 private fun SubPlanItem(
-    item: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory,
+    item: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType,
     modifier: Modifier,
     fullScreen: Boolean,
     onFullScreenChange: (Boolean) -> Unit,
@@ -126,7 +127,7 @@ private fun SubPlanItem(
         if (selectedDurationIndex == -1) {
             "Select a plan duration"
         } else {
-            "Join ${item.title} plan for ${item.durations[selectedDurationIndex].ttl}"
+            "Join ${item.planName} plan for ${item.subscriptionDurationPlans[selectedDurationIndex].durationTitle}"
         }
     } else {
         "Get Started"
@@ -162,14 +163,14 @@ private fun SubPlanItem(
                     Column {
                         HeadingTexts.Level1(
                             modifier = Modifier.align(Alignment.CenterHorizontally),
-                            text = item.title
+                            text = item.planName
                         )
 
                     }
                 } else {
                     HeadingTexts.Level2(
                         modifier = Modifier.align(Alignment.CenterHorizontally),
-                        text = item.title
+                        text = item.planName
                     )
                 }
             }
@@ -182,7 +183,7 @@ private fun SubPlanItem(
                         .fillMaxWidth()
                         .horizontalScroll(rememberScrollState())
                 ) {
-                    item.durations.forEachIndexed { idx, duration ->
+                    item.subscriptionDurationPlans.forEachIndexed { idx, duration ->
                         AppCard(
                             modifier = Modifier
                                 .padding(AppTheme.spacing.level1)
@@ -192,8 +193,8 @@ private fun SubPlanItem(
                                 },
                         ) {
                             Column(modifier = Modifier.padding(AppTheme.spacing.level1)) {
-                                TitleTexts.Level2(text = duration.ttl)
-                                TitleTexts.Level2(text = duration.price)
+                                TitleTexts.Level2(text = duration.durationTitle)
+                                TitleTexts.Level2(text = duration.priceMRP)
                             }
 
                         }
@@ -212,12 +213,12 @@ private fun SubPlanItem(
                     onPayClick(
                         OrderRequest(
                             amtDetails = OrderRequest.AmtDetails(
-                                amt = item.durations[selectedDurationIndex].price.toDouble(),
+                                amt = item.subscriptionDurationPlans[selectedDurationIndex].priceMRP.toDouble(),
                                 //TODO: OTHER FIELDS SHOULD BE THERE
                             ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
                                 subType = item.subscriptionType,
-                                durType = item.durations[selectedDurationIndex].durationType
+                                durType = item.subscriptionDurationPlans[selectedDurationIndex].durationType
                             ),
                             type = OrderRequestType.Subscription.code
                         )

@@ -17,6 +17,8 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
+import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -50,7 +52,7 @@ fun SubscriptionPlansUi(
             is UiState.Success -> {
                 Column(modifier = Modifier.padding(paddingValues)) {
                     if (state.data.userSubscribedPlan != null) {
-                        if (state.data.userSubscribedPlan!!.sts) {
+                        if (state.data.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.ACTIVE) {
                             ShowUserActivePlan(state.data)
                         } else {
                             ShowUserExpiredPlan(state.data)
@@ -88,7 +90,7 @@ fun PendingPlanUI(data: SubscriptionResponse) {
 
 @Composable
 private fun ShowUserActivePlan(data: SubscriptionResponse) {
-    TitleTexts.Level2(text = data.subscriptionPlans.categories[data.userSubscribedPlan!!.type.toInt() - 1].title)
+    TitleTexts.Level2(text = data.subscriptionPlans.subscriptionPlanTypes[data.userSubscribedPlan!!.type.toInt() - 1].planName)
 }
 
 

@@ -117,7 +117,7 @@ fun HomeScreenLayout(
         if (subscriptionResponse != null && subscriptionResponse.userSubscribedPlan == null) {
             item(span = { GridItemSpan(columns) }) {
                 SubscriptionList(
-                    subscriptionPlans = subscriptionResponse.subscriptionPlans.categories
+                    subscriptionPlans = subscriptionResponse.subscriptionPlans.subscriptionPlanTypes
                 ) {
                     onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
                 }

@@ -362,12 +362,12 @@ fun NavGraphBuilder.homeScreen(
             when (subscriptionResponse) {
                 is UiState.Success -> {
                     val category =
-                        subscriptionResponse.data.subscriptionPlans.categories.first { cat ->
+                        subscriptionResponse.data.subscriptionPlans.subscriptionPlanTypes.first { cat ->
                             cat.subscriptionType == subType
                         }
 
                     SubscriptionDurationsScreen(
-                        planSubscriptionPlanCategory = category,
+                        planSubscriptionPlanType = category,
                         onBack = navController::popBackStack,
                         onClick = { _, durType ->
                             navController.navigateToFinalPaymentScreen(subType, durType)
@@ -429,7 +429,7 @@ fun NavGraphBuilder.homeScreen(
                         subType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.subType
                     }
                     val category =
-                        subscriptionResponse.data.subscriptionPlans.categories.firstOrNull { cat ->
+                        subscriptionResponse.data.subscriptionPlans.subscriptionPlanTypes.firstOrNull { cat ->
                             cat.subscriptionType == subType
                         }
                     category?.let {
@@ -438,7 +438,7 @@ fun NavGraphBuilder.homeScreen(
                                 subscriptionResponse.data.offers[offerIndex.toInt()]
                             },
                             walletData = (walletResponseState as? UiState.Success)?.data?.walletData,
-                            subscriptionPlanCategory = category,
+                            subscriptionPlanType = category,
                             durationType = durType!!,
                             onBack = { navController.popBackStack() },
                             onProceedToBuy = { order ->

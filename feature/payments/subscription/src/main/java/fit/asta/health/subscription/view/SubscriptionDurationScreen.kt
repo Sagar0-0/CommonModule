@@ -31,7 +31,7 @@ import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.subscription.remote.model.DurationType
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
 import fit.asta.health.subscription.remote.model.SubscriptionType
 
 /**
@@ -41,7 +41,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionType
 @Composable
 fun PlanScreen() {
     AppTheme {
-        SubscriptionDurationsScreen(SubscriptionPlanCategory(), {}) { _, _ ->
+        SubscriptionDurationsScreen(SubscriptionPlanType(), {}) { _, _ ->
 
         }
     }
@@ -53,25 +53,26 @@ fun PlanScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubscriptionDurationsScreen(
-    planSubscriptionPlanCategory: SubscriptionPlanCategory,
+    planSubscriptionPlanType: SubscriptionPlanType,
     onBack: () -> Unit,
     onClick: (subType: SubscriptionType, durType: DurationType) -> Unit
 ) {
-    val plansList: List<PlansData> = planSubscriptionPlanCategory.durations.map { duration ->
-        PlansData(
-            month = duration.ttl,
-            discount = duration.discount,
-            price = duration.price,
-            tax = duration.tax,
-            desc = duration.dsc,
-            emi = duration.emi
-        )
-    }
+    val plansList: List<PlansData> =
+        planSubscriptionPlanType.subscriptionDurationPlans.map { duration ->
+            PlansData(
+                month = duration.durationTitle,
+                discount = duration.discountAmount,
+                price = duration.priceMRP,
+                tax = duration.tax,
+                desc = duration.dsc,
+                emi = duration.emi
+            )
+        }
 
     AppScaffold(
         topBar = {
             AppTopBar(
-                title = "Explore ${planSubscriptionPlanCategory.title} plans",
+                title = "Explore ${planSubscriptionPlanType.planName} plans",
                 onBack = onBack
             )
         }
@@ -87,8 +88,8 @@ fun SubscriptionDurationsScreen(
                 // Display each plan as a card
                 PlansCard(plansData = plansData) {
                     onClick(
-                        planSubscriptionPlanCategory.subscriptionType,
-                        planSubscriptionPlanCategory.durations[idx].durationType
+                        planSubscriptionPlanType.subscriptionType,
+                        planSubscriptionPlanType.subscriptionDurationPlans[idx].durationType
                     )
                 }
             }
@@ -244,7 +245,7 @@ private fun DisplayPlanDescription(plansData: PlansData) {
 /**
  * Data class representing the details of a subscription plan.
  *
- * @property month Duration of the plan in months.
+ * @property month SubscriptionDurationPlan of the plan in months.
  * @property discount Discount information for the plan.
  * @property price Price of the plan.
  * @property tax Tax details for the plan.

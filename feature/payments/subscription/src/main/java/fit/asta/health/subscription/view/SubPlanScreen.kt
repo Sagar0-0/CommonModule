@@ -46,7 +46,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionResponse
 private fun SubPlanScreenPreview() {
     AppTheme {
         SubPlanContent(
-            subPlanSubscriptionPlanCategory = SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory(),
+            subPlanSubscriptionPlanType = SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType(),
             0
         ) { _, _ ->
 
@@ -59,7 +59,7 @@ private fun SubPlanScreenPreview() {
  */
 @Composable
 fun SubPlanContent(
-    subPlanSubscriptionPlanCategory: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory,
+    subPlanSubscriptionPlanType: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType,
     durIdx: Int,
     onClick: (subType: String, durType: String) -> Unit
 ) {
@@ -89,8 +89,8 @@ fun SubPlanContent(
                 // Buy Now Button
                 BuyNowButton {
                     onClick(
-                        subPlanSubscriptionPlanCategory.subscriptionType,
-                        subPlanSubscriptionPlanCategory.durations[durIdx].durationType
+                        subPlanSubscriptionPlanType.subscriptionType,
+                        subPlanSubscriptionPlanType.subscriptionDurationPlans[durIdx].durationType
                     )
                 }
             }
@@ -133,7 +133,7 @@ fun SubPlanDetails() {
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2)
         ) {
-            // Plan Duration
+            // Plan SubscriptionDurationPlan
             LargeTexts.Level2(text = "12 MONTH")
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             AppDivider()

@@ -48,7 +48,8 @@ import fit.asta.health.payment.remote.model.OrderRequestType
 import fit.asta.health.resources.drawables.R
 import fit.asta.health.subscription.remote.model.Offer
 import fit.asta.health.subscription.remote.model.OfferUnitType
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
+import fit.asta.health.subscription.remote.model.getOfferUnitType
 import fit.asta.health.wallet.remote.model.WalletResponse
 
 /**
@@ -64,7 +65,7 @@ private fun BuyPlanScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProceedToBuyScreen(SubscriptionPlanCategory(), "0", null, null, {}, {})
+            ProceedToBuyScreen(SubscriptionPlanType(), "0", null, null, {}, {})
         }
     }
 }
@@ -75,7 +76,7 @@ private fun BuyPlanScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun ProceedToBuyScreen(
-    subscriptionPlanCategory: SubscriptionPlanCategory,
+    subscriptionPlanType: SubscriptionPlanType,
     durationType: String,
     offer: Offer? = null,
     walletData: WalletResponse.WalletData? = null,
@@ -83,9 +84,9 @@ fun ProceedToBuyScreen(
     onProceedToBuy: (OrderRequest) -> Unit
 ) {
     val totalPrice = remember {
-        (subscriptionPlanCategory.durations.first {
+        (subscriptionPlanType.subscriptionDurationPlans.first {
             it.durationType == durationType
-        }.price.toInt())
+        }.priceMRP.toInt())
     }
 
     var discountCode by rememberSaveable {
@@ -108,13 +109,17 @@ fun ProceedToBuyScreen(
         if (offer == null) {
             0.0
         } else {
-            if (offer.unit == OfferUnitType.Percentage.type) {
-                (totalPrice * offer.discount).toDouble() / 100
-            } else {
-                if (totalPrice < offer.discount || offer.discount < 0) {
-                    0.0
-                } else {
-                    (totalPrice - offer.discount).toDouble()
+            when (offer.unit.getOfferUnitType()) {
+                OfferUnitType.PERCENTAGE -> {
+                    (totalPrice * offer.discount).toDouble() / 100
+                }
+
+                OfferUnitType.RUPEE -> {
+                    if (totalPrice < offer.discount || offer.discount < 0) {
+                        0.0
+                    } else {
+                        (totalPrice - offer.discount).toDouble()
+                    }
                 }
             }
         }
@@ -148,7 +153,7 @@ fun ProceedToBuyScreen(
             Box {
                 // AppLocalImage is a custom composable to load and display local images.
                 AppNetworkImage(
-                    model = getImgUrl(subscriptionPlanCategory.imgUrl),
+                    model = getImgUrl(subscriptionPlanType.imageUrl),
                     modifier = Modifier.aspectRatio(AppTheme.aspectRatio.fullScreen)
                 )
 
@@ -162,18 +167,18 @@ fun ProceedToBuyScreen(
                     ) {
                         // Various card composable and layouts are included.
                         ProMembershipCard(
-                            subscriptionPlanCategory,
+                            subscriptionPlanType,
                             durationType
                         )
                         offer?.let {
                             OffersSection(it)
                         }
-                        subscriptionPlanCategory.durations.firstOrNull {
+                        subscriptionPlanType.subscriptionDurationPlans.firstOrNull {
                             it.durationType == durationType
                         }?.emi?.let {
                             EMISection(it)
                         }
-                        HowItWorksSection(subscriptionPlanCategory.feature)
+                        HowItWorksSection(subscriptionPlanType.subscriptionPlanFeatures)
                         walletData?.let {
                             WalletApplyingSection(
                                 walletData = walletData,
@@ -184,7 +189,7 @@ fun ProceedToBuyScreen(
                             }
                         }
                         DiscountSection(
-                            subscriptionPlanCategory = subscriptionPlanCategory,
+                            subscriptionPlanType = subscriptionPlanType,
                             finalPayableAmount = finalPayableAmount
                         ) { discountCodeApplied, discountGot ->
                             discountMoney = discountGot
@@ -213,7 +218,7 @@ fun ProceedToBuyScreen(
                                 offerCode = offer?.code ?: ""
                             ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
-                                subType = subscriptionPlanCategory.subscriptionType,
+                                subType = subscriptionPlanType.subscriptionType,
                                 durType = durationType
                             ),
                             type = OrderRequestType.Subscription.code
@@ -233,7 +238,7 @@ fun ProceedToBuyScreen(
 
 @Composable
 fun DiscountSection(
-    subscriptionPlanCategory: SubscriptionPlanCategory,
+    subscriptionPlanType: SubscriptionPlanType,
     finalPayableAmount: Double,
     onChange: (discountCode: String, discountMoney: Int) -> Unit
 ) {
@@ -305,7 +310,7 @@ fun WalletApplyingSection(
  * Composable function for displaying a professional plan card.
  */
 @Composable
-fun ProMembershipCard(subscriptionPlanCategory: SubscriptionPlanCategory, durationType: String) {
+fun ProMembershipCard(subscriptionPlanType: SubscriptionPlanType, durationType: String) {
     // AppCard is a custom composable for displaying cards with padding and rounded corners.
     AppCard(
         modifier = Modifier
@@ -319,16 +324,16 @@ fun ProMembershipCard(subscriptionPlanCategory: SubscriptionPlanCategory, durati
 
             // Row displaying plan details and pricing.
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                TitleTexts.Level1(text = subscriptionPlanCategory.title)
+                TitleTexts.Level1(text = subscriptionPlanType.planName)
                 Column(horizontalAlignment = Alignment.End) {
                     HeadingTexts.Level4(
-                        text = subscriptionPlanCategory.durations.find { it.durationType == durationType }?.price
+                        text = subscriptionPlanType.subscriptionDurationPlans.find { it.durationType == durationType }?.priceMRP
                             ?: ""
                     )
                 }
             }
 
-            subscriptionPlanCategory.feature.forEach {
+            subscriptionPlanType.subscriptionPlanFeatures.forEach {
                 Row(Modifier.fillMaxWidth()) {
                     AppIcon(imageVector = Icons.Filled.Build)
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
@@ -424,7 +429,7 @@ fun EMISection(emi: String) {
  * Composable function for displaying "How it works" details.
  */
 @Composable
-fun HowItWorksSection(feature: List<SubscriptionPlanCategory.Feature>) {
+fun HowItWorksSection(subscriptionPlanFeature: List<SubscriptionPlanType.SubscriptionPlanFeature>) {
 
     // Column displaying "How it works" details with padding and spacing.
     Column(
@@ -437,7 +442,7 @@ fun HowItWorksSection(feature: List<SubscriptionPlanCategory.Feature>) {
         // Title for the "How it works" section.
         TitleTexts.Level1(text = "How it works")
 
-        feature.forEach {
+        subscriptionPlanFeature.forEach {
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),

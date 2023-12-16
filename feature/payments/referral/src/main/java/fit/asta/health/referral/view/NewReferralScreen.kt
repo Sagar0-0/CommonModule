@@ -44,7 +44,9 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.referral.remote.model.ReferralDataResponse
+import fit.asta.health.referral.remote.model.SubscriptionStateType
 import fit.asta.health.referral.remote.model.UserDetails
+import fit.asta.health.referral.remote.model.getSubscriptionStateType
 import fit.asta.health.resources.drawables.R
 
 
@@ -269,7 +271,7 @@ fun InvitedUserList(
                     )
                 }
 
-                if (userDetails.prime) {
+                if (userDetails.subscriptionState.getSubscriptionStateType() == SubscriptionStateType.ACTIVE) {
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }

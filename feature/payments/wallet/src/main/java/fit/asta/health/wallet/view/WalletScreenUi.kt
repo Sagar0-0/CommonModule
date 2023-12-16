@@ -137,7 +137,7 @@ fun WalletScreenUi(
             }
         )
 
-        val transactionHistory = walletData.transactionData
+        val transactionHistory = walletData.walletTransactionData
         if (!transactionHistory.isNullOrEmpty()) {
             Spacer(
                 modifier = Modifier
@@ -235,8 +235,8 @@ fun OffersCarousal(offersList: List<Offer>, onOfferClick: (Offer) -> Unit) {
 }
 
 @Composable
-fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
-    val received = (item.creditType == 1 || item.creditType == 4)
+fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
+    val received = (true)//TODO: USE T_TYPES
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -251,8 +251,8 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
         Column(modifier = Modifier.weight(1f)) {
             TitleTexts.Level2(
                 overflow = TextOverflow.Ellipsis,
-                text = when (item.creditType) {
-                    1 -> {
+                text = when (item.transactionType) {
+                    1 -> {//TODO: USE T_TYPES
                         "Cashback received for Referral"
                     }
 
@@ -269,9 +269,14 @@ fun TransactionHistoryItem(item: WalletResponse.TransactionData) {
                 text = item.timeStamp
             )
         }
-        TitleTexts.Level2(
+        TitleTexts.Level2(//TODO: USE T_TYPES
             color = if (received) Color.Green else Color.Red,
-            text = (if (received) "+" else "-") + item.credits.toString()
+            text = (if (received) {
+                "+" + item.creditAmounts!!.points
+            } else {
+                "-" + item.debitAmounts!!.points
+            }
+                    )
         )
     }
     Spacer(

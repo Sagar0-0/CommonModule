@@ -27,7 +27,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanCategory
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
 import fit.asta.health.subscription.remote.model.SubscriptionType
 
 
@@ -47,9 +47,9 @@ private fun SubscriptionListPreview() {
             // Display the content of the subscription list
             SubscriptionList(
                 listOf(
-                    SubscriptionPlanCategory(),
-                    SubscriptionPlanCategory(),
-                    SubscriptionPlanCategory()
+                    SubscriptionPlanType(),
+                    SubscriptionPlanType(),
+                    SubscriptionPlanType()
                 )
             ) {
 
@@ -64,15 +64,15 @@ private fun SubscriptionListPreview() {
 
 @Composable
 fun SubscriptionList(
-    subscriptionPlans: List<SubscriptionPlanCategory>,
+    subscriptionPlans: List<SubscriptionPlanType>,
     onClick: (subType: SubscriptionType) -> Unit
 ) {
     val subPlans = subscriptionPlans.map {
         SubscriptionData(
-            title = it.title,
-            desc = it.feature[0].dsc,
-            price = it.durations[0].price,
-            imageRes = it.imgUrl,
+            title = it.planName,
+            desc = it.subscriptionPlanFeatures[0].dsc,
+            price = it.subscriptionDurationPlans[0].priceMRP,
+            imageRes = it.imageUrl,
             subType = it.subscriptionType
         )
     }

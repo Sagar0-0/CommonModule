@@ -6,6 +6,8 @@ import com.google.gson.annotations.SerializedName
 
 typealias SubscriptionType = String
 typealias DurationType = String
+typealias UserSubscribedPlanStatus = Int
+typealias DiscountUnit = Int
 
 data class SubscriptionResponse(
     @SerializedName("subscriptionPlans")
@@ -25,23 +27,23 @@ data class SubscriptionResponse(
         @SerializedName("ttl")
         val ttl: String = "",
         @SerializedName("types")
-        val categories: List<SubscriptionPlanCategory> = listOf()
+        val subscriptionPlanTypes: List<SubscriptionPlanType> = listOf()
     ) {
-        data class SubscriptionPlanCategory(
+        data class SubscriptionPlanType(
             @SerializedName("fea")
-            val feature: List<Feature> = listOf(),
+            val subscriptionPlanFeatures: List<SubscriptionPlanFeature> = listOf(),
             @SerializedName("id")
             val subscriptionType: SubscriptionType = "",
             @SerializedName("plans")
-            val durations: List<Duration> = listOf(),
+            val subscriptionDurationPlans: List<SubscriptionDurationPlan> = listOf(),
             @SerializedName("ttl")
-            val title: String = "",
+            val planName: String = "",
             @SerializedName("type")
             val type: Int = 0,
             @SerializedName("url")
-            val imgUrl: String = ""
+            val imageUrl: String = ""
         ) {
-            data class Feature(
+            data class SubscriptionPlanFeature(
                 @SerializedName("dsc")
                 val dsc: String = "",
                 @SerializedName("ttl")
@@ -50,7 +52,7 @@ data class SubscriptionResponse(
                 val url: String = ""
             )
 
-            data class Duration(
+            data class SubscriptionDurationPlan(
                 @SerializedName("default")
                 val default: Int = 0,
                 @SerializedName("dsc")
@@ -58,9 +60,9 @@ data class SubscriptionResponse(
                 @SerializedName("id")
                 val durationType: DurationType = "",
                 @SerializedName("price")
-                val price: String = "",
+                val priceMRP: String = "",
                 @SerializedName("cur")
-                val currency: String = "",
+                val currency: Int = 0,
                 @SerializedName("curSym")
                 val curSym: String = "",
                 @SerializedName("sub")
@@ -68,8 +70,11 @@ data class SubscriptionResponse(
                 @SerializedName("tag")
                 val tag: String = "",
                 @SerializedName("ttl")
-                val ttl: String = "",
-                val discount: String = "",//TODO
+                val durationTitle: String = "",
+                @SerializedName("discount")
+                val discountAmount: String = "",
+                @SerializedName("disUnit")
+                val discountUnit: DiscountUnit = DiscountUnitType.PERCENTAGE.code,
                 val tax: String = "",//TODO
                 val emi: String? = null,//TODO
             )
@@ -90,6 +95,27 @@ data class SubscriptionResponse(
         @SerializedName("expBy")
         val expBy: String = "",
         @SerializedName("sts")
-        val sts: Boolean = false
+        val status: UserSubscribedPlanStatus = 0
     )
 }
+
+fun UserSubscribedPlanStatus.getUserSubscribedPlanStatusType() =
+    UserSubscribedPlanStatusType.entries.first { this == it.code }
+
+enum class UserSubscribedPlanStatusType(val code: UserSubscribedPlanStatus) {
+    ACTIVE(1),
+    INACTIVE(2),
+    TEMPORARY_INACTIVE(3)
+}
+
+
+fun DiscountUnit.getDiscountUnitType() =
+    DiscountUnitType.entries.first { this == it.code }
+
+enum class DiscountUnitType(val code: DiscountUnit) {
+    PERCENTAGE(18),
+    RUPEE(23)
+}
+
+
+

@@ -38,7 +38,9 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.referral.remote.model.ReferralDataResponse
+import fit.asta.health.referral.remote.model.SubscriptionStateType
 import fit.asta.health.referral.remote.model.UserDetails
+import fit.asta.health.referral.remote.model.getSubscriptionStateType
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
@@ -217,7 +219,7 @@ private fun ReferredUserItem(
     Row(
         modifier = modifier
             .fillMaxWidth()
-            .background(if (user.prime) Color.Green else Color.Red),
+            .background(if (user.subscriptionState.getSubscriptionStateType() == SubscriptionStateType.ACTIVE) Color.Green else Color.Red),
         verticalAlignment = Alignment.CenterVertically
     ) {
         Image(
