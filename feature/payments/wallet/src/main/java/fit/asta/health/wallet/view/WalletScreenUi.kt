@@ -50,6 +50,8 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.subscription.remote.model.Offer
 import fit.asta.health.wallet.remote.model.WalletResponse
+import fit.asta.health.wallet.remote.model.WalletTransactionType
+import fit.asta.health.wallet.remote.model.getWalletTransactionType
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -236,7 +238,20 @@ fun OffersCarousal(offersList: List<Offer>, onOfferClick: (Offer) -> Unit) {
 
 @Composable
 fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
-    val received = (true)//TODO: USE T_TYPES
+    val received = when (
+        item.transactionType.getWalletTransactionType()
+    ) {
+        WalletTransactionType.SUBSCRIPTION_CASHBACK,
+        WalletTransactionType.REFERRAL_CASHBACK,
+        WalletTransactionType.ADD_MONEY -> {
+            true
+        }
+
+        else -> {
+            false
+        }
+
+    }
     Row(
         modifier = Modifier
             .fillMaxWidth()
@@ -251,16 +266,28 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
         Column(modifier = Modifier.weight(1f)) {
             TitleTexts.Level2(
                 overflow = TextOverflow.Ellipsis,
-                text = when (item.transactionType) {
-                    1 -> {//TODO: USE T_TYPES
+                text = when (item.transactionType.getWalletTransactionType()) {
+                    WalletTransactionType.SUBSCRIPTION_CASHBACK -> {
+                        "Cashback received for Subscription"
+                    }
+
+                    WalletTransactionType.REFERRAL_CASHBACK -> {
                         "Cashback received for Referral"
                     }
 
-                    2 -> {
+                    WalletTransactionType.SEND_TO_BANK -> {
                         "Redeem to bank account"
                     }
 
-                    else -> {
+                    WalletTransactionType.ADD_MONEY -> {
+                        "Added money to wallet"
+                    }
+
+                    WalletTransactionType.WALLET_MONEY_USED -> {
+                        "Made purchase"
+                    }
+
+                    WalletTransactionType.WALLET_POINTS_USED -> {
                         "Made purchase"
                     }
                 }
@@ -269,14 +296,33 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
                 text = item.timeStamp
             )
         }
-        TitleTexts.Level2(//TODO: USE T_TYPES
+        TitleTexts.Level2(
             color = if (received) Color.Green else Color.Red,
-            text = (if (received) {
-                "+" + item.creditAmounts!!.points
-            } else {
-                "-" + item.debitAmounts!!.points
+            text = when (item.transactionType.getWalletTransactionType()) {
+                WalletTransactionType.SUBSCRIPTION_CASHBACK -> {
+                    "+ ${item.creditAmounts!!.points}"
+                }
+
+                WalletTransactionType.REFERRAL_CASHBACK -> {
+                    "+ ${item.creditAmounts!!.points}"
+                }
+
+                WalletTransactionType.SEND_TO_BANK -> {
+                    "- ${item.debitAmounts!!.money}"
+                }
+
+                WalletTransactionType.ADD_MONEY -> {
+                    "+ ${item.creditAmounts!!.money}"
+                }
+
+                WalletTransactionType.WALLET_MONEY_USED -> {
+                    "- ${item.debitAmounts!!.money}"
+                }
+
+                WalletTransactionType.WALLET_POINTS_USED -> {
+                    "- ${item.debitAmounts!!.points}"
+                }
             }
-                    )
         )
     }
     Spacer(
