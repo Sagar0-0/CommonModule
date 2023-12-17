@@ -51,12 +51,10 @@ fun SubscriptionPlansUi(
 
             is UiState.Success -> {
                 Column(modifier = Modifier.padding(paddingValues)) {
-                    if (state.data.userSubscribedPlan != null) {
-                        if (state.data.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.ACTIVE) {
-                            ShowUserActivePlan(state.data)
-                        } else {
-                            ShowUserExpiredPlan(state.data)
-                        }
+                    if (state.data.userSubscribedPlan.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.ACTIVE) {
+                        ShowUserActivePlan(state.data)
+                    } else {
+                        ShowUserExpiredPlan(state.data)
                     }
                     SubPlansPager(
                         subscriptionPlans = state.data.subscriptionPlans,

@@ -16,6 +16,7 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -41,6 +42,8 @@ import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.remote.model.SubscriptionType
+import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
+import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionList
 import fit.asta.health.subscription.view.UserSubscribedPlanSection
@@ -62,37 +65,45 @@ fun HomeScreenLayout(
 
     val context = LocalContext.current
     val columns = 3
+    val showSubscriptionPlans = remember {
+        if (subscriptionResponse != null) {
+            (subscriptionResponse.userSubscribedPlan.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.NOT_BOUGHT
+                    || subscriptionResponse.userSubscribedPlan.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.INACTIVE)
+        } else false
+    }
 
     AppVerticalGrid(
         count = columns,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        if (subscriptionResponse != null && subscriptionResponse.userSubscribedPlan == null) {
-            item(span = { GridItemSpan(columns) }) {
-                val pagerState = rememberPagerState { subscriptionResponse.offers.size }
-                Box {
-                    AppHorizontalPager(
-                        modifier = Modifier.padding(AppTheme.spacing.level2),
-                        pagerState = pagerState,
-                        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
-                        pageSpacing = AppTheme.spacing.level2,
-                        enableAutoAnimation = true,
-                        userScrollEnabled = true
-                    ) { page ->
-                        OfferBanner(
-                            offer = subscriptionResponse.offers[page]
-                        ) {
-                            onEvent(HomeScreenUiEvent.NavigateWithOfferIndex(page))
+        subscriptionResponse?.let {
+            if (showSubscriptionPlans) {
+                item(span = { GridItemSpan(columns) }) {
+                    val pagerState = rememberPagerState { subscriptionResponse.offers.size }
+                    Box {
+                        AppHorizontalPager(
+                            modifier = Modifier.padding(AppTheme.spacing.level2),
+                            pagerState = pagerState,
+                            contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+                            pageSpacing = AppTheme.spacing.level2,
+                            enableAutoAnimation = true,
+                            userScrollEnabled = true
+                        ) { page ->
+                            OfferBanner(
+                                offer = subscriptionResponse.offers[page]
+                            ) {
+                                onEvent(HomeScreenUiEvent.NavigateWithOfferIndex(page))
+                            }
                         }
-                    }
 
-                    // This function draws the Dot Indicator for the Pager
-                    AppExpandingDotIndicator(
-                        modifier = Modifier
-                            .padding(bottom = AppTheme.spacing.level2)
-                            .align(Alignment.BottomCenter),
-                        pagerState = pagerState
-                    )
+                        // This function draws the Dot Indicator for the Pager
+                        AppExpandingDotIndicator(
+                            modifier = Modifier
+                                .padding(bottom = AppTheme.spacing.level2)
+                                .align(Alignment.BottomCenter),
+                            pagerState = pagerState
+                        )
+                    }
                 }
             }
         }
@@ -114,21 +125,24 @@ fun HomeScreenLayout(
             }
         }
 
-        if (subscriptionResponse != null && subscriptionResponse.userSubscribedPlan == null) {
-            item(span = { GridItemSpan(columns) }) {
-                SubscriptionList(
-                    subscriptionPlans = subscriptionResponse.subscriptionPlans.subscriptionPlanTypes
-                ) {
-                    onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+        subscriptionResponse?.let {
+            if (showSubscriptionPlans) {
+                item(span = { GridItemSpan(columns) }) {
+                    SubscriptionList(
+                        subscriptionPlans = subscriptionResponse.subscriptionPlans.subscriptionPlanTypes
+                    ) {
+                        onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+                    }
+                }
+            } else {
+                item(span = { GridItemSpan(columns) }) {
+                    UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan)
                 }
             }
         }
 
-        if (subscriptionResponse?.userSubscribedPlan != null) {
-            item(span = { GridItemSpan(columns) }) {
-                UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
-            }
-        }
+
+
 
         toolsHome.tools?.let {
             // My Tools text and View All button

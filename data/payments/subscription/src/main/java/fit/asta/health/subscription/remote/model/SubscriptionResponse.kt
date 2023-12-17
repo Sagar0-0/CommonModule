@@ -13,7 +13,7 @@ data class SubscriptionResponse(
     @SerializedName("subscriptionPlans")
     val subscriptionPlans: SubscriptionPlans = SubscriptionPlans(),
     @SerializedName("userSubscribedPlan")
-    val userSubscribedPlan: UserSubscribedPlan? = null,
+    val userSubscribedPlan: UserSubscribedPlan = UserSubscribedPlan(),
     @SerializedName("offers")
     val offers: List<Offer> = listOf()
 ) {
@@ -103,6 +103,7 @@ fun UserSubscribedPlanStatus.getUserSubscribedPlanStatusType() =
     UserSubscribedPlanStatusType.entries.first { this == it.code }
 
 enum class UserSubscribedPlanStatusType(val code: UserSubscribedPlanStatus) {
+    NOT_BOUGHT(0),
     ACTIVE(1),
     INACTIVE(2),
     TEMPORARY_INACTIVE(3)
