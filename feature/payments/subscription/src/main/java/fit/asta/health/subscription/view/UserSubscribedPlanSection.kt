@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
@@ -37,6 +38,10 @@ fun UserSubscribedPlanSection(userSubscribedPlan: SubscriptionResponse.UserSubsc
                 when (userSubscribedPlan.status.getUserSubscribedPlanStatusType()) {
                     UserSubscribedPlanStatusType.ACTIVE -> {
                         AppIcon(imageVector = Icons.Default.CheckCircle)
+                    }
+
+                    UserSubscribedPlanStatusType.NOT_BOUGHT -> {
+                        AppIcon(imageVector = Icons.Default.Close)
                     }
 
                     UserSubscribedPlanStatusType.INACTIVE -> {
