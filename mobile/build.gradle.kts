@@ -128,6 +128,7 @@ dependencies {
     implementation(project(":data:auth"))
     implementation(project(":data:payments:referral"))
     implementation(project(":data:payments:payment"))
+    implementation(project(":data:payments:discounts"))
     implementation(project(":data:payments:subscription"))
     implementation(project(":data:address"))
     implementation(project(":data:scheduler"))

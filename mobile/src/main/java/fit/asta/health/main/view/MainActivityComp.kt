@@ -22,7 +22,6 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavOptions
 import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -39,7 +38,6 @@ import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
@@ -50,16 +48,16 @@ import fit.asta.health.feature.walking.nav.navigateToStepsCounter
 import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
-import fit.asta.health.main.SubscriptionViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.payment.PaymentActivity
+import fit.asta.health.subscription.ProceedToBuyScreen
+import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.remote.model.DurationType
 import fit.asta.health.subscription.remote.model.SubscriptionType
-import fit.asta.health.subscription.view.ProceedToBuyScreen
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
 import fit.asta.health.tools.breathing.nav.navigateToBreathing
 import fit.asta.health.tools.exercise.nav.navigateToExercise
@@ -86,16 +84,6 @@ fun NavController.navigateToFinalPaymentScreen(subType: SubscriptionType, durTyp
     this.navigate(
         SUBSCRIPTION_FINAL_SCREEN + "?subType=${subType}&durType=${durType}"
     )
-}
-
-fun NavController.navigateToHome(navOptions: NavOptions? = null) {
-    if (navOptions == null) {
-        this.navigate(HOME_GRAPH_ROUTE) {
-            popUpToTop(this@navigateToHome)
-        }
-    } else {
-        this.navigate(HOME_GRAPH_ROUTE, navOptions)
-    }
 }
 
 
@@ -230,8 +218,8 @@ fun NavGraphBuilder.homeScreen(
                         }
                     }
                 },
-                onNav = {
-                    when (it) {
+                onNav = { destination ->
+                    when (destination) {
                         SCHEDULER_GRAPH_ROUTE -> {
                             checkPermissionAndLaunchScheduler()
                         }
@@ -261,7 +249,7 @@ fun NavGraphBuilder.homeScreen(
                         }
 
                         else -> {
-                            navController.navigate(it)
+                            navController.navigate(destination)
                         }
                     }
                 },

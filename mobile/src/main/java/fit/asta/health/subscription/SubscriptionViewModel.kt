@@ -1,4 +1,4 @@
-package fit.asta.health.main
+package fit.asta.health.subscription
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

@@ -1,4 +1,4 @@
-package fit.asta.health.subscription.view
+package fit.asta.health.subscription
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -188,7 +188,7 @@ fun ProceedToBuyScreen(
                                 walletMoney = money
                             }
                         }
-                        DiscountSection(
+                        CouponSection(
                             subscriptionPlanType = subscriptionPlanType,
                             finalPayableAmount = finalPayableAmount
                         ) { discountCodeApplied, discountGot ->
@@ -237,7 +237,7 @@ fun ProceedToBuyScreen(
 }
 
 @Composable
-fun DiscountSection(
+fun CouponSection(
     subscriptionPlanType: SubscriptionPlanType,
     finalPayableAmount: Double,
     onChange: (discountCode: String, discountMoney: Int) -> Unit
