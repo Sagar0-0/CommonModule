@@ -35,7 +35,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
 
 
 /**
@@ -45,8 +45,8 @@ import fit.asta.health.subscription.remote.model.SubscriptionResponse
 @Composable
 private fun SubPlanScreenPreview() {
     AppTheme {
-        SubPlanContent(
-            subPlanSubscriptionPlanType = SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType(),
+        SubscriptionPlanListItem(
+            subPlanSubscriptionPlanType = SubscriptionPlanType(),
             0
         ) { _, _ ->
 
@@ -58,8 +58,8 @@ private fun SubPlanScreenPreview() {
  * Composable function for the content of the subscription plan screen.
  */
 @Composable
-fun SubPlanContent(
-    subPlanSubscriptionPlanType: SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType,
+fun SubscriptionPlanListItem(
+    subPlanSubscriptionPlanType: SubscriptionPlanType,
     durIdx: Int,
     onClick: (subType: String, durType: String) -> Unit
 ) {

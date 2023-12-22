@@ -13,7 +13,7 @@ data class SubscriptionResponse(
     @SerializedName("subscriptionPlans")
     val subscriptionPlans: SubscriptionPlans = SubscriptionPlans(),
     @SerializedName("userSubscribedPlan")
-    val userSubscribedPlan: UserSubscribedPlan = UserSubscribedPlan(),
+    val userSubscribedPlan: UserSubscribedPlan? = null,
     @SerializedName("offers")
     val offers: List<Offer> = listOf()
 ) {

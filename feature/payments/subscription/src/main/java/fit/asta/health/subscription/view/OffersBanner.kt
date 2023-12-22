@@ -2,7 +2,6 @@ package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -19,7 +18,7 @@ import androidx.media3.common.MediaItem
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
@@ -81,11 +80,13 @@ private fun OffersBannerPreview() {
 @Composable
 fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
     // Container box for the banner content
-    Box(
+    AppCard(
         modifier = Modifier
             .clip(AppTheme.shape.level1)
             .fillMaxSize(),
-        contentAlignment = Alignment.BottomCenter
+        onClick = {
+            onClick(offer)
+        }
     ) {
         // Displaying content based on content type
         when (offer.type) {
@@ -118,18 +119,6 @@ fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
                         .setUri(getVideoUrl(url = offer.url).toUri()).build()
                 )
             }
-        }
-
-        // Text and indicator below the content
-        Column(horizontalAlignment = Alignment.CenterHorizontally) {
-            // Button to explore the section
-            AppOutlinedButton(
-                textToShow = "Explore this Offer",
-                onClick = {
-                    onClick(offer)
-                },
-                modifier = Modifier.padding(AppTheme.spacing.level2)
-            )
         }
     }
 }

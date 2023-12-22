@@ -4,20 +4,15 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
+import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
@@ -45,7 +40,7 @@ private fun SubscriptionListPreview() {
                 .fillMaxSize()
         ) {
             // Display the content of the subscription list
-            SubscriptionList(
+            SubscriptionTypesList(
                 listOf(
                     SubscriptionPlanType(),
                     SubscriptionPlanType(),
@@ -63,7 +58,7 @@ private fun SubscriptionListPreview() {
  */
 
 @Composable
-fun SubscriptionList(
+fun SubscriptionTypesList(
     subscriptionPlans: List<SubscriptionPlanType>,
     onClick: (subType: SubscriptionType) -> Unit
 ) {
@@ -83,8 +78,7 @@ fun SubscriptionList(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         // Display a title for the subscription list
-        TitleTexts.Level1(text = "Explore Premium Plans")
-
+        HeadingTexts.Level1(text = "Explore Premium Plans")
         // Display SubscriptionPassCard for each item in the subscription list
         subPlans.forEach { plan ->
             SubscriptionPassCard(subscriptionData = plan) {
@@ -106,14 +100,20 @@ fun SubscriptionPassCard(
 ) {
     // Use AppCard to create a card with a click listener
     AppCard(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = Modifier
+            .fillMaxWidth(),
         onClick = {
             onClick(subscriptionData.subType)
         }
     ) {
         // Use Row and Column to arrange content horizontally and vertically
         Row(
-            modifier = Modifier.padding(AppTheme.spacing.level2),
+            modifier = Modifier
+                .padding(
+                    top = AppTheme.spacing.level1,
+                    bottom = AppTheme.spacing.level1,
+                    end = AppTheme.spacing.level1
+                ),
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
@@ -121,29 +121,32 @@ fun SubscriptionPassCard(
             AppNetworkImage(
                 model = getImgUrl(subscriptionData.imageRes),
                 modifier = Modifier
-                    .size(120.dp)
-                    .clip(CircleShape)
+                    .size(AppTheme.imageSize.level11)
             )
             // Use Column to arrange text content vertically
-            Column(Modifier.fillMaxWidth()) {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+            ) {
                 // Display title, description, and other details
                 TitleTexts.Level1(text = subscriptionData.title)
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 BodyTexts.Level1(
                     text = subscriptionData.desc,
                     maxLines = 3,
-                    color = AppTheme.colors.onSurface.copy(0.5f)
+                    color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3)
                 )
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 AppDivider()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 // Display subscription price details
-                Row(Modifier.fillMaxWidth(), verticalAlignment = Alignment.CenterVertically) {
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                ) {
                     HeadingTexts.Level3(text = subscriptionData.price)
-                    Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                     CaptionTexts.Level2(
                         text = "onwards",
-                        color = AppTheme.colors.onSurface.copy(0.7f)
+                        color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level4),
+                        overflow = TextOverflow.Ellipsis
                     )
                 }
             }

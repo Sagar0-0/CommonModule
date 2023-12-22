@@ -45,7 +45,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
 import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
 import fit.asta.health.subscription.view.OfferBanner
-import fit.asta.health.subscription.view.SubscriptionList
+import fit.asta.health.subscription.view.SubscriptionTypesList
 import fit.asta.health.subscription.view.UserSubscribedPlanSection
 import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -66,10 +66,12 @@ fun HomeScreenLayout(
     val context = LocalContext.current
     val columns = 3
     val showSubscriptionPlans = remember {
-        if (subscriptionResponse != null) {
-            (subscriptionResponse.userSubscribedPlan.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.NOT_BOUGHT
-                    || subscriptionResponse.userSubscribedPlan.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.INACTIVE)
-        } else false
+        if (subscriptionResponse?.userSubscribedPlan == null) {
+            true
+        } else {
+            (subscriptionResponse.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.NOT_BOUGHT
+                    || subscriptionResponse.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.INACTIVE)
+        }
     }
 
     AppVerticalGrid(
@@ -128,7 +130,7 @@ fun HomeScreenLayout(
         subscriptionResponse?.let {
             if (showSubscriptionPlans) {
                 item(span = { GridItemSpan(columns) }) {
-                    SubscriptionList(
+                    SubscriptionTypesList(
                         subscriptionPlans = subscriptionResponse.subscriptionPlans.subscriptionPlanTypes
                     ) {
                         onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
@@ -136,7 +138,7 @@ fun HomeScreenLayout(
                 }
             } else {
                 item(span = { GridItemSpan(columns) }) {
-                    UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan)
+                    UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
                 }
             }
         }
