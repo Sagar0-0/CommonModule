@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowBack
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
@@ -31,10 +30,9 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -42,7 +40,9 @@ import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
-import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
+import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -141,82 +141,66 @@ fun ProceedToBuyScreen(
     }.toDouble()
 
     // AppSurface is a custom composable providing a themed surface for the content.
-    AppSurface(
-        modifier = Modifier.fillMaxSize()
-    ) {
-        // Column composable to arrange child composable vertically with scrolling enabled.
+    AppScaffold {
         Column(
             modifier = Modifier
                 .verticalScroll(rememberScrollState())
-                .padding(bottom = AppTheme.spacing.level8),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                .padding(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            // Top bar with a back button.
-            Box(
-                contentAlignment = Alignment.TopStart,
-                modifier = Modifier
-                    .fillMaxWidth()
-            ) {
-                AppTopBar(backIcon = Icons.Filled.ArrowBack, onBack = {
+            Box(modifier = Modifier.fillMaxSize()) {
+                AppTopBar(
+                    modifier = Modifier.align(Alignment.TopStart)
+                ) {
                     onEvent(BuyScreenEvent.BACK)
                 }
-                )
-            }
 
-            // Image and various card composable are arranged vertically within a Box layout.
-            Box {
                 // AppLocalImage is a custom composable to load and display local images.
                 AppNetworkImage(
                     model = getImgUrl(subscriptionPlanType.imageUrl),
                     modifier = Modifier.aspectRatio(AppTheme.aspectRatio.fullScreen)
                 )
+            }
 
-                // Inner Box to position content over the image.
-                Box(
-                    modifier = Modifier.fillMaxSize()
-                ) {
-                    Column(
-                        modifier = Modifier.padding(top = 204.dp),
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
-                    ) {
-                        // Various card composable and layouts are included.
-                        ProMembershipCard(
-                            subscriptionPlanType,
-                            durationType
-                        )
-                        offer?.let {
-                            OffersSection(it)
-                        }
-                        subscriptionPlanType.subscriptionDurationPlans.firstOrNull {
-                            it.durationType == durationType
-                        }?.emi?.let {
-                            EMISection(it)
-                        }
-                        HowItWorksSection(subscriptionPlanType.subscriptionPlanFeatures)
-                        walletData?.let {
-                            WalletApplyingSection(
-                                walletData = walletData,
-                                finalPayableAmount = finalPayableAmount
-                            ) { points, money ->
-                                walletPoints = points
-                                walletMoney = money
-                            }
-                        }
-                        CouponSection { discountCodeApplied ->
-                            discountCode = discountCodeApplied
-                            onEvent(BuyScreenEvent.ApplyCouponCode(discountCodeApplied))
-                        }
-                    }
+            // Various card composable and layouts are included.
+            ProMembershipCard(
+                subscriptionPlanType,
+                durationType
+            )
+            offer?.let {
+                OffersSection(it)
+            }
+
+//            subscriptionPlanType.subscriptionDurationPlans.firstOrNull {
+//                it.durationType == durationType
+//            }?.emi?.let {
+//                EMISection(it)
+//            }
+
+            HowItWorksSection(subscriptionPlanType.subscriptionPlanFeatures)
+
+            walletData?.let {
+                WalletApplyingSection(
+                    walletData = walletData,
+                    finalPayableAmount = finalPayableAmount
+                ) { points, money ->
+                    walletPoints = points
+                    walletMoney = money
                 }
             }
-        }
 
-        // Bottom button in a separate Box at the bottom of the screen.
-        Box(
-            modifier = Modifier.fillMaxSize(),
-            contentAlignment = Alignment.BottomCenter
-        ) {
+            CouponSection { discountCodeApplied ->
+                discountCode = discountCodeApplied
+                onEvent(BuyScreenEvent.ApplyCouponCode(discountCodeApplied))
+            }
+
             AppFilledButton(
+                modifier = Modifier
+                    .padding(
+                        horizontal = AppTheme.spacing.level5,
+                        vertical = AppTheme.spacing.level3
+                    )
+                    .fillMaxWidth(),
                 textToShow = "Continue to Buy",
                 onClick = {
                     onEvent(
@@ -237,18 +221,14 @@ fun ProceedToBuyScreen(
                             )
                         )
                     )
-                },
-                modifier = Modifier
-                    .padding(
-                        horizontal = AppTheme.spacing.level6,
-                        vertical = AppTheme.spacing.level1
-                    )
-                    .fillMaxWidth()
+                }
             )
         }
+
     }
 }
 
+const val COUPON_CODE_SIZE_LIMIT = 20
 @Composable
 fun CouponSection(
     onApplyCode: (discountCode: String) -> Unit
@@ -257,16 +237,21 @@ fun CouponSection(
         mutableStateOf("")
     }
 
-    Row(modifier = Modifier.fillMaxWidth()) {
-        AppTextField(
+    Row(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(AppTheme.spacing.level2)
+    ) {
+        AppOutlinedTextField(
             value = discountCode,
-            onValueChange = onDiscountChange
+            onValueChange = onDiscountChange,
+            trailingIcon = Icons.Default.ArrowForwardIos,
+            onTrailingIconClicked = {
+                onApplyCode(discountCode)
+            },
+            appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(COUPON_CODE_SIZE_LIMIT))
         )
-        AppIconButton(imageVector = Icons.Default.ArrowForwardIos) {
-            onApplyCode(discountCode)
-        }
     }
-
 }
 
 @Composable
@@ -289,44 +274,56 @@ fun WalletApplyingSection(
     val moneyChecked by rememberSaveable {
         mutableStateOf(false)
     }
-    Column {
-        Row {
-            TitleTexts.Level2(text = "Wallet Points: ${walletData.points - pointsApplied}")
-            if (walletData.points > 0) {
-                AppCheckBoxButton(checked = pointsChecked) { checked ->
-                    pointsApplied = if (checked) {
-                        if (finalPayableAmount > walletData.points) {
-                            walletData.points
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(AppTheme.spacing.level2)
+    ) {
+        Column(
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                HeadingTexts.Level2(text = "Wallet Points: ${walletData.points - pointsApplied}")
+                if (walletData.points > 0) {
+                    AppCheckBoxButton(checked = pointsChecked) { checked ->
+                        pointsApplied = if (checked) {
+                            if (finalPayableAmount > walletData.points) {
+                                walletData.points
+                            } else {
+                                finalPayableAmount.toInt()
+                            }
                         } else {
-                            finalPayableAmount.toInt()
-                        }
-                    } else {
-                        0
+                            0
 
+                        }
+                        onApplyWallet(0, moneyApplied)
                     }
-                    onApplyWallet(0, moneyApplied)
                 }
             }
-        }
 
-        Row {
-            TitleTexts.Level2(text = "Wallet Money: ${walletData.money - moneyApplied}")
-            if (walletData.money > 0) {
-                AppCheckBoxButton(checked = moneyChecked) { checked ->
-                    moneyApplied = if (checked) {
-                        if (finalPayableAmount > walletData.money) {
-                            walletData.money
+            Row {
+                HeadingTexts.Level2(text = "Wallet Money: ${walletData.money - moneyApplied}")
+                if (walletData.money > 0) {
+                    AppCheckBoxButton(checked = moneyChecked) { checked ->
+                        moneyApplied = if (checked) {
+                            if (finalPayableAmount > walletData.money) {
+                                walletData.money
+                            } else {
+                                finalPayableAmount.toInt()
+                            }
                         } else {
-                            finalPayableAmount.toInt()
+                            0
                         }
-                    } else {
-                        0
+                        onApplyWallet(pointsApplied, moneyApplied)
                     }
-                    onApplyWallet(pointsApplied, moneyApplied)
                 }
             }
         }
     }
+
 
 }
 
