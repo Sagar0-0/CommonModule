@@ -157,6 +157,7 @@ dependencies {
     implementation(project(":feature:meditation"))
     implementation(project(":feature:walking"))
     implementation(project(mapOf("path" to ":data:payments:wallet")))
+    implementation(project(mapOf("path" to ":data:payments:discounts")))
 
 
     //De-sugaring

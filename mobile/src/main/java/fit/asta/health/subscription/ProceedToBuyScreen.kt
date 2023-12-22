@@ -14,12 +14,14 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowBack
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableDoubleStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -40,9 +42,11 @@ import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.discounts.remote.model.CouponResponse
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderRequestType
 import fit.asta.health.resources.drawables.R
@@ -65,9 +69,15 @@ private fun BuyPlanScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProceedToBuyScreen(SubscriptionPlanType(), "0", null, null, {}, {})
+            ProceedToBuyScreen(SubscriptionPlanType(), "0", null, null, null, {})
         }
     }
+}
+
+sealed interface BuyScreenEvent {
+    data object BACK : BuyScreenEvent
+    data class ProceedToBuy(val orderRequest: OrderRequest) : BuyScreenEvent
+    data class ApplyCouponCode(val code: String) : BuyScreenEvent
 }
 
 /**
@@ -78,15 +88,16 @@ private fun BuyPlanScreen() {
 fun ProceedToBuyScreen(
     subscriptionPlanType: SubscriptionPlanType,
     durationType: String,
+    couponResponse: CouponResponse? = null,
     offer: Offer? = null,
     walletData: WalletResponse.WalletData? = null,
-    onBack: () -> Unit,
-    onProceedToBuy: (OrderRequest) -> Unit
+    onEvent: (BuyScreenEvent) -> Unit,
 ) {
     val totalPrice = remember {
         (subscriptionPlanType.subscriptionDurationPlans.first {
             it.durationType == durationType
-        }.priceMRP.toInt())
+        }.priceMRP.toInt()
+                )
     }
 
     var discountCode by rememberSaveable {
@@ -101,8 +112,8 @@ fun ProceedToBuyScreen(
         mutableIntStateOf(0)
     }
 
-    var discountMoney by rememberSaveable {
-        mutableIntStateOf(0)
+    val discountMoney by rememberSaveable {
+        mutableDoubleStateOf(couponResponse?.discountAmount ?: 0.0)
     }
 
     val offerDiscount: Double = remember {
@@ -146,7 +157,10 @@ fun ProceedToBuyScreen(
                 modifier = Modifier
                     .fillMaxWidth()
             ) {
-                AppTopBar(backIcon = Icons.Filled.ArrowBack, onBack = onBack)
+                AppTopBar(backIcon = Icons.Filled.ArrowBack, onBack = {
+                    onEvent(BuyScreenEvent.BACK)
+                }
+                )
             }
 
             // Image and various card composable are arranged vertically within a Box layout.
@@ -188,12 +202,9 @@ fun ProceedToBuyScreen(
                                 walletMoney = money
                             }
                         }
-                        CouponSection(
-                            subscriptionPlanType = subscriptionPlanType,
-                            finalPayableAmount = finalPayableAmount
-                        ) { discountCodeApplied, discountGot ->
-                            discountMoney = discountGot
+                        CouponSection { discountCodeApplied ->
                             discountCode = discountCodeApplied
+                            onEvent(BuyScreenEvent.ApplyCouponCode(discountCodeApplied))
                         }
                     }
                 }
@@ -208,20 +219,22 @@ fun ProceedToBuyScreen(
             AppFilledButton(
                 textToShow = "Continue to Buy",
                 onClick = {
-                    onProceedToBuy(
-                        OrderRequest(
-                            amtDetails = OrderRequest.AmtDetails(
-                                amt = finalPayableAmount,
-                                discountCode = discountCode,
-                                walletMoney = walletMoney,
-                                walletPoints = walletPoints,
-                                offerCode = offer?.code ?: ""
-                            ),
-                            subscriptionDetail = OrderRequest.SubscriptionDetail(
-                                subType = subscriptionPlanType.subscriptionType,
-                                durType = durationType
-                            ),
-                            type = OrderRequestType.Subscription.code
+                    onEvent(
+                        BuyScreenEvent.ProceedToBuy(
+                            OrderRequest(
+                                amtDetails = OrderRequest.AmtDetails(
+                                    amt = finalPayableAmount,
+                                    discountCode = discountCode,
+                                    walletMoney = walletMoney,
+                                    walletPoints = walletPoints,
+                                    offerCode = offer?.code ?: ""
+                                ),
+                                subscriptionDetail = OrderRequest.SubscriptionDetail(
+                                    subType = subscriptionPlanType.subscriptionType,
+                                    durType = durationType
+                                ),
+                                type = OrderRequestType.Subscription.code
+                            )
                         )
                     )
                 },
@@ -238,10 +251,21 @@ fun ProceedToBuyScreen(
 
 @Composable
 fun CouponSection(
-    subscriptionPlanType: SubscriptionPlanType,
-    finalPayableAmount: Double,
-    onChange: (discountCode: String, discountMoney: Int) -> Unit
+    onApplyCode: (discountCode: String) -> Unit
 ) {
+    val (discountCode, onDiscountChange) = rememberSaveable {
+        mutableStateOf("")
+    }
+
+    Row(modifier = Modifier.fillMaxWidth()) {
+        AppTextField(
+            value = discountCode,
+            onValueChange = onDiscountChange
+        )
+        AppIconButton(imageVector = Icons.Default.ArrowForwardIos) {
+            onApplyCode(discountCode)
+        }
+    }
 
 }
 

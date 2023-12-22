@@ -6,6 +6,9 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.discounts.remote.model.CouponRequest
+import fit.asta.health.discounts.remote.model.CouponResponse
+import fit.asta.health.discounts.repo.CouponsRepo
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import fit.asta.health.wallet.remote.model.WalletResponse
@@ -20,6 +23,7 @@ class SubscriptionViewModel
 @Inject constructor(
     private val subscriptionRepo: SubscriptionRepo,
     private val walletRepo: WalletRepo,
+    private val couponsRepo: CouponsRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
@@ -31,9 +35,26 @@ class SubscriptionViewModel
         MutableStateFlow<UiState<WalletResponse>>(UiState.Idle)
     val walletResponseState = _walletResponseState.asStateFlow()
 
+    private val _couponResponseState =
+        MutableStateFlow<UiState<CouponResponse>>(UiState.Idle)
+    val couponResponseState = _couponResponseState.asStateFlow()
+
     init {
         getSubscriptionData()
         getWalletData()
+    }
+
+    fun applyCouponCode(code: String) {
+        _couponResponseState.value = UiState.Loading
+        viewModelScope.launch {
+            _couponResponseState.value = couponsRepo.getCouponCodeDetails(
+                CouponRequest(
+                    couponCode = code,
+                    userId = uid
+                    //TODO: COUPON DETAILS HERE
+                )
+            ).toUiState()
+        }
     }
 
     private fun getSubscriptionData() {

@@ -54,6 +54,7 @@ import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.payment.PaymentActivity
+import fit.asta.health.subscription.BuyScreenEvent
 import fit.asta.health.subscription.ProceedToBuyScreen
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.remote.model.DurationType
@@ -408,6 +409,7 @@ fun NavGraphBuilder.homeScreen(
                 it.sharedViewModel(navController = navController)
 
             val walletResponseState by subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle()
+            val couponResponseState by subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle()
 
             when (val subscriptionResponse =
                 subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value) {
@@ -425,13 +427,25 @@ fun NavGraphBuilder.homeScreen(
                             offer = offerIndex?.let {
                                 subscriptionResponse.data.offers[offerIndex.toInt()]
                             },
+                            couponResponse = (couponResponseState as? UiState.Success)?.data,
                             walletData = (walletResponseState as? UiState.Success)?.data?.walletData,
                             subscriptionPlanType = category,
                             durationType = durType!!,
-                            onBack = { navController.popBackStack() },
-                            onProceedToBuy = { order ->
-                                PaymentActivity.launch(context, order) {
-                                    navController.popBackStack()
+                            onEvent = { event ->
+                                when (event) {
+                                    BuyScreenEvent.BACK -> {
+                                        navController.popBackStack()
+                                    }
+
+                                    is BuyScreenEvent.ProceedToBuy -> {
+                                        PaymentActivity.launch(context, event.orderRequest) {
+                                            navController.popBackStack()
+                                        }
+                                    }
+
+                                    is BuyScreenEvent.ApplyCouponCode -> {
+                                        subscriptionViewModel.applyCouponCode(event.code)
+                                    }
                                 }
                             }
                         )
