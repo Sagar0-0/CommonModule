@@ -63,6 +63,9 @@ class StateManager @Inject constructor(
         skipToday: Boolean = false
     ) {
         val currentTime: Calendar = Calendar.getInstance()
+        if (currentTime.timeInMillis < alarm.selectedStartDateMillis) {
+            currentTime.timeInMillis = alarm.selectedStartDateMillis
+        }
         LogUtils.v("register  ${AlarmUtils.getFormattedTime(context, currentTime)}")
         val time: Calendar
         val state: Int
@@ -92,10 +95,32 @@ class StateManager @Inject constructor(
                 }
                 alarmInstanceDao.insertAndUpdate(instance)
             }
-            scheduleInstanceStateChange(
-                context, instance.alarmTime, instance, state
-            )
+            if (checkDateRange(alarm, time)) {
+                scheduleInstanceStateChange(
+                    context, instance.alarmTime, instance, state
+                )
+            } else {
+                cancelScheduledInstanceStateChange(context, instance)
+                alarmInstanceDao.delete(instance)
+                alarmDao.insertAlarm(
+                    alarm.copy(
+                        status = false,
+                        meta = Meta(
+                            cBy = alarm.meta.cBy,
+                            cDate = alarm.meta.cDate,
+                            sync = 2,
+                            uDate = getCurrentTime()
+                        )
+                    )
+                )
+            }
         }
+    }
+
+    private fun checkDateRange(alarmItem: AlarmEntity, time: Calendar): Boolean {
+        if (alarmItem.selectedEndDateMillis == null) return true
+        if (time.timeInMillis < alarmItem.selectedEndDateMillis!!) return true
+        return false
     }
 
     @Synchronized
@@ -115,7 +140,6 @@ class StateManager @Inject constructor(
                     CURRENT_ALARM_STATE -> {
                         //start service
                         //clear notification
-                        // setCurrentAlarm(context, instance)
                         clearNotification(context, instance)
                         startAlarmService(context, id)
                     }
@@ -123,7 +147,6 @@ class StateManager @Inject constructor(
                     SNOOZE_CURRENT_ALARM_STATE -> {
                         //start service
                         //clear notification
-                        // setCurrentAlarm(context, instance)
                         clearNotification(context, instance)
                         startAlarmService(context, id)
                     }
@@ -137,7 +160,6 @@ class StateManager @Inject constructor(
                     END_ALARM_STATE -> {
                         //start service
                         //clear notification
-                        // setEndAlarm(context, instance)
                         clearNotification(context, instance)
                         startAlarmService(context, id)
                     }
@@ -174,7 +196,14 @@ class StateManager @Inject constructor(
                         instance.alarmTime = time
                         instance.mAlarmState = state
                         alarmInstanceDao.insertAndUpdate(instance)
-                        scheduleInstanceStateChange(context, time, instance, state)
+                        if (checkDateRange(alarm, time)) {
+                            scheduleInstanceStateChange(
+                                context,
+                                time,
+                                instance,
+                                state
+                            )
+                        }
 
                     } else {
                         if (!alarm.daysOfWeek.isRepeating) {
@@ -186,12 +215,11 @@ class StateManager @Inject constructor(
                                     meta = Meta(
                                         cBy = alarm.meta.cBy,
                                         cDate = alarm.meta.cDate,
-                                        sync = 1,
+                                        sync = 2,
                                         uDate = getCurrentTime()
                                     )
                                 )
                             )
-                            return@launch
                         } else {
                             registerAlarm(context, alarm)
                         }
@@ -245,10 +273,17 @@ class StateManager @Inject constructor(
             alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
                 if (alarm.interval.statusEnd) {
                     val newAlarmTime = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.END)
-                    instance.alarmTime = newAlarmTime
-                    instance.mAlarmState = END_ALARM_STATE
-                    alarmInstanceDao.insertAndUpdate(instance)
-                    scheduleInstanceStateChange(context, newAlarmTime, instance, END_ALARM_STATE)
+                    if (checkDateRange(alarm, newAlarmTime)) {
+                        instance.alarmTime = newAlarmTime
+                        instance.mAlarmState = END_ALARM_STATE
+                        alarmInstanceDao.insertAndUpdate(instance)
+                        scheduleInstanceStateChange(
+                            context,
+                            newAlarmTime,
+                            instance,
+                            END_ALARM_STATE
+                        )
+                    }
                 } else {
                     registerAlarm(context, alarm)
                 }
@@ -257,22 +292,23 @@ class StateManager @Inject constructor(
     }
 
 
-
     private fun setPreNotificationAlarm(context: Context, instance: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("setPreNotificationAlarm ${AlarmUtils.getFormattedTime(context, currentTime)}")
         scope.launch {
             alarmDao.getAlarm(instance.mAlarmId)?.let { alarm ->
                 val newAlarmTime = alarm.getNextAlarmTime(currentTime, AlarmEntity.State.CURRENT)
-                instance.alarmTime = newAlarmTime
-                instance.mAlarmState = CURRENT_ALARM_STATE
-                alarmInstanceDao.insertAndUpdate(instance)
-                scheduleInstanceStateChange(
-                    context,
-                    newAlarmTime,
-                    instance,
-                    CURRENT_ALARM_STATE
-                )
+                if (checkDateRange(alarm, newAlarmTime)) {
+                    instance.alarmTime = newAlarmTime
+                    instance.mAlarmState = CURRENT_ALARM_STATE
+                    alarmInstanceDao.insertAndUpdate(instance)
+                    scheduleInstanceStateChange(
+                        context,
+                        newAlarmTime,
+                        instance,
+                        CURRENT_ALARM_STATE
+                    )
+                }
             }
         }
     }
@@ -291,15 +327,17 @@ class StateManager @Inject constructor(
                         if (alarm.interval.statusEnd && alarm.interval.advancedReminder.status) {
                             val newAlarmTime =
                                 alarm.getNextAlarmTime(currentTime, AlarmEntity.State.PREEND)
-                            instance.alarmTime = newAlarmTime
-                            instance.mAlarmState = PRE_END_ALARM_STATE
-                            alarmInstanceDao.insertAndUpdate(instance)
-                            scheduleInstanceStateChange(
-                                context,
-                                newAlarmTime,
-                                instance,
-                                PRE_END_ALARM_STATE
-                            )
+                            if (checkDateRange(alarm, newAlarmTime)) {
+                                instance.alarmTime = newAlarmTime
+                                instance.mAlarmState = PRE_END_ALARM_STATE
+                                alarmInstanceDao.insertAndUpdate(instance)
+                                scheduleInstanceStateChange(
+                                    context,
+                                    newAlarmTime,
+                                    instance,
+                                    PRE_END_ALARM_STATE
+                                )
+                            }
                         } else {
                             registerAlarm(context, alarm)
                         }
@@ -369,7 +407,7 @@ class StateManager @Inject constructor(
         context.stopService(intentService)
     }
 
-    fun showNotification(context: Context, instance: AlarmInstance) {
+    private fun showNotification(context: Context, instance: AlarmInstance) {
         val currentTime: Calendar = Calendar.getInstance()
         LogUtils.v("show notification ${AlarmUtils.getFormattedTime(context, currentTime)}")
         val skipIntent = Intent(context, AlarmBroadcastReceiver::class.java).apply {
@@ -419,8 +457,8 @@ class StateManager @Inject constructor(
 
     fun missedAlarm(context: Context, alarmItem: AlarmEntity) {
         scope.launch {
-            skipAlarmTodayOnly(context, alarmItem)
             alarmDao.updateAlarm(alarmItem.copy(skipDate = LocalDate.now().dayOfMonth))
+            skipAlarmTodayOnly(context, alarmItem)
         }
     }
 }

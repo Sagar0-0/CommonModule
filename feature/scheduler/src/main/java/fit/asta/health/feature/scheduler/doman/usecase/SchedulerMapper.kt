@@ -71,9 +71,11 @@ fun ASUiState.getAlarm(
             cBy = this.cBy,
             sync = this.sync,
             uDate = this.uDate
-        )
+        ),
+        selectedStartDateMillis = this.selectedStartDateMillis,
+        selectedEndDateMillis = this.selectedEndDateMillis
     )
-    val map: LinkedHashMap<String, Any> = LinkedHashMap()
+    val map: LinkedHashMap<String, Any?> = LinkedHashMap()
     map["id"] = newAlarmItem.idFromServer
     map["uid"] = newAlarmItem.userId
     map["almId"] = newAlarmItem.alarmId
@@ -87,6 +89,8 @@ fun ASUiState.getAlarm(
     map["ivl"] = newAlarmItem.interval
     map["vib"] = newAlarmItem.vibration
     map["tone"] = newAlarmItem.tone
+    map["startDate"] = newAlarmItem.selectedStartDateMillis
+    map["endDate"] = newAlarmItem.selectedEndDateMillis
     val jsonObject: String? = Gson().toJson(map)
     Log.d("alarm", "getAlarm: $jsonObject")
     return Gson().fromJson(jsonObject, AlarmEntity::class.java)
@@ -128,6 +132,8 @@ fun AlarmEntity.getAlarmScreenUi(): ASUiState {
         vibration = this.vibration.pattern,
         vibrationStatus = this.vibration.status,
         week = this.daysOfWeek,
-        mode = this.mode
+        mode = this.mode,
+        selectedStartDateMillis = this.selectedStartDateMillis,
+        selectedEndDateMillis = this.selectedEndDateMillis
     )
 }

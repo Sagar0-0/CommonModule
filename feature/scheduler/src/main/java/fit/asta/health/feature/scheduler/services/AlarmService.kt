@@ -196,8 +196,9 @@ class AlarmService : Service() {
                         alarmEntity = alarm
                         try {
                             player.apply {
-                                if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
-                                else setMediaItem(MediaItem.fromUri(ringtone))
+//                                if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
+//                                else setMediaItem(MediaItem.fromUri(ringtone))
+                                setMediaItem(MediaItem.fromUri(ringtone))
                                 prepare()
                             }
                         } catch (_: Exception) {
@@ -268,6 +269,11 @@ class AlarmService : Service() {
             .addAction(0, "Stop", pendingIntentStop)
             .setContentTitle(alarmName)
             .setContentText(alarm.info.tag)
+        startForGroundService(
+            notification = builder.build(),
+            id = alarm.hashCode(),
+            vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
+        )
 
         try {
             val req = ImageRequest.Builder(this)
@@ -280,11 +286,7 @@ class AlarmService : Service() {
                     val bitmap1: Bitmap? = null
                     picStyleBig.bigPicture(bitmap).bigLargeIcon(bitmap1)
                     builder.setStyle(picStyleBig).setLargeIcon(bitmap)
-                    startForGroundService(
-                        notification = builder.build(),
-                        id = alarm.hashCode(),
-                        vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
-                    )
+                    notificationManager.notify(alarm.hashCode(), builder.build())
                 }
                 .build()
             loader.enqueue(req)

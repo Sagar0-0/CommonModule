@@ -10,17 +10,23 @@ import androidx.compose.material.icons.filled.AddAlarm
 import androidx.compose.material.icons.filled.AlarmOff
 import androidx.compose.material.icons.filled.AlarmOn
 import androidx.compose.material.icons.filled.Audiotrack
+import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Description
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.material.icons.filled.Label
 import androidx.compose.material.icons.filled.NotificationImportant
 import androidx.compose.material.icons.filled.NotificationsActive
 import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Wysiwyg
+import androidx.compose.material3.DatePickerDefaults
+import androidx.compose.material3.DateRangePicker
+import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.*
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,6 +37,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
@@ -39,13 +46,16 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.SpotifyActivity
 import fit.asta.health.feature.scheduler.ui.components.CustomLabelBottomSheetLayout
+import fit.asta.health.feature.scheduler.ui.components.DateSelection
 import fit.asta.health.feature.scheduler.ui.components.DigitalDemo
 import fit.asta.health.feature.scheduler.ui.components.NotificationBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.OnlyToggleButton
@@ -55,7 +65,9 @@ import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.VibrationBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmCreateBottomSheetTypes.*
 import kotlinx.coroutines.launch
+import java.text.SimpleDateFormat
 import java.util.Calendar
+import java.util.Locale
 import fit.asta.health.resources.strings.R as StringR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -69,6 +81,11 @@ fun AlarmSettingScreen(
 ) {
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState()
+    val state = rememberDateRangePickerState(
+        initialSelectedStartDateMillis = alarmSettingUiState.selectedStartDateMillis,
+        initialSelectedEndDateMillis = alarmSettingUiState.selectedEndDateMillis,
+        yearRange = DatePickerDefaults.YearRange,
+    )
     var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
@@ -156,6 +173,7 @@ fun AlarmSettingScreen(
                     currentBottomSheet = TIME
                     openSheet()
                 }
+
                 RepeatAlarm(weekdays = alarmSettingUiState.week,
                     onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
                 OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
@@ -165,6 +183,19 @@ fun AlarmSettingScreen(
                     onNavigateToClickText = null,
                     mCheckedState = alarmSettingUiState.status,
                     onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
+                DateSelection(imageIcon = Icons.Default.CalendarMonth,
+                    title = stringResource(id = StringR.string.date_range),
+                    arrowTitle = "${getFormattedDate(alarmSettingUiState.selectedStartDateMillis)} : ${
+                        if (alarmSettingUiState.selectedEndDateMillis != null)
+                            alarmSettingUiState.selectedEndDateMillis?.let {
+                                getFormattedDate(it)
+                            } else "Optional"
+                    } ",
+                    btnEnabled = true, color = tagBg,
+                    onNavigateAction = {
+                        currentBottomSheet = DATERANGE
+                        openSheet()
+                    })
                 TextSelection(imageIcon = Icons.Default.Tag,
                     title = stringResource(id = StringR.string.tag),
                     testTag = stringResource(id = StringR.string.tag),
@@ -173,7 +204,8 @@ fun AlarmSettingScreen(
                     onNavigateAction = {
                         navTagSelection()
                     })
-                TextSelection(imageIcon = Icons.Default.Label,
+                TextSelection(
+                    imageIcon = Icons.Default.Label,
                     title = stringResource(id = StringR.string.label),
                     testTag = stringResource(id = StringR.string.label),
                     arrowTitle = alarmSettingUiState.alarmName,
@@ -255,7 +287,8 @@ fun AlarmSettingScreen(
                     sheetLayout = it,
                     closeSheet = { closeSheet() },
                     aSEvent = aSEvent,
-                    alarmSettingUiState = alarmSettingUiState
+                    alarmSettingUiState = alarmSettingUiState,
+                    state = state
                 )
             }
         },
@@ -264,14 +297,15 @@ fun AlarmSettingScreen(
 }
 
 enum class AlarmCreateBottomSheetTypes {
-    LABEL, DESCRIPTION, REMINDER, VIBRATION, TIME
+    LABEL, DESCRIPTION, REMINDER, VIBRATION, TIME, DATERANGE
 }
 
-@OptIn(ExperimentalComposeUiApi::class)
+@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
     alarmSettingUiState: ASUiState,
+    state: DateRangePickerState,
     closeSheet: () -> Unit,
     aSEvent: (AlarmSettingEvent) -> Unit
 ) {
@@ -377,6 +411,34 @@ fun AlarmCreateBtmSheetLayout(
                 }, onCancel = closeSheet
             )
         }
+
+        DATERANGE -> {
+            Box(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .height(600.dp)
+            ) {
+                DateRangePickerSample(state)
+                AppFilledButton(
+                    onClick = {
+                        state.selectedStartDateMillis?.let { start ->
+                            aSEvent(
+                                AlarmSettingEvent.SetDateRange(
+                                    start,
+                                    state.selectedEndDateMillis
+                                )
+                            )
+                        }
+                        closeSheet()
+                    },
+                    modifier = Modifier
+                        .align(Alignment.BottomEnd)
+                        .padding(end = 16.dp)
+                        .navigationBarsPadding(),
+                    textToShow = "Done"
+                )
+            }
+        }
     }
 
 }
@@ -424,3 +486,68 @@ private fun SoundOptionsUI() {
     }
 }
 
+fun getFormattedDate(timeInMillis: Long, format: String = "dd MMM yy"): String {
+    val calender = Calendar.getInstance()
+    calender.timeInMillis = timeInMillis
+    val dateFormat = SimpleDateFormat(format, Locale.getDefault())
+    return dateFormat.format(calender.timeInMillis)
+}
+
+fun dateValidator(): (Long) -> Boolean {
+    return { timeInMillis ->
+        val selectedDate = Calendar.getInstance()
+        selectedDate.timeInMillis = timeInMillis
+        val todayCalendar = Calendar.getInstance()
+
+        (todayCalendar.get(Calendar.YEAR) == selectedDate.get(Calendar.YEAR) &&
+                todayCalendar.get(Calendar.DAY_OF_YEAR) == selectedDate.get(Calendar.DAY_OF_YEAR)) ||
+                timeInMillis > Calendar.getInstance().timeInMillis
+    }
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun DateRangePickerSample(state: DateRangePickerState) {
+    DateRangePicker(
+        state = state,
+        modifier = Modifier,
+        dateValidator = dateValidator(),
+        title = {
+            TitleTexts.Level2(
+                text = "Select date range ",
+                textAlign = TextAlign.Center,
+                modifier = Modifier.padding(16.dp)
+            )
+        },
+        headline = {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(16.dp)
+            ) {
+                Box(Modifier.weight(1f)) {
+                    (if (state.selectedStartDateMillis != null) state.selectedStartDateMillis?.let {
+                        getFormattedDate(it, "dd/MM/yyyy")
+                    } else "Start Date")?.let { BodyTexts.Level2(text = it) }
+                }
+                Box(Modifier.weight(1f)) {
+                    (if (state.selectedEndDateMillis != null) state.selectedEndDateMillis?.let {
+                        getFormattedDate(it, "dd/MM/yyyy")
+                    } else "End Date")?.let { BodyTexts.Level2(text = it) }
+                }
+                Box(Modifier.weight(0.2f)) {
+                    AppIcon(imageVector = Icons.Default.Done, contentDescription = "Okk")
+                }
+
+            }
+        },
+        showModeToggle = false,
+        colors = DatePickerDefaults.colors(
+            disabledDayContentColor = Color.Gray,
+            todayDateBorderColor = Color.Blue,
+            dayInSelectionRangeContainerColor = Color.LightGray,
+            dayInSelectionRangeContentColor = Color.White,
+            selectedDayContainerColor = Color.Green
+        )
+    )
+}

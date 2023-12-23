@@ -15,6 +15,7 @@ sealed class AlarmSettingEvent {
     data class SetReminderMode(val choice: String) : AlarmSettingEvent()
     data class SetVibrationIntensity(val vibration: VibrationPattern) : AlarmSettingEvent()
     data class SetVibration(val choice: Boolean) : AlarmSettingEvent()
+    data class SetDateRange(val start: Long, val end: Long?) : AlarmSettingEvent()
     data class SetSound(val tone: ToneUiState) : AlarmSettingEvent()
     data class SetImportant(val important: Boolean) : AlarmSettingEvent()
     data class Save(val context: Context) : AlarmSettingEvent()

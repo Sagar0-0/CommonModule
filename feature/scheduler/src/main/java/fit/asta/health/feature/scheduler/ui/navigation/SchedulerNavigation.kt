@@ -93,6 +93,10 @@ fun NavGraphBuilder.schedulerNavigation(
                         is AlarmSettingEvent.ResetUi -> {
                             schedulerViewModel.resetUi()
                         }
+
+                        is AlarmSettingEvent.SetDateRange -> {
+                            schedulerViewModel.setDateRange(uiEvent.start, uiEvent.end)
+                        }
                     }
                 },
                 navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },

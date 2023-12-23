@@ -79,6 +79,38 @@ fun TextSelection(
 }
 
 @Composable
+fun DateSelection(
+    title: String,
+    arrowTitle: String = "",
+    btnEnabled: Boolean = false,
+    imageIcon: ImageVector,
+    color: Color? = null,
+    onNavigateAction: () -> Unit,
+) {
+
+    Row(
+        modifier = Modifier
+            .fillMaxWidth(),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+        verticalAlignment = Alignment.CenterVertically
+    ) {
+        Box(contentAlignment = Alignment.Center) {
+            AppIcon(
+                imageVector = imageIcon,
+                contentDescription = null,
+                tint = color ?: AppTheme.colors.primary
+            )
+        }
+        TitleTexts.Level2(
+            text = title,
+            color = color ?: AppTheme.colors.onSecondaryContainer
+        )
+
+        SelectableText(arrowTitle, btnEnabled, onNavigateAction)
+    }
+}
+
+@Composable
 fun SelectableText(arrowTitle: String, btnEnabled: Boolean = true, onClick: () -> Unit = {}) {
     AppTextButton(textToShow = arrowTitle, enabled = btnEnabled, onClick = onClick)
 }

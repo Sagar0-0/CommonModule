@@ -88,6 +88,12 @@ class SchedulerViewModel
         }
     }
 
+    fun setDateRange(start: Long, end: Long?) {
+        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
+            selectedStartDateMillis = start,
+            selectedEndDateMillis = end
+        )
+    }
 
     private fun getEditUiData() {
         viewModelScope.launch {
@@ -215,7 +221,8 @@ class SchedulerViewModel
 
     fun selectedTag(tag: TagEntity) {
         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-            tagId = tag.id, tagName = tag.name, tagUrl = tag.url
+            tagId = tag.id, tagName = tag.name, tagUrl = tag.url,
+            alarmName = tag.ttl, alarmDescription = tag.dsc
         )
     }
 

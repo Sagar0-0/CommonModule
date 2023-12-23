@@ -3,6 +3,7 @@ package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 import fit.asta.health.data.scheduler.db.entity.AlarmInstance
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.feature.scheduler.util.VibrationPattern
+import java.util.Calendar
 
 
 data class ASUiState(
@@ -47,7 +48,9 @@ data class ASUiState(
     var uDate: String = "1",
 
     //save
-    val alarmList: List<AlarmInstance> = emptyList()
+    val alarmList: List<AlarmInstance> = emptyList(),
+    var selectedStartDateMillis: Long = Calendar.getInstance().timeInMillis,
+    var selectedEndDateMillis: Long? = null,
 )
 
 
