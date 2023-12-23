@@ -3,11 +3,16 @@ package fit.asta.health
 import android.app.Application
 import android.app.NotificationChannel
 import android.app.NotificationManager
+import android.content.BroadcastReceiver
 import android.content.Context
+import android.content.Intent
+import android.content.IntentFilter
 import android.os.Build
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
+import kotlinx.coroutines.flow.MutableStateFlow
+import java.time.LocalDate
 
 @HiltAndroidApp
 class HealthCareApp : /*MultiDexApplication*/ Application() {
@@ -20,10 +25,12 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             private set
     }
 
+    val currentDate = MutableStateFlow<LocalDate>(LocalDate.now())
     override fun onCreate() {
         super.onCreate()
         mContext = this
         instance = this
+        registerMidnightTimer()
         createNotificationChannel()
         createNotificationChannelForActivity()
 //        WorkManager.initialize(
@@ -63,6 +70,25 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
             val notificationManager =
                 getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
             notificationManager.createNotificationChannel(channel)
+        }
+    }
+
+    private fun registerMidnightTimer() {
+        val intentFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_TIME_TICK)
+            addAction(Intent.ACTION_TIME_CHANGED)
+            addAction(Intent.ACTION_TIMEZONE_CHANGED)
+        }
+        registerReceiver(midnightBroadcastReceiver, intentFilter)
+    }
+
+    private val midnightBroadcastReceiver = object : BroadcastReceiver() {
+
+        override fun onReceive(context: Context?, intent: Intent?) {
+            val today = LocalDate.now()
+            if (today != currentDate.value) {
+                currentDate.value = today
+            }
         }
     }
 }

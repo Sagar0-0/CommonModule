@@ -51,6 +51,9 @@ fun UserSubscribedPlanSection(userSubscribedPlan: SubscriptionResponse.UserSubsc
                     UserSubscribedPlanStatusType.TEMPORARY_INACTIVE -> {
                         AppIcon(imageVector = Icons.Default.Warning)
                     }
+                    UserSubscribedPlanStatusType.NOT_BOUGHT -> {
+                        AppIcon(imageVector = Icons.Default.Warning)
+                    }
                 }
                 TitleTexts.Level3(text = "Expiry: " + userSubscribedPlan.expBy)
             }

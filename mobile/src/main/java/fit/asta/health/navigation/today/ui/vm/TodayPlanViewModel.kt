@@ -31,6 +31,7 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.LocalTime
+import java.time.ZoneId
 import java.util.Calendar
 import javax.inject.Inject
 
@@ -167,106 +168,77 @@ class TodayPlanViewModel @Inject constructor(
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()
                 _alarmListEvening.clear()
-//                val alarmList = mutableStateListOf<AlarmEntity>()
-//                alarmList.clear()
-//                alarmList.addAll(list.filter {
-//                    currentTime.isBefore(LocalTime.of(it.time.hours, it.time.minutes))
-//                })
+                val day = calendarUiModel.value.selectedDate.date
+                val calendar1 = Calendar.getInstance()
+
                 Log.d("TAG", "getAlarms: ${calendarUiModel.value.selectedDate.date.dayOfWeek}")
                 list.forEach {
-                    if (it.status) {
-                        if (it.daysOfWeek.isRepeating) {
-                            if (it.daysOfWeek.isBitOn(calendarUiModel.value.selectedDate.date.dayOfWeek.value)) {
-                                when (it.time.hours) {
-                                    in 0..2 -> {
-                                        if (it.time.minutes > 0) _alarmListMorning.add(it)
-                                        else _alarmListEvening.add(it)
-                                    }
+                    calendar1.timeInMillis = it.selectedStartDateMillis
+                    val comparisonStartResult = day.compareTo(
+                        calendar1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                    )
 
-                                    in 3..12 -> {
-                                        if (it.time.minutes > 0) _alarmListAfternoon.add(it)
-                                        else _alarmListMorning.add(it)
-                                    }
+                    if (it.status && comparisonStartResult >= 0) {
+                        if (it.selectedEndDateMillis != null) {
+                            calendar1.timeInMillis = it.selectedEndDateMillis!!
+                            val comparisonEndResult = day.compareTo(
+                                calendar1.toInstant().atZone(ZoneId.systemDefault()).toLocalDate()
+                            )
+                            if (comparisonEndResult <= 0) {
+                                if (it.daysOfWeek.isRepeating) {
+                                    if (it.daysOfWeek.isBitOn(calendarUiModel.value.selectedDate.date.dayOfWeek.value)) {
+                                        when (it.time.hours) {
+                                            in 0..2 -> {
+                                                if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                                else _alarmListEvening.add(it)
+                                            }
 
-                                    in 13..16 -> {
-                                        if (it.time.minutes > 0) _alarmListEvening.add(it)
-                                        else _alarmListAfternoon.add(it)
-                                    }
+                                            in 3..12 -> {
+                                                if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                                else _alarmListMorning.add(it)
+                                            }
 
-                                    in 17..23 -> {
-                                        _alarmListEvening.add(it)
-                                    }
-                                }
-                            }
-                        } else {
-                            if (calendarUiModel.value.selectedDate.isToday) {
-                                when (it.time.hours) {
-                                    in 0..2 -> {
-                                        if (it.time.minutes > 0) _alarmListMorning.add(it)
-                                        else _alarmListEvening.add(it)
-                                    }
+                                            in 13..16 -> {
+                                                if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                                else _alarmListAfternoon.add(it)
+                                            }
 
-                                    in 3..12 -> {
-                                        if (it.time.minutes > 0) _alarmListAfternoon.add(it)
-                                        else _alarmListMorning.add(it)
+                                            in 17..23 -> {
+                                                _alarmListEvening.add(it)
+                                            }
+                                        }
                                     }
+                                } else {
+                                    if (calendarUiModel.value.selectedDate.isToday) {
+                                        when (it.time.hours) {
+                                            in 0..2 -> {
+                                                if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                                else _alarmListEvening.add(it)
+                                            }
 
-                                    in 13..16 -> {
-                                        if (it.time.minutes > 0) _alarmListEvening.add(it)
-                                        else _alarmListAfternoon.add(it)
-                                    }
+                                            in 3..12 -> {
+                                                if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                                else _alarmListMorning.add(it)
+                                            }
 
-                                    in 17..23 -> {
-                                        _alarmListEvening.add(it)
+                                            in 13..16 -> {
+                                                if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                                else _alarmListAfternoon.add(it)
+                                            }
+
+                                            in 17..23 -> {
+                                                _alarmListEvening.add(it)
+                                            }
+                                        }
                                     }
                                 }
                             }
                         }
                     }
-//                    if (it.status && it.skipDate != LocalDate.now().dayOfMonth) {
-//                        val today = if (it.daysOfWeek.isRepeating) {
-//                            it.daysOfWeek.isBitOn(today)
-//                        } else true
-//                        if (today) {
-//                            when (it.time.hours) {
-//                                in 0..2 -> {
-//                                    if (it.time.minutes > 0) _alarmListMorning.add(it)
-//                                    else _alarmListEvening.add(it)
-//                                }
-//
-//                                in 3..12 -> {
-//                                    if (it.time.minutes > 0) _alarmListAfternoon.add(it)
-//                                    else _alarmListMorning.add(it)
-//                                }
-//
-//                                in 13..16 -> {
-//                                    if (it.time.minutes > 0) _alarmListEvening.add(it)
-//                                    else _alarmListAfternoon.add(it)
-//                                }
-//
-//                                in 17..23 -> {
-//                                    _alarmListEvening.add(it)
-//                                }
-//                            }
-//                        }
-//                    }
                 }
-
-//                val alarmTime = LocalTime.of(21, 0)
-//                if (currentTime.isAfter(alarmTime) || currentTime == alarmTime) {
-//                    _alarmListNextDay.clear()
-//                    var nextDay = today + 1
-//                    if (nextDay > Calendar.SATURDAY) {
-//                        nextDay = Calendar.SUNDAY
-//                    }
-//                    list.forEach {
-//                        if (it.status && it.daysOfWeek.isRepeating &&
-//                            it.daysOfWeek.isBitOn(nextDay)
-//                        ) {
-//                            _alarmListNextDay.add(it)
-//                        }
-//                    }
-//                }
+                _alarmListMorning.sortBy { it.time.hours * 60 + it.time.minutes }
+                _alarmListAfternoon.sortBy { it.time.hours * 60 + it.time.minutes }
+                _alarmListEvening.sortBy { it.time.hours * 60 + it.time.minutes }
             }
         }
     }

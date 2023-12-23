@@ -20,6 +20,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
+import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.service.StepController
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
@@ -43,6 +45,12 @@ object AppModule {
     @Provides
     fun provideApplication(@ApplicationContext app: Context): HealthCareApp {
         return app as HealthCareApp
+    }
+
+    @Singleton
+    @Provides
+    fun provideStepController(app: HealthCareApp, dayUseCases: DayUseCases): StepController {
+        return StepController(dayUseCases, app.currentDate)
     }
 
     @Provides
