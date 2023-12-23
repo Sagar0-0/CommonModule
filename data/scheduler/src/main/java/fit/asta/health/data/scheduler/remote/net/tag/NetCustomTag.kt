@@ -22,12 +22,3 @@ data class NetCustomTag(
     @Transient
     var localUrl: Uri? = null,
 ) : Parcelable
-
-//{
-//    "id": "633eac4769e8a8a7f88421d8",
-//    "uid": "000000000000000000000000",
-//    "name": "Breathing",
-//    "ttl":"",
-//    "dsc":"",
-//    "url": "/tags/Breathing+Tag.png"
-//}

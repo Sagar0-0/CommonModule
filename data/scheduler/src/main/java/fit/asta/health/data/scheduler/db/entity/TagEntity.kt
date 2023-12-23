@@ -16,6 +16,10 @@ data class TagEntity(
     var name: String = "",
     @SerializedName("url")
     var url: String = "",
+    @SerializedName("dsc")
+    var dsc: String = "",
+    @SerializedName("ttl")
+    var ttl: String = "",
     @PrimaryKey(autoGenerate = false)
     @SerializedName("id")
     var id: String = "",

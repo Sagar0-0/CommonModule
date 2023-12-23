@@ -8,7 +8,6 @@ import fit.asta.health.data.scheduler.remote.model.WeatherData
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
 
-
 fun TodaySchedules.getTodayData(): TodayData {
     return TodayData(
         temperature = this.weather.currentWeather.temperature.toString(),
@@ -30,6 +29,11 @@ fun TodaySchedules.getTodayData(): TodayData {
 
 fun TagData.toTagEntity(): TagEntity {
     return TagEntity(
-        id = this.id, uid = this.uid, name = this.name, url = this.url
+        id = this.id,
+        uid = this.uid,
+        name = this.name,
+        url = this.url,
+        ttl = this.ttl,
+        dsc = this.dsc
     )
 }

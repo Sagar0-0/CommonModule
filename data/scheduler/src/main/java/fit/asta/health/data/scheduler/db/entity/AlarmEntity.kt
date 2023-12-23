@@ -62,7 +62,13 @@ data class AlarmEntity(
     @SerializedName("wk")
     var daysOfWeek: Weekdays = Weekdays.NONE,
     @ColumnInfo(name = "skipDate")
-    var skipDate: Int = -1
+    var skipDate: Int = -1,
+    @ColumnInfo(name = "startDate")
+    @SerializedName("startDate")
+    var selectedStartDateMillis: Long,
+    @ColumnInfo(name = "endDate")
+    @SerializedName("endDate")
+    var selectedEndDateMillis: Long? = null,
 ) : Serializable, Parcelable {
 
     override fun hashCode(): Int {
