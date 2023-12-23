@@ -30,21 +30,29 @@ import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.HealthConnectClient
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import com.smarttoolfactory.colorpicker.util.roundToTwoDigits
+import fit.asta.health.common.health_data.ExerciseSessionData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.formatTime
@@ -68,12 +76,24 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.walking.presentation.component.InstalledMessage
+import fit.asta.health.feature.walking.presentation.component.NotInstalledMessage
 import fit.asta.health.feature.walking.view.component.StepsProgressCard
+import fit.asta.health.feature.walking.vm.WalkingViewModel
 import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StepsScreen(
+    healthConnectAvailability: Int,
+    onResumeAvailabilityCheck: () -> Unit,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
+    permissions: Set<String>,
+    permissionsGranted: Boolean,
+    sessionMetrics: ExerciseSessionData,
+    uiState: WalkingViewModel.HealthUiState,
+    onPermissionsResult: () -> Unit = {},
+    onPermissionsLaunch: (Set<String>) -> Unit = {},
     list: SnapshotStateList<Day>,
     state: UiState<StepsUiState>,
     selectedData: SnapshotStateList<Prc>,
@@ -92,6 +112,29 @@ fun StepsScreen(
     )
     var showTargetDialogWithResult by remember { mutableStateOf(false) }
     val context = LocalContext.current
+    val currentOnAvailabilityCheck by rememberUpdatedState(onResumeAvailabilityCheck)
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_RESUME) {
+                currentOnAvailabilityCheck()
+            }
+        }
+
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
+    LaunchedEffect(uiState) {
+        // If the initial data load has not taken place, attempt to load the data.
+        if (uiState is WalkingViewModel.HealthUiState.Uninitialized) {
+            onPermissionsResult()
+        }
+    }
     when (state) {
         UiState.Loading -> {
             Box(
@@ -144,6 +187,21 @@ fun StepsScreen(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    when (healthConnectAvailability) {
+                        HealthConnectClient.SDK_AVAILABLE -> if (!permissionsGranted) {
+                            item {
+                                InstalledMessage(onPermissionsLaunch = {
+                                    onPermissionsLaunch(permissions)
+                                })
+                            }
+                        }
+
+                        HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> item {
+                            NotInstalledMessage()
+                        }
+
+                        HealthConnectClient.SDK_UNAVAILABLE -> {}
+                    }
                     item {
                         AppSurface(
                             modifier = Modifier.fillMaxWidth()
@@ -170,19 +228,21 @@ fun StepsScreen(
                             StepsProgressCard(
                                 modifier = Modifier.weight(.3f),
                                 title = "Kilometer",
-                                titleValue = "${state.data.distance.roundToTwoDigits()}",
+                                titleValue = sessionMetrics.totalDistance?.inKilometers?.toFloat()
+                                    ?.roundToTwoDigits()?.toString() ?: "0",
                                 id = R.drawable.total_distance
                             )
                             StepsProgressCard(
                                 modifier = Modifier.weight(.3f),
                                 title = "Steps",
-                                titleValue = "${state.data.stepCount}",
+                                titleValue = sessionMetrics.totalSteps?.toInt()?.toString() ?: "0",
                                 id = R.drawable.runing
                             )
                             StepsProgressCard(
                                 modifier = Modifier.weight(.3f),
                                 title = "Calories",
-                                titleValue = "${state.data.caloriesBurned}",
+                                titleValue = (sessionMetrics.totalEnergyBurned?.inCalories?.toFloat()
+                                    ?.div(1000f)?.roundToTwoDigits()?.toString()) ?: "0",
                                 id = R.drawable.calories
                             )
                         }

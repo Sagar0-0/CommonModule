@@ -1,11 +1,21 @@
 package fit.asta.health.feature.walking.vm
 
+import android.os.RemoteException
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
+import androidx.health.connect.client.permission.HealthPermission
+import androidx.health.connect.client.records.DistanceRecord
+import androidx.health.connect.client.records.StepsRecord
+import androidx.health.connect.client.records.TotalCaloriesBurnedRecord
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smarttoolfactory.colorpicker.util.roundToTwoDigits
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.health_data.ExerciseSessionData
+import fit.asta.health.common.health_data.HealthConnectManager
 import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
@@ -19,7 +29,6 @@ import fit.asta.health.data.walking.data.source.network.request.Target
 import fit.asta.health.data.walking.domain.model.Day
 import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
 import fit.asta.health.data.walking.domain.usecase.DayUseCases
-import fit.asta.health.data.walking.service.FitManager
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.walking.view.home.StepsUiState
 import fit.asta.health.feature.walking.view.home.TargetData
@@ -33,22 +42,24 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
+import java.io.IOException
 import java.time.LocalDate
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
 class WalkingViewModel @Inject constructor(
     private val dayUseCases: DayUseCases,
     private val repo: WalkingToolRepo,
-    private val fitManager: FitManager,
     private val prefManager: PrefManager,
+    private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
 
 
     private val _sessionList = mutableStateListOf<Day>()
     val sessionList = MutableStateFlow(_sessionList)
 
-
+    val availability = healthConnectManager.availability
     private var getTodayProgressJob: Job? = null
 
     private val _mutableState = MutableStateFlow<UiState<StepsUiState>>(UiState.Idle)
@@ -75,6 +86,78 @@ class WalkingViewModel @Inject constructor(
         getTodayProgressList(LocalDate.now())
     }
 
+    val permissions = setOf(
+        HealthPermission.getReadPermission(StepsRecord::class),
+        HealthPermission.getReadPermission(DistanceRecord::class),
+        HealthPermission.getReadPermission(TotalCaloriesBurnedRecord::class),
+    )
+
+    var permissionsGranted = mutableStateOf(false)
+        private set
+
+    var sessionMetrics: MutableState<ExerciseSessionData> = mutableStateOf(ExerciseSessionData())
+        private set
+
+    var healthUiState: HealthUiState by mutableStateOf(HealthUiState.Uninitialized)
+        private set
+
+    val permissionsLauncher = healthConnectManager.requestPermissionsActivityContract()
+
+    fun initialLoad() {
+        readAssociatedSessionData()
+    }
+
+    private fun readAssociatedSessionData() {
+        viewModelScope.launch {
+            tryWithPermissionsCheck {
+                healthConnectManager.readAssociatedSessionData().collect {
+                    sessionMetrics.value = it
+                }
+            }
+        }
+    }
+
+    fun checkAvailability() {
+        healthConnectManager.checkAvailability()
+    }
+
+    /**
+     * Provides permission check and error handling for Health Connect suspend function calls.
+     *
+     * Permissions are checked prior to execution of [block], and if all permissions aren't granted
+     * the [block] won't be executed, and [permissionsGranted] will be set to false, which will
+     * result in the UI showing the permissions button.
+     *
+     * Where an error is caught, of the type Health Connect is known to throw, [HealthUiState] is set to
+     * [HealthUiState.Error], which results in the snackbar being used to show the error message.
+     */
+    private suspend fun tryWithPermissionsCheck(block: suspend () -> Unit) {
+        permissionsGranted.value = healthConnectManager.hasAllPermissions(permissions)
+        healthUiState = try {
+            if (permissionsGranted.value) {
+                block()
+            }
+            HealthUiState.Done
+        } catch (remoteException: RemoteException) {
+            HealthUiState.Error(remoteException)
+        } catch (securityException: SecurityException) {
+            HealthUiState.Error(securityException)
+        } catch (ioException: IOException) {
+            HealthUiState.Error(ioException)
+        } catch (illegalStateException: IllegalStateException) {
+            HealthUiState.Error(illegalStateException)
+        }
+    }
+
+    sealed class HealthUiState {
+        data object Uninitialized : HealthUiState()
+        data object Done : HealthUiState()
+
+        // A random UUID is used in each Error object to allow errors to be uniquely identified,
+        // and recomposition won't result in multiple snackbars.
+        data class Error(val exception: Throwable, val uuid: UUID = UUID.randomUUID()) :
+            HealthUiState()
+    }
 
     fun setStepsPermissionRejectedCount(count: Int) {
         viewModelScope.launch { repo.updateStepsPermissionRejectedCount(count) }
@@ -83,10 +166,9 @@ class WalkingViewModel @Inject constructor(
     private fun startProgressHome() {
         _mutableState.value = UiState.Loading
         viewModelScope.launch {
-            fitManager.getDailyFitnessData().collect { dailyFit ->
-                val result = repo.getHomeData("6309a9379af54f142c65fbfe")
-                _mutableState.value = when (result) {
-                    is ResponseState.Success -> {
+            val result = repo.getHomeData("6309a9379af54f142c65fbfe")
+            _mutableState.value = when (result) {
+                is ResponseState.Success -> {
                         _selectedData.clear()
                         _selectedData.addAll(result.data.walkingTool.prc)
                         target.value = TargetData(
@@ -95,9 +177,9 @@ class WalkingViewModel @Inject constructor(
                         )
                         UiState.Success(
                             StepsUiState(
-                                stepCount = dailyFit.stepCount,
-                                caloriesBurned = dailyFit.caloriesBurned,
-                                distance = dailyFit.distance,
+                                stepCount = 0,
+                                caloriesBurned = 0,
+                                distance = 0f,
                                 recommendDistance = result.data.walkingRecommendation.recommend.distance.distance,
                                 recommendDuration = result.data.walkingRecommendation.recommend.duration.duration
                             )
@@ -116,7 +198,6 @@ class WalkingViewModel @Inject constructor(
                         UiState.NoInternet
                     }
                 }
-            }
         }
     }
 
@@ -256,8 +337,4 @@ class WalkingViewModel @Inject constructor(
         }
     }
 
-    fun checkPermission() = fitManager.checkFitPermission()
-    fun requestPermission() {
-        fitManager.requestPermissions()
-    }
 }

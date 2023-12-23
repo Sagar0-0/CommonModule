@@ -1,8 +1,10 @@
 package fit.asta.health.feature.walking.nav
 
 import android.content.Intent
+import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -13,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.data.walking.service.StepCounterService
+import fit.asta.health.data.walking.service.StepService
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
 import fit.asta.health.feature.walking.view.home.StepsScreen
 import fit.asta.health.feature.walking.view.permission.StepsPermissionScreen
@@ -46,27 +49,37 @@ fun NavGraphBuilder.stepsCounterNavigation(
         }
     ) {
         composable(route = StepsCounterScreen.StepsPermissionScreen.route) { navBackStackEntry ->
+            val context = LocalContext.current
             val walkingViewModel: WalkingViewModel =
                 navBackStackEntry.sharedViewModel(navController)
             val stepsPermissionCount by walkingViewModel.stepsPermissionRejectedCount.collectAsStateWithLifecycle()
-            StepsPermissionScreen(stepsPermissionCount = stepsPermissionCount, checkPermission = {
-                walkingViewModel.checkPermission()
-            }, setPermission = {
-                walkingViewModel.requestPermission()
-            }, goToSteps = {
-                navController.popBackStack()
-                navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
-            }, setPermissionCount = {
-                walkingViewModel.setStepsPermissionRejectedCount(it)
-            })
+            StepsPermissionScreen(stepsPermissionCount = stepsPermissionCount,
+                goToSteps = {
+                    val launchIntent = Intent(context, StepService::class.java)
+                    ContextCompat.startForegroundService(context, launchIntent)
+                    navController.popBackStack()
+                    navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
+                }, setPermissionCount = {
+                    walkingViewModel.setStepsPermissionRejectedCount(it)
+                })
         }
         composable(route = StepsCounterScreen.StepsCounterHomeScreen.route) { navBackStackEntry ->
+            val context = LocalContext.current
+
             val walkingViewModel: WalkingViewModel =
                 navBackStackEntry.sharedViewModel(navController)
             val state by walkingViewModel.state.collectAsStateWithLifecycle()
             val list by walkingViewModel.sessionList.collectAsStateWithLifecycle()
             val selectedData by walkingViewModel.selectedData.collectAsStateWithLifecycle()
-            val context = LocalContext.current
+            val availability by walkingViewModel.availability
+            val permissionsGranted by walkingViewModel.permissionsGranted
+            val sessionMetrics by walkingViewModel.sessionMetrics
+            val permissions = walkingViewModel.permissions
+            val onPermissionsResult = { walkingViewModel.initialLoad() }
+            val permissionsLauncher =
+                rememberLauncherForActivityResult(walkingViewModel.permissionsLauncher) {
+                    onPermissionsResult()
+                }
             StepsScreen(
                 state = state, list = list,
                 onStart = {
@@ -81,7 +94,21 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 },
                 setTarget = { dis, dur -> walkingViewModel.setTarget(dis, dur) },
                 onBack = onBack,
-                onScheduler = onScheduler
+                onScheduler = onScheduler,
+                healthConnectAvailability = availability,
+                onResumeAvailabilityCheck = {
+                    walkingViewModel.checkAvailability()
+                },
+                permissions = permissions,
+                permissionsGranted = permissionsGranted,
+                sessionMetrics = sessionMetrics,
+                uiState = walkingViewModel.healthUiState,
+                onPermissionsResult = {
+                    walkingViewModel.initialLoad()
+                },
+                onPermissionsLaunch = { values ->
+                    permissionsLauncher.launch(values)
+                }
             )
         }
         composable(route = StepsCounterScreen.StepsProgressScreen.route) {

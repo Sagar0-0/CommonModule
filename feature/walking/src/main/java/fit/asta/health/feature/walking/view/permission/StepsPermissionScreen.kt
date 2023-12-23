@@ -11,17 +11,12 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -36,24 +31,18 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 fun StepsPermissionScreen(
     stepsPermissionCount: Int,
     goToSteps: () -> Unit,
-    checkPermission: () -> Boolean,
-    setPermission: () -> Unit,
     setPermissionCount: (Int) -> Unit
 ) {
-    var state by remember {
-        mutableStateOf(true)
-    }
+
     val context = LocalContext.current as Activity
-    LaunchedEffect(key1 = Unit, key2 = state, block = {
+    LaunchedEffect(key1 = Unit, block = {
         if (ContextCompat.checkSelfPermission(
                 context,
                 Manifest.permission.ACTIVITY_RECOGNITION
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
-            if (checkPermission()) {
-                goToSteps()
-            }
+            goToSteps()
         }
 
     })
@@ -68,7 +57,7 @@ fun StepsPermissionScreen(
                     Toast.LENGTH_SHORT
                 ).show()
                 setPermissionCount(0)
-                state = false
+                goToSteps()
             } else {
                 Toast.makeText(
                     context,
@@ -87,7 +76,7 @@ fun StepsPermissionScreen(
             == PackageManager.PERMISSION_GRANTED
         ) {
             setPermissionCount(0)
-            state = false
+            goToSteps()
         } else {
             if (stepsPermissionCount > 2) {
                 Toast.makeText(
@@ -108,7 +97,7 @@ fun StepsPermissionScreen(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     stepsPermissionResultLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
                 } else {
-                    state = false
+                    goToSteps()
                 }
             }
         }
@@ -116,34 +105,15 @@ fun StepsPermissionScreen(
 
     AppScaffold(modifier = Modifier.fillMaxSize()) {
 
-        AnimatedContent(targetState = state, label = "permission") { targetState ->
-            if (targetState) {
-                PermissionScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    text = "Please let me see the total steps your phone detects",
-                    buttonText = "Access physical activity"
-                ) {
-                    // open steps permission
-                    checkPermissionAndLaunchScheduler()
-                }
-            } else {
-                PermissionScreen(
-                    modifier = Modifier
-                        .fillMaxSize()
-                        .padding(16.dp),
-                    text = "Now let me access your GoogleFit so I can see your steps data !",
-                    buttonText = "Enable GoogleFit"
-                ) {
-                    //ask googleFit permission
-                    if (!checkPermission()) {
-                        setPermission()
-                    } else {
-                        goToSteps()
-                    }
-                }
-            }
+        PermissionScreen(
+            modifier = Modifier
+                .fillMaxSize()
+                .padding(16.dp),
+            text = "Please let me see the total steps your phone detects",
+            buttonText = "Access physical activity"
+        ) {
+            // open steps permission
+            checkPermissionAndLaunchScheduler()
         }
     }
 }
