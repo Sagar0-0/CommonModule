@@ -79,4 +79,6 @@ dependencies {
     implementation("com.github.SmartToolFactory:Compose-AnimatedList:0.5.1")
     //TODO-------------------Low standard libraries - consider removing later---------------------//
     implementation(libs.androidx.hilt.navigation.compose)
+    implementation(libs.androidx.health.connect.client)
+    implementation(libs.androidx.concurrent.futures)
 }
