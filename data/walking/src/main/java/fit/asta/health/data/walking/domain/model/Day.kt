@@ -3,7 +3,6 @@ package fit.asta.health.data.walking.domain.model
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import fit.asta.health.data.walking.data.Settings
-import fit.asta.health.data.walking.service.DailyFitnessModel
 import java.time.LocalDate
 
 @Entity(tableName = "day")
@@ -72,8 +71,3 @@ fun Settings.toDay(
     pace = pace
 )
 
-fun Day.toDailyFitness() = DailyFitnessModel(
-    stepCount = steps,
-    caloriesBurned = calorieBurned.toInt(),
-    distance = distanceTravelled.toFloat()
-)

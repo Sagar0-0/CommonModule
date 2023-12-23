@@ -7,4 +7,6 @@ data class DayUseCases(
     val incrementStepDuration: IncrementStepDuration,
     val changeStepsState: ActiveStateOfSteps,
     val getAllDayData: GetTodayData,
+    val getDailyData: GetDailyData,
+    val incrementStepsInDaily: IncrementStepsInDaily
 )

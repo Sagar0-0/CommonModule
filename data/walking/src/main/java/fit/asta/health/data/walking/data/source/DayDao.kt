@@ -1,6 +1,7 @@
 package fit.asta.health.data.walking.data.source
 
 import androidx.room.*
+import fit.asta.health.data.walking.domain.model.AllDay
 import fit.asta.health.data.walking.domain.model.Day
 import kotlinx.coroutines.flow.Flow
 import java.time.LocalDate
@@ -15,6 +16,9 @@ interface DayDao {
     @Query("SELECT * FROM day WHERE date = :date ORDER BY startupTime DESC LIMIT 1")
     fun getDay(date: LocalDate): Flow<Day>
 
+    @Query("SELECT * FROM daily WHERE date = :date ")
+    fun getDailyData(date: LocalDate): Flow<AllDay?>
+
     @Query("SELECT * FROM day")
     suspend fun getAllDays(): List<Day>
 
@@ -23,6 +27,9 @@ interface DayDao {
 
     @Upsert
     suspend fun upsertDay(day: Day)
+
+    @Upsert
+    suspend fun upsertDailyData(allDay: AllDay)
 
 //    @Update(entity = Day::class)
 //    suspend fun updateDaySettings(day: DaySettings)

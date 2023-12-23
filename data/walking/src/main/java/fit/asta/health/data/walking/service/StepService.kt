@@ -15,7 +15,6 @@ import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.sensor.MeasurableSensor
-import fit.asta.health.common.utils.Constants.NOTIFICATION_TAG
 import fit.asta.health.data.walking.domain.usecase.DayUseCases
 import kotlinx.coroutines.launch
 import java.time.LocalDate
@@ -24,7 +23,7 @@ import fit.asta.health.resources.drawables.R as DrwR
 import fit.asta.health.resources.strings.R as StringR
 
 @AndroidEntryPoint
-class StepCounterService : LifecycleService() {
+class StepService : LifecycleService() {
 
     @Inject
     lateinit var stepsSensor: MeasurableSensor
@@ -33,12 +32,13 @@ class StepCounterService : LifecycleService() {
     @Inject
     lateinit var dayUseCases: DayUseCases
 
-    private lateinit var controller: StepCounterController
+    @Inject
+    lateinit var controller: StepController
 
     companion object {
         private const val NOTIFICATION_CHANNEL_ID = "step_counter_channel"
-        private const val NOTIFICATION_ID = 0x1
-        private const val PENDING_INTENT_ID = 0x1
+        private const val NOTIFICATION_ID = 0x2
+        private const val PENDING_INTENT_ID = 0x2
     }
 
     override fun onCreate() {
@@ -47,7 +47,8 @@ class StepCounterService : LifecycleService() {
             val notificationChannel = createNotificationChannel()
             registerNotificationChannel(notificationChannel)
         }
-        controller = StepCounterController(dayUseCases, lifecycleScope)
+        // Initialise controller
+
 
         // Create notification
         val notification = createNotification(controller.stats.value)
@@ -77,14 +78,13 @@ class StepCounterService : LifecycleService() {
         }
     }
 
-    private fun createNotification(state: StepCounterState): Notification = state.run {
+    private fun createNotification(state: StepState): Notification = state.run {
         val title = resources.getQuantityString(StringR.plurals.step_count, steps, steps)
-        val progress = if (steps == 0) 0 else (distanceTravelled * 100 / goalDistance).toInt()
         val content = getString(
-            StringR.string.step_counter_stats, calorieBurned, distanceTravelled, progress
+            StringR.string.step_counter_stats_daily, calorieBurned, distanceTravelled
         )
 
-        NotificationCompat.Builder(this@StepCounterService, NOTIFICATION_CHANNEL_ID)
+        NotificationCompat.Builder(this@StepService, NOTIFICATION_CHANNEL_ID)
             .setContentIntent(launchApplicationPendingIntent)
             .setSmallIcon(DrwR.drawable.runing)
             .setContentTitle(title)
@@ -99,7 +99,6 @@ class StepCounterService : LifecycleService() {
     private val launchApplicationPendingIntent
         get(): PendingIntent {
             val intent = Intent(this, Class.forName("fit.asta.health.MainActivity"))
-            intent.putExtra(NOTIFICATION_TAG, "walking")
             val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             return PendingIntent.getActivity(this, PENDING_INTENT_ID, intent, flags)
         }

@@ -8,6 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.health_data.HealthConnectManager
 import fit.asta.health.common.sensor.MeasurableSensor
 import fit.asta.health.common.sensor.StepsSensor
 import fit.asta.health.common.utils.IODispatcher
@@ -19,10 +20,12 @@ import fit.asta.health.data.walking.domain.repository.DayRepository
 import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
 import fit.asta.health.data.walking.domain.usecase.ActiveStateOfSteps
 import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.domain.usecase.GetDailyData
 import fit.asta.health.data.walking.domain.usecase.GetDay
 import fit.asta.health.data.walking.domain.usecase.GetTodayData
 import fit.asta.health.data.walking.domain.usecase.IncrementStepCount
 import fit.asta.health.data.walking.domain.usecase.IncrementStepDuration
+import fit.asta.health.data.walking.domain.usecase.IncrementStepsInDaily
 import fit.asta.health.data.walking.domain.usecase.SetDay
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
@@ -67,6 +70,11 @@ object WalkingModule {
         "steps-database"
     ).build()
 
+    @Singleton
+    @Provides
+    fun provideHealth(@ApplicationContext context: Context): HealthConnectManager {
+        return HealthConnectManager(context)
+    }
 
     @Singleton
     @Provides
@@ -79,11 +87,13 @@ object WalkingModule {
     fun provideUseCase(dayRepository: DayRepository): DayUseCases {
         return DayUseCases(
             getDay = GetDay(dayRepository),
+            getDailyData = GetDailyData(dayRepository),
             setDay = SetDay(dayRepository),
             incrementStepCount = IncrementStepCount(dayRepository),
             incrementStepDuration = IncrementStepDuration(dayRepository),
             changeStepsState = ActiveStateOfSteps(dayRepository),
-            getAllDayData = GetTodayData(dayRepository)
+            getAllDayData = GetTodayData(dayRepository),
+            incrementStepsInDaily = IncrementStepsInDaily(dayRepository)
         )
     }
 }
