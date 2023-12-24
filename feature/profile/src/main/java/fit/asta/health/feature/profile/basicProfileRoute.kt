@@ -14,7 +14,7 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.feature.profile.basic.ui.BasicProfileEvent
-import fit.asta.health.feature.profile.basic.ui.BasicProfileNewScreen
+import fit.asta.health.feature.profile.basic.ui.BasicProfileScreenUi
 import fit.asta.health.feature.profile.basic.vm.BasicProfileViewModel
 
 const val BASIC_PROFILE_GRAPH_ROUTE = "graph_basic_profile"
@@ -51,7 +51,7 @@ fun NavGraphBuilder.basicProfileRoute() {
             }
         }
 
-        BasicProfileNewScreen(
+        BasicProfileScreenUi(
             user = user,
             checkReferralCodeState = checkReferralCodeState,
             linkAccountState = linkAccountState,

@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -16,21 +15,20 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material3.ButtonDefaults
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.TextField
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -48,7 +46,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
-import androidx.compose.ui.unit.dp
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.model.domain.User
@@ -66,11 +63,11 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
-import fit.asta.health.designsystem.molecular.button.AppRadioButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
@@ -91,7 +88,7 @@ import fit.asta.otpfield.configuration.OTPConfigurations
 @Composable
 fun BasicProfilePreview() {
     AppTheme {
-        BasicProfileNewScreen(
+        BasicProfileScreenUi(
             checkReferralCodeState = UiState.Success(CheckReferralDTO()),
             linkAccountState = UiState.Success(User()),
             createBasicProfileState = UiState.Success(PutResponse()),
@@ -103,7 +100,7 @@ fun BasicProfilePreview() {
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun BasicProfileNewScreen(
+fun BasicProfileScreenUi(
     user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
     linkAccountState: UiState<User>,
@@ -193,11 +190,14 @@ fun BasicProfileNewScreen(
 
             else -> {}
         }
+
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .padding(paddingValues)
                 .verticalScroll(rememberScrollState()),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             ProfileImageUi(
                 profileImageUri = profileImageUri,
@@ -212,8 +212,6 @@ fun BasicProfileNewScreen(
             GenderUi(genderCode) { newGender ->
                 genderCode = newGender
             }
-
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             EmailUi(user.email) { cred ->
                 onEvent(BasicProfileEvent.Link(cred))
@@ -231,8 +229,6 @@ fun BasicProfileNewScreen(
                 }
             )
 
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
             ReferralUi(
                 refCode = referralCode,
                 checkReferralState = checkReferralCodeState,
@@ -249,8 +245,6 @@ fun BasicProfileNewScreen(
                 referralCode = it
                 isReferralChanged = true
             }
-
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             CreateButton(
                 modifier = Modifier
@@ -273,8 +267,6 @@ fun BasicProfileNewScreen(
                     )
                 )
             }
-
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
     }
 
@@ -293,12 +285,24 @@ fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
         verticalAlignment = Alignment.CenterVertically
     ) {
         genders.entries.forEach { entry ->
-            Column(horizontalAlignment = Alignment.CenterHorizontally) {
-                AppRadioButton(selected = gender == entry.value) {
+            AppCard(
+                colors = CardDefaults.cardColors(
+                    containerColor = if (gender == entry.value) {
+                        AppTheme.colors.surface
+                    } else {
+                        AppTheme.colors.inverseSurface
+                    }
+                ),
+                onClick = {
                     onValueChange(entry.value)
                 }
-                Spacer(modifier = Modifier.padding(AppTheme.spacing.level0))
-                TitleTexts.Level2(text = entry.key)
+            ) {
+                TitleTexts.Level2(
+                    modifier = Modifier
+                        .padding(AppTheme.spacing.level1)
+                        .align(Alignment.CenterHorizontally),
+                    text = entry.key
+                )
             }
         }
 
@@ -315,7 +319,6 @@ fun ProfileImageUi(
     ConstraintLayout(
         modifier = modifier
             .fillMaxSize()
-            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         val (image, button) = createRefs()
 
@@ -379,7 +382,7 @@ fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
 
     AppTextField(
         modifier = Modifier
-            .padding(AppTheme.spacing.level2)
+            .padding(horizontal = AppTheme.spacing.level2)
             .fillMaxWidth()
             .focusRequester(focusRequester),
         value = name,
@@ -402,7 +405,7 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
     if (gmail.isNullOrEmpty()) {
         GoogleSignIn(
             modifier = Modifier
-                .padding(AppTheme.spacing.level2)
+                .padding(horizontal = AppTheme.spacing.level2)
                 .fillMaxWidth()
                 .height(AppTheme.buttonSize.level6),
             textId = fit.asta.health.resources.strings.R.string.link_with_google_account
@@ -410,21 +413,32 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
             onClick(cred)
         }
     } else {
-        Row(
+        AppCard(
             modifier = Modifier
-                .padding(AppTheme.spacing.level2)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2)
         ) {
-            AppIcon(imageVector = Icons.Rounded.Email)
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-            TitleTexts.Level4(
-                modifier = Modifier.weight(1f),
-                text = gmail,
-                color = AppTheme.colors.onSurface
-            )
-            AppIcon(imageVector = Icons.Default.Verified)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
+                    AppIcon(imageVector = Icons.Rounded.Email)
+                    TitleTexts.Level3(
+                        modifier = Modifier.weight(1f),
+                        text = gmail,
+                        color = AppTheme.colors.onSurface
+                    )
+                }
+
+                AppIcon(
+                    imageVector = Icons.Default.Verified
+                )
+            }
         }
+
     }
 }
 
@@ -445,19 +459,25 @@ fun PhoneUi(
             onLinkAccount(cred)
         }
     } else {
-        Row(
+        AppCard(
             modifier = Modifier
-                .padding(AppTheme.spacing.level2)
-                .fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2)
         ) {
-            AppIcon(imageVector = Icons.Rounded.Phone)
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-            TitleTexts.Level4(
-                modifier = Modifier.weight(1f),
-                text = phoneNumber, color = AppTheme.colors.onSurface
-            )
-            AppIcon(imageVector = Icons.Default.Verified)
+            Row(
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                    AppIcon(imageVector = Icons.Rounded.Phone)
+                    TitleTexts.Level3(
+                        modifier = Modifier.weight(1f),
+                        text = phoneNumber, color = AppTheme.colors.onSurface
+                    )
+                }
+
+                AppIcon(imageVector = Icons.Default.Verified)
+            }
         }
     }
 }
@@ -471,37 +491,35 @@ fun ReferralUi(
     onValueChange: (String) -> Unit
 ) {
     val context = LocalContext.current
-    Crossfade(targetState = checkReferralState, label = "") { checkReferralCodeState ->
+    Crossfade(
+        targetState = checkReferralState,
+        label = ""
+    ) { checkReferralCodeState ->
         when (checkReferralCodeState) {
             is UiState.Idle -> {
                 val focusRequester = remember { FocusRequester() }
 
-                Column(
-                    Modifier
+                AppOutlinedTextField(
+                    modifier = Modifier
                         .fillMaxWidth()
                         .padding(horizontal = AppTheme.spacing.level2)
-                ) {
-                    TextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester),
-                        value = refCode,
-                        onValueChange = onValueChange,
-                        placeholder = {
-                            CaptionTexts.Level4(text = "Enter your Referral Code")
-                        },
-                        keyboardActions = KeyboardActions(onDone = {
-                            focusRequester.freeFocus()
-                        }),
-                        keyboardOptions = KeyboardOptions.Default.copy(
-                            imeAction = ImeAction.Done,
-                        )
-                    )
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                    VerifyButton(text = "Apply Referral Code") {
+                        .focusRequester(focusRequester),
+                    value = refCode,
+                    onValueChange = onValueChange,
+                    trailingIcon = Icons.Default.ArrowForwardIos,
+                    onTrailingIconClicked = {
                         onApplyReferralCode()
-                    }
-                }
+                    },
+                    placeholder = {
+                        CaptionTexts.Level4(text = "Enter your Referral Code")
+                    },
+                    keyboardActions = KeyboardActions(onDone = {
+                        focusRequester.freeFocus()
+                    }),
+                    keyboardOptions = KeyboardOptions.Default.copy(
+                        imeAction = ImeAction.Done,
+                    )
+                )
             }
 
             is UiState.Loading -> {
@@ -509,7 +527,6 @@ fun ReferralUi(
             }
 
             is UiState.Success -> {
-
                 LaunchedEffect(Unit) {
                     Toast.makeText(
                         context,
@@ -517,12 +534,18 @@ fun ReferralUi(
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                Row(Modifier.fillMaxWidth()) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
                     AppNetworkImage(
                         modifier = Modifier.clip(CircleShape),
                         model = checkReferralCodeState.data.pic,
                     )
-                    TitleTexts.Level2(text = checkReferralCodeState.data.name)
+                    TitleTexts.Level3(text = checkReferralCodeState.data.name)
                 }
             }
 
@@ -560,18 +583,6 @@ fun CreateButton(
     onClick: () -> Unit = {},
 ) {
     AppFilledButton(enabled = enabled, textToShow = text, modifier = modifier, onClick = onClick)
-}
-
-@Composable
-fun VerifyButton(text: String, onClick: () -> Unit = {}) {
-    Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.End) {
-        AppOutlinedButton(
-            textToShow = text,
-            onClick = onClick,
-            colors = ButtonDefaults.outlinedButtonColors(contentColor = AppTheme.colors.primary),
-            border = BorderStroke(color = AppTheme.colors.primary, width = 2.dp)
-        )
-    }
 }
 
 @Preview

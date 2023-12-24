@@ -4,6 +4,7 @@ package fit.asta.health.subscription.remote.model
 import com.google.gson.annotations.SerializedName
 
 typealias OfferUnit = Int
+
 data class Offer(
     @SerializedName("code")
     val code: String = "",
