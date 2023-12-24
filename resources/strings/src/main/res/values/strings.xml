@@ -676,10 +676,7 @@
     <!-- Welcome screen -->
     <string name="welcome_message">Welcome to Health Connect!</string>
     <string name="health_connect_logo">Health Connect logo</string>
-    <string name="installed_welcome_message">
-        Health Connect is installed on this device. Use the menu to explore the sample, with each
-        screen demonstrating a different aspect of Health Connect functionality.
-    </string>
+    <string name="installed_welcome_message">Health Connect</string>
 
     <!-- Privacy policy screen -->
     <string name="privacy_policy">Privacy policy</string>
@@ -698,7 +695,7 @@
         Health Connect is supported on this device, but is either not installed, or requires an update.
     </string>
     <string name="not_installed_link_text">
-        To use this sample, please install or update the Health Connect package via Google Play.
+        please install Health Connect
     </string>
 
     <!-- Not supported on device -->
