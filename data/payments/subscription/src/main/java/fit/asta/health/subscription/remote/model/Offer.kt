@@ -7,34 +7,34 @@ typealias OfferUnit = Int
 data class Offer(
     @SerializedName("code")
     val code: String = "",
-    @SerializedName("desc")
+    @SerializedName("dsc")
     val desc: String = "",
-    @SerializedName("endDate")
+    @SerializedName("end")
     val endDate: String = "",
     @SerializedName("id")
     val id: String = "",
     @SerializedName("offer")
     val discount: Int = 0,
-    @SerializedName("startDate")
+    @SerializedName("start")
     val startDate: String = "",
-    @SerializedName("status")
+    @SerializedName("sts")
     val status: Int = 0,
-    @SerializedName("sub")
-    val sub: Sub = Sub(),
     @SerializedName("ttl")
-    val ttl: String = "",
-    @SerializedName("type")
-    val type: Int = 0,
+    val title: String = "",
     @SerializedName("unit")
     val unit: OfferUnit = OfferUnitType.PERCENTAGE.type,
     @SerializedName("url")
-    val url: String = ""
+    val url: String = "",
+    @SerializedName("areas")
+    val areas: List<Areas> = listOf()
 ) {
-    data class Sub(
-        @SerializedName("durType")
-        val durType: String = "",
-        @SerializedName("subType")
-        val subType: String = ""
+    data class Areas(
+        @SerializedName("id")
+        val id: String = "",
+        @SerializedName("type")
+        val type: String = "",
+        @SerializedName("name")
+        val name: String = ""
     )
 }
 
