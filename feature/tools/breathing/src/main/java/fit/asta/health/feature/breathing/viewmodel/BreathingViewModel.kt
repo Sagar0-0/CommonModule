@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.viewmodel
+package fit.asta.health.feature.breathing.viewmodel
 
 import android.app.NotificationManager
 import android.content.Context
@@ -26,8 +26,16 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.getVideoUrl
+import fit.asta.health.data.breathing.db.BreathingData
+import fit.asta.health.data.breathing.model.BreathingRepo
+import fit.asta.health.data.breathing.model.LocalRepo
+import fit.asta.health.data.breathing.model.domain.mapper.getBreathingTool
+import fit.asta.health.data.breathing.model.domain.mapper.getMusicTool
+import fit.asta.health.data.breathing.model.network.request.NetPost
+import fit.asta.health.data.breathing.model.network.request.NetPut
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.meditation.view.home.ToolUiState
+import fit.asta.health.feature.breathing.view.home.ToolUiState
+import fit.asta.health.feature.breathing.view.home.UiEvent
 import fit.asta.health.network.utils.toValue
 import fit.asta.health.player.audio.MusicServiceConnection
 import fit.asta.health.player.domain.mapper.asMediaItem
@@ -35,14 +43,6 @@ import fit.asta.health.player.domain.model.Song
 import fit.asta.health.player.domain.utils.MediaConstants
 import fit.asta.health.player.domain.utils.convertToPosition
 import fit.asta.health.player.presentation.screens.player.PlayerEvent
-import fit.asta.health.tools.breathing.db.BreathingData
-import fit.asta.health.tools.breathing.model.BreathingRepo
-import fit.asta.health.tools.breathing.model.LocalRepo
-import fit.asta.health.tools.breathing.model.domain.mapper.getBreathingTool
-import fit.asta.health.tools.breathing.model.domain.mapper.getMusicTool
-import fit.asta.health.tools.breathing.model.network.request.NetPost
-import fit.asta.health.tools.breathing.model.network.request.NetPut
-import fit.asta.health.tools.breathing.view.home.UiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow

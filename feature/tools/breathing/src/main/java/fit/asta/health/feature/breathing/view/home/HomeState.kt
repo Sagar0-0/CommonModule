@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.view.home
+package fit.asta.health.feature.breathing.view.home
 
 data class HomeState(
     val targetAngle: Float = 0f,

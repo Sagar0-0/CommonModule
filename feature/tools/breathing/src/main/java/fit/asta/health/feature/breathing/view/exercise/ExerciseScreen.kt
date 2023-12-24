@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.view.exercise
+package fit.asta.health.feature.breathing.view.exercise
 
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.clickable
@@ -14,6 +14,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.LocalTextStyle
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -25,8 +26,14 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.TextStyle
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
+import fit.asta.health.data.breathing.model.domain.model.Exercise
+import fit.asta.health.data.breathing.model.domain.model.Ratio
+import fit.asta.health.data.breathing.model.domain.model.toStr
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
@@ -34,17 +41,16 @@ import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
-import fit.asta.health.tools.breathing.model.domain.model.Exercise
-import fit.asta.health.tools.breathing.model.domain.model.Ratio
-import fit.asta.health.tools.breathing.model.domain.model.toStr
-import fit.asta.health.tools.breathing.view.components.CardBreathingRatio
-import fit.asta.health.tools.breathing.view.exercise.ExerciseBottomSheetTypes.*
+import fit.asta.health.feature.breathing.view.components.CardBreathingRatio
+import fit.asta.health.feature.breathing.view.exercise.ExerciseBottomSheetTypes.*
+import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
+import kotlin.math.abs
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -177,6 +183,67 @@ fun ExerciseBottomSheetLayout(
         }
     }
 
+}
+
+@Composable
+fun SnoozeBottomSheet(
+    minutesRange: Iterable<Int> = (1..59),
+    onNavigateBack: () -> Unit,
+    onValueChange: (Int) -> Unit = {}
+) {
+    MinutesPicker(onCancel = onNavigateBack, onSave = onValueChange, minutesRange = minutesRange)
+
+}
+
+@Composable
+fun MinutesPicker(
+    onCancel: () -> Unit, onSave: (Int) -> Unit,
+    modifier: Modifier = Modifier,
+    leadingZero: Boolean = true,
+    minutesRange: Iterable<Int> = (5..30),
+    dividersColor: Color = Color.Green,
+    textStyle: TextStyle = LocalTextStyle.current,
+) {
+    var min by remember { mutableIntStateOf(minutesRange.first()) }
+
+    Column(
+        modifier = modifier
+            .fillMaxWidth()
+            .padding(16.dp),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        TitleTexts.Level3(text = "Select Time")
+
+        Row(
+            modifier = Modifier.fillMaxWidth(),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
+            NumberPicker(modifier = Modifier.weight(1f), label = {
+                "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
+            }, value = min, onValueChange = {
+                min = it
+            }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
+            )
+
+            TitleTexts.Level1(
+                textAlign = TextAlign.Center,
+                text = "Minutes"
+            )
+
+        }
+        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+            AppTonalButton(
+                textToShow = stringResource(id = R.string.cancel),
+                modifier = Modifier.weight(0.5f)
+            ) { onCancel() }
+            AppTonalButton(
+                textToShow = stringResource(R.string.save),
+                modifier = Modifier.weight(0.5f)
+            ) { onSave(min) }
+        }
+    }
 }
 
 @OptIn(ExperimentalLayoutApi::class)

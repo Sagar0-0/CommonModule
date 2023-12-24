@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.view.home
+package fit.asta.health.feature.breathing.view.home
 
 import android.content.Intent
 import android.provider.Settings
@@ -18,17 +18,21 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
 import androidx.compose.material3.BottomSheetScaffoldState
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.UiState
@@ -44,8 +48,13 @@ import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndi
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.button.AppSwitch
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.meditation.view.home.ToolUiState
+import fit.asta.health.resources.drawables.R
 
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -269,7 +278,7 @@ fun BreathingBottomSheet(
                             }
                         }
                     }
-                    fit.asta.health.meditation.view.home.SunlightCard(modifier = Modifier.fillMaxWidth())
+                    SunlightCard(modifier = Modifier.fillMaxWidth())
                 }
             }
 
@@ -289,6 +298,43 @@ fun BreathingBottomSheet(
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun SunlightCard(modifier: Modifier) {
+    val checked = remember { mutableStateOf(true) }
+    AppCard(
+        modifier = modifier,
+        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            horizontalAlignment = Alignment.CenterHorizontally
+        ) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                AppIcon(
+                    painter = painterResource(id = R.drawable.ic_ic24_notification),
+                    contentDescription = null,
+                )
+                BodyTexts.Level2(text = "Sunlight")
+                AppSwitch(
+                    checked = checked.value,
+                    modifier = Modifier.weight(0.5f),
+                ) { checked.value = it }
+            }
+            CaptionTexts.Level3(
+                maxLines = 3,
+                text = "There will be addition of 500 ml to 1 Litre of water to your daily intake based on the weather temperature.",
+            )
         }
     }
 }

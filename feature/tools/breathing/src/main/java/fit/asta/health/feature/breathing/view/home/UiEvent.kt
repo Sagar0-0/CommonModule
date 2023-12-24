@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.view.home
+package fit.asta.health.feature.breathing.view.home
 
 import android.content.Context
 

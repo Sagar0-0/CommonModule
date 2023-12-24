@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.view.components
+package fit.asta.health.feature.breathing.view.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -6,15 +6,15 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Info
+import androidx.compose.material.icons.filled.RestartAlt
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
-import fit.asta.health.R
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -49,7 +49,7 @@ fun CardBreathingRatio(
                 ) {
                     AppIconButton(onClick = onReset) {
                         AppIcon(
-                            painter = painterResource(id = R.drawable.baseline_restart_alt_24),
+                            imageVector = Icons.Default.RestartAlt,
                             contentDescription = null
                         )
                     }
@@ -80,7 +80,7 @@ fun CardBreathingRatio(
                 ) {
                     AppIconButton(onClick = onInfo) {
                         AppIcon(
-                            painter = painterResource(id = R.drawable.baseline_info_24),
+                            imageVector = Icons.Default.Info,
                             contentDescription = null
                         )
                     }
@@ -90,18 +90,4 @@ fun CardBreathingRatio(
             }
         }
     }
-}
-
-@Preview
-@Composable
-fun ComposablePreviewDemo() {
-    CardBreathingRatio(
-        name = "Nadi Shodana",
-        duration = "2:00", color = Color.Green,
-        ratio = "1:1",
-        onDuration = {},
-        onInfo = {},
-        onRatio = {},
-        onReset = {}
-    )
 }

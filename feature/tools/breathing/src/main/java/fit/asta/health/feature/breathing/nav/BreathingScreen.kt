@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.nav
+package fit.asta.health.feature.breathing.nav
 
 sealed class BreathingScreen(val route: String){
     data object HomeScreen : BreathingScreen(route = "breathing_home_screen")

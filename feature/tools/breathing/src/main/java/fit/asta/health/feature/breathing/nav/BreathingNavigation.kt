@@ -1,4 +1,4 @@
-package fit.asta.health.tools.breathing.nav
+package fit.asta.health.feature.breathing.nav
 
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -12,12 +12,11 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
+import fit.asta.health.feature.breathing.view.exercise.ExerciseScreen
+import fit.asta.health.feature.breathing.view.home.BreathingHomeScreen
+import fit.asta.health.feature.breathing.viewmodel.BreathingViewModel
 import fit.asta.health.player.presentation.UiState
 import fit.asta.health.player.presentation.screens.player.PlayerScreen
-import fit.asta.health.tools.breathing.view.exercise.ExerciseScreen
-import fit.asta.health.tools.breathing.view.home.BreathingHomeScreen
-import fit.asta.health.tools.breathing.view.home.UiEvent
-import fit.asta.health.tools.breathing.viewmodel.BreathingViewModel
 
 fun NavController.navigateToBreathing(navOptions: NavOptions? = null) {
     this.navigate(BREATHING_GRAPH_ROUTE, navOptions)
@@ -65,7 +64,13 @@ fun NavGraphBuilder.breathingNavigation(
         composable(BreathingScreen.ExerciseScreen.route) {
             val viewModel: BreathingViewModel = it.sharedViewModel(navController)
             ExerciseScreen(
-                onClick = { viewModel.event(UiEvent.SetExercise(it)) },
+                onClick = {
+                    viewModel.event(
+                        fit.asta.health.feature.breathing.view.home.UiEvent.SetExercise(
+                            it
+                        )
+                    )
+                },
                 onBack = { navController.popBackStack() })
         }
 
@@ -89,7 +94,7 @@ fun NavGraphBuilder.breathingNavigation(
                 onVisibility = viewModel::setVisibility,
                 onTrackChange = viewModel::onTrackChange,
                 onBack = {
-                    viewModel.event(UiEvent.End(context))
+                    viewModel.event(fit.asta.health.feature.breathing.view.home.UiEvent.End(context))
                     navController.popBackStack()
                 }
             )
