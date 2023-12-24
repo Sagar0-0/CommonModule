@@ -1,9 +1,9 @@
 package fit.asta.health.feature.walking.view.home
 
 data class StepsUiState(
-    val stepCount: Int = 0,
-    val caloriesBurned: Int = 0,
-    val distance: Float = 0f,
+    var stepCount: Int = 0,
+    var caloriesBurned: Int = 0,
+    var distance: Float = 0f,
     val recommendDistance: Float = 0f,
     val recommendDuration: Int = 0,
 

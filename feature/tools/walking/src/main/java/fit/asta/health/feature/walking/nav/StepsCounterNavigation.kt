@@ -4,7 +4,6 @@ import android.content.Intent
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
-import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
@@ -15,7 +14,6 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.data.walking.service.StepCounterService
-import fit.asta.health.data.walking.service.StepService
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
 import fit.asta.health.feature.walking.view.home.StepsScreen
 import fit.asta.health.feature.walking.view.permission.StepsPermissionScreen
@@ -30,7 +28,10 @@ fun NavController.navigateToStepsCounter(navOptions: NavOptions? = null) {
 }
 
 fun NavController.navigateToStepsCounterProgress(navOptions: NavOptions? = null) {
-    this.navigate(StepsCounterScreen.StepsProgressScreen.route, navOptions)
+    this.navigate(
+        StepsCounterScreen.StepsProgressScreen.route,
+        navOptions
+    )
 }
 
 fun NavGraphBuilder.stepsCounterNavigation(
@@ -49,14 +50,11 @@ fun NavGraphBuilder.stepsCounterNavigation(
         }
     ) {
         composable(route = StepsCounterScreen.StepsPermissionScreen.route) { navBackStackEntry ->
-            val context = LocalContext.current
             val walkingViewModel: WalkingViewModel =
                 navBackStackEntry.sharedViewModel(navController)
             val stepsPermissionCount by walkingViewModel.stepsPermissionRejectedCount.collectAsStateWithLifecycle()
             StepsPermissionScreen(stepsPermissionCount = stepsPermissionCount,
                 goToSteps = {
-                    val launchIntent = Intent(context, StepService::class.java)
-                    ContextCompat.startForegroundService(context, launchIntent)
                     navController.popBackStack()
                     navController.navigate(StepsCounterScreen.StepsCounterHomeScreen.route)
                 }, setPermissionCount = {

@@ -169,22 +169,28 @@ class WalkingViewModel @Inject constructor(
             val result = repo.getHomeData("6309a9379af54f142c65fbfe")
             _mutableState.value = when (result) {
                 is ResponseState.Success -> {
-                        _selectedData.clear()
-                        _selectedData.addAll(result.data.walkingTool.prc)
-                        target.value = TargetData(
-                            targetDistance = result.data.walkingRecommendation.recommend.distance.distance,
-                            targetDuration = result.data.walkingRecommendation.recommend.duration.duration
-                        )
-                        UiState.Success(
-                            StepsUiState(
-                                stepCount = 0,
-                                caloriesBurned = 0,
-                                distance = 0f,
-                                recommendDistance = result.data.walkingRecommendation.recommend.distance.distance,
-                                recommendDuration = result.data.walkingRecommendation.recommend.duration.duration
-                            )
-                        )
-                    }
+                    _selectedData.clear()
+                    _selectedData.addAll(result.data.walkingTool.prc)
+                    target.value = TargetData(
+                        targetDistance = result.data.walkingRecommendation.recommend.distance.distance,
+                        targetDuration = result.data.walkingRecommendation.recommend.duration.duration
+                    )
+                    val stepsUiState = StepsUiState(
+                        stepCount = 0,
+                        caloriesBurned = 0,
+                        distance = 0f,
+                        recommendDistance = result.data.walkingRecommendation.recommend.distance.distance,
+                        recommendDuration = result.data.walkingRecommendation.recommend.duration.duration
+                    )
+//                    dayUseCases.getDailyData(LocalDate.now()).collectLatest {daily->
+//                       daily?.let {
+//                           stepsUiState.stepCount=it.steps
+//                           stepsUiState.caloriesBurned=it.calorieBurned.toInt()
+//                           stepsUiState.distance=it.distanceTravelled.toFloat()
+//                       }
+//                    }
+                    UiState.Success(stepsUiState)
+                }
 
                     is ResponseState.ErrorMessage -> {
                         UiState.ErrorMessage(result.resId)

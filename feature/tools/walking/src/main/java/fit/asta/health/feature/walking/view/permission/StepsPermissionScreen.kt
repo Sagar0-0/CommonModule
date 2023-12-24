@@ -22,6 +22,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat
+import fit.asta.health.data.walking.service.StepService
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -56,6 +57,8 @@ fun StepsPermissionScreen(
                     "This permission is recommended for better functionality.",
                     Toast.LENGTH_SHORT
                 ).show()
+                val launchIntent = Intent(context, StepService::class.java)
+                ContextCompat.startForegroundService(context, launchIntent)
                 setPermissionCount(0)
                 goToSteps()
             } else {
@@ -75,6 +78,8 @@ fun StepsPermissionScreen(
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
+            val launchIntent = Intent(context, StepService::class.java)
+            ContextCompat.startForegroundService(context, launchIntent)
             setPermissionCount(0)
             goToSteps()
         } else {
@@ -97,6 +102,8 @@ fun StepsPermissionScreen(
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
                     stepsPermissionResultLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
                 } else {
+                    val launchIntent = Intent(context, StepService::class.java)
+                    ContextCompat.startForegroundService(context, launchIntent)
                     goToSteps()
                 }
             }

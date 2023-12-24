@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.presentation.component
+package fit.asta.health.feature.walking.component
 
 import android.graphics.drawable.Drawable
 import androidx.compose.foundation.layout.Arrangement

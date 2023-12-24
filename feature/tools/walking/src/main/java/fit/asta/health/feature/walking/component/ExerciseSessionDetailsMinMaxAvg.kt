@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.presentation.component
+package fit.asta.health.feature.walking.component
 
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth

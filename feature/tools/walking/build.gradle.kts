@@ -25,8 +25,9 @@ android {
         }
     }
 }
+
 dependencies {
-    implementation(project(":data:walking"))
+    implementation(project(":data:tools:walking"))
     implementation(project(":data:auth"))
     implementation(project(":core:common"))
     implementation(project(":core:test"))

@@ -76,8 +76,8 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.walking.presentation.component.InstalledMessage
-import fit.asta.health.feature.walking.presentation.component.NotInstalledMessage
+import fit.asta.health.feature.walking.component.InstalledMessage
+import fit.asta.health.feature.walking.component.NotInstalledMessage
 import fit.asta.health.feature.walking.view.component.StepsProgressCard
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 import fit.asta.health.resources.drawables.R
@@ -210,7 +210,8 @@ fun StepsScreen(
                                 modifier = Modifier.size(200.dp),
                                 isStarted = true,
                                 appliedAngleDistanceValue = 110f,
-                                indicatorValue = state.data.stepCount.toFloat(),
+                                indicatorValue = sessionMetrics.totalSteps?.toFloat()
+                                    ?: state.data.stepCount.toFloat(),
                                 maxIndicatorValue = 10000f,
                                 bigTextSuffix = "Steps",
                                 onChangeDistance = {},
