@@ -22,8 +22,8 @@ import fit.asta.health.tools.sunlight.model.network.response.ResponseData
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.components.*
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
-import fit.asta.health.tools.view.PracticeGridView
-import fit.asta.health.tools.view.components.CardSunBurn
+import fit.asta.health.ui.common.PracticeGridView
+import fit.asta.health.ui.common.components.CardSunBurn
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 

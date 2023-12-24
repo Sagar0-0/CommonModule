@@ -6,8 +6,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.graphics.Color
 import androidx.navigation.NavController
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
-import fit.asta.health.tools.view.components.ItemData
-import fit.asta.health.tools.view.components.ItemList
+import fit.asta.health.ui.common.components.ItemData
+import fit.asta.health.ui.common.components.ItemList
 
 @Composable
 fun AgeRange(navController: NavController, homeViewModel: SunlightViewModel) {

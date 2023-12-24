@@ -23,8 +23,8 @@ import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.view.components.ItemData
-import fit.asta.health.tools.view.components.ItemList
+import fit.asta.health.ui.common.components.ItemData
+import fit.asta.health.ui.common.components.ItemList
 
 @Composable
 fun SPFLevel(navController: NavController) {

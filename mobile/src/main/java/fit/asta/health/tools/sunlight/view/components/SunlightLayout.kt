@@ -17,7 +17,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.view.components.CardSunBurn
+import fit.asta.health.ui.common.components.CardSunBurn
 
 @Composable
 fun SunlightLayout(it: PaddingValues) {

@@ -27,9 +27,9 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.nav.SunlightScreen
 import fit.asta.health.tools.sunlight.view.home.SunlightHomeScreenEvents
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
-import fit.asta.health.tools.view.PracticeGridView
-import fit.asta.health.tools.view.components.AddMoreWater
-import fit.asta.health.tools.view.components.PracticeExpandedCard
+import fit.asta.health.ui.common.PracticeGridView
+import fit.asta.health.ui.common.components.AddMoreWater
+import fit.asta.health.ui.common.components.PracticeExpandedCard
 
 @Composable
 

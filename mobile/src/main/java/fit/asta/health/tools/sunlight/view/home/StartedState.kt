@@ -19,7 +19,7 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.tools.sunlight.view.components.RoundedColorButton
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
-import fit.asta.health.tools.view.components.CardSunBurn
+import fit.asta.health.ui.common.components.CardSunBurn
 
 @Composable
 fun StatedStateComposable(navController: NavController, homeViewModel: SunlightViewModel) {

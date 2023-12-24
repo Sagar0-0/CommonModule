@@ -37,7 +37,6 @@ import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
-import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.main.view.HOME_GRAPH_ROUTE
@@ -133,7 +132,7 @@ class MainActivity : ComponentActivity(),
 
                     else -> {
                         if (intent != null && intent.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
-                            STEPS_GRAPH_ROUTE
+                            fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
                         } else {
                             HOME_GRAPH_ROUTE
                         }
