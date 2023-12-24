@@ -1,4 +1,4 @@
-package fit.asta.health.tools.view
+package fit.asta.health.ui.common
 
 data class PracticeGridView(
     val cardTitle: String,

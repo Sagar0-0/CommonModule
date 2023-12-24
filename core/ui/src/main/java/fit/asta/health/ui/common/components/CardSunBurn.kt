@@ -1,4 +1,4 @@
-package fit.asta.health.tools.view.components
+package fit.asta.health.ui.common.components
 
 import android.util.Log
 import androidx.compose.foundation.layout.Arrangement
@@ -19,7 +19,6 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.tools.sunlight.view.components.CircularSlider
 
 @Composable
 fun CardSunBurn(
