@@ -1,6 +1,5 @@
-package fit.asta.health.tools.water.view.screen
+package fit.asta.health.feature.water.view.screen
 
-import androidx.annotation.DrawableRes
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.background
@@ -44,10 +43,10 @@ import androidx.compose.ui.platform.LocalConfiguration
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
-import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
-import fit.asta.health.R
+import fit.asta.health.data.water.model.domain.BeverageDetails
+import fit.asta.health.data.water.model.network.TodayActivityData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CircularSliderFloat
@@ -64,8 +63,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.tools.water.model.domain.BeverageDetails
-import fit.asta.health.tools.water.model.network.TodayActivityData
+import fit.asta.health.resources.drawables.R
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -432,32 +430,6 @@ fun ActivityItem(title: String, consumeValue: Float, icon_code: Int, time: Strin
     }
 }
 
-@Composable
-@Preview
-fun RecommendBeverage() {
-    AppSurface(
-        modifier = Modifier
-            .fillMaxWidth(),
-    ) {
-        val daily = listOf("W", "SD", "FG", "M", "BM", "C")
-        LazyColumn(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(16.dp),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-        ) {
-            item {
-                TitleTexts.Level2(
-                    text = "Recommend ",
-                    textAlign = TextAlign.Start
-                )
-            }
-            items(daily) {
-                RecommendItem(title = "Water", value = 700f, progress = 30)
-            }
-        }
-    }
-}
 
 @Composable
 fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, progress: Int) {
@@ -496,36 +468,6 @@ fun RecommendItem(modifier: Modifier = Modifier, title: String, value: Float, pr
     }
 }
 
-@Composable
-fun GridItem(
-    modifier: Modifier = Modifier,
-    name: String,
-    type: String,
-    @DrawableRes id: Int,
-    onClick: () -> Unit
-) {
-    AppCard(
-        modifier = modifier.clickable { onClick() }
-    ) {
-
-        Row(
-            modifier = modifier.padding(16.dp),
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
-        ) {
-            Column(verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
-                AppIcon(
-                    painter = painterResource(id), contentDescription = null
-                )
-            }
-            Column(
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-            ) {
-                TitleTexts.Level3(text = name)
-                BodyTexts.Level3(text = type)
-            }
-        }
-    }
-}
 
 @Composable
 fun CustomAlertDialog(onDismiss: () -> Unit, onUpdate: () -> Unit, dialogString: String) {
@@ -680,17 +622,6 @@ fun beverageNameToIcon(name: String): Int {
     }
 }
 
-@Composable
-@Preview
-fun Test() {
-    CustomProgressBar(
-        modifier = Modifier
-            .clip(shape = RoundedCornerShape(6.dp))
-            .height(14.dp),
-        backgroundColor = Color.LightGray,
-        percent = 80
-    )
-}
 
 
 @Composable

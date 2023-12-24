@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.nav
+package fit.asta.health.feature.water.nav
 
 import android.util.Log
 import androidx.compose.runtime.collectAsState
@@ -13,9 +13,9 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.tools.water.view.screen.WaterToolScreen
-import fit.asta.health.tools.water.viewmodel.WaterState
-import fit.asta.health.tools.water.viewmodel.WaterViewModel
+import fit.asta.health.feature.water.view.screen.WaterToolScreen
+import fit.asta.health.feature.water.viewmodel.WaterState
+import fit.asta.health.feature.water.viewmodel.WaterViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 fun NavController.navigateToWater(navOptions: NavOptions? = null) {
@@ -31,7 +31,7 @@ fun NavGraphBuilder.waterToolNavigation(
         startDestination = WaterScreen.WaterToolHomeScreen.route
     ) {
         composable(WaterScreen.WaterToolHomeScreen.route) {
-            val viewModel:WaterViewModel = it.sharedViewModel(navController)
+            val viewModel: WaterViewModel = it.sharedViewModel(navController)
             val state = viewModel.state.collectAsState()
             val uiState = viewModel.uiState.value
             val waterTool by viewModel.modifiedWaterTool.collectAsStateWithLifecycle()

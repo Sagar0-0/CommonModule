@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.viewmodel
+package fit.asta.health.feature.water.viewmodel
 
 import android.content.Context
 import android.util.Log
@@ -11,16 +11,16 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.getCurrentDate
-import fit.asta.health.tools.water.db.WaterData
-import fit.asta.health.tools.water.model.WaterLocalRepo
-import fit.asta.health.tools.water.model.WaterToolRepo
-import fit.asta.health.tools.water.model.domain.BeverageDetails
-import fit.asta.health.tools.water.model.domain.WaterTool
-import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.TodayActivityData
-import fit.asta.health.tools.water.model.network.WaterToolData
-import fit.asta.health.tools.water.view.screen.WTEvent
-import fit.asta.health.tools.water.view.screen.WaterUiState
+import fit.asta.health.data.water.db.WaterData
+import fit.asta.health.data.water.model.WaterLocalRepo
+import fit.asta.health.data.water.model.WaterToolRepo
+import fit.asta.health.data.water.model.domain.BeverageDetails
+import fit.asta.health.data.water.model.domain.WaterTool
+import fit.asta.health.data.water.model.network.NetBevQtyPut
+import fit.asta.health.data.water.model.network.TodayActivityData
+import fit.asta.health.data.water.model.network.WaterToolData
+import fit.asta.health.feature.water.view.screen.WTEvent
+import fit.asta.health.feature.water.view.screen.WaterUiState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -93,7 +93,7 @@ class WaterViewModel
     fun event(event: WTEvent) {
         when (event) {
             is WTEvent.SelectBeverage -> {
-                _selectedBeverage.value = event.Index
+                _selectedBeverage.value = event.index
             }
 
             is WTEvent.SelectTarget -> {
@@ -121,14 +121,14 @@ class WaterViewModel
             }
 
             is WTEvent.SelectContainer -> {
-                _containerIndex.value = event.Index
+                _containerIndex.value = event.index
                 val title = _beverageList.find { BD ->
                     BD.code == _selectedBeverage.value
                 }?.title
                 _uiState.value = _uiState.value.copy(
                     showCustomDialog = true,
                     dialogString = "This action cannot be undone. Please review the details carefully before proceeding.\n" +
-                            "$title Quantity: ${list[event.Index]} ml\n" +
+                            "$title Quantity: ${list[event.index]} ml\n" +
                             "Have you drunk that much ${title}? Confirming this update will reflect the new quantity in the system."
                 )
             }
