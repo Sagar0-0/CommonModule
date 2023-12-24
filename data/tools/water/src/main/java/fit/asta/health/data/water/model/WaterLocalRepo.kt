@@ -1,6 +1,6 @@
-package fit.asta.health.tools.water.model
+package fit.asta.health.data.water.model
 
-import fit.asta.health.tools.water.db.WaterData
+import fit.asta.health.data.water.db.WaterData
 
 interface WaterLocalRepo {
         suspend fun getWaterData(date: Int): WaterData?

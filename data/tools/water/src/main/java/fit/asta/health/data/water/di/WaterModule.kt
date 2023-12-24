@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.di
+package fit.asta.health.data.water.di
 
 import android.content.Context
 import androidx.room.Room
@@ -7,14 +7,14 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.tools.water.db.WaterToolDatabase
-import fit.asta.health.tools.water.model.WaterLocalRepo
-import fit.asta.health.tools.water.model.WaterLocalRepoImpl
-import fit.asta.health.tools.water.model.WaterToolDataMapper
-import fit.asta.health.tools.water.model.WaterToolRepo
-import fit.asta.health.tools.water.model.WaterToolRepoImpl
-import fit.asta.health.tools.water.model.api.WaterApi
-import fit.asta.health.tools.water.model.api.WaterRestApi
+import fit.asta.health.data.water.db.WaterToolDatabase
+import fit.asta.health.data.water.model.WaterLocalRepo
+import fit.asta.health.data.water.model.WaterLocalRepoImpl
+import fit.asta.health.data.water.model.WaterToolDataMapper
+import fit.asta.health.data.water.model.WaterToolRepo
+import fit.asta.health.data.water.model.WaterToolRepoImpl
+import fit.asta.health.data.water.model.api.WaterApi
+import fit.asta.health.data.water.model.api.WaterRestApi
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 

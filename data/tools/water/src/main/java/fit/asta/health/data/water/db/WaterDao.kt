@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.db
+package fit.asta.health.data.water.db
 
 import androidx.room.Dao
 import androidx.room.Insert

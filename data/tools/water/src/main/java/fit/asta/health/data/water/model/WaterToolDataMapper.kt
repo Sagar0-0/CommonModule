@@ -1,10 +1,10 @@
-package fit.asta.health.tools.water.model
+package fit.asta.health.data.water.model
 
 import android.util.Log
-import fit.asta.health.tools.water.model.domain.BeverageDetails
-import fit.asta.health.tools.water.model.domain.WaterTool
-import fit.asta.health.tools.water.model.network.TodayActivityData
-import fit.asta.health.tools.water.model.network.WaterToolResult
+import fit.asta.health.data.water.model.domain.BeverageDetails
+import fit.asta.health.data.water.model.domain.WaterTool
+import fit.asta.health.data.water.model.network.TodayActivityData
+import fit.asta.health.data.water.model.network.WaterToolResult
 
 class WaterToolDataMapper {
 

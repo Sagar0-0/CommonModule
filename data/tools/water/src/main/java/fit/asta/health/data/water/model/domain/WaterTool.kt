@@ -1,13 +1,13 @@
-package fit.asta.health.tools.water.model.domain
+package fit.asta.health.data.water.model.domain
 
-import fit.asta.health.tools.water.model.network.ButterMilk
-import fit.asta.health.tools.water.model.network.Coconut
-import fit.asta.health.tools.water.model.network.FruitJuice
-import fit.asta.health.tools.water.model.network.Meta
-import fit.asta.health.tools.water.model.network.Milk
-import fit.asta.health.tools.water.model.network.TodayActivityData
-import fit.asta.health.tools.water.model.network.Water
-import fit.asta.health.tools.water.model.network.WaterToolData
+import fit.asta.health.data.water.model.network.ButterMilk
+import fit.asta.health.data.water.model.network.Coconut
+import fit.asta.health.data.water.model.network.FruitJuice
+import fit.asta.health.data.water.model.network.Meta
+import fit.asta.health.data.water.model.network.Milk
+import fit.asta.health.data.water.model.network.TodayActivityData
+import fit.asta.health.data.water.model.network.Water
+import fit.asta.health.data.water.model.network.WaterToolData
 
 data class WaterTool(
     var waterToolData: WaterToolData,

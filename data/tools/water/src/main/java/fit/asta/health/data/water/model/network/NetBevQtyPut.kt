@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.model.network
+package fit.asta.health.data.water.model.network
 
 data class NetBevQtyPut(
     val bev: String,

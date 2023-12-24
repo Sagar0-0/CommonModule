@@ -1,9 +1,9 @@
-package fit.asta.health.tools.water.model.api
+package fit.asta.health.data.water.model.api
 
+import fit.asta.health.data.water.model.network.NetBevQtyPut
+import fit.asta.health.data.water.model.network.WaterToolData
+import fit.asta.health.data.water.model.network.WaterToolResult
 import fit.asta.health.network.data.Status
-import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.WaterToolData
-import fit.asta.health.tools.water.model.network.WaterToolResult
 import retrofit2.http.*
 
 //Health Tool - Water Endpoints

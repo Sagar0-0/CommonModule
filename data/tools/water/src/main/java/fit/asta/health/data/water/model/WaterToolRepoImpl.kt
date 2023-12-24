@@ -1,10 +1,10 @@
-package fit.asta.health.tools.water.model
+package fit.asta.health.data.water.model
 
+import fit.asta.health.data.water.model.api.WaterApi
+import fit.asta.health.data.water.model.domain.WaterTool
+import fit.asta.health.data.water.model.network.NetBevQtyPut
+import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.network.data.Status
-import fit.asta.health.tools.water.model.api.WaterApi
-import fit.asta.health.tools.water.model.domain.WaterTool
-import fit.asta.health.tools.water.model.network.NetBevQtyPut
-import fit.asta.health.tools.water.model.network.WaterToolData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

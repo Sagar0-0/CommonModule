@@ -1,4 +1,4 @@
-package fit.asta.health.tools.water.model.network
+package fit.asta.health.data.water.model.network
 
 import com.google.gson.annotations.SerializedName
 
