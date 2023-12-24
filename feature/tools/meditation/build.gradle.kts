@@ -23,7 +23,7 @@ dependencies {
     implementation(libs.compose.theme.adapter)
 
     implementation(project(":libs:media"))
-    implementation(project(":data:meditation"))
+    implementation(project(":data:tools:meditation"))
     implementation(project(":data:auth"))
     implementation(project(":core:common"))
     implementation(project(":core:test"))
