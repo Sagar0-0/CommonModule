@@ -31,6 +31,7 @@ android {
 
 dependencies {
     implementation(project(":data:scheduler"))
+    implementation(project(":data:tools:walking"))
     implementation(project(":data:auth"))
     implementation(project(":data:spotify"))
     implementation(project(":core:common"))
@@ -87,7 +88,6 @@ dependencies {
 
     implementation(libs.androidx.lifecycle.extensions)
     implementation(libs.androidx.navigation.testing)
-    implementation(project(mapOf("path" to ":data:walking")))
 
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)
     debugImplementation(libs.androidx.compose.ui.testManifest)
