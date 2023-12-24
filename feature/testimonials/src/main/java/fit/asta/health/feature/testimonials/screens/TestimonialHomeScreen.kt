@@ -159,7 +159,7 @@ private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
                                 UserTestimonialUI(userTestimonial = testimonial.testimonial)
 
                                 TestimonialArtistCard(
-                                    imageUrl = testimonial.user.url,
+                                    imageUrl = testimonial.userId,
                                     name = testimonial.user.name,
                                     organization = testimonial.user.org,
                                     role = testimonial.user.role
@@ -203,7 +203,7 @@ private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
                                 TestimonialArtistCard(
-                                    imageUrl = testimonial.user.url,
+                                    imageUrl = testimonial.userId,
                                     name = testimonial.user.name,
                                     organization = testimonial.user.org,
                                     role = testimonial.user.role

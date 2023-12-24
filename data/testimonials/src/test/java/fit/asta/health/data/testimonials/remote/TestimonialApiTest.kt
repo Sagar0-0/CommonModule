@@ -88,7 +88,7 @@ class TestimonialApiTest {
         server.enqueue(res)
 
         val testimonialRepoImpl = TestimonialRepoImpl(mockk(), api, UnconfinedTestDispatcher())
-        val data = testimonialRepoImpl.saveTestimonial(Testimonial())
+        val data = testimonialRepoImpl.saveUserTestimonial(Testimonial())
         server.takeRequest()
 
         assert(data is ResponseState.ErrorMessage)

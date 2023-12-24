@@ -7,5 +7,5 @@ import fit.asta.health.data.testimonials.model.Testimonial
 interface TestimonialRepo {
     suspend fun getAllTestimonials(index: Int, limit: Int): ResponseState<List<Testimonial>>
     suspend fun getUserTestimonial(userId: String): ResponseState<Testimonial>
-    suspend fun saveTestimonial(testimonial: Testimonial): ResponseState<SaveTestimonialResponse>
+    suspend fun saveUserTestimonial(testimonial: Testimonial): ResponseState<SaveTestimonialResponse>
 }

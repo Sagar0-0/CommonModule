@@ -75,14 +75,14 @@ class TestimonialViewModelTest : BaseTest() {
     fun `onEvent onSubmit Success, updates submitSate`() = runTest {
 
         coEvery { authRepo.getUser() } returns User(uid = "", name = "", photoUrl = "")
-        coEvery { repo.saveTestimonial(any()) } returns ResponseState.Success(
+        coEvery { repo.saveUserTestimonial(any()) } returns ResponseState.Success(
             SaveTestimonialResponse()
         )
 
         viewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
 
         coVerify { authRepo.getUser() }
-        coVerify { repo.saveTestimonial(any()) }
+        coVerify { repo.saveUserTestimonial(any()) }
 
         viewModel.testimonialSubmitApiState.test {
             assert(awaitItem() is UiState.Success)
@@ -93,12 +93,12 @@ class TestimonialViewModelTest : BaseTest() {
     fun `onEvent onSubmit Error, updates submitSate`() = runTest {
 
         coEvery { authRepo.getUser() } returns User(uid = "", name = "", photoUrl = "")
-        coEvery { repo.saveTestimonial(any()) } returns ResponseState.ErrorMessage(0)
+        coEvery { repo.saveUserTestimonial(any()) } returns ResponseState.ErrorMessage(0)
 
         viewModel.onEvent(TestimonialEvent.OnSubmitTestimonial)
 
         coVerify { authRepo.getUser() }
-        coVerify { repo.saveTestimonial(any()) }
+        coVerify { repo.saveUserTestimonial(any()) }
 
         viewModel.testimonialSubmitApiState.test {
             assert(awaitItem() is UiState.ErrorMessage)

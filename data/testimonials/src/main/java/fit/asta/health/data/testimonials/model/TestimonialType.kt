@@ -9,9 +9,9 @@ sealed class TestimonialType(
     val title: String
 ) : Parcelable {
 
-    object TEXT : TestimonialType(value = 0, title = "Text")
-    object IMAGE : TestimonialType(value = 1, title = "Image")
-    object VIDEO : TestimonialType(value = 2, title = "Video")
+    data object TEXT : TestimonialType(value = 0, title = "Text")
+    data object IMAGE : TestimonialType(value = 1, title = "Image")
+    data object VIDEO : TestimonialType(value = 2, title = "Video")
 
     companion object {
         fun from(code: Int): TestimonialType {
