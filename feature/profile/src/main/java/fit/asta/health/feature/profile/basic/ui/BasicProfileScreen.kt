@@ -8,6 +8,7 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,7 +23,11 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
+import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
@@ -42,6 +47,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -68,18 +74,13 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
-import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
-import fit.asta.health.feature.auth.util.PhoneSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
-import fit.asta.otpfield.OTPInput
-import fit.asta.otpfield.configuration.OTPCellConfiguration
-import fit.asta.otpfield.configuration.OTPConfigurations
 
 @Preview("Light Button")
 @Preview(
@@ -90,7 +91,6 @@ fun BasicProfilePreview() {
     AppTheme {
         BasicProfileScreenUi(
             checkReferralCodeState = UiState.Success(CheckReferralDTO()),
-            linkAccountState = UiState.Success(User()),
             createBasicProfileState = UiState.Success(PutResponse()),
             autoFetchedReferralCode = "",
             onEvent = {}
@@ -103,7 +103,6 @@ fun BasicProfilePreview() {
 fun BasicProfileScreenUi(
     user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
-    linkAccountState: UiState<User>,
     createBasicProfileState: UiState<PutResponse>,
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
@@ -220,12 +219,8 @@ fun BasicProfileScreenUi(
 
             PhoneUi(
                 phoneNumber = phone,
-                isFailed = linkAccountState is UiState.ErrorMessage,
-                onResetLinkState = {
-                    onEvent(BasicProfileEvent.ResetLinkAccountState)
-                },
-                onLinkAccount = { cred ->
-                    onEvent(BasicProfileEvent.Link(cred))
+                navigateToPhoneAuth = {
+                    onEvent(BasicProfileEvent.NavigateToPhoneAuth)
                 }
             )
 
@@ -239,7 +234,7 @@ fun BasicProfileScreenUi(
                     }
                 },
                 resetCodeState = {
-                    onEvent(BasicProfileEvent.ResetCodeState)
+                    onEvent(BasicProfileEvent.ResetReferralCodeState)
                 }
             ) {
                 referralCode = it
@@ -249,7 +244,11 @@ fun BasicProfileScreenUi(
             CreateButton(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
+                    .padding(
+                        start = AppTheme.spacing.level2,
+                        end = AppTheme.spacing.level2,
+                        bottom = AppTheme.spacing.level2
+                    ),
                 enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
                 text = "Create your Profile",
             ) {
@@ -259,7 +258,7 @@ fun BasicProfileScreenUi(
                             uid = user.uid,
                             gmailPic = user.photoUrl,
                             name = name,
-                            gen = genderCode.toInt(),
+                            gen = genderCode,
                             mail = email,
                             ph = phone,
                             refCode = referralCode
@@ -272,13 +271,21 @@ fun BasicProfileScreenUi(
 
 }
 
+data class GenderData(
+    val name: String,
+    val icon: ImageVector
+)
+
 @Composable
-fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
+fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
     val genders = linkedMapOf(
-        "Male" to GenderCode.Male.gender,
-        "Female" to GenderCode.Female.gender,
-        "Prefer not to say" to GenderCode.Other.gender
+        GenderData("Male", Icons.Default.Male) to GenderCode.Male.gender,
+        GenderData("Female", Icons.Default.Female) to GenderCode.Female.gender,
+        GenderData("Others", Icons.Default.QuestionMark) to GenderCode.Other.gender
     )
+
+    TitleTexts.Level1(text = "Gender")
+
     Row(
         modifier = Modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceEvenly,
@@ -288,21 +295,27 @@ fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
             AppCard(
                 colors = CardDefaults.cardColors(
                     containerColor = if (gender == entry.value) {
-                        AppTheme.colors.surface
+                        AppTheme.colors.primary
                     } else {
-                        AppTheme.colors.inverseSurface
+                        AppTheme.colors.primary.copy(alpha = AppTheme.alphaValues.level3)
                     }
                 ),
                 onClick = {
                     onValueChange(entry.value)
                 }
             ) {
-                TitleTexts.Level2(
+                Row(
                     modifier = Modifier
-                        .padding(AppTheme.spacing.level1)
-                        .align(Alignment.CenterHorizontally),
-                    text = entry.key
-                )
+                        .padding(AppTheme.spacing.level1),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    AppIcon(imageVector = entry.key.icon)
+                    TitleTexts.Level2(
+                        text = entry.key.name
+                    )
+                }
+
             }
         }
 
@@ -380,7 +393,7 @@ fun ProfileImageUi(
 fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
     val focusRequester = remember { FocusRequester() }
 
-    AppTextField(
+    AppOutlinedTextField(
         modifier = Modifier
             .padding(horizontal = AppTheme.spacing.level2)
             .fillMaxWidth()
@@ -396,7 +409,7 @@ fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
             }
         ),
         keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
-        appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(maxSize = 20))
+        appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(maxSize = 30))
     )
 }
 
@@ -419,10 +432,14 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
                 .padding(horizontal = AppTheme.spacing.level2)
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2),
+                verticalAlignment = Alignment.CenterVertically
             ) {
                 Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
                     AppIcon(imageVector = Icons.Rounded.Email)
@@ -445,18 +462,18 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
 @Composable
 fun PhoneUi(
     phoneNumber: String?,
-    isFailed: Boolean,
-    onResetLinkState: () -> Unit,
-    onLinkAccount: (AuthCredential) -> Unit
+    navigateToPhoneAuth: () -> Unit
 ) {
     if (phoneNumber.isNullOrEmpty()) {
-        PhoneSignIn(
-            failed = isFailed,
-            resetFailedState = {
-                onResetLinkState()
-
-            }) { cred ->
-            onLinkAccount(cred)
+        // Sign in with Phone Button
+        AppFilledButton(
+            textToShow = "Link with Phone Number",
+            modifier = Modifier
+                .fillMaxWidth()
+                .height(AppTheme.buttonSize.level6),
+            leadingIcon = Icons.Default.Phone
+        ) {
+            navigateToPhoneAuth()
         }
     } else {
         AppCard(
@@ -465,14 +482,21 @@ fun PhoneUi(
                 .padding(horizontal = AppTheme.spacing.level2)
         ) {
             Row(
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                Row(
+                    modifier = Modifier.weight(1f),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
                     AppIcon(imageVector = Icons.Rounded.Phone)
                     TitleTexts.Level3(
                         modifier = Modifier.weight(1f),
-                        text = phoneNumber, color = AppTheme.colors.onSurface
+                        text = phoneNumber,
+                        color = AppTheme.colors.onSurface
                     )
                 }
 
@@ -583,44 +607,4 @@ fun CreateButton(
     onClick: () -> Unit = {},
 ) {
     AppFilledButton(enabled = enabled, textToShow = text, modifier = modifier, onClick = onClick)
-}
-
-@Preview
-@Composable
-fun OTPBlock() {
-
-    var otpValue: String by remember { mutableStateOf("") }
-
-    val defaultConfig = OTPCellConfiguration.withDefaults()
-
-    Row(
-        modifier = Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center
-    ) {
-        OTPInput(
-            value = otpValue,
-            onValueChange = { newValue, isValid ->
-                otpValue = newValue
-                if (isValid) {
-                    // Validate the value here...
-                }
-            },
-            /* when the value is 1111, all cells will use errorCellConfig */
-            isValueInvalid = otpValue == "111111",
-            configurations = OTPConfigurations.withDefaults(
-                cellsCount = 6,
-                emptyCellConfig = defaultConfig,
-                filledCellConfig = defaultConfig,
-                activeCellConfig = defaultConfig.copy(
-                    borderColor = AppTheme.colors.onSurface, borderWidth = AppTheme.elevation.level1
-                ),
-                errorCellConfig = defaultConfig.copy(
-                    borderColor = AppTheme.colors.error, borderWidth = AppTheme.elevation.level1
-                ),
-                placeHolder = "*",
-                cellModifier = Modifier
-                    .padding(horizontal = AppTheme.spacing.level0)
-                    .size(AppTheme.customSize.level6),
-            ),
-        )
-    }
 }
