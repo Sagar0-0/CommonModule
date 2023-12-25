@@ -23,17 +23,8 @@ import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.subscription.remote.model.OffersBannerContentType
 
-/**
- * Sealed class representing different types of content for offers banners.
- *
- * @property type An integer identifier for the content type.
- */
-sealed class OffersBannerContentType(val type: Int) {
-    data object Image : OffersBannerContentType(0)
-    data object GIF : OffersBannerContentType(1)
-    data object Video : OffersBannerContentType(2)
-}
 
 /**
  * Composable function to display a pager of offer banners.
@@ -60,7 +51,7 @@ private fun OffersBannerPreview() {
                     .fillMaxHeight(0.6f),
                 enableAutoAnimation = false,
                 userScrollEnabled = true
-            ) { page ->
+            ) { _ ->
                 OfferBanner(
                     Offer()
                 ) {
@@ -70,13 +61,6 @@ private fun OffersBannerPreview() {
         }
     }
 }
-
-/**
- * Composable function to display the content of an offer banner.
- *
- * @param bannerDataPages The resource ID of the banner image.
- * @param contentType The type of content for the banner (image, GIF, video).
- */
 @Composable
 fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
     // Container box for the banner content

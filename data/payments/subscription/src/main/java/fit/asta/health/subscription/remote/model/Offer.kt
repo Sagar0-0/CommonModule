@@ -26,6 +26,8 @@ data class Offer(
     val unit: OfferUnit = OfferUnitType.PERCENTAGE.type,
     @SerializedName("url")
     val url: String = "",
+    @SerializedName("type")
+    val type: Int = OffersBannerContentType.Image.type,
     @SerializedName("areas")
     val areas: List<Areas> = listOf()
 ) {
@@ -44,4 +46,10 @@ fun OfferUnit.getOfferUnitType(): OfferUnitType = OfferUnitType.entries.first { 
 enum class OfferUnitType(val type: OfferUnit) {
     PERCENTAGE(18),
     RUPEE(23)
+}
+
+enum class OffersBannerContentType(val type: Int) {
+    Image(0),
+    GIF(1),
+    Video(2)
 }
