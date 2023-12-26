@@ -6,11 +6,11 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
+import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
@@ -18,7 +18,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
-import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -28,6 +27,7 @@ import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.QuestionMark
+import androidx.compose.material.icons.filled.SafetyDivider
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
@@ -45,8 +45,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -76,7 +74,6 @@ import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
-import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
@@ -192,10 +189,10 @@ fun BasicProfileScreenUi(
 
         Column(
             modifier = Modifier
-                .fillMaxSize()
                 .padding(paddingValues)
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2)
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             ProfileImageUi(
@@ -215,7 +212,6 @@ fun BasicProfileScreenUi(
             EmailUi(user.email) { cred ->
                 onEvent(BasicProfileEvent.Link(cred))
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             PhoneUi(
                 phoneNumber = phone,
@@ -245,8 +241,6 @@ fun BasicProfileScreenUi(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(
-                        start = AppTheme.spacing.level2,
-                        end = AppTheme.spacing.level2,
                         bottom = AppTheme.spacing.level2
                     ),
                 enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
@@ -283,21 +277,31 @@ fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
         GenderData("Female", Icons.Default.Female) to GenderCode.Female.gender,
         GenderData("Others", Icons.Default.QuestionMark) to GenderCode.Other.gender
     )
-
-    TitleTexts.Level1(text = "Gender")
+    val getModifier: (currentSelected: Int) -> Modifier = {
+        if (gender == it) {
+            Modifier
+                .weight(1f)
+                .animateContentSize()
+        } else {
+            Modifier.animateContentSize()
+        }
+    }
 
     Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceEvenly,
+        modifier = Modifier
+            .fillMaxWidth()
+            .animateContentSize(),
+        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         verticalAlignment = Alignment.CenterVertically
     ) {
         genders.entries.forEach { entry ->
             AppCard(
+                modifier = getModifier(entry.value),
                 colors = CardDefaults.cardColors(
                     containerColor = if (gender == entry.value) {
                         AppTheme.colors.primary
                     } else {
-                        AppTheme.colors.primary.copy(alpha = AppTheme.alphaValues.level3)
+                        AppTheme.colors.onPrimaryContainer.copy(alpha = AppTheme.alphaValues.level4)
                     }
                 ),
                 onClick = {
@@ -307,7 +311,7 @@ fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
                 Row(
                     modifier = Modifier
                         .padding(AppTheme.spacing.level1),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppIcon(imageVector = entry.key.icon)
@@ -320,6 +324,7 @@ fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
         }
 
     }
+
 }
 
 @Composable
@@ -391,24 +396,15 @@ fun ProfileImageUi(
 
 @Composable
 fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
-    val focusRequester = remember { FocusRequester() }
 
     AppOutlinedTextField(
         modifier = Modifier
-            .padding(horizontal = AppTheme.spacing.level2)
-            .fillMaxWidth()
-            .focusRequester(focusRequester),
+            .fillMaxWidth(),
         value = name,
         singleLine = true,
         leadingIcon = Icons.Default.Person,
         onValueChange = onValueChange,
         label = "Name",
-        keyboardActions = KeyboardActions(
-            onDone = {
-                focusRequester.freeFocus()
-            }
-        ),
-        keyboardOptions = KeyboardOptions.Default.copy(imeAction = ImeAction.Done),
         appTextFieldType = AppTextFieldValidator(AppTextFieldType.Custom(maxSize = 30))
     )
 }
@@ -418,7 +414,6 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
     if (gmail.isNullOrEmpty()) {
         GoogleSignIn(
             modifier = Modifier
-                .padding(horizontal = AppTheme.spacing.level2)
                 .fillMaxWidth()
                 .height(AppTheme.buttonSize.level6),
             textId = fit.asta.health.resources.strings.R.string.link_with_google_account
@@ -429,13 +424,13 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
         AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(AppTheme.spacing.level2),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 Row(
                     modifier = Modifier.weight(1f),
@@ -446,7 +441,8 @@ fun EmailUi(gmail: String?, onClick: (AuthCredential) -> Unit) {
                     TitleTexts.Level3(
                         modifier = Modifier.weight(1f),
                         text = gmail,
-                        color = AppTheme.colors.onSurface
+                        color = AppTheme.colors.onSurface,
+                        maxLines = 1
                     )
                 }
 
@@ -465,7 +461,7 @@ fun PhoneUi(
     navigateToPhoneAuth: () -> Unit
 ) {
     if (phoneNumber.isNullOrEmpty()) {
-        // Sign in with Phone Button
+        // Linking with Phone Button
         AppFilledButton(
             textToShow = "Link with Phone Number",
             modifier = Modifier
@@ -479,13 +475,13 @@ fun PhoneUi(
         AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2)
         ) {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2),
-                verticalAlignment = Alignment.CenterVertically
+                    .padding(AppTheme.spacing.level2),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
                 Row(
                     modifier = Modifier.weight(1f),
@@ -496,7 +492,8 @@ fun PhoneUi(
                     TitleTexts.Level3(
                         modifier = Modifier.weight(1f),
                         text = phoneNumber,
-                        color = AppTheme.colors.onSurface
+                        color = AppTheme.colors.onSurface,
+                        maxLines = 1
                     )
                 }
 
@@ -521,27 +518,26 @@ fun ReferralUi(
     ) { checkReferralCodeState ->
         when (checkReferralCodeState) {
             is UiState.Idle -> {
-                val focusRequester = remember { FocusRequester() }
 
                 AppOutlinedTextField(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2)
-                        .focusRequester(focusRequester),
+                        .fillMaxWidth(),
                     value = refCode,
                     onValueChange = onValueChange,
+                    leadingIcon = Icons.Default.SafetyDivider,
                     trailingIcon = Icons.Default.ArrowForwardIos,
                     onTrailingIconClicked = {
                         onApplyReferralCode()
                     },
-                    placeholder = {
-                        CaptionTexts.Level4(text = "Enter your Referral Code")
-                    },
-                    keyboardActions = KeyboardActions(onDone = {
-                        focusRequester.freeFocus()
-                    }),
+                    label = "Referral Code",
                     keyboardOptions = KeyboardOptions.Default.copy(
                         imeAction = ImeAction.Done,
+                    ),
+                    appTextFieldType = AppTextFieldValidator(
+                        AppTextFieldType.Custom(
+                            REFERRAL_LENGTH,
+                            REFERRAL_LENGTH
+                        )
                     )
                 )
             }

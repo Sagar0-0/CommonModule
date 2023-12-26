@@ -1,5 +1,6 @@
 package fit.asta.health.feature.profile.basic.vm
 
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.firebase.auth.AuthCredential
@@ -27,6 +28,9 @@ class BasicProfileViewModel
     private val profileRepo: ProfileRepo,
     private val authRepo: AuthRepo
 ) : ViewModel() {
+    init {
+        Log.e("BASIC", "STARTED VIEWMODEL")
+    }
 
     private val _createBasicProfileState =
         MutableStateFlow<UiState<PutResponse>>(UiState.Idle)
