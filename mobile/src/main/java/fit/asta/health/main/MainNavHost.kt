@@ -1,5 +1,6 @@
 package fit.asta.health.main
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -77,8 +78,9 @@ private fun MainNavHost(startDestination: String) {
         route = Graph.ROOT.route,
         startDestination = startDestination
     ) {
+        Log.e("TAG", "MainNavHost routes = ${navController.visibleEntries}")
         authRoute(navController, navController::navigateToWebView)
-        basicProfileRoute(navController)
+        basicProfileRoute()
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {
