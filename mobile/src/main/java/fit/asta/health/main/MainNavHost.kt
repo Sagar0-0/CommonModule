@@ -24,6 +24,7 @@ import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.authRoute
 import fit.asta.health.feature.auth.navigateToAuth
 import fit.asta.health.feature.breathing.nav.breathingNavigation
+import fit.asta.health.feature.exercise.nav.exerciseNavigation
 import fit.asta.health.feature.feedback.feedbackRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
@@ -34,6 +35,7 @@ import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
+import fit.asta.health.feature.sunlight.nav.sunlightNavigation
 import fit.asta.health.feature.testimonials.navigation.testimonialNavGraph
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.stepsCounterNavigation
@@ -46,8 +48,6 @@ import fit.asta.health.referral.referralRoute
 import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionRoute
-import fit.asta.health.tools.exercise.nav.exerciseNavigation
-import fit.asta.health.tools.sunlight.nav.sunlightNavigation
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
 import java.net.URLEncoder

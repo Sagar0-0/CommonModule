@@ -46,7 +46,6 @@ import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionTypesList
 import fit.asta.health.subscription.view.UserSubscribedPlanSection
-import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -193,9 +192,9 @@ fun HomeScreenLayout(
 
                             "sleep" -> {
 //                            onNav(Graph.SleepTool.route)
-                                SleepToolActivity.launch(
-                                    context = context, userId = userId
-                                )
+//                                fit.asta.health.feature.sleep.SleepToolActivity.launch(
+//                                    context = context, userId = userId
+//                                )
                             }
 
                             "breathing" -> {
