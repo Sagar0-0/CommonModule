@@ -5,7 +5,6 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.testimonials.model.Testimonial
 
-
 class TestimonialApiHandler : ApiErrorHandler() {
 
     override fun <T> fetchStatusCodeMessage(status: Response.Status): ResponseState<T> {

@@ -11,7 +11,7 @@ data class Testimonial(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("apv")
-    val apv: Boolean = false,
+    val isApproved: Boolean = false,
     @SerializedName("type")
     val type: Int = 0,
     @SerializedName("rank")

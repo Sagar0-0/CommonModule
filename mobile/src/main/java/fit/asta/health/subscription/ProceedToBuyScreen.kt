@@ -77,7 +77,7 @@ private fun BuyPlanScreen() {
 sealed interface BuyScreenEvent {
     data object BACK : BuyScreenEvent
     data class ProceedToBuy(val orderRequest: OrderRequest) : BuyScreenEvent
-    data class ApplyCouponCode(val code: String) : BuyScreenEvent
+    data class ApplyCouponCode(val code: String, val productMRP: Double) : BuyScreenEvent
 }
 
 /**
@@ -93,10 +93,10 @@ fun ProceedToBuyScreen(
     walletData: WalletResponse.WalletData? = null,
     onEvent: (BuyScreenEvent) -> Unit,
 ) {
-    val totalPrice = remember {
+    val productMRP = remember {
         (subscriptionPlanType.subscriptionDurationPlans.first {
             it.durationType == durationType
-        }.priceMRP.toInt()
+        }.priceMRP.toDouble()
                 )
     }
 
@@ -122,14 +122,14 @@ fun ProceedToBuyScreen(
         } else {
             when (offer.unit.getOfferUnitType()) {
                 OfferUnitType.PERCENTAGE -> {
-                    (totalPrice * offer.discount).toDouble() / 100
+                    (productMRP * offer.discount).toDouble() / 100
                 }
 
                 OfferUnitType.RUPEE -> {
-                    if (totalPrice < offer.discount || offer.discount < 0) {
+                    if (productMRP < offer.discount || offer.discount < 0) {
                         0.0
                     } else {
-                        (totalPrice - offer.discount).toDouble()
+                        (productMRP - offer.discount).toDouble()
                     }
                 }
             }
@@ -137,7 +137,7 @@ fun ProceedToBuyScreen(
     }
 
     val finalPayableAmount: Double = remember {
-        totalPrice - offerDiscount - walletPoints - walletMoney - discountMoney
+        productMRP - offerDiscount - walletPoints - walletMoney - discountMoney
     }.toDouble()
 
     // AppSurface is a custom composable providing a themed surface for the content.
@@ -191,7 +191,7 @@ fun ProceedToBuyScreen(
 
             CouponSection { discountCodeApplied ->
                 discountCode = discountCodeApplied
-                onEvent(BuyScreenEvent.ApplyCouponCode(discountCodeApplied))
+                onEvent(BuyScreenEvent.ApplyCouponCode(discountCodeApplied, productMRP))
             }
 
             AppFilledButton(

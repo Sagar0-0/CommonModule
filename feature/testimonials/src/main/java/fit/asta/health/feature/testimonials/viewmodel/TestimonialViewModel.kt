@@ -18,13 +18,11 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
-
 @HiltViewModel
 class TestimonialViewModel @Inject constructor(
     private val testimonialRepo: TestimonialRepo,
     private val authRepo: AuthRepo,
 ) : ViewModel() {
-
 
     /**
      * This variable fetches and stores the user's Testimonial Details from the server and shows the
@@ -92,19 +90,17 @@ class TestimonialViewModel @Inject constructor(
 
                 testimonialData.value = testimonialData.value.copy(
                     user = testimonialData.value.user.copy(
-                        name = it.name!!,
-                        url = it.photoUrl.toString()
+                        name = authRepo.getUser()?.name!!
                     ),
-                    userId = it.uid
+                    userId = authRepo.getUserId()!!,
                 )
 
                 _testimonialSubmitApiState.value = testimonialRepo
-                    .saveTestimonial(testimonialData.value)
+                    .saveUserTestimonial(testimonialData.value)
                     .toUiState()
             }
         }
     }
-
 
     fun onEvent(event: TestimonialEvent) {
         when (event) {

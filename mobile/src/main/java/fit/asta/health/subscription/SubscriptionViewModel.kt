@@ -8,6 +8,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.discounts.remote.model.CouponRequest
 import fit.asta.health.discounts.remote.model.CouponResponse
+import fit.asta.health.discounts.remote.model.ProductType
 import fit.asta.health.discounts.repo.CouponsRepo
 import fit.asta.health.subscription.remote.model.SubscriptionResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
@@ -44,14 +45,15 @@ class SubscriptionViewModel
         getWalletData()
     }
 
-    fun applyCouponCode(code: String) {
+    fun applyCouponCode(code: String, productMRP: Double) {
         _couponResponseState.value = UiState.Loading
         viewModelScope.launch {
             _couponResponseState.value = couponsRepo.getCouponCodeDetails(
                 CouponRequest(
+                    productType = ProductType.SUBSCRIPTION.type,
                     couponCode = code,
-                    userId = uid
-                    //TODO: COUPON DETAILS HERE
+                    userId = uid,
+                    productMRP = productMRP
                 )
             ).toUiState()
         }

@@ -220,7 +220,7 @@ fun OffersCarousal(offersList: List<Offer>, onOfferClick: (Offer) -> Unit) {
                         .fillMaxWidth()
                         .height(150.dp)
                 ) {
-                    BodyTexts.Level2(text = offersList[page].ttl)
+                    BodyTexts.Level2(text = offersList[page].title)
                 }
             }
         }

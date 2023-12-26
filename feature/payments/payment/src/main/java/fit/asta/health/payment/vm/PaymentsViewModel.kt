@@ -52,4 +52,12 @@ class PaymentsViewModel
         }
     }
 
+    fun informCancelledPayment() = viewModelScope.launch {
+        paymentRepo
+            .informCancelledPayment(
+                (orderResponseState.value as? UiState.Success)?.data?.orderId ?: "",
+                uid
+            )
+    }
+
 }

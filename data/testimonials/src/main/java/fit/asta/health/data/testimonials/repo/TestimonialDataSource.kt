@@ -10,6 +10,7 @@ class TestimonialDataSource(
 ) : PagingSource<Int, Testimonial>() {
 
     override fun getRefreshKey(state: PagingState<Int, Testimonial>): Int? {
+
         return state.anchorPosition?.let { anchorPosition ->
             val anchorPage = state.closestPageToPosition(anchorPosition)
             anchorPage?.prevKey?.plus(1) ?: anchorPage?.nextKey?.minus(1)
@@ -19,7 +20,6 @@ class TestimonialDataSource(
     override suspend fun load(params: LoadParams<Int>): LoadResult<Int, Testimonial> {
 
         val index = params.key ?: STARTING_PAGE_INDEX
-
         return when (val result = repo.getAllTestimonials(index = index, limit = params.loadSize)) {
             is ResponseState.Success -> {
                 LoadResult.Page(

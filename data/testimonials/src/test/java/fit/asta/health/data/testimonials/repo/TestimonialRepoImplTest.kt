@@ -72,7 +72,7 @@ class TestimonialRepoImplTest {
     fun `updateTestimonial with success, return Success Response`() = runTest {
         val res = Response(data = SaveTestimonialResponse())
         coEvery { api.createTestimonial(any(), any()) } returns res
-        val response = repo.saveTestimonial(Testimonial())
+        val response = repo.saveUserTestimonial(Testimonial())
         coVerify { api.createTestimonial(Testimonial(), any()) }
         assert(response is ResponseState.Success)
     }
@@ -80,7 +80,7 @@ class TestimonialRepoImplTest {
     @Test
     fun `updateTestimonial with random exception, return ErrorMessage`() = runTest {
         coEvery { api.createTestimonial(any(), any()) } throws Exception()
-        val response = repo.saveTestimonial(Testimonial())
+        val response = repo.saveUserTestimonial(Testimonial())
         coVerify { api.createTestimonial(Testimonial(), any()) }
         assert(response is ResponseState.ErrorMessage)
     }

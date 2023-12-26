@@ -78,7 +78,7 @@ private fun MainNavHost(startDestination: String) {
         startDestination = startDestination
     ) {
         authRoute(navController, navController::navigateToWebView)
-        basicProfileRoute()
+        basicProfileRoute(navController)
         homeScreen(navController)
 
         composable(route = Graph.Profile.route) {

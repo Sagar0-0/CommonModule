@@ -26,6 +26,8 @@ data class OrderRequest(
         val amt: Double = 0.0,
         @SerializedName("discountCode")
         val discountCode: String = "",
+        @SerializedName("couponCode")
+        val couponCode: String = "",
         @SerializedName("offerCode")
         val offerCode: String = "",
         @SerializedName("walletMoney")

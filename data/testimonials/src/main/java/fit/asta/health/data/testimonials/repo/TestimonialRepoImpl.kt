@@ -41,7 +41,9 @@ class TestimonialRepoImpl
         }
     }
 
-    override suspend fun saveTestimonial(testimonial: Testimonial): ResponseState<SaveTestimonialResponse> {
+    override suspend fun saveUserTestimonial(testimonial: Testimonial):
+        ResponseState<SaveTestimonialResponse> {
+
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
 
         listOf(

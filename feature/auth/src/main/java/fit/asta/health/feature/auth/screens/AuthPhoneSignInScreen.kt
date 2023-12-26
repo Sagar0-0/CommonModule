@@ -30,10 +30,16 @@ import fit.asta.health.feature.auth.components.AuthNumberInputUI
 import fit.asta.health.feature.auth.components.AuthOtpVerificationUI
 import fit.asta.health.feature.auth.util.OtpVerifier
 
+sealed interface PhoneAuthUiEvent {
+    data class SignInWithCredentials(val authCredential: AuthCredential) : PhoneAuthUiEvent
+    data object OnLoginFailed : PhoneAuthUiEvent
+    data object OnAuthSuccess : PhoneAuthUiEvent
+}
+
 @Composable
 fun AuthPhoneSignInScreen(
-    loginState: UiState<Unit>,
-    onUiEvent: (AuthUiEvent) -> Unit
+    loginState: UiState<Any>,
+    onUiEvent: (PhoneAuthUiEvent) -> Unit
 ) {
 
     val context = LocalContext.current
@@ -74,7 +80,7 @@ fun AuthPhoneSignInScreen(
                 number = "${countryCode}${phoneNumber}",
                 activity = context as Activity,
                 onVerificationComplete = {
-                    onUiEvent(AuthUiEvent.SignInWithCredentials(it))
+                    onUiEvent(PhoneAuthUiEvent.SignInWithCredentials(it))
                 },
                 onVerificationFailure = {
                     Toast.makeText(
@@ -101,7 +107,7 @@ fun AuthPhoneSignInScreen(
         else {
             loading = true
             val credential: AuthCredential = PhoneAuthProvider.getCredential(verificationID, otp)
-            onUiEvent(AuthUiEvent.SignInWithCredentials(credential))
+            onUiEvent(PhoneAuthUiEvent.SignInWithCredentials(credential))
         }
     }
 
@@ -109,12 +115,16 @@ fun AuthPhoneSignInScreen(
     when (loginState) {
         is UiState.ErrorRetry -> {
             AppErrorScreen(text = loginState.resId.toStringFromResId()) {
-                onUiEvent(AuthUiEvent.OnLoginFailed)
+                onUiEvent(PhoneAuthUiEvent.OnLoginFailed)
             }
         }
 
         UiState.Loading -> {
             loading = true
+        }
+
+        is UiState.Success -> {
+            onUiEvent(PhoneAuthUiEvent.OnAuthSuccess)
         }
 
         else -> {}
