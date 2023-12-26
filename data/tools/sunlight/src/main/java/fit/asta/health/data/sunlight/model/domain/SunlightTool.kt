@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.model.domain
+package fit.asta.health.data.sunlight.model.domain
 
 
 data class SunlightTool(

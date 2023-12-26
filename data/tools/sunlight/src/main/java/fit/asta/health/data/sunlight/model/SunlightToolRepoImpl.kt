@@ -1,7 +1,7 @@
-package fit.asta.health.tools.sunlight.model
+package fit.asta.health.data.sunlight.model
 
-import fit.asta.health.tools.sunlight.model.api.SunlightApi
-import fit.asta.health.tools.sunlight.model.network.response.ResponseData
+import fit.asta.health.data.sunlight.model.api.SunlightApi
+import fit.asta.health.data.sunlight.model.network.response.ResponseData
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.flow
 

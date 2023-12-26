@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.model.network.response
+package fit.asta.health.data.sunlight.model.network.response
 
 import com.google.gson.annotations.SerializedName
 

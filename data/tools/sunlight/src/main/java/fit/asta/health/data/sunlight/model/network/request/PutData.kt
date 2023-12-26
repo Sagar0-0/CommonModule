@@ -1,4 +1,4 @@
-package fit.asta.health.tools.sunlight.model.network.request
+package fit.asta.health.data.sunlight.model.network.request
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,14 +1,14 @@
-package fit.asta.health.tools.sunlight.di
+package fit.asta.health.data.sunlight.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.tools.sunlight.model.SunlightToolDataMapper
-import fit.asta.health.tools.sunlight.model.SunlightToolRepo
-import fit.asta.health.tools.sunlight.model.SunlightToolRepoImpl
-import fit.asta.health.tools.sunlight.model.api.SunlightApi
-import fit.asta.health.tools.sunlight.model.api.SunlightRestApi
+import fit.asta.health.data.sunlight.model.SunlightToolDataMapper
+import fit.asta.health.data.sunlight.model.SunlightToolRepo
+import fit.asta.health.data.sunlight.model.SunlightToolRepoImpl
+import fit.asta.health.data.sunlight.model.api.SunlightApi
+import fit.asta.health.data.sunlight.model.api.SunlightRestApi
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
