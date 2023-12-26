@@ -10,15 +10,30 @@ data class OffersData(
     @SerializedName("ttl")
     val title: String = "",
     @SerializedName("url")
-    val url: String = "",
-    @SerializedName("status")
+    val imageUrl: String = "",
+    @SerializedName("sts")
     val status: Int = 0,
     @SerializedName("discount")
     val discount: Int = 0,
     @SerializedName("code")
-    val code: String = "",
-    @SerializedName("startDate")
+    val offerCode: String = "",
+    @SerializedName("code")
+    val offer: String = "",
+    @SerializedName("start")
     val startDate: String = "",
-    @SerializedName("endDate")
-    val endDate: String = ""
-)
+    @SerializedName("end")
+    val endDate: String = "",
+    @SerializedName("unit")
+    val unit: String = "",
+    @SerializedName("areas")
+    val areas: List<OfferArea> = listOf(),
+) {
+    data class OfferArea(
+        @SerializedName("id")
+        val id: String = "",
+        @SerializedName("type")
+        val type: String = "",
+        @SerializedName("name")
+        val name: String = "",
+    )
+}

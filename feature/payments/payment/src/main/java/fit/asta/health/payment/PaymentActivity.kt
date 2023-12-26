@@ -155,7 +155,6 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
             else -> {
                 AppInternetErrorDialog()
             }
-
         }
     }
 
@@ -166,6 +165,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
 
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
         Log.e("PAY", "onPaymentError: $p0 $p1 ${p2?.paymentId}")
+        paymentsViewModel.informCancelledPayment()
         finish()
         onSuccess()
     }

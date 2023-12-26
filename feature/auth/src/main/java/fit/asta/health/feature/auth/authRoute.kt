@@ -2,16 +2,17 @@ package fit.asta.health.feature.auth
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.popUpToTop
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
 import fit.asta.health.feature.auth.screens.AuthScreenControl
 import fit.asta.health.feature.auth.screens.AuthUiEvent
+import fit.asta.health.feature.auth.screens.PhoneAuthUiEvent
 import fit.asta.health.feature.auth.vm.AuthViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
@@ -34,7 +35,7 @@ fun NavGraphBuilder.authRoute(
 ) {
 
     composable(AUTH_GRAPH_ROUTE) {
-        val authViewModel: AuthViewModel = hiltViewModel()
+        val authViewModel: AuthViewModel = it.sharedViewModel(navController = navController)
         LaunchedEffect(Unit) {
             authViewModel.getOnboardingData()
         }
@@ -69,28 +70,19 @@ fun NavGraphBuilder.authRoute(
 
 
     composable(AUTH_OTP_VERIFICATION_ROUTE) {
-        val authViewModel: AuthViewModel = hiltViewModel()
-        LaunchedEffect(Unit) {
-            authViewModel.getOnboardingData()
-        }
+        val authViewModel: AuthViewModel = it.sharedViewModel(navController = navController)
         val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
-        AuthPhoneSignInScreen(loginState = loginState) {
-            when (it) {
-                AuthUiEvent.OnLoginFailed -> {
+        AuthPhoneSignInScreen(loginState = loginState) { event ->
+            when (event) {
+                PhoneAuthUiEvent.OnLoginFailed -> {
                     authViewModel.onLoginFailed()
                 }
 
-                is AuthUiEvent.NavigateToWebView -> {
-                    navigateToWebView(it.url)
+                is PhoneAuthUiEvent.SignInWithCredentials -> {
+                    authViewModel.signInAndNavigate(event.authCredential)
                 }
 
-                is AuthUiEvent.SignInWithCredentials -> {
-                    authViewModel.signInAndNavigate(it.authCredential)
-                }
-
-                is AuthUiEvent.GetOnboardingData -> {
-                    authViewModel.getOnboardingData()
-                }
+                else -> {}
             }
         }
     }

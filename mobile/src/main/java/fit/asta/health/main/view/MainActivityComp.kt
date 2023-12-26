@@ -410,12 +410,13 @@ fun NavGraphBuilder.homeScreen(
             val walletResponseState by subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle()
             val couponResponseState by subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle()
 
-            when (val subscriptionResponse =
-                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value) {
+            when (
+                val subscriptionResponse =
+                    subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value) {
                 is UiState.Success -> {
                     if (offerIndex != null) {
-                        durType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.durType
-                        subType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.subType
+//                        durType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.durType//TODO: FIND SUBTYPE AND DURTPE??
+//                        subType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.subType
                     }
                     val category =
                         subscriptionResponse.data.subscriptionPlans.subscriptionPlanTypes.firstOrNull { cat ->
@@ -443,7 +444,10 @@ fun NavGraphBuilder.homeScreen(
                                     }
 
                                     is BuyScreenEvent.ApplyCouponCode -> {
-                                        subscriptionViewModel.applyCouponCode(event.code)
+                                        subscriptionViewModel.applyCouponCode(
+                                            event.code,
+                                            event.productMRP
+                                        )
                                     }
                                 }
                             }
