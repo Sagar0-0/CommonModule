@@ -19,8 +19,8 @@ import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.tools.sunlight.viewmodel.SunlightViewModel
-import fit.asta.health.tools.view.components.ItemData
-import fit.asta.health.tools.view.components.ItemList
+import fit.asta.health.ui.common.components.ItemData
+import fit.asta.health.ui.common.components.ItemList
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")

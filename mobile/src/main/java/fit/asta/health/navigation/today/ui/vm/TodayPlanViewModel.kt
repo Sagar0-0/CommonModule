@@ -30,7 +30,6 @@ import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.LocalTime
 import java.time.ZoneId
 import java.util.Calendar
 import javax.inject.Inject
@@ -59,7 +58,6 @@ class TodayPlanViewModel @Inject constructor(
     private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
 
-    private val currentTime: LocalTime = LocalTime.now()
 
     private val dataSource = CalendarDataSource()
 
@@ -107,6 +105,7 @@ class TodayPlanViewModel @Inject constructor(
                             idFromServer = "",
                             userId = uId,
                             daysOfWeek = Weekdays.ALL,
+                            selectedStartDateMillis = calendar.timeInMillis
 //                        alarmId = (System.currentTimeMillis() + AtomicLong().incrementAndGet())
                         )
                         stateManager.registerAlarm(context, alarm)
