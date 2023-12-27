@@ -7,13 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.sleep.model.SleepLocalRepo
 import fit.asta.health.data.sleep.model.SleepLocalRepositoryImpl
 import fit.asta.health.data.sleep.model.SleepRepository
 import fit.asta.health.data.sleep.model.SleepRepositoryImpl
 import fit.asta.health.data.sleep.model.api.SleepingApi
-import fit.asta.health.data.sleep.model.api.SleepingRestApi
 import fit.asta.health.data.sleep.model.db.SleepToolDatabase
+import fit.asta.health.network.utils.NetworkUtil
+import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -23,14 +25,16 @@ object SleepingModule {
 
     @Singleton
     @Provides
-    fun provideSleepApi(client: OkHttpClient): SleepingApi {
-        return SleepingRestApi(client)
-    }
+    fun provideSleepApi(client: OkHttpClient): SleepingApi =
+        NetworkUtil.getRetrofit(client).create(SleepingApi::class.java)
 
     @Singleton
     @Provides
-    fun provideSleepRepository(api: SleepingApi): SleepRepository {
-        return SleepRepositoryImpl(api = api)
+    fun provideSleepToolRepo(
+        remoteApi: SleepingApi,
+        @IODispatcher coroutineDispatcher: CoroutineDispatcher
+    ): SleepRepository {
+        return SleepRepositoryImpl(api = remoteApi, coroutineDispatcher = coroutineDispatcher)
     }
 
 
