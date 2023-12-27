@@ -45,6 +45,8 @@ import fit.asta.health.feature.breathing.nav.navigateToBreathing
 import fit.asta.health.feature.exercise.nav.navigateToExercise
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
+import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
+import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
 import fit.asta.health.feature.sunlight.nav.navigateToSunlight
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.navigateToStepsCounter
@@ -232,7 +234,11 @@ fun NavGraphBuilder.homeScreen(
                         WATER_GRAPH_ROUTE -> {
                             navController.navigateToWater()
                         }
-//                    SLEEP_GRAPH_ROUTE->{navController}
+
+                        SLEEP_GRAPH_ROUTE -> {
+                            navController.navigateToSleep()
+                        }
+
                         MEDITATION_GRAPH_ROUTE -> {
                             navController.navigateToMeditation()
                         }

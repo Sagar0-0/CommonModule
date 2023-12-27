@@ -138,6 +138,7 @@ dependencies {
     implementation(project(":data:tools:walking"))
     implementation(project(":data:tools:water"))
     implementation(project(":data:tools:exercise"))
+    implementation(project(":data:tools:sleep"))
 
     implementation(project(":feature:address"))
     implementation(project(":feature:auth"))
@@ -157,6 +158,7 @@ dependencies {
     implementation(project(":feature:tools:water"))
     implementation(project(":feature:tools:exercise"))
     implementation(project(":feature:tools:sunlight"))
+    implementation(project(":feature:tools:sleep"))
 
     implementation(project(":data:spotify"))
     implementation(project(":feature:spotify"))

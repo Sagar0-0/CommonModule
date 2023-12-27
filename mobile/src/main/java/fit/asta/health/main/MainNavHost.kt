@@ -36,6 +36,7 @@ import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
+import fit.asta.health.feature.sleep.view.navigation.sleepNavGraph
 import fit.asta.health.feature.sunlight.nav.sunlightNavigation
 import fit.asta.health.feature.testimonials.navigation.testimonialNavGraph
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
@@ -95,7 +96,7 @@ private fun MainNavHost(startDestination: String) {
         waterToolNavigation(navController, onBack = { navController.navigateUp() })
         meditationNavigation(navController, onBack = { navController.navigateUp() })
         sunlightNavigation(navController, onBack = { navController.navigateUp() })
-        //sleepNavGraph(navController,  onBack = { navController.navigateUp() })
+        sleepNavGraph(navController, onBack = { navController.navigateUp() })
         exerciseNavigation(navController, onBack = { navController.navigateUp() })
         testimonialNavGraph(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
