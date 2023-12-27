@@ -9,6 +9,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -18,6 +19,8 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 internal fun SettingsCardItem(
     icon: ImageVector,
     text: String,
+    iconTint: Color = AppTheme.colors.primary,
+    textColor: Color = AppTheme.colors.onSurface,
     onClick: () -> Unit
 ) {
     Box(
@@ -33,9 +36,9 @@ internal fun SettingsCardItem(
             AppIcon(
                 imageVector = icon,
                 modifier = Modifier.padding(start = AppTheme.spacing.level2),
-                tint = AppTheme.colors.primary
+                tint = iconTint
             )
-            CaptionTexts.Level1(text = text)
+            CaptionTexts.Level1(text = text, color = textColor)
         }
     }
 }

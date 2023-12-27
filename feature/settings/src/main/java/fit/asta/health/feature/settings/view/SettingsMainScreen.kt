@@ -4,7 +4,6 @@ import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
@@ -14,14 +13,12 @@ import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.FileCopy
-import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material.icons.filled.ShoppingCart
-import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -30,7 +27,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.toStringFromResId
@@ -42,7 +41,7 @@ import fit.asta.health.ui.common.AppDialogPopUp
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SettingsScreenLayout(
+fun SettingsHomeScreen(
     appVersionNumber: String,
     selectedTheme: String,
     onUiEvent: (key: SettingsUiEvent) -> Unit
@@ -54,7 +53,7 @@ fun SettingsScreenLayout(
     AnimatedVisibility(showDeleteConfirmationDialog) {
         AppDialogPopUp(
             headingText = R.string.confirm_delete.toStringFromResId(),
-            bodyText = "Are you sure you want to delete ??",
+            bodyText = "This operation can not be undone.",
             primaryButtonText = R.string.yes.toStringFromResId(),
             secondaryButtonText = R.string.cancel.toStringFromResId(),
             onDismiss = { showDeleteConfirmationDialog = false }
@@ -80,12 +79,16 @@ fun SettingsScreenLayout(
         Column(
             modifier = Modifier
                 .padding(padding)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3)
+                .verticalScroll(rememberScrollState())
+                .padding(horizontal = AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
 
-            // support Us Card Layout Function
-            SettingsCardLayout(title = stringResource(id = R.string.user_pref_support_us_cat_title)) {
+            // support Us Group Card
+            SettingsGroupCard(
+                title = stringResource(id = R.string.user_pref_support_us_cat_title)
+            ) {
 
                 // Share
                 SettingsCardItem(
@@ -93,11 +96,11 @@ fun SettingsScreenLayout(
                     text = stringResource(R.string.user_pref_share_app_title)
                 ) { onUiEvent(SettingsUiEvent.SHARE) }
 
-                // Subscribe
-                SettingsCardItem(
-                    icon = Icons.Default.Subscriptions,
-                    text = R.string.subscribe.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.NavigateToSubscription) }
+//                // Subscribe
+//                SettingsCardItem(
+//                    icon = Icons.Default.Subscriptions,
+//                    text = R.string.subscribe.toStringFromResId()
+//                ) { onUiEvent(SettingsUiEvent.NavigateToSubscription) }
 
                 // Orders
                 SettingsCardItem(
@@ -111,11 +114,11 @@ fun SettingsScreenLayout(
                     text = R.string.refer_and_earn.toStringFromResId()
                 ) { onUiEvent(SettingsUiEvent.REFERRAL) }
 
-                // Saved Addresses
-                SettingsCardItem(
-                    icon = Icons.Default.LocationOn,
-                    text = R.string.saved_address.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.ADDRESS) }
+//                // Saved Addresses
+//                SettingsCardItem(
+//                    icon = Icons.Default.LocationOn,
+//                    text = R.string.saved_address.toStringFromResId()
+//                ) { onUiEvent(SettingsUiEvent.ADDRESS) }
 
                 // Wallet
                 SettingsCardItem(
@@ -125,7 +128,7 @@ fun SettingsScreenLayout(
             }
 
             // This is the Display card section
-            SettingsCardLayout(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
+            SettingsGroupCard(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
 
                 // Theme
                 SettingsPreferenceDialog(
@@ -139,24 +142,8 @@ fun SettingsScreenLayout(
                 }
             }
 
-            // This is the Account Section
-            SettingsCardLayout(title = R.string.user_pref_account_cat_title.toStringFromResId()) {
-
-                // Sign out
-                SettingsCardItem(
-                    icon = Icons.Default.Logout,
-                    text = R.string.user_pref_sign_out_title.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.SIGNOUT) }
-
-                // Delete
-                SettingsCardItem(
-                    icon = Icons.Default.DeleteForever,
-                    text = R.string.user_pref_delete_account_title.toStringFromResId()
-                ) { showDeleteConfirmationDialog = true }
-            }
-
             // This is the About Card Section
-            SettingsCardLayout(title = R.string.user_pref_about_cat_title.toStringFromResId()) {
+            SettingsGroupCard(title = R.string.user_pref_about_cat_title.toStringFromResId()) {
 
                 // Bug Report
                 SettingsCardItem(
@@ -179,10 +166,34 @@ fun SettingsScreenLayout(
                 // Version
                 SettingsCardItem(
                     icon = Icons.Default.SettingsPhone,
-                    text = R.string.user_pref_version_title.toStringFromResId() + appVersionNumber
+                    text = R.string.user_pref_version_title.toStringFromResId() + " " + appVersionNumber
                 ) { onUiEvent(SettingsUiEvent.VERSION) }
             }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+
+            // This is the Account Section
+            SettingsGroupCard(
+                title = R.string.user_pref_account_cat_title.toStringFromResId()
+            ) {
+
+                // Sign out
+                SettingsCardItem(
+                    icon = Icons.Default.Logout,
+                    iconTint = Color.Red,
+                    textColor = Color.Red,
+                    text = R.string.user_pref_sign_out_title.toStringFromResId()
+                ) { onUiEvent(SettingsUiEvent.SIGNOUT) }
+
+                // Delete
+                SettingsCardItem(
+                    icon = Icons.Default.DeleteForever,
+                    iconTint = Color.Red,
+                    textColor = Color.Red,
+                    text = R.string.user_pref_delete_account_title.toStringFromResId()
+                ) { showDeleteConfirmationDialog = true }
+            }
+
+            //To add vertical space by targeting vertical spacing from parent
+            Spacer(modifier = Modifier)
         }
     }
 }

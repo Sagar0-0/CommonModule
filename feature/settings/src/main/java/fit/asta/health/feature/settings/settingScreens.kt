@@ -17,12 +17,12 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppErrorScreen
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
+import fit.asta.health.feature.settings.view.SettingsHomeScreen
 import fit.asta.health.feature.settings.view.SettingsNotificationLayout
 import fit.asta.health.feature.settings.view.SettingsNotificationsStatus
-import fit.asta.health.feature.settings.view.SettingsScreenLayout
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.feature.settings.vm.SettingsViewModel
 
@@ -126,7 +126,7 @@ fun NavGraphBuilder.settingScreens(
                 }
                 val selectedTheme by settingsViewModel.selectedTheme.collectAsStateWithLifecycle()
 
-                SettingsScreenLayout(
+                SettingsHomeScreen(
                     appVersionNumber = context.getCurrentBuildVersion(),
                     selectedTheme = selectedTheme,
                     onUiEvent = {
@@ -154,6 +154,7 @@ fun NavGraphBuilder.settingScreens(
                     }
                 )
             }
+
             composable(route = SettingDestination.Notifications.route) {
                 val notificationPreferenceState by remember {
                     mutableStateOf(
