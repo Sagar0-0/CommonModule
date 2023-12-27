@@ -1,6 +1,8 @@
 package fit.asta.health.feature.orders
 
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
@@ -22,7 +24,6 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.feature.orders.ui.OrderDetailScreen
-import fit.asta.health.feature.orders.ui.OrderDetailUiEvent
 import fit.asta.health.feature.orders.ui.OrdersScreen
 import fit.asta.health.feature.orders.vm.OrdersViewModel
 
@@ -60,15 +61,21 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
                             onBack = onBack
                         )
                     }
-                ) { padd ->
+                ) { padding ->
                     when (ordersState) {
                         is UiState.Loading -> {
-                            AppDotTypingAnimation(modifier = Modifier.padding(padd))
+                            Box(
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .fillMaxSize()
+                            ) {
+                                AppDotTypingAnimation()
+                            }
                         }
 
                         is UiState.Success -> {
                             OrdersScreen(
-                                modifier = Modifier.padding(padd),
+                                modifier = Modifier.padding(padding),
                                 orders = ordersState.data
                             ) { orderId ->
                                 navController.navigateToOrderDetailsPage(ordersViewModel, orderId)
@@ -80,8 +87,7 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
                                 context,
                                 ordersState.resId.toStringFromResId(),
                                 Toast.LENGTH_SHORT
-                            )
-                                .show()
+                            ).show()
                         }
 
                         is UiState.ErrorRetry -> {
@@ -106,19 +112,23 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
                             }
                         )
                     }
-                ) { padd ->
+                ) { padding ->
                     when (orderDetailDataState) {
                         is UiState.Loading -> {
-                            AppDotTypingAnimation(modifier = Modifier.padding(padd))
+                            Box(
+                                modifier = Modifier
+                                    .padding(padding)
+                                    .fillMaxSize()
+                            ) {
+                                AppDotTypingAnimation()
+                            }
                         }
 
                         is UiState.Success -> {
-                            OrderDetailScreen(orderDetailDataState.data) { event ->
-                                when (event) {
-                                    is OrderDetailUiEvent.Back -> {
-                                        navController.popBackStack()
-                                    }
-                                }
+                            OrderDetailScreen(
+                                modifier = Modifier.padding(padding),
+                                orderData = orderDetailDataState.data
+                            ) { event ->
 
                             }
                         }

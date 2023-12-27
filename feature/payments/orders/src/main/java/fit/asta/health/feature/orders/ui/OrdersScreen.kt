@@ -1,10 +1,14 @@
 package fit.asta.health.feature.orders.ui
 
+import android.content.res.Configuration
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -16,15 +20,60 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.orders.remote.OrderId
 import fit.asta.health.data.orders.remote.model.OrderData
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 import fit.asta.health.resources.strings.R as StringR
+
+@Preview("Orders Light")
+@Preview(
+    name = "Orders Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun OrderScreenPreview() {
+    AppTheme {
+        OrdersScreen(
+            orders = listOf(
+                OrderData(
+                    amt = 8978,
+                    cDate = 2248,
+                    durType = "theophrastus",
+                    orderId = "nullam",
+                    paymentId = "pericula",
+                    subType = "morbi",
+                    type = 6133,
+                    title = "Title",
+                    url = "https://duckduckgo.com/?q=movet",
+                    status = "pulvinar"
+                ),
+                OrderData(
+                    amt = 8978,
+                    cDate = 2248,
+                    durType = "theophrastus",
+                    orderId = "nullam",
+                    paymentId = "pericula",
+                    subType = "morbi",
+                    type = 6133,
+                    title = "Title",
+                    url = "https://duckduckgo.com/?q=movet",
+                    status = "pulvinar"
+                )
+            )
+        ) {
+
+        }
+    }
+}
 
 @Composable
 fun OrdersScreen(
@@ -33,25 +82,29 @@ fun OrdersScreen(
     onOrderClick: (OrderId) -> Unit
 ) {
     if (orders.isEmpty()) {
-        Column(
+        Box(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
-            verticalArrangement = Arrangement.Center,
-            horizontalAlignment = Alignment.CenterHorizontally
+                .fillMaxSize(),
+            contentAlignment = Alignment.Center
         ) {
-            Image(
-                painter = painterResource(id = R.drawable.placeholder_tag),
-                contentDescription = ""
-            )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            TitleTexts.Level2(
-                textAlign = TextAlign.Center,
-                text = stringResource(id = StringR.string.no_order_history)
-            )
+            Column {
+                Image(
+                    painter = painterResource(id = R.drawable.placeholder_tag),
+                    contentDescription = ""
+                )
+                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+                TitleTexts.Level2(
+                    textAlign = TextAlign.Center,
+                    text = stringResource(id = StringR.string.no_order_history)
+                )
+            }
         }
     } else {
-        LazyColumn(modifier = modifier) {
+        LazyColumn(
+            contentPadding = PaddingValues(AppTheme.spacing.level2),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+            modifier = modifier
+        ) {
             items(orders) { order ->
                 OrderItem(order) {
                     onOrderClick(order.orderId)
@@ -63,25 +116,32 @@ fun OrdersScreen(
 
 @Composable
 private fun OrderItem(order: OrderData, onClick: () -> Unit) {
-    AppCard(
-        modifier = Modifier
-            .padding(AppTheme.spacing.level2),
+    AppElevatedCard(
         onClick = onClick
     ) {
-        Row(modifier = Modifier.fillMaxWidth()) {
-            Column(modifier = Modifier.weight(1f)) {
-                TitleTexts.Level2(text = order.title)
-                Spacer(modifier = Modifier.padding(AppTheme.spacing.level1))
-                TitleTexts.Level2(text = order.cDate.toString())
-                Spacer(modifier = Modifier.padding(AppTheme.spacing.level1))
-                TitleTexts.Level2(text = order.amt.toString())
-                Spacer(modifier = Modifier.padding(AppTheme.spacing.level1))
-                TitleTexts.Level2(text = order.status)
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2)
+        ) {
+            Column(
+                modifier = Modifier.weight(1f),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            ) {
+                HeadingTexts.Level1(text = order.title)
+                BodyTexts.Level2(text = "Date: " + order.cDate.toString())
+                TitleTexts.Level2(text = order.amt.toString() + "/-")
             }
 
-            AppNetworkImage(
-                model = getImgUrl(order.url)
-            )
+            Box {
+                BodyTexts.Level2(
+                    modifier = Modifier.align(Alignment.TopEnd),
+                    text = order.status
+                )
+                AppNetworkImage(
+                    model = getImgUrl(order.url)
+                )
+            }
         }
     }
 }

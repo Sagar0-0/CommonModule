@@ -35,4 +35,5 @@ dependencies {
     implementation(libs.accompanist.coil)
 
     implementation(libs.moshi.kotlin)
+    implementation(libs.androidx.ui.tooling.preview.android)
 }
