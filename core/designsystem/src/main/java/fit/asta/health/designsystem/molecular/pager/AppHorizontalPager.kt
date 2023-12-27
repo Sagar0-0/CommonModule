@@ -8,14 +8,12 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * The [AppHorizontalPager] composable function is a custom component in Jetpack Compose, a declarative UI
@@ -60,17 +58,12 @@ fun AppHorizontalPager(
     // Animating to the next Pages if it is enabled
     if (enableAutoAnimation) {
 
-        // Coroutine Scope State
-        val scope = rememberCoroutineScope()
-
         LaunchedEffect(pagerState.currentPage) {
-            scope.launch {
-                delay(animationDelay)
+            delay(animationDelay)
 
-                // Calculating the next Page to be shown and transiting to it
-                val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
-                pagerState.animateScrollToPage(newPosition)
-            }
+            // Calculating the next Page to be shown and transiting to it
+            val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
+            pagerState.animateScrollToPage(newPosition)
         }
     }
 

@@ -22,6 +22,7 @@ import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthOnboardingControl
@@ -34,7 +35,6 @@ import fit.asta.health.resources.strings.R
  * This function is the Screen for the Login or Sign up screen in the App. This shows the various types
  * of Login for the App.
  *
- * @param loginState This is the Login API call State
  * @param onboardingState This is the on Boarding API call state
  * @param onNavigate This is the function which helps to Navigate between different screens
  * @param onUiEvent This function is used to send UI Events to the ViewModel
@@ -47,38 +47,36 @@ fun AuthScreenControl(
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
 
-    // Parent Composable
-    Box(modifier = Modifier.fillMaxSize()) {
-        Column(
-            modifier = Modifier.fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.SpaceBetween
+    AppScaffold { padding ->
+        // Parent Composable
+        Box(
+            modifier = Modifier
+                .padding(padding)
+                .fillMaxSize()
+                .padding(AppTheme.spacing.level2)
         ) {
-
-            // On Boarding UI
-            Box(
-                modifier = Modifier
-                    .weight(.65f)
-                    .padding(vertical = AppTheme.spacing.level2)
+            Column(
+                modifier = Modifier.fillMaxSize(),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.SpaceBetween
             ) {
 
-                // This handles and shows UI of On Boarding Data Pager
-                AuthOnboardingControl(
-                    onboardingState = onboardingState,
-                    onUiEvent = onUiEvent
-                )
-            }
+                // On Boarding UI
+                Box(
+                    modifier = Modifier
+                        .weight(1f)
+                        .padding(bottom = AppTheme.spacing.level2)
+                ) {
 
-            // Whole Login and Sign up along with the terms and policy UI
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(.35f)
-                    .padding(horizontal = AppTheme.spacing.level3),
-                contentAlignment = Alignment.BottomCenter
-            ) {
+                    // This handles and shows UI of On Boarding Data Pager
+                    AuthOnboardingControl(
+                        onboardingState = onboardingState,
+                        onUiEvent = onUiEvent
+                    )
+                }
+
                 Column(
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
 
@@ -109,19 +107,15 @@ fun AuthScreenControl(
                     // Terms and Policy composable function
                     AuthTermAndPrivacyUI(
                         modifier = Modifier.fillMaxWidth(),
-                        onTermsClick = {
-                            onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
-                        },
-                        onPrivacyClick = {
-                            onUiEvent(AuthUiEvent.NavigateToWebView(url = it))
+                        onClick = { url ->
+                            onUiEvent(AuthUiEvent.NavigateToWebView(url = url))
                         }
                     )
                 }
             }
+            // This function shows and handles the Login State UI Flow
+            HandleLoginState(loginState = loginState, onUiEvent = onUiEvent)
         }
-
-        // This function shows and handles the Login State UI Flow
-        HandleLoginState(loginState = loginState, onUiEvent = onUiEvent)
     }
 }
 

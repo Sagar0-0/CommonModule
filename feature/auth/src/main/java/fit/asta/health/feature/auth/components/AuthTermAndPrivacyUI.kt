@@ -18,14 +18,12 @@ import java.nio.charset.StandardCharsets
  * This composable function creates the Annotated String in the UI
  *
  * @param modifier This is modifications which may be passed from the Parent Composable
- * @param onTermsClick This function is called when the User clicks on the Terms Text
- * @param onPrivacyClick This function is called when the User clicks on the Privacy Text
+ * @param onClick This function is called when the User clicks on the TnC Texts
  */
 @Composable
 fun AuthTermAndPrivacyUI(
     modifier: Modifier = Modifier,
-    onTermsClick: (String) -> Unit,
-    onPrivacyClick: (String) -> Unit
+    onClick: (String) -> Unit,
 ) {
 
     val context = LocalContext.current
@@ -70,7 +68,7 @@ fun AuthTermAndPrivacyUI(
         annotatedLinkString
             .getStringAnnotations("terms", it, it)
             .firstOrNull()?.let { stringAnnotation ->
-                onTermsClick(
+                onClick(
                     URLEncoder.encode(
                         stringAnnotation.item,
                         StandardCharsets.UTF_8.toString()
@@ -80,7 +78,7 @@ fun AuthTermAndPrivacyUI(
         annotatedLinkString
             .getStringAnnotations("privacy", it, it)
             .firstOrNull()?.let { stringAnnotation ->
-                onPrivacyClick(
+                onClick(
                     URLEncoder.encode(
                         stringAnnotation.item,
                         StandardCharsets.UTF_8.toString()
