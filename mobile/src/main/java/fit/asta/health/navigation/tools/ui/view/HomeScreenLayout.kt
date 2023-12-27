@@ -30,7 +30,9 @@ import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
+import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.UserTestimonialUI
+import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
@@ -46,7 +48,6 @@ import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
 import fit.asta.health.subscription.view.OfferBanner
 import fit.asta.health.subscription.view.SubscriptionTypesList
 import fit.asta.health.subscription.view.UserSubscribedPlanSection
-import fit.asta.health.tools.sleep.SleepToolActivity
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -168,7 +169,7 @@ fun HomeScreenLayout(
                             }
 
                             "steps" -> {
-                                onNav(fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE)
+                                onNav(STEPS_GRAPH_ROUTE)
                             }
 
                             "workout" -> {
@@ -192,10 +193,7 @@ fun HomeScreenLayout(
                             }
 
                             "sleep" -> {
-//                            onNav(Graph.SleepTool.route)
-                                SleepToolActivity.launch(
-                                    context = context, userId = userId
-                                )
+                                onNav(SLEEP_GRAPH_ROUTE)
                             }
 
                             "breathing" -> {

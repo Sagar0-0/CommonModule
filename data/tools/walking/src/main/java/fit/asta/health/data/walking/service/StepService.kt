@@ -99,6 +99,7 @@ class StepService : LifecycleService() {
     private val launchApplicationPendingIntent
         get(): PendingIntent {
             val intent = Intent(this, Class.forName("fit.asta.health.MainActivity"))
+            intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
             val flags = PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
             return PendingIntent.getActivity(this, PENDING_INTENT_ID, intent, flags)
         }

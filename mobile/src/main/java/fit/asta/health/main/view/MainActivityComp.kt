@@ -42,8 +42,13 @@ import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feature.breathing.nav.navigateToBreathing
+import fit.asta.health.feature.exercise.nav.navigateToExercise
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
+import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
+import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
+import fit.asta.health.feature.sunlight.nav.navigateToSunlight
+import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.navigateToStepsCounter
 import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
 import fit.asta.health.feature.water.nav.navigateToWater
@@ -61,8 +66,6 @@ import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.remote.model.DurationType
 import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
-import fit.asta.health.tools.exercise.nav.navigateToExercise
-import fit.asta.health.tools.sunlight.nav.navigateToSunlight
 
 const val HOME_GRAPH_ROUTE = "graph_home"
 const val HOME_ROUTE = "home_route"
@@ -231,7 +234,11 @@ fun NavGraphBuilder.homeScreen(
                         WATER_GRAPH_ROUTE -> {
                             navController.navigateToWater()
                         }
-//                    SLEEP_GRAPH_ROUTE->{navController}
+
+                        SLEEP_GRAPH_ROUTE -> {
+                            navController.navigateToSleep()
+                        }
+
                         MEDITATION_GRAPH_ROUTE -> {
                             navController.navigateToMeditation()
                         }
@@ -244,7 +251,7 @@ fun NavGraphBuilder.homeScreen(
                             navController.navigateToExercise()
                         }
 
-                        fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE -> {
+                        STEPS_GRAPH_ROUTE -> {
                             navController.navigateToStepsCounter()
                         }
 

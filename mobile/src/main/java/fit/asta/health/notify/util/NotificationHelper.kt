@@ -308,6 +308,7 @@ fun Context.sendNotification(
     )
 
     val intentNotify = Intent(this, MainActivity::class.java)
+    intentNotify.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     val intentPending = PendingIntent.getActivity(
         this,
         NOTIFICATION_ID,

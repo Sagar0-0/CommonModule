@@ -5,7 +5,6 @@ import android.util.Log
 import androidx.hilt.work.HiltWorker
 import androidx.work.Constraints
 import androidx.work.CoroutineWorker
-import androidx.work.ForegroundInfo
 import androidx.work.NetworkType
 import androidx.work.OneTimeWorkRequestBuilder
 import androidx.work.OutOfQuotaPolicy
@@ -33,8 +32,8 @@ class SchedulerWorker @AssistedInject constructor(
     private val stateManager: StateManager,
     @UID private val uId: String
 ) : CoroutineWorker(appContext, workerParams) {
-    override suspend fun getForegroundInfo(): ForegroundInfo =
-        appContext.syncForegroundInfo()
+//    override suspend fun getForegroundInfo(): ForegroundInfo =
+//        appContext.syncForegroundInfo()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 

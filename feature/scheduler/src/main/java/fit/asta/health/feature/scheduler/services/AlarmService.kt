@@ -384,6 +384,7 @@ class AlarmService : Service() {
 
 fun getMainActivityPendingIntent(context: Context): PendingIntent {
     val intent = Intent(context, Class.forName("fit.asta.health.MainActivity"))
+    intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     return PendingIntent.getActivity(
         context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
     )

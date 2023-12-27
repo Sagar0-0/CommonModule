@@ -94,11 +94,6 @@
             android:value="com.google.android.exoplayer2.ext.cast.DefaultCastOptionsProvider" />
 
         <activity android:name=".payment.PaymentActivity" />
-        <activity
-            android:name=".tools.sleep.SleepToolActivity"
-            android:exported="true"
-            android:label="@string/title_activity_sleep_tool">
-        </activity>
         <activity android:name=".BillingActivity" />
         <activity
             android:name=".feature.scheduler.ui.AlarmScreenActivity"
