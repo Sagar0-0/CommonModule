@@ -3,16 +3,16 @@ package fit.asta.health.feature.auth.screens
 import android.app.Activity
 import android.widget.Toast
 import androidx.compose.animation.Crossfade
+import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,7 +24,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppScreen
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.components.AuthNumberInputUI
 import fit.asta.health.feature.auth.components.AuthOtpVerificationUI
@@ -45,28 +45,28 @@ fun AuthPhoneSignInScreen(
     val context = LocalContext.current
 
     // phone Number inputted by the User
-    var phoneNumber by remember { mutableStateOf("") }
+    var phoneNumber by rememberSaveable { mutableStateOf("") }
 
     // Country Code Inputted By the user
-    var countryCode by remember { mutableStateOf("+91") }
+    var countryCode by rememberSaveable { mutableStateOf("+91") }
 
     // This determines if to show the OTP input text fields or the Phone Number Input Fields
-    var otpVisible by remember { mutableStateOf(false) }
+    var otpVisible by rememberSaveable { mutableStateOf(false) }
 
     // This is the OTP entered by the user
-    var otp by remember { mutableStateOf("") }
+    var otp by rememberSaveable { mutableStateOf("") }
 
     // This is the heading text of the App asking the App for necessary inputs
     val textToShow = when (otpVisible) {
-        true -> "Enter the Otp Sent To phone Number ${countryCode}$phoneNumber"
-        false -> "Enter your mobile number to get the OTP"
+        true -> "Enter the Otp Sent to ${countryCode}$phoneNumber"
+        false -> "Enter your mobile number to continue"
     }
 
     // Used to show the Loading state of the Whole Flow
-    var loading by remember { mutableStateOf(false) }
+    var loading by rememberSaveable { mutableStateOf(false) }
 
     // This is the Verification ID which would be matched for OTP
-    var verificationID by remember { mutableStateOf("") }
+    var verificationID by rememberSaveable { mutableStateOf("") }
 
     // This is the function for sending the OTP
     val onSendOtp = {
@@ -130,26 +130,32 @@ fun AuthPhoneSignInScreen(
         else -> {}
     }
 
-    AppScreen {
+    AppScaffold { padding ->
 
         // Contains Both the heading text, Number Input and the Verification Code input Fields
         Box(
             modifier = Modifier
+                .padding(padding)
                 .fillMaxSize()
-                .padding(horizontal = AppTheme.spacing.level2),
+                .padding(AppTheme.spacing.level2),
             contentAlignment = Alignment.Center
         ) {
 
-            Column {
+            Column(
+                modifier = Modifier.fillMaxWidth(),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
                 // heading Text asking user to give his inputs
                 TitleTexts.Level2(text = textToShow)
 
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
                 // This Contains the Phone Number Input UI
-                Crossfade(targetState = otpVisible, label = "") { visibility ->
-                    if (!visibility)
+                Crossfade(
+                    targetState = otpVisible,
+                    label = ""
+                ) { otpScreen ->
+                    if (!otpScreen) {
                         AuthNumberInputUI(
                             phoneNumber = phoneNumber,
                             countryCode = countryCode,
@@ -161,7 +167,7 @@ fun AuthPhoneSignInScreen(
                             },
                             onGenerateOtpClick = onSendOtp
                         )
-                    else
+                    } else {
                         AuthOtpVerificationUI(
                             otp = otp,
                             onOtpTextChange = {
@@ -174,6 +180,7 @@ fun AuthPhoneSignInScreen(
                             onVerifyOtpClick = onOtpSubmit,
                             onResendOtpClick = onSendOtp
                         )
+                    }
                 }
             }
 

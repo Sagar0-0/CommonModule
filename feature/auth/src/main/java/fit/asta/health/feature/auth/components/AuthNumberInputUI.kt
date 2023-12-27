@@ -5,8 +5,10 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -63,6 +65,7 @@ fun AuthNumberInputUI(
     Column(
         modifier = Modifier
             .fillMaxWidth()
+            .verticalScroll(rememberScrollState())
             .padding(horizontal = AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -80,7 +83,7 @@ fun AuthNumberInputUI(
             verticalAlignment = Alignment.CenterVertically
         ) {
 
-            // TODO :- Change this code with the country code thing
+            // TODO :- Change this field with the country code picker
             AppOutlinedTextField(
                 modifier = Modifier.weight(.27f),
                 value = countryCode,
@@ -94,11 +97,10 @@ fun AuthNumberInputUI(
                     onNext = { focusManager.moveFocus(FocusDirection.Next) }
                 ),
                 appTextFieldType = AppTextFieldValidator(
-                    appTextFieldType = AppTextFieldType.Custom(
-                        minSize = 1,
-                        maxSize = 4,
-                        getErrorMessageLogic = { _, _ -> "" },
-
+                    appTextFieldType = AppTextFieldType
+                        .Custom(
+                            minSize = 2,
+                            maxSize = 4
                         )
                 ),
                 singleLine = true
@@ -108,7 +110,7 @@ fun AuthNumberInputUI(
             AppOutlinedTextField(
                 modifier = Modifier.weight(.73f),
                 value = phoneNumber,
-                label = "Enter Phone Number",
+                label = "Phone Number",
                 onValueChange = onPhoneNumberChange,
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,

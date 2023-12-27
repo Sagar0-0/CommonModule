@@ -111,7 +111,7 @@ fun AppOutlinedTextField(
     val stringCounter = appTextFieldType.getStringCounter(value)
 
 
-    // Text Field Layout from Material 3
+    // Outlined Text Field from Material 3
     OutlinedTextField(
         value = value,
         onValueChange = {
@@ -123,14 +123,17 @@ fun AppOutlinedTextField(
         textStyle = AppTheme.customTypography.caption.level2,
         label = { BodyTexts.Level3(text = label) },
         leadingIcon = leadingIcon,
-        trailingIcon = {
-            if (trailingIcon != null && !isError) {
+        trailingIcon = if (isError) {
+            {
+                Icon(
+                    imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+                )
+            }
+        } else if (trailingIcon != null) {
+            {
                 trailingIcon()
             }
-            if (isError) Icon(
-                imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
-            )
-        },
+        } else null,
         isError = isError,
         visualTransformation = visualTransformation,
         keyboardOptions = keyboardOptions,
