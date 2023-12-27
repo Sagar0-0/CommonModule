@@ -8,6 +8,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.shape.RoundedCornerShape
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -19,17 +24,91 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.drawBehind
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.unit.dp
+import androidx.navigation.NavHostController
+import androidx.navigation.compose.currentBackStackEntryAsState
+import fit.asta.health.data.sleep.model.db.SleepData
+import fit.asta.health.data.sleep.model.network.common.Prc
 import fit.asta.health.data.sleep.model.network.get.ProgressData
+import fit.asta.health.data.sleep.utils.SleepNetworkCall
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ProgressBarInt
+import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.sleep.view.components.SleepBottomSheet
+import fit.asta.health.feature.sleep.view.navigation.SleepToolNavRoutes
 import kotlinx.coroutines.delay
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
 
+
+@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SleepHomeScreen(
+    navController: NavHostController,
+    progressData: ProgressData?,
+    bottomSheetData: List<Prc>?,
+    selectedDisturbances: Prc?,
+    timerStatus: SleepNetworkCall<List<SleepData>>,
+    onStartStopClick: () -> Unit,
+    onBack: () -> Unit
+) {
+
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+    val backStackEntry = navController.currentBackStackEntryAsState()
+    val currentBackStackEntryRoute = backStackEntry.value?.destination?.route
+    val shouldShowSheet = currentBackStackEntryRoute == SleepToolNavRoutes.SleepHomeRoute.routes
+
+    AppBottomSheetScaffold(
+        modifier = Modifier.fillMaxSize(),
+        sheetShape = RoundedCornerShape(16.dp),
+        sheetContent = {
+            if (shouldShowSheet) {
+                SleepBottomSheet(
+                    scaffoldState = sheetState,
+                    navController = navController,
+                    bottomSheetData = bottomSheetData,
+                    selectedDisturbances = selectedDisturbances,
+                    timerStatus = timerStatus,// sleepToolViewModel.timerStatus.collectAsState().value
+                ) {
+                    onStartStopClick()// sleepToolViewModel.setTimerStatus()
+                }
+            }
+        },
+        sheetPeekHeight = if (shouldShowSheet) 230.dp else 0.dp,
+        scaffoldState = scaffoldState,
+        topBar = {
+
+            val topBarTitle = when (currentBackStackEntryRoute) {
+                SleepToolNavRoutes.SleepHomeRoute.routes -> "Sleep Tool"
+                SleepToolNavRoutes.SleepFactorRoute.routes -> "Sleep Factors"
+                SleepToolNavRoutes.SleepDisturbanceRoute.routes -> "Sleep Disturbances"
+                SleepToolNavRoutes.SleepJetLagTipsRoute.routes -> "Jet Lab Tips"
+                SleepToolNavRoutes.SleepGoalsRoute.routes -> "Goals"
+                else -> {
+                    ""
+                }
+            }
+
+            AppTopBarWithHelp(
+                title = topBarTitle,
+                onBack = {
+                    onBack()
+                },
+                onHelp = { /*TODO*/ }
+            )
+        }
+    ) {
+        ScaffoldUI(progressData = progressData)
+    }
+}
+
+@Composable
+fun ScaffoldUI(
     progressData: ProgressData?
 ) {
 

@@ -18,7 +18,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
-import fit.asta.health.data.sleep.model.network.jetlag.SleepJetLagTipResponse
+import fit.asta.health.data.sleep.model.network.jetlag.JetLagTipsData
 import fit.asta.health.data.sleep.utils.SleepNetworkCall
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -30,7 +30,7 @@ import fit.asta.health.resources.drawables.R
 
 @Composable
 fun SleepJetLagTipsScreen(
-    jetLagDetails: SleepNetworkCall<SleepJetLagTipResponse>,
+    jetLagDetails: SleepNetworkCall<JetLagTipsData>,
     loadData: () -> Unit
 ) {
 
@@ -79,7 +79,7 @@ fun SleepJetLagTipsScreen(
                 }
 
                 // Showing all the Jet Lag Details in the UI
-                jetLagDetails.data?.jetLagTipsData?.jetLagTipDetails?.let { jetDetailsList ->
+                jetLagDetails.data?.jetLagTipDetails?.let { jetDetailsList ->
                     items(jetDetailsList.size) {
 
                         // Current Item

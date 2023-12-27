@@ -3,6 +3,7 @@ package fit.asta.health.feature.sleep.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.sleep.model.SleepLocalRepo
 import fit.asta.health.data.sleep.model.SleepRepository
 import fit.asta.health.data.sleep.model.db.SleepData
@@ -10,8 +11,8 @@ import fit.asta.health.data.sleep.model.network.common.ToolData
 import fit.asta.health.data.sleep.model.network.common.Value
 import fit.asta.health.data.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.data.sleep.model.network.get.SleepToolGetResponse
-import fit.asta.health.data.sleep.model.network.goals.SleepGoalResponse
-import fit.asta.health.data.sleep.model.network.jetlag.SleepJetLagTipResponse
+import fit.asta.health.data.sleep.model.network.goals.SleepGoalData
+import fit.asta.health.data.sleep.model.network.jetlag.JetLagTipsData
 import fit.asta.health.data.sleep.model.network.post.SleepPostRequestBody
 import fit.asta.health.data.sleep.model.network.post.Slp
 import fit.asta.health.data.sleep.utils.SleepNetworkCall
@@ -27,7 +28,8 @@ import javax.inject.Inject
 @HiltViewModel
 class SleepToolViewModel @Inject constructor(
     private val remoteRepository: SleepRepository,
-    private val localRepository: SleepLocalRepo
+    private val localRepository: SleepLocalRepo,
+//    @UID private val uid: UserId
 ) : ViewModel() {
 
     // This contains the user ID for the Api Calls
@@ -59,6 +61,11 @@ class SleepToolViewModel @Inject constructor(
     )
     val timerStatus = _timerStatus.asStateFlow()
 
+
+    init {
+        getUserData()
+    }
+
     /**
      * This function fetches the data of the default UI element settings of the user
      * from the Server
@@ -69,35 +76,45 @@ class SleepToolViewModel @Inject constructor(
         _userUIDefaults.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            try {
 
                 // Local Date time
                 val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
-                // Fetching the data from the server
-                val response = remoteRepository.getUserDefaultSettings(
-                    userId = userIdFromHomeScreen,
-                    date = currentDate
-                )
+            // Fetching the data from the server
+            val response = remoteRepository.getUserDefaultSettings(
+                userId = userIdFromHomeScreen,
+                date = currentDate
+            )
 
-                // Fetching the Local Data of whether the Timer is already started or not
-                val localData = localRepository.getData()
-                _timerStatus.value = SleepNetworkCall.Success(data = localData)
+            // Fetching the Local Data of whether the Timer is already started or not
+            val localData = localRepository.getData()
+            _timerStatus.value = SleepNetworkCall.Success(data = localData)
 
-                // handling the Response
-                if (response.isSuccessful) {
-                    _userUIDefaults.value = SleepNetworkCall.Success(data = response.body()!!)
+            when (response) {
+                is ResponseState.Success -> {
+                    _userUIDefaults.value = SleepNetworkCall.Success(response.data)
 
                     toolDataID =
                         if (_userUIDefaults.value.data?.sleepData?.toolData!!.uid != "000000000000000000000000")
                             _userUIDefaults.value.data?.sleepData?.toolData!!.id
                         else
                             ""
-                } else
-                    _userUIDefaults.value = SleepNetworkCall.Failure(message = "No Data Present")
+                }
 
-            } catch (e: Exception) {
-                _userUIDefaults.value = SleepNetworkCall.Failure(message = e.message.toString())
+                is ResponseState.ErrorMessage -> {
+                    _userUIDefaults.value =
+                        SleepNetworkCall.Failure(message = "No Data Present")
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    _userUIDefaults.value =
+                        SleepNetworkCall.Failure(message = "No Data Present")
+                }
+
+                is ResponseState.NoInternet -> {
+                    _userUIDefaults.value =
+                        SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
         }
     }
@@ -119,27 +136,36 @@ class SleepToolViewModel @Inject constructor(
         _userValueUpdate.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            _userValueUpdate.value = try {
 
-                val response = remoteRepository.putUserData(
-                    toolData = ToolData(
-                        code = "sleep",
-                        id = toolDataID,
-                        prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc!!,
-                        type = 1,
-                        uid = userIdFromHomeScreen
-                    )
+
+            val response = remoteRepository.putUserData(
+                toolData = ToolData(
+                    code = "sleep",
+                    id = toolDataID,
+                    prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc!!,
+                    type = 1,
+                    uid = userIdFromHomeScreen
                 )
+            )
 
-                if (response.isSuccessful) {
+            _userValueUpdate.value = when (response) {
+                is ResponseState.Success -> {
                     if (toolDataID == "")
-                        toolDataID = response.body()!!.data.id
-
+                        toolDataID = response.data.id
                     SleepNetworkCall.Success(data = Unit)
-                } else
+                }
+
+                is ResponseState.ErrorMessage -> {
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
-            } catch (e: Exception) {
-                SleepNetworkCall.Failure(message = e.message.toString())
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                }
+
+                is ResponseState.NoInternet -> {
+                    SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
         }
     }
@@ -162,22 +188,29 @@ class SleepToolViewModel @Inject constructor(
         _sleepDisturbancesData.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            _sleepDisturbancesData.value = try {
+            // Fetching the Data from the server
+            val response = remoteRepository.getPropertyData(
+                userId = userIdFromHomeScreen,
+                property = "sd"
+            )
+            _sleepDisturbancesData.value = when (response) {
+                is ResponseState.Success -> {
+                    SleepNetworkCall.Success(data = response.data)
+                }
 
-                // Fetching the Data from the server
-                val response = remoteRepository.getPropertyData(
-                    userId = userIdFromHomeScreen,
-                    property = "sd"
-                )
-
-                // Handling the Response
-                if (response.isSuccessful)
-                    SleepNetworkCall.Success(data = response.body()!!)
-                else
+                is ResponseState.ErrorMessage -> {
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
-            } catch (e: Exception) {
-                SleepNetworkCall.Failure(message = e.message.toString())
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                }
+
+                is ResponseState.NoInternet -> {
+                    SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
+
         }
     }
 
@@ -199,21 +232,28 @@ class SleepToolViewModel @Inject constructor(
         _sleepFactorsData.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            _sleepFactorsData.value = try {
 
-                // Fetching the Data from the server
-                val response = remoteRepository.getPropertyData(
-                    userId = userIdFromHomeScreen,
-                    property = "sf"
-                )
+            // Fetching the Data from the server
+            val response = remoteRepository.getPropertyData(
+                userId = userIdFromHomeScreen,
+                property = "sf"
+            )
+            _sleepFactorsData.value = when (response) {
+                is ResponseState.Success -> {
+                    SleepNetworkCall.Success(data = response.data)
+                }
 
-                // Handling the Response
-                if (response.isSuccessful)
-                    SleepNetworkCall.Success(data = response.body()!!)
-                else
+                is ResponseState.ErrorMessage -> {
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
-            } catch (e: Exception) {
-                SleepNetworkCall.Failure(message = e.message.toString())
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                }
+
+                is ResponseState.NoInternet -> {
+                    SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
         }
     }
@@ -221,7 +261,7 @@ class SleepToolViewModel @Inject constructor(
     /**
      * This variable contains the goals Options List which is provided by the Server
      */
-    private val _goalsList = MutableStateFlow<SleepNetworkCall<SleepGoalResponse>>(
+    private val _goalsList = MutableStateFlow<SleepNetworkCall<List<SleepGoalData>>>(
         SleepNetworkCall.Initialized()
     )
     val goalsList = _goalsList.asStateFlow()
@@ -233,21 +273,30 @@ class SleepToolViewModel @Inject constructor(
         _goalsList.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            _goalsList.value = try {
-                val response = remoteRepository.getGoalsList(property = "goal")
+            val response = remoteRepository.getGoalsList(property = "goal")
 
-                // Handling the Response
-                if (response.isSuccessful)
-                    SleepNetworkCall.Success(data = response.body()!!)
-                else
+            _goalsList.value = when (response) {
+                is ResponseState.Success -> {
+                    SleepNetworkCall.Success(data = response.data)
+                }
+
+                is ResponseState.ErrorMessage -> {
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
-            } catch (e: Exception) {
-                SleepNetworkCall.Failure(message = e.message.toString())
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                }
+
+                is ResponseState.NoInternet -> {
+                    SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
+
         }
     }
 
-    private val _jetLagDetails = MutableStateFlow<SleepNetworkCall<SleepJetLagTipResponse>>(
+    private val _jetLagDetails = MutableStateFlow<SleepNetworkCall<JetLagTipsData>>(
         SleepNetworkCall.Initialized()
     )
     val jetLagDetails = _jetLagDetails.asStateFlow()
@@ -261,18 +310,25 @@ class SleepToolViewModel @Inject constructor(
         _jetLagDetails.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            _jetLagDetails.value = try {
+            // Fetching the Data from the server
+            val response = remoteRepository.getJetLagTips(id = "64b12f149fd4fae964059446")
 
-                // Fetching the Data from the server
-                val response = remoteRepository.getJetLagTips(id = "64b12f149fd4fae964059446")
+            _jetLagDetails.value = when (response) {
+                is ResponseState.Success -> {
+                    SleepNetworkCall.Success(data = response.data)
+                }
 
-                // Handling the Response
-                if (response.isSuccessful)
-                    SleepNetworkCall.Success(data = response.body()!!)
-                else
+                is ResponseState.ErrorMessage -> {
                     SleepNetworkCall.Failure(message = "Unsuccessful operation")
-            } catch (e: Exception) {
-                SleepNetworkCall.Failure(message = e.message.toString())
+                }
+
+                is ResponseState.ErrorRetry -> {
+                    SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                }
+
+                is ResponseState.NoInternet -> {
+                    SleepNetworkCall.Failure(message = "No Internet Present")
+                }
             }
         }
     }
@@ -301,8 +357,6 @@ class SleepToolViewModel @Inject constructor(
         _userValueUpdate.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-            try {
-
                 // Checking if the Timer Status Data is null or not
                 if (_timerStatus.value.data.isNullOrEmpty()) {
 
@@ -344,21 +398,28 @@ class SleepToolViewModel @Inject constructor(
                         )
                     )
 
-                    // Handling the Request
-                    if (response.isSuccessful) {
-                        _userValueUpdate.value = SleepNetworkCall.Success(data = Unit)
-                        localRepository.deleteData()
-                    } else
-                        _userValueUpdate.value =
-                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                    _userValueUpdate.value = when (response) {
+                        is ResponseState.Success -> {
+                            localRepository.deleteData()
+                            SleepNetworkCall.Success(data = Unit)
+                        }
 
+                        is ResponseState.ErrorMessage -> {
+                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                        }
+
+                        is ResponseState.ErrorRetry -> {
+                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                        }
+
+                        is ResponseState.NoInternet -> {
+                            SleepNetworkCall.Failure(message = "No Internet Present")
+                        }
+                    }
                     // Fetching the Local Data
                     val data = localRepository.getData()
                     _timerStatus.value = SleepNetworkCall.Success(data = data)
                 }
-            } catch (e: Exception) {
-                _userValueUpdate.value = SleepNetworkCall.Failure(message = e.message.toString())
-            }
         }
     }
 }

@@ -1,16 +1,15 @@
 package fit.asta.health.feature.sleep.view.navigation
 
-import android.content.Intent
-import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import androidx.navigation.NavController
+import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
-import androidx.navigation.compose.NavHost
+import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
-import androidx.navigation.navDeepLink
-import fit.asta.health.common.utils.Constants.SLEEP_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.deepLinkUrl
+import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.feature.sleep.view.screens.SleepDisturbanceScreen
 import fit.asta.health.feature.sleep.view.screens.SleepFactorsScreen
 import fit.asta.health.feature.sleep.view.screens.SleepGoalsScreen
@@ -18,40 +17,58 @@ import fit.asta.health.feature.sleep.view.screens.SleepHomeScreen
 import fit.asta.health.feature.sleep.view.screens.SleepJetLagTipsScreen
 import fit.asta.health.feature.sleep.viewmodel.SleepToolViewModel
 
-@Composable
-fun SleepNavGraph(
+const val SLEEP_GRAPH_ROUTE = "SLEEP_graph_address"
+
+fun NavController.navigateToSleep(navOptions: NavOptions? = null) {
+    this.navigate(SLEEP_GRAPH_ROUTE, navOptions)
+}
+
+fun NavGraphBuilder.sleepNavGraph(
     navController: NavHostController,
-    sleepToolViewModel: SleepToolViewModel
+    onBack: () -> Unit
 ) {
 
-    NavHost(
-        navController = navController,
+    navigation(
+        route = SLEEP_GRAPH_ROUTE,
         startDestination = SleepToolNavRoutes.SleepHomeRoute.routes,
         builder = {
 
             // Sleep Home Screen
-            composable(
-                SleepToolNavRoutes.SleepHomeRoute.routes,
-                deepLinks = listOf(navDeepLink {
-                    uriPattern = "$deepLinkUrl/${SLEEP_GRAPH_ROUTE}"
-                    action = Intent.ACTION_VIEW
-                }),
-                content = {
+            composable(SleepToolNavRoutes.SleepHomeRoute.routes) {
+                val sleepToolViewModel: SleepToolViewModel = it.sharedViewModel(navController)
+                // Progress Data which is shown in the Home Screen
+                val progressData = sleepToolViewModel.userUIDefaults.collectAsState().value
+                    .data?.sleepData?.progressData
+                // Bottom Sheet Details
+                val bottomSheetData =
+                    sleepToolViewModel.userUIDefaults.collectAsState()
+                        .value.data?.sleepData?.toolData?.prc
 
-                    // Progress Data which is shown in the Home Screen
-                    val progressData = sleepToolViewModel.userUIDefaults.collectAsState().value
-                        .data?.sleepData?.progressData
+                // Selected Disturbances which will be shown in the bottom sheet
+                val selectedDisturbances =
+                    sleepToolViewModel.userUIDefaults.collectAsState()
+                        .value.data?.sleepData?.toolData?.prc?.find {
+                            it.ttl == "disturbance"
+                        }
+                val timerStatus = sleepToolViewModel.timerStatus.collectAsState().value
 
-                    SleepHomeScreen(
-                        progressData = progressData
-                    )
-                }
-            )
+                SleepHomeScreen(
+                    progressData = progressData,
+                    navController = navController,
+                    bottomSheetData = bottomSheetData,
+                    selectedDisturbances = selectedDisturbances,
+                    timerStatus = timerStatus,
+                    onStartStopClick = { sleepToolViewModel.setTimerStatus() },
+                    onBack = onBack
+                )
+            }
+
 
             // Sleep goals Screen
             composable(
                 SleepToolNavRoutes.SleepGoalsRoute.routes,
                 content = {
+                    val sleepToolViewModel: SleepToolViewModel = it.sharedViewModel(navController)
 
                     // Default Goals List fetched from the Server
                     val goalsList by sleepToolViewModel.goalsList.collectAsStateWithLifecycle()
@@ -79,7 +96,7 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepFactorRoute.routes,
                 content = {
-
+                    val sleepToolViewModel: SleepToolViewModel = it.sharedViewModel(navController)
                     // Default Sleep Factor List fetched from the Server
                     val sleepFactorState by sleepToolViewModel.sleepFactorsData
                         .collectAsStateWithLifecycle()
@@ -107,7 +124,7 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepDisturbanceRoute.routes,
                 content = {
-
+                    val sleepToolViewModel: SleepToolViewModel = it.sharedViewModel(navController)
                     // Default Sleep Disturbances List fetched from the Server
                     val sleepDisturbances by sleepToolViewModel.sleepDisturbancesData
                         .collectAsStateWithLifecycle()
@@ -135,7 +152,7 @@ fun SleepNavGraph(
             composable(
                 SleepToolNavRoutes.SleepJetLagTipsRoute.routes,
                 content = {
-
+                    val sleepToolViewModel: SleepToolViewModel = it.sharedViewModel(navController)
                     // Default Jet Lag Details List fetched from the Server
                     val jetLagDetails =
                         sleepToolViewModel.jetLagDetails.collectAsStateWithLifecycle().value

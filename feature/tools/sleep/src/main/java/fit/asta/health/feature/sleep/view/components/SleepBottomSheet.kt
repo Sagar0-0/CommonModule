@@ -42,7 +42,7 @@ import fit.asta.health.resources.drawables.R
 fun SleepBottomSheet(
     scaffoldState: SheetState,
     navController: NavController,
-    bottomSheetData: List<Prc>,
+    bottomSheetData: List<Prc>?,
     selectedDisturbances: Prc?,
     timerStatus: SleepNetworkCall<List<SleepData>>,
     onStartStopClick: () -> Unit
@@ -63,10 +63,12 @@ fun SleepBottomSheet(
         )
 
         AnimatedVisibility(visible = scaffoldState.currentValue == SheetValue.Expanded) {
-            SleepBottomSheetOptionUI(
-                navController = navController,
-                bottomSheetData = bottomSheetData
-            )
+            if (bottomSheetData != null) {
+                SleepBottomSheetOptionUI(
+                    navController = navController,
+                    bottomSheetData = bottomSheetData
+                )
+            }
         }
 
         SleepBottomSheetButtonRow(timerStatus = timerStatus.data) {

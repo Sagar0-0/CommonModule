@@ -13,6 +13,7 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.data.sunlight.model.network.response.ResponseData.SunlightToolData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
@@ -59,14 +60,14 @@ fun SunlightBottomSheet(
                 navController = navController,
                 homeViewModel,
                 visible,
-                apiState!!
+                apiState
             )
         },
         sheetPeekHeight = 40.dp,
         scaffoldState = scaffoldState
     ) {
         visible = !scaffoldState.bottomSheetState.hasPartiallyExpandedState
-        SunlightHomeScreenLayout(paddingValues, apiState!!)
+        SunlightHomeScreenLayout(paddingValues, apiState)
     }
 }
 
@@ -76,7 +77,7 @@ fun SunlightPracticeGridView(
     navController: NavController,
     homeViewModel: SunlightViewModel,
     visible: Boolean,
-    apiState: fit.asta.health.data.sunlight.model.network.response.ResponseData.SunlightToolData
+    apiState: SunlightToolData?
 ) {
     val selectedSunScreen by homeViewModel.seletedSpfSelection.collectAsState("")
     val selectedSkinExposure by homeViewModel.selectedSkinExposure.collectAsState("")
@@ -84,54 +85,55 @@ fun SunlightPracticeGridView(
     val selectedAge by homeViewModel.selectedAgeSelection.collectAsState("")
     val startState = homeViewModel.startState
 
-    val cardList = listOf(
-        PracticeGridView(
-            onClick = { navController.navigate(route = SunlightScreen.SPFSelectionScreen.route) },
-            cardTitle = apiState.sunlightTool.prc[0].ttl,
-            cardValue = selectedSunScreen.let {
-                it.ifBlank { apiState.sunlightTool.prc[0].values[0].name }
-            },
-            cardImg = R.drawable.sunscreen_icon
-        ),
-        PracticeGridView(
-            onClick = { navController.navigate(route = SunlightScreen.SkinExposureScreen.route) },
-            cardTitle = apiState.sunlightTool.prc[1].ttl,
-            cardValue = selectedSkinExposure.let { it.ifBlank { apiState.sunlightTool.prc[1].values[0].name } },
-            cardImg = R.drawable.skinexposure_icon
-        ),
-        PracticeGridView(
-            onClick = { navController.navigate(route = SunlightScreen.SkinColorScreen.route) },
-            cardTitle = apiState.sunlightTool.prc[2].ttl,
-            cardValue = selectedSkinColor.let { it.ifBlank { apiState.sunlightTool.prc[2].values[0].name } },
-            cardImg = R.drawable.skincolor_icon
-        ),
-        PracticeGridView(
-            onClick = {},
-            cardTitle = "Music",
-            cardValue = "Spotify",
-            cardImg = R.drawable.music_icon
-        ),
-        PracticeGridView(
-            onClick = { navController.navigate(route = SunlightScreen.AgeSelectionScreen.route) },
-            cardTitle = apiState.sunlightTool.prc[5].ttl,
-            cardValue = selectedAge.let { it.ifBlank { apiState.sunlightTool.prc[5].values[0].name } },
-            cardImg = R.drawable.age_icon
-        ),
-    )
-    SunlightBottomSheetGridView(
-        cardList = cardList,
-        startState = startState,
-        navController = navController,
-        homeViewModel
-    )
-
+    if (apiState != null) {
+        val cardList = listOf(
+            PracticeGridView(
+                onClick = { navController.navigate(route = SunlightScreen.SPFSelectionScreen.route) },
+                cardTitle = apiState.sunlightTool.prc[0].ttl,
+                cardValue = selectedSunScreen.let {
+                    it.ifBlank { apiState.sunlightTool.prc[0].values[0].name }
+                },
+                cardImg = R.drawable.sunscreen_icon
+            ),
+            PracticeGridView(
+                onClick = { navController.navigate(route = SunlightScreen.SkinExposureScreen.route) },
+                cardTitle = apiState.sunlightTool.prc[1].ttl,
+                cardValue = selectedSkinExposure.let { it.ifBlank { apiState.sunlightTool.prc[1].values[0].name } },
+                cardImg = R.drawable.skinexposure_icon
+            ),
+            PracticeGridView(
+                onClick = { navController.navigate(route = SunlightScreen.SkinColorScreen.route) },
+                cardTitle = apiState.sunlightTool.prc[2].ttl,
+                cardValue = selectedSkinColor.let { it.ifBlank { apiState.sunlightTool.prc[2].values[0].name } },
+                cardImg = R.drawable.skincolor_icon
+            ),
+            PracticeGridView(
+                onClick = {},
+                cardTitle = "Music",
+                cardValue = "Spotify",
+                cardImg = R.drawable.music_icon
+            ),
+            PracticeGridView(
+                onClick = { navController.navigate(route = SunlightScreen.AgeSelectionScreen.route) },
+                cardTitle = apiState.sunlightTool.prc[5].ttl,
+                cardValue = selectedAge.let { it.ifBlank { apiState.sunlightTool.prc[5].values[0].name } },
+                cardImg = R.drawable.age_icon
+            ),
+        )
+        SunlightBottomSheetGridView(
+            cardList = cardList,
+            startState = startState,
+            navController = navController,
+            homeViewModel
+        )
+    }
 
 }
 
 @Composable
 fun SunlightHomeScreenLayout(
     paddingValues: PaddingValues,
-    apiState: fit.asta.health.data.sunlight.model.network.response.ResponseData.SunlightToolData
+    apiState: SunlightToolData?
 ) {
 
     Column(
@@ -157,28 +159,30 @@ fun SunlightHomeScreenLayout(
 
         Spacer(modifier = Modifier.height(24.dp))
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = 16.dp),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            Box(
-                Modifier
+        if (apiState != null) {
+            Row(
+                modifier = Modifier
                     .fillMaxWidth()
-                    .weight(1f)
+                    .padding(horizontal = 16.dp),
+                horizontalArrangement = Arrangement.SpaceEvenly
             ) {
-                UpcomingSlotsCard(apiState)
-            }
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    UpcomingSlotsCard(apiState)
+                }
 
-            Spacer(modifier = Modifier.width(8.dp))
+                Spacer(modifier = Modifier.width(8.dp))
 
-            Box(
-                Modifier
-                    .fillMaxWidth()
-                    .weight(1f)
-            ) {
-                UpcomingSlotsCard(apiState)
+                Box(
+                    Modifier
+                        .fillMaxWidth()
+                        .weight(1f)
+                ) {
+                    UpcomingSlotsCard(apiState)
+                }
             }
         }
 

@@ -16,7 +16,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import fit.asta.health.data.sleep.model.network.common.Prc
-import fit.asta.health.data.sleep.model.network.goals.SleepGoalResponse
+import fit.asta.health.data.sleep.model.network.goals.SleepGoalData
 import fit.asta.health.data.sleep.utils.SleepNetworkCall
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -25,7 +25,7 @@ import fit.asta.health.feature.sleep.view.components.SleepCardItems
 @Composable
 fun SleepGoalsScreen(
     navController: NavController,
-    goalsList: SleepNetworkCall<SleepGoalResponse>,
+    goalsList: SleepNetworkCall<List<SleepGoalData>>,
     selectedGoals: Prc?,
     loadData: () -> Unit,
     onGoalSelected: (String, String) -> Unit
@@ -68,7 +68,7 @@ fun SleepGoalsScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                goalsList.data?.data?.let { listData ->
+                goalsList.data?.let { listData ->
                     items(listData.size) {
 
                         // Current Item
