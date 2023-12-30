@@ -15,6 +15,7 @@ import fit.asta.health.auth.remote.AuthApi
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.auth.repo.AuthRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
+import fit.asta.health.resources.strings.R
 import okhttp3.OkHttpClient
 import javax.inject.Qualifier
 import javax.inject.Singleton
@@ -49,6 +50,7 @@ object AuthModule {
     @Provides
     fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+            .requestIdToken(context.getString(R.string.default_web_client_id))
             .requestEmail()
             .build()
     }

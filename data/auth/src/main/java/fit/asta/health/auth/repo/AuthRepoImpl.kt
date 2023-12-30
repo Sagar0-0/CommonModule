@@ -162,10 +162,13 @@ class AuthRepoImpl @Inject constructor(
                                     if (deleteTask.isSuccessful) {
                                         trySend(ResponseState.Success(true))
                                     } else {
+                                        Log.d(
+                                            "DeleteAccount",
+                                            "Phone delete !success: " + deleteTask.exception?.message!!
+                                        )
                                         trySend(
                                             ResponseState.ErrorMessage(R.string.delete_account_failed)
                                         )
-                                        Log.d("DeleteAccount", deleteTask.exception?.message!!)
                                     }
                                 }
                         } else {
@@ -183,18 +186,19 @@ class AuthRepoImpl @Inject constructor(
                                                 if (deleteTask.isSuccessful) {
                                                     trySend(ResponseState.Success(true))
                                                 } else {
+                                                    Log.d(
+                                                        "DeleteAccount",
+                                                        "Google delete !success: " + deleteTask.exception?.message!!
+                                                    )
                                                     trySend(
                                                         ResponseState.ErrorMessage(
                                                             R.string.delete_account_failed
                                                         )
                                                     )
-                                                    Log.d(
-                                                        "DeleteAccount",
-                                                        deleteTask.exception?.message!!
-                                                    )
                                                 }
                                             }
                                     } else { //Handle the exception
+                                        Log.d("DeleteAccount", "Google ReAuthFailure")
                                         trySend(
                                             ResponseState.ErrorMessage(
                                                 R.string.delete_account_failed
@@ -205,6 +209,7 @@ class AuthRepoImpl @Inject constructor(
                         }
                         deleteServerAccount(it.uid)
                     } catch (e: Exception) {
+                        Log.d("DeleteAccount", "Generic Exception: " + e.message!!)
                         trySend(ResponseState.ErrorMessage(R.string.delete_account_failed))
                     }
                 }

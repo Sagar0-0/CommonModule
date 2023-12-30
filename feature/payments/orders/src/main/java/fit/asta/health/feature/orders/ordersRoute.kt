@@ -128,7 +128,7 @@ fun NavGraphBuilder.ordersRoute(onBack: () -> Unit) {
                             OrderDetailScreen(
                                 modifier = Modifier.padding(padding),
                                 orderData = orderDetailDataState.data
-                            ) { event ->
+                            ) { _ ->
 
                             }
                         }
