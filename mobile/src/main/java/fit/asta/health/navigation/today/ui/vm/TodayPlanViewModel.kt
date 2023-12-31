@@ -67,16 +67,18 @@ class TodayPlanViewModel @Inject constructor(
 
     init {
         getWeatherSunSlots()
-        getAlarms()
+        setWeekDate()
     }
 
 
-    fun setWeekDate(date: CalendarUiModel.Date) {
-        _calendarUiModel.value = _calendarUiModel.value.copy(selectedDate = date,
-            visibleDates = _calendarUiModel.value.visibleDates.map {
-                it.copy(isSelected = it.date.isEqual(date.date))
-            }
-        )
+    fun setWeekDate(date: CalendarUiModel.Date? = null) {
+        if (date != null) {
+            _calendarUiModel.value = _calendarUiModel.value.copy(selectedDate = date,
+                visibleDates = _calendarUiModel.value.visibleDates.map {
+                    it.copy(isSelected = it.date.isEqual(date.date))
+                }
+            )
+        }
         getAlarms()
     }
 
@@ -228,6 +230,54 @@ class TodayPlanViewModel @Inject constructor(
                                             in 17..23 -> {
                                                 _alarmListEvening.add(it)
                                             }
+                                        }
+                                    }
+                                }
+                            }
+                        } else {
+                            if (it.daysOfWeek.isRepeating) {
+                                if (it.daysOfWeek.isBitOn(calendarUiModel.value.selectedDate.date.dayOfWeek.value)) {
+                                    when (it.time.hours) {
+                                        in 0..2 -> {
+                                            if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                            else _alarmListEvening.add(it)
+                                        }
+
+                                        in 3..12 -> {
+                                            if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                            else _alarmListMorning.add(it)
+                                        }
+
+                                        in 13..16 -> {
+                                            if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                            else _alarmListAfternoon.add(it)
+                                        }
+
+                                        in 17..23 -> {
+                                            _alarmListEvening.add(it)
+                                        }
+                                    }
+                                }
+                            } else {
+                                if (calendarUiModel.value.selectedDate.isToday) {
+                                    when (it.time.hours) {
+                                        in 0..2 -> {
+                                            if (it.time.minutes > 0) _alarmListMorning.add(it)
+                                            else _alarmListEvening.add(it)
+                                        }
+
+                                        in 3..12 -> {
+                                            if (it.time.minutes > 0) _alarmListAfternoon.add(it)
+                                            else _alarmListMorning.add(it)
+                                        }
+
+                                        in 13..16 -> {
+                                            if (it.time.minutes > 0) _alarmListEvening.add(it)
+                                            else _alarmListAfternoon.add(it)
+                                        }
+
+                                        in 17..23 -> {
+                                            _alarmListEvening.add(it)
                                         }
                                     }
                                 }
