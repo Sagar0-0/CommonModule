@@ -702,7 +702,7 @@ public protected private abstract static final transient volatile synchronized n
 * [6] Coding Standards for Java from Geosoft http://geosoft.no/development/javastyle.html
 
 
-# Commit Style Guidelines
+# Commit Style Guidelines for ASTA
 
 ### Message Structure
 Commit messages should be in the following format:
@@ -714,8 +714,554 @@ Commit messages should be in the following format:
 
 # Pull Requests Guidelines:
   - Follow the Pull request template.
-  - Commit messages should follow this template: `#<issue-no> - <short description of the changes>`
+  - Commit messages should follow this template: `fix #<issue-no> - <short description of the changes>`
   - Pull request title shoud follow this template: `fix: <issue-desc>`
   - Squash all your commits to a single commit.
   - Create a new branch before adding and committing your changes ( This allows you to send multiple Pull Requests )
 
+# Coding Guidelines
+
+## App-specific Guidelines:
+1. Define featureRoute() function as the main point of interaction with your feature screens from MainNavHost.
+```kotlin
+fun NavGraphBuilder.walletRoute()
+```
+2. NavController.navigateTofeature(xxx,navOptions ? = null) to navigate to that Route
+```kotlin
+fun NavController.navigateToWallet(navOptions: NavOptions? = null) {
+    this.navigate(WALLET_GRAPH_ROUTE, navOptions)
+}
+```
+3. Define Route name only in this same file and use that only
+```kotlin
+private const val WALLET_GRAPH_ROUTE = "graph_wallet"
+```
+4. Add this feature route in MainNavHost
+```kotlin
+MainNavHost.kt
+walletRoute()
+```
+
+1. Use UiState wrapper for your object state
+```kotlin
+    private val _state = MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
+    val state = _state.asStateFlow()
+```
+2. Use featureUiEvent callback method for any UiEvent
+```kotlin
+fun OrderDetailScreen(
+    modifier: Modifier = Modifier,
+    orderData: OrderDetailData,
+    onUiEvent: (OrderDetailUiEvent) -> Unit
+)
+```
+```kotlin
+sealed interface AuthUiEvent {
+    data object OnLoginFailed : AuthUiEvent
+    data object GetOnboardingData : AuthUiEvent
+}
+```
+3. Use featureDestinations sealed class for defining routes of subfeature screens
+```kotlin
+internal sealed class SettingDestination(val route: String) {
+    data object Main : SettingDestination("ss_main")
+    data object Notifications : SettingDestination("ss_notification")
+}
+```
+4. Use only popBackStack() to navigate back from the screen
+```kotlin
+navController.popBackStack()
+```
+5. If you are using nested NavHost then also work with nested NavController for navigating in feature Destinations
+```kotlin
+val nestedNavController = rememberNavController()
+```
+```kotlin
+nestedNavController.navigateToMaps(event.address, event.type)
+```
+
+In Api,
+Use Response<> wrapper(from common main) to wrap your data for api Status and data
+```kotlin
+suspend fun putAddress(@Body myAddress: MyAddress): Response<PutAddressResponse>
+```
+```kotlin
+data class Response<T>(
+    @SerializedName("status")
+    val status: Status = Status(),
+    @SerializedName("data")
+    val data: T
+) {
+    @Parcelize
+    data class Status(
+        @SerializedName("code")
+        val code: Int = SUCCESS_STATUS_CODE,
+        @SerializedName("msg")
+        val msg: String = "",
+        @SerializedName("retry")
+        val retry: Boolean = false,
+        @SerializedName("err")
+        val error: String = "",
+    ) : Parcelable
+}
+```
+
+In Repo,
+1. Expose ResponseState wrapper for suspend functions.
+```kotlin
+suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse>
+```
+2. Use getApiResponseState{} function for wrapping any data calls
+```kotlin
+override suspend fun getSavedAddresses(uid: String): ResponseState<List<MyAddress>> {
+        return getApiResponseState {
+            addressApi.getAddresses(uid)
+        }
+    }
+```
+3. Use the ApiErrorHandler class to override the functions and add your own status code Handling(must override super methods in else block).
+```kotlin
+suspend fun <T> getApiResponseState(
+    onSuccess: suspend () -> Unit = {},
+    onFailure: suspend (Exception) -> Unit = {},
+    errorHandler: ApiErrorHandler = ApiErrorHandler(),
+    request: suspend () -> Response<T>
+): ResponseState<T>
+```
+4. Expose Flow<> for observables with non-suspend functions
+```kotlin
+override fun signInWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>>
+```
+5. Inject dispatcher and Use withContext(dispatcher) to have main safe suspend calls
+```kotlin
+class AuthRepoImpl @Inject constructor(
+    ...	,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
+) : AuthRepo
+```
+6. For the work that needs to be surely done even when user leaves the screen, then use 
+```kotlin
+externalScope.launch{ //work// }.join()
+```
+
+In VM,
+1. Use toUiState() to map ResponseState to UiState
+```kotlin
+_currentAddressState.value = addressResponse.toUiState()
+```
+2. Expose StateFlow objects
+```kotlin
+private val _putAddressState = MutableStateFlow<UiState<PutAddressResponse>>(UiState.Idle)
+val putAddressState = _putAddressState.asStateFlow()
+```
+3. If possible, use stateIn() to Map Flow<> into stateFlow
+```kotlin
+val locationPermissionRejectedCount = addressRepo.userPreferences
+        .map {
+            it.locationPermissionRejectedCount
+        }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = 0,
+        )
+```
+4. Handle events in repo layer
+```kotlin
+    fun setIsLocationEnabled() {
+        _isLocationEnabled.value = addressRepo.isLocationEnabled()
+        checkPermissionAndUpdateCurrentAddress()
+    }
+
+    fun setIsPermissionGranted() {
+        _isPermissionGranted.value = addressRepo.isPermissionGranted()
+    }
+```
+
+In Unit Testing,
+1. Override BaseTest class, beforeEach and afterEach for viewmodel testing
+```kotlin
+class TrackViewModelTest : BaseTest() {
+
+    private lateinit var viewModel: TrackViewModel
+    private val trackingRepo: TrackingRepo = mockk(relaxed = true)
+
+    @BeforeEach
+    override fun beforeEach() {
+        super.beforeEach()
+        viewModel = spyk(TrackViewModel(trackingRepo))
+    }
+
+    @AfterEach
+    override fun afterEach() {
+        super.afterEach()
+        clearAllMocks()
+    }
+}    
+```
+2. Use mockk,Junit5,turbine
+
+For UI Creation:
+1. Use App prefix for usng any component
+```kotlin
+            AppIcon(
+                imageVector = icon,
+                modifier = Modifier.padding(start = AppTheme.spacing.level2),
+                tint = iconTint
+            )
+```
+2. Create a separate composable for preview
+```kotlin
+// Preview Function
+@Preview(
+    "Light Button",
+    heightDp = 1100
+)
+@Preview(
+    name = "Dark Button",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true,
+    heightDp = 1100
+)
+@Composable
+private fun DefaultPreview() {
+    AppTheme {
+        Surface {
+            AppButtonScreen()
+        }
+    }
+}
+```
+3. Only pass objects, states, callbacks in params of composable functions.
+```kotlin
+@Composable
+fun OrderDetailScreen(
+    modifier: Modifier = Modifier,
+    orderData: OrderDetailData,
+    onUiEvent: (OrderDetailUiEvent) -> Unit
+)
+```
+4. Larger and reusable functions should be present in separate files.
+5. While calling a function, give parameter names if more than 2 exists.
+```kotlin
+           OrderDetailData(
+                amt = 8575,
+                cDate = 9353,
+                discount = 8530,
+                walletPoints = 2893
+            )
+```
+6. Use string from resource file instead of hard coding.
+```kotlin
+R.string.location_access_required.toStringFromResId(context)//Non-Compose
+R.string.location_access_required.toStringFromResId()//Compose
+```
+7. While creating a function, follow this order for adding params... Mandatory params -> Modifier -> other optional param -> one mandatory callback function(if any).
+```kotlin
+@Composable
+fun OrderDetailScreen(
+    orderData: OrderDetailData,
+    modifier: Modifier = Modifier,
+    onUiEvent: (OrderDetailUiEvent) -> Unit
+)
+```
+
+# SOLID Principles in Kotlin
+
+In Kotlin, SOLID principles refer to a set of five object-oriented design principles aimed at making software designs more understandable, flexible, and maintainable. These principles are:
+
+1. **Single Responsibility Principle (SRP):**
+Classes should be responsible and focus on doing one thing at a time.
+
+   - **Incorrect Example:**
+     ```kotlin
+     class Employee {
+         fun calculatePay() {
+             // Calculate employee's pay
+         }
+         fun saveEmployee(employee: Employee) {
+             // Save employee to database
+         }
+     }
+     ```
+     In this incorrect example, the `Employee` class handles both calculating pay and database operations, violating SRP.
+
+   - **Correct Example:**
+     ```kotlin
+     class Employee {
+         fun calculatePay() {
+             // Calculate employee's pay
+         }
+     }
+
+     class EmployeeRepository {
+         fun saveEmployee(employee: Employee) {
+             // Save employee to database
+         }
+     }
+     ```
+     Here, responsibilities are separated. The `Employee` class handles pay calculations, while `EmployeeRepository` manages database operations.
+
+2. **Open/Closed Principle (OCP):**
+Software entities should be open for extension but closed for modification.
+Utilize inheritance, interfaces, and design patterns to achieve this. 
+
+   - **Incorrect Example:**
+     ```kotlin
+     class GraphicEditor {
+         fun drawShape(shape: Shape) {
+             when (shape) {
+                 is Circle -> drawCircle(shape)
+                 is Square -> drawSquare(shape)
+             }
+         }
+
+         fun drawCircle(circle: Circle) {
+             // Draw a circle
+         }
+
+         fun drawSquare(square: Square) {
+             // Draw a square
+         }
+     }
+     ```
+     This violates OCP since the `GraphicEditor` class needs modification to support new shapes.
+
+   - **Correct Example:**
+     ```kotlin
+     interface Shape {
+         fun draw()
+     }
+
+     class Circle : Shape {
+         override fun draw() {
+             // Draw a circle
+         }
+     }
+
+     class Square : Shape {
+         override fun draw() {
+             // Draw a square
+         }
+     }
+
+     class GraphicEditor {
+         fun drawShape(shape: Shape) {
+             shape.draw()
+         }
+     }
+     ```
+     Using an interface (`Shape`) and implementing it in specific shape classes allows extending functionality without modifying `GraphicEditor`.
+
+3. **Liskov Substitution Principle (LSP):**
+Objects of a superclass should be replaceable with objects of its subclasses without affecting the correctness of the program.
+
+   - **Incorrect Example:**
+     ```kotlin
+     open class Bird {
+         open fun fly() {
+             // Fly
+         }
+     }
+
+     class Ostrich : Bird() {
+         override fun fly() {
+             // Ostrich can't fly
+         }
+     }
+     ```
+     The `Ostrich` class breaks LSP by not behaving as expected (birds should fly).
+
+   - **Correct Example:**
+     ```kotlin
+     open class Bird {
+         open fun fly() {
+             // Fly
+         }
+     }
+
+     class Ostrich : Bird() {
+         override fun fly() {
+             throw UnsupportedOperationException("Ostrich can't fly")
+         }
+     }
+     ```
+     In this case, the `Ostrich` class follows LSP by explicitly indicating it cannot fly.
+
+4. **Interface Segregation Principle (ISP):**
+Clients should not be forced to depend on interfaces they don't use. 
+I prefer smaller, cohesive interfaces over larger, monolithic ones. 
+
+   - **Incorrect Example:**
+     ```kotlin
+     interface Worker {
+         fun work()
+         fun takeBreak()
+     }
+
+     class Programmer : Worker {
+         override fun work() {
+             // Code
+         }
+
+         override fun takeBreak() {
+             // Take a break
+         }
+     }
+     ```
+     ISP is violated since not all implementing classes need both methods.
+
+   - **Correct Example:**
+     ```kotlin
+     interface Workable {
+         fun work()
+     }
+
+     interface Breakable {
+         fun takeBreak()
+     }
+
+     class Programmer : Workable, Breakable {
+         override fun work() {
+             // Code
+         }
+
+         override fun takeBreak() {
+             // Take a break
+         }
+     }
+     ```
+     Here, interfaces are segregated into smaller, more focused ones, allowing classes to implement only what they need.
+
+5. **Dependency Inversion Principle (DIP):**
+High-level modules should be independent of low-level modules. Both should depend on abstractions. Abstractions should not depend on details; details should depend on abstractions.
+
+   - **Incorrect Example:**
+     ```kotlin
+     class LightSwitch {
+         private val bulb = Bulb()
+
+         fun turnOn() {
+             bulb.turnOn()
+         }
+
+         fun turnOff() {
+             bulb.turnOff()
+         }
+     }
+     ```
+     This violates DIP since `LightSwitch` directly depends on `Bulb`.
+
+   - **Correct Example:**
+     ```kotlin
+     interface Switchable {
+         fun turnOn()
+         fun turnOff()
+     }
+
+     class Bulb : Switchable {
+         override fun turnOn() {
+             // Turn on bulb
+         }
+
+         override fun turnOff() {
+             // Turn off bulb
+         }
+     }
+
+     class LightSwitch(private val device: Switchable) {
+         fun turnOn() {
+             device.turnOn()
+         }
+
+         fun turnOff() {
+             device.turnOff()
+         }
+     }
+     ```
+     The `LightSwitch` class now depends on the `Switchable` interface, allowing flexibility by injecting different implementations.
+
+Applying SOLID principles results in more maintainable, flexible, and easily extendable Kotlin code.
+
+# Jetpack Compose Guidelines:
+1. UI Composition:
+ Prefer composition over inheritance for building UI components. 
+2. Break down UI into smaller, reusable composable functions. 
+### State Management:
+1. Use remember/rememberSaveable/derivedStateOf for managing local state within composables.
+2. Utilize ViewModel for handling complex UI logic and sharing data across composables.
+3. Use shared ViewModel for closely related screen data and events.
+4. Accessibility: Consider accessibility best practices for inclusive app development. Eg. defining content description on clickable elements.
+### Jetpack Compose Performance and Memory Management Guidelines:
+1. Use DisposableEffect to manage resources that need to be cleaned up when a composable is removed from the composition.
+
+# Clean MVVM Architecture with Jetpack Compose:
+Separation of Concerns
+Model: Represents data entities and business logic.
+View: Displays UI components using Jetpack Compose.
+ViewModel: Manages UI-related logic and interacts with the Model.
+
+### View
+Composables in Jetpack Compose act as the View layer in MVVM.
+They observe the ViewModel's state and react to changes.
+```kotlin
+@Composable
+fun UserListScreen(viewModel: UserListViewModel) {
+    val userList by viewModel.userList.collectAsStateWithLifecycle()
+
+    // Display user list using Jetpack Compose components
+    // ...
+}
+```
+### ViewModel
+Contains the presentation logic and business operations.
+Manages UI state and exposes data to the View layer.
+```kotlin
+class UserListViewModel : ViewModel() {
+    private val _userList = MutableStateFlow<UiState<User>>(UiState.Idle)
+    val userList: StateFlow<List<User>> get() = _userList
+
+    // Load users from repository or data source
+    fun loadUsers() {
+        // Fetch data from repository and update _userList
+    }
+}
+```
+### Model
+Represents the data layer, including entities, repositories, and data sources.
+Encapsulates data-related operations.
+```kotlin
+data class User(val id: Int, val name: String)
+```
+```kotlin
+class UserRepository {
+    // Methods to interact with user data source
+}
+```
+### Data Flow
+Jetpack Compose components observe changes in ViewModel's state using collectAsStateWithLifecycle.
+ViewModel interacts with the Model (e.g., repositories) to fetch and manipulate data.
+The model provides data to the ViewModel, which updates the View accordingly.
+State Management
+Utilize Jetpack Compose's collectAsStateWithLifecycle or remember to manage and observe state changes from ViewModels.
+```kotlin
+@Composable
+fun UserListScreen(viewModel: UserListViewModel) {
+    val userList by viewModel.userList.collectAsStateWithLifecycle()
+
+    // Display user list using Jetpack Compose components based on userList
+    // ...
+}
+```
+### Dependency Injection
+Use our recommended dependency injection frameworks (Hilt)
+```kotlin
+@Composable
+fun MyApp() {
+    val userListViewModel: UserListViewModel = hiltviewModel()
+}
+```
+#### Benefits
+Separation of Concerns: Clear separation between UI, logic, and data layers.
+Testability: It is easier to test ViewModel and Model independently of UI.
+Reactivity: Jetpack Compose's reactive nature simplifies UI updates based on ViewModel changes.
