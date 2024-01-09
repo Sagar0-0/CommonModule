@@ -8,5 +8,4 @@ sealed interface AuthUiEvent {
     data class NavigateToWebView(val url: String) : AuthUiEvent
     data class SignInWithCredentials(val authCredential: AuthCredential) : AuthUiEvent
 
-
 }

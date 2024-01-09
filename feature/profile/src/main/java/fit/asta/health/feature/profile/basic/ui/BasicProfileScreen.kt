@@ -7,7 +7,9 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.animation.animateContentSize
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
@@ -21,10 +23,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Female
 import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.PersonSearch
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.SafetyDivider
@@ -76,6 +78,7 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
+import fit.asta.health.feature.profile.basic.vm.BasicProfileUiState
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
 
@@ -87,8 +90,17 @@ import fit.asta.health.resources.drawables.R
 fun BasicProfilePreview() {
     AppTheme {
         BasicProfileScreenUi(
-            checkReferralCodeState = UiState.Success(CheckReferralDTO()),
-            createBasicProfileState = UiState.Success(PutResponse()),
+            basicProfileUiState = BasicProfileUiState(),
+            checkReferralCodeState = UiState.Idle,
+//                .Success(
+//                    CheckReferralDTO(
+//                        mail = "mail@gmail.com",
+//                        name = "Sagar",
+//                        pic = "pic",
+//                        prime = true
+//                    )
+//                ),
+            createBasicProfileState = UiState.Idle,
             autoFetchedReferralCode = "",
             onEvent = {}
         )
@@ -99,6 +111,7 @@ fun BasicProfilePreview() {
 @Composable
 fun BasicProfileScreenUi(
     user: User = User(),
+    basicProfileUiState: BasicProfileUiState,
     checkReferralCodeState: UiState<CheckReferralDTO>,
     createBasicProfileState: UiState<PutResponse>,
     autoFetchedReferralCode: String,
@@ -136,10 +149,6 @@ fun BasicProfileScreenUi(
         }
     ) { paddingValues ->
         when (createBasicProfileState) {
-            is UiState.Loading -> {
-                AppDotTypingAnimation()
-            }
-
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
                     onEvent(BasicProfileEvent.NavigateToHome)
@@ -187,78 +196,93 @@ fun BasicProfileScreenUi(
             else -> {}
         }
 
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        Box(
+            modifier = Modifier.fillMaxSize()
         ) {
-            ProfileImageUi(
-                profileImageUri = profileImageUri,
-                googlePicUrl = user.photoUrl,
-                onClick = { imagePickerLauncher.launch("image/*") }
-            )
-
-            UsernameUi(name) { newName ->
-                name = newName
-            }
-
-            GenderUi(genderCode) { newGender ->
-                genderCode = newGender
-            }
-
-            EmailUi(user.email) { cred ->
-                onEvent(BasicProfileEvent.Link(cred))
-            }
-
-            PhoneUi(
-                phoneNumber = phone,
-                navigateToPhoneAuth = {
-                    onEvent(BasicProfileEvent.NavigateToPhoneAuth)
-                }
-            )
-
-            ReferralUi(
-                refCode = referralCode,
-                checkReferralState = checkReferralCodeState,
-                onApplyReferralCode = {
-                    if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
-                        isReferralChanged = false
-                        onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
-                    }
-                },
-                resetCodeState = {
-                    onEvent(BasicProfileEvent.ResetReferralCodeState)
-                }
-            ) {
-                referralCode = it
-                isReferralChanged = true
-            }
-
-            CreateButton(
+            Column(
                 modifier = Modifier
+                    .padding(paddingValues)
                     .fillMaxWidth()
-                    .padding(
-                        bottom = AppTheme.spacing.level2
-                    ),
-                enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
-                text = "Create your Profile",
+                    .padding(horizontal = AppTheme.spacing.level2)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
-                onEvent(
-                    BasicProfileEvent.CreateBasicProfile(
-                        BasicProfileDTO(
-                            uid = user.uid,
-                            gmailPic = user.photoUrl,
-                            name = name,
-                            gen = genderCode,
-                            mail = email,
-                            ph = phone,
-                            refCode = referralCode
+                ProfileImageUi(
+                    profileImageUri = profileImageUri,
+                    googlePicUrl = user.photoUrl,
+                    onClick = { imagePickerLauncher.launch("image/*") }
+                )
+
+                UsernameUi(name) { newName ->
+                    name = newName
+                }
+
+                GenderUi(genderCode) { newGender ->
+                    genderCode = newGender
+                }
+
+                EmailUi(user.email) { cred ->
+                    onEvent(BasicProfileEvent.Link(cred))
+                }
+
+                PhoneUi(
+                    phoneNumber = phone,
+                    navigateToPhoneAuth = {
+                        onEvent(BasicProfileEvent.NavigateToPhoneAuth)
+                    }
+                )
+
+                ReferralUi(
+                    refCode = referralCode,
+                    checkReferralState = checkReferralCodeState,
+                    onApplyReferralCode = {
+                        if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
+                            isReferralChanged = false
+                            onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
+                        }
+                    },
+                    resetCodeState = {
+                        onEvent(BasicProfileEvent.ResetReferralCodeState)
+                    }
+                ) {
+                    referralCode = it
+                    isReferralChanged = true
+                }
+
+                CreateButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            bottom = AppTheme.spacing.level2
+                        ),
+                    enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
+                    text = "Create your Profile",
+                ) {
+                    onEvent(
+                        BasicProfileEvent.CreateBasicProfile(
+                            BasicProfileDTO(
+                                uid = user.uid,
+                                gmailPic = user.photoUrl,
+                                name = name,
+                                gen = genderCode,
+                                mail = email,
+                                ph = phone,
+                                refCode = referralCode
+                            )
                         )
                     )
-                )
+                }
+            }
+
+            if (basicProfileUiState.screenLoading) {
+                Box(
+                    modifier = Modifier
+                        .fillMaxSize()
+                        .background(AppTheme.colors.surface.copy(alpha = AppTheme.alphaValues.level2)),
+                    contentAlignment = Alignment.Center
+                ) {
+                    AppDotTypingAnimation()
+                }
             }
         }
     }
@@ -518,14 +542,13 @@ fun ReferralUi(
     ) { checkReferralCodeState ->
         when (checkReferralCodeState) {
             is UiState.Idle -> {
-
                 AppOutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth(),
                     value = refCode,
                     onValueChange = onValueChange,
                     leadingIcon = Icons.Default.SafetyDivider,
-                    trailingIcon = Icons.Default.ArrowForwardIos,
+                    trailingIcon = Icons.Default.PersonSearch,
                     onTrailingIconClicked = {
                         onApplyReferralCode()
                     },
@@ -542,10 +565,6 @@ fun ReferralUi(
                 )
             }
 
-            is UiState.Loading -> {
-                AppDotTypingAnimation()
-            }
-
             is UiState.Success -> {
                 LaunchedEffect(Unit) {
                     Toast.makeText(
@@ -554,18 +573,25 @@ fun ReferralUi(
                         Toast.LENGTH_SHORT
                     ).show()
                 }
-                Row(
+                AppCard(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2),
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
-                    AppNetworkImage(
-                        modifier = Modifier.clip(CircleShape),
-                        model = checkReferralCodeState.data.pic,
-                    )
-                    TitleTexts.Level3(text = checkReferralCodeState.data.name)
+                    Row(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(AppTheme.spacing.level2),
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                    ) {
+                        AppNetworkImage(
+                            modifier = Modifier
+                                .clip(CircleShape)
+                                .padding(end = AppTheme.spacing.level1),
+                            model = checkReferralCodeState.data.pic,
+                        )
+                        TitleTexts.Level3(text = checkReferralCodeState.data.name)
+                    }
                 }
             }
 
@@ -591,6 +617,8 @@ fun ReferralUi(
                     resetCodeState()
                 }
             }
+
+            else -> {}
         }
     }
 }
