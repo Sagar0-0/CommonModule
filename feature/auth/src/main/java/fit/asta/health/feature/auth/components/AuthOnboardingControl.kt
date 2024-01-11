@@ -15,9 +15,13 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.geometry.Offset
+import androidx.compose.ui.graphics.DefaultShadowColor
+import androidx.compose.ui.graphics.Shadow
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import fit.asta.health.common.utils.UiState
@@ -38,6 +42,27 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
 
+@Composable
+@Preview
+private fun AuthOnboardingSuccessPreview() {
+    AppTheme {
+        Box(Modifier.fillMaxSize()) {
+            OnBoardingSuccess(
+                items = listOf(
+                    OnboardingData(
+                        desc = "errem",
+                        id = "litora",
+                        title = "TITLE HERE",
+                        type = 1,
+                        url = "https://duckduckgo.com/?q=quisque",
+                        ver = 9370,
+                        vis = false
+                    )
+                )
+            )
+        }
+    }
+}
 
 /**
  * This function handles the On Boarding Data Pager UI Data states. It Determines which UI to show
@@ -154,6 +179,13 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                 ) {
                     HeadingTexts.Level2(
                         text = items[page].title,
+                        style = AppTheme.customTypography.heading.level2.copy(
+                            shadow = Shadow(
+                                color = DefaultShadowColor,
+                                offset = Offset(4f, 4f),
+                                blurRadius = 8f
+                            )
+                        ),
                         textAlign = TextAlign.Center
                     )
                     BodyTexts.Level1(
