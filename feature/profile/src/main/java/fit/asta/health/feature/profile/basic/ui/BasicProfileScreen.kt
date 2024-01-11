@@ -6,7 +6,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
-import androidx.compose.animation.animateContentSize
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -34,7 +33,7 @@ import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
@@ -69,6 +68,7 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.button.AppMultiChoiceSegmentedButtonRow
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
@@ -301,53 +301,29 @@ fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
         GenderData("Female", Icons.Default.Female) to GenderCode.Female.gender,
         GenderData("Others", Icons.Default.QuestionMark) to GenderCode.Other.gender
     )
-    val getModifier: (currentSelected: Int) -> Modifier = {
-        if (gender == it) {
-            Modifier
-                .weight(1f)
-                .animateContentSize()
-        } else {
-            Modifier.animateContentSize()
-        }
-    }
 
-    Row(
+    AppMultiChoiceSegmentedButtonRow(
         modifier = Modifier
-            .fillMaxWidth()
-            .animateContentSize(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-        verticalAlignment = Alignment.CenterVertically
-    ) {
-        genders.entries.forEach { entry ->
-            AppCard(
-                modifier = getModifier(entry.value),
-                colors = CardDefaults.cardColors(
-                    containerColor = if (gender == entry.value) {
-                        AppTheme.colors.primary
-                    } else {
-                        AppTheme.colors.onPrimaryContainer.copy(alpha = AppTheme.alphaValues.level4)
-                    }
-                ),
-                onClick = {
-                    onValueChange(entry.value)
-                }
-            ) {
+            .fillMaxWidth(),
+        items = genders.map { entry ->
+            {
                 Row(
                     modifier = Modifier
-                        .padding(AppTheme.spacing.level1),
+                        .padding(AppTheme.spacing.level0),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
                     AppIcon(imageVector = entry.key.icon)
-                    TitleTexts.Level2(
-                        text = entry.key.name
+                    TitleTexts.Level3(
+                        text = entry.key.name,
+                        maxLines = 1
                     )
                 }
-
             }
-        }
-
-    }
+        },
+        checked = gender,
+        onCheckedChange = onValueChange
+    )
 
 }
 
@@ -487,6 +463,10 @@ fun PhoneUi(
     if (phoneNumber.isNullOrEmpty()) {
         // Linking with Phone Button
         AppFilledButton(
+            colors = ButtonDefaults.buttonColors(
+                containerColor = AppTheme.colors.secondary,
+                contentColor = AppTheme.colors.onSecondaryContainer
+            ),
             textToShow = "Link with Phone Number",
             modifier = Modifier
                 .fillMaxWidth()

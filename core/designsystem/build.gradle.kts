@@ -23,6 +23,7 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.ui.unit.android)
     implementation(libs.androidx.documentfile)
+    implementation(libs.androidx.material3.android)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
