@@ -23,7 +23,6 @@ dependencies {
     implementation(libs.material)
     implementation(libs.androidx.ui.unit.android)
     implementation(libs.androidx.documentfile)
-    implementation(libs.androidx.material3.android)
     testImplementation(libs.junit.jupiter)
     androidTestImplementation(libs.androidx.test.espresso.core)
 
@@ -43,9 +42,9 @@ dependencies {
     implementation(libs.androidx.compose.foundation)
 
     //Jetpack Compose - Material theme components
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material3.window.size)
-    implementation(libs.androidx.material.icons.extended.android)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
+    implementation(libs.androidx.compose.material.iconsExtended)
     implementation(libs.compose.theme.adapter)
 
     //Jetpack Compose - Pager

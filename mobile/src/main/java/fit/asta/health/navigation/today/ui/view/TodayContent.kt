@@ -8,7 +8,6 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
-import androidx.compose.foundation.gestures.detectDragGestures
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -27,6 +26,7 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.lazy.rememberLazyListState
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
@@ -37,6 +37,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -45,13 +46,13 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.input.pointer.pointerInput
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
+import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
@@ -69,22 +70,24 @@ import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.components.SunSlotsProgressCard
 import fit.asta.health.feature.scheduler.ui.components.WeatherCardHome
 import fit.asta.health.main.Graph
 import fit.asta.health.ui.common.AppDialogPopUp
+import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalFoundationApi::class)
+@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
 @Composable
 fun TodayContent(
     state: UiState<TodayData>,
     userName: String,
-    defaultScheduleVisibility: Boolean,
     calendarUiModel: CalendarUiModel,
+    defaultScheduleVisibility: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
@@ -95,13 +98,11 @@ fun TodayContent(
     var deleteDialog by rememberSaveable { mutableStateOf(false) }
     var skipDialog by rememberSaveable { mutableStateOf(false) }
     var deletedItem by remember { mutableStateOf<AlarmEntity?>(null) }
-    var skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
-    var evenType by remember { mutableStateOf(Event.Morning) }
+    val skipItem by remember { mutableStateOf<AlarmEntity?>(null) }
     val context = LocalContext.current
-    val isLeftDrag = remember { mutableStateOf(false) }
-    val isRightDrag = remember { mutableStateOf(false) }
     val index = remember { mutableIntStateOf(1) }
-    val listState = rememberLazyListState()
+    var eventType by remember { mutableStateOf(Event.Morning) }
+
 
     if (deleteDialog) {
         AppDialogPopUp(
@@ -132,340 +133,315 @@ fun TodayContent(
     AppScreen {
         Column(
             modifier = Modifier
-                .fillMaxSize()
-                .pointerInput(Unit) {
-
-                    // Detects all the drag gestures and processes the data accordingly
-                    detectDragGestures(
-
-                        // This is called when the drag is started
-                        onDrag = { change, dragAmount ->
-                            change.consume()
-
-                            when {
-
-                                // Right Drag
-                                dragAmount.x > 0 -> {
-                                    isRightDrag.value = true
-                                    isLeftDrag.value = false
-                                }
-
-                                // Left Drag
-                                dragAmount.x < 0 -> {
-                                    isLeftDrag.value = true
-                                    isRightDrag.value = false
-                                }
-                            }
-                        },
-
-                        // This is called when the drag is completed
-                        onDragEnd = {
-
-                            // If the drag is a right drag
-                            if (isRightDrag.value && index.intValue > 0) {
-
-                                // Checking which tab option is selected by the User and showing the UI Accordingly
-                                index.intValue = index.intValue - 1
-                                onDateClickListener(calendarUiModel.visibleDates[index.intValue])
-
-                                // Resetting the drag flags
-                                isRightDrag.value = false
-                            }
-
-                            // If the drag is a left drag
-                            if (isLeftDrag.value && index.intValue < calendarUiModel.visibleDates.size - 1) {
-
-                                // Checking which tab option is selected by the User and showing the UI Accordingly
-                                index.intValue = index.intValue + 1
-                                onDateClickListener(calendarUiModel.visibleDates[index.intValue])
-
-                                // Resetting the drag flags
-                                isLeftDrag.value = false
-                            }
-                        },
-
-                        // This function is called when the drag is cancelled
-                        onDragCancel = {
-
-                            // Resetting all the drag flags
-                            isLeftDrag.value = false
-                            isRightDrag.value = false
-                        }
-                    )
-                },
+                .fillMaxSize(),
             horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            WeekTabBar(data = calendarUiModel, onDateClickListener = { date, ind ->
-                index.intValue = ind
-                onDateClickListener(date)
-            })
-            LazyColumn(
-                Modifier
-                    .fillMaxSize()
-                    .navigationBarsPadding(),
-                state = listState,
-                contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            val coroutineScope = rememberCoroutineScope()
+            val pagerState = rememberPagerState(
+                initialPage = calendarUiModel.visibleDates.indexOfFirst {
+                    it.isToday
+                }
             ) {
+                calendarUiModel.visibleDates.size
+            }
 
-                // Heading Name, show Alarms and What's your mood composable
-
-//            item {
-//                NameAndMoodHomeScreenHeader(
-//                    userName = userName,
-//                    onAlarm = { onNav(ALL_ALARMS_ROUTE) }
-//                )
-//            }
-//            item {
-//                WeekScreen(
-//                    modifier = Modifier.fillMaxWidth(),
-//                    data = calendarUiModel,
-//                    onDateClickListener = onDateClickListener
-//                )
-//            }
-                item { Spacer(modifier = Modifier.height(8.dp)) }
-                if (calendarUiModel.selectedDate.isToday) {
-                    when (state) {
-                        is UiState.Loading -> {
-                            item {
-                                Box(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .animateItemPlacement(
-                                            animationSpec = tween(
-                                                durationMillis = 500,
-                                                easing = LinearOutSlowInEasing,
-                                            )
-                                        ),
-                                    contentAlignment = Alignment.Center
-                                ) {
-                                    AppDotTypingAnimation()
-                                }
-                            }
+            WeekTabBar(
+                data = calendarUiModel,
+                onDateClickListener = { date, newIndex ->
+                    coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
+                    index.intValue = newIndex
+                    onDateClickListener(date)
+                }
+            )
+            AppHorizontalPager(
+                pagerState = pagerState
+            ) {
+                if (calendarUiModel.visibleDates[it].isToday) {
+                    TodayTabContent(
+                        calendarUiModel = calendarUiModel,
+                        state = state,
+                        defaultScheduleVisibility = defaultScheduleVisibility,
+                        listMorning = listMorning,
+                        listAfternoon = listAfternoon,
+                        listEvening = listEvening,
+                        hSEvent = hSEvent,
+                        onNav = onNav,
+                        onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
+                            eventType = newEventType
+                            deleteDialog = newDeleteDialog
+                            deletedItem = newDeletedItem
                         }
+                    )
+                } else {
+                    OtherDaysTabContent()
+                }
+            }
 
-                        is UiState.ErrorMessage -> {
-                            item {
-                                AppSurface(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .padding(16.dp)
-                                ) {
-                                    AppTonalButton(
-                                        textToShow = stringResource(R.string.retry)
-                                    ) { hSEvent(HomeEvent.Retry) }
-                                }
-                            }
+        }
+    }
+}
+
+@Composable
+fun OtherDaysTabContent() {
+    Box(
+        modifier = Modifier.fillMaxSize(),
+        contentAlignment = Alignment.Center
+    ) {
+        TitleTexts.Level1(
+            text = "Content Needs to be added."
+        )
+    }
+}
+
+@OptIn(ExperimentalFoundationApi::class)
+@Composable
+fun TodayTabContent(
+    calendarUiModel: CalendarUiModel,
+    state: UiState<TodayData>,
+    defaultScheduleVisibility: Boolean,
+    listMorning: SnapshotStateList<AlarmEntity>,
+    listAfternoon: SnapshotStateList<AlarmEntity>,
+    listEvening: SnapshotStateList<AlarmEntity>,
+    hSEvent: (HomeEvent) -> Unit,
+    onNav: (String) -> Unit,
+    onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit
+) {
+    val listState = rememberLazyListState()
+    val context = LocalContext.current
+    LazyColumn(
+        modifier = Modifier
+            .fillMaxSize()
+            .navigationBarsPadding(),
+        state = listState,
+        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+    ) {
+        item { Spacer(modifier = Modifier.height(8.dp)) }
+        if (calendarUiModel.selectedDate.isToday) {
+            when (state) {
+                is UiState.Loading -> {
+                    item {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(
+                                    animationSpec = tween(
+                                        durationMillis = 500,
+                                        easing = LinearOutSlowInEasing,
+                                    )
+                                ),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            AppDotTypingAnimation()
                         }
+                    }
+                }
 
-                        is UiState.Success -> {
-                            item {
-                                WeatherCardHome(
-                                    modifier = Modifier
-                                        .fillMaxWidth()
-                                        .animateItemPlacement(
-                                            animationSpec = tween(
-                                                durationMillis = 500,
-                                                easing = LinearOutSlowInEasing,
+                is UiState.ErrorMessage -> {
+                    item {
+                        AppSurface(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(16.dp)
+                        ) {
+                            AppTonalButton(
+                                textToShow = stringResource(R.string.retry)
+                            ) { hSEvent(HomeEvent.Retry) }
+                        }
+                    }
+                }
+
+                is UiState.Success -> {
+                    item {
+                        WeatherCardHome(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .animateItemPlacement(
+                                    animationSpec = tween(
+                                        durationMillis = 500,
+                                        easing = LinearOutSlowInEasing,
+                                    )
+                                ),
+                            temperature = state.data.temperature,
+                        )
+                    }
+                    item { TitleTexts.Level2(text = "SunSlots") }
+                    item {
+                        LazyRow(
+                            modifier = Modifier.fillMaxWidth(),
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                        ) {
+                            items(items = state.data.slots) { slot ->
+                                SunSlotsProgressCard(
+                                    modifier = Modifier.animateItemPlacement(
+                                        animationSpec = tween(
+                                            durationMillis = 500,
+                                            easing = LinearOutSlowInEasing,
+                                        )
+                                    ),
+                                    title = slot.temperature,
+                                    titleValue = slot.time,
+                                    onSchedule = {
+                                        hSEvent(
+                                            HomeEvent.NavSchedule(
+                                                getHourMinAmPm(
+                                                    slot.time, slot.title
+                                                )
                                             )
-                                        ),
-                                    temperature = state.data.temperature,
+                                        )
+                                        onNav(Graph.Scheduler.route)
+                                    }
                                 )
                             }
-                            item { TitleTexts.Level2(text = "SunSlots") }
-                            item {
-                                LazyRow(
-                                    modifier = Modifier.fillMaxWidth(),
-                                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-                                ) {
-                                    items(items = state.data.slots) { slot ->
-                                        SunSlotsProgressCard(
-                                            modifier = Modifier.animateItemPlacement(
-                                                animationSpec = tween(
-                                                    durationMillis = 500,
-                                                    easing = LinearOutSlowInEasing,
-                                                )
-                                            ),
-                                            title = slot.temperature,
-                                            titleValue = slot.time,
-                                            onSchedule = {
-                                                hSEvent(
-                                                    HomeEvent.NavSchedule(
-                                                        getHourMinAmPm(
-                                                            slot.time, slot.title
-                                                        )
-                                                    )
-                                                )
-                                                onNav(Graph.Scheduler.route)
-                                            }
-                                        )
-                                    }
-                                }
-                            }
                         }
+                    }
+                }
 
-                        else -> {}
-                    }
-                }
-                if (defaultScheduleVisibility) {
-                    item {
-                        AnimatedVisibility(
-                            visible = true, exit = scaleOut(
-                                targetScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            ),
-                            enter = scaleIn(
-                                initialScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            )
-                        ) {
-                            AppOutlinedButton(
-                                textToShow = stringResource(R.string.default_schedule)
-                            ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
-                        }
-                    }
-                }
-                if (listMorning.isNotEmpty()) {
-                    item {
-                        AnimatedVisibility(
-                            visible = listMorning.isNotEmpty(), exit = scaleOut(
-                                targetScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            ),
-                            enter = scaleIn(
-                                initialScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            )
-                        ) {
-                            TitleTexts.Level2(text = stringResource(R.string.morning_events))
-                        }
-                    }
-
-                    items(items = listMorning, key = { it }) { data ->
-                        TodayItem2(modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(
-                                durationMillis = 500,
-                                easing = LinearOutSlowInEasing,
-                            )
-                        ),
-                            item = data,
-                            onDelete = {
-                                evenType = Event.Morning
-                                deleteDialog = true
-                                deletedItem = data
-                            }, onDone = {
-                                onNav(goToTool(data.info.tag))
-                            }, onReschedule = {
-                                onNav(Graph.Scheduler.route)
-                                hSEvent(HomeEvent.EditAlarm(data))
-                            }
-                        )
-//                    SwipeDemoToday(data = data, onSwipeRight = {
-//                        evenType = Event.Morning
-//                        deleteDialog = true
-//                        deletedItem = data
-//                    }, onSwipeLeft = {
-//                        evenType = Event.Morning
-//                        skipDialog = true
-//                        skipItem = data
-//                    }, onDone = {
-//                        onNav(goToTool(data.info.tag))
-//                    }, onReschedule = {
-//                        onNav(Graph.Scheduler.route)
-//                        hSEvent(HomeEvent.EditAlarm(data))
-//                    })
-                    }
-                }
-                if (listAfternoon.isNotEmpty()) {
-                    item {
-                        AnimatedVisibility(
-                            visible = listAfternoon.isNotEmpty(),
-                            exit = scaleOut(
-                                targetScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            ),
-                            enter = scaleIn(
-                                initialScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            )
-                        ) {
-                            TitleTexts.Level2(text = stringResource(R.string.afternoon_events))
-                        }
-                    }
-                    items(items = listAfternoon, key = { it }) { data ->
-                        TodayItem(modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(
-                                durationMillis = 500,
-                                easing = LinearOutSlowInEasing,
-                            )
-                        ),
-                            item = data,
-                            onDelete = {
-                                evenType = Event.Afternoon
-                                deleteDialog = true
-                                deletedItem = data
-                            }, onDone = {
-                                onNav(goToTool(data.info.tag))
-                            }, onReschedule = {
-                                onNav(Graph.Scheduler.route)
-                                hSEvent(HomeEvent.EditAlarm(data))
-                            }
-                        )
-                    }
-                }
-                if (listEvening.isNotEmpty()) {
-                    item {
-                        AnimatedVisibility(
-                            visible = listEvening.isNotEmpty(), exit = scaleOut(
-                                targetScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            ),
-                            enter = scaleIn(
-                                initialScale = 0.5f,
-                                animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                            )
-                        ) {
-                            TitleTexts.Level2(text = stringResource(R.string.evening_events))
-                        }
-                    }
-                    items(items = listEvening, key = { it }) { data ->
-                        TodayItem1(modifier = Modifier.animateItemPlacement(
-                            animationSpec = tween(
-                                durationMillis = 500,
-                                easing = LinearOutSlowInEasing,
-                            )
-                        ),
-                            item = data,
-                            onDelete = {
-                                evenType = Event.Evening
-                                deleteDialog = true
-                                deletedItem = data
-                            }, onDone = {
-                                onNav(goToTool(data.info.tag))
-                            }, onReschedule = {
-                                onNav(Graph.Scheduler.route)
-                                hSEvent(HomeEvent.EditAlarm(data))
-                            }
-                        )
-//                    SwipeDemoToday(data = data, onSwipeRight = {
-//                        evenType = Event.Morning
-//                        deleteDialog = true
-//                        deletedItem = data
-//                    }, onSwipeLeft = {
-//                        evenType = Event.Morning
-//                        skipDialog = true
-//                        skipItem = data
-//                    }, onDone = {
-//                        onNav(goToTool(data.info.tag))
-//                    }, onReschedule = {
-//                        onNav(Graph.Scheduler.route)
-//                        hSEvent(HomeEvent.EditAlarm(data))
-//                    })
-                    }
-                }
-                item { Spacer(modifier = Modifier.height(16.dp)) }
+                else -> {}
             }
         }
+        if (defaultScheduleVisibility) {
+            item {
+                AnimatedVisibility(
+                    visible = true, exit = scaleOut(
+                        targetScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    ),
+                    enter = scaleIn(
+                        initialScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    )
+                ) {
+                    AppOutlinedButton(
+                        textToShow = stringResource(R.string.default_schedule)
+                    ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
+                }
+            }
+        }
+        if (listMorning.isNotEmpty()) {
+            item {
+                AnimatedVisibility(
+                    visible = listMorning.isNotEmpty(),
+                    exit = scaleOut(
+                        targetScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    ),
+                    enter = scaleIn(
+                        initialScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    )
+                ) {
+                    TitleTexts.Level2(text = stringResource(R.string.morning_events))
+                }
+            }
+
+            items(items = listMorning, key = { it }) { data ->
+                TodayItem2(modifier = Modifier.animateItemPlacement(
+                    animationSpec = tween(
+                        durationMillis = 500,
+                        easing = LinearOutSlowInEasing,
+                    )
+                ),
+                    item = data,
+                    onDelete = {
+                        onDelete(
+                            Event.Morning,
+                            true,
+                            data
+                        )
+                    },
+                    onDone = {
+                        onNav(goToTool(data.info.tag))
+                    },
+                    onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    }
+                )
+            }
+        }
+        if (listAfternoon.isNotEmpty()) {
+            item {
+                AnimatedVisibility(
+                    visible = listAfternoon.isNotEmpty(),
+                    exit = scaleOut(
+                        targetScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    ),
+                    enter = scaleIn(
+                        initialScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    )
+                ) {
+                    TitleTexts.Level2(text = stringResource(R.string.afternoon_events))
+                }
+            }
+            items(items = listAfternoon, key = { it }) { data ->
+                TodayItem(modifier = Modifier.animateItemPlacement(
+                    animationSpec = tween(
+                        durationMillis = 500,
+                        easing = LinearOutSlowInEasing,
+                    )
+                ),
+                    item = data,
+                    onDelete = {
+                        onDelete(
+                            Event.Afternoon,
+                            true,
+                            data
+                        )
+                    },
+                    onDone = {
+                        onNav(goToTool(data.info.tag))
+                    },
+                    onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    }
+                )
+            }
+        }
+        if (listEvening.isNotEmpty()) {
+            item {
+                AnimatedVisibility(
+                    visible = listEvening.isNotEmpty(), exit = scaleOut(
+                        targetScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    ),
+                    enter = scaleIn(
+                        initialScale = 0.5f,
+                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
+                    )
+                ) {
+                    TitleTexts.Level2(text = stringResource(R.string.evening_events))
+                }
+            }
+            items(items = listEvening, key = { it }) { data ->
+                TodayItem1(modifier = Modifier.animateItemPlacement(
+                    animationSpec = tween(
+                        durationMillis = 500,
+                        easing = LinearOutSlowInEasing,
+                    )
+                ),
+                    item = data,
+                    onDelete = {
+                        onDelete(
+                            Event.Evening,
+                            true,
+                            data
+                        )
+                    },
+                    onDone = {
+                        onNav(goToTool(data.info.tag))
+                    },
+                    onReschedule = {
+                        onNav(Graph.Scheduler.route)
+                        hSEvent(HomeEvent.EditAlarm(data))
+                    }
+                )
+            }
+        }
+        item { Spacer(modifier = Modifier.height(16.dp)) }
     }
 }
 

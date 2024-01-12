@@ -10,6 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
@@ -47,6 +48,7 @@ object BodyTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
+        style: TextStyle = AppTheme.customTypography.heading.level2,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -54,7 +56,7 @@ object BodyTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.customTypography.body.level1,
+            style = AppTheme.customTypography.body.level1.plus(style),
             modifier = modifier,
             color = color,
             textAlign = textAlign,

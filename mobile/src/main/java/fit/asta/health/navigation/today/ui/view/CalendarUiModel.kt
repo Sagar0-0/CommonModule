@@ -17,6 +17,7 @@ data class CalendarUiModel(
         val isToday: Boolean
     ) {
         val day: String =
-            date.format(DateTimeFormatter.ofPattern("E")) // get the day by formatting the date
+            date.format(DateTimeFormatter.ofPattern("E"))
+                .take(1) // get the day by formatting the date
     }
 }

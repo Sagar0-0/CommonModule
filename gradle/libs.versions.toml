@@ -107,8 +107,8 @@ lifecycleViewmodelKtx = "2.6.2"
 lint = "31.1.4"
 lottieCompose = "6.1.0"
 mapsCompose = "2.12.0"
-material3 = "1.1.2"
-material3WindowSizeClass = "1.1.2"
+material3 = "1.2.0-beta02"
+material3WindowSizeClass = "1.2.0-beta02"
 materialIconsExtendedAndroid = "1.5.4"
 media3 = "1.2.0"
 mockkAndroid = "1.13.5"
@@ -153,7 +153,6 @@ workRuntimeKtx = "2.8.1"
 mockwebserver = "4.11.0"
 org-jetbrains-kotlin-android = "1.9.10"
 material = "1.10.0"
-material3Android = "1.2.0-beta01"
 
 [libraries]
 accompanist-coil = { module = "com.google.accompanist:accompanist-coil", version.ref = "accompanistCoil" }
@@ -176,9 +175,9 @@ androidx-compose-animation = { group = "androidx.compose.animation", name = "ani
 androidx-compose-bom = { group = "androidx.compose", name = "compose-bom", version.ref = "androidxComposeBom" }
 androidx-compose-foundation = { group = "androidx.compose.foundation", name = "foundation" }
 androidx-compose-foundation-layout = { group = "androidx.compose.foundation", name = "foundation-layout" }
-androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended" }
-androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3" }
-androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class" }
+androidx-compose-material-iconsExtended = { group = "androidx.compose.material", name = "material-icons-extended", version.ref = "materialIconsExtendedAndroid" }
+androidx-compose-material3 = { group = "androidx.compose.material3", name = "material3", version.ref = "material3" }
+androidx-compose-material3-windowSizeClass = { group = "androidx.compose.material3", name = "material3-window-size-class", version.ref = "material3WindowSizeClass" }
 androidx-compose-runtime = { group = "androidx.compose.runtime", name = "runtime" }
 androidx-compose-runtime-livedata = { group = "androidx.compose.runtime", name = "runtime-livedata" }
 androidx-compose-runtime-tracing = { group = "androidx.compose.runtime", name = "runtime-tracing", version.ref = "androidxComposeRuntimeTracing" }
@@ -359,7 +358,6 @@ core-ktx = { group = "androidx.test", name = "core-ktx", version = "1.5.0" }
 androidx-ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreview" }
 ui-tooling-preview-android = { group = "androidx.compose.ui", name = "ui-tooling-preview-android", version.ref = "uiToolingPreview" }
 play-services-fitness = { group = "com.google.android.gms", name = "play-services-fitness", version = "21.1.0" }
-androidx-material3-android = { group = "androidx.compose.material3", name = "material3-android", version.ref = "material3Android" }
 
 [plugins]
 android-application = { id = "com.android.application", version.ref = "androidGradlePlugin" }

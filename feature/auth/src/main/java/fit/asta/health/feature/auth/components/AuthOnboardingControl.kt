@@ -190,6 +190,13 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                     )
                     BodyTexts.Level1(
                         text = items[page].desc,
+                        style = AppTheme.customTypography.heading.level2.copy(
+                            shadow = Shadow(
+                                color = DefaultShadowColor,
+                                offset = Offset(4f, 4f),
+                                blurRadius = 8f
+                            )
+                        ),
                         textAlign = TextAlign.Center
                     )
                 }
