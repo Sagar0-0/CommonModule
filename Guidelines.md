@@ -849,7 +849,11 @@ In VM,
 ```kotlin
 _currentAddressState.value = addressResponse.toUiState()
 ```
-2. Expose StateFlow objects
+2. Expose mutableStateOf(majorly) or StateFlow(when stream of data or some edge cases) objects
+```kotlin
+va loading by mutableStateOf(false) - most of the time this works
+    private set
+```
 ```kotlin
 private val _putAddressState = MutableStateFlow<UiState<PutAddressResponse>>(UiState.Idle)
 val putAddressState = _putAddressState.asStateFlow()
@@ -866,7 +870,7 @@ val locationPermissionRejectedCount = addressRepo.userPreferences
             initialValue = 0,
         )
 ```
-4. Handle events in repo layer
+4. Handle events in repo layer that were sent to viewmodel
 ```kotlin
     fun setIsLocationEnabled() {
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
@@ -877,6 +881,22 @@ val locationPermissionRejectedCount = addressRepo.userPreferences
         _isPermissionGranted.value = addressRepo.isPermissionGranted()
     }
 ```
+5. Create a data class that holds a particular screen all data states
+```kotlin
+data class BasicProfileUiState(
+    val loading: Boolean,
+    val name: Boolean
+    val gender: Int,
+    val submitButtonEnabled: Booolean,
+    val referButtonVisible: Boolean
+)
+```
+and use this object to expose to the ui layer
+```kotlin
+    var basicProfileUiState by mutableStateOf(BasicProfileUiState())
+        private set
+```
+don't forget to update this object on  every event/method call
 
 In Unit Testing,
 1. Override BaseTest class, beforeEach and afterEach for viewmodel testing
@@ -901,8 +921,8 @@ class TrackViewModelTest : BaseTest() {
 ```
 2. Use mockk,Junit5,turbine
 
-For UI Creation:
-1. Use App prefix for usng any component
+In Compose Ui(IMPORTANT): 
+1. Use App prefix for accessing any component from design system
 ```kotlin
             AppIcon(
                 imageVector = icon,
@@ -910,7 +930,7 @@ For UI Creation:
                 tint = iconTint
             )
 ```
-2. Create a separate composable for preview
+2. Always Create a separate composable for preview
 ```kotlin
 // Preview Function
 @Preview(
@@ -936,8 +956,8 @@ private fun DefaultPreview() {
 ```kotlin
 @Composable
 fun OrderDetailScreen(
-    modifier: Modifier = Modifier,
     orderData: OrderDetailData,
+    modifier: Modifier = Modifier,
     onUiEvent: (OrderDetailUiEvent) -> Unit
 )
 ```
@@ -965,6 +985,22 @@ fun OrderDetailScreen(
     onUiEvent: (OrderDetailUiEvent) -> Unit
 )
 ```
+8. Observe the data from VM
+9. Use Property Drilling(Pass data/event from main parent composable to all lower/children composables to the deepest levels).
+Parent -> A -> B -> C -> D
+i.e. the data/state required in A,B,C,D should be declared in Parent composable
+10. If a compose function have more than 3 events, then wrap them in a sealed interface wrapper.
+```kotlin
+sealed interfae ProfileUiEvent{
+    data object onButtonClick() : ProfileUiEvent
+    data classs NameChange(val name: String) : ProfileUiEvent
+    data classs GenderChange(val gender: Int) : ProfileUiEvent
+}
+```
+11. Handler all events at a single place and that will be lower common ancestor or highest parent composable.
+12. Don't create any object in child composable(always declare only in parent).
+13. Use two types of loading for any screen(only from design system) - User blocking(covers entire screen and restricts user to perform any action), Non-User-Blocking(just to show some progress and loading indicator).
+14. Use level 2 for general padding of any side
 
 # SOLID Principles in Kotlin
 
