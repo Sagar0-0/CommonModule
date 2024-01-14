@@ -1301,3 +1301,7 @@ fun MyApp() {
 Separation of Concerns: Clear separation between UI, logic, and data layers.
 Testability: It is easier to test ViewModel and Model independently of UI.
 Reactivity: Jetpack Compose's reactive nature simplifies UI updates based on ViewModel changes.
+
+
+
+[UI GUIDELINES](https://docs.google.com/document/d/154J2KuX1WiFJCknstjpPaP--fsm3VUqah0L2Am9vyIk/edit?usp=sharing)
