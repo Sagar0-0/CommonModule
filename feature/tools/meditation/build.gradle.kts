@@ -17,8 +17,8 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.material)
     //Jetpack Compose - Material theme components
-    implementation(libs.androidx.material3)
-    implementation(libs.androidx.material3.window.size)
+    implementation(libs.androidx.compose.material3)
+    implementation(libs.androidx.compose.material3.windowSizeClass)
     implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
 
