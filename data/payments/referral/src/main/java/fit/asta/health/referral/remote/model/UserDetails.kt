@@ -11,7 +11,7 @@ data class UserDetails(
     val name: String = "",
     @SerializedName("pic")
     val pic: String = "",
-    val phone: String = "",
+    val phone: String = "",//TODO: ADD FROM API
     @SerializedName("prime")
     val subscriptionState: SubscriptionState = SubscriptionStateType.INACTIVE.code,
 )

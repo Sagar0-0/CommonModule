@@ -121,7 +121,8 @@ fun NavGraphBuilder.homeScreen(
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
             val referralDataState =
                 mainViewModel.referralDataState.collectAsStateWithLifecycle().value
-            val refCode = (referralDataState as? UiState.Success)?.data?.referralCode?.refCode ?: ""
+            val refCode =
+                (referralDataState as? UiState.Success)?.data?.referralDetails?.refCode ?: ""
 
             val permissionResultLauncher =
                 rememberLauncherForActivityResult(
