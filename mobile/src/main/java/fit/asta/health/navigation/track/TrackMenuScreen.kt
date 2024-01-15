@@ -455,7 +455,7 @@ private fun ToolsItemsCard(
                     .fillMaxWidth()
                     .padding(top = 16.dp, start = 16.dp, end = 16.dp),
 
-                // Text Features
+                // Text Feature
                 textAlign = TextAlign.Start
             )
 

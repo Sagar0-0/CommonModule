@@ -177,7 +177,7 @@ private fun SubPlanItem(
 
 
             AnimatedVisibility(visible = fullScreen) {
-                //Features
+                //Feature
                 Row(
                     Modifier
                         .fillMaxWidth()
@@ -217,8 +217,8 @@ private fun SubPlanItem(
                                 //TODO: OTHER FIELDS SHOULD BE THERE
                             ),
                             subscriptionDetail = OrderRequest.SubscriptionDetail(
-                                subType = item.subscriptionType,
-                                durType = item.subscriptionDurationPlans[selectedDurationIndex].durationType
+                                productCategoryId = item.subscriptionType,
+                                productId = item.subscriptionDurationPlans[selectedDurationIndex].durationType
                             ),
                             type = OrderRequestType.Subscription.code
                         )

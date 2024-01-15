@@ -47,25 +47,21 @@ private fun OrderScreenPreview() {
                 OrderData(
                     amt = 8978,
                     cDate = 2248,
-                    durType = "theophrastus",
                     orderId = "nullam",
                     paymentId = "pericula",
-                    subType = "morbi",
                     type = 6133,
                     title = "Title",
-                    url = "https://duckduckgo.com/?q=movet",
+                    imageUrl = "https://duckduckgo.com/?q=movet",
                     status = "pulvinar"
                 ),
                 OrderData(
                     amt = 8978,
                     cDate = 2248,
-                    durType = "theophrastus",
                     orderId = "nullam",
                     paymentId = "pericula",
-                    subType = "morbi",
                     type = 6133,
                     title = "Title",
-                    url = "https://duckduckgo.com/?q=movet",
+                    imageUrl = "https://duckduckgo.com/?q=movet",
                     status = "pulvinar"
                 )
             )
@@ -139,7 +135,7 @@ private fun OrderItem(order: OrderData, onClick: () -> Unit) {
                     text = order.status
                 )
                 AppNetworkImage(
-                    model = getImgUrl(order.url)
+                    model = getImgUrl(order.imageUrl)
                 )
             }
         }

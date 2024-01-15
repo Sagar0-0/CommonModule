@@ -5,9 +5,10 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
+
 @Parcelize
 data class OrderRequest(
-    @SerializedName("amtDetails")
+    @SerializedName("amtDtls")
     val amtDetails: AmtDetails = AmtDetails(),
     @SerializedName("con")
     val country: String = "",
@@ -24,24 +25,24 @@ data class OrderRequest(
     data class AmtDetails(
         @SerializedName("amt")
         val amt: Double = 0.0,
-        @SerializedName("discountCode")
+        @SerializedName("dct")
         val discountCode: String = "",
-        @SerializedName("couponCode")
+        @SerializedName("cpn")
         val couponCode: String = "",
-        @SerializedName("offerCode")
+        @SerializedName("ofr")
         val offerCode: String = "",
-        @SerializedName("walletMoney")
-        val walletMoney: Int = 0,
-        @SerializedName("walletPoints")
-        val walletPoints: Int = 0
+        @SerializedName("wMny")
+        val walletMoney: Double = 0.0,
+        @SerializedName("wPts")
+        val walletPoints: Double = 0.0
     ) : Parcelable
 
     @Parcelize
     data class SubscriptionDetail(
-        @SerializedName("durType")
-        val durType: String = "",
-        @SerializedName("subType")
-        val subType: String = ""
+        @SerializedName("cat")
+        val productCategoryId: String = "",
+        @SerializedName("prod")
+        val productId: String = ""
     ) : Parcelable
 }
 

@@ -37,19 +37,19 @@ private fun OrderDetailScreenPreview() {
     AppTheme {
         OrderDetailScreen(
             orderData = OrderDetailData(
-                amt = 8575,
+                amt = 85.75,
                 cDate = 9353,
-                discount = 8530,
-                offer = "malesuada",
+                discount = 853.0,
+                offer = null,
                 orderId = "accusata",
                 paymentId = "xxxxxxxxxx",
                 paymentMode = "definitionem",
                 sts = "Active",
                 ttl = "Title",
                 type = 5208,
-                url = "https://www.google.com/#q=graeci",
-                walletMoney = 3096,
-                walletPoints = 2893
+                imageUrl = "https://www.google.com/#q=graeci",
+                walletMoney = 30.96,
+                walletPoints = 28.93
             )
         ) {
 
@@ -83,7 +83,7 @@ fun OrderDetailScreen(
             ) {
                 HeadingTexts.Level1(text = orderData.ttl)
                 AppNetworkImage(
-                    model = getImgUrl(orderData.url)
+                    model = getImgUrl(orderData.imageUrl)
                 )
             }
         }
@@ -116,7 +116,7 @@ fun OrderDetailScreen(
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TitleTexts.Level2(text = "Payment Mode")
-                    TitleTexts.Level2(text = orderData.paymentMode)
+                    orderData.paymentMode?.let { TitleTexts.Level2(text = it) }
                 }
             }
         }
@@ -185,10 +185,12 @@ fun OrderDetailScreen(
                         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                     ) {
                         AppIcon(imageVector = Icons.Default.PlayArrow)
-                        BodyTexts.Level2(
-                            modifier = Modifier.weight(1f),
-                            text = orderData.offer
-                        )
+                        orderData.offer?.let {
+                            BodyTexts.Level2(
+                                modifier = Modifier.weight(1f),
+                                text = it.toString()
+                            )
+                        }
                     }
 
                     AppIcon(imageVector = Icons.Default.Check)

@@ -5,19 +5,19 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderDetailData(
     @SerializedName("amt")
-    val amt: Int = 0,
+    val amt: Double = 0.0,
+    @SerializedName("mode")
+    val paymentMode: String? = null,
     @SerializedName("cDate")
     val cDate: Int = 0,
-    @SerializedName("discount")
-    val discount: Int = 0,
-    @SerializedName("offer")
-    val offer: String = "",
-    @SerializedName("orderId")
+    @SerializedName("dct")
+    val discount: Double? = 0.0,
+    @SerializedName("ofr")
+    val offer: Double? = 0.0,
+    @SerializedName("oid")
     val orderId: String = "",
-    @SerializedName("paymentId")
+    @SerializedName("pid")
     val paymentId: String = "",
-    @SerializedName("paymentMode")
-    val paymentMode: String = "",
     @SerializedName("sts")
     val sts: String = "",
     @SerializedName("ttl")
@@ -25,9 +25,9 @@ data class OrderDetailData(
     @SerializedName("type")
     val type: Int = 0,
     @SerializedName("url")
-    val url: String = "",
-    @SerializedName("walletMoney")
-    val walletMoney: Int = 0,
-    @SerializedName("walletPoints")
-    val walletPoints: Int = 0
+    val imageUrl: String = "",
+    @SerializedName("wMny")
+    val walletMoney: Double? = 0.0,
+    @SerializedName("wPts")
+    val walletPoints: Double? = 0.0
 )

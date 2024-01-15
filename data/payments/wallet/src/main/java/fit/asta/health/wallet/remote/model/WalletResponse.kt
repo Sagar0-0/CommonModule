@@ -4,19 +4,19 @@ package fit.asta.health.wallet.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class WalletResponse(
-    @SerializedName("transaction_data")
+    @SerializedName("txnData")
     val walletTransactionData: List<WalletTransactionData>? = null,
-    @SerializedName("moneyAddedTransactions")
+    @SerializedName("mnyTxn")
     val moneyAddedTransactionsData: List<MoneyAddedTransactionData>? = null,
-    @SerializedName("wallet_data")
+    @SerializedName("wltData")
     val walletData: WalletData = WalletData()
 ) {
     data class MoneyAddedTransactionData(
         @SerializedName("type")
         val type: Int = 0,
-        @SerializedName("orderId")
+        @SerializedName("oid")
         val orderId: String = "",
-        @SerializedName("paymentId")
+        @SerializedName("pid")
         val paymentId: String = "",
         @SerializedName("cDate")
         val cDate: String = "",
@@ -39,41 +39,41 @@ data class WalletResponse(
         val tid: String = "",
         @SerializedName("type")
         val transactionType: WalletTransactionCode = WalletTransactionType.SUBSCRIPTION_CASHBACK.code,
-        @SerializedName("referrer")
+        @SerializedName("rfr")
         val referredBy: String = "",
-        @SerializedName("referee")
+        @SerializedName("rfe")
         val referee: String = "",
-        @SerializedName("timeStamp")
+        @SerializedName("time")
         val timeStamp: String = "",
         @SerializedName("from")
         val from: String = "",
         @SerializedName("to")
         val to: String = "",
-        @SerializedName("debit")
+        @SerializedName("dr")
         val debitAmounts: WalletTransactionDebitData? = null,
         @SerializedName("credit")
         val creditAmounts: WalletTransactionCreditData? = null,
     )
 
     data class WalletTransactionDebitData(
-        @SerializedName("points")
-        val points: Int = 0,
-        @SerializedName("money")
-        val money: Int = 0
+        @SerializedName("pts")
+        val points: Double = 0.0,
+        @SerializedName("mny")
+        val money: Double = 0.0
     )
 
     data class WalletTransactionCreditData(
-        @SerializedName("points")
-        val points: Int = 0,
-        @SerializedName("money")
-        val money: Int = 0
+        @SerializedName("pts")
+        val points: Double = 0.0,
+        @SerializedName("mny")
+        val money: Double = 0.0
     )
 
     data class WalletData(
-        @SerializedName("money")
-        val money: Int = 0,
-        @SerializedName("points")
-        val points: Int = 0,
+        @SerializedName("mny")
+        val money: Double = 0.0,
+        @SerializedName("pts")
+        val points: Double = 0.0,
         @SerializedName("id")
         val id: String = "",
         @SerializedName("uid")

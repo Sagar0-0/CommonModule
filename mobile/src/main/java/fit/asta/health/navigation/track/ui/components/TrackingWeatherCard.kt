@@ -68,7 +68,7 @@ fun TrackingWeatherCard(
             TitleTexts.Level2(
                 text = "$weatherType - $temperature °C",
 
-                // Text Features
+                // Text Feature
                 textAlign = TextAlign.Start,
                 color = AppTheme.colors.onSurface,
             )
@@ -78,7 +78,7 @@ fun TrackingWeatherCard(
             TitleTexts.Level2(
                 text = location,
 
-                // Text Features
+                // Text Feature
                 textAlign = TextAlign.Start,
                 color = AppTheme.colors.onSurface.copy(alpha = .7f),
             )
