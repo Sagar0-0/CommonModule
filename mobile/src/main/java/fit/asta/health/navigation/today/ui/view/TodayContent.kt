@@ -63,7 +63,6 @@ import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
@@ -130,54 +129,52 @@ fun TodayContent(
             }
         )
     }
-    AppScreen {
-        Column(
-            modifier = Modifier
-                .fillMaxSize(),
-            horizontalAlignment = Alignment.CenterHorizontally
+    Column(
+        modifier = Modifier
+            .fillMaxSize(),
+        horizontalAlignment = Alignment.CenterHorizontally
+    ) {
+        val coroutineScope = rememberCoroutineScope()
+        val pagerState = rememberPagerState(
+            initialPage = calendarUiModel.visibleDates.indexOfFirst {
+                it.isToday
+            }
         ) {
-            val coroutineScope = rememberCoroutineScope()
-            val pagerState = rememberPagerState(
-                initialPage = calendarUiModel.visibleDates.indexOfFirst {
-                    it.isToday
-                }
-            ) {
-                calendarUiModel.visibleDates.size
-            }
-
-            WeekTabBar(
-                data = calendarUiModel,
-                onDateClickListener = { date, newIndex ->
-                    coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
-                    index.intValue = newIndex
-                    onDateClickListener(date)
-                }
-            )
-            AppHorizontalPager(
-                pagerState = pagerState
-            ) {
-                if (calendarUiModel.visibleDates[it].isToday) {
-                    TodayTabContent(
-                        calendarUiModel = calendarUiModel,
-                        state = state,
-                        defaultScheduleVisibility = defaultScheduleVisibility,
-                        listMorning = listMorning,
-                        listAfternoon = listAfternoon,
-                        listEvening = listEvening,
-                        hSEvent = hSEvent,
-                        onNav = onNav,
-                        onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
-                            eventType = newEventType
-                            deleteDialog = newDeleteDialog
-                            deletedItem = newDeletedItem
-                        }
-                    )
-                } else {
-                    OtherDaysTabContent()
-                }
-            }
-
+            calendarUiModel.visibleDates.size
         }
+
+        WeekTabBar(
+            data = calendarUiModel,
+            onDateClickListener = { date, newIndex ->
+                coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
+                index.intValue = newIndex
+                onDateClickListener(date)
+            }
+        )
+        AppHorizontalPager(
+            pagerState = pagerState
+        ) {
+            if (calendarUiModel.visibleDates[it].isToday) {
+                TodayTabContent(
+                    calendarUiModel = calendarUiModel,
+                    state = state,
+                    defaultScheduleVisibility = defaultScheduleVisibility,
+                    listMorning = listMorning,
+                    listAfternoon = listAfternoon,
+                    listEvening = listEvening,
+                    hSEvent = hSEvent,
+                    onNav = onNav,
+                    onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
+                        eventType = newEventType
+                        deleteDialog = newDeleteDialog
+                        deletedItem = newDeletedItem
+                    }
+                )
+            } else {
+                OtherDaysTabContent()
+            }
+        }
+
     }
 }
 

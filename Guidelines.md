@@ -849,7 +849,7 @@ In VM,
 ```kotlin
 _currentAddressState.value = addressResponse.toUiState()
 ```
-2. Expose StateFlow objects
+2. Expose StateFlow objects using backing property:
 ```kotlin
 private val _putAddressState = MutableStateFlow<UiState<PutAddressResponse>>(UiState.Idle)
 val putAddressState = _putAddressState.asStateFlow()
@@ -866,7 +866,7 @@ val locationPermissionRejectedCount = addressRepo.userPreferences
             initialValue = 0,
         )
 ```
-4. Handle events in repo layer
+4. Handle events in repo layer that were sent to viewmodel
 ```kotlin
     fun setIsLocationEnabled() {
         _isLocationEnabled.value = addressRepo.isLocationEnabled()
@@ -877,32 +877,17 @@ val locationPermissionRejectedCount = addressRepo.userPreferences
         _isPermissionGranted.value = addressRepo.isPermissionGranted()
     }
 ```
-
-In Unit Testing,
-1. Override BaseTest class, beforeEach and afterEach for viewmodel testing
+5. Always use update to assign new value to a stateflow:
 ```kotlin
-class TrackViewModelTest : BaseTest() {
-
-    private lateinit var viewModel: TrackViewModel
-    private val trackingRepo: TrackingRepo = mockk(relaxed = true)
-
-    @BeforeEach
-    override fun beforeEach() {
-        super.beforeEach()
-        viewModel = spyk(TrackViewModel(trackingRepo))
-    }
-
-    @AfterEach
-    override fun afterEach() {
-        super.afterEach()
-        clearAllMocks()
-    }
-}    
+_uiState.update{ oldState->
+    newState
+}
 ```
-2. Use mockk,Junit5,turbine
+6. Do not pass instances of lifecycle components like context, to avoid memory leaks.
+7. Use saveStatehandler to preserve data on process death.
 
-For UI Creation:
-1. Use App prefix for usng any component
+In Compose Ui(IMPORTANT): 
+1. Use App prefix for accessing any component from design system
 ```kotlin
             AppIcon(
                 imageVector = icon,
@@ -910,7 +895,7 @@ For UI Creation:
                 tint = iconTint
             )
 ```
-2. Create a separate composable for preview
+2. Always Create a separate composable for preview
 ```kotlin
 // Preview Function
 @Preview(
@@ -936,8 +921,8 @@ private fun DefaultPreview() {
 ```kotlin
 @Composable
 fun OrderDetailScreen(
-    modifier: Modifier = Modifier,
     orderData: OrderDetailData,
+    modifier: Modifier = Modifier,
     onUiEvent: (OrderDetailUiEvent) -> Unit
 )
 ```
@@ -965,6 +950,298 @@ fun OrderDetailScreen(
     onUiEvent: (OrderDetailUiEvent) -> Unit
 )
 ```
+8. Observe the data from VM
+9. Use Property Drilling(Pass data/event from main parent composable to all lower/children composables to the deepest levels).
+Parent -> A -> B -> C -> D
+i.e. the data/state required in A,B,C,D should be declared in Parent composable
+10. If a compose function have more than 3 events, then wrap them in a sealed interface wrapper.
+```kotlin
+sealed interfae ProfileUiEvent{
+    data object onButtonClick() : ProfileUiEvent
+    data classs NameChange(val name: String) : ProfileUiEvent
+    data classs GenderChange(val gender: Int) : ProfileUiEvent
+}
+```
+11. Handler all events at a single place and that will be lower common ancestor/highest parent composable.
+12. Don't create any object in child composable(always declare in parent).
+13. Use two types of loading for any screen(only from design system) - User blocking(covers entire screen and restricts user to perform any action), Non-User-Blocking(just to show some progress and loading indicator).
+14. Use level 2 for general padding between elements.
+15. Create own custom StateHolders to hold any ui element states
+```kotlin
+@Stable
+data class DialogState<T>(
+    val isShown: Boolean,
+    val show: () -> Unit,
+    val dismiss: () -> Unit,
+    val confirm: () -> Unit,
+    val current: T,
+    val setCurrent: (T) -> Unit,
+)
+
+@Stable
+data class SettingsScreenState(
+    val settings: Settings,
+    val snackbarHostState: SnackbarHostState,
+    val countDialog: DialogState<Int>,
+    val descriptionDialog: DialogState<String>,
+)
+
+@Composable
+fun rememberSettingScreenState(
+    settings: Settings,
+    setCount: (Int) -> Unit,
+    setDescription: (String) -> Unit,
+    snackbarHostState: SnackbarHostState = remember { SnackbarHostState() },
+    coroutineScope: CoroutineScope = rememberCoroutineScope()
+): SettingsScreenState {
+    var countDialogValue by rememberSaveable {
+        mutableStateOf(settings.count)
+    }
+    var isCountDialogShown by rememberSaveable { mutableStateOf(false) }
+    var descriptionDialogValue by rememberSaveable {
+        mutableStateOf(settings.description)
+    }
+    var isDescriptionDialogShown by rememberSaveable { mutableStateOf(false) }
+
+    val showCountDialog = remember(settings.count) {
+        {
+            countDialogValue = settings.count
+            isCountDialogShown = true
+        }
+    }
+    val countDialog = remember(isCountDialogShown, countDialogValue, settings.count) {
+        DialogState(
+            isShown = isCountDialogShown,
+            show = showCountDialog,
+            dismiss = { isCountDialogShown = false },
+            confirm = {
+                setCount(countDialogValue)
+                coroutineScope.launch {
+                    snackbarHostState.showSnackbar("Updated Count")
+                }
+                isCountDialogShown = false
+            },
+            current = countDialogValue,
+            setCurrent = { countDialogValue = it }
+        )
+    }
+    val showDescriptionDialog = remember(settings.description) {
+        {
+            descriptionDialogValue = settings.description
+            isDescriptionDialogShown = true
+        }
+    }
+    val descriptionDialog =
+        remember(isDescriptionDialogShown, descriptionDialogValue, settings.description) {
+            DialogState(
+                isShown = isDescriptionDialogShown,
+                show = showDescriptionDialog,
+                dismiss = { isDescriptionDialogShown = false },
+                confirm = {
+                    setDescription(descriptionDialogValue)
+                    coroutineScope.launch {
+                        snackbarHostState.showSnackbar("Updated Description")
+                    }
+                    isDescriptionDialogShown = false
+                },
+                current = descriptionDialogValue,
+                setCurrent = { descriptionDialogValue = it }
+            )
+        }
+
+    return remember(settings, countDialog, descriptionDialog) {
+        SettingsScreenState(
+            settings = settings,
+            snackbarHostState = snackbarHostState,
+            countDialog = countDialog,
+            descriptionDialog = descriptionDialog,
+        )
+    }
+}
+
+@Composable
+fun SettingsScreen(viewModel: StateHolderExampleViewModel) {
+    val settings by viewModel.state.collectAsStateAsLifecycle()
+    val state = rememberSettingScreenState(
+        settings = settings,
+        setCount = viewModel::setCount,
+        setDescription = viewModel::setDescription
+    )
+
+    SettingsScreen(state)
+}
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun SettingsScreen(state: SettingsScreenState) {
+    Scaffold(snackbarHost = { SnackbarHost(state.snackbarHostState) }) { paddingValues ->
+        Column(modifier = Modifier.padding(paddingValues)) {
+            Text(
+                text = "Settings",
+                style = MaterialTheme.typography.headlineLarge,
+                modifier = Modifier.padding(
+                    horizontal = 16.dp,
+                    vertical = 8.dp,
+                )
+            )
+            SettingsRow(
+                title = "Count",
+                subTitle = state.settings.count.toString(),
+                onClick = state.countDialog.show
+            )
+            SettingsRow(
+                title = "Description",
+                subTitle = state.settings.description,
+                onClick = state.descriptionDialog.show
+            )
+        }
+    }
+    CountDialog(dialogState = state.countDialog)
+    DescriptionDialog(dialogState = state.descriptionDialog)
+}
+```
+or
+```kotlin
+@Composable
+fun rememberNiaAppState(
+    windowSizeClass: WindowSizeClass,
+    networkMonitor: NetworkMonitor,
+    userNewsResourceRepository: UserNewsResourceRepository,
+    coroutineScope: CoroutineScope = rememberCoroutineScope(),
+    navController: NavHostController = rememberNavController(),
+): NiaAppState {
+    NavigationTrackingSideEffect(navController)
+    return remember(
+        navController,
+        coroutineScope,
+        windowSizeClass,
+        networkMonitor,
+        userNewsResourceRepository,
+    ) {
+        NiaAppState(
+            navController,
+            coroutineScope,
+            windowSizeClass,
+            networkMonitor,
+            userNewsResourceRepository,
+        )
+    }
+}
+
+@Stable
+class NiaAppState(
+    val navController: NavHostController,
+    val coroutineScope: CoroutineScope,
+    val windowSizeClass: WindowSizeClass,
+    networkMonitor: NetworkMonitor,
+    userNewsResourceRepository: UserNewsResourceRepository,
+) {
+    val currentDestination: NavDestination?
+        @Composable get() = navController
+            .currentBackStackEntryAsState().value?.destination
+
+    val currentTopLevelDestination: TopLevelDestination?
+        @Composable get() = when (currentDestination?.route) {
+            FOR_YOU_ROUTE -> FOR_YOU
+            BOOKMARKS_ROUTE -> BOOKMARKS
+            INTERESTS_ROUTE -> INTERESTS
+            else -> null
+        }
+
+    val shouldShowBottomBar: Boolean
+        get() = windowSizeClass.widthSizeClass == WindowWidthSizeClass.Compact
+
+    val shouldShowNavRail: Boolean
+        get() = !shouldShowBottomBar
+
+    val isOffline = networkMonitor.isOnline
+        .map(Boolean::not)
+        .stateIn(
+            scope = coroutineScope,
+            started = SharingStarted.WhileSubscribed(5_000),
+            initialValue = false,
+        )
+
+    /**
+     * Map of top level destinations to be used in the TopBar, BottomBar and NavRail. The key is the
+     * route.
+     */
+    val topLevelDestinations: List<TopLevelDestination> = TopLevelDestination.entries
+
+    /**
+     * The top level destinations that have unread news resources.
+     */
+    val topLevelDestinationsWithUnreadResources: StateFlow<Set<TopLevelDestination>> =
+        userNewsResourceRepository.observeAllForFollowedTopics()
+            .combine(userNewsResourceRepository.observeAllBookmarked()) { forYouNewsResources, bookmarkedNewsResources ->
+                setOfNotNull(
+                    FOR_YOU.takeIf { forYouNewsResources.any { !it.hasBeenViewed } },
+                    BOOKMARKS.takeIf { bookmarkedNewsResources.any { !it.hasBeenViewed } },
+                )
+            }.stateIn(
+                coroutineScope,
+                SharingStarted.WhileSubscribed(5_000),
+                initialValue = emptySet(),
+            )
+
+    /**
+     * UI logic for navigating to a top level destination in the app. Top level destinations have
+     * only one copy of the destination of the back stack, and save and restore state whenever you
+     * navigate to and from it.
+     *
+     * @param topLevelDestination: The destination the app needs to navigate to.
+     */
+    fun navigateToTopLevelDestination(topLevelDestination: TopLevelDestination) {
+        trace("Navigation: ${topLevelDestination.name}") {
+            val topLevelNavOptions = navOptions {
+                // Pop up to the start destination of the graph to
+                // avoid building up a large stack of destinations
+                // on the back stack as users select items
+                popUpTo(navController.graph.findStartDestination().id) {
+                    saveState = true
+                }
+                // Avoid multiple copies of the same destination when
+                // reselecting the same item
+                launchSingleTop = true
+                // Restore state when reselecting a previously selected item
+                restoreState = true
+            }
+
+            when (topLevelDestination) {
+                FOR_YOU -> navController.navigateToForYou(topLevelNavOptions)
+                BOOKMARKS -> navController.navigateToBookmarks(topLevelNavOptions)
+                INTERESTS -> navController.navigateToInterestsGraph(topLevelNavOptions)
+            }
+        }
+    }
+
+    fun navigateToSearch() = navController.navigateToSearch()
+}
+```
+
+
+In Unit Testing,
+1. Override BaseTest class, beforeEach and afterEach for viewmodel testing
+```kotlin
+class TrackViewModelTest : BaseTest() {
+
+    private lateinit var viewModel: TrackViewModel
+    private val trackingRepo: TrackingRepo = mockk(relaxed = true)
+
+    @BeforeEach
+    override fun beforeEach() {
+        super.beforeEach()
+        viewModel = spyk(TrackViewModel(trackingRepo))
+    }
+
+    @AfterEach
+    override fun afterEach() {
+        super.afterEach()
+        clearAllMocks()
+    }
+}    
+```
+2. Use mockk,Junit5,turbine
 
 # SOLID Principles in Kotlin
 
@@ -1265,3 +1542,7 @@ fun MyApp() {
 Separation of Concerns: Clear separation between UI, logic, and data layers.
 Testability: It is easier to test ViewModel and Model independently of UI.
 Reactivity: Jetpack Compose's reactive nature simplifies UI updates based on ViewModel changes.
+
+
+
+[UI GUIDELINES](https://docs.google.com/document/d/154J2KuX1WiFJCknstjpPaP--fsm3VUqah0L2Am9vyIk/edit?usp=sharing)
