@@ -66,7 +66,7 @@ fun TrackingYourMoodCard(
             TitleTexts.Level2(
                 text = "Your Mood",
 
-                // Text Features
+                // Text Feature
                 textAlign = TextAlign.Start,
                 color = AppTheme.colors.onSurface.copy(alpha = .7f),
             )
@@ -83,7 +83,7 @@ fun TrackingYourMoodCard(
             text = moodText,
             modifier = Modifier
                 .weight(1f),
-            // Text Features
+            // Text Feature
             textAlign = TextAlign.Center,
             color = Color.Blue,
         )

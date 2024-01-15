@@ -288,7 +288,7 @@ private fun TrackSuccessScreen(stepsTrackData: StepsResponse) {
                                 TitleTexts.Level2(
                                     text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
-                                    // Text Features
+                                    // Text Feature
                                     textAlign = TextAlign.Start,
                                     color = AppTheme.colors.onSurface,
                                 )

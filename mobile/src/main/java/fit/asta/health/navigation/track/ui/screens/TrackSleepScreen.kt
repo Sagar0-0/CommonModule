@@ -282,7 +282,7 @@ fun TrackSuccessScreen(sleepData: SleepResponse) {
                                 TitleTexts.Level2(
                                     text = TrackStringConstants.WEEKDAYS_STRINGS[index],
 
-                                    // Text Features
+                                    // Text Feature
                                     textAlign = TextAlign.Start,
                                     color = AppTheme.colors.onSurface,
                                 )

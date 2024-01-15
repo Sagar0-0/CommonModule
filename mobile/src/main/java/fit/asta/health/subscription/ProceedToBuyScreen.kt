@@ -21,7 +21,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableDoubleStateOf
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -69,7 +68,7 @@ private fun BuyPlanScreen() {
                 .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
-            ProceedToBuyScreen(SubscriptionPlanType(), "0", null, null, null, {})
+            ProceedToBuyScreen(SubscriptionPlanType(), "0", null, null, null) {}
         }
     }
 }
@@ -105,11 +104,11 @@ fun ProceedToBuyScreen(
     }
 
     var walletPoints by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableDoubleStateOf(0.0)
     }
 
     var walletMoney by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableDoubleStateOf(0.0)
     }
 
     val discountMoney by rememberSaveable {
@@ -122,14 +121,14 @@ fun ProceedToBuyScreen(
         } else {
             when (offer.unit.getOfferUnitType()) {
                 OfferUnitType.PERCENTAGE -> {
-                    (productMRP * offer.discount).toDouble() / 100
+                    (productMRP * offer.discount) / 100
                 }
 
                 OfferUnitType.RUPEE -> {
                     if (productMRP < offer.discount || offer.discount < 0) {
                         0.0
                     } else {
-                        (productMRP - offer.discount).toDouble()
+                        (productMRP - offer.discount)
                     }
                 }
             }
@@ -214,8 +213,8 @@ fun ProceedToBuyScreen(
                                     offerCode = offer?.code ?: ""
                                 ),
                                 subscriptionDetail = OrderRequest.SubscriptionDetail(
-                                    subType = subscriptionPlanType.subscriptionType,
-                                    durType = durationType
+                                    productCategoryId = subscriptionPlanType.subscriptionType,
+                                    productId = durationType
                                 ),
                                 type = OrderRequestType.Subscription.code
                             )
@@ -258,13 +257,13 @@ fun CouponSection(
 fun WalletApplyingSection(
     walletData: WalletResponse.WalletData,
     finalPayableAmount: Double,
-    onApplyWallet: (pointsApplied: Int, moneyApplied: Int) -> Unit
+    onApplyWallet: (pointsApplied: Double, moneyApplied: Double) -> Unit
 ) {
     var pointsApplied by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableDoubleStateOf(0.0)
     }
     var moneyApplied by rememberSaveable {
-        mutableIntStateOf(0)
+        mutableDoubleStateOf(0.0)
     }
 
     val pointsChecked by rememberSaveable {
@@ -293,13 +292,12 @@ fun WalletApplyingSection(
                             if (finalPayableAmount > walletData.points) {
                                 walletData.points
                             } else {
-                                finalPayableAmount.toInt()
+                                finalPayableAmount
                             }
                         } else {
-                            0
-
+                            0.0
                         }
-                        onApplyWallet(0, moneyApplied)
+                        onApplyWallet(pointsApplied, moneyApplied)
                     }
                 }
             }
@@ -312,10 +310,10 @@ fun WalletApplyingSection(
                             if (finalPayableAmount > walletData.money) {
                                 walletData.money
                             } else {
-                                finalPayableAmount.toInt()
+                                finalPayableAmount
                             }
                         } else {
-                            0
+                            0.0
                         }
                         onApplyWallet(pointsApplied, moneyApplied)
                     }

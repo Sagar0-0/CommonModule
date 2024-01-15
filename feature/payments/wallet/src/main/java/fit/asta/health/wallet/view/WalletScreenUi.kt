@@ -335,7 +335,7 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
 }
 
 @Composable
-fun WalletBalance(points: Int, money: Int, onAddMoneyClick: () -> Unit) {
+fun WalletBalance(points: Double, money: Double, onAddMoneyClick: () -> Unit) {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()

@@ -86,7 +86,7 @@ fun ShareReferralUi(
 
                     item {
                         ReferralCard(
-                            referralDataState.data.referralCode.refCode,
+                            referralDataState.data.referralDetails.refCode,
                             shareReferralCode
                         )
                     }
