@@ -24,7 +24,7 @@ class OffersViewModel
     fun getData() {
         _mutableState.value = UiState.Loading
         viewModelScope.launch {
-            _mutableState.value = repo.getData().toUiState()
+            _mutableState.value = repo.getOffers().toUiState()
         }
     }
 }

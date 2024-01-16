@@ -48,7 +48,7 @@ import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.wallet.remote.model.WalletTransactionType
 import fit.asta.health.wallet.remote.model.getWalletTransactionType
@@ -61,8 +61,8 @@ import fit.asta.health.resources.strings.R as StringR
 fun WalletScreenUi(
     modifier: Modifier,
     walletData: WalletResponse,
-    offersList: List<Offer>?,
-    onNavigateWithOffer: (Offer) -> Unit,
+    offersList: List<OffersData>?,
+    onNavigateWithOffer: (OffersData) -> Unit,
     onProceedToAdd: (String) -> Unit
 ) {
     var isAddMoneySheetVisible by rememberSaveable {
@@ -198,7 +198,7 @@ fun WalletScreenUi(
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun OffersCarousal(offersList: List<Offer>, onOfferClick: (Offer) -> Unit) {
+fun OffersCarousal(offersList: List<OffersData>, onOfferClick: (OffersData) -> Unit) {
     val pagerState = rememberPagerState { offersList.size }
     Box {
         AppHorizontalPager(

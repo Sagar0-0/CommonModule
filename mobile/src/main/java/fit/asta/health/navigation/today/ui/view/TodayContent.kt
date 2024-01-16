@@ -145,6 +145,7 @@ fun TodayContent(
 
         WeekTabBar(
             data = calendarUiModel,
+            selectedIndex = pagerState.currentPage,
             onDateClickListener = { date, newIndex ->
                 coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
                 index.intValue = newIndex
@@ -152,7 +153,11 @@ fun TodayContent(
             }
         )
         AppHorizontalPager(
-            pagerState = pagerState
+            pagerState = pagerState,
+            enableAutoAnimation = false,
+            pageSpacing = AppTheme.spacing.noSpacing,
+            contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
+            userScrollEnabled = true
         ) {
             if (calendarUiModel.visibleDates[it].isToday) {
                 TodayTabContent(

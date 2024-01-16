@@ -42,12 +42,13 @@ fun NavGraphBuilder.walletRoute(
         val walletViewModel: WalletViewModel = hiltViewModel()
         LaunchedEffect(Unit) {
             walletViewModel.getData()
+            walletViewModel.getOffersData()
         }
 
         val walletDataState = walletViewModel.state.collectAsStateWithLifecycle().value
-        val subscriptionResponse =
-            walletViewModel.subscriptionData.collectAsStateWithLifecycle().value
-        val offersList = (subscriptionResponse as? UiState.Success)?.data?.offers
+        val offersDataState =
+            walletViewModel.offersDataState.collectAsStateWithLifecycle().value
+        val offersList = (offersDataState as? UiState.Success)?.data
 
         val scaffoldState = rememberBottomSheetScaffoldState()
         AppBottomSheetScaffold(
@@ -86,7 +87,7 @@ fun NavGraphBuilder.walletRoute(
                         walletData = walletDataState.data,
                         offersList = offersList,
                         onNavigateWithOffer = {
-                            //TODO
+                            //TODO : Navigate to final payment sccreen
                         }
                     ) { amount ->
                         if (amount != "0") {

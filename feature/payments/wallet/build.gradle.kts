@@ -35,4 +35,5 @@ dependencies {
     implementation(libs.androidx.foundation.android)
     implementation(libs.androidx.compose.material3)
     implementation(project(mapOf("path" to ":data:payments:subscription")))
+    implementation(project(":data:payments:offers"))
 }

@@ -11,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.material3.CardDefaults
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -22,6 +21,7 @@ import androidx.compose.ui.graphics.RectangleShape
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 
 
@@ -52,6 +52,7 @@ fun WeekScreen(
 @Composable
 fun WeekTabBar(
     modifier: Modifier = Modifier,
+    selectedIndex: Int,
     data: CalendarUiModel,
     onDateClickListener: (CalendarUiModel.Date, Int) -> Unit,
     strokeWidth: Float = 10f,
@@ -60,7 +61,7 @@ fun WeekTabBar(
 
     // Card Layout Which is elevated
     // TODO :- Removing the Elevated card and using AppElevatedCard is changing shape
-    ElevatedCard(
+    AppElevatedCard(
         elevation = CardDefaults.elevatedCardElevation(defaultElevation = AppTheme.elevation.level4),
         colors = CardDefaults.elevatedCardColors(containerColor = Color.Transparent),
         shape = RectangleShape
@@ -97,7 +98,7 @@ fun WeekTabBar(
                             onDateClickListener(date, index)
                         }
                         .drawBehind {
-                            if (date.isSelected)
+                            if (index == selectedIndex)
                                 drawLine(
                                     color = selectedColor,
                                     start = Offset(0f, size.height),
