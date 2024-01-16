@@ -10,12 +10,17 @@ import fit.asta.health.discounts.remote.model.CouponRequest
 import fit.asta.health.discounts.remote.model.CouponResponse
 import fit.asta.health.discounts.remote.model.ProductType
 import fit.asta.health.discounts.repo.CouponsRepo
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.offers.remote.model.OffersData
+import fit.asta.health.offers.repo.OffersRepo
+import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
+import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
+import fit.asta.health.subscription.remote.model.SubscriptionFinalAmountData
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.wallet.repo.WalletRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -23,14 +28,26 @@ import javax.inject.Inject
 class SubscriptionViewModel
 @Inject constructor(
     private val subscriptionRepo: SubscriptionRepo,
+    private val offersRepo: OffersRepo,
     private val walletRepo: WalletRepo,
     private val couponsRepo: CouponsRepo,
     @UID private val uid: String
 ) : ViewModel() {
 
-    private val _subscriptionResponseState =
-        MutableStateFlow<UiState<SubscriptionResponse>>(UiState.Idle)
-    val subscriptionResponseState = _subscriptionResponseState.asStateFlow()
+    private val _subscriptionCategoryDataState =
+        MutableStateFlow<UiState<List<SubscriptionCategoryData>>>(UiState.Idle)
+    val subscriptionCategoryDataState = _subscriptionCategoryDataState.asStateFlow()
+
+    private val _subscriptionDurationDataState =
+        MutableStateFlow<UiState<SubscriptionDurationsData>>(UiState.Idle)
+    val subscriptionDurationDataState = _subscriptionDurationDataState.asStateFlow()
+
+    private val _offersDataState = MutableStateFlow<UiState<List<OffersData>>>(UiState.Idle)
+    val offersDataState = _offersDataState.asStateFlow()
+
+    private val _subscriptionFinalPaymentState =
+        MutableStateFlow<UiState<SubscriptionFinalAmountData>>(UiState.Idle)
+    val subscriptionFinalPaymentState = _subscriptionFinalPaymentState.asStateFlow()
 
     private val _walletResponseState =
         MutableStateFlow<UiState<WalletResponse>>(UiState.Idle)
@@ -40,36 +57,81 @@ class SubscriptionViewModel
         MutableStateFlow<UiState<CouponResponse>>(UiState.Idle)
     val couponResponseState = _couponResponseState.asStateFlow()
 
-    init {
-        getSubscriptionData()
-        getWalletData()
-    }
-
     fun applyCouponCode(code: String, productMRP: Double) {
-        _couponResponseState.value = UiState.Loading
+        _couponResponseState.update {
+            UiState.Loading
+        }
         viewModelScope.launch {
-            _couponResponseState.value = couponsRepo.getCouponCodeDetails(
-                CouponRequest(
-                    productType = ProductType.SUBSCRIPTION.type,
-                    couponCode = code,
-                    userId = uid,
-                    productMRP = productMRP
-                )
-            ).toUiState()
+            _couponResponseState.update {
+                couponsRepo.getCouponCodeDetails(
+                    CouponRequest(
+                        productType = ProductType.SUBSCRIPTION.type,
+                        couponCode = code,
+                        userId = uid,
+                        productMRP = productMRP
+                    )
+                ).toUiState()
+            }
         }
     }
 
-    private fun getSubscriptionData() {
-        _subscriptionResponseState.value = UiState.Loading
+    fun getOffersData() {
+        _offersDataState.update {
+            UiState.Loading
+        }
         viewModelScope.launch {
-            _subscriptionResponseState.value = subscriptionRepo.getData(uid, "IND").toUiState()
+            _offersDataState.update {
+                offersRepo.getOffers().toUiState()
+            }
         }
     }
 
-    private fun getWalletData() {
-        _walletResponseState.value = UiState.Loading
+    fun getSubscriptionCategoryData() {
+        _subscriptionCategoryDataState.update {
+            UiState.Loading
+        }
         viewModelScope.launch {
-            _walletResponseState.value = walletRepo.getData(uid).toUiState()
+            _subscriptionCategoryDataState.update {
+                subscriptionRepo.getSubscriptionData().toUiState()
+            }
+        }
+    }
+
+    fun getSubscriptionDurationData(categoryId: String) {
+        _subscriptionDurationDataState.update {
+            UiState.Loading
+        }
+        viewModelScope.launch {
+            _subscriptionDurationDataState.update {
+                subscriptionRepo.getSubscriptionDurationsData(categoryId).toUiState()
+            }
+        }
+    }
+
+    fun getSubscriptionFinalAmountData(categoryId: String, productId: String) {
+        _subscriptionFinalPaymentState.update {
+            UiState.Loading
+        }
+        viewModelScope.launch {
+            _subscriptionFinalPaymentState.update {
+                subscriptionRepo.getFinalAmountData(
+                    type = "1",//For subscription
+                    categoryId = categoryId,
+                    productId = productId
+                ).toUiState()
+            }
+        }
+    }
+
+
+    fun getWalletData() {
+        _walletResponseState.update {
+            UiState.Loading
+        }
+        viewModelScope.launch {
+            _walletResponseState.update {
+                walletRepo.getData(uid).toUiState()
+            }
         }
     }
 

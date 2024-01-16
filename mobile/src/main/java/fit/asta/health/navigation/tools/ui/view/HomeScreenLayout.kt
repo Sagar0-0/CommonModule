@@ -16,11 +16,13 @@ import androidx.compose.foundation.lazy.grid.GridItemSpan
 import androidx.compose.foundation.lazy.grid.items
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.BuildConfig
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
@@ -40,14 +42,13 @@ import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
 import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
+import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.referral.view.NewReferralDialogContent
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
-import fit.asta.health.subscription.remote.model.SubscriptionType
-import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
-import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
-import fit.asta.health.subscription.view.OfferBanner
+import fit.asta.health.subscription.OfferBanner
+import fit.asta.health.subscription.OffersLoadingCard
+import fit.asta.health.subscription.SubscriptionLoadingCard
+import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
 import fit.asta.health.subscription.view.SubscriptionTypesList
-import fit.asta.health.subscription.view.UserSubscribedPlanSection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -56,32 +57,39 @@ import java.util.Locale
 @Composable
 fun HomeScreenLayout(
     toolsHome: ToolsHome,
-    subscriptionResponse: SubscriptionResponse?,
+    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    offersDataState: UiState<List<OffersData>>,
     refCode: String,
-    userId: String,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
-
     val context = LocalContext.current
     val columns = 3
     val showSubscriptionPlans = remember {
-        if (subscriptionResponse?.userSubscribedPlan == null) {
-            true
-        } else {
-            (subscriptionResponse.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.NOT_BOUGHT
-                    || subscriptionResponse.userSubscribedPlan!!.status.getUserSubscribedPlanStatusType() == UserSubscribedPlanStatusType.INACTIVE)
-        }
+        true//TODO: HIDE SUBSCRIPTION CARDS WHEN PURCHASED
     }
 
     AppVerticalGrid(
         count = columns,
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        subscriptionResponse?.let {
-            if (showSubscriptionPlans) {
-                item(span = { GridItemSpan(columns) }) {
-                    val pagerState = rememberPagerState { subscriptionResponse.offers.size }
+        item(span = { GridItemSpan(columns) }) {
+            when (offersDataState) {
+                is UiState.Idle -> {
+                    LaunchedEffect(
+                        key1 = Unit,
+                        block = {
+                            onEvent(HomeScreenUiEvent.LoadOffersData)
+                        }
+                    )
+                }
+
+                is UiState.Loading -> {
+                    OffersLoadingCard(true)
+                }
+
+                is UiState.Success -> {
+                    val pagerState = rememberPagerState { offersDataState.data.size }
                     Box {
                         AppHorizontalPager(
                             modifier = Modifier.padding(AppTheme.spacing.level2),
@@ -92,9 +100,14 @@ fun HomeScreenLayout(
                             userScrollEnabled = true
                         ) { page ->
                             OfferBanner(
-                                offer = subscriptionResponse.offers[page]
+                                offer = offersDataState.data[page]
                             ) {
-                                onEvent(HomeScreenUiEvent.NavigateWithOfferIndex(page))
+                                onEvent(
+                                    HomeScreenUiEvent.NavigateToFinalPayment(
+                                        categoryId = offersDataState.data[page].areas[0].productCategoryId.toString(),
+                                        productId = offersDataState.data[page].areas[0].productId.toString(),
+                                    )
+                                )
                             }
                         }
 
@@ -105,6 +118,12 @@ fun HomeScreenLayout(
                                 .align(Alignment.BottomCenter),
                             pagerState = pagerState
                         )
+                    }
+                }
+
+                else -> {
+                    OffersLoadingCard(isLoading = true) {
+                        onEvent(HomeScreenUiEvent.LoadOffersData)
                     }
                 }
             }
@@ -127,24 +146,41 @@ fun HomeScreenLayout(
             }
         }
 
-        subscriptionResponse?.let {
-            if (showSubscriptionPlans) {
-                item(span = { GridItemSpan(columns) }) {
-                    SubscriptionTypesList(
-                        subscriptionPlans = subscriptionResponse.subscriptionPlans.subscriptionPlanTypes
-                    ) {
-                        onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+        item(span = { GridItemSpan(columns) }) {
+            when (subscriptionCategoryState) {
+                is UiState.Idle -> {
+                    LaunchedEffect(
+                        key1 = Unit,
+                        block = {
+                            onEvent(HomeScreenUiEvent.LoadSubscriptionCategoryData)
+                        }
+                    )
+                }
+
+                is UiState.Loading -> {
+                    SubscriptionLoadingCard(true)
+                }
+
+                is UiState.Success -> {
+                    if (showSubscriptionPlans) {
+                        SubscriptionTypesList(
+                            subscriptionPlans = subscriptionCategoryState.data
+                        ) {
+                            onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+                        }
+                    } else {
+//                        UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
+                        // TODO: ALREADY PURCHASED UI
                     }
                 }
-            } else {
-                item(span = { GridItemSpan(columns) }) {
-                    UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
+
+                else -> {
+                    SubscriptionLoadingCard(isLoading = true) {
+                        onEvent(HomeScreenUiEvent.LoadSubscriptionCategoryData)
+                    }
                 }
             }
         }
-
-
-
 
         toolsHome.tools?.let {
             // My Tools text and View All button
@@ -295,6 +331,9 @@ fun HomeScreenLayout(
 }
 
 sealed interface HomeScreenUiEvent {
-    data class NavigateToSubscriptionDurations(val subType: SubscriptionType) : HomeScreenUiEvent
-    data class NavigateWithOfferIndex(val offerIndex: Int) : HomeScreenUiEvent
+    data object LoadSubscriptionCategoryData : HomeScreenUiEvent
+    data object LoadOffersData : HomeScreenUiEvent
+    data class NavigateToSubscriptionDurations(val categoryId: String) : HomeScreenUiEvent
+    data class NavigateToFinalPayment(val categoryId: String, val productId: String) :
+        HomeScreenUiEvent
 }

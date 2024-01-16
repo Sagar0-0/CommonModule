@@ -13,8 +13,8 @@ class OffersRepoImpl @Inject constructor(
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : OffersRepo {
 
-    override suspend fun getData() = withContext(coroutineDispatcher) {
-        getApiResponseState { remoteApi.getData() }
+    override suspend fun getOffers() = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getOffers() }
     }
 }
 

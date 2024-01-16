@@ -8,16 +8,28 @@ import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
-class
-SubscriptionRepoImpl
+class SubscriptionRepoImpl
 @Inject constructor(
     private val remoteApi: SubscriptionApi,
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SubscriptionRepo {
-    override suspend fun getData(
-        uid: String,
+    override suspend fun getFinalAmountData(
+        type: String,
+        categoryId: String,
+        productId: String,
         country: String
     ) = withContext(coroutineDispatcher) {
-        getApiResponseState { remoteApi.getData(uid, country) }
+        getApiResponseState { remoteApi.getFinalAmountData(type, categoryId, productId, country) }
+    }
+
+    override suspend fun getSubscriptionData(country: String) = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getSubscriptionData(country) }
+    }
+
+    override suspend fun getSubscriptionDurationsData(
+        country: String,
+        categoryId: String
+    ) = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getSubscriptionDurationsData(country, categoryId) }
     }
 }

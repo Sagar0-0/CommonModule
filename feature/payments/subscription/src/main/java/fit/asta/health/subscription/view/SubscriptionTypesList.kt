@@ -22,8 +22,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
-import fit.asta.health.subscription.remote.model.SubscriptionType
+import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
 
 
 /**
@@ -42,9 +41,9 @@ private fun SubscriptionListPreview() {
             // Display the content of the subscription list
             SubscriptionTypesList(
                 listOf(
-                    SubscriptionPlanType(),
-                    SubscriptionPlanType(),
-                    SubscriptionPlanType()
+                    SubscriptionCategoryData(),
+                    SubscriptionCategoryData(),
+                    SubscriptionCategoryData(),
                 )
             ) {
 
@@ -59,16 +58,16 @@ private fun SubscriptionListPreview() {
 
 @Composable
 fun SubscriptionTypesList(
-    subscriptionPlans: List<SubscriptionPlanType>,
-    onClick: (subType: SubscriptionType) -> Unit
+    subscriptionPlans: List<SubscriptionCategoryData>,
+    onClick: (categoryId: String) -> Unit
 ) {
     val subPlans = subscriptionPlans.map {
         SubscriptionData(
-            title = it.planName,
-            desc = it.subscriptionPlanFeatures[0].dsc,
-            price = it.subscriptionDurationPlans[0].priceMRP,
+            title = it.title,
+            desc = it.desc,
+            price = it.price,
             imageRes = it.imageUrl,
-            subType = it.subscriptionType
+            categoryId = it.type
         )
     }
     Column(
@@ -96,14 +95,14 @@ fun SubscriptionTypesList(
 @Composable
 fun SubscriptionPassCard(
     subscriptionData: SubscriptionData,
-    onClick: (subType: SubscriptionType) -> Unit
+    onClick: (categoryId: String) -> Unit
 ) {
     // Use AppCard to create a card with a click listener
     AppCard(
         modifier = Modifier
             .fillMaxWidth(),
         onClick = {
-            onClick(subscriptionData.subType)
+            onClick(subscriptionData.categoryId.toString())
         }
     ) {
         // Use Row and Column to arrange content horizontally and vertically
@@ -167,5 +166,5 @@ data class SubscriptionData(
     val desc: String,
     val price: String,
     val imageRes: String,
-    val subType: String
+    val categoryId: Int
 )

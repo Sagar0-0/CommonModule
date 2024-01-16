@@ -96,7 +96,8 @@ import fit.asta.health.navigation.tools.ui.view.HomeContent
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.offers.remote.model.OffersData
+import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,11 +106,12 @@ fun MainActivityLayout(
     currentAddressState: UiState<String>,
     refCode: String,
     profileImageUri: String?,
+    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    offersDataState: UiState<List<OffersData>>,
     notificationState: Boolean,
     sessionState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
-    subscriptionResponse: SubscriptionResponse?,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
@@ -133,7 +135,8 @@ fun MainActivityLayout(
                 navController = navController,
                 refCode = refCode,
                 onNav = onNav,
-                subscriptionResponse = subscriptionResponse,
+                subscriptionCategoryState = subscriptionCategoryState,
+                offersDataState = offersDataState,
                 onEvent = onEvent,
                 onSchedule = onSchedule,
                 onLocation = onLocation,
@@ -401,7 +404,8 @@ private fun MainNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     refCode: String,
-    subscriptionResponse: SubscriptionResponse?,
+    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    offersDataState: UiState<List<OffersData>>,
     onNav: (String) -> Unit,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
@@ -426,7 +430,8 @@ private fun MainNavHost(
             HomeContent(
                 homeViewModel = homeViewModel,
                 refCode = refCode,
-                subscriptionResponse = subscriptionResponse,
+                subscriptionCategoryState = subscriptionCategoryState,
+                offersDataState = offersDataState,
                 onNav = onNav,
                 onEvent = onEvent
             )

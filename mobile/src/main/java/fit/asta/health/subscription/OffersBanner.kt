@@ -1,4 +1,4 @@
-package fit.asta.health.subscription.view
+package fit.asta.health.subscription
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
@@ -22,8 +22,9 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.subscription.remote.model.Offer
+import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.subscription.remote.model.OffersBannerContentType
+import fit.asta.health.subscription.view.VideoViewUI
 
 
 /**
@@ -53,7 +54,7 @@ private fun OffersBannerPreview() {
                 userScrollEnabled = true
             ) { _ ->
                 OfferBanner(
-                    Offer()
+                    OffersData()
                 ) {
 
                 }
@@ -61,15 +62,16 @@ private fun OffersBannerPreview() {
         }
     }
 }
+
 @Composable
-fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
+fun OfferBanner(offer: OffersData, onClick: () -> Unit) {
     // Container box for the banner content
     AppCard(
         modifier = Modifier
             .clip(AppTheme.shape.level1)
             .fillMaxSize(),
         onClick = {
-            onClick(offer)
+            onClick()
         }
     ) {
         // Displaying content based on content type
@@ -77,7 +79,7 @@ fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
             OffersBannerContentType.Image.type -> {
                 // Image content
                 AppNetworkImage(
-                    model = getImgUrl(offer.url),
+                    model = getImgUrl(offer.imageUrl),
                     contentDescription = "Offers Banner",
                     modifier = Modifier.fillMaxSize(),
                     contentScale = ContentScale.FillBounds
@@ -88,7 +90,7 @@ fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
                 // GIF content
                 AppGifImage(
                     modifier = Modifier.fillMaxSize(),
-                    url = getImgUrl(offer.url),
+                    url = getImgUrl(offer.imageUrl),
                     contentScale = ContentScale.FillBounds
                 )
             }
@@ -100,7 +102,7 @@ fun OfferBanner(offer: Offer, onClick: (offer: Offer) -> Unit) {
                     onPause = false,
                     mediaItem = MediaItem
                         .Builder()
-                        .setUri(getVideoUrl(url = offer.url).toUri()).build()
+                        .setUri(getVideoUrl(url = offer.imageUrl).toUri()).build()
                 )
             }
         }

@@ -166,6 +166,7 @@ dependencies {
     implementation(project(":feature:testimonials"))
     implementation(project(mapOf("path" to ":data:payments:wallet")))
     implementation(project(mapOf("path" to ":data:payments:discounts")))
+    implementation(project(":data:payments:offers"))
 
 
     //De-sugaring

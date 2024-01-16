@@ -5,6 +5,7 @@ import fit.asta.health.offers.remote.model.OffersData
 import retrofit2.http.GET
 
 interface OffersApi {
-    @GET("onboarding/get/")
-    suspend fun getData(): Response<List<OffersData>>
+    @GET("offers/all/get/")
+    suspend fun getOffers(): Response<List<OffersData>>
+
 }

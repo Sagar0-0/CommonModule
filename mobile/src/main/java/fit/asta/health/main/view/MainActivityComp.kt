@@ -7,12 +7,12 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
-import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
+import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -41,6 +41,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.designsystem.atomic.AppLoadingScreen
 import fit.asta.health.feature.breathing.nav.navigateToBreathing
 import fit.asta.health.feature.exercise.nav.navigateToExercise
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
@@ -59,12 +60,7 @@ import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
-import fit.asta.health.payment.PaymentActivity
-import fit.asta.health.subscription.BuyScreenEvent
-import fit.asta.health.subscription.ProceedToBuyScreen
 import fit.asta.health.subscription.SubscriptionViewModel
-import fit.asta.health.subscription.remote.model.DurationType
-import fit.asta.health.subscription.remote.model.SubscriptionType
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
 
 const val HOME_GRAPH_ROUTE = "graph_home"
@@ -73,19 +69,13 @@ const val ALL_ALARMS_ROUTE = "all_alarms"
 private const val SUBSCRIPTION_DURATION_ROUTE = "graph_duration_route"
 private const val SUBSCRIPTION_FINAL_SCREEN = "graph_final_route"
 
-fun NavController.navigateToSubscriptionDurations(subType: SubscriptionType) {
-    this.navigate("$SUBSCRIPTION_DURATION_ROUTE?subType=$subType")
+fun NavController.navigateToSubscriptionDurations(categoryId: String) {
+    this.navigate("$SUBSCRIPTION_DURATION_ROUTE?categoryId=$categoryId")
 }
 
-fun NavController.navigateToFinalPaymentScreen(offerIndex: Int) {
+fun NavController.navigateToFinalPaymentScreen(categoryId: String, productId: String) {
     this.navigate(
-        "$SUBSCRIPTION_FINAL_SCREEN?offerIndex=$offerIndex"
-    )
-}
-
-fun NavController.navigateToFinalPaymentScreen(subType: SubscriptionType, durType: DurationType) {
-    this.navigate(
-        SUBSCRIPTION_FINAL_SCREEN + "?subType=${subType}&durType=${durType}"
+        SUBSCRIPTION_FINAL_SCREEN + "?categoryId=${categoryId}&productId=${productId}"
     )
 }
 
@@ -111,9 +101,11 @@ fun NavGraphBuilder.homeScreen(
                 }
             )
 
-            val subscriptionResponse =
-                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value
-            Log.d("Main", "homeScreen: subscriptionResponse $subscriptionResponse")
+            val subscriptionCategoryState =
+                subscriptionViewModel.subscriptionCategoryDataState.collectAsStateWithLifecycle().value
+            val offersDataState =
+                subscriptionViewModel.offersDataState.collectAsStateWithLifecycle().value
+
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
@@ -206,7 +198,8 @@ fun NavGraphBuilder.homeScreen(
             MainActivityLayout(
                 currentAddressState = currentAddressName,
                 refCode = refCode,
-                subscriptionResponse = (subscriptionResponse as? UiState.Success)?.data,
+                subscriptionCategoryState = subscriptionCategoryState,
+                offersDataState = offersDataState,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 notificationState = notificationState,
                 sessionState = sessionState,
@@ -214,11 +207,22 @@ fun NavGraphBuilder.homeScreen(
                 onEvent = { event ->
                     when (event) {
                         is HomeScreenUiEvent.NavigateToSubscriptionDurations -> {
-                            navController.navigateToSubscriptionDurations(event.subType)
+                            navController.navigateToSubscriptionDurations(event.categoryId)
                         }
 
-                        is HomeScreenUiEvent.NavigateWithOfferIndex -> {
-                            navController.navigateToFinalPaymentScreen(event.offerIndex)
+                        is HomeScreenUiEvent.NavigateToFinalPayment -> {
+                            navController.navigateToFinalPaymentScreen(
+                                event.categoryId,
+                                event.productId
+                            )
+                        }
+
+                        is HomeScreenUiEvent.LoadSubscriptionCategoryData -> {
+
+                        }
+
+                        is HomeScreenUiEvent.LoadOffersData -> {
+
                         }
                     }
                 },
@@ -297,6 +301,7 @@ fun NavGraphBuilder.homeScreen(
                 }
             )
         }
+
         composable(ALL_ALARMS_ROUTE) {
             val vm: AllAlarmViewModel = hiltViewModel()
             val list by vm.alarmList.collectAsStateWithLifecycle()
@@ -340,33 +345,40 @@ fun NavGraphBuilder.homeScreen(
         }
 
         composable(
-            route = "$SUBSCRIPTION_DURATION_ROUTE?subType={subType}",
+            route = "$SUBSCRIPTION_DURATION_ROUTE?categoryId={categoryId}",
             arguments = listOf(
-                navArgument("subType") {
+                navArgument("categoryId") {
+                    defaultValue = ""
                     type = NavType.StringType
-                },
+                    nullable = false
+                }
             )
         ) {
             val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
-            val subscriptionResponse =
-                subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value
+            val subscriptionDurationState =
+                subscriptionViewModel.subscriptionDurationDataState.collectAsStateWithLifecycle().value
 
-            val subType = it.arguments?.getString("subType")!!
+            val categoryId = it.arguments?.getString("categoryId")!!
 
-            when (subscriptionResponse) {
+            when (subscriptionDurationState) {
+                is UiState.Idle -> {
+                    LaunchedEffect(Unit) {
+                        subscriptionViewModel.getSubscriptionDurationData(categoryId)
+                    }
+                }
+
+                is UiState.Loading -> {
+                    AppLoadingScreen()
+                }
+
                 is UiState.Success -> {
-                    val category =
-                        subscriptionResponse.data.subscriptionPlans.subscriptionPlanTypes.first { cat ->
-                            cat.subscriptionType == subType
-                        }
-
                     SubscriptionDurationsScreen(
-                        planSubscriptionPlanType = category,
+                        data = subscriptionDurationState.data,
                         onBack = navController::popBackStack,
-                        onClick = { _, durType ->
-                            navController.navigateToFinalPaymentScreen(subType, durType)
+                        onClick = { productId ->
+                            navController.navigateToFinalPaymentScreen(categoryId, productId)
                         }
                     )
                 }
@@ -380,88 +392,79 @@ fun NavGraphBuilder.homeScreen(
                         ).show()
                         navController.popBackStack()
                     }
-
                 }
             }
 
         }
 
         composable(
-            route = "$SUBSCRIPTION_FINAL_SCREEN?subType={subType}&durType={durType}&offerIndex={offerIndex}",
+            route = "$SUBSCRIPTION_FINAL_SCREEN?categoryId={categoryId}&productId={productId}",
             arguments = listOf(
-                navArgument("offerIndex") {
-                    defaultValue = null
+                navArgument("categoryId") {
+                    defaultValue = ""
                     type = NavType.StringType
-                    nullable = true
+                    nullable = false
                 },
-                navArgument("subType") {
-                    defaultValue = null
+                navArgument("productId") {
+                    defaultValue = ""
                     type = NavType.StringType
-                    nullable = true
-                },
-                navArgument("durType") {
-                    defaultValue = null
-                    type = NavType.StringType
-                    nullable = true
+                    nullable = false
                 }
             )
         ) {
             val context = LocalContext.current
 
-            var subType = it.arguments?.getString("subType")
-            var durType = it.arguments?.getString("durType")
-            val offerIndex = it.arguments?.getString("offerIndex")
+            val categoryId = it.arguments?.getString("categoryId")!!
+            val productId = it.arguments?.getString("productId")!!
 
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
 
-            val walletResponseState by subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle()
-            val couponResponseState by subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle()
+            val walletResponseState =
+                subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle().value
+            val couponResponseState =
+                subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle().value
+            val subscriptionFinalPaymentState =
+                subscriptionViewModel.subscriptionFinalPaymentState.collectAsStateWithLifecycle().value
 
-            when (
-                val subscriptionResponse =
-                    subscriptionViewModel.subscriptionResponseState.collectAsStateWithLifecycle().value) {
+            when (subscriptionFinalPaymentState) {
+                is UiState.Idle -> {
+                    LaunchedEffect(key1 = Unit) {
+                        subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
+                    }
+                }
+
+                is UiState.Loading -> {
+                    AppLoadingScreen()
+                }
+
                 is UiState.Success -> {
-                    if (offerIndex != null) {
-//                        durType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.durType//TODO: FIND SUBTYPE AND DURTPE??
-//                        subType = subscriptionResponse.data.offers[offerIndex.toInt()].sub.subType
-                    }
-                    val category =
-                        subscriptionResponse.data.subscriptionPlans.subscriptionPlanTypes.firstOrNull { cat ->
-                            cat.subscriptionType == subType
-                        }
-                    category?.let {
-                        ProceedToBuyScreen(
-                            offer = offerIndex?.let {
-                                subscriptionResponse.data.offers[offerIndex.toInt()]
-                            },
-                            couponResponse = (couponResponseState as? UiState.Success)?.data,
-                            walletData = (walletResponseState as? UiState.Success)?.data?.walletData,
-                            subscriptionPlanType = category,
-                            durationType = durType!!,
-                            onEvent = { event ->
-                                when (event) {
-                                    BuyScreenEvent.BACK -> {
-                                        navController.popBackStack()
-                                    }
-
-                                    is BuyScreenEvent.ProceedToBuy -> {
-                                        PaymentActivity.launch(context, event.orderRequest) {
-                                            navController.popBackStack()
-                                        }
-                                    }
-
-                                    is BuyScreenEvent.ApplyCouponCode -> {
-                                        subscriptionViewModel.applyCouponCode(
-                                            event.code,
-                                            event.productMRP
-                                        )
-                                    }
-                                }
-                            }
-                        )
-                    }
-
+                    Text(text = "Final Payment Screen")
+//                    ProceedToBuyScreen(
+//                        subscriptionFinalPaymentData = subscriptionFinalPaymentState.data,
+//                        couponResponseState = couponResponseState,
+//                        walletResponseState = walletResponseState,
+//                        onEvent = { event ->
+//                            when (event) {
+//                                BuyScreenEvent.BACK -> {
+//                                    navController.popBackStack()
+//                                }
+//
+//                                is BuyScreenEvent.ProceedToBuy -> {
+//                                    PaymentActivity.launch(context, event.orderRequest) {
+//                                        navController.popBackStack()
+//                                    }
+//                                }
+//
+//                                is BuyScreenEvent.ApplyCouponCode -> {
+//                                    subscriptionViewModel.applyCouponCode(
+//                                        event.code,
+//                                        event.productMRP
+//                                    )
+//                                }
+//                            }
+//                        }
+//                    )
                 }
 
                 else -> {
@@ -473,7 +476,6 @@ fun NavGraphBuilder.homeScreen(
                         ).show()
                         navController.popBackStack()
                     }
-
                 }
             }
         }

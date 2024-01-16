@@ -2,18 +2,20 @@ package fit.asta.health.subscription.remote
 
 import fit.asta.health.common.utils.Response
 import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
-import fit.asta.health.subscription.remote.model.SubscriptionDurationData
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
+import fit.asta.health.subscription.remote.model.SubscriptionFinalAmountData
 import retrofit2.http.GET
 import retrofit2.http.Query
 
 interface SubscriptionApi {
 
-    @GET("payment/plan/get/?")
-    suspend fun getData(
-        @Query("uid") uid: String,
+    @GET("payment/plan/details/get/?")
+    suspend fun getFinalAmountData(
+        @Query("type") type: String,
+        @Query("catId") categoryId: String,
+        @Query("prodId") productId: String,
         @Query("con") country: String
-    ): Response<SubscriptionResponse>
+    ): Response<SubscriptionFinalAmountData>
 
 
     @GET("payment/plan/subscription/get/?")
@@ -23,9 +25,9 @@ interface SubscriptionApi {
 
 
     @GET("payment/plan/subscription/duration/get/?")
-    suspend fun getSubscriptionDurationData(
+    suspend fun getSubscriptionDurationsData(
         @Query("con") country: String,
-        @Query("id") id: String
-    ): Response<SubscriptionDurationData>
+        @Query("id") categoryId: String
+    ): Response<SubscriptionDurationsData>
 
 }

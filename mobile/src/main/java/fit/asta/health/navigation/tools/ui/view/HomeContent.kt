@@ -13,7 +13,8 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.offers.remote.model.OffersData
+import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 
@@ -22,7 +23,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun HomeContent(
     homeViewModel: HomeViewModel,
     refCode: String,
-    subscriptionResponse: SubscriptionResponse?,
+    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    offersDataState: UiState<List<OffersData>>,
     onEvent: (HomeScreenUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
@@ -38,9 +40,9 @@ fun HomeContent(
         is UiState.Success -> {
             HomeScreenLayout(
                 toolsHome = state.data,
-                subscriptionResponse = subscriptionResponse,
+                subscriptionCategoryState = subscriptionCategoryState,
+                offersDataState = offersDataState,
                 refCode = refCode,
-                userId = homeViewModel.userId,
                 onNav = onNav,
                 onEvent = onEvent
             )

@@ -27,9 +27,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
-import fit.asta.health.subscription.remote.model.DurationType
-import fit.asta.health.subscription.remote.model.SubscriptionResponse.SubscriptionPlans.SubscriptionPlanType
-import fit.asta.health.subscription.remote.model.SubscriptionType
+import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
 
 /**
  * Preview function for the PlanScreen.
@@ -38,7 +36,7 @@ import fit.asta.health.subscription.remote.model.SubscriptionType
 @Composable
 fun PlanScreen() {
     AppTheme {
-        SubscriptionDurationsScreen(SubscriptionPlanType(), {}) { _, _ ->
+        SubscriptionDurationsScreen(SubscriptionDurationsData(), {}) { _ ->
 
         }
     }
@@ -50,16 +48,16 @@ fun PlanScreen() {
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubscriptionDurationsScreen(
-    planSubscriptionPlanType: SubscriptionPlanType,
+    data: SubscriptionDurationsData,
     onBack: () -> Unit,
-    onClick: (subType: SubscriptionType, durType: DurationType) -> Unit
+    onClick: (productId: String) -> Unit
 ) {
     val plansList: List<PlansData> =
-        planSubscriptionPlanType.subscriptionDurationPlans.map { duration ->
+        data.planDurations.map { duration ->
             PlansData(
-                durationType = duration.durationType,
-                discount = duration.discountAmount,
-                price = duration.priceMRP,
+                title = duration.ttl,
+                productId = "1",//TODO: USE PRODUCT ID FROM API
+                price = duration.price,
                 desc = duration.dsc,
             )
         }
@@ -67,7 +65,7 @@ fun SubscriptionDurationsScreen(
     AppScaffold(
         topBar = {
             AppTopBar(
-                title = "Explore ${planSubscriptionPlanType.planName} plans",
+                title = "Explore plan duration",
                 onBack = onBack
             )
         }
@@ -84,8 +82,7 @@ fun SubscriptionDurationsScreen(
                     // Display each plan as a card
                     PlanDurationCard(plansData = plansData) {
                         onClick(
-                            planSubscriptionPlanType.subscriptionType,
-                            planSubscriptionPlanType.subscriptionDurationPlans[idx].durationType
+                            plansData.productId
                         )
                     }
                 }
@@ -165,7 +162,7 @@ private fun DisplayPlanDuration(plansData: PlansData) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        LargeTexts.Level2(text = plansData.calculateMonth())
+        LargeTexts.Level2(text = plansData.title)
         HeadingTexts.Level4(text = "MONTHS")
     }
 }
@@ -249,43 +246,11 @@ private fun DisplayPlanDescription(plansData: PlansData) {
     BodyTexts.Level2(text = plansData.desc)
 }
 
-/**
- * Data class representing the details of a subscription plan.
- *
- * @property durationType SubscriptionDurationPlan of the plan in months.
- * @property discount Discount information for the plan.
- * @property price Price of the plan.
- * @property tax Tax details for the plan.
- * @property desc Description of the plan.
- * @property emi EMI details for the plan.
- */
+
 data class PlansData(
-    val durationType: DurationType = "",
+    val title: String = "",
+    val productId: String = "",
     val discount: String = "",
     val price: String = "",
     val desc: String = ""
-) {
-    fun calculateMonth(): String {
-        return when (durationType) {
-            "1" -> {
-                "1"
-            }
-
-            "2" -> {
-                "3"
-            }
-
-            "3" -> {
-                "6"
-            }
-
-            "4" -> {
-                "12"
-            }
-
-            else -> {
-                "X"
-            }
-        }
-    }
-}
+)

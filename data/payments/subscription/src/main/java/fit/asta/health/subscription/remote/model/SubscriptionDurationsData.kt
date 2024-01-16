@@ -3,7 +3,7 @@ package fit.asta.health.subscription.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class SubscriptionDurationData(
+data class SubscriptionDurationsData(
     @SerializedName("durs")
     val planDurations: List<Duration> = listOf(),
     @SerializedName("fea")
