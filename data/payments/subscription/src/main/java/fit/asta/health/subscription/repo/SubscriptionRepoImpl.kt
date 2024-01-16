@@ -27,8 +27,8 @@ class SubscriptionRepoImpl
     }
 
     override suspend fun getSubscriptionDurationsData(
-        country: String,
-        categoryId: String
+        categoryId: String,
+        country: String
     ) = withContext(coroutineDispatcher) {
         getApiResponseState { remoteApi.getSubscriptionDurationsData(country, categoryId) }
     }

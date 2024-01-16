@@ -41,7 +41,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.designsystem.atomic.AppLoadingScreen
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.breathing.nav.navigateToBreathing
 import fit.asta.health.feature.exercise.nav.navigateToExercise
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
@@ -103,6 +103,13 @@ fun NavGraphBuilder.homeScreen(
 
             val subscriptionCategoryState =
                 subscriptionViewModel.subscriptionCategoryDataState.collectAsStateWithLifecycle().value
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    subscriptionViewModel.getSubscriptionCategoryData()
+                    subscriptionViewModel.getOffersData()
+                }
+            )
             val offersDataState =
                 subscriptionViewModel.offersDataState.collectAsStateWithLifecycle().value
 
@@ -218,11 +225,11 @@ fun NavGraphBuilder.homeScreen(
                         }
 
                         is HomeScreenUiEvent.LoadSubscriptionCategoryData -> {
-
+                            subscriptionViewModel.getSubscriptionCategoryData()
                         }
 
                         is HomeScreenUiEvent.LoadOffersData -> {
-
+                            subscriptionViewModel.getOffersData()
                         }
                     }
                 },
@@ -354,7 +361,6 @@ fun NavGraphBuilder.homeScreen(
                 }
             )
         ) {
-            val context = LocalContext.current
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
             val subscriptionDurationState =
@@ -362,38 +368,29 @@ fun NavGraphBuilder.homeScreen(
 
             val categoryId = it.arguments?.getString("categoryId")!!
 
-            when (subscriptionDurationState) {
-                is UiState.Idle -> {
-                    LaunchedEffect(Unit) {
-                        subscriptionViewModel.getSubscriptionDurationData(categoryId)
-                    }
-                }
-
-                is UiState.Loading -> {
-                    AppLoadingScreen()
-                }
-
-                is UiState.Success -> {
+            AppUiStateHandler(
+                uiState = subscriptionDurationState,
+                onSuccess = { data ->
                     SubscriptionDurationsScreen(
-                        data = subscriptionDurationState.data,
+                        data = data,
                         onBack = navController::popBackStack,
                         onClick = { productId ->
                             navController.navigateToFinalPaymentScreen(categoryId, productId)
                         }
                     )
-                }
-
-                else -> {
+                },
+                onIdle = {
                     LaunchedEffect(Unit) {
-                        Toast.makeText(
-                            context,
-                            "Something went wrong!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        navController.popBackStack()
+                        subscriptionViewModel.getSubscriptionDurationData(categoryId)
                     }
+                },
+                onRetry = {
+                    subscriptionViewModel.getSubscriptionDurationData(categoryId)
+                },
+                onErrorMessage = {
+                    navController.popBackStack()
                 }
-            }
+            )
 
         }
 
@@ -412,33 +409,22 @@ fun NavGraphBuilder.homeScreen(
                 }
             )
         ) {
-            val context = LocalContext.current
-
             val categoryId = it.arguments?.getString("categoryId")!!
             val productId = it.arguments?.getString("productId")!!
 
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
 
-            val walletResponseState =
-                subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle().value
-            val couponResponseState =
-                subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle().value
+//            val walletResponseState =
+//                subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle().value
+//            val couponResponseState =
+//                subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle().value
             val subscriptionFinalPaymentState =
                 subscriptionViewModel.subscriptionFinalPaymentState.collectAsStateWithLifecycle().value
 
-            when (subscriptionFinalPaymentState) {
-                is UiState.Idle -> {
-                    LaunchedEffect(key1 = Unit) {
-                        subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
-                    }
-                }
-
-                is UiState.Loading -> {
-                    AppLoadingScreen()
-                }
-
-                is UiState.Success -> {
+            AppUiStateHandler(
+                uiState = subscriptionFinalPaymentState,
+                onSuccess = {
                     Text(text = "Final Payment Screen")
 //                    ProceedToBuyScreen(
 //                        subscriptionFinalPaymentData = subscriptionFinalPaymentState.data,
@@ -465,19 +451,19 @@ fun NavGraphBuilder.homeScreen(
 //                            }
 //                        }
 //                    )
-                }
-
-                else -> {
-                    LaunchedEffect(Unit) {
-                        Toast.makeText(
-                            context,
-                            "Something went wrong!",
-                            Toast.LENGTH_SHORT
-                        ).show()
-                        navController.popBackStack()
+                },
+                onIdle = {
+                    LaunchedEffect(key1 = Unit) {
+                        subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
                     }
+                },
+                onRetry = {
+                    subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
+                },
+                onErrorMessage = {
+                    navController.popBackStack()
                 }
-            }
+            )
         }
     }
 }

@@ -35,14 +35,14 @@ class SubscriptionViewModel
 ) : ViewModel() {
 
     private val _subscriptionCategoryDataState =
-        MutableStateFlow<UiState<List<SubscriptionCategoryData>>>(UiState.Idle)
+        MutableStateFlow<UiState<List<SubscriptionCategoryData>>>(UiState.Loading)
     val subscriptionCategoryDataState = _subscriptionCategoryDataState.asStateFlow()
 
     private val _subscriptionDurationDataState =
         MutableStateFlow<UiState<SubscriptionDurationsData>>(UiState.Idle)
     val subscriptionDurationDataState = _subscriptionDurationDataState.asStateFlow()
 
-    private val _offersDataState = MutableStateFlow<UiState<List<OffersData>>>(UiState.Idle)
+    private val _offersDataState = MutableStateFlow<UiState<List<OffersData>>>(UiState.Loading)
     val offersDataState = _offersDataState.asStateFlow()
 
     private val _subscriptionFinalPaymentState =
