@@ -122,7 +122,7 @@ fun HomeScreenLayout(
                 }
 
                 else -> {
-                    OffersLoadingCard(isLoading = true) {
+                    OffersLoadingCard(isLoading = false) {
                         onEvent(HomeScreenUiEvent.LoadOffersData)
                     }
                 }
@@ -175,7 +175,7 @@ fun HomeScreenLayout(
                 }
 
                 else -> {
-                    SubscriptionLoadingCard(isLoading = true) {
+                    SubscriptionLoadingCard(isLoading = false) {
                         onEvent(HomeScreenUiEvent.LoadSubscriptionCategoryData)
                     }
                 }
