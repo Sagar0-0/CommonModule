@@ -18,7 +18,6 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -41,9 +40,37 @@ private fun SubscriptionListPreview() {
             // Display the content of the subscription list
             SubscriptionTypesList(
                 listOf(
-                    SubscriptionCategoryData(),
-                    SubscriptionCategoryData(),
-                    SubscriptionCategoryData(),
+                    SubscriptionCategoryData(
+                        id = "ut",
+                        type = 8192,
+                        title = "deterruisset",
+                        desc = "quo",
+                        imageUrl = "https://search.yahoo.com/search?p=luptatum",
+                        price = "doctus",
+                        cur = 6675,
+                        sym = "nascetur"
+
+                    ),
+                    SubscriptionCategoryData(
+                        id = "ut",
+                        type = 8192,
+                        title = "deterruisset",
+                        desc = "quo",
+                        imageUrl = "https://search.yahoo.com/search?p=luptatum",
+                        price = "doctus",
+                        cur = 6675,
+                        sym = "nascetur"
+                    ),
+                    SubscriptionCategoryData(
+                        id = "ut",
+                        type = 8192,
+                        title = "deterruisset",
+                        desc = "quo",
+                        imageUrl = "https://search.yahoo.com/search?p=luptatum",
+                        price = "doctus",
+                        cur = 6675,
+                        sym = "nascetur"
+                    ),
                 )
             ) {
 
@@ -72,7 +99,7 @@ fun SubscriptionTypesList(
     }
     Column(
         modifier = Modifier
-            .fillMaxSize()
+            .fillMaxWidth()
             .padding(AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
@@ -107,14 +134,7 @@ fun SubscriptionPassCard(
     ) {
         // Use Row and Column to arrange content horizontally and vertically
         Row(
-            modifier = Modifier
-                .padding(
-                    top = AppTheme.spacing.level1,
-                    bottom = AppTheme.spacing.level1,
-                    end = AppTheme.spacing.level1
-                ),
             verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
             // Display an image using AppLocalImage
             AppNetworkImage(
@@ -124,24 +144,26 @@ fun SubscriptionPassCard(
             )
             // Use Column to arrange text content vertically
             Column(
-                modifier = Modifier.fillMaxWidth(),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level1),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
             ) {
                 // Display title, description, and other details
-                TitleTexts.Level1(text = subscriptionData.title)
-                BodyTexts.Level1(
+                TitleTexts.Level1(text = subscriptionData.title, maxLines = 1)
+                CaptionTexts.Level2(
                     text = subscriptionData.desc,
                     maxLines = 3,
                     color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level3)
                 )
-                AppDivider()
+                AppDivider(modifier = Modifier.fillMaxWidth())
                 // Display subscription price details
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                 ) {
-                    HeadingTexts.Level3(text = subscriptionData.price)
+                    TitleTexts.Level2(text = subscriptionData.price)
                     CaptionTexts.Level2(
                         text = "onwards",
                         color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level4),

@@ -25,8 +25,8 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
-import fit.asta.health.designsystem.molecular.texts.LargeTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
 
 /**
@@ -36,7 +36,110 @@ import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
 @Composable
 fun PlanScreen() {
     AppTheme {
-        SubscriptionDurationsScreen(SubscriptionDurationsData(), {}) { _ ->
+        SubscriptionDurationsScreen(
+            SubscriptionDurationsData(
+                planDurations = listOf(
+                    SubscriptionDurationsData.Duration(
+                        cur = 7733,
+                        default = 8676,
+                        dsc = "regione",
+                        id = "similique",
+                        price = "ipsum",
+                        sub = "saepe",
+                        sym = "legere",
+                        tag = "utinam",
+                        ttl = "electram"
+                    ),
+                    SubscriptionDurationsData.Duration(
+                        cur = 7733,
+                        default = 8676,
+                        dsc = "regione",
+                        id = "similique",
+                        price = "ipsum",
+                        sub = "saepe",
+                        sym = "legere",
+                        tag = "utinam",
+                        ttl = "electram"
+                    ),
+                    SubscriptionDurationsData.Duration(
+                        cur = 7733,
+                        default = 8676,
+                        dsc = "regione",
+                        id = "similique",
+                        price = "ipsum",
+                        sub = "saepe",
+                        sym = "legere",
+                        tag = "utinam",
+                        ttl = "electram"
+                    ),
+                ),
+                planFeatures = listOf(
+                    SubscriptionDurationsData.Feature(
+                        dsc = "facilis", ttl = "mei", url = "http://www.bing.com/search?q=solet"
+                    ),
+                    SubscriptionDurationsData.Feature(
+                        dsc = "facilis", ttl = "mei", url = "http://www.bing.com/search?q=solet"
+                    ),
+                    SubscriptionDurationsData.Feature(
+                        dsc = "facilis", ttl = "mei", url = "http://www.bing.com/search?q=solet"
+                    ),
+                ),
+                offers = listOf(
+                    SubscriptionDurationsData.Offer(
+                        areas = listOf(),
+                        code = "dissentiunt",
+                        con = "ponderum",
+                        dsc = "atqui",
+                        end = "mediocrem",
+                        id = "interesset",
+                        ofr = 6989,
+                        start = "libris",
+                        sts = 9717,
+                        ttl = "sed",
+                        type = 6900,
+                        unit = 1866,
+                        url = "https://duckduckgo.com/?q=tamquam"
+                    ),
+                    SubscriptionDurationsData.Offer(
+                        areas = listOf(),
+                        code = "dissentiunt",
+                        con = "ponderum",
+                        dsc = "atqui",
+                        end = "mediocrem",
+                        id = "interesset",
+                        ofr = 6989,
+                        start = "libris",
+                        sts = 9717,
+                        ttl = "sed",
+                        type = 6900,
+                        unit = 1866,
+                        url = "https://duckduckgo.com/?q=tamquam"
+                    ),
+                    SubscriptionDurationsData.Offer(
+                        areas = listOf(),
+                        code = "dissentiunt",
+                        con = "ponderum",
+                        dsc = "atqui",
+                        end = "mediocrem",
+                        id = "interesset",
+                        ofr = 6989,
+                        start = "libris",
+                        sts = 9717,
+                        ttl = "sed",
+                        type = 6900,
+                        unit = 1866,
+                        url = "https://duckduckgo.com/?q=tamquam"
+                    ),
+                ),
+                termsAndConditions = SubscriptionDurationsData.Tnc(
+                    eff = "nam",
+                    id = "laoreet",
+                    last = "novum",
+                    sec = listOf(),
+                    type = "ridiculus"
+                )
+            ), {}
+        ) { _ ->
 
         }
     }
@@ -107,31 +210,37 @@ fun PlanDurationCard(plansData: PlansData, onClick: () -> Unit) {
             .fillMaxWidth(),
         onClick = onClick
     ) {
-        Row(
+        Column(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2),
-            verticalAlignment = Alignment.Top,
-            horizontalArrangement = Arrangement.SpaceBetween
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            // Display plan duration and months
-            DisplayPlanDuration(plansData = plansData)
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.Top,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                // Display plan duration and months
+                DisplayPlanDuration(plansData = plansData)
 
-            // Display plan details
-            DisplayPriceDetails(plansData = plansData)
+                // Display plan details
+                DisplayPriceDetails(plansData = plansData)
 
-            // Display arrow button for more actions
-            DisplayArrowButton()
+                // Display arrow button for more actions
+                DisplayArrowButton()
+            }
+
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+            ) {
+                // Display plan description
+                DisplayPlanDescription(plansData = plansData)
+            }
         }
 
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
-        ) {
-            // Display plan description
-            DisplayPlanDescription(plansData = plansData)
-        }
     }
 }
 
@@ -142,7 +251,7 @@ private fun RowScope.DisplayPriceDetails(plansData: PlansData) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.SpaceEvenly
     ) {
-        LargeTexts.Level3(text = plansData.price)
+        TitleTexts.Level3(text = plansData.price)
         BodyTexts.Level2(
             text = plansData.price + "/- OFF",
             modifier = Modifier.alpha(AppTheme.alphaValues.level2),
@@ -162,8 +271,8 @@ private fun DisplayPlanDuration(plansData: PlansData) {
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.Center
     ) {
-        LargeTexts.Level2(text = plansData.title)
-        HeadingTexts.Level4(text = "MONTHS")
+        TitleTexts.Level2(text = plansData.title)
+        TitleTexts.Level4(text = "MONTHS")
     }
 }
 
@@ -243,7 +352,7 @@ private fun DisplayArrowButton() {
  */
 @Composable
 private fun DisplayPlanDescription(plansData: PlansData) {
-    BodyTexts.Level2(text = plansData.desc)
+    CaptionTexts.Level2(text = plansData.desc)
 }
 
 
