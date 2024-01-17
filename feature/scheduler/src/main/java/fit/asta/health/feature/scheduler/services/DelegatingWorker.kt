@@ -4,6 +4,7 @@ import android.content.Context
 import androidx.hilt.work.HiltWorkerFactory
 import androidx.work.CoroutineWorker
 import androidx.work.Data
+import androidx.work.ForegroundInfo
 import androidx.work.WorkerParameters
 import dagger.hilt.EntryPoint
 import dagger.hilt.InstallIn
@@ -52,11 +53,11 @@ class DelegatingWorker(
         EntryPointAccessors.fromApplication<HiltWorkerFactoryEntryPoint>(appContext)
             .hiltWorkerFactory()
             .createWorker(appContext, workerClassName, workerParams)
-                as? CoroutineWorker
+            as? CoroutineWorker
             ?: throw IllegalArgumentException("Unable to find appropriate worker")
 
-//    override suspend fun getForegroundInfo(): ForegroundInfo =
-//        delegateWorker.getForegroundInfo()
+    override suspend fun getForegroundInfo(): ForegroundInfo =
+        delegateWorker.getForegroundInfo()
 
     override suspend fun doWork(): Result =
         delegateWorker.doWork()
