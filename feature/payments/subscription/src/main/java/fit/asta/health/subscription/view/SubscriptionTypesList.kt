@@ -1,13 +1,16 @@
 package fit.asta.health.subscription.view
 
+import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -18,6 +21,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
+import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -38,7 +43,7 @@ private fun SubscriptionListPreview() {
                 .fillMaxSize()
         ) {
             // Display the content of the subscription list
-            SubscriptionTypesList(
+            SubscriptionTypesPager(
                 listOf(
                     SubscriptionCategoryData(
                         id = "ut",
@@ -83,8 +88,9 @@ private fun SubscriptionListPreview() {
  * Composable function to render the list of subscriptions using LazyColumn.
  */
 
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun SubscriptionTypesList(
+fun SubscriptionTypesPager(
     subscriptionPlans: List<SubscriptionCategoryData>,
     onClick: (categoryId: String) -> Unit
 ) {
@@ -97,6 +103,8 @@ fun SubscriptionTypesList(
             categoryId = it.type
         )
     }
+    val pagerState = rememberPagerState { subPlans.size }
+
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -106,10 +114,27 @@ fun SubscriptionTypesList(
         // Display a title for the subscription list
         HeadingTexts.Level1(text = "Explore Premium Plans")
         // Display SubscriptionPassCard for each item in the subscription list
-        subPlans.forEach { plan ->
-            SubscriptionPassCard(subscriptionData = plan) {
-                onClick(it)
+        Box {
+            AppHorizontalPager(
+                modifier = Modifier.padding(AppTheme.spacing.level2),
+                pagerState = pagerState,
+                contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+                pageSpacing = AppTheme.spacing.level2,
+                enableAutoAnimation = true,
+                userScrollEnabled = true
+            ) { page ->
+                SubscriptionPassCard(subscriptionData = subPlans[page]) {
+                    onClick(it)
+                }
             }
+
+            // This function draws the Dot Indicator for the Pager
+            AppExpandingDotIndicator(
+                modifier = Modifier
+                    .padding(bottom = AppTheme.spacing.level2)
+                    .align(Alignment.BottomCenter),
+                pagerState = pagerState
+            )
         }
     }
 }

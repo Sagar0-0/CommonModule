@@ -4,7 +4,6 @@ package fit.asta.health.subscription.remote.model
 import com.google.gson.annotations.SerializedName
 
 
-typealias SubscriptionType = String
 typealias DurationType = String
 typealias UserSubscribedPlanStatus = Int
 typealias DiscountUnit = Int
@@ -33,7 +32,7 @@ data class SubscriptionResponse(
             @SerializedName("fea")
             val subscriptionPlanFeatures: List<SubscriptionPlanFeature> = listOf(),
             @SerializedName("id")
-            val subscriptionType: SubscriptionType = "",
+            val subscriptionType: String = "",
             @SerializedName("plans")
             val subscriptionDurationPlans: List<SubscriptionDurationPlan> = listOf(),
             @SerializedName("ttl")

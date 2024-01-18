@@ -3,6 +3,8 @@ package fit.asta.health.subscription.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+typealias SubscriptionDurationType = Int
+
 data class SubscriptionDurationsData(
     @SerializedName("durs")
     val planDurations: List<Duration> = listOf(),
@@ -18,6 +20,8 @@ data class SubscriptionDurationsData(
         val cur: Int = 0,
         @SerializedName("default")
         val default: Int = 0,
+        @SerializedName("type")
+        val type: SubscriptionDurationType = 1,
         @SerializedName("dsc")
         val dsc: String = "",
         @SerializedName("id")
@@ -104,4 +108,11 @@ data class SubscriptionDurationsData(
             val ttl: String = ""
         )
     }
+}
+
+enum class SubscriptionDurationTypes(val types: SubscriptionDurationType) {
+    ONE_MONTH(1),
+    THREE_MONTH(2),
+    SIX_MONTH(3),
+    TWELVE_MONTH(4)
 }

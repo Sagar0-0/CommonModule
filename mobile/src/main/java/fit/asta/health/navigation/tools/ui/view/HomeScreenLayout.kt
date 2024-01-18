@@ -44,11 +44,12 @@ import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.referral.view.NewReferralDialogContent
-import fit.asta.health.subscription.OfferBanner
 import fit.asta.health.subscription.OffersLoadingCard
 import fit.asta.health.subscription.SubscriptionLoadingCard
 import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
-import fit.asta.health.subscription.view.SubscriptionTypesList
+import fit.asta.health.subscription.view.OffersBanner
+import fit.asta.health.subscription.view.OffersUiData
+import fit.asta.health.subscription.view.SubscriptionTypesPager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -89,34 +90,21 @@ fun HomeScreenLayout(
                 }
 
                 is UiState.Success -> {
-                    val pagerState = rememberPagerState { offersDataState.data.size }
-                    Box {
-                        AppHorizontalPager(
-                            modifier = Modifier.padding(AppTheme.spacing.level2),
-                            pagerState = pagerState,
-                            contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
-                            pageSpacing = AppTheme.spacing.level2,
-                            enableAutoAnimation = true,
-                            userScrollEnabled = true
-                        ) { page ->
-                            OfferBanner(
-                                offer = offersDataState.data[page]
-                            ) {
-                                onEvent(
-                                    HomeScreenUiEvent.NavigateToFinalPayment(
-                                        categoryId = offersDataState.data[page].areas[0].productCategoryId.toString(),
-                                        productId = offersDataState.data[page].areas[0].productId.toString(),
-                                    )
-                                )
-                            }
+                    OffersBanner(
+                        offersList = offersDataState.data.map {
+                            OffersUiData(
+                                categoryId = it.areas[0].productCategoryId.toString(),
+                                productId = it.areas[0].productId.toString(),
+                                type = it.type,
+                                url = it.imageUrl
+                            )
                         }
-
-                        // This function draws the Dot Indicator for the Pager
-                        AppExpandingDotIndicator(
-                            modifier = Modifier
-                                .padding(bottom = AppTheme.spacing.level2)
-                                .align(Alignment.BottomCenter),
-                            pagerState = pagerState
+                    ) { categoryId, productId ->
+                        onEvent(
+                            HomeScreenUiEvent.NavigateToFinalPayment(
+                                categoryId = categoryId,
+                                productId = productId
+                            )
                         )
                     }
                 }
@@ -163,7 +151,7 @@ fun HomeScreenLayout(
 
                 is UiState.Success -> {
                     if (showSubscriptionPlans) {
-                        SubscriptionTypesList(
+                        SubscriptionTypesPager(
                             subscriptionPlans = subscriptionCategoryState.data
                         ) {
                             onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))

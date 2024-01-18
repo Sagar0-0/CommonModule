@@ -37,6 +37,9 @@ dependencies {
     implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.ui.tooling.preview.android)
 
+    //Image - Coil library
+    implementation(libs.coil.kt.compose)
+    implementation(libs.coil.gif)
 
     //Media 3
     implementation(libs.androidx.media3.exoplayer)

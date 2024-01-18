@@ -3,7 +3,7 @@ package fit.asta.health.subscription.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-typealias OfferUnit = Int
+
 
 data class Offer(
     @SerializedName("code")
@@ -23,11 +23,11 @@ data class Offer(
     @SerializedName("ttl")
     val title: String = "",
     @SerializedName("unit")
-    val unit: OfferUnit = OfferUnitType.PERCENTAGE.type,
+    val unit: Int = 0,
     @SerializedName("url")
     val url: String = "",
     @SerializedName("type")
-    val type: Int = OffersBannerContentType.Image.type,
+    val type: Int = 0,
     @SerializedName("areas")
     val areas: List<Areas> = listOf()
 ) {
@@ -39,17 +39,4 @@ data class Offer(
         @SerializedName("name")
         val name: String = ""
     )
-}
-
-fun OfferUnit.getOfferUnitType(): OfferUnitType = OfferUnitType.entries.first { this == it.type }
-
-enum class OfferUnitType(val type: OfferUnit) {
-    PERCENTAGE(18),
-    RUPEE(23)
-}
-
-enum class OffersBannerContentType(val type: Int) {
-    Image(0),
-    GIF(1),
-    Video(2)
 }

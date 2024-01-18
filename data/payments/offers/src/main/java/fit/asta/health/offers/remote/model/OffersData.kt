@@ -2,13 +2,16 @@ package fit.asta.health.offers.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+
+typealias OfferUnit = Int
+
 data class OffersData(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("con")
     val country: String = "IND",
     @SerializedName("type")
-    val type: Int = 0,
+    val type: OfferUnit = 0,
     @SerializedName("ofr")
     val amountReduced: Int = 0,
     @SerializedName("unit")
@@ -42,4 +45,11 @@ data class OffersData(
         @SerializedName("prod")
         val productId: Int = 0,
     )
+}
+
+fun OfferUnit.getOfferUnitType(): OfferUnitType = OfferUnitType.entries.first { this == it.type }
+
+enum class OfferUnitType(val type: OfferUnit) {
+    PERCENTAGE(18),
+    RUPEE(23)
 }

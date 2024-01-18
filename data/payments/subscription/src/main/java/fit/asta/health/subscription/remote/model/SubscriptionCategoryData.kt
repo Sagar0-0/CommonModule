@@ -2,11 +2,12 @@ package fit.asta.health.subscription.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+typealias SubscriptionType = Int
 data class SubscriptionCategoryData(
     @SerializedName("id")
     val id: String = "",
     @SerializedName("type")
-    val type: Int = 0,
+    val type: SubscriptionType = 1,
     @SerializedName("ttl")
     val title: String = "",
     @SerializedName("dsc")
@@ -20,3 +21,10 @@ data class SubscriptionCategoryData(
     @SerializedName("sym")
     val sym: String = "",
 )
+
+enum class SubscriptionTypes(val type: SubscriptionType) {
+    BRONZE(1),
+    SILVER(2),
+    GOLD(3),
+    PLATINUM(4)
+}
