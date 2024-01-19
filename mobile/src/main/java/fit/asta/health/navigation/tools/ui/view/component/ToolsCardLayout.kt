@@ -52,7 +52,9 @@ fun ToolsCardLayout(
 
         // Tools Card Texts
         BodyTexts.Level1(
-            text = cardTitle, modifier = Modifier.padding(AppTheme.spacing.level1)
+            modifier = Modifier.padding(AppTheme.spacing.level1),
+            text = cardTitle,
+            maxLines = 1
         )
     }
 }

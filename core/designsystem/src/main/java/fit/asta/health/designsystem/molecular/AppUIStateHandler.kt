@@ -16,11 +16,11 @@ import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 @Composable
 fun <T> AppUiStateHandler(
     uiState: UiState<T>,
-    onSuccess: @Composable (data: T) -> Unit,
     isScreenLoading: Boolean = true,
     onIdle: @Composable () -> Unit = {},
     onErrorMessage: () -> Unit = {},
     onRetry: () -> Unit = {},
+    onSuccess: @Composable (data: T) -> Unit,
 ) {
     val context = LocalContext.current
     when (uiState) {

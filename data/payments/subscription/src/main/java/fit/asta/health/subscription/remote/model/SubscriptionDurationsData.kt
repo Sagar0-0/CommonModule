@@ -11,7 +11,7 @@ data class SubscriptionDurationsData(
     @SerializedName("fea")
     val planFeatures: List<Feature> = listOf(),
     @SerializedName("ofr")
-    val offers: List<Offer> = listOf(),
+    val offers: List<Offer>? = null,
     @SerializedName("tnc")
     val termsAndConditions: Tnc = Tnc()
 ) {

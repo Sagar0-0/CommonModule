@@ -22,7 +22,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 fun OffersLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {}) {
     Box(
         modifier = Modifier
-            .height(AppTheme.boxSize.level9)
+            .height(AppTheme.boxSize.level10)
             .fillMaxWidth()
             .clip(AppTheme.shape.level1)
             .appShimmerAnimation(isLoading)
@@ -31,7 +31,7 @@ fun OffersLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {}) {
                     onClick.invoke()
                 }
             }
-            .background(if (!isLoading) AppTheme.colors.surfaceVariant else Color.Transparent),
+            .background(if (!isLoading) AppTheme.colors.onSurfaceVariant else Color.Transparent),
         contentAlignment = Alignment.Center
     ) {
         if (!isLoading) {

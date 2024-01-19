@@ -52,11 +52,12 @@ private fun NewRefDialog() {
 // Composable function for the content of the new referral dialog
 @Composable
 fun NewReferralDialogContent(
+    modifier: Modifier = Modifier,
     refCode: String = "",
     shareRefLink: (String) -> Unit = {},
     closeDialog: () -> Unit = {},
 ) {
-    AppCard {
+    AppCard(modifier) {
         // Header section with a close button
         HeaderIconButton(closeDialog = closeDialog)
 

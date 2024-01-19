@@ -6,7 +6,6 @@ import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,16 +40,13 @@ fun SubscriptionLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {})
         HeadingTexts.Level1(text = "Explore Premium Plans")
         val pagerState = rememberPagerState { 3 }
         AppHorizontalPager(
-            modifier = Modifier.padding(AppTheme.spacing.level2),
             pagerState = pagerState,
-            contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
-            pageSpacing = AppTheme.spacing.level2,
-            enableAutoAnimation = true,
             userScrollEnabled = true
         ) { _ ->
             Box(
                 modifier = Modifier
                     .height(AppTheme.boxSize.level8)
+                    .padding(AppTheme.spacing.level2)
                     .fillMaxWidth()
                     .clip(AppTheme.shape.level1)
                     .appShimmerAnimation(isLoading)
@@ -59,7 +55,7 @@ fun SubscriptionLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {})
                             onClick.invoke()
                         }
                     }
-                    .background(if (!isLoading) AppTheme.colors.surfaceVariant else Color.Transparent),
+                    .background(if (!isLoading) AppTheme.colors.onSurfaceVariant else Color.Transparent),
                 contentAlignment = Alignment.Center
             ) {
                 if (!isLoading) {
@@ -68,7 +64,7 @@ fun SubscriptionLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {})
                 // This function draws the Dot Indicator for the Pager
                 AppExpandingDotIndicator(
                     modifier = Modifier
-                        .padding(bottom = AppTheme.spacing.level2)
+                        .padding(bottom = AppTheme.spacing.level0)
                         .align(Alignment.BottomCenter),
                     pagerState = pagerState
                 )

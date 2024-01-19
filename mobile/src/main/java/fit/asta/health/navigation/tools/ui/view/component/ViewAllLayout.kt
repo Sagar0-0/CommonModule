@@ -17,12 +17,13 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun ViewAllLayout(
+    modifier: Modifier = Modifier,
     title: String,
     clickString: String = "",
     onClick: (() -> Unit)? = null,
 ) {
     Row(
-        modifier = Modifier.fillMaxWidth(),
+        modifier = modifier.fillMaxWidth(),
         horizontalArrangement = Arrangement.SpaceBetween,
         verticalAlignment = Alignment.CenterVertically
     ) {

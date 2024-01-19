@@ -1,5 +1,7 @@
 package fit.asta.health.designsystem.molecular.pager
 
+import androidx.compose.animation.core.FastOutSlowInEasing
+import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -14,6 +16,7 @@ import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.launch
 
 /**
  * The [AppHorizontalPager] composable function is a custom component in Jetpack Compose, a declarative UI
@@ -46,11 +49,11 @@ import kotlinx.coroutines.delay
 fun AppHorizontalPager(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
-    enableAutoAnimation: Boolean = true,
+    enableAutoAnimation: Boolean = false,
     animationDelay: Long = 3500L,
-    contentPadding: PaddingValues = PaddingValues(horizontal = AppTheme.spacing.level4),
-    pageSpacing: Dp = AppTheme.spacing.level2,
-    userScrollEnabled: Boolean = false,
+    contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.noSpacing),
+    pageSpacing: Dp = AppTheme.spacing.noSpacing,
+    userScrollEnabled: Boolean = true,
     verticalAlignment: Alignment.Vertical = Alignment.Top,
     content: @Composable BoxScope.(page: Int) -> Unit,
 ) {
@@ -58,12 +61,21 @@ fun AppHorizontalPager(
     // Animating to the next Pages if it is enabled
     if (enableAutoAnimation) {
 
-        LaunchedEffect(pagerState.currentPage) {
-            delay(animationDelay)
+        LaunchedEffect(key1 = pagerState.currentPage) {
+            launch {
+                delay(animationDelay)
+                with(pagerState) {
+                    val nextPage = if (currentPage < pageCount - 1) currentPage + 1 else 0
 
-            // Calculating the next Page to be shown and transiting to it
-            val newPosition = (pagerState.currentPage + 1) % pagerState.pageCount
-            pagerState.animateScrollToPage(newPosition)
+                    animateScrollToPage(
+                        page = nextPage,
+                        animationSpec = tween(
+                            durationMillis = 500,
+                            easing = FastOutSlowInEasing
+                        )
+                    )
+                }
+            }
         }
     }
 
@@ -75,7 +87,9 @@ fun AppHorizontalPager(
         pageSpacing = pageSpacing,
         userScrollEnabled = userScrollEnabled
     ) { page ->
-        Box(modifier = modifier.carouselTransition(page, pagerState)) {
+        Box(
+            modifier = modifier.carouselTransition(page, pagerState)
+        ) {
             content(page)
         }
     }

@@ -4,7 +4,8 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -12,15 +13,14 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
-import androidx.compose.foundation.lazy.grid.GridItemSpan
-import androidx.compose.foundation.lazy.grid.items
+import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.unit.dp
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
@@ -29,7 +29,6 @@ import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
@@ -53,38 +52,29 @@ import fit.asta.health.subscription.view.SubscriptionTypesPager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
-@OptIn(ExperimentalFoundationApi::class)
+const val MAX_TOOLS_IN_ONE_ROW = 3
+
+@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
 @ExperimentalCoroutinesApi
 @Composable
-fun HomeScreenLayout(
+fun ToolsHomeContent(
     toolsHome: ToolsHome,
     subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
     offersDataState: UiState<List<OffersData>>,
     refCode: String,
-    onEvent: (HomeScreenUiEvent) -> Unit,
+    onEvent: (ToolsHomeUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
     val context = LocalContext.current
-    val columns = 3
     val showSubscriptionPlans = remember {
         true//TODO: HIDE SUBSCRIPTION CARDS WHEN PURCHASED
     }
 
-    AppVerticalGrid(
-        count = columns,
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+    LazyColumn(
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
     ) {
-        item(span = { GridItemSpan(columns) }) {
+        item {
             when (offersDataState) {
-                is UiState.Idle -> {
-                    LaunchedEffect(
-                        key1 = Unit,
-                        block = {
-                            onEvent(HomeScreenUiEvent.LoadOffersData)
-                        }
-                    )
-                }
-
                 is UiState.Loading -> {
                     OffersLoadingCard(true)
                 }
@@ -101,7 +91,7 @@ fun HomeScreenLayout(
                         }
                     ) { categoryId, productId ->
                         onEvent(
-                            HomeScreenUiEvent.NavigateToFinalPayment(
+                            ToolsHomeUiEvent.NavigateToFinalPayment(
                                 categoryId = categoryId,
                                 productId = productId
                             )
@@ -111,7 +101,7 @@ fun HomeScreenLayout(
 
                 else -> {
                     OffersLoadingCard(isLoading = false) {
-                        onEvent(HomeScreenUiEvent.LoadOffersData)
+                        onEvent(ToolsHomeUiEvent.LoadOffersData)
                     }
                 }
             }
@@ -119,7 +109,7 @@ fun HomeScreenLayout(
 
         // Top Sliding Images
         toolsHome.banners?.let { banners ->
-            item(span = { GridItemSpan(columns) }) {
+            item {
                 Column {
                     AppHorizontalPager(
                         pagerState = rememberPagerState { banners.size },
@@ -129,22 +119,12 @@ fun HomeScreenLayout(
                     ) { page ->
                         ToolsHmScreenTopBanner(bannerDataPages = banners[page])
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
                 }
             }
         }
 
-        item(span = { GridItemSpan(columns) }) {
+        item {
             when (subscriptionCategoryState) {
-                is UiState.Idle -> {
-                    LaunchedEffect(
-                        key1 = Unit,
-                        block = {
-                            onEvent(HomeScreenUiEvent.LoadSubscriptionCategoryData)
-                        }
-                    )
-                }
-
                 is UiState.Loading -> {
                     SubscriptionLoadingCard(true)
                 }
@@ -154,7 +134,7 @@ fun HomeScreenLayout(
                         SubscriptionTypesPager(
                             subscriptionPlans = subscriptionCategoryState.data
                         ) {
-                            onEvent(HomeScreenUiEvent.NavigateToSubscriptionDurations(it))
+                            onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
                         }
                     } else {
 //                        UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
@@ -164,89 +144,104 @@ fun HomeScreenLayout(
 
                 else -> {
                     SubscriptionLoadingCard(isLoading = false) {
-                        onEvent(HomeScreenUiEvent.LoadSubscriptionCategoryData)
+                        onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
                     }
                 }
             }
         }
 
-        toolsHome.tools?.let {
+        toolsHome.tools?.let { tools ->
             // My Tools text and View All button
-            item(span = { GridItemSpan(columns) }) {
-                Column {
-                    ViewAllLayout(title = "My Tools")
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                }
+            item {
+                ViewAllLayout(
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
+                    title = "My Tools"
+                )
             }
 
             // All The Tools Composable cards
-            items(it) { tool ->
-                Column {
-                    ToolsCardLayout(
-                        cardTitle = tool.title,
-                        type = tool.name,
-                        imgUrl = tool.url
-                    ) { type ->
-                        when (type.lowercase(Locale.getDefault())) {
-                            "water" -> {
-                                onNav(Graph.WaterTool.route)
-                            }
+            item {
+                FlowRow(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                ) {
+                    tools.forEach { tool ->
+                        Column(
+                            modifier = Modifier.width(98.dp)//TODO: SIZE SHOULD NOT BE STATIC
+                        ) {
+                            ToolsCardLayout(
+                                cardTitle = tool.title,
+                                type = tool.name,
+                                imgUrl = tool.url
+                            ) { type ->
+                                when (type.lowercase(Locale.getDefault())) {
+                                    "water" -> {
+                                        onNav(Graph.WaterTool.route)
+                                    }
 
-                            "steps" -> {
-                                onNav(STEPS_GRAPH_ROUTE)
-                            }
+                                    "steps" -> {
+                                        onNav(STEPS_GRAPH_ROUTE)
+                                    }
 
-                            "workout" -> {
-                                onNav(Graph.ExerciseTool.route + "?activity=workout")
-                            }
+                                    "workout" -> {
+                                        onNav(Graph.ExerciseTool.route + "?activity=workout")
+                                    }
 
-                            "yoga" -> {
-                                onNav(Graph.ExerciseTool.route + "?activity=yoga")
-                            }
+                                    "yoga" -> {
+                                        onNav(Graph.ExerciseTool.route + "?activity=yoga")
+                                    }
 
-                            "hiit" -> {
-                                onNav(Graph.ExerciseTool.route + "?activity=HIIT")
-                            }
+                                    "hiit" -> {
+                                        onNav(Graph.ExerciseTool.route + "?activity=HIIT")
+                                    }
 
-                            "dance" -> {
-                                onNav(Graph.ExerciseTool.route + "?activity=dance")
-                            }
+                                    "dance" -> {
+                                        onNav(Graph.ExerciseTool.route + "?activity=dance")
+                                    }
 
-                            "meditation" -> {
-                                onNav(Graph.MeditationTool.route)
-                            }
+                                    "meditation" -> {
+                                        onNav(Graph.MeditationTool.route)
+                                    }
 
-                            "sleep" -> {
-                                onNav(SLEEP_GRAPH_ROUTE)
-                            }
+                                    "sleep" -> {
+                                        onNav(SLEEP_GRAPH_ROUTE)
+                                    }
 
-                            "breathing" -> {
-                                onNav(Graph.BreathingTool.route)
-                            }
+                                    "breathing" -> {
+                                        onNav(Graph.BreathingTool.route)
+                                    }
 
-                            "sunlight" -> {
-                                onNav(Graph.SunlightTool.route)
+                                    "sunlight" -> {
+                                        onNav(Graph.SunlightTool.route)
+                                    }
+                                }
                             }
                         }
                     }
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
+
             }
         }
 
         toolsHome.testimonials?.let { testimonials ->
             // Testimonials Text and View All Button
-            item(span = { GridItemSpan(columns) }) {
+            item {
                 ViewAllLayout(
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
                     title = "Testimonials",
                     clickString = "View All"
                 ) { onNav(Graph.Testimonials.route) }
             }
 
             // Why our Customers text
-            item(span = { GridItemSpan(columns) }) {
+            item {
                 Column(
-                    Modifier.fillMaxWidth(),
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     TitleTexts.Level3(text = "Why our customers love ASTA?")
@@ -257,19 +252,21 @@ fun HomeScreenLayout(
             }
 
             // Testimonials Banners in a Horizontal Pager
-            item(span = { GridItemSpan(columns) }) {
+            item {
 
                 val pagerState = rememberPagerState { testimonials.size }
 
-                Box(modifier = Modifier.padding(bottom = AppTheme.spacing.level1)) {
+                Box {
                     AppHorizontalPager(
                         modifier = Modifier
-                            .padding(bottom = AppTheme.spacing.level2)
                             .fillMaxWidth(),
                         pagerState = pagerState,
-                        contentPadding = PaddingValues(AppTheme.spacing.level2)
                     ) { page ->
-                        AppCard(modifier = Modifier.fillMaxSize()) {
+                        AppCard(
+                            modifier = Modifier
+                                .padding(bottom = AppTheme.spacing.level2)
+                                .fillMaxSize()
+                        ) {
                             UserTestimonialUI(
                                 modifier = Modifier.padding(AppTheme.spacing.level2),
                                 userTestimonial = testimonials[page].testimonial
@@ -289,39 +286,40 @@ fun HomeScreenLayout(
         }
 
         // rate my app Card
-        item(span = { GridItemSpan(columns) }) {
-            Column {
+        item {
+            Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
                 RateAppCard()
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 
         // Feedback Card
-        item(span = { GridItemSpan(columns) }) {
-            Column {
+        item {
+            Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
                 FeedbackCard {
                     onNav("$FEEDBACK_GRAPH_ROUTE/application")
                 }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
         }
 
         // Refer and Earn Card
-        item(span = { GridItemSpan(columns) }) {
+        item {
             NewReferralDialogContent(
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
                 refCode = refCode,
                 shareRefLink = {
                     context.shareReferralCode(it, BuildConfig.APPLICATION_ID)
                 }
             )
         }
+
+        item { Spacer(Modifier) }//To provide end padding
     }
 }
 
-sealed interface HomeScreenUiEvent {
-    data object LoadSubscriptionCategoryData : HomeScreenUiEvent
-    data object LoadOffersData : HomeScreenUiEvent
-    data class NavigateToSubscriptionDurations(val categoryId: String) : HomeScreenUiEvent
+sealed interface ToolsHomeUiEvent {
+    data object LoadSubscriptionCategoryData : ToolsHomeUiEvent
+    data object LoadOffersData : ToolsHomeUiEvent
+    data class NavigateToSubscriptionDurations(val categoryId: String) : ToolsHomeUiEvent
     data class NavigateToFinalPayment(val categoryId: String, val productId: String) :
-        HomeScreenUiEvent
+        ToolsHomeUiEvent
 }

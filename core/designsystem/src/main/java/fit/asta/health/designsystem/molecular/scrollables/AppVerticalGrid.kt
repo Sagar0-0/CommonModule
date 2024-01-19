@@ -3,7 +3,6 @@ package fit.asta.health.designsystem.molecular.scrollables
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyGridScope
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
@@ -33,8 +32,7 @@ fun AppVerticalGrid(
         content = content,
         modifier = modifier
             .background(AppTheme.colors.background)
-            .fillMaxSize()
-            .padding(AppTheme.spacing.level2),
+            .fillMaxSize(),
         verticalArrangement = verticalArrangement,
         horizontalArrangement = horizontalArrangement,
         userScrollEnabled = userScrollEnabled

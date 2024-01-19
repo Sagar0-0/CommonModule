@@ -5,6 +5,8 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -80,24 +82,29 @@ data class OffersUiData(
 @Composable
 fun OffersBanner(
     offersList: List<OffersUiData>,
+    modifier: Modifier = Modifier,
+    contentModifier: Modifier = Modifier,
     onClick: (categoryId: String, productId: String) -> Unit
 ) {
     val pagerState = rememberPagerState { offersList.size }
     Box {
         AppHorizontalPager(
+            modifier = modifier,
             pagerState = pagerState,
-            contentPadding = PaddingValues(AppTheme.spacing.level0),
-            pageSpacing = AppTheme.spacing.level0,
+            contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
+            pageSpacing = AppTheme.spacing.noSpacing,
             enableAutoAnimation = true,
             userScrollEnabled = true
         ) { page ->
             // Container box for the banner content
             AppCard(
-                modifier = Modifier
-                    .fillMaxSize(),
+                modifier = contentModifier
+                    .height(AppTheme.boxSize.level10)
+                    .fillMaxWidth(),
                 onClick = {
                     onClick(offersList[page].categoryId, offersList[page].productId)
-                }
+                },
+                shape = AppTheme.shape.rectangle
             ) {
                 // Displaying content based on content type
                 when (offersList[page].type) {

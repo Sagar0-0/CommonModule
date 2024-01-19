@@ -106,19 +106,22 @@ fun SubscriptionTypesPager(
     val pagerState = rememberPagerState { subPlans.size }
 
     Column(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         // Display a title for the subscription list
-        HeadingTexts.Level1(text = "Explore Premium Plans")
+        HeadingTexts.Level1(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2),
+            text = "Explore Premium Plans"
+        )
         // Display SubscriptionPassCard for each item in the subscription list
         Box {
             AppHorizontalPager(
-                modifier = Modifier.padding(AppTheme.spacing.level2),
+                modifier = Modifier
+                    .padding(bottom = AppTheme.spacing.level0),
                 pagerState = pagerState,
-                contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+                contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
                 pageSpacing = AppTheme.spacing.level2,
                 enableAutoAnimation = true,
                 userScrollEnabled = true
@@ -131,7 +134,6 @@ fun SubscriptionTypesPager(
             // This function draws the Dot Indicator for the Pager
             AppExpandingDotIndicator(
                 modifier = Modifier
-                    .padding(bottom = AppTheme.spacing.level2)
                     .align(Alignment.BottomCenter),
                 pagerState = pagerState
             )
@@ -152,7 +154,8 @@ fun SubscriptionPassCard(
     // Use AppCard to create a card with a click listener
     AppCard(
         modifier = Modifier
-            .fillMaxWidth(),
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2),
         onClick = {
             onClick(subscriptionData.categoryId.toString())
         }

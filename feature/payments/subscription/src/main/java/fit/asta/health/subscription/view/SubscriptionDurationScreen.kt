@@ -156,10 +156,10 @@ fun PlanScreen() {
 fun SubscriptionDurationsScreen(
     data: SubscriptionDurationsData,
     onBack: () -> Unit,
-    onClick: (productId: String) -> Unit
+    onNavigateToFinalPayment: (productId: String) -> Unit
 ) {
-    val offersList: List<OffersUiData> =
-        data.offers.map {
+    val offersList: List<OffersUiData>? =
+        data.offers?.map {
             OffersUiData(
                 productId = it.areas[0].prod.toString(),
                 type = it.type,
@@ -178,7 +178,7 @@ fun SubscriptionDurationsScreen(
         data.planDurations.map { duration ->
             DurationUiData(
                 title = duration.ttl,
-                productId = "1",//TODO: USE PRODUCT ID FROM API
+                productId = duration.id,
                 price = duration.price,
                 desc = duration.dsc,
             )
@@ -199,13 +199,14 @@ fun SubscriptionDurationsScreen(
                 .padding(start = AppTheme.spacing.level2, end = AppTheme.spacing.level2),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            OffersBanner(offersList) { _, productId ->
-                onClick(productId)
+            offersList?.let {
+                OffersBanner(it) { _, productId ->
+                    onNavigateToFinalPayment(productId)
+                }
             }
             FeaturesSection(featuresList)
-            DurationsSection(durationsList, onClick)
+            DurationsSection(durationsList, onNavigateToFinalPayment)
         }
-
     }
 }
 

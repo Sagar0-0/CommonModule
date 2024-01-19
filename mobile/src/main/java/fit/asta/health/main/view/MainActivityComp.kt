@@ -59,7 +59,7 @@ import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
-import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
+import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
 
@@ -103,13 +103,6 @@ fun NavGraphBuilder.homeScreen(
 
             val subscriptionCategoryState =
                 subscriptionViewModel.subscriptionCategoryDataState.collectAsStateWithLifecycle().value
-            LaunchedEffect(
-                key1 = Unit,
-                block = {
-                    subscriptionViewModel.getSubscriptionCategoryData()
-                    subscriptionViewModel.getOffersData()
-                }
-            )
             val offersDataState =
                 subscriptionViewModel.offersDataState.collectAsStateWithLifecycle().value
 
@@ -202,7 +195,7 @@ fun NavGraphBuilder.homeScreen(
             val checkPermissionAndLaunchScheduler =
                 checkPermissionAndLaunchScheduler(context, navController)
 
-            MainActivityLayout(
+            HomeScreensLayout(
                 currentAddressState = currentAddressName,
                 refCode = refCode,
                 subscriptionCategoryState = subscriptionCategoryState,
@@ -213,22 +206,22 @@ fun NavGraphBuilder.homeScreen(
                 onLocation = { enableLocationAndUpdateAddress() },
                 onEvent = { event ->
                     when (event) {
-                        is HomeScreenUiEvent.NavigateToSubscriptionDurations -> {
+                        is ToolsHomeUiEvent.NavigateToSubscriptionDurations -> {
                             navController.navigateToSubscriptionDurations(event.categoryId)
                         }
 
-                        is HomeScreenUiEvent.NavigateToFinalPayment -> {
+                        is ToolsHomeUiEvent.NavigateToFinalPayment -> {
                             navController.navigateToFinalPaymentScreen(
                                 event.categoryId,
                                 event.productId
                             )
                         }
 
-                        is HomeScreenUiEvent.LoadSubscriptionCategoryData -> {
+                        is ToolsHomeUiEvent.LoadSubscriptionCategoryData -> {
                             subscriptionViewModel.getSubscriptionCategoryData()
                         }
 
-                        is HomeScreenUiEvent.LoadOffersData -> {
+                        is ToolsHomeUiEvent.LoadOffersData -> {
                             subscriptionViewModel.getOffersData()
                         }
                     }
@@ -374,7 +367,7 @@ fun NavGraphBuilder.homeScreen(
                     SubscriptionDurationsScreen(
                         data = data,
                         onBack = navController::popBackStack,
-                        onClick = { productId ->
+                        onNavigateToFinalPayment = { productId ->
                             navController.navigateToFinalPaymentScreen(categoryId, productId)
                         }
                     )

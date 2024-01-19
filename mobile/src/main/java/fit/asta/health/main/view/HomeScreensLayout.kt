@@ -17,7 +17,6 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -80,6 +79,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppNavigationBar
 import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -92,8 +92,8 @@ import fit.asta.health.feature.scheduler.services.SchedulerWorker
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
-import fit.asta.health.navigation.tools.ui.view.HomeContent
-import fit.asta.health.navigation.tools.ui.view.HomeScreenUiEvent
+import fit.asta.health.navigation.tools.ui.view.ToolsHomeContent
+import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import fit.asta.health.offers.remote.model.OffersData
@@ -102,7 +102,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun MainActivityLayout(
+fun HomeScreensLayout(
     currentAddressState: UiState<String>,
     refCode: String,
     profileImageUri: String?,
@@ -112,7 +112,7 @@ fun MainActivityLayout(
     sessionState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
-    onEvent: (HomeScreenUiEvent) -> Unit,
+    onEvent: (ToolsHomeUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
     onWalkingTool: () -> Unit
@@ -130,19 +130,6 @@ fun MainActivityLayout(
                 navController = navController, currentDestination = currentDestination
             )
         },
-        content = {
-            MainNavHost(
-                navController = navController,
-                refCode = refCode,
-                onNav = onNav,
-                subscriptionCategoryState = subscriptionCategoryState,
-                offersDataState = offersDataState,
-                onEvent = onEvent,
-                onSchedule = onSchedule,
-                onLocation = onLocation,
-                innerPadding = it
-            )
-        },
         topBar = {
             AppTopBar(
                 backIcon = null,
@@ -158,7 +145,22 @@ fun MainActivityLayout(
                 }
             )
         }
-    )
+    ) {
+        HomeNavHost(
+            modifier = Modifier.padding(
+                top = it.calculateTopPadding(),
+                bottom = it.calculateBottomPadding()
+            ),
+            navController = navController,
+            refCode = refCode,
+            onNav = onNav,
+            subscriptionCategoryState = subscriptionCategoryState,
+            offersDataState = offersDataState,
+            onEvent = onEvent,
+            onSchedule = onSchedule,
+            onLocation = onLocation
+        )
+    }
 }
 
 @Composable
@@ -400,44 +402,23 @@ private fun onNavigate(
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-private fun MainNavHost(
+private fun HomeNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     refCode: String,
     subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
     offersDataState: UiState<List<OffersData>>,
     onNav: (String) -> Unit,
-    onEvent: (HomeScreenUiEvent) -> Unit,
+    onEvent: (ToolsHomeUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
     onLocation: () -> Unit,
-    innerPadding: PaddingValues,
 ) {
     NavHost(
         route = HOME_GRAPH_ROUTE,
         navController = navController,
         startDestination = BottomBarDestination.Today.route,
-        modifier = modifier.padding(innerPadding)
+        modifier = modifier
     ) {
-        composable(BottomBarDestination.Tools.route) {
-            val homeViewModel: HomeViewModel = hiltViewModel()
-            LaunchedEffect(
-                key1 = Unit,
-                block = {
-                    homeViewModel.loadHomeData()
-                }
-            )
-
-            HomeContent(
-                homeViewModel = homeViewModel,
-                refCode = refCode,
-                subscriptionCategoryState = subscriptionCategoryState,
-                offersDataState = offersDataState,
-                onNav = onNav,
-                onEvent = onEvent
-            )
-
-        }
-
         composable(BottomBarDestination.Today.route) { navBackStackEntry ->
             val todayPlanViewModel: TodayPlanViewModel =
                 navBackStackEntry.sharedViewModel(navController = navController)
@@ -565,6 +546,33 @@ private fun MainNavHost(
                     }
                 },
             )
+        }
+
+        composable(BottomBarDestination.Tools.route) {
+            val homeViewModel: HomeViewModel = hiltViewModel()
+            val toolsHomeData by homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    homeViewModel.loadHomeData()
+                    onEvent(ToolsHomeUiEvent.LoadOffersData)
+                    onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
+                }
+            )
+
+            AppUiStateHandler(
+                uiState = toolsHomeData
+            ) {
+                ToolsHomeContent(
+                    toolsHome = it,
+                    subscriptionCategoryState = subscriptionCategoryState,
+                    offersDataState = offersDataState,
+                    refCode = refCode,
+                    onNav = onNav,
+                    onEvent = onEvent
+                )
+            }
+
         }
 
         composable(BottomBarDestination.Track.route) {
