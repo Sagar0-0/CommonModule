@@ -11,7 +11,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.AppTheme
 
 
-/**The [AppVerticalGrid] composable is a custom composable function that provides
+/**The [AppLazyVerticalGrid] composable is a custom composable function that provides
  *  a vertical grid layout for displaying items in a grid format.
  * @param count The number of columns in the grid layout.
  * @param modifier the modifier to apply to this layout
@@ -19,7 +19,7 @@ import fit.asta.health.designsystem.AppTheme
  * @param horizontalArrangement The horizontal arrangement of the layout's children
  * */
 @Composable
-fun AppVerticalGrid(
+fun AppLazyVerticalGrid(
     count: Int,
     modifier: Modifier = Modifier,
     verticalArrangement: Arrangement.Vertical = Arrangement.Top,

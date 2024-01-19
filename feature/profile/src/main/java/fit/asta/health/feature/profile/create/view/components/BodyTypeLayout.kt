@@ -17,8 +17,8 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.scrollables.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
+import fit.asta.health.designsystem.molecular.scrollables.AppLazyVerticalGrid
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
@@ -51,7 +51,7 @@ fun BodyTypeLayout() {
         ) {
             TitleTexts.Level4(text = "Select the Body Type")
         }
-        AppVerticalGrid(
+        AppLazyVerticalGrid(
             count = bodyTypeList.size,
             content = {
                 bodyTypeList.forEach {

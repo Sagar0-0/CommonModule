@@ -4,8 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ExperimentalLayoutApi
-import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -13,6 +11,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -20,11 +19,11 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.unit.dp
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
@@ -52,9 +51,8 @@ import fit.asta.health.subscription.view.SubscriptionTypesPager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
-const val MAX_TOOLS_IN_ONE_ROW = 3
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalLayoutApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalCoroutinesApi
 @Composable
 fun ToolsHomeContent(
@@ -161,68 +159,69 @@ fun ToolsHomeContent(
 
             // All The Tools Composable cards
             item {
-                FlowRow(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-                ) {
-                    tools.forEach { tool ->
-                        Column(
-                            modifier = Modifier.width(98.dp)//TODO: SIZE SHOULD NOT BE STATIC
-                        ) {
-                            ToolsCardLayout(
-                                cardTitle = tool.title,
-                                type = tool.name,
-                                imgUrl = tool.url
-                            ) { type ->
-                                when (type.lowercase(Locale.getDefault())) {
-                                    "water" -> {
-                                        onNav(Graph.WaterTool.route)
-                                    }
+                val toolGridItem: @Composable (ToolsHome.HealthTool) -> Unit = { tool ->
+                    Column {
+                        ToolsCardLayout(
+                            cardTitle = tool.title,
+                            type = tool.name,
+                            imgUrl = tool.url
+                        ) { type ->
+                            when (type.lowercase(Locale.getDefault())) {
+                                "water" -> {
+                                    onNav(Graph.WaterTool.route)
+                                }
 
-                                    "steps" -> {
-                                        onNav(STEPS_GRAPH_ROUTE)
-                                    }
+                                "steps" -> {
+                                    onNav(STEPS_GRAPH_ROUTE)
+                                }
 
-                                    "workout" -> {
-                                        onNav(Graph.ExerciseTool.route + "?activity=workout")
-                                    }
+                                "workout" -> {
+                                    onNav(Graph.ExerciseTool.route + "?activity=workout")
+                                }
 
-                                    "yoga" -> {
-                                        onNav(Graph.ExerciseTool.route + "?activity=yoga")
-                                    }
+                                "yoga" -> {
+                                    onNav(Graph.ExerciseTool.route + "?activity=yoga")
+                                }
 
-                                    "hiit" -> {
-                                        onNav(Graph.ExerciseTool.route + "?activity=HIIT")
-                                    }
+                                "hiit" -> {
+                                    onNav(Graph.ExerciseTool.route + "?activity=HIIT")
+                                }
 
-                                    "dance" -> {
-                                        onNav(Graph.ExerciseTool.route + "?activity=dance")
-                                    }
+                                "dance" -> {
+                                    onNav(Graph.ExerciseTool.route + "?activity=dance")
+                                }
 
-                                    "meditation" -> {
-                                        onNav(Graph.MeditationTool.route)
-                                    }
+                                "meditation" -> {
+                                    onNav(Graph.MeditationTool.route)
+                                }
 
-                                    "sleep" -> {
-                                        onNav(SLEEP_GRAPH_ROUTE)
-                                    }
+                                "sleep" -> {
+                                    onNav(SLEEP_GRAPH_ROUTE)
+                                }
 
-                                    "breathing" -> {
-                                        onNav(Graph.BreathingTool.route)
-                                    }
+                                "breathing" -> {
+                                    onNav(Graph.BreathingTool.route)
+                                }
 
-                                    "sunlight" -> {
-                                        onNav(Graph.SunlightTool.route)
-                                    }
+                                "sunlight" -> {
+                                    onNav(Graph.SunlightTool.route)
                                 }
                             }
                         }
                     }
                 }
-
+                AppVerticalGrid(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .wrapContentHeight(),
+                    count = 3,
+                    items = tools.map {
+                        {
+                            toolGridItem(it)
+                        }
+                    }
+                )
             }
         }
 
@@ -247,7 +246,6 @@ fun ToolsHomeContent(
                     TitleTexts.Level3(text = "Why our customers love ASTA?")
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                     AppDivider(modifier = Modifier.width(AppTheme.customSize.level9))
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
                 }
             }
 
@@ -264,7 +262,11 @@ fun ToolsHomeContent(
                     ) { page ->
                         AppCard(
                             modifier = Modifier
-                                .padding(bottom = AppTheme.spacing.level2)
+                                .padding(
+                                    start = AppTheme.spacing.level2,
+                                    end = AppTheme.spacing.level2,
+                                    bottom = AppTheme.spacing.level2
+                                )
                                 .fillMaxSize()
                         ) {
                             UserTestimonialUI(
