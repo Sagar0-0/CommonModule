@@ -113,7 +113,8 @@ fun ToolsHomeContent(
                         pagerState = rememberPagerState { banners.size },
                         modifier = Modifier
                             .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen)
-                            .fillMaxWidth()
+                            .fillMaxWidth(),
+                        enableAutoAnimation = true
                     ) { page ->
                         ToolsHmScreenTopBanner(bannerDataPages = banners[page])
                     }

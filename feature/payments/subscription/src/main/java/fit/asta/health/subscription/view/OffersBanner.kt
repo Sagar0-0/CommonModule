@@ -3,6 +3,7 @@ package fit.asta.health.subscription.view
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -89,12 +90,13 @@ fun OffersBanner(
     val pagerState = rememberPagerState { offersList.size }
     Box {
         AppHorizontalPager(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth()
+                .aspectRatio(ratio = AppTheme.aspectRatio.fullScreen),
             pagerState = pagerState,
             contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
             pageSpacing = AppTheme.spacing.noSpacing,
             enableAutoAnimation = true,
-            userScrollEnabled = true
         ) { page ->
             // Container box for the banner content
             AppCard(

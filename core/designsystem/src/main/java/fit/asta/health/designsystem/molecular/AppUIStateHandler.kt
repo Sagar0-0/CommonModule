@@ -18,6 +18,7 @@ fun <T> AppUiStateHandler(
     uiState: UiState<T>,
     isScreenLoading: Boolean = true,
     onIdle: @Composable () -> Unit = {},
+    onLoading: (@Composable () -> Unit)? = null,
     onErrorMessage: () -> Unit = {},
     onRetry: () -> Unit = {},
     onSuccess: @Composable (data: T) -> Unit,
@@ -34,15 +35,19 @@ fun <T> AppUiStateHandler(
         }
 
         is UiState.Loading -> {
-            if (isScreenLoading) {
-                AppLoadingScreen()
-            } else {
-                Box(
-                    modifier = Modifier.fillMaxSize(),
-                    contentAlignment = Alignment.Center
-                ) {
-                    AppDotTypingAnimation()
+            if (onLoading == null) {
+                if (isScreenLoading) {
+                    AppLoadingScreen()
+                } else {
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AppDotTypingAnimation()
+                    }
                 }
+            } else {
+                onLoading.invoke()
             }
         }
 

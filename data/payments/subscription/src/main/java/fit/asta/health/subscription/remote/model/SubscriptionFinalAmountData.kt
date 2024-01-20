@@ -13,11 +13,11 @@ data class SubscriptionFinalAmountData(
 ) {
     data class Details(
         @SerializedName("amt")
-        val amt: Int = 0,
+        val amt: Double = 0.0,
         @SerializedName("fnlAmt")
         val fnlAmt: Double = 0.0,
         @SerializedName("ofr")
-        val ofr: Int = 0,
+        val offerCode: String = "",
         @SerializedName("ofrAmt")
         val ofrAmt: Double = 0.0,
         @SerializedName("sub")

@@ -46,11 +46,11 @@ class SubscriptionViewModel
     val offersDataState = _offersDataState.asStateFlow()
 
     private val _subscriptionFinalPaymentState =
-        MutableStateFlow<UiState<SubscriptionFinalAmountData>>(UiState.Idle)
+        MutableStateFlow<UiState<SubscriptionFinalAmountData>>(UiState.Loading)
     val subscriptionFinalPaymentState = _subscriptionFinalPaymentState.asStateFlow()
 
     private val _walletResponseState =
-        MutableStateFlow<UiState<WalletResponse>>(UiState.Idle)
+        MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
     val walletResponseState = _walletResponseState.asStateFlow()
 
     private val _couponResponseState =
@@ -58,9 +58,7 @@ class SubscriptionViewModel
     val couponResponseState = _couponResponseState.asStateFlow()
 
     fun applyCouponCode(code: String, productMRP: Double) {
-        _couponResponseState.update {
-            UiState.Loading
-        }
+        _couponResponseState.value = UiState.Loading
         viewModelScope.launch {
             _couponResponseState.update {
                 couponsRepo.getCouponCodeDetails(
@@ -76,9 +74,7 @@ class SubscriptionViewModel
     }
 
     fun getOffersData() {
-        _offersDataState.update {
-            UiState.Loading
-        }
+        _offersDataState.value = UiState.Loading
         viewModelScope.launch {
             _offersDataState.update {
                 offersRepo.getOffers().toUiState()
@@ -87,9 +83,7 @@ class SubscriptionViewModel
     }
 
     fun getSubscriptionCategoryData() {
-        _subscriptionCategoryDataState.update {
-            UiState.Loading
-        }
+        _subscriptionCategoryDataState.value = UiState.Loading
         viewModelScope.launch {
             _subscriptionCategoryDataState.update {
                 subscriptionRepo.getSubscriptionData().toUiState()
@@ -98,9 +92,7 @@ class SubscriptionViewModel
     }
 
     fun getSubscriptionDurationData(categoryId: String) {
-        _subscriptionDurationDataState.update {
-            UiState.Loading
-        }
+        _subscriptionDurationDataState.value = UiState.Loading
         viewModelScope.launch {
             _subscriptionDurationDataState.update {
                 subscriptionRepo.getSubscriptionDurationsData(categoryId).toUiState()
@@ -109,9 +101,7 @@ class SubscriptionViewModel
     }
 
     fun getSubscriptionFinalAmountData(categoryId: String, productId: String) {
-        _subscriptionFinalPaymentState.update {
-            UiState.Loading
-        }
+        _subscriptionFinalPaymentState.value = UiState.Loading
         viewModelScope.launch {
             _subscriptionFinalPaymentState.update {
                 subscriptionRepo.getFinalAmountData(
@@ -125,14 +115,16 @@ class SubscriptionViewModel
 
 
     fun getWalletData() {
-        _walletResponseState.update {
-            UiState.Loading
-        }
+        _walletResponseState.value = UiState.Loading
         viewModelScope.launch {
             _walletResponseState.update {
                 walletRepo.getData(uid).toUiState()
             }
         }
+    }
+
+    fun resetCouponState() {
+        _couponResponseState.value = UiState.Idle
     }
 
 }

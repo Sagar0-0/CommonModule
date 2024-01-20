@@ -1,6 +1,5 @@
 package fit.asta.health.main
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -73,13 +72,11 @@ fun MainNavHost(
 private fun MainNavHost(startDestination: String) {
     val context = LocalContext.current
     val navController = rememberNavController()
-
     NavHost(
         navController = navController,
         route = Graph.ROOT.route,
         startDestination = startDestination
     ) {
-        Log.e("TAG", "MainNavHost routes = ${navController.visibleEntries}")
         authRoute(navController, navController::navigateToWebView)
         basicProfileRoute()
         homeScreen(navController)

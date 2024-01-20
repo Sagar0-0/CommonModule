@@ -12,7 +12,6 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.appcompat.app.AppCompatActivity
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -60,6 +59,10 @@ import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
+import fit.asta.health.payment.PaymentActivity
+import fit.asta.health.subscription.BuyScreenEvent
+import fit.asta.health.subscription.SubscriptionCheckoutScreen
+import fit.asta.health.subscription.SubscriptionCheckoutScreenData
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.view.SubscriptionDurationsScreen
 
@@ -407,44 +410,24 @@ fun NavGraphBuilder.homeScreen(
 
             val subscriptionViewModel: SubscriptionViewModel =
                 it.sharedViewModel(navController = navController)
+            LaunchedEffect(
+                key1 = Unit,
+                block = {
+                    subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
+//                    subscriptionViewModel.getWalletData()
+                }
+            )
+            val context = LocalContext.current
 
-//            val walletResponseState =
-//                subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle().value
-//            val couponResponseState =
-//                subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle().value
-            val subscriptionFinalPaymentState =
-                subscriptionViewModel.subscriptionFinalPaymentState.collectAsStateWithLifecycle().value
+            val walletResponseState by
+            subscriptionViewModel.walletResponseState.collectAsStateWithLifecycle()
+            val couponResponseState by
+            subscriptionViewModel.couponResponseState.collectAsStateWithLifecycle()
+            val subscriptionFinalPaymentState by
+            subscriptionViewModel.subscriptionFinalPaymentState.collectAsStateWithLifecycle()
 
             AppUiStateHandler(
                 uiState = subscriptionFinalPaymentState,
-                onSuccess = {
-                    Text(text = "Final Payment Screen")
-//                    ProceedToBuyScreen(
-//                        subscriptionFinalPaymentData = subscriptionFinalPaymentState.data,
-//                        couponResponseState = couponResponseState,
-//                        walletResponseState = walletResponseState,
-//                        onEvent = { event ->
-//                            when (event) {
-//                                BuyScreenEvent.BACK -> {
-//                                    navController.popBackStack()
-//                                }
-//
-//                                is BuyScreenEvent.ProceedToBuy -> {
-//                                    PaymentActivity.launch(context, event.orderRequest) {
-//                                        navController.popBackStack()
-//                                    }
-//                                }
-//
-//                                is BuyScreenEvent.ApplyCouponCode -> {
-//                                    subscriptionViewModel.applyCouponCode(
-//                                        event.code,
-//                                        event.productMRP
-//                                    )
-//                                }
-//                            }
-//                        }
-//                    )
-                },
                 onIdle = {
                     LaunchedEffect(key1 = Unit) {
                         subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
@@ -456,7 +439,56 @@ fun NavGraphBuilder.homeScreen(
                 onErrorMessage = {
                     navController.popBackStack()
                 }
-            )
+            ) { data ->
+                SubscriptionCheckoutScreen(
+                    subscriptionCheckoutScreenData = SubscriptionCheckoutScreenData(
+                        planMRP = data.details.amt,
+                        offerAmount = data.details.ofrAmt,
+                        imageUrl = data.details.url,
+                        planName = data.details.ttl,
+                        planDesc = data.details.sub,
+                        offerCode = data.details.offerCode,
+                        categoryId = categoryId,
+                        productId = productId,
+                        featuresList = data.features.map { feature ->
+                            feature.ttl
+                        }
+                    ),
+                    couponResponseState = couponResponseState,
+                    walletResponseState = walletResponseState
+                ) { event ->
+                    when (event) {
+                        is BuyScreenEvent.ApplyCouponCode -> {
+                            subscriptionViewModel.applyCouponCode(event.code, event.productMRP)
+                        }
+
+                        BuyScreenEvent.BACK -> {
+                            navController.popBackStack()
+                        }
+
+                        BuyScreenEvent.FetchWalletData -> {
+                            subscriptionViewModel.getWalletData()
+                        }
+
+                        is BuyScreenEvent.ProceedToBuy -> {
+                            PaymentActivity.launch(
+                                context = context,
+                                orderRequest = event.orderRequest
+                            ) {
+                                navController.navigate(HOME_ROUTE) {
+                                    popUpTo(HOME_ROUTE) {
+                                        inclusive = false
+                                    }
+                                }
+                            }
+                        }
+
+                        BuyScreenEvent.ResetCouponState -> {
+                            subscriptionViewModel.resetCouponState()
+                        }
+                    }
+                }
+            }
         }
     }
 }

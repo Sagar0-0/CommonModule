@@ -123,7 +123,6 @@ fun SubscriptionTypesPager(
                 pagerState = pagerState,
                 contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
                 pageSpacing = AppTheme.spacing.level2,
-                enableAutoAnimation = true,
                 userScrollEnabled = true
             ) { page ->
                 SubscriptionPassCard(subscriptionData = subPlans[page]) {

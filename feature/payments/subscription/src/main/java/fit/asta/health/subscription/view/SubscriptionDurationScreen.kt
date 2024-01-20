@@ -1,13 +1,15 @@
 package fit.asta.health.subscription.view
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -15,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
 import coil.request.ImageRequest
@@ -196,7 +197,7 @@ fun SubscriptionDurationsScreen(
             modifier = Modifier
                 .padding(padd)
                 .fillMaxSize()
-                .padding(start = AppTheme.spacing.level2, end = AppTheme.spacing.level2),
+                .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             offersList?.let {
@@ -206,13 +207,20 @@ fun SubscriptionDurationsScreen(
             }
             FeaturesSection(featuresList)
             DurationsSection(durationsList, onNavigateToFinalPayment)
+            Spacer(modifier = Modifier)
         }
     }
 }
 
 @Composable
 fun DurationsSection(durationsList: List<DurationUiData>, onClick: (productId: String) -> Unit) {
-    Box(modifier = Modifier.fillMaxWidth()) {
+    Column(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+    ) {
+        HeadingTexts.Level1(text = "Select Duration:")
         durationsList.forEach { plansData ->
             PlanDurationCard(durationUiData = plansData) {
                 onClick(plansData.productId)
@@ -224,8 +232,10 @@ fun DurationsSection(durationsList: List<DurationUiData>, onClick: (productId: S
 @Composable
 fun FeaturesSection(featuresList: List<FeaturesUiData>) {
     Column(
-        modifier = Modifier.fillMaxWidth(),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         HeadingTexts.Level1(text = "Features included:")
         featuresList.forEach {
@@ -249,7 +259,7 @@ fun FeaturesSection(featuresList: List<FeaturesUiData>) {
                             .padding(bottom = AppTheme.spacing.level0),
                     ) {
                         TitleTexts.Level2(text = it.title)
-                        BodyTexts.Level3(text = it.description)
+                        CaptionTexts.Level2(text = it.description)
                     }
                 }
             }
@@ -315,7 +325,7 @@ private fun RowScope.DisplayPriceDetails(durationUiData: DurationUiData) {
         BodyTexts.Level2(
             text = durationUiData.price + "/- OFF",
             modifier = Modifier.alpha(AppTheme.alphaValues.level2),
-            color = Color.LightGray
+            color = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
         )
     }
 }
