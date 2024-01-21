@@ -50,7 +50,7 @@ class SubscriptionViewModel
     val subscriptionFinalPaymentState = _subscriptionFinalPaymentState.asStateFlow()
 
     private val _walletResponseState =
-        MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
+        MutableStateFlow<UiState<WalletResponse>>(UiState.Idle)
     val walletResponseState = _walletResponseState.asStateFlow()
 
     private val _couponResponseState =

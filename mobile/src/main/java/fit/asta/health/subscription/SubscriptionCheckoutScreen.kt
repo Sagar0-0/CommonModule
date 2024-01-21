@@ -26,12 +26,14 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
@@ -67,8 +69,18 @@ private fun BuyPlanScreen() {
         ) {
             SubscriptionCheckoutScreen(
                 subscriptionCheckoutScreenData = SubscriptionCheckoutScreenData(),
-                couponResponseState = UiState.Idle,
-                walletResponseState = UiState.Loading
+                couponResponseState = UiState.Success(
+                    CouponResponse(
+
+                    )
+                ),
+                walletResponseState = UiState.Success(
+                    WalletResponse(
+                        walletData = WalletResponse.WalletData(
+                            money = 4.5, points = 6.7, id = "movet", uid = "quaeque"
+                        )
+                    )
+                )
             ) {
 
             }
@@ -108,7 +120,6 @@ fun SubscriptionCheckoutScreen(
     walletResponseState: UiState<WalletResponse>,
     onEvent: (BuyScreenEvent) -> Unit,
 ) {
-
     val (couponCode, onCouponChange) = rememberSaveable {
         mutableStateOf("")
     }
@@ -143,29 +154,28 @@ fun SubscriptionCheckoutScreen(
         }
 
     // AppSurface is a custom composable providing a themed surface for the content.
-    AppScaffold {
+    AppScaffold(
+        topBar = {
+            AppTopBar(
+                onBack = {
+                    onEvent(BuyScreenEvent.BACK)
+                }
+            )
+        }
+    ) {
         Column(
             modifier = Modifier
+                .fillMaxWidth()
                 .verticalScroll(rememberScrollState()),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            Box(modifier = Modifier.fillMaxSize()) {
-                AppTopBar(
-                    modifier = Modifier
-                        .align(Alignment.TopStart)
-                        .padding(top = AppTheme.spacing.level2, start = AppTheme.spacing.level2)
-                ) {
-                    onEvent(BuyScreenEvent.BACK)
-                }
-
-                // AppLocalImage is a custom composable to load and display local images.
-                AppNetworkImage(
-                    model = getImgUrl(subscriptionCheckoutScreenData.imageUrl),
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .aspectRatio(AppTheme.aspectRatio.fullScreen)
-                )
-            }
+            // AppLocalImage is a custom composable to load and display local images.
+            AppNetworkImage(
+                model = getImgUrl(subscriptionCheckoutScreenData.imageUrl),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .aspectRatio(AppTheme.aspectRatio.fullScreen)
+            )
 
             // Various card composable and layouts are included.
             ProMembershipCard(
@@ -178,13 +188,18 @@ fun SubscriptionCheckoutScreen(
             AppUiStateHandler(
                 uiState = walletResponseState,
                 onLoading = {
-                    AppCard(
+                    Box(
                         modifier = Modifier
                             .fillMaxWidth()
+                            .clip(AppTheme.shape.level2)
                             .padding(AppTheme.spacing.level2)
                             .appShimmerAnimation(true)
                     ) {
-                        BodyTexts.Level1(text = "Fetching Wallet Data...")
+                        BodyTexts.Level2(
+                            modifier = Modifier
+                                .padding(AppTheme.spacing.level2),
+                            text = "Fetching Wallet Data..."
+                        )
                     }
                 },
                 onRetry = {
@@ -216,12 +231,18 @@ fun SubscriptionCheckoutScreen(
                 )
             }
 
+            PriceBreakdownSection(
+                subscriptionCheckoutScreenData.planMRP,
+                subscriptionCheckoutScreenData.offerAmount,
+                walletMoneyUsed,
+                walletPointsUsed,
+                couponDiscountMoney,
+                finalPayableAmount
+            )
+
             AppFilledButton(
                 modifier = Modifier
-                    .padding(
-                        horizontal = AppTheme.spacing.level5,
-                        vertical = AppTheme.spacing.level3
-                    )
+                    .padding(horizontal = AppTheme.spacing.level2)
                     .fillMaxWidth(),
                 textToShow = "Continue to Buy",
                 onClick = {
@@ -250,6 +271,93 @@ fun SubscriptionCheckoutScreen(
     }
 }
 
+@Composable
+fun PriceBreakdownSection(
+    planMRP: Double,
+    offerAmount: Double,
+    walletMoneyUsed: Double,
+    walletPointsUsed: Double,
+    couponDiscountMoney: Double,
+    finalPayableAmount: Double
+) {
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                HeadingTexts.Level3(text = "Listing Price")
+                HeadingTexts.Level3(text = planMRP.toString())
+            }
+            if (offerAmount != 0.0) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Offer Discount")
+                    HeadingTexts.Level3(text = "-$offerAmount")
+                }
+            }
+            if (walletMoneyUsed != 0.0) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Wallet Money used")
+                    HeadingTexts.Level3(text = "-$walletMoneyUsed")
+                }
+            }
+            if (walletPointsUsed != 0.0) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Wallet Points used")
+                    HeadingTexts.Level3(text = "-$walletPointsUsed")
+                }
+            }
+            if (couponDiscountMoney != 0.0) {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Coupon applied")
+                    HeadingTexts.Level3(text = "-$couponDiscountMoney")
+                }
+            }
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                HeadingTexts.Level3(text = "Final Price")
+                HeadingTexts.Level3(text = finalPayableAmount.toString())
+            }
+        }
+    }
+}
+
 const val COUPON_CODE_SIZE_LIMIT = 20
 
 @Composable
@@ -263,25 +371,22 @@ fun CouponSection(
     AppUiStateHandler(
         uiState = couponResponseState,
         onIdle = {
-            Row(
+            AppOutlinedTextField(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2)
-            ) {
-                AppOutlinedTextField(
-                    value = couponCode,
-                    onValueChange = onCouponChange,
-                    trailingIcon = Icons.Default.ArrowForwardIos,
-                    onTrailingIconClicked = {
-                        onApplyCode(couponCode)
-                    },
-                    appTextFieldType = AppTextFieldValidator(
-                        AppTextFieldType.Custom(
-                            COUPON_CODE_SIZE_LIMIT
-                        )
+                    .padding(horizontal = AppTheme.spacing.level2),
+                value = couponCode,
+                onValueChange = onCouponChange,
+                trailingIcon = Icons.Default.ArrowForwardIos,
+                onTrailingIconClicked = {
+                    onApplyCode(couponCode)
+                },
+                appTextFieldType = AppTextFieldValidator(
+                    AppTextFieldType.Custom(
+                        COUPON_CODE_SIZE_LIMIT
                     )
                 )
-            }
+            )
         },
         onErrorMessage = {
             onEvent(BuyScreenEvent.ResetCouponState)
@@ -290,7 +395,7 @@ fun CouponSection(
         AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
+                .padding(horizontal = AppTheme.spacing.level2)
         ) {
             Row(
                 modifier = Modifier
@@ -299,7 +404,7 @@ fun CouponSection(
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HeadingTexts.Level2(text = "Coupon $couponCode applied")
+                HeadingTexts.Level3(text = "Coupon $couponCode applied")
                 AppIconButton(
                     onClick = {
                         onEvent(BuyScreenEvent.ResetCouponState)
@@ -310,7 +415,6 @@ fun CouponSection(
             }
         }
     }
-
 }
 
 @Composable
@@ -328,26 +432,31 @@ fun WalletApplyingSection(
     var moneyChecked by rememberSaveable {
         mutableStateOf(false)
     }
-    val pointsToDisplay = rememberSaveable(pointsApplied) {
+    val pointsToDisplay by rememberSaveable(pointsApplied) {
         mutableDoubleStateOf(totalPoints - pointsApplied)
     }
-    val moneyToDisplay = rememberSaveable(moneyApplied) {
+    val moneyToDisplay by rememberSaveable(moneyApplied) {
         mutableDoubleStateOf(totalMoney - moneyApplied)
     }
 
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(AppTheme.spacing.level2)
+            .padding(horizontal = AppTheme.spacing.level2)
     ) {
         Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                HeadingTexts.Level2(text = "Wallet Points: $pointsToDisplay")
+                HeadingTexts.Level3(text = "Wallet Points: $pointsToDisplay")
                 if (totalPoints > 0) {
                     AppCheckBoxButton(
                         checked = pointsChecked
@@ -369,8 +478,14 @@ fun WalletApplyingSection(
                 }
             }
 
-            Row {
-                HeadingTexts.Level2(text = "Wallet Money: $moneyToDisplay")
+            AppDivider(color = AppTheme.colors.onSurfaceVariant)
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                HeadingTexts.Level3(text = "Wallet Money: $moneyToDisplay")
                 if (totalMoney > 0) {
                     AppCheckBoxButton(
                         checked = moneyChecked
@@ -442,97 +557,3 @@ fun ProMembershipCard(
         }
     }
 }
-
-///**
-// * Composable function for displaying individual offer content.
-// */
-//@Composable
-//private fun IndividualOfferContent(desc: String) {
-//    // Row displaying an icon, text, and a button for each offer.
-//    Row(
-//        modifier = Modifier.fillMaxWidth(),
-//        horizontalArrangement = Arrangement.SpaceBetween,
-//        verticalAlignment = Alignment.CenterVertically
-//    ) {
-//
-//        AppIcon(painter = painterResource(id = R.drawable.sell))
-//
-//        BodyTexts.Level1(
-//            text = desc,
-//            modifier = Modifier.fillMaxWidth(0.7f)
-//        )
-//
-//        AppIconButton(
-//            painter = painterResource(id = R.drawable.navigate_next),
-//            modifier = Modifier.padding(start = AppTheme.spacing.level2), onClick = {}
-//        )
-//    }
-//}
-//
-///**
-// * Composable function for displaying EMI details.
-// */
-//@Composable
-//fun EMISection(emi: String) {
-//
-//    // Column displaying EMI details with padding and spacing.
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(horizontal = AppTheme.spacing.level2),
-//        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-//    ) {
-//
-//        // Title for the EMI section.
-//        TitleTexts.Level1(text = "No Cost EMI")
-//
-//        // Row displaying an icon, text, and a button for EMI details.
-//        Row(
-//            Modifier.fillMaxWidth(),
-//            horizontalArrangement = Arrangement.SpaceBetween,
-//            verticalAlignment = Alignment.CenterVertically
-//        ) {
-//
-//            AppIcon(imageVector = Icons.Filled.ShoppingCart)
-//
-//            BodyTexts.Level1(
-//                text = "Starting from $emi/month",
-//            )
-//        }
-//    }
-//}
-
-///**
-// * Composable function for displaying "How it works" details.
-// */
-//@Composable
-//fun HowItWorksSection(subscriptionPlanFeature: List<SubscriptionPlanType.SubscriptionPlanFeature>) {
-//
-//    // Column displaying "How it works" details with padding and spacing.
-//    Column(
-//        modifier = Modifier
-//            .fillMaxWidth()
-//            .padding(horizontal = AppTheme.spacing.level2),
-//        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-//    ) {
-//
-//        // Title for the "How it works" section.
-//        TitleTexts.Level1(text = "How it works")
-//
-//        subscriptionPlanFeature.forEach {
-//            Row(
-//                modifier = Modifier.fillMaxWidth(),
-//                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//
-//                AppIcon(imageVector = Icons.Filled.Check)
-//
-//                BodyTexts.Level1(
-//                    text = it.dsc
-//                )
-//            }
-//        }
-//
-//    }
-//}

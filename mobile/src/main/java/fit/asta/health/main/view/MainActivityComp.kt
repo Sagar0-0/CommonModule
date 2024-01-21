@@ -428,11 +428,6 @@ fun NavGraphBuilder.homeScreen(
 
             AppUiStateHandler(
                 uiState = subscriptionFinalPaymentState,
-                onIdle = {
-                    LaunchedEffect(key1 = Unit) {
-                        subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
-                    }
-                },
                 onRetry = {
                     subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
                 },
