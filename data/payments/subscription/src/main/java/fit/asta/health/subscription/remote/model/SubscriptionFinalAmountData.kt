@@ -17,6 +17,8 @@ data class SubscriptionFinalAmountData(
         @SerializedName("fnlAmt")
         val fnlAmt: Double = 0.0,
         @SerializedName("ofr")
+        val offerDiscount: Double = 0.0,
+        @SerializedName("code")
         val offerCode: String = "",
         @SerializedName("ofrAmt")
         val ofrAmt: Double = 0.0,
