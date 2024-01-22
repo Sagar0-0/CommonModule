@@ -1,5 +1,6 @@
 package fit.asta.health.subscription
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -48,7 +49,6 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.discounts.remote.model.CouponResponse
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderRequestType
@@ -57,7 +57,12 @@ import fit.asta.health.wallet.remote.model.WalletResponse
 /**
  * Composable function for the Buy Plan Screen. It sets up the UI using the AppTheme and a Box layout.
  */
-@Preview
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
 @Composable
 private fun BuyPlanScreen() {
 
@@ -68,7 +73,14 @@ private fun BuyPlanScreen() {
             contentAlignment = Alignment.Center
         ) {
             SubscriptionCheckoutScreen(
-                subscriptionCheckoutScreenData = SubscriptionCheckoutScreenData(),
+                subscriptionCheckoutScreenData = SubscriptionCheckoutScreenData(
+                    planName = "Bronze",
+                    planDesc = "Some description here",
+                    featuresList = listOf(
+                        "abcolor",
+                        "Default"
+                    )
+                ),
                 couponResponseState = UiState.Success(
                     CouponResponse(
 
@@ -377,6 +389,7 @@ fun CouponSection(
                     .padding(horizontal = AppTheme.spacing.level2),
                 value = couponCode,
                 onValueChange = onCouponChange,
+                label = "Coupon code",
                 trailingIcon = Icons.Default.ArrowForwardIos,
                 onTrailingIconClicked = {
                     onApplyCode(couponCode)
@@ -539,7 +552,7 @@ fun ProMembershipCard(
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Column(modifier = Modifier.weight(1f)) {
-                    TitleTexts.Level1(text = planName)
+                    HeadingTexts.Level1(text = planName)
                     CaptionTexts.Level2(text = desc)
                 }
                 HeadingTexts.Level4(
@@ -547,11 +560,18 @@ fun ProMembershipCard(
                 )
             }
 
-            featuresList.forEach {
-                Row(modifier = Modifier.fillMaxWidth()) {
-                    AppIcon(imageVector = Icons.Filled.Build)
-                    Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
-                    BodyTexts.Level1(text = it)
+            Column(
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+            ) {
+                featuresList.forEach {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        AppIcon(imageVector = Icons.Filled.Build)
+                        Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
+                        BodyTexts.Level3(text = it)
+                    }
                 }
             }
         }
