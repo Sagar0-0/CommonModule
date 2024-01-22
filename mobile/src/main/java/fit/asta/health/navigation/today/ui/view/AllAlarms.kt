@@ -1,23 +1,22 @@
 package fit.asta.health.navigation.today.ui.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -38,8 +37,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppSwitch
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -59,7 +58,8 @@ fun AllAlarms(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.all_events),
-                onBack = { onEvent(AlarmEvent.OnBack) })
+                onBack = { onEvent(AlarmEvent.OnBack) }
+            )
         },
         floatingActionButton = {
             AppFloatingActionButton(
@@ -76,31 +76,37 @@ fun AllAlarms(
                         )
                     )
                 },
-                modifier = Modifier.size(50.dp),
-                shape = CircleShape,
             ) {
-                AppIcon(imageVector = Icons.Filled.Add, contentDescription = null)
+                AppIcon(
+                    imageVector = Icons.Filled.Add
+                )
             }
         },
     )
     { paddingValues ->
         LazyColumn(
-            Modifier
+            modifier = Modifier
                 .fillMaxWidth()
                 .padding(paddingValues),
-            contentPadding = PaddingValues(16.dp),
+            horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
+            item {
+                Spacer(modifier = Modifier)
+            }
             items(items = list) { alarm ->
-                val time = AMPMHoursMin(
-                    hours = if (alarm.time.hours > 12) {
-                        alarm.time.hours - 12
-                    } else if (alarm.time.hours == 0) 12
-                    else alarm.time.hours,
-                    minutes = alarm.time.minutes,
-                    dayTime = if (alarm.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
-                )
+                val time = remember {
+                    AMPMHoursMin(
+                        hours = if (alarm.time.hours > 12) {
+                            alarm.time.hours - 12
+                        } else if (alarm.time.hours == 0) 12
+                        else alarm.time.hours,
+                        minutes = alarm.time.minutes,
+                        dayTime = if (alarm.time.hours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                    )
+                }
                 AlarmItem(
+                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
                     title = alarm.info.name,
                     image = alarm.info.url,
                     description = alarm.info.description,
@@ -112,12 +118,36 @@ fun AllAlarms(
                     }
                 )
             }
+            item {
+                Spacer(modifier = Modifier)
+            }
         }
     }
 }
 
 @Composable
-@Preview
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+fun AlarmItemPreview() {
+    AppTheme {
+        AlarmItem(
+            modifier = Modifier,
+            image = "",
+            title = "Fasting",
+            description = "Fasting to cleanse your body",
+            time = "9:00am",
+            state = true,
+            onStateChange = {},
+            onSchedule = {}
+        )
+    }
+}
+
+@Composable
 fun AlarmItem(
     modifier: Modifier = Modifier,
     image: String = "",
@@ -128,13 +158,17 @@ fun AlarmItem(
     onStateChange: (Boolean) -> Unit = {},
     onSchedule: () -> Unit = {}
 ) {
-    AppCard(modifier = modifier) {
+    AppCard(
+        modifier = modifier
+    ) {
         Column(
             modifier = Modifier
-                .padding(16.dp)
+                .padding(AppTheme.spacing.level2)
                 .fillMaxWidth(),
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level0)
+            verticalArrangement = Arrangement.spacedBy(
+                AppTheme.spacing.level1
+            )
         ) {
             Row(
                 modifier = Modifier
@@ -157,27 +191,25 @@ fun AlarmItem(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                     horizontalAlignment = Alignment.Start
                 ) {
-                    TitleTexts.Level2(text = title)
-                    BodyTexts.Level2(text = description)
-                    TitleTexts.Level2(text = time)
+                    TitleTexts.Level2(text = title, maxLines = 1)
+                    BodyTexts.Level2(text = description, maxLines = 1)
+                    TitleTexts.Level2(text = time, maxLines = 1)
                 }
             }
-            Row {
-                AppTextButton(
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            ) {
+                AppOutlinedButton(
+                    modifier = Modifier.weight(1f),
                     textToShow = stringResource(R.string.reschedule),
-                    modifier = Modifier.weight(.5f),
                     onClick = onSchedule
                 )
-                Box(
-                    modifier = Modifier.weight(.5f),
-                    contentAlignment = Alignment.CenterEnd
-                ) {
-                    AppSwitch(
-                        checked = state,
-                        onCheckedChange = onStateChange
-                    )
-                }
-
+                AppSwitch(
+                    checked = state,
+                    onCheckedChange = onStateChange
+                )
             }
         }
     }

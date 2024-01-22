@@ -27,7 +27,8 @@ fun NavGraphBuilder.allAlarmsRoute(navController: NavController) {
         val context = LocalContext.current
         val checkPermissionAndLaunchScheduler =
             checkPermissionAndLaunchScheduler(context, navController)
-        AllAlarms(list = list,
+        AllAlarms(
+            list = list,
             onEvent = {
                 when (it) {
                     is AlarmEvent.SetAlarmState -> {
