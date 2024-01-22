@@ -30,6 +30,7 @@ dependencies {
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
     implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)

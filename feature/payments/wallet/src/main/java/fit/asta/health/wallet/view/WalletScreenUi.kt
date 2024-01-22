@@ -1,5 +1,6 @@
 package fit.asta.health.wallet.view
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
@@ -37,6 +38,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
+import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
@@ -45,7 +47,7 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.offers.remote.model.OffersData
@@ -56,13 +58,90 @@ import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
+
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
+@Composable
+private fun WalletScreenUiPreview() {
+    AppTheme {
+        WalletScreenUi(
+            modifier = Modifier,
+            walletData = WalletResponse(
+                walletData = WalletResponse.WalletData(
+                    money = 100.0,
+                    points = 9.0
+                ),
+                walletTransactionData = listOf(
+                    WalletResponse.WalletTransactionData(
+                        id = "lacinia",
+                        uid = "feugait",
+                        tid = "singulis",
+                        transactionType = 3779,
+                        referredBy = "lacus",
+                        referee = "liber",
+                        timeStamp = "ad",
+                        from = "varius",
+                        to = "sententiae",
+                        debitAmounts = WalletResponse.WalletTransactionDebitData(
+                            points = 4.5, money = 6.7
+                        ),
+                        creditAmounts = WalletResponse.WalletTransactionCreditData(
+                            points = 4.5, money = 6.7
+                        )
+                    ),
+                    WalletResponse.WalletTransactionData(
+                        id = "lacinia",
+                        uid = "feugait",
+                        tid = "singulis",
+                        transactionType = 3779,
+                        referredBy = "lacus",
+                        referee = "liber",
+                        timeStamp = "ad",
+                        from = "varius",
+                        to = "sententiae",
+                        debitAmounts = WalletResponse.WalletTransactionDebitData(
+                            points = 4.5, money = 6.7
+                        ),
+                        creditAmounts = WalletResponse.WalletTransactionCreditData(
+                            points = 4.5, money = 6.7
+                        )
+                    ),
+                    WalletResponse.WalletTransactionData(
+                        id = "lacinia",
+                        uid = "feugait",
+                        tid = "singulis",
+                        transactionType = 3779,
+                        referredBy = "lacus",
+                        referee = "liber",
+                        timeStamp = "ad",
+                        from = "varius",
+                        to = "sententiae",
+                        debitAmounts = WalletResponse.WalletTransactionDebitData(
+                            points = 4.5, money = 6.7
+                        ),
+                        creditAmounts = WalletResponse.WalletTransactionCreditData(
+                            points = 4.5, money = 6.7
+                        )
+                    ),
+                )
+            ),
+            onProceedToAdd = {
+
+            }
+        )
+    }
+}
+
+
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WalletScreenUi(
     modifier: Modifier,
     walletData: WalletResponse,
-    offersList: List<OffersData>?,
-    onNavigateWithOffer: (OffersData) -> Unit,
     onProceedToAdd: (String) -> Unit
 ) {
     var isAddMoneySheetVisible by rememberSaveable {
@@ -86,27 +165,31 @@ fun WalletScreenUi(
     ) {
         Column(
             horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.Center
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            var amount by rememberSaveable { mutableStateOf("0") }
-            AppTextField(
-                modifier = Modifier.padding(AppTheme.spacing.level2),
+            var amount by rememberSaveable { mutableStateOf("") }
+            AppOutlinedTextField(
                 value = amount,
                 onValueChange = {
                     amount = it
                 },
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2),
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
-                    imeAction = ImeAction.Done
+                    imeAction = ImeAction.Send
                 ),
                 keyboardActions = KeyboardActions(
-                    onDone = {
+                    onSend = {
                         onProceedToAdd(amount)
                     }
                 )
             )
             AppTextButton(
-                modifier = Modifier.padding(AppTheme.spacing.level2),
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2),
                 textToShow = "Proceed to add",
                 onClick = {
                     onProceedToAdd(amount)
@@ -119,19 +202,14 @@ fun WalletScreenUi(
     Column(
         modifier = modifier
             .fillMaxWidth(),
-        horizontalAlignment = Alignment.CenterHorizontally
+        horizontalAlignment = Alignment.CenterHorizontally,
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        offersList?.let {
-            OffersCarousal(
-                offersList = offersList
-            ) {
-                onNavigateWithOffer(it)
-            }
-        }
-
-        Spacer(modifier = Modifier.padding(AppTheme.spacing.level2))
-
         WalletBalance(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(top = AppTheme.spacing.level2)
+                .padding(horizontal = AppTheme.spacing.level2),
             points = walletData.walletData.points,
             money = walletData.walletData.money,
             onAddMoneyClick = {
@@ -335,30 +413,30 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
 }
 
 @Composable
-fun WalletBalance(points: Double, money: Double, onAddMoneyClick: () -> Unit) {
+fun WalletBalance(
+    modifier: Modifier,
+    points: Double,
+    money: Double,
+    onAddMoneyClick: () -> Unit
+) {
     AppCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level2),
+        modifier = modifier
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level1),
+                .padding(AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.CenterVertically
         ) {
             Column(
-                modifier = Modifier
-                    .padding(AppTheme.spacing.level1)
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)
             ) {
                 TitleTexts.Level2(text = "$money/$points")
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                 TitleTexts.Level2(text = "Money/Points")
             }
             AppTextButton(
                 textToShow = "Add money",
-                modifier = Modifier.padding(AppTheme.spacing.level1),
                 onClick = onAddMoneyClick
             )
         }

@@ -41,7 +41,7 @@ fun NavController.navigateToOrderDetailsPage(orderId: OrderId) {
 }
 
 @OptIn(ExperimentalMaterial3Api::class)
-fun NavGraphBuilder.ordersRoute(navController: NavController, onBack: () -> Unit) {
+fun NavGraphBuilder.ordersRoute(navController: NavController) {
     navigation(
         route = ORDERS_GRAPH_ROUTE,
         startDestination = ORDERS_LIST_ROUTE
@@ -56,7 +56,7 @@ fun NavGraphBuilder.ordersRoute(navController: NavController, onBack: () -> Unit
                 topBar = {
                     AppTopBar(
                         title = "Orders",
-                        onBack = onBack
+                        onBack = navController::popBackStack
                     )
                 }
             ) { padding ->
@@ -113,9 +113,7 @@ fun NavGraphBuilder.ordersRoute(navController: NavController, onBack: () -> Unit
                 topBar = {
                     AppTopBar(
                         title = "Order Details",
-                        onBack = {
-                            navController.popBackStack()
-                        }
+                        onBack = navController::popBackStack
                     )
                 }
             ) { padding ->

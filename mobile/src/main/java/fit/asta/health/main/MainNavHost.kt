@@ -173,7 +173,7 @@ private fun MainNavHost(startDestination: String) {
         }
         feedbackRoute(navController::popBackStack)
         addressRoute(navController::popBackStack)
-        ordersRoute(navController::popBackStack)
+        ordersRoute(navController)
 
         subscriptionRoute(
             onBackPress = navController::popBackStack,

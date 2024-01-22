@@ -1,6 +1,7 @@
 package fit.asta.health.wallet
 
 import android.content.Context
+import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
@@ -84,11 +85,7 @@ fun NavGraphBuilder.walletRoute(
                 is UiState.Success -> {
                     WalletScreenUi(
                         modifier = Modifier.padding(paddingValues),
-                        walletData = walletDataState.data,
-                        offersList = offersList,
-                        onNavigateWithOffer = {
-                            //TODO : Navigate to final payment sccreen
-                        }
+                        walletData = walletDataState.data
                     ) { amount ->
                         if (amount != "0") {
                             onProceedToAdd(
@@ -96,6 +93,9 @@ fun NavGraphBuilder.walletRoute(
                             ) {
                                 walletViewModel.getData()
                             }
+                        } else {
+                            Toast.makeText(context, "Enter a valid amount", Toast.LENGTH_SHORT)
+                                .show()
                         }
                     }
                 }
