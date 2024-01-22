@@ -59,7 +59,6 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -89,12 +88,12 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.services.SchedulerWorker
+import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeContent
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
-import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
@@ -108,6 +107,7 @@ fun HomeScreensLayout(
     profileImageUri: String?,
     subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
     offersDataState: UiState<List<OffersData>>,
+    toolsHomeDataState: UiState<ToolsHome>,
     notificationState: Boolean,
     sessionState: Boolean,
     onClick: (key: MainTopBarActions) -> Unit,
@@ -147,13 +147,11 @@ fun HomeScreensLayout(
         }
     ) {
         HomeNavHost(
-            modifier = Modifier.padding(
-                top = it.calculateTopPadding(),
-                bottom = it.calculateBottomPadding()
-            ),
+            modifier = Modifier.padding(it),
             navController = navController,
             refCode = refCode,
             onNav = onNav,
+            toolsHomeData = toolsHomeDataState,
             subscriptionCategoryState = subscriptionCategoryState,
             offersDataState = offersDataState,
             onEvent = onEvent,
@@ -406,6 +404,7 @@ private fun HomeNavHost(
     navController: NavHostController,
     modifier: Modifier = Modifier,
     refCode: String,
+    toolsHomeData: UiState<ToolsHome>,
     subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
     offersDataState: UiState<List<OffersData>>,
     onNav: (String) -> Unit,
@@ -549,14 +548,18 @@ private fun HomeNavHost(
         }
 
         composable(BottomBarDestination.Tools.route) {
-            val homeViewModel: HomeViewModel = hiltViewModel()
-            val toolsHomeData by homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
             LaunchedEffect(
                 key1 = Unit,
                 block = {
-                    homeViewModel.loadHomeData()
-                    onEvent(ToolsHomeUiEvent.LoadOffersData)
-                    onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
+                    if (offersDataState !is UiState.Success) {
+                        onEvent(ToolsHomeUiEvent.LoadOffersData)
+                    }
+                    if (subscriptionCategoryState !is UiState.Success) {
+                        onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
+                    }
+                    if (toolsHomeData !is UiState.Success) {
+                        onEvent(ToolsHomeUiEvent.LoadToolsData)
+                    }
                 }
             )
 

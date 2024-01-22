@@ -322,6 +322,8 @@ fun ToolsHomeContent(
 sealed interface ToolsHomeUiEvent {
     data object LoadSubscriptionCategoryData : ToolsHomeUiEvent
     data object LoadOffersData : ToolsHomeUiEvent
+    data object LoadToolsData : ToolsHomeUiEvent
+
     data class NavigateToSubscriptionDurations(val categoryId: String) : ToolsHomeUiEvent
     data class NavigateToFinalPayment(val categoryId: String, val productId: String) :
         ToolsHomeUiEvent

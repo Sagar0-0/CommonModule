@@ -59,6 +59,7 @@ import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
 import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
+import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
 import fit.asta.health.payment.PaymentActivity
 import fit.asta.health.subscription.BuyScreenEvent
 import fit.asta.health.subscription.SubscriptionCheckoutScreen
@@ -95,27 +96,31 @@ fun NavGraphBuilder.homeScreen(
             val context = LocalContext.current
 
             val mainViewModel: MainViewModel = hiltViewModel()
-            val subscriptionViewModel: SubscriptionViewModel =
-                it.sharedViewModel(navController = navController)
+            val referralDataState by mainViewModel.referralDataState.collectAsStateWithLifecycle()
+
+            val subscriptionViewModel: SubscriptionViewModel = hiltViewModel()
+            val subscriptionCategoryState by
+            subscriptionViewModel.subscriptionCategoryDataState.collectAsStateWithLifecycle()
+            val offersDataState by
+            subscriptionViewModel.offersDataState.collectAsStateWithLifecycle()
+
+            val homeViewModel: HomeViewModel = hiltViewModel()
+            val toolsHomeDataState by homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
+
             LaunchedEffect(
                 key1 = Unit,
                 block = {
-                    mainViewModel.getReferralData()
+                    if (referralDataState !is UiState.Success) {
+                        mainViewModel.getReferralData()
+                    }
                 }
             )
-
-            val subscriptionCategoryState =
-                subscriptionViewModel.subscriptionCategoryDataState.collectAsStateWithLifecycle().value
-            val offersDataState =
-                subscriptionViewModel.offersDataState.collectAsStateWithLifecycle().value
 
             val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
             val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
             val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
             val locationPermissionRejectedCount by mainViewModel.locationPermissionRejectedCount.collectAsStateWithLifecycle()
             val isLocationEnabled by mainViewModel.isLocationEnabled.collectAsStateWithLifecycle()
-            val referralDataState =
-                mainViewModel.referralDataState.collectAsStateWithLifecycle().value
             val refCode =
                 (referralDataState as? UiState.Success)?.data?.referralDetails?.refCode ?: ""
 
@@ -203,6 +208,7 @@ fun NavGraphBuilder.homeScreen(
                 refCode = refCode,
                 subscriptionCategoryState = subscriptionCategoryState,
                 offersDataState = offersDataState,
+                toolsHomeDataState = toolsHomeDataState,
                 profileImageUri = mainViewModel.getUser()?.photoUrl,
                 notificationState = notificationState,
                 sessionState = sessionState,
@@ -211,6 +217,10 @@ fun NavGraphBuilder.homeScreen(
                     when (event) {
                         is ToolsHomeUiEvent.NavigateToSubscriptionDurations -> {
                             navController.navigateToSubscriptionDurations(event.categoryId)
+                        }
+
+                        ToolsHomeUiEvent.LoadToolsData -> {
+                            homeViewModel.loadHomeData()
                         }
 
                         is ToolsHomeUiEvent.NavigateToFinalPayment -> {
