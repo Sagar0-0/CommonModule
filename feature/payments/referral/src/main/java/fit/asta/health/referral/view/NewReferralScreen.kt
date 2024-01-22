@@ -32,6 +32,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.copyTextToClipboard
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -253,7 +254,7 @@ fun InvitedUserList(
             // Display user details including profile picture, name, and contact information
             Row {
                 AppNetworkImage(
-                    model = userDetails.pic,
+                    model = getImgUrl(userDetails.pic),
                     contentDescription = "Profile",
                     modifier = Modifier
                         .size(AppTheme.boxSize.level6)

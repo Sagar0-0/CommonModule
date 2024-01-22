@@ -15,10 +15,12 @@ import androidx.compose.foundation.lazy.items
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.orders.remote.OrderId
 import fit.asta.health.data.orders.remote.model.OrderData
@@ -135,7 +137,9 @@ private fun OrderItem(order: OrderData, onClick: () -> Unit) {
                     text = order.status
                 )
                 AppNetworkImage(
-                    model = getImgUrl(order.imageUrl)
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(getImgUrl(url = order.imageUrl))
+                        .crossfade(true).build()
                 )
             }
         }

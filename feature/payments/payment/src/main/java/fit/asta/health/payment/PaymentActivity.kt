@@ -26,6 +26,7 @@ import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.payment.remote.model.OrderRequest
@@ -42,8 +43,15 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
     companion object {
         private const val DATA_KEY = "orderRequest"
         private var onSuccess: () -> Unit = {}
-        fun launch(context: Context, orderRequest: OrderRequest, onSuccess: () -> Unit) {
+        private var onFailure: () -> Unit = {}
+        fun launch(
+            context: Context,
+            orderRequest: OrderRequest,
+            onSuccess: () -> Unit,
+            onFailure: () -> Unit
+        ) {
             this.onSuccess = onSuccess
+            this.onFailure = onFailure
             Intent(context, PaymentActivity::class.java)
                 .apply {
                     putExtra(DATA_KEY, orderRequest)
@@ -51,8 +59,9 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                 }
         }
 
-        fun launch(context: Context, amount: String, onSuccess: () -> Unit) {
+        fun launch(context: Context, amount: String, onSuccess: () -> Unit, onFailure: () -> Unit) {
             this.onSuccess = onSuccess
+            this.onFailure = onFailure
             val orderRequest = OrderRequest(
                 amtDetails = OrderRequest.AmtDetails(
                     amt = amount.toDouble()
@@ -86,8 +95,6 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         orderResponse: UiState<OrderResponse>,
         paymentResponse: UiState<Unit>
     ) {
-
-
         when (orderResponse) {
             UiState.Loading -> {
                 Box(modifier = Modifier.fillMaxSize(), contentAlignment = Alignment.Center) {
@@ -128,27 +135,26 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
                         }
                     }
                 )
-                when (paymentResponse) {
-                    UiState.Loading -> {
+                AppUiStateHandler(
+                    uiState = paymentResponse,
+                    onLoading = {
                         Box(
                             modifier = Modifier.fillMaxSize(),
                             contentAlignment = Alignment.Center
                         ) {
                             TitleTexts.Level2(text = "Confirming your payment...")
                         }
-                    }
-
-                    is UiState.Success -> {
+                    },
+                    onErrorMessage = {
                         finish()
-                        onSuccess()
+                        onFailure()
+                    },
+                    onErrorRetry = {
+                        paymentsViewModel.verifyAndUpdateProfile()
                     }
-
-                    is UiState.ErrorMessage -> {
-                        Toast.makeText(this, "Something went wrong!", Toast.LENGTH_SHORT).show()
-                        finish()
-                    }
-
-                    else -> {}
+                ) {
+                    finish()
+                    onSuccess()
                 }
             }
 
@@ -166,7 +172,5 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
     override fun onPaymentError(p0: Int, p1: String?, p2: PaymentData?) {
         Log.e("PAY", "onPaymentError: $p0 $p1 ${p2?.paymentId}")
         paymentsViewModel.informCancelledPayment()
-        finish()
-        onSuccess()
     }
 }

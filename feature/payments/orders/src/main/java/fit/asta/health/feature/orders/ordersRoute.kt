@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -48,9 +49,13 @@ fun NavGraphBuilder.ordersRoute(navController: NavController) {
     ) {
         composable(route = ORDERS_LIST_ROUTE) {
             val ordersViewModel: OrdersViewModel = it.sharedViewModel(navController)
-            val context = LocalContext.current
-            LaunchedEffect(Unit) { ordersViewModel.getOrders() }
             val ordersState = ordersViewModel.ordersState.collectAsStateWithLifecycle().value
+            val context = LocalContext.current
+            LaunchedEffect(Unit) {
+                if (ordersState !is UiState.Success) {
+                    ordersViewModel.getOrders()
+                }
+            }
 
             AppScaffold(
                 topBar = {
@@ -65,7 +70,8 @@ fun NavGraphBuilder.ordersRoute(navController: NavController) {
                         Box(
                             modifier = Modifier
                                 .padding(padding)
-                                .fillMaxSize()
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
                             AppDotTypingAnimation()
                         }
@@ -97,7 +103,7 @@ fun NavGraphBuilder.ordersRoute(navController: NavController) {
             }
         }
 
-        composable(route = "$ORDERS_DETAIL_ROUTE/orderId") {
+        composable(route = "$ORDERS_DETAIL_ROUTE/{orderId}") {
             val ordersViewModel: OrdersViewModel = it.sharedViewModel(navController)
             val orderId = it.arguments?.getString("orderId")!!
             val orderDetailDataState =
@@ -122,7 +128,8 @@ fun NavGraphBuilder.ordersRoute(navController: NavController) {
                         Box(
                             modifier = Modifier
                                 .padding(padding)
-                                .fillMaxSize()
+                                .fillMaxSize(),
+                            contentAlignment = Alignment.Center
                         ) {
                             AppDotTypingAnimation()
                         }

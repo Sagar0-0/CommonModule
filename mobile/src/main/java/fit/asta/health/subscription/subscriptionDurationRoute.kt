@@ -52,7 +52,7 @@ fun NavGraphBuilder.subscriptionDurationRoute(navController: NavController) {
                     subscriptionViewModel.getSubscriptionDurationData(categoryId)
                 }
             },
-            onRetry = {
+            onErrorRetry = {
                 subscriptionViewModel.getSubscriptionDurationData(categoryId)
             },
             onErrorMessage = {

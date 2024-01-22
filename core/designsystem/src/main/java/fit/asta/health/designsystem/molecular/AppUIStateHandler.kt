@@ -20,7 +20,7 @@ fun <T> AppUiStateHandler(
     onIdle: @Composable () -> Unit = {},
     onLoading: (@Composable () -> Unit)? = null,
     onErrorMessage: () -> Unit = {},
-    onRetry: () -> Unit = {},
+    onErrorRetry: () -> Unit = {},
     onSuccess: @Composable (data: T) -> Unit,
 ) {
     val context = LocalContext.current
@@ -53,7 +53,7 @@ fun <T> AppUiStateHandler(
 
         is UiState.NoInternet -> {
             AppInternetErrorDialog {
-                onRetry.invoke()
+                onErrorRetry.invoke()
             }
         }
 
@@ -72,7 +72,7 @@ fun <T> AppUiStateHandler(
             AppErrorScreen(
                 text = uiState.resId.toStringFromResId(context),
             ) {
-                onRetry.invoke()
+                onErrorRetry.invoke()
             }
         }
 

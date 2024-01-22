@@ -35,7 +35,7 @@ fun NavController.navigateToWallet(navOptions: NavOptions? = null) {
 
 @OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.walletRoute(
-    onProceedToAdd: (Context, String, () -> Unit) -> Unit,
+    onProceedToAdd: (context: Context, amount: String, onPaymentSuccess: () -> Unit, onPaymentFailure: () -> Unit) -> Unit,
     onBackPress: () -> Unit
 ) {
     composable(WALLET_GRAPH_ROUTE) {
@@ -47,9 +47,6 @@ fun NavGraphBuilder.walletRoute(
         }
 
         val walletDataState = walletViewModel.state.collectAsStateWithLifecycle().value
-        val offersDataState =
-            walletViewModel.offersDataState.collectAsStateWithLifecycle().value
-        val offersList = (offersDataState as? UiState.Success)?.data
 
         val scaffoldState = rememberBottomSheetScaffoldState()
         AppBottomSheetScaffold(
@@ -89,10 +86,19 @@ fun NavGraphBuilder.walletRoute(
                     ) { amount ->
                         if (amount != "0") {
                             onProceedToAdd(
-                                context, amount
-                            ) {
-                                walletViewModel.getData()
-                            }
+                                context,
+                                amount,
+                                {
+                                    walletViewModel.getData()
+                                },
+                                {
+                                    Toast.makeText(
+                                        context,
+                                        "Payment Failed, try again later!",
+                                        Toast.LENGTH_SHORT
+                                    ).show()
+                                }
+                            )
                         } else {
                             Toast.makeText(context, "Enter a valid amount", Toast.LENGTH_SHORT)
                                 .show()

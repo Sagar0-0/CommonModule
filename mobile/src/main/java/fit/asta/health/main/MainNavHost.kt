@@ -51,7 +51,6 @@ import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionCheckoutRoute
 import fit.asta.health.subscription.subscriptionDurationRoute
-import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
 import java.net.URLEncoder
@@ -184,10 +183,6 @@ private fun MainNavHost(startDestination: String) {
         addressRoute(navController::popBackStack)
         ordersRoute(navController)
 
-        subscriptionRoute(
-            onBackPress = navController::popBackStack,
-            onLaunchPayments = PaymentActivity::launch
-        )
         referralRoute(navController::popBackStack) {
             context.shareReferralCode(it, BuildConfig.APPLICATION_ID)
         }

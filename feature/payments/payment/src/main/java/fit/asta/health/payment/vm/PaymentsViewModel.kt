@@ -24,6 +24,7 @@ class PaymentsViewModel
 ) : ViewModel() {
 
     val currentUser = authRepo.getUser()
+    private var pId: String? = null
 
     private val _orderResponseState =
         MutableStateFlow<UiState<OrderResponse>>(UiState.Loading)
@@ -43,11 +44,12 @@ class PaymentsViewModel
         ).toUiState()
     }
 
-    fun verifyAndUpdateProfile(paymentId: String) {
+    fun verifyAndUpdateProfile(paymentId: String? = pId) {
+        if (pId == null) pId = paymentId
         _paymentResponseState.value = UiState.Loading
         viewModelScope.launch {
             _paymentResponseState.value =
-                paymentRepo.verifyAndUpdateProfile(paymentId, authRepo.getUserId() ?: "")
+                paymentRepo.verifyAndUpdateProfile(paymentId!!, authRepo.getUserId() ?: "")
                     .toUiState()
         }
     }

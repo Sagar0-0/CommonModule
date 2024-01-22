@@ -9,7 +9,6 @@ import retrofit2.http.GET
 interface CouponsApi {
     @GET("payment/coupons/details/get/")
     suspend fun getCouponCodeDetails(
-        @Body
-        couponRequest: CouponRequest
+        @Body couponRequest: CouponRequest
     ): Response<CouponResponse>
 }

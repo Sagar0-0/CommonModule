@@ -4,8 +4,10 @@ import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -15,7 +17,9 @@ import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
+import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.data.orders.remote.model.OrderDetailData
 import fit.asta.health.designsystem.AppTheme
@@ -41,7 +45,7 @@ private fun OrderDetailScreenPreview() {
                 cDate = 9353,
                 discount = 853.0,
                 offer = null,
-                orderId = "accusata",
+                orderId = "accusata asdfg wer asdfg qwert ertghj dsdfg",
                 paymentId = "xxxxxxxxxx",
                 paymentMode = "definitionem",
                 sts = "Active",
@@ -83,7 +87,10 @@ fun OrderDetailScreen(
             ) {
                 HeadingTexts.Level1(text = orderData.ttl)
                 AppNetworkImage(
-                    model = getImgUrl(orderData.imageUrl)
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(getImgUrl(url = orderData.imageUrl))
+                        .crossfade(true).build(),
+                    modifier = Modifier.padding(end = AppTheme.spacing.level1)
                 )
             }
         }
@@ -99,15 +106,17 @@ fun OrderDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TitleTexts.Level2(text = "Order Id")
-                    TitleTexts.Level2(text = orderData.orderId)
+                    TitleTexts.Level2(text = "Order Id:")
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
+                    TitleTexts.Level2(text = orderData.orderId, maxLines = 1)
                 }
 
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TitleTexts.Level2(text = "Date")
+                    TitleTexts.Level2(text = "Date:")
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                     TitleTexts.Level2(text = orderData.cDate.toString())
                 }
 
@@ -115,7 +124,8 @@ fun OrderDetailScreen(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    TitleTexts.Level2(text = "Payment Mode")
+                    TitleTexts.Level2(text = "Payment Mode:")
+                    Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                     orderData.paymentMode?.let { TitleTexts.Level2(text = it) }
                 }
             }

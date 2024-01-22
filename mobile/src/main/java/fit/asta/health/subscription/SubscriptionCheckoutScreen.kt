@@ -214,7 +214,7 @@ fun SubscriptionCheckoutScreen(
                         )
                     }
                 },
-                onRetry = {
+                onErrorRetry = {
                     onEvent(BuyScreenEvent.FetchWalletData)
                 }
             ) {
@@ -263,7 +263,8 @@ fun SubscriptionCheckoutScreen(
                             OrderRequest(
                                 amtDetails = OrderRequest.AmtDetails(
                                     amt = finalPayableAmount,
-                                    couponCode = couponCode,
+                                    couponCode = (couponResponseState as? UiState.Success)?.data?.couponDetails?.code
+                                        ?: "",
                                     walletMoney = walletMoneyUsed,
                                     walletPoints = walletPointsUsed,
                                     offerCode = subscriptionCheckoutScreenData.offerCode
@@ -278,8 +279,8 @@ fun SubscriptionCheckoutScreen(
                     )
                 }
             )
+            Spacer(modifier = Modifier)
         }
-
     }
 }
 
@@ -370,7 +371,7 @@ fun PriceBreakdownSection(
     }
 }
 
-const val COUPON_CODE_SIZE_LIMIT = 20
+const val COUPON_CODE_SIZE_LIMIT = 10
 
 @Composable
 fun CouponSection(
@@ -396,6 +397,7 @@ fun CouponSection(
                 },
                 appTextFieldType = AppTextFieldValidator(
                     AppTextFieldType.Custom(
+                        COUPON_CODE_SIZE_LIMIT,
                         COUPON_CODE_SIZE_LIMIT
                     )
                 )

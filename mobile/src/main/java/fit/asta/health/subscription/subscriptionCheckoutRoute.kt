@@ -1,5 +1,6 @@
 package fit.asta.health.subscription
 
+import android.widget.Toast
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -61,7 +62,7 @@ fun NavGraphBuilder.subscriptionCheckoutRoute(navController: NavController) {
 
         AppUiStateHandler(
             uiState = subscriptionFinalPaymentState,
-            onRetry = {
+            onErrorRetry = {
                 subscriptionViewModel.getSubscriptionFinalAmountData(categoryId, productId)
             },
             onErrorMessage = {
@@ -101,14 +102,22 @@ fun NavGraphBuilder.subscriptionCheckoutRoute(navController: NavController) {
                     is BuyScreenEvent.ProceedToBuy -> {
                         PaymentActivity.launch(
                             context = context,
-                            orderRequest = event.orderRequest
-                        ) {
-                            navController.navigate(HOME_ROUTE) {
-                                popUpTo(HOME_ROUTE) {
-                                    inclusive = false
+                            orderRequest = event.orderRequest,
+                            onSuccess = {
+                                navController.navigate(HOME_ROUTE) {
+                                    popUpTo(HOME_ROUTE) {
+                                        inclusive = false
+                                    }
                                 }
+                            },
+                            onFailure = {
+                                Toast.makeText(
+                                    context,
+                                    "Payment Failed, try again later!",
+                                    Toast.LENGTH_SHORT
+                                ).show()
                             }
-                        }
+                        )
                     }
 
                     BuyScreenEvent.ResetCouponState -> {
