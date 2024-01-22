@@ -43,11 +43,14 @@ import fit.asta.health.feature.walking.nav.stepsCounterNavigation
 import fit.asta.health.feature.water.nav.waterToolNavigation
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.meditation.nav.meditationNavigation
+import fit.asta.health.navigation.alarms.allAlarmsRoute
 import fit.asta.health.payment.PaymentActivity
 import fit.asta.health.referral.navigateToReferral
 import fit.asta.health.referral.referralRoute
 import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.navigateToSubscription
+import fit.asta.health.subscription.subscriptionCheckoutRoute
+import fit.asta.health.subscription.subscriptionDurationRoute
 import fit.asta.health.subscription.subscriptionRoute
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
@@ -79,7 +82,13 @@ private fun MainNavHost(startDestination: String) {
     ) {
         authRoute(navController, navController::navigateToWebView)
         basicProfileRoute()
+
         homeScreen(navController)
+
+        allAlarmsRoute(navController)
+
+        subscriptionDurationRoute(navController)
+        subscriptionCheckoutRoute(navController)
 
         composable(route = Graph.Profile.route) {
             ProfileContent(onBack = { navController.popBackStack() },

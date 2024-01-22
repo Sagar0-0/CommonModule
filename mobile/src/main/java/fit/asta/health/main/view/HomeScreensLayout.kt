@@ -413,7 +413,7 @@ private fun HomeNavHost(
     onLocation: () -> Unit,
 ) {
     NavHost(
-        route = HOME_GRAPH_ROUTE,
+        route = HOME_ROUTE,
         navController = navController,
         startDestination = BottomBarDestination.Today.route,
         modifier = modifier

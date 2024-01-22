@@ -32,14 +32,16 @@ import com.google.android.play.core.install.model.InstallStatus
 import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
-import fit.asta.health.common.utils.*
+import fit.asta.health.common.utils.Constants
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
+import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
-import fit.asta.health.main.view.HOME_GRAPH_ROUTE
+import fit.asta.health.main.view.HOME_ROUTE
 import fit.asta.health.network.TokenProvider
 import fit.asta.health.network.utils.NetworkConnectivity
 import fit.asta.health.player.audio.MusicService
@@ -132,9 +134,9 @@ class MainActivity : ComponentActivity(),
 
                     else -> {
                         if (intent != null && intent.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
-                            fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
+                            STEPS_GRAPH_ROUTE
                         } else {
-                            HOME_GRAPH_ROUTE
+                            HOME_ROUTE
                         }
                     }
                 }
