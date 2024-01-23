@@ -5,28 +5,24 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.PlayArrow
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.toDateFormat
 import fit.asta.health.data.orders.remote.model.OrderDetailData
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
-import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
@@ -43,8 +39,8 @@ private fun OrderDetailScreenPreview() {
             orderData = OrderDetailData(
                 amt = 85.75,
                 cDate = 9353,
-                discount = 853.0,
-                offer = null,
+                couponDiscount = 853.0,
+                offerDiscount = null,
                 orderId = "accusata asdfg wer asdfg qwert ertghj dsdfg",
                 paymentId = "xxxxxxxxxx",
                 paymentMode = "definitionem",
@@ -81,16 +77,18 @@ fun OrderDetailScreen(
         ) {
             Row(
                 modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2),
+                    .fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
-                HeadingTexts.Level1(text = orderData.ttl)
+                HeadingTexts.Level1(
+                    modifier = Modifier.padding(AppTheme.spacing.level2),
+                    text = orderData.ttl
+                )
                 AppNetworkImage(
-                    model = ImageRequest.Builder(LocalContext.current)
-                        .data(getImgUrl(url = orderData.imageUrl))
-                        .crossfade(true).build(),
-                    modifier = Modifier.padding(end = AppTheme.spacing.level1)
+                    model = getImgUrl(orderData.imageUrl),
+                    modifier = Modifier
+                        .size(AppTheme.imageSize.level11)
+                        .aspectRatio(ratio = AppTheme.aspectRatio.square)
                 )
             }
         }
@@ -110,14 +108,13 @@ fun OrderDetailScreen(
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
                     TitleTexts.Level2(text = orderData.orderId, maxLines = 1)
                 }
-
                 Row(
                     modifier = Modifier.fillMaxWidth(),
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
                     TitleTexts.Level2(text = "Date:")
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                    TitleTexts.Level2(text = orderData.cDate.toString())
+                    TitleTexts.Level2(text = orderData.cDate.toDateFormat())
                 }
 
                 Row(
@@ -158,55 +155,88 @@ fun OrderDetailScreen(
                     TitleTexts.Level2(text = orderData.amt.toString())
                 }
 
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TitleTexts.Level2(text = "Discount")
-                    TitleTexts.Level2(text = orderData.discount.toString())
-                }
-
-                Divider()
-
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    horizontalArrangement = Arrangement.SpaceBetween
-                ) {
-                    TitleTexts.Level2(text = "Total Payable Amount")
-                    TitleTexts.Level2(text = orderData.amt.toString())
-                }
-            }
-        }
-
-        AppElevatedCard {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2),
-                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
-            ) {
-                TitleTexts.Level2(text = "Offers you got:")
-                Row(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
+                if (orderData.offerDiscount != 0.0) {
                     Row(
-                        modifier = Modifier.weight(1f),
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
                     ) {
-                        AppIcon(imageVector = Icons.Default.PlayArrow)
-                        orderData.offer?.let {
-                            BodyTexts.Level2(
-                                modifier = Modifier.weight(1f),
-                                text = it.toString()
-                            )
-                        }
+                        TitleTexts.Level2(text = "Offer")
+                        TitleTexts.Level2(text = "-" + orderData.offerDiscount.toString())
                     }
+                }
 
-                    AppIcon(imageVector = Icons.Default.Check)
+                if (orderData.couponDiscount != 0.0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TitleTexts.Level2(text = "Discount")
+                        TitleTexts.Level2(text = "-" + orderData.couponDiscount.toString())
+                    }
+                }
+
+                if (orderData.walletMoney != 0.0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TitleTexts.Level2(text = "Wallet Money")
+                        TitleTexts.Level2(text = "-" + orderData.walletMoney.toString())
+                    }
+                }
+
+                if (orderData.walletPoints != 0.0) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        TitleTexts.Level2(text = "Wallet Points")
+                        TitleTexts.Level2(text = "-" + orderData.walletPoints.toString())
+                    }
+                }
+
+
+                AppDivider()
+
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    TitleTexts.Level2(text = "Paid Amount")
+                    TitleTexts.Level2(text = orderData.paid.toString())
                 }
             }
         }
+
+//        AppElevatedCard {
+//            Column(
+//                modifier = Modifier
+//                    .fillMaxWidth()
+//                    .padding(AppTheme.spacing.level2),
+//                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+//            ) {
+//                TitleTexts.Level2(text = "Offers you got:")
+//                Row(
+//                    modifier = Modifier.fillMaxWidth(),
+//                    verticalAlignment = Alignment.CenterVertically
+//                ) {
+//                    Row(
+//                        modifier = Modifier.weight(1f),
+//                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+//                    ) {
+//                        AppIcon(imageVector = Icons.Default.PlayArrow)
+//                        orderData.offerDiscount?.let {
+//                            BodyTexts.Level2(
+//                                modifier = Modifier.weight(1f),
+//                                text = it.toString()
+//                            )
+//                        }
+//                    }
+//
+//                    AppIcon(imageVector = Icons.Default.Check)
+//                }
+//            }
+//        }
 
     }
 }

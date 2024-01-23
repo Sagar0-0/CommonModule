@@ -5,9 +5,11 @@ import com.google.gson.annotations.SerializedName
 
 data class OrderData(
     @SerializedName("amt")
-    val amt: Int = 0,
+    val mrp: Double = 0.0,
+    @SerializedName("paid")
+    val amt: Double = 0.0,
     @SerializedName("cDate")
-    val cDate: Int = 0,
+    val cDate: Long = 0,
     @SerializedName("oid")
     val orderId: String = "",
     @SerializedName("pid")

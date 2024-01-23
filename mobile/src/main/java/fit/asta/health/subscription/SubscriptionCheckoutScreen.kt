@@ -405,6 +405,9 @@ fun CouponSection(
         },
         onErrorMessage = {
             onEvent(BuyScreenEvent.ResetCouponState)
+        },
+        onErrorRetry = {
+            onEvent(BuyScreenEvent.ResetCouponState)
         }
     ) {
         AppCard(

@@ -1,14 +1,20 @@
 package fit.asta.health.discounts.remote
 
 import fit.asta.health.common.utils.Response
-import fit.asta.health.discounts.remote.model.CouponRequest
 import fit.asta.health.discounts.remote.model.CouponResponse
-import retrofit2.http.Body
-import retrofit2.http.PUT
+import retrofit2.http.GET
+import retrofit2.http.Query
 
 interface CouponsApi {
-    @PUT("payment/coupons/details/get/")
+    @GET("payment/coupons/details/get?")
     suspend fun getCouponCodeDetails(
-        @Body couponRequest: CouponRequest
+        @Query("type")
+        productType: Int,
+        @Query("uid")
+        userId: String,
+        @Query("couponCode")
+        couponCode: String,
+        @Query("amt")
+        productMRP: Double,
     ): Response<CouponResponse>
 }

@@ -18,7 +18,12 @@ class CouponsRepoImpl @Inject constructor(
         couponRequest: CouponRequest
     ) = withContext(coroutineDispatcher) {
         getApiResponseState {
-            remoteApi.getCouponCodeDetails(couponRequest)
+            remoteApi.getCouponCodeDetails(
+                productType = couponRequest.productType,
+                userId = couponRequest.userId,
+                couponCode = couponRequest.couponCode,
+                productMRP = couponRequest.productMRP
+            )
         }
     }
 }

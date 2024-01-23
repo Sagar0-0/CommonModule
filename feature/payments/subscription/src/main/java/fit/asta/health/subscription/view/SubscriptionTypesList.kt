@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -163,11 +164,13 @@ fun SubscriptionPassCard(
         Row(
             verticalAlignment = Alignment.CenterVertically,
         ) {
-            // Display an image using AppLocalImage
+            // Display an image using AppNetworkImage
+
             AppNetworkImage(
                 model = getImgUrl(subscriptionData.imageRes),
                 modifier = Modifier
                     .size(AppTheme.imageSize.level11)
+                    .aspectRatio(ratio = AppTheme.aspectRatio.square)
             )
             // Use Column to arrange text content vertically
             Column(

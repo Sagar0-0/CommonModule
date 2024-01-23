@@ -5,9 +5,11 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
@@ -17,9 +19,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.tooling.preview.Preview
-import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -248,10 +248,10 @@ fun FeaturesSection(featuresList: List<FeaturesUiData>) {
                         .padding(AppTheme.spacing.level1)
                 ) {
                     AppNetworkImage(
-                        model = ImageRequest.Builder(LocalContext.current)
-                            .data(getImgUrl(url = it.url))
-                            .crossfade(true).build(),
-                        modifier = Modifier.padding(end = AppTheme.spacing.level1)
+                        model = getImgUrl(it.url),
+                        modifier = Modifier
+                            .size(AppTheme.imageSize.level11)
+                            .aspectRatio(ratio = AppTheme.aspectRatio.square)
                     )
                     Column(
                         modifier = Modifier
