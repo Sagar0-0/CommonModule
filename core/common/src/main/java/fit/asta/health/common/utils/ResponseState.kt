@@ -37,14 +37,14 @@ sealed interface ResponseState<out T> {
 }
 
 suspend fun <T> getApiResponseState(
-    onSuccess: suspend () -> Unit = {},
+    onSuccess: suspend (Response<T>) -> Unit = {},
     onFailure: suspend (Exception) -> Unit = {},
     errorHandler: ApiErrorHandler = ApiErrorHandler(),
     request: suspend () -> Response<T>
 ): ResponseState<T> {
     return try {
         val response = request()
-        onSuccess()
+        onSuccess(response)
 
         Log.e("TAG", "ResponseState: $response")
         when (response.status.code) {

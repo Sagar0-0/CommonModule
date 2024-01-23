@@ -12,7 +12,7 @@ interface PaymentsRepo {
     suspend fun verifyAndUpdateProfile(
         paymentId: String,
         uid: String
-    ): ResponseState<Unit>
+    ): ResponseState<String>
 
     suspend fun informCancelledPayment(
         orderId: String,

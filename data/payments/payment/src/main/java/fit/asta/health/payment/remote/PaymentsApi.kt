@@ -25,5 +25,5 @@ interface PaymentsApi {
     suspend fun verifyAndUpdateProfile(
         @Query("pid") paymentId: String,
         @Query("uid") uid: String
-    ): Response<Unit>
+    ): Response<String>
 }

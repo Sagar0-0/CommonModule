@@ -93,7 +93,7 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
     @Composable
     fun ShowPaymentScreen(
         orderResponse: UiState<OrderResponse>,
-        paymentResponse: UiState<Unit>
+        paymentResponse: UiState<String>
     ) {
         when (orderResponse) {
             UiState.Loading -> {

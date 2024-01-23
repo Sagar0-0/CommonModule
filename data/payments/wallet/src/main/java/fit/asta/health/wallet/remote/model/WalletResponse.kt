@@ -38,7 +38,7 @@ data class WalletResponse(
         @SerializedName("tid")
         val tid: String = "",
         @SerializedName("type")
-        val transactionType: WalletTransactionCode = WalletTransactionType.SUBSCRIPTION_CASHBACK.code,
+        val transactionType: WalletTransactionCode = WalletTransactionType.WalletMoneyUsed.code,
         @SerializedName("rfr")
         val referredBy: String = "",
         @SerializedName("rfe")
@@ -51,7 +51,7 @@ data class WalletResponse(
         val to: String = "",
         @SerializedName("dr")
         val debitAmounts: WalletTransactionDebitData? = null,
-        @SerializedName("credit")
+        @SerializedName("cr")
         val creditAmounts: WalletTransactionCreditData? = null,
     )
 
@@ -87,10 +87,10 @@ fun WalletTransactionCode.getWalletTransactionType() =
     WalletTransactionType.entries.first { this == it.code }
 
 enum class WalletTransactionType(val code: WalletTransactionCode) {
-    SUBSCRIPTION_CASHBACK(1),
-    ADD_MONEY(2),
-    REFERRAL_CASHBACK(3),
-    SEND_TO_BANK(4),
-    WALLET_MONEY_USED(5),
-    WALLET_POINTS_USED(6)
+    WalletMoneyUsed(1),
+    AccountToWallet(2),
+    WalletToAccount(3),
+    ReferrerCredit(4),
+    RefereeCredit(5),
+    WalletPointsUsed(8)
 }

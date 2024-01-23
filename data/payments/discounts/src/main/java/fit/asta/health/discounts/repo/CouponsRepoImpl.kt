@@ -14,9 +14,12 @@ class CouponsRepoImpl @Inject constructor(
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : CouponsRepo {
 
-    override suspend fun getCouponCodeDetails(couponRequest: CouponRequest) =
-        withContext(coroutineDispatcher) {
-            getApiResponseState { remoteApi.getCouponCodeDetails(couponRequest) }
+    override suspend fun getCouponCodeDetails(
+        couponRequest: CouponRequest
+    ) = withContext(coroutineDispatcher) {
+        getApiResponseState {
+            remoteApi.getCouponCodeDetails(couponRequest)
         }
+    }
 }
 

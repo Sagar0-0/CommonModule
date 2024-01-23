@@ -4,7 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class CouponRequest(
     @SerializedName("type")
-    val productType: String = ProductType.SUBSCRIPTION.type,
+    val productType: Int = ProductType.SUBSCRIPTION.type,
     @SerializedName("uid")
     val userId: String = "",
     @SerializedName("couponCode")
@@ -13,6 +13,6 @@ data class CouponRequest(
     val productMRP: Double = 0.0,
 )
 
-enum class ProductType(val type: String) {
-    SUBSCRIPTION("1")
+enum class ProductType(val type: Int) {
+    SUBSCRIPTION(1)
 }

@@ -21,7 +21,7 @@ import fit.asta.health.designsystem.AppTheme
 fun AppDivider(
     modifier: Modifier = Modifier,
     thickness: Dp = AppTheme.spacing.level0,
-    color: Color = AppTheme.colors.primary,
+    color: Color = AppTheme.colors.surfaceVariant,
 ) {
     Divider(
         color = color, thickness = thickness, modifier = modifier.clip(AppTheme.shape.level0)

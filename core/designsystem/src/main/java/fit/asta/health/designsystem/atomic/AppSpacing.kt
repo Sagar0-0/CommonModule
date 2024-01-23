@@ -11,7 +11,7 @@ import androidx.compose.ui.unit.dp
 @Immutable
 data class AppSpacing(
     val noSpacing: Dp = 0.dp,
-    val level0: Dp = 2.dp,
+    val level0: Dp = 1.dp,
     val level1: Dp = 8.dp,
     val level2: Dp = 16.dp,
     val level3: Dp = 24.dp,

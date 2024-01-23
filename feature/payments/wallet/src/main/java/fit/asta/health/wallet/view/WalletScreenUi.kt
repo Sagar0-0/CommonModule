@@ -3,13 +3,14 @@ package fit.asta.health.wallet.view
 import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
-import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
@@ -41,7 +42,9 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -186,22 +189,21 @@ fun WalletScreenUi(
                     }
                 )
             )
-            AppTextButton(
+            AppOutlinedButton(
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level2),
-                textToShow = "Proceed to add",
-                onClick = {
-                    onProceedToAdd(amount)
-                }
-            )
+                textToShow = "Proceed to add"
+            ) {
+                onProceedToAdd(amount)
+            }
         }
 
     }
 
     Column(
         modifier = modifier
-            .fillMaxWidth(),
+            .fillMaxSize(),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
@@ -219,16 +221,15 @@ fun WalletScreenUi(
 
         val transactionHistory = walletData.walletTransactionData
         if (!transactionHistory.isNullOrEmpty()) {
-            Spacer(
+            AppDivider(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2)
-                    .height(1.dp)
-                    .background(AppTheme.colors.surfaceVariant)
+                    .padding(horizontal = AppTheme.spacing.level2)
             )
             AppCard(
                 modifier = Modifier
-                    .padding(AppTheme.spacing.level2)
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2)
             ) {
                 TitleTexts.Level2(
                     modifier = Modifier
@@ -244,7 +245,9 @@ fun WalletScreenUi(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = AppTheme.spacing.level2),
-                    contentPadding = PaddingValues(AppTheme.spacing.level2)
+                    contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
+                    horizontalAlignment = Alignment.CenterHorizontally,
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                 ) {
                     items(transactionHistory) { item ->
                         TransactionHistoryItem(item)
@@ -319,9 +322,9 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
     val received = when (
         item.transactionType.getWalletTransactionType()
     ) {
-        WalletTransactionType.SUBSCRIPTION_CASHBACK,
-        WalletTransactionType.REFERRAL_CASHBACK,
-        WalletTransactionType.ADD_MONEY -> {
+        WalletTransactionType.RefereeCredit,
+        WalletTransactionType.ReferrerCredit,
+        WalletTransactionType.AccountToWallet -> {
             true
         }
 
@@ -333,7 +336,9 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(bottom = AppTheme.spacing.level2),
+            .clickable {
+
+            },
         verticalAlignment = Alignment.CenterVertically
     ) {
         AppIcon(
@@ -342,73 +347,75 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
             contentDescription = ""
         )
         Column(modifier = Modifier.weight(1f)) {
-            TitleTexts.Level2(
+            TitleTexts.Level3(
                 overflow = TextOverflow.Ellipsis,
                 text = when (item.transactionType.getWalletTransactionType()) {
-                    WalletTransactionType.SUBSCRIPTION_CASHBACK -> {
-                        "Cashback received for Subscription"
+                    WalletTransactionType.WalletMoneyUsed -> {
+                        "Money spent on Subscription"
                     }
 
-                    WalletTransactionType.REFERRAL_CASHBACK -> {
-                        "Cashback received for Referral"
+                    WalletTransactionType.WalletToAccount -> {
+                        "Redeemed to bank"
                     }
 
-                    WalletTransactionType.SEND_TO_BANK -> {
-                        "Redeem to bank account"
+                    WalletTransactionType.ReferrerCredit -> {
+                        "Referrer Credit Received"
                     }
 
-                    WalletTransactionType.ADD_MONEY -> {
+                    WalletTransactionType.AccountToWallet -> {
                         "Added money to wallet"
                     }
 
-                    WalletTransactionType.WALLET_MONEY_USED -> {
-                        "Made purchase"
+                    WalletTransactionType.RefereeCredit -> {
+                        "Referee Credit Received"
                     }
 
-                    WalletTransactionType.WALLET_POINTS_USED -> {
-                        "Made purchase"
+                    WalletTransactionType.WalletPointsUsed -> {
+                        "Points spent on Subscription"
                     }
                 }
             )
-            TitleTexts.Level2(
+            BodyTexts.Level3(
                 text = item.timeStamp
             )
         }
+
         TitleTexts.Level2(
             color = if (received) Color.Green else Color.Red,
-            text = when (item.transactionType.getWalletTransactionType()) {
-                WalletTransactionType.SUBSCRIPTION_CASHBACK -> {
-                    "+ ${item.creditAmounts!!.points}"
+            text = when (item.transactionType) {
+                WalletTransactionType.WalletMoneyUsed.code -> {
+                    "- ${item.debitAmounts?.money}"
                 }
 
-                WalletTransactionType.REFERRAL_CASHBACK -> {
-                    "+ ${item.creditAmounts!!.points}"
+                WalletTransactionType.WalletToAccount.code -> {
+                    "- ${item.debitAmounts?.money}"
                 }
 
-                WalletTransactionType.SEND_TO_BANK -> {
-                    "- ${item.debitAmounts!!.money}"
+                WalletTransactionType.ReferrerCredit.code -> {
+                    "+ ${item.creditAmounts?.points}"
                 }
 
-                WalletTransactionType.ADD_MONEY -> {
-                    "+ ${item.creditAmounts!!.money}"
+                WalletTransactionType.AccountToWallet.code -> {
+                    "+ ${item.creditAmounts?.money}"
                 }
 
-                WalletTransactionType.WALLET_MONEY_USED -> {
-                    "- ${item.debitAmounts!!.money}"
+                WalletTransactionType.RefereeCredit.code -> {
+                    "+ ${item.creditAmounts?.points}"
                 }
 
-                WalletTransactionType.WALLET_POINTS_USED -> {
-                    "- ${item.debitAmounts!!.points}"
+                WalletTransactionType.WalletPointsUsed.code -> {
+                    "- ${item.debitAmounts?.points}"
+                }
+
+                else -> {
+                    ""
                 }
             }
         )
     }
-    Spacer(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level2)
-            .height(1.dp)
-            .background(AppTheme.colors.onSecondaryContainer)
+    Spacer(modifier = Modifier.padding(AppTheme.spacing.level1))
+    AppDivider(
+        color = AppTheme.colors.surface
     )
 }
 

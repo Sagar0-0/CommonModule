@@ -4,10 +4,10 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.discounts.remote.model.CouponRequest
 import fit.asta.health.discounts.remote.model.CouponResponse
 import retrofit2.http.Body
-import retrofit2.http.GET
+import retrofit2.http.PUT
 
 interface CouponsApi {
-    @GET("payment/coupons/details/get/")
+    @PUT("payment/coupons/details/get/")
     suspend fun getCouponCodeDetails(
         @Body couponRequest: CouponRequest
     ): Response<CouponResponse>

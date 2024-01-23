@@ -31,7 +31,7 @@ class PaymentsViewModel
     val orderResponseState = _orderResponseState.asStateFlow()
 
     private val _paymentResponseState =
-        MutableStateFlow<UiState<Unit>>(UiState.Idle)
+        MutableStateFlow<UiState<String>>(UiState.Idle)
     val paymentResponseState = _paymentResponseState.asStateFlow()
 
 
