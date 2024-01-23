@@ -9,12 +9,12 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
-import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 @Composable
 fun AuthStringDivider(
     modifier: Modifier = Modifier,
-    textToShow: String
+    textToShow: String = "Login or Sign Up"
 ) {
     Row(
         modifier = modifier.fillMaxWidth(),
@@ -26,7 +26,7 @@ fun AuthStringDivider(
             thickness = .5.dp
         )
 
-        BodyTexts.Level1(
+        HeadingTexts.Level3(
             modifier = Modifier.padding(horizontal = AppTheme.spacing.level1),
             text = textToShow
         )

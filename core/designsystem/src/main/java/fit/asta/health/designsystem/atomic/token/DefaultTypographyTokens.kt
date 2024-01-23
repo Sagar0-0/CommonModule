@@ -35,7 +35,7 @@ object DefaultTypographyTokens {
     )
     val headingLevel2: TextStyle = TextStyle(
         fontSize = 24.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.SemiBold,
         fontFamily = astaFontFamily
     )
     val headingLevel3: TextStyle = TextStyle(
@@ -45,7 +45,7 @@ object DefaultTypographyTokens {
     )
     val headingLevel4: TextStyle = TextStyle(
         fontSize = 20.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.SemiBold,
         fontFamily = astaFontFamily
     )
 
@@ -54,7 +54,7 @@ object DefaultTypographyTokens {
      */
     val titleLevel1: TextStyle = TextStyle(
         fontSize = 20.sp,
-        fontWeight = FontWeight.Normal,
+        fontWeight = FontWeight.Bold,
         fontFamily = astaFontFamily
     )
     val titleLevel2: TextStyle = TextStyle(
@@ -64,7 +64,7 @@ object DefaultTypographyTokens {
     )
     val titleLevel3: TextStyle = TextStyle(
         fontSize = 18.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Bold,
         fontFamily = astaFontFamily
     )
     val titleLevel4: TextStyle = TextStyle(
@@ -77,8 +77,8 @@ object DefaultTypographyTokens {
      * Body Texts Constants
      */
     val bodyLevel1: TextStyle = TextStyle(
-        fontSize = 16.sp,
-        fontWeight = FontWeight.Medium,
+        fontSize = 18.sp,
+        fontWeight = FontWeight.Normal,
         fontFamily = astaFontFamily
     )
     val bodyLevel2: TextStyle = TextStyle(
@@ -88,7 +88,7 @@ object DefaultTypographyTokens {
     )
     val bodyLevel3: TextStyle = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontFamily = astaFontFamily
     )
 
@@ -97,7 +97,7 @@ object DefaultTypographyTokens {
      */
     val captionLevel1: TextStyle = TextStyle(
         fontSize = 14.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontFamily = astaFontFamily
     )
     val captionLevel2: TextStyle = TextStyle(
@@ -107,7 +107,7 @@ object DefaultTypographyTokens {
     )
     val captionLevel3: TextStyle = TextStyle(
         fontSize = 12.sp,
-        fontWeight = FontWeight.Medium,
+        fontWeight = FontWeight.Normal,
         fontFamily = astaFontFamily
     )
     val captionLevel4: TextStyle = TextStyle(
@@ -117,7 +117,7 @@ object DefaultTypographyTokens {
     )
     val captionLevel5: TextStyle = TextStyle(
         fontSize = 10.sp,
-        fontWeight = FontWeight.Bold,
+        fontWeight = FontWeight.Normal,
         fontFamily = astaFontFamily
     )
 }

@@ -62,7 +62,7 @@ fun GoogleSignIn(
         AppLocalImage(
             modifier = Modifier
                 .size(AppTheme.imageSize.level3)
-                .padding(end = AppTheme.spacing.level0),
+                .padding(end = AppTheme.spacing.level1),
             painter = painterResource(id = R.drawable.googleg_standard_color_18),
             contentDescription = "google icon"
         )

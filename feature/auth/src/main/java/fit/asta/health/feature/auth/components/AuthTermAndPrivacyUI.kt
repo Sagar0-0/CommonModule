@@ -63,6 +63,7 @@ fun AuthTermAndPrivacyUI(
     // The Whole Clickable Composable which shows the Text UI
     ClickableText(
         modifier = modifier,
+        style = AppTheme.customTypography.body.level3,
         text = annotatedLinkString
     ) {
         annotatedLinkString

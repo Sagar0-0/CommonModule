@@ -11,6 +11,7 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
@@ -23,7 +24,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthOnboardingControl
 import fit.asta.health.feature.auth.components.AuthStringDivider
@@ -84,14 +86,24 @@ fun AuthScreenControl(
                     AuthStringDivider(textToShow = "Login or Sign up")
 
                     // Sign in with Phone Button
-                    AppFilledButton(
-                        textToShow = "Sign in with Phone",
+                    AppOutlinedButton(
                         modifier = Modifier
                             .fillMaxWidth()
                             .height(AppTheme.buttonSize.level6),
-                        leadingIcon = Icons.Default.Phone
+                        onClick = {
+                            onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
+                        }
                     ) {
-                        onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
+                        Icon(
+                            imageVector = Icons.Default.Phone,
+                            contentDescription = null,
+                            modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                        )
+                        // Button Text
+                        CaptionTexts.Level1(
+                            text = "Sign in with Phone",
+                            color = AppTheme.colors.onSurface
+                        )
                     }
 
                     // Google Sign In Button

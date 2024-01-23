@@ -282,7 +282,7 @@ fun AppFilledButton(
             Icon(
                 imageVector = leadingIcon,
                 contentDescription = leadingIconDes,
-                modifier = Modifier.padding(end = AppTheme.spacing.level0),
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
                 tint = if (enabled)
                     iconTint
                 else

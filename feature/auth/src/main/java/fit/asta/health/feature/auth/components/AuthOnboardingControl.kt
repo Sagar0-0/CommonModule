@@ -39,7 +39,7 @@ import fit.asta.health.designsystem.molecular.image.AppGifImage
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
 
 @Composable
@@ -171,26 +171,27 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                     modifier = Modifier
                         .padding(
                             horizontal = AppTheme.spacing.level2,
-                            vertical = AppTheme.spacing.level6
+                            vertical = AppTheme.spacing.level4
                         )
                         .align(Alignment.BottomCenter),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
                 ) {
-                    HeadingTexts.Level2(
+                    TitleTexts.Level1(
                         text = items[page].title,
-                        style = AppTheme.customTypography.heading.level2.copy(
+                        style = AppTheme.customTypography.title.level1.copy(
                             shadow = Shadow(
                                 color = DefaultShadowColor,
                                 offset = Offset(4f, 4f),
                                 blurRadius = 8f
                             )
                         ),
-                        textAlign = TextAlign.Center
+                        textAlign = TextAlign.Center,
+                        maxLines = 1
                     )
-                    BodyTexts.Level1(
+                    BodyTexts.Level3(
                         text = items[page].desc,
-                        style = AppTheme.customTypography.heading.level2.copy(
+                        style = AppTheme.customTypography.body.level3.copy(
                             shadow = Shadow(
                                 color = DefaultShadowColor,
                                 offset = Offset(4f, 4f),

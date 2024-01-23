@@ -48,7 +48,7 @@ object BodyTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
-        style: TextStyle = AppTheme.customTypography.heading.level2,
+        style: TextStyle? = null,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis,
@@ -56,7 +56,7 @@ object BodyTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.customTypography.body.level1.plus(style),
+            style = style ?: AppTheme.customTypography.body.level1,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
@@ -91,13 +91,14 @@ object BodyTexts {
         text: String,
         modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
+        style: TextStyle? = null,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
         overflow: TextOverflow = TextOverflow.Ellipsis
     ) {
         Text(
             text = text,
-            style = AppTheme.customTypography.body.level3,
+            style = style ?: AppTheme.customTypography.body.level3,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
