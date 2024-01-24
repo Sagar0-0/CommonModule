@@ -32,10 +32,6 @@ class BasicProfileViewModel
         MutableStateFlow<UiState<PutResponse>>(UiState.Idle)
     val createBasicProfileState = _createBasicProfileState.asStateFlow()
 
-    private val _basicProfileUiState =
-        MutableStateFlow(BasicProfileUiState())
-    val basicProfileUiState = _basicProfileUiState.asStateFlow()
-
     private val _checkReferralCodeState = MutableStateFlow<UiState<CheckReferralDTO>>(UiState.Idle)
     val checkReferralCodeState = _checkReferralCodeState.asStateFlow()
 
@@ -52,29 +48,15 @@ class BasicProfileViewModel
             initialValue = "",
         )
 
-    private fun enableScreenLoading() {
-        _basicProfileUiState.value = _basicProfileUiState.value.copy(
-            screenLoading = true,
-        )
-    }
-
-    private fun disableScreenLoading() {
-        _basicProfileUiState.value = _basicProfileUiState.value.copy(
-            screenLoading = true
-        )
-    }
-
     private fun resetReferralCode() = viewModelScope.launch {
         authRepo.resetReferralCode()
     }
 
     fun createBasicProfile(basicProfileDTO: BasicProfileDTO) {
         _createBasicProfileState.value = UiState.Loading
-        enableScreenLoading()
         viewModelScope.launch {
             val res = profileRepo.createBasicProfile(basicProfileDTO)
             _createBasicProfileState.value = res.toUiState()
-            disableScreenLoading()
             if (res is ResponseState.Success) {
                 resetReferralCode()
             }
@@ -83,10 +65,8 @@ class BasicProfileViewModel
 
     fun checkReferralCode(code: String) {
         _checkReferralCodeState.value = UiState.Loading
-        enableScreenLoading()
         viewModelScope.launch {
             val res = profileRepo.checkReferralCode(code)
-            disableScreenLoading()
             _checkReferralCodeState.value = res.toUiState()
         }
     }
@@ -112,10 +92,8 @@ class BasicProfileViewModel
     }
 
     fun linkWithCredentials(authCredential: AuthCredential) = viewModelScope.launch {
-        enableScreenLoading()
         authRepo.linkWithCredential(authCredential).collect {
             _linkAccountState.value = it.toUiState()
-            disableScreenLoading()
         }
     }
 
@@ -123,7 +101,3 @@ class BasicProfileViewModel
         _linkAccountState.value = UiState.Idle
     }
 }
-
-data class BasicProfileUiState(
-    val screenLoading: Boolean = false,
-)

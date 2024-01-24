@@ -18,7 +18,7 @@ import retrofit2.http.Query
 interface ProfileApi {
 
     @GET("payment/referral/code/check/?")
-    suspend fun checkReferralCode(@Query("refCode") refCode: String): Response<CheckReferralDTO>
+    suspend fun checkReferralCode(@Query("code") refCode: String): Response<CheckReferralDTO>
 
     @GET("userProfile/get/isUserProfileAvailable/?")
     suspend fun isUserProfileAvailable(@Query("uid") userId: String): Response<UserProfileAvailableResponse>

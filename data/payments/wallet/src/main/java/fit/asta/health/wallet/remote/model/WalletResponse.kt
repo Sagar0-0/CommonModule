@@ -3,6 +3,10 @@ package fit.asta.health.wallet.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+typealias CreditType = Int
+typealias WalletType = Int
+typealias SourceType = Int
+
 data class WalletResponse(
     @SerializedName("txnData")
     val walletTransactionData: List<WalletTransactionData>? = null,
@@ -37,8 +41,12 @@ data class WalletResponse(
         val uid: String = "",
         @SerializedName("tid")
         val tid: String = "",
-        @SerializedName("type")
-        val transactionType: WalletTransactionCode = WalletTransactionType.WalletMoneyUsed.code,
+        @SerializedName("sType")
+        val sourceType: SourceType = 0,
+        @SerializedName("cType")
+        val creditType: CreditType = 0,
+        @SerializedName("wType")
+        val walletType: WalletType = 0,
         @SerializedName("rfr")
         val referredBy: String = "",
         @SerializedName("rfe")
@@ -49,10 +57,8 @@ data class WalletResponse(
         val from: String = "",
         @SerializedName("to")
         val to: String = "",
-        @SerializedName("dr")
-        val debitAmounts: WalletTransactionDebitData? = null,
-        @SerializedName("cr")
-        val creditAmounts: WalletTransactionCreditData? = null,
+        @SerializedName("amt")
+        val amount: Double = 0.0,
     )
 
     data class WalletTransactionDebitData(
@@ -81,16 +87,21 @@ data class WalletResponse(
     )
 }
 
-typealias WalletTransactionCode = Int
-
-fun WalletTransactionCode.getWalletTransactionType() =
-    WalletTransactionType.entries.first { this == it.code }
-
-enum class WalletTransactionType(val code: WalletTransactionCode) {
+enum class SourceTypes(val code: SourceType) {
     WalletMoneyUsed(1),
     AccountToWallet(2),
     WalletToAccount(3),
     ReferrerCredit(4),
     RefereeCredit(5),
-    WalletPointsUsed(8)
+    WalletPointsUsed(7)
+}
+
+enum class CreditTypes(val code: CreditType) {
+    Debit(1),
+    Credit(2)
+}
+
+enum class WalletTypes(val code: WalletType) {
+    Money(1),
+    Points(2)
 }

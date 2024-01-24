@@ -33,8 +33,8 @@ import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -69,6 +69,7 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppMultiChoiceSegmentedButtonRow
+import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
@@ -76,9 +77,9 @@ import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
-import fit.asta.health.feature.profile.basic.vm.BasicProfileUiState
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
 
@@ -90,7 +91,6 @@ import fit.asta.health.resources.drawables.R
 fun BasicProfilePreview() {
     AppTheme {
         BasicProfileScreenUi(
-            basicProfileUiState = BasicProfileUiState(),
             checkReferralCodeState = UiState.Idle,
 //                .Success(
 //                    CheckReferralDTO(
@@ -111,7 +111,6 @@ fun BasicProfilePreview() {
 @Composable
 fun BasicProfileScreenUi(
     user: User = User(),
-    basicProfileUiState: BasicProfileUiState,
     checkReferralCodeState: UiState<CheckReferralDTO>,
     createBasicProfileState: UiState<PutResponse>,
     autoFetchedReferralCode: String,
@@ -124,6 +123,11 @@ fun BasicProfileScreenUi(
     var genderCode by rememberSaveable { mutableIntStateOf(GenderCode.Other.gender) }
     val phone by rememberSaveable { mutableStateOf(user.phoneNumber ?: "") }
     val email by rememberSaveable { mutableStateOf(user.email ?: "") }
+    var screenLoading by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(createBasicProfileState, checkReferralCodeState) {
+        screenLoading =
+            checkReferralCodeState is UiState.Loading || createBasicProfileState is UiState.Loading
+    }
 
     LaunchedEffect(referralCode) {
         if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
@@ -274,7 +278,7 @@ fun BasicProfileScreenUi(
                 }
             }
 
-            if (basicProfileUiState.screenLoading) {
+            if (screenLoading) {
                 Box(
                     modifier = Modifier
                         .fillMaxSize()
@@ -462,18 +466,25 @@ fun PhoneUi(
 ) {
     if (phoneNumber.isNullOrEmpty()) {
         // Linking with Phone Button
-        AppFilledButton(
-            colors = ButtonDefaults.buttonColors(
-                containerColor = AppTheme.colors.secondary,
-                contentColor = AppTheme.colors.onSecondaryContainer
-            ),
-            textToShow = "Link with Phone Number",
+        // Sign in with Phone Button
+        AppOutlinedButton(
             modifier = Modifier
                 .fillMaxWidth()
                 .height(AppTheme.buttonSize.level6),
-            leadingIcon = Icons.Default.Phone
+            onClick = {
+                navigateToPhoneAuth()
+            }
         ) {
-            navigateToPhoneAuth()
+            Icon(
+                imageVector = Icons.Default.Phone,
+                contentDescription = null,
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+            )
+            // Button Text
+            CaptionTexts.Level1(
+                text = "Link with Phone Number",
+                color = AppTheme.colors.onSurface
+            )
         }
     } else {
         AppCard(
@@ -582,7 +593,7 @@ fun ReferralUi(
                         checkReferralCodeState.resId.toStringFromResId(context),
                         Toast.LENGTH_SHORT
                     ).show()
-
+                    resetCodeState()
                 }
             }
 

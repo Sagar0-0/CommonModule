@@ -27,11 +27,13 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
@@ -54,9 +56,11 @@ import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.offers.remote.model.OffersData
+import fit.asta.health.wallet.remote.model.CreditType
+import fit.asta.health.wallet.remote.model.SourceType
+import fit.asta.health.wallet.remote.model.SourceTypes
 import fit.asta.health.wallet.remote.model.WalletResponse
-import fit.asta.health.wallet.remote.model.WalletTransactionType
-import fit.asta.health.wallet.remote.model.getWalletTransactionType
+import fit.asta.health.wallet.remote.model.WalletType
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -83,53 +87,45 @@ private fun WalletScreenUiPreview() {
                         id = "lacinia",
                         uid = "feugait",
                         tid = "singulis",
-                        transactionType = 3779,
                         referredBy = "lacus",
                         referee = "liber",
                         timeStamp = "ad",
                         from = "varius",
                         to = "sententiae",
-                        debitAmounts = WalletResponse.WalletTransactionDebitData(
-                            points = 4.5, money = 6.7
-                        ),
-                        creditAmounts = WalletResponse.WalletTransactionCreditData(
-                            points = 4.5, money = 6.7
-                        )
+                        sourceType = 0,
+                        creditType = 0,
+                        walletType = 0,
+                        amount = 0.0,
                     ),
                     WalletResponse.WalletTransactionData(
                         id = "lacinia",
                         uid = "feugait",
                         tid = "singulis",
-                        transactionType = 3779,
                         referredBy = "lacus",
                         referee = "liber",
                         timeStamp = "ad",
                         from = "varius",
                         to = "sententiae",
-                        debitAmounts = WalletResponse.WalletTransactionDebitData(
-                            points = 4.5, money = 6.7
-                        ),
-                        creditAmounts = WalletResponse.WalletTransactionCreditData(
-                            points = 4.5, money = 6.7
-                        )
+                        sourceType = 0,
+                        creditType = 0,
+                        walletType = 0,
+                        amount = 0.0,
                     ),
                     WalletResponse.WalletTransactionData(
                         id = "lacinia",
                         uid = "feugait",
                         tid = "singulis",
-                        transactionType = 3779,
                         referredBy = "lacus",
                         referee = "liber",
                         timeStamp = "ad",
                         from = "varius",
                         to = "sententiae",
-                        debitAmounts = WalletResponse.WalletTransactionDebitData(
-                            points = 4.5, money = 6.7
+                        sourceType = 0,
+                        creditType = 0,
+                        walletType = 0,
+                        amount = 0.0,
+
                         ),
-                        creditAmounts = WalletResponse.WalletTransactionCreditData(
-                            points = 4.5, money = 6.7
-                        )
-                    ),
                 )
             ),
             onProceedToAdd = {
@@ -245,7 +241,7 @@ fun WalletScreenUi(
                     modifier = Modifier
                         .fillMaxWidth()
                         .padding(top = AppTheme.spacing.level2),
-                    contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
+                    contentPadding = PaddingValues(horizontal = AppTheme.spacing.level1),
                     horizontalAlignment = Alignment.CenterHorizontally,
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                 ) {
@@ -319,26 +315,15 @@ fun OffersCarousal(offersList: List<OffersData>, onOfferClick: (OffersData) -> U
 
 @Composable
 fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
-    val received = when (
-        item.transactionType.getWalletTransactionType()
-    ) {
-        WalletTransactionType.RefereeCredit,
-        WalletTransactionType.ReferrerCredit,
-        WalletTransactionType.AccountToWallet -> {
-            true
-        }
-
-        else -> {
-            false
-        }
-
+    val received = remember {
+        item.creditType == 2
     }
     Row(
         modifier = Modifier
             .fillMaxWidth()
-            .clickable {
-
-            },
+            .clip(AppTheme.shape.level2)
+            .clickable {}
+            .padding(horizontal = AppTheme.spacing.level1),
         verticalAlignment = Alignment.CenterVertically
     ) {
         AppIcon(
@@ -349,31 +334,11 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
         Column(modifier = Modifier.weight(1f)) {
             TitleTexts.Level3(
                 overflow = TextOverflow.Ellipsis,
-                text = when (item.transactionType.getWalletTransactionType()) {
-                    WalletTransactionType.WalletMoneyUsed -> {
-                        "Money spent on Subscription"
-                    }
-
-                    WalletTransactionType.WalletToAccount -> {
-                        "Redeemed to bank"
-                    }
-
-                    WalletTransactionType.ReferrerCredit -> {
-                        "Referrer Credit Received"
-                    }
-
-                    WalletTransactionType.AccountToWallet -> {
-                        "Added money to wallet"
-                    }
-
-                    WalletTransactionType.RefereeCredit -> {
-                        "Referee Credit Received"
-                    }
-
-                    WalletTransactionType.WalletPointsUsed -> {
-                        "Points spent on Subscription"
-                    }
-                }
+                text = getMessageFromTransactionTypes(
+                    item.sourceType,
+                    item.creditType,
+                    item.walletType
+                )
             )
             BodyTexts.Level3(
                 text = item.timeStamp
@@ -382,41 +347,50 @@ fun TransactionHistoryItem(item: WalletResponse.WalletTransactionData) {
 
         TitleTexts.Level2(
             color = if (received) Color.Green else Color.Red,
-            text = when (item.transactionType) {
-                WalletTransactionType.WalletMoneyUsed.code -> {
-                    "- ${item.debitAmounts?.money}"
-                }
-
-                WalletTransactionType.WalletToAccount.code -> {
-                    "- ${item.debitAmounts?.money}"
-                }
-
-                WalletTransactionType.ReferrerCredit.code -> {
-                    "+ ${item.creditAmounts?.points}"
-                }
-
-                WalletTransactionType.AccountToWallet.code -> {
-                    "+ ${item.creditAmounts?.money}"
-                }
-
-                WalletTransactionType.RefereeCredit.code -> {
-                    "+ ${item.creditAmounts?.points}"
-                }
-
-                WalletTransactionType.WalletPointsUsed.code -> {
-                    "- ${item.debitAmounts?.points}"
-                }
-
-                else -> {
-                    ""
-                }
-            }
+            text = if (received) "+${item.amount}" else "-${item.amount}"
         )
     }
     Spacer(modifier = Modifier.padding(AppTheme.spacing.level1))
     AppDivider(
         color = AppTheme.colors.surface
     )
+}
+
+@Composable
+fun getMessageFromTransactionTypes(
+    sourceType: SourceType,
+    creditType: CreditType,
+    walletType: WalletType
+): String {
+    return when (sourceType) {
+        SourceTypes.AccountToWallet.code -> {
+            "Money added to wallet"
+        }
+
+        SourceTypes.WalletMoneyUsed.code -> {
+            "Money used for Subscription"
+        }
+
+        SourceTypes.WalletToAccount.code -> {
+            "Money Redeemed to bank"
+        }
+
+        SourceTypes.ReferrerCredit.code -> {
+            "Referrer Credit Received"
+        }
+
+        SourceTypes.RefereeCredit.code -> {
+            "Referee Credit Received"
+        }
+
+        SourceTypes.WalletPointsUsed.code -> {
+            "Points used for Subscription"
+        }
+
+        else -> {
+            ""
+        }
+    }
 }
 
 @Composable

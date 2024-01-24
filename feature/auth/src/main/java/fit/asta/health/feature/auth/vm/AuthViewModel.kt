@@ -25,6 +25,7 @@ import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.tasks.await
 import javax.inject.Inject
@@ -84,8 +85,9 @@ internal class AuthViewModel
     private fun isProfileAvailable(userId: String = uid) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
-            val res = profileRepo.isUserProfileAvailable(userId)
-            _isProfileAvailable.value = res.toUiState()
+            _isProfileAvailable.update {
+                profileRepo.isUserProfileAvailable(userId).toUiState()
+            }
         }
     }
 

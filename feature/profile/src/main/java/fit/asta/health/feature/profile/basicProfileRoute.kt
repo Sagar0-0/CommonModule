@@ -45,7 +45,6 @@ fun NavGraphBuilder.basicProfileRoute() {
         val createBasicProfileState by basicProfileViewModel.createBasicProfileState.collectAsStateWithLifecycle()
         val autoFetchedReferralCode by basicProfileViewModel.referralCode.collectAsStateWithLifecycle()
         val linkAccountState by basicProfileViewModel.linkAccountState.collectAsStateWithLifecycle()
-        val basicProfileUiState by basicProfileViewModel.basicProfileUiState.collectAsStateWithLifecycle()
 
         LaunchedEffect(autoFetchedReferralCode) {
             if (autoFetchedReferralCode.isNotEmpty()) {
@@ -70,7 +69,6 @@ fun NavGraphBuilder.basicProfileRoute() {
             composable(BASIC_PROFILE_CREATE_SCREEN) {
                 BasicProfileScreenUi(
                     user = user,
-                    basicProfileUiState = basicProfileUiState,
                     checkReferralCodeState = checkReferralCodeState,
                     createBasicProfileState = createBasicProfileState,
                     autoFetchedReferralCode = autoFetchedReferralCode,
