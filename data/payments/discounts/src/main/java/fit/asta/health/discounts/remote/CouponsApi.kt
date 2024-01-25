@@ -10,9 +10,7 @@ interface CouponsApi {
     suspend fun getCouponCodeDetails(
         @Query("type")
         productType: Int,
-        @Query("uid")
-        userId: String,
-        @Query("couponCode")
+        @Query("cpn")
         couponCode: String,
         @Query("amt")
         productMRP: Double,

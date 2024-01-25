@@ -4,6 +4,7 @@ import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -36,7 +37,7 @@ fun AppModalBottomSheet(
     sheetState: SheetState,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    windowInsets: WindowInsets = BottomSheetDefaults.windowInsets,
+    windowInsets: WindowInsets = WindowInsets.ime,
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {

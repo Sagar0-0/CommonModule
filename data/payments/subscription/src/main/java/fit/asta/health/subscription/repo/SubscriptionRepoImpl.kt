@@ -13,6 +13,7 @@ class SubscriptionRepoImpl
     private val remoteApi: SubscriptionApi,
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SubscriptionRepo {
+
     override suspend fun getFinalAmountData(
         type: String,
         categoryId: String,
@@ -22,8 +23,13 @@ class SubscriptionRepoImpl
         getApiResponseState { remoteApi.getFinalAmountData(type, categoryId, productId, country) }
     }
 
-    override suspend fun getSubscriptionData(country: String) = withContext(coroutineDispatcher) {
-        getApiResponseState { remoteApi.getSubscriptionData(country) }
+    override suspend fun getSubscriptionData(country: String, uid: String) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState { remoteApi.getSubscriptionData(country, uid) }
+        }
+
+    override suspend fun getUserSubscribedPlan(uid: String) = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getUserSubscribedPlan(uid) }
     }
 
     override suspend fun getSubscriptionDurationsData(

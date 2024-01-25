@@ -12,7 +12,7 @@ data class BasicProfileDTO(
     @SerializedName("gen") val gen: Int = GenderCode.Other.gender,
     @SerializedName("mail") val mail: String = "",
     @SerializedName("ph") val ph: String = "",
-    @SerializedName("refCode") val refCode: String = "",
+    @SerializedName("rflCode") val refCode: String = "",
 )
 
 sealed class GenderCode(val gender: Int) {

@@ -96,7 +96,7 @@ import fit.asta.health.navigation.tools.ui.view.ToolsHomeContent
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
 import fit.asta.health.navigation.track.TrackMenuScreenControl
 import fit.asta.health.offers.remote.model.OffersData
-import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
+import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -105,7 +105,7 @@ fun HomeScreensLayout(
     currentAddressState: UiState<String>,
     refCode: String,
     profileImageUri: String?,
-    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    subscriptionCategoryState: UiState<SubscriptionPlansResponse>,
     offersDataState: UiState<List<OffersData>>,
     toolsHomeDataState: UiState<ToolsHome>,
     notificationState: Boolean,
@@ -405,7 +405,7 @@ private fun HomeNavHost(
     modifier: Modifier = Modifier,
     refCode: String,
     toolsHomeData: UiState<ToolsHome>,
-    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    subscriptionCategoryState: UiState<SubscriptionPlansResponse>,
     offersDataState: UiState<List<OffersData>>,
     onNav: (String) -> Unit,
     onEvent: (ToolsHomeUiEvent) -> Unit,

@@ -271,7 +271,7 @@ fun BasicProfileScreenUi(
                                 gen = genderCode,
                                 mail = email,
                                 ph = phone,
-                                refCode = referralCode
+                                refCode = if (checkReferralCodeState is UiState.Success) referralCode else ""
                             )
                         )
                     )

@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -44,10 +43,11 @@ import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.subscription.OffersLoadingCard
 import fit.asta.health.subscription.SubscriptionLoadingCard
-import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
+import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.subscription.view.OffersBanner
 import fit.asta.health.subscription.view.OffersUiData
 import fit.asta.health.subscription.view.SubscriptionTypesPager
+import fit.asta.health.subscription.view.UserSubscribedPlanSection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -57,16 +57,13 @@ import java.util.Locale
 @Composable
 fun ToolsHomeContent(
     toolsHome: ToolsHome,
-    subscriptionCategoryState: UiState<List<SubscriptionCategoryData>>,
+    subscriptionCategoryState: UiState<SubscriptionPlansResponse>,
     offersDataState: UiState<List<OffersData>>,
     refCode: String,
     onEvent: (ToolsHomeUiEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
     val context = LocalContext.current
-    val showSubscriptionPlans = remember {
-        true//TODO: HIDE SUBSCRIPTION CARDS WHEN PURCHASED
-    }
 
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
@@ -129,15 +126,16 @@ fun ToolsHomeContent(
                 }
 
                 is UiState.Success -> {
-                    if (showSubscriptionPlans) {
+                    subscriptionCategoryState.data.userPlan?.let { plan ->
+                        UserSubscribedPlanSection(userSubscribedPlan = plan)
+                    }
+
+                    subscriptionCategoryState.data.plans?.let { plans ->
                         SubscriptionTypesPager(
-                            subscriptionPlans = subscriptionCategoryState.data
+                            subscriptionPlans = plans
                         ) {
                             onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
                         }
-                    } else {
-//                        UserSubscribedPlanSection(subscriptionResponse.userSubscribedPlan!!)
-                        // TODO: ALREADY PURCHASED UI
                     }
                 }
 

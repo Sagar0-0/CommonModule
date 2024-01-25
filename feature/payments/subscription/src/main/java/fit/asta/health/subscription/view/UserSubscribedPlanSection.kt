@@ -3,59 +3,72 @@ package fit.asta.health.subscription.view
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Refresh
 import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.subscription.remote.model.SubscriptionResponse
+import fit.asta.health.subscription.remote.model.UserSubscribedPlan
 import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
-import fit.asta.health.subscription.remote.model.getUserSubscribedPlanStatusType
-import java.util.Calendar
 
 @Composable
-fun UserSubscribedPlanSection(userSubscribedPlan: SubscriptionResponse.UserSubscribedPlan) {
-    val calendar = remember {
-        Calendar.getInstance()
-    }
+fun UserSubscribedPlanSection(userSubscribedPlan: UserSubscribedPlan) {
 
-    AppCard(modifier = Modifier.fillMaxWidth()) {
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
+    ) {
         Row(
-            modifier = Modifier.fillMaxWidth(),
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.SpaceBetween,
             verticalAlignment = Alignment.Top
         ) {
-            TitleTexts.Level1(text = userSubscribedPlan.plan)
+            AppNetworkImage(
+                model = getImgUrl(userSubscribedPlan.imageUrl),
+                modifier = Modifier
+                    .size(AppTheme.imageSize.level11)
+                    .aspectRatio(ratio = AppTheme.aspectRatio.square)
+            )
+            TitleTexts.Level1(
+                modifier = Modifier
+                    .padding(AppTheme.spacing.level2),
+                text = userSubscribedPlan.plan
+            )
             Column {
-                when (userSubscribedPlan.status.getUserSubscribedPlanStatusType()) {
-                    UserSubscribedPlanStatusType.ACTIVE -> {
+                when (userSubscribedPlan.sts) {
+                    UserSubscribedPlanStatusType.ACTIVE.code -> {
                         AppIcon(imageVector = Icons.Default.CheckCircle)
                     }
 
-                    UserSubscribedPlanStatusType.NOT_BOUGHT -> {
+                    UserSubscribedPlanStatusType.NOT_BOUGHT.code -> {
                         AppIcon(imageVector = Icons.Default.Close)
                     }
 
-                    UserSubscribedPlanStatusType.INACTIVE -> {
+                    UserSubscribedPlanStatusType.INACTIVE.code -> {
                         AppIcon(imageVector = Icons.Default.Refresh)
                     }
 
-                    UserSubscribedPlanStatusType.TEMPORARY_INACTIVE -> {
-                        AppIcon(imageVector = Icons.Default.Warning)
-                    }
-                    UserSubscribedPlanStatusType.NOT_BOUGHT -> {
+                    UserSubscribedPlanStatusType.TEMPORARY_INACTIVE.code -> {
                         AppIcon(imageVector = Icons.Default.Warning)
                     }
                 }
-                TitleTexts.Level3(text = "Expiry: " + userSubscribedPlan.expBy)
+                TitleTexts.Level3(text = "Expiry on: " + userSubscribedPlan.expBy)
             }
         }
 

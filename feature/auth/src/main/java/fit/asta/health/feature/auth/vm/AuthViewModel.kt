@@ -113,7 +113,7 @@ internal class AuthViewModel
                     _isProfileAvailable.value = res.toUiState()
                     if (res is ResponseState.Success) {//If profile available request is success then navigate accordingly
                         _loginState.value = UiState.Success(Unit)
-                        if (res.data.flag) {//Profile available in server
+                        if (res.data.isBasicProfileAvailable) {//Profile available in server
                             navigateToHome()
                         } else {//Profile not available in server
                             navigateToBasicProfile()

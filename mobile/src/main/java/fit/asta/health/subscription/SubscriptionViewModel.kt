@@ -12,9 +12,9 @@ import fit.asta.health.discounts.remote.model.ProductType
 import fit.asta.health.discounts.repo.CouponsRepo
 import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.offers.repo.OffersRepo
-import fit.asta.health.subscription.remote.model.SubscriptionCategoryData
 import fit.asta.health.subscription.remote.model.SubscriptionDurationsData
 import fit.asta.health.subscription.remote.model.SubscriptionFinalAmountData
+import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.subscription.repo.SubscriptionRepo
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.wallet.repo.WalletRepo
@@ -35,7 +35,7 @@ class SubscriptionViewModel
 ) : ViewModel() {
 
     private val _subscriptionCategoryDataState =
-        MutableStateFlow<UiState<List<SubscriptionCategoryData>>>(UiState.Loading)
+        MutableStateFlow<UiState<SubscriptionPlansResponse>>(UiState.Loading)
     val subscriptionCategoryDataState = _subscriptionCategoryDataState.asStateFlow()
 
     private val _subscriptionDurationDataState =
@@ -65,7 +65,6 @@ class SubscriptionViewModel
                     CouponRequest(
                         productType = ProductType.SUBSCRIPTION.type,
                         couponCode = code,
-                        userId = uid,
                         productMRP = productMRP
                     )
                 ).toUiState()
@@ -86,7 +85,7 @@ class SubscriptionViewModel
         _subscriptionCategoryDataState.value = UiState.Loading
         viewModelScope.launch {
             _subscriptionCategoryDataState.update {
-                subscriptionRepo.getSubscriptionData().toUiState()
+                subscriptionRepo.getSubscriptionData(uid = uid).toUiState()
             }
         }
     }

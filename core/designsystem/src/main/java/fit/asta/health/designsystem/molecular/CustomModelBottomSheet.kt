@@ -2,9 +2,10 @@ package fit.asta.health.designsystem.molecular
 
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
-import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
@@ -30,7 +31,7 @@ fun CustomModelBottomSheet(
                         .navigationBarsPadding(),
                     onDismissRequest = onClose,
                     sheetState = sheetState,
-                    windowInsets = BottomSheetDefaults.windowInsets,
+                    windowInsets = WindowInsets.ime,
                     dragHandle = dragHandle,
                     content = content,
                 )

@@ -20,7 +20,6 @@ class CouponsRepoImpl @Inject constructor(
         getApiResponseState {
             remoteApi.getCouponCodeDetails(
                 productType = couponRequest.productType,
-                userId = couponRequest.userId,
                 couponCode = couponRequest.couponCode,
                 productMRP = couponRequest.productMRP
             )

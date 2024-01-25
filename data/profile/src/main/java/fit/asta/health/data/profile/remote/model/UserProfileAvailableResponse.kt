@@ -3,5 +3,6 @@ package fit.asta.health.data.profile.remote.model
 import com.google.gson.annotations.SerializedName
 
 data class UserProfileAvailableResponse(
-    @SerializedName("flag") val flag: Boolean = false
+    @SerializedName("basic") val isBasicProfileAvailable: Boolean = false,
+    @SerializedName("flag") val userProfilePresent: Boolean = false
 )
