@@ -65,16 +65,13 @@ fun SettingsLayout(
         TextSelection(
             imageIcon = Icons.Default.Snooze,
             title = stringResource(id = StringR.string.snooze),
-            testTag = stringResource(id = StringR.string.snooze),
             arrowTitle = "${timeSettingUiState.snoozeTime} Minutes",
-            btnEnabled = true,
             onNavigateAction = onNavigateSnooze
         )
         OnlyToggleButton(
             imageIcon = Icons.Default.Notifications,
             title = stringResource(id = StringR.string.advanced_reminder),
             testTag = stringResource(id = StringR.string.advanced_reminder),
-            btnEnabled = true,
             switchTitle = stringResource(
                 StringR.string.minutes,
                 timeSettingUiState.advancedReminder.time

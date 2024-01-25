@@ -5,6 +5,6 @@ import com.google.gson.annotations.SerializedName
 data class SubscriptionPlansResponse(
     @SerializedName("plans")
     val plans: List<SubscriptionCategoryData>? = null,
-    @SerializedName("userPlan")
+    @SerializedName("userSub")
     val userPlan: UserSubscribedPlan? = null
 )

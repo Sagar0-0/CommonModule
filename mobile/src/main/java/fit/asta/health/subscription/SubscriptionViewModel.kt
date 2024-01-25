@@ -85,7 +85,9 @@ class SubscriptionViewModel
         _subscriptionCategoryDataState.value = UiState.Loading
         viewModelScope.launch {
             _subscriptionCategoryDataState.update {
-                subscriptionRepo.getSubscriptionData(uid = uid).toUiState()
+                subscriptionRepo.getSubscriptionData(
+                    uid = uid
+                ).toUiState()
             }
         }
     }

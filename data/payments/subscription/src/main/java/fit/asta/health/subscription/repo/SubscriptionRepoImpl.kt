@@ -1,5 +1,6 @@
 package fit.asta.health.subscription.repo
 
+import android.util.Log
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.subscription.remote.SubscriptionApi
@@ -25,7 +26,14 @@ class SubscriptionRepoImpl
 
     override suspend fun getSubscriptionData(country: String, uid: String) =
         withContext(coroutineDispatcher) {
-            getApiResponseState { remoteApi.getSubscriptionData(country, uid) }
+            getApiResponseState(
+                onSuccess = {
+                    Log.d("TAG", "getSubscriptionData: onSuccess = $it")
+                },
+                onFailure = {
+                    Log.d("TAG", "getSubscriptionData: onFailure = $it")
+                }
+            ) { remoteApi.getSubscriptionData(country, uid) }
         }
 
     override suspend fun getUserSubscribedPlan(uid: String) = withContext(coroutineDispatcher) {

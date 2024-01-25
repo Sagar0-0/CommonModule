@@ -10,7 +10,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
@@ -64,6 +63,7 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -144,8 +144,8 @@ fun AlarmSettingScreen(
 
     AppScaffold(
         modifier = Modifier
-            .fillMaxSize()
-            .imePadding(), snackBarHostState = snackBarHostState,
+            .fillMaxSize(),
+        snackBarHostState = snackBarHostState,
         topBar = {
             AppTopBar(
                 title = stringResource(StringR.string.alarm_setting),
@@ -171,135 +171,149 @@ fun AlarmSettingScreen(
                         }
                     }
                 })
-        }, content = { paddingValues ->
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(paddingValues)
-                    .padding(horizontal = 16.dp)
-                    .verticalScroll(rememberScrollState())
+        }
+    ) { paddingValues ->
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(paddingValues)
+                .padding(horizontal = AppTheme.spacing.level2)
+                .verticalScroll(rememberScrollState()),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
+            DigitalDemo(
+                time = AMPMHoursMin(
+                    hours = if (alarmSettingUiState.timeHours > 12) {
+                        alarmSettingUiState.timeHours - 12
+                    } else if (alarmSettingUiState.timeHours == 0) {
+                        12
+                    } else alarmSettingUiState.timeHours,
+                    minutes = alarmSettingUiState.timeMinutes,
+                    dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
+                )
             ) {
-                DigitalDemo(
-                    time = AMPMHoursMin(
-                        hours = if (alarmSettingUiState.timeHours > 12) {
-                            alarmSettingUiState.timeHours - 12
-                        } else if (alarmSettingUiState.timeHours == 0) {
-                            12
-                        } else alarmSettingUiState.timeHours,
-                        minutes = alarmSettingUiState.timeMinutes,
-                        dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
-                    )
-                ) {
-                    currentBottomSheet = TIME
+                currentBottomSheet = TIME
+                openSheet()
+            }
+
+            RepeatAlarm(
+                weekdays = alarmSettingUiState.week,
+                onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) }
+            )
+
+            OnlyToggleButton(
+                imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
+                title = stringResource(id = StringR.string.status),
+                testTag = stringResource(id = StringR.string.status),
+                mCheckedState = alarmSettingUiState.status,
+                onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) }
+            )
+
+            DateSelection(
+                imageIcon = Icons.Default.CalendarMonth,
+                title = stringResource(id = StringR.string.date_range),
+                arrowTitle = "${getFormattedDate(alarmSettingUiState.selectedStartDateMillis)} : ${
+                    if (alarmSettingUiState.selectedEndDateMillis != null)
+                        alarmSettingUiState.selectedEndDateMillis?.let {
+                            getFormattedDate(it)
+                        } else "Optional"
+                } ",
+                color = tagBg,
+                onNavigateAction = {
+                    currentBottomSheet = DATERANGE
                     openSheet()
                 }
+            )
 
-                RepeatAlarm(weekdays = alarmSettingUiState.week,
-                    onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) })
-                OnlyToggleButton(imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
-                    title = stringResource(id = StringR.string.status),
-                    testTag = stringResource(id = StringR.string.status),
-                    switchTitle = "",
-                    onNavigateToClickText = null,
-                    mCheckedState = alarmSettingUiState.status,
-                    onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) })
-                DateSelection(imageIcon = Icons.Default.CalendarMonth,
-                    title = stringResource(id = StringR.string.date_range),
-                    arrowTitle = "${getFormattedDate(alarmSettingUiState.selectedStartDateMillis)} : ${
-                        if (alarmSettingUiState.selectedEndDateMillis != null)
-                            alarmSettingUiState.selectedEndDateMillis?.let {
-                                getFormattedDate(it)
-                            } else "Optional"
-                    } ",
-                    btnEnabled = true, color = tagBg,
-                    onNavigateAction = {
-                        currentBottomSheet = DATERANGE
-                        openSheet()
-                    })
-                TextSelection(imageIcon = Icons.Default.Tag,
-                    title = stringResource(id = StringR.string.tag),
-                    testTag = stringResource(id = StringR.string.tag),
-                    arrowTitle = alarmSettingUiState.tagName,
-                    btnEnabled = true, color = tagBg,
-                    onNavigateAction = {
-                        navTagSelection()
-                    })
-                TextSelection(
-                    imageIcon = Icons.Default.Label,
-                    title = stringResource(id = StringR.string.label),
-                    testTag = stringResource(id = StringR.string.label),
-                    arrowTitle = alarmSettingUiState.alarmName,
-                    btnEnabled = true, color = nameBg,
-                    onNavigateAction = {
-                        currentBottomSheet = LABEL
-                        openSheet()
-                    })
-                TextSelection(imageIcon = Icons.Default.Description,
-                    title = stringResource(id = StringR.string.description),
-                    testTag = stringResource(id = StringR.string.description),
-                    arrowTitle = alarmSettingUiState.alarmDescription,
-                    btnEnabled = true, color = descriptionBg,
-                    onNavigateAction = {
-                        currentBottomSheet = DESCRIPTION
-                        openSheet()
-                    })
-                TextSelection(imageIcon = Icons.Default.AddAlarm,
-                    title = stringResource(StringR.string.intervals_settings),
-                    testTag = stringResource(StringR.string.intervals_settings),
-                    arrowTitle = stringResource(StringR.string.optional),
-                    btnEnabled = true,
-                    onNavigateAction = {
-                        if (areInputsValid) {
-                            navTimeSetting()
-                        } else {
-                            onClick = true
-                        }
-                    })
-                TextSelection(imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
-                    title = stringResource(id = StringR.string.reminder_mode),
-                    testTag = stringResource(id = StringR.string.reminder_mode),
-                    arrowTitle = alarmSettingUiState.mode,
-                    btnEnabled = true,
-                    onNavigateAction = {
-                        currentBottomSheet = REMINDER
-                        openSheet()
-                    })
-                OnlyToggleButton(imageIcon = Icons.Default.Vibration,
-                    title = stringResource(StringR.string.vibration),
-                    testTag = stringResource(StringR.string.vibration),
-                    mCheckedState = alarmSettingUiState.vibrationStatus,
-                    onCheckClicked = {
-                        aSEvent(AlarmSettingEvent.SetVibration(it))
-                    },
-                    switchTitle = alarmSettingUiState.vibration,
-                    btnEnabled = true,
-                    onNavigateToClickText = {
-                        currentBottomSheet = VIBRATION
-                        openSheet()
-                    })
+            TextSelection(
+                imageIcon = Icons.Default.Tag,
+                title = stringResource(id = StringR.string.tag),
+                arrowTitle = alarmSettingUiState.tagName,
+                color = tagBg,
+                onNavigateAction = {
+                    navTagSelection()
+                }
+            )
 
-                SoundOptionsUI()
+            TextSelection(
+                imageIcon = Icons.Default.Label,
+                title = stringResource(id = StringR.string.label),
+                arrowTitle = alarmSettingUiState.alarmName,
+                color = nameBg,
+                onNavigateAction = {
+                    currentBottomSheet = LABEL
+                    openSheet()
+                }
+            )
+            TextSelection(
+                imageIcon = Icons.Default.Description,
+                title = stringResource(id = StringR.string.description),
+                arrowTitle = alarmSettingUiState.alarmDescription,
+                color = descriptionBg,
+                onNavigateAction = {
+                    currentBottomSheet = DESCRIPTION
+                    openSheet()
+                }
+            )
+            TextSelection(
+                imageIcon = Icons.Default.AddAlarm,
+                title = stringResource(StringR.string.intervals_settings),
+                arrowTitle = stringResource(StringR.string.optional),
+                onNavigateAction = {
+                    if (areInputsValid) {
+                        navTimeSetting()
+                    } else {
+                        onClick = true
+                    }
+                }
+            )
+            TextSelection(
+                imageIcon = if (alarmSettingUiState.mode == "Notification") Icons.Default.NotificationsActive else Icons.Default.Wysiwyg,
+                title = stringResource(id = StringR.string.reminder_mode),
+                arrowTitle = alarmSettingUiState.mode,
+                onNavigateAction = {
+                    currentBottomSheet = REMINDER
+                    openSheet()
+                }
+            )
+            OnlyToggleButton(
+                imageIcon = Icons.Default.Vibration,
+                title = stringResource(StringR.string.vibration),
+                testTag = stringResource(StringR.string.vibration),
+                mCheckedState = alarmSettingUiState.vibrationStatus,
+                onCheckClicked = {
+                    aSEvent(AlarmSettingEvent.SetVibration(it))
+                },
+                switchTitle = alarmSettingUiState.vibration,
+                onNavigateToClickText = {
+                    currentBottomSheet = VIBRATION
+                    openSheet()
+                }
+            )
 
-                OnlyToggleButton(
-                    imageIcon = Icons.Default.NotificationImportant,
-                    title = stringResource(StringR.string.important),
-                    testTag = stringResource(StringR.string.important),
-                    mCheckedState = alarmSettingUiState.important,
-                    onCheckClicked = {
-                        aSEvent(AlarmSettingEvent.SetImportant(it))
-                    },
-                    switchTitle = "",
-                    onNavigateToClickText = null
-                )
-                CaptionTexts.Level2(
-                    text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
-                    color = AppTheme.colors.onSurfaceVariant,
-                    maxLines = 2
-                )
-                Spacer(modifier = Modifier.height(16.dp))
-            }
-        })
-    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
+            SoundOptionsUI()
+
+            OnlyToggleButton(
+                imageIcon = Icons.Default.NotificationImportant,
+                title = stringResource(StringR.string.important),
+                testTag = stringResource(StringR.string.important),
+                mCheckedState = alarmSettingUiState.important,
+                onCheckClicked = {
+                    aSEvent(AlarmSettingEvent.SetImportant(it))
+                }
+            )
+            CaptionTexts.Level2(
+                text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
+                color = AppTheme.colors.onSurfaceVariant,
+                maxLines = 2
+            )
+
+            Spacer(modifier = Modifier)
+        }
+    }
+
+    CustomModelBottomSheet(
+        targetState = bottomSheetState.isVisible,
         sheetState = bottomSheetState,
         content = {
             currentBottomSheet?.let {
@@ -313,7 +327,8 @@ fun AlarmSettingScreen(
             }
         },
         dragHandle = {},
-        onClose = { closeSheet() })
+        onClose = { closeSheet() }
+    )
 }
 
 enum class AlarmCreateBottomSheetTypes {
@@ -453,7 +468,7 @@ fun AlarmCreateBtmSheetLayout(
                     },
                     modifier = Modifier
                         .align(Alignment.BottomEnd)
-                        .padding(end = 16.dp)
+                        .padding(end = AppTheme.spacing.level2)
                         .navigationBarsPadding(),
                     textToShow = "Done"
                 )
@@ -468,42 +483,48 @@ fun AlarmCreateBtmSheetLayout(
 private fun SoundOptionsUI() {
     val activity = LocalContext.current as Activity
 
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
     ) {
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
-            Box(contentAlignment = Alignment.Center) {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level1),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
                 AppIcon(
                     imageVector = Icons.Default.Audiotrack,
                     contentDescription = null,
                     tint = AppTheme.colors.primary
                 )
+                TitleTexts.Level2(
+                    text = stringResource(StringR.string.sound),
+                    color = AppTheme.colors.onSecondaryContainer
+                )
             }
-            TitleTexts.Level2(
-                text = stringResource(StringR.string.sound),
-                color = AppTheme.colors.onSecondaryContainer
-            )
-        }
 
-        Row(
-            horizontalArrangement = Arrangement.SpaceEvenly,
-            verticalAlignment = Alignment.CenterVertically
-        ) {
-            AppTextButton(
-                textToShow = stringResource(StringR.string.spotify),
+            Row(
+                horizontalArrangement = Arrangement.SpaceEvenly,
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Opening the Spotify Activity
-                val intent = Intent(activity, SpotifyActivity::class.java)
-                activity.startActivity(intent)
-            }
+                AppTextButton(
+                    textToShow = stringResource(StringR.string.spotify)
+                ) {
+                    // Opening the Spotify Activity
+                    val intent = Intent(activity, SpotifyActivity::class.java)
+                    activity.startActivity(intent)
+                }
 
-            AppTextButton(
-                textToShow = stringResource(StringR.string.local_music)
-            ) { /*TODO*/ }
+                AppTextButton(
+                    textToShow = stringResource(StringR.string.local_music)
+                ) { /*TODO: Fetch Local Music*/ }
+            }
         }
     }
+
 }
 
 fun getFormattedDate(timeInMillis: Long, format: String = "dd MMM yy"): String {
@@ -535,14 +556,14 @@ fun DateRangePickerSample(state: DateRangePickerState) {
             TitleTexts.Level2(
                 text = "Select date range ",
                 textAlign = TextAlign.Center,
-                modifier = Modifier.padding(16.dp)
+                modifier = Modifier.padding(AppTheme.spacing.level2)
             )
         },
         headline = {
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(16.dp)
+                    .padding(AppTheme.spacing.level2)
             ) {
                 Box(Modifier.weight(1f)) {
                     (if (state.selectedStartDateMillis != null) state.selectedStartDateMillis?.let {

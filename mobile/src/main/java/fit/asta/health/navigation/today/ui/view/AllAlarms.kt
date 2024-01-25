@@ -5,9 +5,9 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -37,7 +37,6 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
-import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -148,6 +147,7 @@ fun AlarmItemPreview() {
 }
 
 @Composable
+@Preview
 fun AlarmItem(
     modifier: Modifier = Modifier,
     image: String = "",
@@ -159,58 +159,40 @@ fun AlarmItem(
     onSchedule: () -> Unit = {}
 ) {
     AppCard(
-        modifier = modifier
+        modifier = modifier,
+        onClick = onSchedule
     ) {
-        Column(
+        Row(
             modifier = Modifier
-                .padding(AppTheme.spacing.level2)
-                .fillMaxWidth(),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(
-                AppTheme.spacing.level1
-            )
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
         ) {
-            Row(
+            AppNetworkImage(
+                model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
+                    .crossfade(true).build(),
+                contentDescription = R.string.description.toStringFromResId(),
+                contentScale = ContentScale.Crop,
                 modifier = Modifier
-                    .fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
+                    .clip(AppTheme.shape.level2)
+                    .width(90.dp)
+                    .aspectRatio(AppTheme.aspectRatio.square)
+            )
+            Column(
+                modifier = Modifier
+                    .weight(1f),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                horizontalAlignment = Alignment.Start
             ) {
-                AppNetworkImage(
-                    model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
-                        .crossfade(true).build(),
-                    contentDescription = R.string.description.toStringFromResId(),
-                    contentScale = ContentScale.Crop,
-                    modifier = Modifier
-                        .clip(AppTheme.shape.level2)
-                        .height(110.dp)
-                        .width(90.dp)
-                )
-                Column(
-                    modifier = Modifier.weight(1f),
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-                    horizontalAlignment = Alignment.Start
-                ) {
-                    TitleTexts.Level2(text = title, maxLines = 1)
-                    BodyTexts.Level2(text = description, maxLines = 1)
-                    TitleTexts.Level2(text = time, maxLines = 1)
-                }
+                TitleTexts.Level2(text = title, maxLines = 1)
+                BodyTexts.Level3(text = description, maxLines = 1)
+                TitleTexts.Level2(text = time, maxLines = 1)
             }
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-            ) {
-                AppOutlinedButton(
-                    modifier = Modifier.weight(1f),
-                    textToShow = stringResource(R.string.reschedule),
-                    onClick = onSchedule
-                )
-                AppSwitch(
-                    checked = state,
-                    onCheckedChange = onStateChange
-                )
-            }
+            AppSwitch(
+                checked = state,
+                onCheckedChange = onStateChange
+            )
         }
     }
 }

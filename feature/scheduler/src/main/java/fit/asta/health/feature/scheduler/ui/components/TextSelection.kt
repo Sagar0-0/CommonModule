@@ -1,113 +1,114 @@
 package fit.asta.health.feature.scheduler.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ChevronRight
-import androidx.compose.material3.IconButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
-import androidx.compose.ui.platform.testTag
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun TextSelection(
     title: String,
-    testTag: String,
     arrowTitle: String = "",
-    btnEnabled: Boolean = false,
     imageIcon: ImageVector,
     color: Color? = null,
     onNavigateAction: () -> Unit,
 ) {
-
-    Row(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+        onClick = onNavigateAction
     ) {
-        Box {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
+                modifier = Modifier.padding(end = AppTheme.spacing.level2),
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    AppIcon(
-                        imageVector = imageIcon,
-                        contentDescription = null,
-                        tint = color ?: AppTheme.colors.primary
-                    )
-                }
+                AppIcon(
+                    imageVector = imageIcon,
+                    contentDescription = null,
+                    tint = color ?: AppTheme.colors.primary
+                )
                 TitleTexts.Level2(
+                    maxLines = 1,
                     text = title,
                     color = color ?: AppTheme.colors.onSecondaryContainer
                 )
             }
-        }
 
-        Box {
-            Row(
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                SelectableText(arrowTitle, btnEnabled, onNavigateAction)
-                Box(contentAlignment = Alignment.Center) {
-                    IconButton(
-                        modifier = Modifier.testTag(testTag),
-                        enabled = btnEnabled,
-                        onClick = onNavigateAction
-                    ) {
-                        AppIcon(
-                            imageVector = Icons.Default.ChevronRight,
-                            contentDescription = null,
-                            tint = AppTheme.colors.primary
-                        )
-                    }
-                }
-            }
+            CaptionTexts.Level1(
+                modifier = Modifier.weight(1f),
+                text = arrowTitle,
+                maxLines = 1
+            )
+            AppIcon(
+                imageVector = Icons.Default.ChevronRight,
+                contentDescription = null,
+                tint = AppTheme.colors.primary
+            )
         }
     }
+
 }
 
 @Composable
 fun DateSelection(
     title: String,
     arrowTitle: String = "",
-    btnEnabled: Boolean = false,
     imageIcon: ImageVector,
     color: Color? = null,
     onNavigateAction: () -> Unit,
 ) {
-
-    Row(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-        verticalAlignment = Alignment.CenterVertically
+        onClick = onNavigateAction
     ) {
-        Box(contentAlignment = Alignment.Center) {
-            AppIcon(
-                imageVector = imageIcon,
-                contentDescription = null,
-                tint = color ?: AppTheme.colors.primary
-            )
-        }
-        TitleTexts.Level2(
-            text = title,
-            color = color ?: AppTheme.colors.onSecondaryContainer
-        )
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+            ) {
+                AppIcon(
+                    imageVector = imageIcon,
+                    contentDescription = null,
+                    tint = color ?: AppTheme.colors.primary
+                )
+                TitleTexts.Level2(
+                    maxLines = 1,
+                    text = title,
+                    color = color ?: AppTheme.colors.onSecondaryContainer
+                )
+            }
 
-        SelectableText(arrowTitle, btnEnabled, onNavigateAction)
+            CaptionTexts.Level1(text = arrowTitle, maxLines = 1)
+        }
     }
+
 }
 
 @Composable

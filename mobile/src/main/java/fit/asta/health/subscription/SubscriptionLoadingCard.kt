@@ -1,5 +1,6 @@
 package fit.asta.health.subscription
 
+import android.content.res.Configuration
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
@@ -27,7 +28,12 @@ import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-@Preview
+@Preview("Light")
+@Preview(
+    name = "Dark",
+    uiMode = Configuration.UI_MODE_NIGHT_YES,
+    showBackground = true
+)
 fun SubscriptionLoadingCard(isLoading: Boolean = true, onClick: () -> Unit = {}) {
     Column(
         modifier = Modifier

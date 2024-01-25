@@ -3,18 +3,13 @@ package fit.asta.health.feature.scheduler.ui.components
 import androidx.compose.animation.core.FastOutLinearInEasing
 import androidx.compose.animation.core.animateIntAsState
 import androidx.compose.animation.core.tween
-import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
@@ -41,6 +36,7 @@ import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import java.util.Calendar
 
@@ -48,46 +44,54 @@ import java.util.Calendar
 fun OnlyToggleButton(
     imageIcon: ImageVector,
     title: String,
-    switchTitle: String,
-    onNavigateToClickText: (() -> Unit)?,
+    switchTitle: String = "",
+    onNavigateToClickText: (() -> Unit)? = null,
     onCheckClicked: (Boolean) -> Unit = {},
     mCheckedState: Boolean = false,
-    btnEnabled: Boolean = false,
     testTag: String
 ) {
-
-    Row(
-        modifier = Modifier.fillMaxWidth(),
-        horizontalArrangement = Arrangement.SpaceBetween,
-        verticalAlignment = Alignment.CenterVertically
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth(),
+        onClick = {
+            if (onNavigateToClickText == null) {
+                onCheckClicked(!mCheckedState)
+            } else {
+                onNavigateToClickText.invoke()
+            }
+        }
     ) {
-        Box {
+        Row(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level1),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically
+        ) {
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                Box(contentAlignment = Alignment.Center) {
-                    AppIcon(
-                        imageVector = imageIcon,
-                        contentDescription = null,
-                        tint = AppTheme.colors.primary
-                    )
-                }
+                AppIcon(
+                    imageVector = imageIcon,
+                    contentDescription = null,
+                    tint = AppTheme.colors.primary
+                )
                 TitleTexts.Level2(
-                    text = title, maxLines = 2,
+                    text = title,
+                    maxLines = 2,
                     color = AppTheme.colors.onSecondaryContainer
                 )
             }
-        }
-        Box {
+
             Row(
                 horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                SelectableText(
-                    btnEnabled = btnEnabled,
-                    arrowTitle = switchTitle,
-                    onClick = { onNavigateToClickText?.invoke() })
+                CaptionTexts.Level1(
+                    text = switchTitle,
+                    maxLines = 1
+                )
                 AppSwitch(
                     modifier = Modifier.testTag(testTag),
                     checked = mCheckedState,
@@ -105,6 +109,7 @@ fun OnlyToggleButton(
             }
         }
     }
+
 }
 
 
@@ -118,28 +123,31 @@ fun DigitalDemo(time: AMPMHoursMin, open: () -> Unit = {}) {
         targetValue = time.minutes, label = "",
         animationSpec = tween(700, easing = FastOutLinearInEasing)
     )
-    AppCard(modifier = Modifier
-        .testTag("alarmclock")
-        .clickable { open() }, content = {
+    AppCard(
+        modifier = Modifier
+            .testTag("alarmclock"),
+        onClick = open
+    ) {
         Row(
             modifier = Modifier
-                .padding(16.dp),
-            verticalAlignment = Alignment.CenterVertically
+                .padding(AppTheme.spacing.level2),
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
         ) {
             TitleTexts.Level2(
                 text = "${if (time.hours < 10) "0" else ""}${hours}:${if (time.minutes < 10) "0" else ""}${minutes}",
             )
-            Spacer(modifier = Modifier.width(8.dp))
             TitleTexts.Level2(
                 text = time.dayTime.name
             )
         }
-    })
+    }
 }
 
 @Composable
 fun RepeatAlarm(
-    onDaySelect: (Int) -> Unit, weekdays: Weekdays,
+    weekdays: Weekdays,
+    onDaySelect: (Int) -> Unit
 ) {
     val context = LocalContext.current
     val text by remember(weekdays) {
@@ -149,43 +157,34 @@ fun RepeatAlarm(
     }
     Column(
         modifier = Modifier
-            .fillMaxWidth()
+            .fillMaxWidth(),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
             verticalAlignment = Alignment.CenterVertically
         ) {
-            Box {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
-                ) {
-                    Box(contentAlignment = Alignment.Center) {
-                        AppIcon(
-                            imageVector = Icons.Default.EditCalendar,
-                            contentDescription = null,
-                            tint = AppTheme.colors.primary
-                        )
-                    }
-                    Column {
-                        TitleTexts.Level2(
-                            text = "Repeat",
-                            color = AppTheme.colors.onSecondaryContainer
-                        )
-                        Spacer(modifier = Modifier.height(1.dp))
-                        TitleTexts.Level3(
-                            text = text,
-                            color = AppTheme.colors.onSurfaceVariant
-                        )
-                    }
-                }
+            AppIcon(
+                imageVector = Icons.Default.EditCalendar,
+                contentDescription = null,
+                tint = AppTheme.colors.primary
+            )
+            Column(
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)
+            ) {
+                TitleTexts.Level2(
+                    text = "Repeat",
+                    color = AppTheme.colors.onSecondaryContainer
+                )
+                TitleTexts.Level3(
+                    text = text,
+                    color = AppTheme.colors.onSurfaceVariant
+                )
             }
         }
-        Spacer(modifier = Modifier.height(16.dp))
         AllDays(onDaySelect = onDaySelect, weekdays = weekdays)
-        Spacer(modifier = Modifier.height(16.dp))
     }
 }
 
