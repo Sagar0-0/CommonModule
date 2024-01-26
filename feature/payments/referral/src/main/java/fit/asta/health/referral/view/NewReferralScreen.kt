@@ -11,13 +11,11 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
-import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.WorkspacePremium
@@ -33,7 +31,6 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.copyTextToClipboard
-import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -127,45 +124,28 @@ fun NewReferralDesign(
                             .align(Alignment.Start),
                         text = "Referred by:"
                     )
-                    AppCard(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                    ) {
-                        Row(
-                            modifier = Modifier
-                                .fillMaxWidth()
-                                .padding(AppTheme.spacing.level2),
-                            verticalAlignment = Alignment.CenterVertically,
-                            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
-                        ) {
-                            AppNetworkImage(
-                                modifier = Modifier
-                                    .size(AppTheme.imageSize.level4)
-                                    .clip(CircleShape),
-                                model = user.pic,
-                            )
-                            TitleTexts.Level3(text = user.name)
-                            AppIcon(
-                                imageVector =
-                                if (user.prime == PrimeUserTypes.ACTIVE.code) {
-                                    Icons.Default.VerifiedUser
-                                } else {
-                                    Icons.Default.WorkspacePremium
-                                },
-                                contentDescription = "Premium User"
-                            )
-                        }
-                    }
+                    ReferralUserItem(userDetails = user)
                 }
             }
 
             // Display the list of referred users, if available
             referralData.referredUsers?.let { list ->
-                HeadingTexts.Level2(text = "You've invited...")
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                list.forEach { user ->
-                    InvitedUserList(user)
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                ) {
+                    HeadingTexts.Level3(
+                        modifier = Modifier
+                            .align(Alignment.Start),
+                        text = "You've invited..."
+                    )
+                    list.forEach { user ->
+                        ReferralUserItem(user)
+                    }
                 }
+
             }
 
             Spacer(modifier = Modifier)
@@ -262,12 +242,12 @@ fun CopyReferralCodeCard(
  * @param addToCommunity Callback to handle adding the user to the community.
  */
 @Composable
-fun InvitedUserList(
+fun ReferralUserItem(
     userDetails: UserDetails,
     addToCommunity: () -> Unit = {}
 ) {
     // Use AppCard to create a card for each invited user
-    AppCard(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+    AppCard {
         // Row layout to organize UI elements horizontally
         Row(
             modifier = Modifier
@@ -277,18 +257,21 @@ fun InvitedUserList(
             horizontalArrangement = Arrangement.SpaceBetween
         ) {
             // Display user details including profile picture, name, and contact information
-            Row {
+            Row(
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+            ) {
                 AppNetworkImage(
-                    model = getImgUrl(userDetails.pic),
-                    contentDescription = "Profile",
                     modifier = Modifier
-                        .size(AppTheme.boxSize.level6)
-                        .clip(CircleShape)
+                        .align(Alignment.CenterVertically)
+                        .size(AppTheme.imageSize.level4)
+                        .clip(CircleShape),
+                    model = userDetails.pic,
                 )
-                Spacer(modifier = Modifier.width(AppTheme.spacing.level1))
-                Column(modifier = Modifier.weight(1f)) {
-                    HeadingTexts.Level3(text = userDetails.name)
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                Column(
+                    modifier = Modifier.weight(1f),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)
+                ) {
+                    TitleTexts.Level3(text = userDetails.name)
                     BodyTexts.Level3(
                         text = userDetails.phone.ifEmpty {
                             userDetails.mail
@@ -298,8 +281,12 @@ fun InvitedUserList(
                 }
 
                 if (userDetails.prime == PrimeUserTypes.ACTIVE.code) {
-                    AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
+                    AppIcon(
+                        imageVector = Icons.Filled.WorkspacePremium,
+                        tint = AppTheme.colors.primary
+                    )
+                } else {
+                    AppIcon(imageVector = Icons.Default.VerifiedUser)
                 }
             }
         }

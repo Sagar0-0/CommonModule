@@ -49,6 +49,7 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.discounts.remote.model.CouponResponse
 import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderRequestType
@@ -162,7 +163,8 @@ fun SubscriptionCheckoutScreen(
 
     val finalPayableAmount =
         rememberSaveable(walletPointsUsed, walletMoneyUsed, couponDiscountMoney) {
-            subscriptionCheckoutScreenData.planMRP - subscriptionCheckoutScreenData.offerAmount - walletMoneyUsed - walletPointsUsed - couponDiscountMoney
+            "%.2f".format(subscriptionCheckoutScreenData.planMRP - subscriptionCheckoutScreenData.offerAmount - walletMoneyUsed - walletPointsUsed - couponDiscountMoney)
+                .toDouble()
         }
 
     // AppSurface is a custom composable providing a themed surface for the content.
@@ -418,11 +420,18 @@ fun CouponSection(
             Row(
                 modifier = Modifier
                     .fillMaxWidth()
-                    .padding(AppTheme.spacing.level2),
+                    .padding(
+                        vertical = AppTheme.spacing.level1,
+                        horizontal = AppTheme.spacing.level2
+                    ),
                 horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                HeadingTexts.Level3(text = "Coupon $couponCode applied")
+                TitleTexts.Level3(
+                    modifier = Modifier.weight(1f),
+                    maxLines = 1,
+                    text = "Coupon applied"
+                )
                 AppIconButton(
                     onClick = {
                         onEvent(BuyScreenEvent.ResetCouponState)
