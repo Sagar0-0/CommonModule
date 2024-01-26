@@ -271,8 +271,12 @@ fun ReferralUserItem(
                     modifier = Modifier.weight(1f),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)
                 ) {
-                    TitleTexts.Level3(text = userDetails.name)
+                    TitleTexts.Level3(
+                        maxLines = 1,
+                        text = userDetails.name
+                    )
                     BodyTexts.Level3(
+                        maxLines = 1,
                         text = userDetails.phone.ifEmpty {
                             userDetails.mail
                         },
