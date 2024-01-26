@@ -107,14 +107,14 @@ fun SubscriptionTypesPager(
     val pagerState = rememberPagerState { subPlans.size }
 
     Column(
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
         // Display a title for the subscription list
         HeadingTexts.Level1(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(horizontal = AppTheme.spacing.level2),
-            text = "Explore Premium Plans"
+            text = "Explore Premium Plans:"
         )
         // Display SubscriptionPassCard for each item in the subscription list
         Box {

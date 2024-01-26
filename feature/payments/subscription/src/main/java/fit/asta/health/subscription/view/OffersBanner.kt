@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -101,7 +100,6 @@ fun OffersBanner(
             // Container box for the banner content
             AppCard(
                 modifier = contentModifier
-                    .height(AppTheme.boxSize.level10)
                     .fillMaxWidth(),
                 onClick = {
                     onClick(offersList[page].categoryId, offersList[page].productId)

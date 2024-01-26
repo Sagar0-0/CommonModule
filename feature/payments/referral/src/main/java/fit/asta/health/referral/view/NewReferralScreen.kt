@@ -3,7 +3,6 @@ package fit.asta.health.referral.view
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -20,6 +19,8 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Diamond
 import androidx.compose.material.icons.filled.Link
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
@@ -44,10 +45,10 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.LargeTexts
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.referral.remote.model.PrimeUserTypes
 import fit.asta.health.referral.remote.model.ReferralDataResponse
-import fit.asta.health.referral.remote.model.SubscriptionStateType
 import fit.asta.health.referral.remote.model.UserDetails
-import fit.asta.health.referral.remote.model.getSubscriptionStateType
 import fit.asta.health.resources.drawables.R
 
 
@@ -63,7 +64,7 @@ import fit.asta.health.resources.drawables.R
 @Composable
 fun ReferralScreenPreview() {
     AppTheme {
-        NewReferralDesign(refCode = "0000")
+        NewReferralDesign(referralData = ReferralDataResponse())
     }
 }
 
@@ -78,61 +79,96 @@ fun ReferralScreenPreview() {
 fun NewReferralDesign(
     modifier: Modifier = Modifier,
     shareRefLink: (String) -> Unit = {},
-    refCode: String = "",
-    referralStats: ReferralDataResponse.ReferralStats = ReferralDataResponse.ReferralStats(),
-    referredUserList: List<UserDetails>? = null,
+    referralData: ReferralDataResponse,
 ) {
     // Use AppSurface as the root layout
-    AppSurface(modifier = modifier.fillMaxSize()) {
+    AppSurface(
+        modifier = modifier.fillMaxSize()
+    ) {
         // Column layout to organize UI elements vertically
         Column(
             modifier = Modifier
                 .fillMaxSize()
                 .verticalScroll(rememberScrollState()),
-            horizontalAlignment = Alignment.CenterHorizontally
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            // Add spacing
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
             // Display referral image
             ReferralImage()
 
-            // Add spacing
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
             // Button to share referral link
-            ShareReferralButton(shareRefLink = { shareRefLink(refCode) })
+            ShareReferralButton(shareRefLink = { shareRefLink(referralData.referralDetails.refCode) })
 
             // Display OR text
-            LargeTexts.Level2(
+            HeadingTexts.Level1(
                 text = "OR",
                 color = AppTheme.colors.onSurfaceVariant,
             )
 
             // Display referral code with a copy button
-            CopyReferralCodeCard(refCode = refCode)
-
-            // Add spacing
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            CopyReferralCodeCard(refCode = referralData.referralDetails.refCode)
 
             // Display invitation report
             InvitationReport(
-                referralStats.totalIncome.toString(),
-                referralStats.nonPremiumUsers.toString(),
-                referralStats.premiumUsers.toString()
+                referralData.referralStats.totalIncome.toString(),
+                referralData.referralStats.nonPremiumUsers.toString(),
+                referralData.referralStats.premiumUsers.toString()
             )
 
-            // Add spacing
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+            referralData.referredByUsersDetails?.let { user ->
+                Column(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(horizontal = AppTheme.spacing.level2),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                ) {
+                    HeadingTexts.Level3(
+                        modifier = Modifier
+                            .align(Alignment.Start),
+                        text = "Referred by:"
+                    )
+                    AppCard(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                    ) {
+                        Row(
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(AppTheme.spacing.level2),
+                            verticalAlignment = Alignment.CenterVertically,
+                            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                        ) {
+                            AppNetworkImage(
+                                modifier = Modifier
+                                    .size(AppTheme.imageSize.level4)
+                                    .clip(CircleShape),
+                                model = user.pic,
+                            )
+                            TitleTexts.Level3(text = user.name)
+                            AppIcon(
+                                imageVector =
+                                if (user.prime == PrimeUserTypes.ACTIVE.code) {
+                                    Icons.Default.VerifiedUser
+                                } else {
+                                    Icons.Default.WorkspacePremium
+                                },
+                                contentDescription = "Premium User"
+                            )
+                        }
+                    }
+                }
+            }
 
             // Display the list of referred users, if available
-            referredUserList?.let {
+            referralData.referredUsers?.let { list ->
                 HeadingTexts.Level2(text = "You've invited...")
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level3))
-                referredUserList.forEach { user ->
+                list.forEach { user ->
                     InvitedUserList(user)
                 }
             }
+
+            Spacer(modifier = Modifier)
         }
     }
 }
@@ -187,45 +223,34 @@ fun CopyReferralCodeCard(
     // Access the current context
     val context = LocalContext.current
 
-    // Row layout to organize UI elements horizontally
-    Row(
-        Modifier
-            .fillMaxWidth()
-            .padding(vertical = AppTheme.spacing.level2),
-        horizontalArrangement = Arrangement.Center
+    // Use AppCard to create a card containing the referral code and copy button
+    AppCard(
+        colors = colors,
+        onClick = { context.copyTextToClipboard(refCode) }
     ) {
-        // Use AppCard to create a card containing the referral code and copy button
-        AppCard(colors = colors, onClick = { context.copyTextToClipboard(refCode) }) {
+        // Row layout to organize UI elements horizontally
+        Row(
+            modifier = Modifier.padding(AppTheme.spacing.level2),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            // Display the referral code
+            HeadingTexts.Level1(
+                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                text = refCode,
+                textAlign = TextAlign.Center,
+                color = AppTheme.colors.primary
+            )
+
             // Row layout to organize UI elements horizontally
             Row(
-                horizontalArrangement = Arrangement.SpaceBetween,
-                verticalAlignment = Alignment.CenterVertically,
-                modifier = Modifier.padding(
-                    PaddingValues(
-                        start = AppTheme.spacing.level3,
-                        top = AppTheme.spacing.level1,
-                        end = AppTheme.spacing.level3,
-                        bottom = AppTheme.spacing.level1
-                    )
-                )
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                // Display the referral code
-                HeadingTexts.Level1(
-                    text = refCode,
-                    modifier = Modifier.padding(AppTheme.spacing.level2),
-                    textAlign = TextAlign.Center,
-                    color = AppTheme.colors.primary
-                )
-
-                // Row layout to organize UI elements horizontally
-                Row(verticalAlignment = Alignment.CenterVertically) {
-                    // Display copy icon
-                    AppIcon(imageVector = Icons.Filled.ContentCopy, tint = AppTheme.colors.primary)
-                    Spacer(modifier = Modifier.width(AppTheme.spacing.level0))
-
-                    // Display copy text
-                    CaptionTexts.Level1(text = "Copy", color = AppTheme.colors.primary)
-                }
+                // Display copy icon
+                AppIcon(imageVector = Icons.Filled.ContentCopy, tint = AppTheme.colors.primary)
+                // Display copy text
+                CaptionTexts.Level1(text = "Copy", color = AppTheme.colors.primary)
             }
         }
     }
@@ -272,16 +297,13 @@ fun InvitedUserList(
                     )
                 }
 
-                if (userDetails.subscriptionState.getSubscriptionStateType() == SubscriptionStateType.ACTIVE) {
+                if (userDetails.prime == PrimeUserTypes.ACTIVE.code) {
                     AppIcon(imageVector = Icons.Filled.Diamond, tint = AppTheme.colors.primary)
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 }
             }
         }
     }
-
-    // Add spacing
-    Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 }
 
 ///**
@@ -301,15 +323,18 @@ fun InvitedUserList(
 @Composable
 fun InvitationReport(totalIncome: String, nonPremiumUsers: String, premiumUsers: String) {
     // Column layout to organize UI elements vertically
-    Column(Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+    Column(
+        modifier = Modifier
+            .padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+    ) {
         // Display the heading for the invitation report
-        HeadingTexts.Level2(text = "Invitation Report")
+        HeadingTexts.Level2(text = "Invitation Report", maxLines = 1)
 
         // Row layout to organize UI elements horizontally
         Row(
-            Modifier
-                .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level2),
+            modifier = Modifier
+                .fillMaxWidth(),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             verticalAlignment = Alignment.CenterVertically
         ) {
@@ -363,7 +388,7 @@ fun InvitationReportCard(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
 
             // Display the title of the report card
-            CaptionTexts.Level2(text = title)
+            CaptionTexts.Level2(text = title, maxLines = 2)
         }
     }
 }

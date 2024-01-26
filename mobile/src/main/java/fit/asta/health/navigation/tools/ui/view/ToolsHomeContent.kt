@@ -127,7 +127,9 @@ fun ToolsHomeContent(
 
                 is UiState.Success -> {
                     subscriptionCategoryState.data.userPlan?.let { plan ->
-                        UserSubscribedPlanSection(userSubscribedPlan = plan)
+                        UserSubscribedPlanSection(userSubscribedPlan = plan) { catId, prodId ->
+                            onEvent(ToolsHomeUiEvent.NavigateToFinalPayment(catId, prodId))
+                        }
                     }
 
                     subscriptionCategoryState.data.plans?.let { plans ->

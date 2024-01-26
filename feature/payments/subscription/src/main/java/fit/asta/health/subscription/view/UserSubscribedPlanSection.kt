@@ -20,57 +20,89 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.subscription.remote.model.UserSubscribedPlan
 import fit.asta.health.subscription.remote.model.UserSubscribedPlanStatusType
 
 @Composable
-fun UserSubscribedPlanSection(userSubscribedPlan: UserSubscribedPlan) {
-
-    AppCard(
+fun UserSubscribedPlanSection(
+    userSubscribedPlan: UserSubscribedPlan,
+    onClick: (categoryId: String, productId: String) -> Unit
+) {
+    Column(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+            .padding(bottom = AppTheme.spacing.level2)
+            .padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
-        Row(
+        HeadingTexts.Level1(
+            text = "Your plan:"
+        )
+        AppCard(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
-        ) {
-            AppNetworkImage(
-                model = getImgUrl(userSubscribedPlan.imageUrl),
-                modifier = Modifier
-                    .size(AppTheme.imageSize.level11)
-                    .aspectRatio(ratio = AppTheme.aspectRatio.square)
-            )
-            TitleTexts.Level1(
-                modifier = Modifier
-                    .padding(AppTheme.spacing.level2),
-                text = userSubscribedPlan.plan
-            )
-            Column {
-                when (userSubscribedPlan.sts) {
-                    UserSubscribedPlanStatusType.ACTIVE.code -> {
-                        AppIcon(imageVector = Icons.Default.CheckCircle)
-                    }
-
-                    UserSubscribedPlanStatusType.NOT_BOUGHT.code -> {
-                        AppIcon(imageVector = Icons.Default.Close)
-                    }
-
-                    UserSubscribedPlanStatusType.INACTIVE.code -> {
-                        AppIcon(imageVector = Icons.Default.Refresh)
-                    }
-
-                    UserSubscribedPlanStatusType.TEMPORARY_INACTIVE.code -> {
-                        AppIcon(imageVector = Icons.Default.Warning)
-                    }
-                }
-                TitleTexts.Level3(text = "Expiry on: " + userSubscribedPlan.expBy)
+                .fillMaxWidth(),
+            onClick = {
+                onClick(userSubscribedPlan.plan, userSubscribedPlan.type)
             }
-        }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.Top
+            ) {
+                AppNetworkImage(
+                    model = getImgUrl(userSubscribedPlan.imageUrl),
+                    modifier = Modifier
+                        .padding(end = AppTheme.spacing.level1)
+                        .size(AppTheme.imageSize.level11)
+                        .aspectRatio(ratio = AppTheme.aspectRatio.square)
+                )
+                Column(
+                    modifier = Modifier
+                        .padding(AppTheme.spacing.level1),
+                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                ) {
+                    Row(
+                        modifier = Modifier.fillMaxWidth(),
+                        horizontalArrangement = Arrangement.SpaceBetween,
+                        verticalAlignment = Alignment.CenterVertically
+                    ) {
+                        TitleTexts.Level1(
+                            maxLines = 1,
+                            modifier = Modifier
+                                .weight(1f),
+                            text = userSubscribedPlan.ttl
+                        )
+                        AppIcon(
+                            imageVector = when (userSubscribedPlan.sts) {
 
+                                UserSubscribedPlanStatusType.ACTIVE.code -> {
+                                    Icons.Default.CheckCircle
+                                }
+
+                                UserSubscribedPlanStatusType.NOT_BOUGHT.code -> {
+                                    Icons.Default.Close
+                                }
+
+                                UserSubscribedPlanStatusType.INACTIVE.code -> {
+                                    Icons.Default.Refresh
+                                }
+
+                                else -> {
+                                    Icons.Default.Warning
+                                }
+                            }
+                        )
+                    }
+
+                    BodyTexts.Level3(text = "Expiry on: " + userSubscribedPlan.expBy)
+                }
+            }
+
+        }
     }
+
 }

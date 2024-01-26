@@ -7,7 +7,6 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
-import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
@@ -57,11 +56,9 @@ class ProfileRepoImpl
         }
     }
 
-    override suspend fun checkReferralCode(code: String): ResponseState<CheckReferralDTO> {
-        return withContext(coroutineDispatcher) {
-            getApiResponseState {
-                profileApi.checkReferralCode(code)
-            }
+    override suspend fun checkReferralCode(code: String) = withContext(coroutineDispatcher) {
+        getApiResponseState {
+            profileApi.checkReferralCode(code)
         }
     }
 

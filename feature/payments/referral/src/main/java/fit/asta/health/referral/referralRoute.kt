@@ -83,9 +83,7 @@ fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit, shareReferralCode: (S
                     is UiState.Success -> {
                         NewReferralDesign(
                             modifier = Modifier.padding(paddingValues),
-                            refCode = referralDataState.data.referralDetails.refCode,
-                            referralStats = referralDataState.data.referralStats,
-                            referredUserList = referralDataState.data.referredUsers,
+                            referralData = referralDataState.data,
                             shareRefLink = shareReferralCode,
                         )
                     }

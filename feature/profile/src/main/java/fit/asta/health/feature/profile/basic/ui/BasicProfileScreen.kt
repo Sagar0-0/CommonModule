@@ -30,6 +30,8 @@ import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.SafetyDivider
 import androidx.compose.material.icons.filled.Verified
+import androidx.compose.material.icons.filled.VerifiedUser
+import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
@@ -60,6 +62,7 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.GenderCode
+import fit.asta.health.data.profile.remote.model.PrimeTypes
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -573,15 +576,24 @@ fun ReferralUi(
                             .fillMaxWidth()
                             .padding(AppTheme.spacing.level2),
                         verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
                     ) {
                         AppNetworkImage(
                             modifier = Modifier
-                                .clip(CircleShape)
-                                .padding(end = AppTheme.spacing.level1),
+                                .size(AppTheme.imageSize.level4)
+                                .clip(CircleShape),
                             model = checkReferralCodeState.data.pic,
                         )
                         TitleTexts.Level3(text = checkReferralCodeState.data.name)
+                        AppIcon(
+                            imageVector =
+                            if (checkReferralCodeState.data.prime == PrimeTypes.PRIME.code) {
+                                Icons.Default.WorkspacePremium
+                            } else {
+                                Icons.Default.VerifiedUser
+                            },
+                            contentDescription = "Premium User"
+                        )
                     }
                 }
             }
