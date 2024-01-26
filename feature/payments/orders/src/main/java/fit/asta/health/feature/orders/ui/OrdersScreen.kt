@@ -104,7 +104,7 @@ fun OrdersScreen(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
             modifier = modifier
         ) {
-            items(orders) { order ->
+            items(orders.reversed()) { order ->
                 OrderItem(order) {
                     onOrderClick(order.orderId)
                 }
