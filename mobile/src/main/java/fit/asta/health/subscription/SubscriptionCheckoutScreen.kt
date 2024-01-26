@@ -499,7 +499,7 @@ fun WalletApplyingSection(
                             } else {
                                 0.0
                             },
-                            0.0
+                            moneyApplied
                         )
                     }
                 }
@@ -519,7 +519,7 @@ fun WalletApplyingSection(
                     ) { checked ->
                         moneyChecked = checked
                         onApplyWallet(
-                            0.0,
+                            pointsApplied,
                             if (checked) {
                                 if (finalPayableAmount > totalMoney) {
                                     totalMoney
