@@ -6,6 +6,7 @@
 
 package fit.asta.health.designsystem.molecular.background
 
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
@@ -27,6 +28,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.AppLoadingScreen
 
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
  *  for the app.
@@ -42,6 +44,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 fun AppScaffold(
     modifier: Modifier = Modifier,
+    isScreenLoading: Boolean = false,
     snackBarHostState: SnackbarHostState? = null,
     topBar: @Composable (() -> Unit)? = null,
     bottomBar: @Composable (() -> Unit)? = null,
@@ -69,7 +72,10 @@ fun AppScaffold(
             }
         },
         content = { innerPadding ->
-            content(innerPadding)
+            Box(modifier = modifier.fillMaxSize()) {
+                content(innerPadding)
+                if (isScreenLoading) AppLoadingScreen()
+            }
         }
     )
 }

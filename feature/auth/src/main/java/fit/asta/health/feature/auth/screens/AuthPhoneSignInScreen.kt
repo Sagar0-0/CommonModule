@@ -23,7 +23,6 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.components.AuthNumberInputUI
@@ -80,6 +79,7 @@ fun AuthPhoneSignInScreen(
                 number = "${countryCode}${phoneNumber}",
                 activity = context as Activity,
                 onVerificationComplete = {
+                    loading = false
                     onUiEvent(PhoneAuthUiEvent.SignInWithCredentials(it))
                 },
                 onVerificationFailure = {
@@ -114,9 +114,15 @@ fun AuthPhoneSignInScreen(
     // Resetting all the Values once the Login Fails and asks the User to enter and check data again
     when (loginState) {
         is UiState.ErrorRetry -> {
+            loading = false
             AppErrorScreen(text = loginState.resId.toStringFromResId()) {
                 onUiEvent(PhoneAuthUiEvent.OnLoginFailed)
             }
+        }
+
+        is UiState.ErrorMessage -> {
+            loading = false
+            Toast.makeText(context, loginState.resId.toString(), Toast.LENGTH_SHORT).show()
         }
 
         UiState.Loading -> {
@@ -124,10 +130,13 @@ fun AuthPhoneSignInScreen(
         }
 
         is UiState.Success -> {
+            loading = false
             onUiEvent(PhoneAuthUiEvent.OnAuthSuccess)
         }
 
-        else -> {}
+        else -> {
+            loading = false
+        }
     }
 
     AppScaffold { padding ->
@@ -183,10 +192,6 @@ fun AuthPhoneSignInScreen(
                     }
                 }
             }
-
-            // If loading is true we show the Loading UI
-            if (loading)
-                AppDotTypingAnimation(modifier = Modifier.align(Alignment.Center))
         }
     }
 }

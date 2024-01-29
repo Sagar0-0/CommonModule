@@ -120,7 +120,7 @@ class AuthRepoImpl @Inject constructor(
                             Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
                             trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
                         } else {
-                            Log.e(TAG, "linkWithCredential: Not Successful")
+                            Log.e(TAG, "linkWithCredential: Not success = ${it.exception?.message}")
                             trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
                         }
                     }
