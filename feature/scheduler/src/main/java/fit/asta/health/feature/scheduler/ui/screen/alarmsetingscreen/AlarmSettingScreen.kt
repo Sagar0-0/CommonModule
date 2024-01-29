@@ -57,7 +57,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -101,6 +101,9 @@ fun AlarmSettingScreen(
 ) {
     val context = LocalContext.current
     val bottomSheetState = rememberModalBottomSheetState()
+    var bottomSheetVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     val state = rememberDateRangePickerState(
         initialSelectedStartDateMillis = alarmSettingUiState.selectedStartDateMillis,
         initialSelectedEndDateMillis = alarmSettingUiState.selectedEndDateMillis,
@@ -134,11 +137,16 @@ fun AlarmSettingScreen(
 
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+            if (!bottomSheetState.isVisible) {
+                bottomSheetVisible = false
+            }
+        }
     }
 
     val openSheet = {
-        scope.launch { bottomSheetState.show() }
+        scope.launch { bottomSheetState.expand() }
+        bottomSheetVisible = true
     }
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -312,23 +320,22 @@ fun AlarmSettingScreen(
         }
     }
 
-    CustomModelBottomSheet(
-        targetState = bottomSheetState.isVisible,
+    AppModalBottomSheet(
+        sheetVisible = bottomSheetVisible,
         sheetState = bottomSheetState,
-        content = {
-            currentBottomSheet?.let {
-                AlarmCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    aSEvent = aSEvent,
-                    alarmSettingUiState = alarmSettingUiState,
-                    state = state
-                )
-            }
-        },
-        dragHandle = {},
-        onClose = { closeSheet() }
-    )
+        dragHandle = null,
+        onDismissRequest = { closeSheet() },
+    ) {
+        currentBottomSheet?.let {
+            AlarmCreateBtmSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                aSEvent = aSEvent,
+                alarmSettingUiState = alarmSettingUiState,
+                state = state
+            )
+        }
+    }
 }
 
 enum class AlarmCreateBottomSheetTypes {

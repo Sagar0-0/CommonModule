@@ -52,7 +52,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
-import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
@@ -80,7 +79,7 @@ import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TodayContent(
     state: UiState<TodayData>,

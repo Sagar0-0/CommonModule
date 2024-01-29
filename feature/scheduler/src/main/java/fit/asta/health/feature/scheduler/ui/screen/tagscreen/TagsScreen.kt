@@ -29,7 +29,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
@@ -51,13 +51,20 @@ fun TagsScreen(
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
-
+    var bottomSheetVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+            if (!bottomSheetState.isVisible) {
+                bottomSheetVisible = false
+            }
+        }
     }
 
     val openSheet = {
-        scope.launch { bottomSheetState.show() }
+        scope.launch { bottomSheetState.expand() }
+        bottomSheetVisible = true
     }
     var deleteDialog by rememberSaveable { mutableStateOf(false) }
     var deletedItem by remember { mutableStateOf<TagEntity?>(null) }
@@ -132,18 +139,17 @@ fun TagsScreen(
             )
         })
 
-    CustomModelBottomSheet(
-        targetState = bottomSheetState.isVisible,
+    AppModalBottomSheet(
+        sheetVisible = bottomSheetVisible,
         sheetState = bottomSheetState,
-        content = {
-            TagCreateBtmSheetLayout(
-                closeSheet = { closeSheet() },
-                tagsEvent = tagsEvent
-            )
-        },
-        dragHandle = {},
-        onClose = { closeSheet() }
-    )
+        dragHandle = null,
+        onDismissRequest = { closeSheet() },
+    ) {
+        TagCreateBtmSheetLayout(
+            closeSheet = { closeSheet() },
+            tagsEvent = tagsEvent
+        )
+    }
 }
 
 

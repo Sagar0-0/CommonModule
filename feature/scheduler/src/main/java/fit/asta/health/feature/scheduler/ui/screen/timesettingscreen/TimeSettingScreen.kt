@@ -1,17 +1,26 @@
 package fit.asta.health.feature.scheduler.ui.screen.timesettingscreen
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.feature.scheduler.ui.components.SettingsLayout
@@ -19,7 +28,9 @@ import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
-import fit.asta.health.feature.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.*
+import fit.asta.health.feature.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.Advanced
+import fit.asta.health.feature.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.EndAlarm
+import fit.asta.health.feature.scheduler.ui.screen.timesettingscreen.TimeSettingCreateBottomSheetTypes.SnoozeSelection
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.strings.R as StringR
 
@@ -34,14 +45,22 @@ fun TimeSettingScreen(
         mutableStateOf(null)
     }
     val bottomSheetState = rememberModalBottomSheetState()
+    var bottomSheetVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+            if (!bottomSheetState.isVisible) {
+                bottomSheetVisible = false
+            }
+        }
     }
 
     val openSheet = {
-        scope.launch { bottomSheetState.show() }
+        scope.launch { bottomSheetState.expand() }
+        bottomSheetVisible = true
     }
     AppScaffold(modifier = Modifier.fillMaxSize(),
         content = { paddingValues ->
@@ -74,21 +93,21 @@ fun TimeSettingScreen(
                 onBack = { navBack() },
             )
         })
-    CustomModelBottomSheet(
-        targetState = bottomSheetState.isVisible,
+
+    AppModalBottomSheet(
+        sheetVisible = bottomSheetVisible,
         sheetState = bottomSheetState,
-        content = {
-            currentBottomSheet?.let {
-                TimeSettingCreateBtmSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    tSEvent = tSEvent
-                )
-            }
-        },
-        dragHandle = {},
-        onClose = { closeSheet() }
-    )
+        dragHandle = null,
+        onDismissRequest = { closeSheet() },
+    ) {
+        currentBottomSheet?.let {
+            TimeSettingCreateBtmSheetLayout(
+                sheetLayout = it,
+                closeSheet = { closeSheet() },
+                tSEvent = tSEvent
+            )
+        }
+    }
 }
 
 enum class TimeSettingCreateBottomSheetTypes {

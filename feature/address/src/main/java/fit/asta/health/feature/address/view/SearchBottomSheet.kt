@@ -54,7 +54,7 @@ import fit.asta.health.resources.drawables.R as DrawR
 @Composable
 internal fun SearchBottomSheet(
     modifier: Modifier = Modifier,
-    type: SearchSheetType,
+    sheetVisible: Boolean,
     searchResponseState: UiState<SearchResponse>,
     onUiEvent: (SearchSheetUiEvent) -> Unit
 ) {
@@ -81,6 +81,7 @@ internal fun SearchBottomSheet(
     }
 
     AppModalBottomSheet(
+        sheetVisible = sheetVisible,
         modifier = modifier,
         sheetState = bottomSheetState,
         dragHandle = null,

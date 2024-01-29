@@ -61,6 +61,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalComposeUiApi::class)
 @Composable
 internal fun FillAddressSheet(
+    sheetVisible: Boolean,
     modifier: Modifier = Modifier,
     type: FillAddressSheetType,
     putAddressState: UiState<PutAddressResponse>,
@@ -145,6 +146,7 @@ internal fun FillAddressSheet(
     }
 
     AppModalBottomSheet(
+        sheetVisible = sheetVisible,
         modifier = modifier,
         sheetState = bottomSheetState,
         dragHandle = null,

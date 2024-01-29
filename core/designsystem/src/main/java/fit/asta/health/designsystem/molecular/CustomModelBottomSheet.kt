@@ -23,21 +23,20 @@ fun CustomModelBottomSheet(
 ) {
     AnimatedContent(
         targetState = targetState,
-        content = { isVisible ->
-            if (isVisible) {
-                ModalBottomSheet(
-                    modifier = Modifier
-                        .imePadding()
-                        .navigationBarsPadding(),
-                    onDismissRequest = onClose,
-                    sheetState = sheetState,
-                    windowInsets = WindowInsets.ime,
-                    dragHandle = dragHandle,
-                    content = content,
-                )
-
-            }
-        },
         label = "",
-    )
+    ) { isVisible ->
+        if (isVisible) {
+            ModalBottomSheet(
+                modifier = Modifier
+                    .imePadding()
+                    .navigationBarsPadding(),
+                onDismissRequest = onClose,
+                sheetState = sheetState,
+                windowInsets = WindowInsets.ime,
+                dragHandle = dragHandle,
+                content = content,
+            )
+
+        }
+    }
 }

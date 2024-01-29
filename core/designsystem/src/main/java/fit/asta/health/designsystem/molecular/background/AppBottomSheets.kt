@@ -34,6 +34,7 @@ import androidx.compose.ui.Modifier
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppModalBottomSheet(
+    sheetVisible: Boolean,
     sheetState: SheetState,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
@@ -41,14 +42,16 @@ fun AppModalBottomSheet(
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
-    ModalBottomSheet(
-        modifier = modifier.fillMaxSize(),
-        sheetState = sheetState,
-        onDismissRequest = onDismissRequest,
-        windowInsets = windowInsets,
-        dragHandle = dragHandle,
-        content = content,
-    )
+    if (sheetVisible) {
+        ModalBottomSheet(
+            modifier = modifier.fillMaxSize(),
+            sheetState = sheetState,
+            onDismissRequest = onDismissRequest,
+            windowInsets = windowInsets,
+            dragHandle = dragHandle,
+            content = content,
+        )
+    }
 }
 
 

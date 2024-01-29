@@ -156,7 +156,8 @@ fun WalletScreenUi(
         }
     }
 
-    if (isAddMoneySheetVisible) AppModalBottomSheet(
+    AppModalBottomSheet(
+        sheetVisible = isAddMoneySheetVisible,
         sheetState = bottomSheetState,
         onDismissRequest = {
             closeSheet()
@@ -172,6 +173,7 @@ fun WalletScreenUi(
                 onValueChange = {
                     amount = it
                 },
+                label = "Enter amount",
                 modifier = Modifier
                     .fillMaxWidth()
                     .padding(horizontal = AppTheme.spacing.level2),

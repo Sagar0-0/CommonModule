@@ -29,7 +29,6 @@ import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Share
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,7 +54,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -76,8 +75,6 @@ internal fun SavedAddressesScreen(
     onUiEvent: (SavedAddressUiEvent) -> Unit
 ) {
     val context = LocalContext.current
-
-    val scaffoldState = rememberBottomSheetScaffoldState()
     var searchSheetType by rememberSaveable { mutableStateOf<SearchSheetType?>(null) }
     var fillAddressSheetType by rememberSaveable { mutableStateOf<FillAddressSheetType?>(null) }
 
@@ -101,21 +98,16 @@ internal fun SavedAddressesScreen(
         searchSheetType = it
     }
 
-    AppBottomSheetScaffold(
+    AppScaffold(
         topBar = {
             AppTopBar(title = R.string.saved_address.toStringFromResId(), onBack = {
                 onUiEvent(SavedAddressUiEvent.Back)
             })
-        },
-        sheetPeekHeight = 0.dp,
-        sheetSwipeEnabled = false,
-        scaffoldState = scaffoldState,
-        sheetDragHandle = null,
-        sheetContent = {}
+        }
     ) { padding ->
 
-        if (searchSheetType != null) SearchBottomSheet(
-            type = searchSheetType!!,
+        SearchBottomSheet(
+            sheetVisible = searchSheetType != null,
             searchResponseState = searchResultState,
             onUiEvent = {
                 when (it) {
@@ -138,7 +130,8 @@ internal fun SavedAddressesScreen(
             }
         )
 
-        if (fillAddressSheetType != null) FillAddressSheet(
+        FillAddressSheet(
+            sheetVisible = fillAddressSheetType != null,
             type = fillAddressSheetType!!,
             putAddressState = putAddressState,
             onUiEvent = {

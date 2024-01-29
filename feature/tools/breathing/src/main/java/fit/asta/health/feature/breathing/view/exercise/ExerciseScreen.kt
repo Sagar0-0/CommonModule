@@ -22,6 +22,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -36,8 +37,8 @@ import fit.asta.health.data.breathing.model.domain.model.Ratio
 import fit.asta.health.data.breathing.model.domain.model.toStr
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
-import fit.asta.health.designsystem.molecular.CustomModelBottomSheet
 import fit.asta.health.designsystem.molecular.animations.AppDivider
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
@@ -47,7 +48,8 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.breathing.view.components.CardBreathingRatio
-import fit.asta.health.feature.breathing.view.exercise.ExerciseBottomSheetTypes.*
+import fit.asta.health.feature.breathing.view.exercise.ExerciseBottomSheetTypes.DURATION
+import fit.asta.health.feature.breathing.view.exercise.ExerciseBottomSheetTypes.RATIO
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 import kotlin.math.abs
@@ -85,15 +87,23 @@ fun ExerciseScreen(
     val bottomSheetState = rememberModalBottomSheetState(
         skipPartiallyExpanded = skipPartiallyExpanded
     )
+    var bottomSheetVisible by rememberSaveable {
+        mutableStateOf(false)
+    }
 
     val scope = rememberCoroutineScope()
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }
+        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
+            if (!bottomSheetState.isVisible) {
+                bottomSheetVisible = false
+            }
+        }
     }
 
     val openSheet = {
-        scope.launch { bottomSheetState.show() }
+        scope.launch { bottomSheetState.expand() }
+        bottomSheetVisible = true
     }
 
     AppScaffold(
@@ -148,15 +158,16 @@ fun ExerciseScreen(
             }
         }
     }
-    CustomModelBottomSheet(targetState = bottomSheetState.isVisible,
+    AppModalBottomSheet(
+        sheetVisible = bottomSheetVisible,
         sheetState = bottomSheetState,
-        content = {
-            currentBottomSheet?.let {
-                ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
-            }
-        },
-        dragHandle = {},
-        onClose = { closeSheet() })
+        dragHandle = null,
+        onDismissRequest = { closeSheet() }
+    ) {
+        currentBottomSheet?.let {
+            ExerciseBottomSheetLayout(sheetLayout = it, closeSheet = { closeSheet() })
+        }
+    }
 }
 
 
