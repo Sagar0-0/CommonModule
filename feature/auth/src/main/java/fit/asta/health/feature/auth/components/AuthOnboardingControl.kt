@@ -2,12 +2,15 @@ package fit.asta.health.feature.auth.components
 
 import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.runtime.Composable
@@ -15,9 +18,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.geometry.Offset
-import androidx.compose.ui.graphics.DefaultShadowColor
-import androidx.compose.ui.graphics.Shadow
+import androidx.compose.ui.graphics.Brush
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
@@ -136,7 +138,7 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
     val pagerState = rememberPagerState { items.size }
     AppHorizontalPager(
         pagerState = pagerState,
-        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level3),
+        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level1),
         pageSpacing = AppTheme.spacing.level2,
         enableAutoAnimation = false,
         userScrollEnabled = true
@@ -167,6 +169,21 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                     }
                 }
 
+                Box(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .fillMaxHeight(0.4f)
+                        .align(alignment = Alignment.BottomCenter)
+                        .background(
+                            Brush.verticalGradient(
+                                colors = listOf(
+                                    Color.Transparent,
+                                    AppTheme.colors.inverseOnSurface
+                                )
+                            )
+                        )
+                )
+
                 Column(
                     modifier = Modifier
                         .padding(
@@ -179,25 +196,13 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                 ) {
                     TitleTexts.Level1(
                         text = items[page].title,
-                        style = AppTheme.customTypography.title.level1.copy(
-                            shadow = Shadow(
-                                color = DefaultShadowColor,
-                                offset = Offset(4f, 4f),
-                                blurRadius = 8f
-                            )
-                        ),
+                        style = AppTheme.customTypography.title.level1,
                         textAlign = TextAlign.Center,
                         maxLines = 1
                     )
                     BodyTexts.Level3(
                         text = items[page].desc,
-                        style = AppTheme.customTypography.body.level3.copy(
-                            shadow = Shadow(
-                                color = DefaultShadowColor,
-                                offset = Offset(4f, 4f),
-                                blurRadius = 8f
-                            )
-                        ),
+                        style = AppTheme.customTypography.body.level3,
                         textAlign = TextAlign.Center
                     )
                 }
