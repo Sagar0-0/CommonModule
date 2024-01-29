@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.runtime.Composable
@@ -37,12 +36,11 @@ fun WeatherCardHome(
 ) {
     AppCard(
         modifier = modifier,
-        shape = RoundedCornerShape(16.dp),
     ) {
         Row(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(16.dp),
+                .padding(AppTheme.spacing.level2),
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             Column(

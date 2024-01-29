@@ -19,7 +19,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -62,7 +61,6 @@ import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
@@ -128,6 +126,7 @@ fun TodayContent(
             }
         )
     }
+
     Column(
         modifier = Modifier
             .fillMaxSize(),
@@ -158,27 +157,22 @@ fun TodayContent(
             contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
             userScrollEnabled = true
         ) {
-            if (calendarUiModel.visibleDates[it].isToday) {
-                TodayTabContent(
-                    calendarUiModel = calendarUiModel,
-                    state = state,
-                    defaultScheduleVisibility = defaultScheduleVisibility,
-                    listMorning = listMorning,
-                    listAfternoon = listAfternoon,
-                    listEvening = listEvening,
-                    hSEvent = hSEvent,
-                    onNav = onNav,
-                    onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
-                        eventType = newEventType
-                        deleteDialog = newDeleteDialog
-                        deletedItem = newDeletedItem
-                    }
-                )
-            } else {
-                OtherDaysTabContent()
-            }
+            TodayTabContent(
+                calendarUiModel = calendarUiModel,
+                state = state,
+                defaultScheduleVisibility = defaultScheduleVisibility,
+                listMorning = listMorning,
+                listAfternoon = listAfternoon,
+                listEvening = listEvening,
+                hSEvent = hSEvent,
+                onNav = onNav,
+                onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
+                    eventType = newEventType
+                    deleteDialog = newDeleteDialog
+                    deletedItem = newDeletedItem
+                }
+            )
         }
-
     }
 }
 
@@ -211,13 +205,11 @@ fun TodayTabContent(
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier
-            .fillMaxSize()
-            .navigationBarsPadding(),
+            .fillMaxWidth(),
         state = listState,
-        contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
     ) {
-        item { Spacer(modifier = Modifier.height(8.dp)) }
+        item { Spacer(modifier = Modifier) }
         if (calendarUiModel.selectedDate.isToday) {
             when (state) {
                 is UiState.Loading -> {
@@ -240,10 +232,10 @@ fun TodayTabContent(
 
                 is UiState.ErrorMessage -> {
                     item {
-                        AppSurface(
+                        AppCard(
                             modifier = Modifier
                                 .fillMaxWidth()
-                                .padding(16.dp)
+                                .padding(AppTheme.spacing.level2)
                         ) {
                             AppTonalButton(
                                 textToShow = stringResource(R.string.retry)
@@ -257,6 +249,7 @@ fun TodayTabContent(
                         WeatherCardHome(
                             modifier = Modifier
                                 .fillMaxWidth()
+                                .padding(horizontal = AppTheme.spacing.level2)
                                 .animateItemPlacement(
                                     animationSpec = tween(
                                         durationMillis = 500,
@@ -266,12 +259,21 @@ fun TodayTabContent(
                             temperature = state.data.temperature,
                         )
                     }
-                    item { TitleTexts.Level2(text = "SunSlots") }
+                    item {
+                        TitleTexts.Level2(
+                            modifier = Modifier
+                                .padding(horizontal = AppTheme.spacing.level2),
+                            text = "SunSlots"
+                        )
+                    }
                     item {
                         LazyRow(
-                            modifier = Modifier.fillMaxWidth(),
+                            modifier = Modifier
+                                .fillMaxWidth()
+                                .padding(horizontal = AppTheme.spacing.level2),
                             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                         ) {
+                            item { Spacer(modifier = Modifier) }
                             items(items = state.data.slots) { slot ->
                                 SunSlotsProgressCard(
                                     modifier = Modifier.animateItemPlacement(
@@ -294,6 +296,7 @@ fun TodayTabContent(
                                     }
                                 )
                             }
+                            item { Spacer(modifier = Modifier) }
                         }
                     }
                 }
@@ -301,6 +304,7 @@ fun TodayTabContent(
                 else -> {}
             }
         }
+
         if (defaultScheduleVisibility) {
             item {
                 AnimatedVisibility(
@@ -314,6 +318,9 @@ fun TodayTabContent(
                     )
                 ) {
                     AppOutlinedButton(
+                        modifier = Modifier
+                            .fillMaxWidth()
+                            .padding(horizontal = AppTheme.spacing.level2),
                         textToShow = stringResource(R.string.default_schedule)
                     ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
                 }
@@ -332,17 +339,24 @@ fun TodayTabContent(
                         animationSpec = tween(durationMillis = 500, delayMillis = 100)
                     )
                 ) {
-                    TitleTexts.Level2(text = stringResource(R.string.morning_events))
+                    TitleTexts.Level2(
+                        modifier = Modifier
+                            .padding(horizontal = AppTheme.spacing.level2),
+                        text = stringResource(R.string.morning_events)
+                    )
                 }
             }
 
             items(items = listMorning, key = { it }) { data ->
-                TodayItem2(modifier = Modifier.animateItemPlacement(
-                    animationSpec = tween(
-                        durationMillis = 500,
-                        easing = LinearOutSlowInEasing,
-                    )
-                ),
+                TodayItem2(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .animateItemPlacement(
+                            animationSpec = tween(
+                                durationMillis = 500,
+                                easing = LinearOutSlowInEasing,
+                            )
+                        ),
                     item = data,
                     onDelete = {
                         onDelete(
@@ -374,16 +388,23 @@ fun TodayTabContent(
                         animationSpec = tween(durationMillis = 500, delayMillis = 100)
                     )
                 ) {
-                    TitleTexts.Level2(text = stringResource(R.string.afternoon_events))
+                    TitleTexts.Level2(
+                        modifier = Modifier
+                            .padding(horizontal = AppTheme.spacing.level2),
+                        text = stringResource(R.string.afternoon_events)
+                    )
                 }
             }
             items(items = listAfternoon, key = { it }) { data ->
-                TodayItem(modifier = Modifier.animateItemPlacement(
-                    animationSpec = tween(
-                        durationMillis = 500,
-                        easing = LinearOutSlowInEasing,
-                    )
-                ),
+                TodayItem(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .animateItemPlacement(
+                            animationSpec = tween(
+                                durationMillis = 500,
+                                easing = LinearOutSlowInEasing,
+                            )
+                        ),
                     item = data,
                     onDelete = {
                         onDelete(
@@ -414,16 +435,23 @@ fun TodayTabContent(
                         animationSpec = tween(durationMillis = 500, delayMillis = 100)
                     )
                 ) {
-                    TitleTexts.Level2(text = stringResource(R.string.evening_events))
+                    TitleTexts.Level2(
+                        modifier = Modifier
+                            .padding(horizontal = AppTheme.spacing.level2),
+                        text = stringResource(R.string.evening_events)
+                    )
                 }
             }
             items(items = listEvening, key = { it }) { data ->
-                TodayItem1(modifier = Modifier.animateItemPlacement(
-                    animationSpec = tween(
-                        durationMillis = 500,
-                        easing = LinearOutSlowInEasing,
-                    )
-                ),
+                TodayItem1(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .animateItemPlacement(
+                            animationSpec = tween(
+                                durationMillis = 500,
+                                easing = LinearOutSlowInEasing,
+                            )
+                        ),
                     item = data,
                     onDelete = {
                         onDelete(
@@ -442,7 +470,7 @@ fun TodayTabContent(
                 )
             }
         }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item { Spacer(modifier = Modifier) }
     }
 }
 
