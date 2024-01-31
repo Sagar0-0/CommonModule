@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
 import androidx.compose.foundation.layout.fillMaxSize
@@ -14,6 +15,10 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Error
+import androidx.compose.material.icons.filled.Lock
+import androidx.compose.material.icons.filled.LockOpen
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +30,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppVerticalGrid
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -47,7 +53,6 @@ import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.subscription.view.OffersBanner
 import fit.asta.health.subscription.view.OffersUiData
 import fit.asta.health.subscription.view.SubscriptionTypesPager
-import fit.asta.health.subscription.view.UserSubscribedPlanSection
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -119,29 +124,35 @@ fun ToolsHomeContent(
             }
         }
 
-        item {
-            when (subscriptionCategoryState) {
-                is UiState.Loading -> {
+        when (subscriptionCategoryState) {
+            is UiState.Loading -> {
+                item {
                     SubscriptionLoadingCard(true)
                 }
+            }
 
-                is UiState.Success -> {
-                    subscriptionCategoryState.data.userPlan?.let { plan ->
-                        UserSubscribedPlanSection(userSubscribedPlan = plan) { catId, prodId ->
-                            onEvent(ToolsHomeUiEvent.NavigateToFinalPayment(catId, prodId))
-                        }
-                    }
-
+            is UiState.Success -> {
+                if (subscriptionCategoryState.data.userPlan == null) {
                     subscriptionCategoryState.data.plans?.let { plans ->
-                        SubscriptionTypesPager(
-                            subscriptionPlans = plans
-                        ) {
-                            onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
+                        item {
+                            SubscriptionTypesPager(
+                                subscriptionPlans = plans
+                            ) {
+                                onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
+                            }
                         }
                     }
                 }
+//                    subscriptionCategoryState.data.userPlan?.let { plan ->
+//                        UserSubscribedPlanSection(userSubscribedPlan = plan) { catId, prodId ->
+//                            onEvent(ToolsHomeUiEvent.NavigateToFinalPayment(catId, prodId))
+//                        }
+//                    }
 
-                else -> {
+            }
+
+            else -> {
+                item {
                     SubscriptionLoadingCard(isLoading = false) {
                         onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
                     }
@@ -152,10 +163,28 @@ fun ToolsHomeContent(
         toolsHome.tools?.let { tools ->
             // My Tools text and View All button
             item {
-                ViewAllLayout(
-                    modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
-                    title = "My Tools"
-                )
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    TitleTexts.Level2(text = "My Tools")
+                    AppIcon(
+                        imageVector =
+                        if (subscriptionCategoryState is UiState.Success) {
+                            if (subscriptionCategoryState.data.userPlan != null) {
+                                Icons.Default.LockOpen
+                            } else {
+                                Icons.Default.Lock
+                            }
+                        } else {
+                            Icons.Default.Error
+                        },
+                        contentDescription = "Plans Locked/Unlocked"
+                    )
+                }
             }
 
             // All The Tools Composable cards

@@ -10,7 +10,7 @@ sealed interface SettingsUiEvent {
     data object NavigateToSubscription : SettingsUiEvent
     data object NOTIFICATION : SettingsUiEvent
     data object SHARE : SettingsUiEvent
-    data object SIGNOUT : SettingsUiEvent
+    data object Logout : SettingsUiEvent
     data object DELETE : SettingsUiEvent
     data object BUG : SettingsUiEvent
     data object TERMS : SettingsUiEvent
@@ -18,4 +18,6 @@ sealed interface SettingsUiEvent {
     data object VERSION : SettingsUiEvent
     data object NavigateToAuthScreen : SettingsUiEvent
     data object NavigateToOrders : SettingsUiEvent
+    data object ResetDeleteState : SettingsUiEvent
+    data object ResetLogoutState : SettingsUiEvent
 }

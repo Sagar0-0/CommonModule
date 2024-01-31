@@ -39,6 +39,7 @@ import fit.asta.health.designsystem.atomic.AppLoadingScreen
  * [SnackbarHostState.showSnackbar], typically a [SnackbarHost]
  * @param floatingActionButton Main action button of the screen, typically a [FloatingActionButton]
  * @param content content of the screen. The lambda receives a [PaddingValues] that should be
+ * @param isScreenLoading used to show a loading animation(covering whole screen) using the [AppLoadingScreen]
  * applied to the content root.
  * */
 @Composable

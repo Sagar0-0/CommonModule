@@ -1,9 +1,7 @@
 package fit.asta.health.feature.auth.screens
 
-import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -13,16 +11,11 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppErrorScreen
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -49,7 +42,9 @@ fun AuthScreenControl(
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
 
-    AppScaffold { padding ->
+    AppScaffold(
+        isScreenLoading = loginState is UiState.Loading
+    ) { padding ->
         // Parent Composable
         Box(
             modifier = Modifier
@@ -125,46 +120,6 @@ fun AuthScreenControl(
                     )
                 }
             }
-            // This function shows and handles the Login State UI Flow
-            HandleLoginState(loginState = loginState, onUiEvent = onUiEvent)
         }
-    }
-}
-
-@Composable
-private fun BoxScope.HandleLoginState(
-    loginState: UiState<Unit>,
-    onUiEvent: (AuthUiEvent) -> Unit
-) {
-    val context = LocalContext.current
-
-    when (loginState) {
-
-        is UiState.ErrorRetry -> {
-
-            // TODO :- Properly Handle the Error
-            AppErrorScreen(
-                modifier = Modifier.fillMaxSize(),
-                text = loginState.resId.toStringFromResId()
-            ) { onUiEvent(AuthUiEvent.OnLoginFailed) }
-        }
-
-        UiState.Loading -> {
-            AppDotTypingAnimation(modifier = Modifier.align(Alignment.Center))
-        }
-
-        is UiState.ErrorMessage -> {
-
-            // TODO :- Properly Handle the Error
-            LaunchedEffect(Unit) {
-                Toast.makeText(
-                    context,
-                    loginState.resId.toStringFromResId(context),
-                    Toast.LENGTH_SHORT
-                ).show()
-            }
-        }
-
-        else -> {}
     }
 }

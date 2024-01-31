@@ -46,19 +46,19 @@ fun NavGraphBuilder.authRoute(
         AuthScreenControl(
             loginState = loginState,
             onboardingState = onboardingState,
-            onNavigate = { navController.navigate(it) }
-        ) {
-            when (it) {
+            onNavigate = { destination -> navController.navigate(destination) }
+        ) { event ->
+            when (event) {
                 AuthUiEvent.OnLoginFailed -> {
                     authViewModel.onLoginFailed()
                 }
 
                 is AuthUiEvent.NavigateToWebView -> {
-                    navigateToWebView(it.url)
+                    navigateToWebView(event.url)
                 }
 
                 is AuthUiEvent.SignInWithCredentials -> {
-                    authViewModel.signInAndNavigate(it.authCredential)
+                    authViewModel.signInAndNavigate(event.authCredential)
                 }
 
                 is AuthUiEvent.GetOnboardingData -> {

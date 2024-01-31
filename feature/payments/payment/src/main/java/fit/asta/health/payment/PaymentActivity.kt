@@ -7,6 +7,7 @@ import android.os.Bundle
 import android.util.Log
 import android.widget.Toast
 import androidx.activity.ComponentActivity
+import androidx.activity.compose.BackHandler
 import androidx.activity.compose.setContent
 import androidx.activity.viewModels
 import androidx.annotation.RequiresApi
@@ -82,6 +83,11 @@ class PaymentActivity : ComponentActivity(), PaymentResultWithDataListener {
         val data = intent.getParcelableExtra(DATA_KEY, OrderRequest::class.java)!!
         paymentsViewModel.createOrder(data)
         setContent {
+            BackHandler(
+                enabled = true
+            ) {
+                finish()
+            }
             AppTheme {
                 val orderResponse by paymentsViewModel.orderResponseState.collectAsStateWithLifecycle()
                 val paymentResponse by paymentsViewModel.paymentResponseState.collectAsStateWithLifecycle()

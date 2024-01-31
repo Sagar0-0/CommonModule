@@ -44,7 +44,7 @@ fun UserSubscribedPlanSection(
             modifier = Modifier
                 .fillMaxWidth(),
             onClick = {
-                onClick(userSubscribedPlan.plan, userSubscribedPlan.type)
+                onClick(userSubscribedPlan.categoryId, userSubscribedPlan.productId)
             }
         ) {
             Row(

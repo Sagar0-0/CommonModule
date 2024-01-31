@@ -11,7 +11,7 @@ data class UserSubscribedPlan(
     @SerializedName("expBy")
     val expBy: String = "",
     @SerializedName("plan")
-    val plan: String = "",
+    val productId: String = "",
     @SerializedName("price")
     val price: String = "",
     @SerializedName("sts")
@@ -23,7 +23,7 @@ data class UserSubscribedPlan(
     @SerializedName("ttl")
     val ttl: String = "",
     @SerializedName("type")
-    val type: String = "",
+    val categoryId: String = "",
     @SerializedName("uid")
     val uid: String = ""
 )

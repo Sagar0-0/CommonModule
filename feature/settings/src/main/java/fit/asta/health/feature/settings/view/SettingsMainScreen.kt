@@ -32,8 +32,10 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringArrayResource
 import androidx.compose.ui.res.stringResource
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.resources.strings.R
@@ -44,28 +46,20 @@ import fit.asta.health.ui.common.AppDialogPopUp
 fun SettingsHomeScreen(
     appVersionNumber: String,
     selectedTheme: String,
+    deleteAccountState: UiState<Boolean>,
+    userLogoutState: UiState<Boolean>,
     onUiEvent: (key: SettingsUiEvent) -> Unit
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-
-    // This is the App Dialog which pops up
-    AnimatedVisibility(showDeleteConfirmationDialog) {
-        AppDialogPopUp(
-            headingText = R.string.confirm_delete.toStringFromResId(),
-            bodyText = "This operation can not be undone.",
-            primaryButtonText = R.string.yes.toStringFromResId(),
-            secondaryButtonText = R.string.cancel.toStringFromResId(),
-            onDismiss = { showDeleteConfirmationDialog = false }
-        ) {
-            showDeleteConfirmationDialog = false
-            onUiEvent(SettingsUiEvent.DELETE)
-        }
+    val isScreenLoading = rememberSaveable {
+        deleteAccountState is UiState.Loading || userLogoutState is UiState.Loading
     }
 
     // Scaffold for the Screen
     AppScaffold(
         snackBarHostState = snackBarHostState,
+        isScreenLoading = isScreenLoading,
         topBar = {
             // Top App Bar
             AppTopBar(
@@ -75,7 +69,44 @@ fun SettingsHomeScreen(
         }
     ) { padding ->
 
-        // This Column contains all the necessary Composable Functions
+        AnimatedVisibility(showDeleteConfirmationDialog) {
+            AppDialogPopUp(
+                headingText = R.string.confirm_delete.toStringFromResId(),
+                bodyText = "This operation can not be undone.",
+                primaryButtonText = R.string.yes.toStringFromResId(),
+                secondaryButtonText = R.string.cancel.toStringFromResId(),
+                onDismiss = { showDeleteConfirmationDialog = false }
+            ) {
+                showDeleteConfirmationDialog = false
+                onUiEvent(SettingsUiEvent.DELETE)
+            }
+        }
+        AppUiStateHandler(
+            uiState = deleteAccountState,
+            onErrorRetry = {
+                onUiEvent(SettingsUiEvent.DELETE)
+            },
+            onErrorMessage = {
+                onUiEvent(SettingsUiEvent.ResetDeleteState)
+            }
+        ) {
+            onUiEvent(SettingsUiEvent.ResetDeleteState)
+            onUiEvent(SettingsUiEvent.NavigateToAuthScreen)
+        }
+        AppUiStateHandler(
+            uiState = userLogoutState,
+            onErrorRetry = {
+                onUiEvent(SettingsUiEvent.Logout)
+            },
+            onErrorMessage = {
+                onUiEvent(SettingsUiEvent.ResetLogoutState)
+            }
+        ) {
+            onUiEvent(SettingsUiEvent.ResetLogoutState)
+            onUiEvent(SettingsUiEvent.NavigateToAuthScreen)
+        }
+
+        // This Column contains all the necessary Composable Functions for settings screen
         Column(
             modifier = Modifier
                 .padding(padding)
@@ -95,12 +126,6 @@ fun SettingsHomeScreen(
                     icon = Icons.Default.Share,
                     text = stringResource(R.string.user_pref_share_app_title)
                 ) { onUiEvent(SettingsUiEvent.SHARE) }
-
-//                // Subscribe
-//                SettingsCardItem(
-//                    icon = Icons.Default.Subscriptions,
-//                    text = R.string.subscribe.toStringFromResId()
-//                ) { onUiEvent(SettingsUiEvent.NavigateToSubscription) }
 
                 // Orders
                 SettingsCardItem(
@@ -181,7 +206,7 @@ fun SettingsHomeScreen(
                     iconTint = Color.Red,
                     textColor = Color.Red,
                     text = R.string.user_pref_sign_out_title.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.SIGNOUT) }
+                ) { onUiEvent(SettingsUiEvent.Logout) }
 
                 // Delete
                 SettingsCardItem(

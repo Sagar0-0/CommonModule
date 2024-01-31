@@ -28,7 +28,10 @@ fun AppVerticalGrid(
         for (i in 0 until rowsCount) {
             RowWithItems(
                 horizontalPadding = horizontalPadding,
-                items = items.subList(i * count, count * (i + 1))//Take count elements every time
+                items = items.subList(
+                    i * count,
+                    count * (i + 1)
+                )//TODO: Improve performance by taking count every time instead of creating sublist in each row
             )
             Spacer(modifier = Modifier.padding(vertical = verticalPadding))
         }

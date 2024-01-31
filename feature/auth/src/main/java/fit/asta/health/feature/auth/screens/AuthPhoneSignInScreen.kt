@@ -79,7 +79,6 @@ fun AuthPhoneSignInScreen(
                 number = "${countryCode}${phoneNumber}",
                 activity = context as Activity,
                 onVerificationComplete = {
-                    loading = false
                     onUiEvent(PhoneAuthUiEvent.SignInWithCredentials(it))
                 },
                 onVerificationFailure = {
@@ -130,16 +129,16 @@ fun AuthPhoneSignInScreen(
         }
 
         is UiState.Success -> {
-            loading = false
             onUiEvent(PhoneAuthUiEvent.OnAuthSuccess)
+            loading = false
         }
 
-        else -> {
-            loading = false
-        }
+        else -> {}
     }
 
-    AppScaffold { padding ->
+    AppScaffold(
+        isScreenLoading = loading
+    ) { padding ->
 
         // Contains Both the heading text, Number Input and the Verification Code input Fields
         Box(

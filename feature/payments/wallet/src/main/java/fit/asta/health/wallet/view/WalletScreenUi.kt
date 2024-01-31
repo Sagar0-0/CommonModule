@@ -1,6 +1,7 @@
 package fit.asta.health.wallet.view
 
 import android.content.res.Configuration
+import android.widget.Toast
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.clickable
@@ -35,6 +36,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
@@ -61,6 +63,7 @@ import fit.asta.health.wallet.remote.model.SourceType
 import fit.asta.health.wallet.remote.model.SourceTypes
 import fit.asta.health.wallet.remote.model.WalletResponse
 import fit.asta.health.wallet.remote.model.WalletType
+import fit.asta.health.wallet.remote.model.WalletTypes
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
@@ -146,6 +149,7 @@ fun WalletScreenUi(
     var isAddMoneySheetVisible by rememberSaveable {
         mutableStateOf(false)
     }
+    val context = LocalContext.current
     val scope = rememberCoroutineScope()
     val bottomSheetState = rememberModalBottomSheetState()
     val closeSheet = {
@@ -168,6 +172,15 @@ fun WalletScreenUi(
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             var amount by rememberSaveable { mutableStateOf("") }
+
+            TitleTexts.Level2(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .align(Alignment.Start)
+                    .padding(start = AppTheme.spacing.level2),
+                text = "Add Money from Bank"
+            )
+
             AppOutlinedTextField(
                 value = amount,
                 onValueChange = {
@@ -193,7 +206,16 @@ fun WalletScreenUi(
                     .padding(horizontal = AppTheme.spacing.level2),
                 textToShow = "Proceed to add"
             ) {
-                onProceedToAdd(amount)
+                if (amount.isEmpty()) {
+                    Toast.makeText(context, "Please enter a valid amount", Toast.LENGTH_SHORT)
+                        .show()
+                } else if (amount.toDouble().equals(0.0)) {
+                    Toast.makeText(context, "Amount should be more than 0", Toast.LENGTH_SHORT)
+                        .show()
+                } else {
+                    onProceedToAdd(amount)
+                }
+
             }
         }
 
@@ -366,11 +388,15 @@ fun getMessageFromTransactionTypes(
 ): String {
     return when (sourceType) {
         SourceTypes.AccountToWallet.code -> {
-            "Money added to wallet"
+            "Money added from Bank"
         }
 
-        SourceTypes.WalletMoneyUsed.code -> {
-            "Money used for Subscription"
+        SourceTypes.SubscriptionUsage.code -> {
+            if (walletType == WalletTypes.Money.code) {
+                "Money used for Subscription"
+            } else {
+                "Points used for Subscription"
+            }
         }
 
         SourceTypes.WalletToAccount.code -> {
@@ -378,15 +404,11 @@ fun getMessageFromTransactionTypes(
         }
 
         SourceTypes.ReferrerCredit.code -> {
-            "Referrer Credit Received"
+            "Credits for successful referral"
         }
 
         SourceTypes.RefereeCredit.code -> {
-            "Referee Credit Received"
-        }
-
-        SourceTypes.WalletPointsUsed.code -> {
-            "Points used for Subscription"
+            "Credits for being Referred"
         }
 
         else -> {

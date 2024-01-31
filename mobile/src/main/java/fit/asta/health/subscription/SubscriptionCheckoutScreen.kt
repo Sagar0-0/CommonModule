@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForwardIos
 import androidx.compose.material.icons.filled.Build
 import androidx.compose.material.icons.filled.Cancel
+import androidx.compose.material.icons.filled.CheckCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
@@ -28,6 +29,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
@@ -153,12 +155,12 @@ fun SubscriptionCheckoutScreen(
         )
     }
 
-    var walletPointsUsed by rememberSaveable {
-        mutableDoubleStateOf(0.0)
+    var walletPointsUsed = rememberSaveable {
+        "%.2f".format(mutableDoubleStateOf(0.0).doubleValue).toDouble()
     }
 
-    var walletMoneyUsed by rememberSaveable {
-        mutableDoubleStateOf(0.0)
+    var walletMoneyUsed = rememberSaveable {
+        "%.2f".format(mutableDoubleStateOf(0.0).doubleValue).toDouble()
     }
 
     val finalPayableAmount =
@@ -356,7 +358,7 @@ fun PriceBreakdownSection(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.SpaceBetween
                 ) {
-                    HeadingTexts.Level3(text = "Coupon applied")
+                    HeadingTexts.Level3(text = "Coupon Discount")
                     HeadingTexts.Level3(text = "-$couponDiscountMoney")
                 }
             }
@@ -424,14 +426,20 @@ fun CouponSection(
                         vertical = AppTheme.spacing.level1,
                         horizontal = AppTheme.spacing.level2
                     ),
-                horizontalArrangement = Arrangement.SpaceBetween,
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
                 verticalAlignment = Alignment.CenterVertically
             ) {
+                AppIcon(
+                    tint = Color.Green,
+                    imageVector = Icons.Default.CheckCircle,
+                )
+
                 TitleTexts.Level3(
                     modifier = Modifier.weight(1f),
                     maxLines = 1,
-                    text = "Coupon applied"
+                    text = "Saved extra ${it.discountAmount} with ${it.couponDetails.code}"
                 )
+
                 AppIconButton(
                     onClick = {
                         onEvent(BuyScreenEvent.ResetCouponState)
@@ -459,77 +467,86 @@ fun WalletApplyingSection(
     var moneyChecked by rememberSaveable {
         mutableStateOf(false)
     }
-    val pointsToDisplay by rememberSaveable(pointsApplied) {
-        mutableDoubleStateOf(totalPoints - pointsApplied)
+    val pointsToDisplay = rememberSaveable(pointsApplied) {
+        "%.2f".format(mutableDoubleStateOf(totalPoints - pointsApplied).doubleValue).toDouble()
     }
-    val moneyToDisplay by rememberSaveable(moneyApplied) {
-        mutableDoubleStateOf(totalMoney - moneyApplied)
+    val moneyToDisplay = rememberSaveable(moneyApplied) {
+        "%.2f".format(mutableDoubleStateOf(totalMoney - moneyApplied).doubleValue).toDouble()
     }
 
-    AppCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
-    ) {
-        Column(
+    Column {
+        TitleTexts.Level2(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
-            horizontalAlignment = Alignment.CenterHorizontally,
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
+                .padding(start = AppTheme.spacing.level2)
+                .padding(bottom = AppTheme.spacing.level1),
+            text = "Use wallet to pay:"
+        )
+        AppCard(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2)
         ) {
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2),
+                horizontalAlignment = Alignment.CenterHorizontally,
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
             ) {
-                HeadingTexts.Level3(text = "Wallet Points: $pointsToDisplay")
-                if (totalPoints > 0) {
-                    AppCheckBoxButton(
-                        checked = pointsChecked
-                    ) { checked ->
-                        pointsChecked = checked
-                        onApplyWallet(
-                            if (checked) {
-                                if (finalPayableAmount > totalPoints) {
-                                    totalPoints
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Points remaining: $pointsToDisplay")
+                    if (totalPoints > 0) {
+                        AppCheckBoxButton(
+                            checked = pointsChecked
+                        ) { checked ->
+                            pointsChecked = checked
+                            onApplyWallet(
+                                if (checked) {
+                                    if (finalPayableAmount > totalPoints) {
+                                        totalPoints
+                                    } else {
+                                        finalPayableAmount
+                                    }
                                 } else {
-                                    finalPayableAmount
-                                }
-                            } else {
-                                0.0
-                            },
-                            moneyApplied
-                        )
+                                    0.0
+                                },
+                                moneyApplied
+                            )
+                        }
                     }
                 }
-            }
 
-            AppDivider(color = AppTheme.colors.onSurfaceVariant)
+                AppDivider(color = AppTheme.colors.onSurfaceVariant)
 
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                verticalAlignment = Alignment.CenterVertically,
-                horizontalArrangement = Arrangement.SpaceBetween
-            ) {
-                HeadingTexts.Level3(text = "Wallet Money: $moneyToDisplay")
-                if (totalMoney > 0) {
-                    AppCheckBoxButton(
-                        checked = moneyChecked
-                    ) { checked ->
-                        moneyChecked = checked
-                        onApplyWallet(
-                            pointsApplied,
-                            if (checked) {
-                                if (finalPayableAmount > totalMoney) {
-                                    totalMoney
+                Row(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalAlignment = Alignment.CenterVertically,
+                    horizontalArrangement = Arrangement.SpaceBetween
+                ) {
+                    HeadingTexts.Level3(text = "Money remaining: $moneyToDisplay")
+                    if (totalMoney > 0) {
+                        AppCheckBoxButton(
+                            checked = moneyChecked
+                        ) { checked ->
+                            moneyChecked = checked
+                            onApplyWallet(
+                                pointsApplied,
+                                if (checked) {
+                                    if (finalPayableAmount > totalMoney) {
+                                        totalMoney
+                                    } else {
+                                        finalPayableAmount
+                                    }
                                 } else {
-                                    finalPayableAmount
+                                    0.0
                                 }
-                            } else {
-                                0.0
-                            }
-                        )
+                            )
+                        }
                     }
                 }
             }

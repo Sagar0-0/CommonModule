@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.today.ui.vm
+package fit.asta.health.navigation.alarms
 
 import android.content.Context
 import android.util.Log

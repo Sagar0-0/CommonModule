@@ -88,12 +88,11 @@ data class WalletResponse(
 }
 
 enum class SourceTypes(val code: SourceType) {
-    WalletMoneyUsed(1),
+    SubscriptionUsage(1),
     AccountToWallet(2),
     WalletToAccount(3),
     ReferrerCredit(4),
     RefereeCredit(5),
-    WalletPointsUsed(7)
 }
 
 enum class CreditTypes(val code: CreditType) {

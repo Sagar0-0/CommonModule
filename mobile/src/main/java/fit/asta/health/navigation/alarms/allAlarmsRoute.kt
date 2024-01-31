@@ -11,7 +11,6 @@ import fit.asta.health.common.utils.Constants
 import fit.asta.health.main.view.checkPermissionAndLaunchScheduler
 import fit.asta.health.navigation.today.ui.view.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.AllAlarms
-import fit.asta.health.navigation.today.ui.vm.AllAlarmViewModel
 
 
 private const val ALL_ALARMS_ROUTE = "all_alarms"
