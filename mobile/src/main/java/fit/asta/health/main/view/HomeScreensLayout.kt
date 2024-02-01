@@ -15,8 +15,10 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.Image
+import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -29,6 +31,7 @@ import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
 import androidx.compose.material.icons.filled.DirectionsWalk
 import androidx.compose.material.icons.filled.Handyman
+import androidx.compose.material.icons.filled.KeyboardArrowRight
 import androidx.compose.material.icons.filled.LocationOn
 import androidx.compose.material.icons.filled.MoreVert
 import androidx.compose.material.icons.filled.NotificationsActive
@@ -75,6 +78,7 @@ import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
@@ -86,6 +90,7 @@ import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.services.SchedulerWorker
 import fit.asta.health.home.remote.model.ToolsHome
@@ -119,6 +124,7 @@ fun HomeScreensLayout(
 ) {
 
     val navController = rememberNavController()
+    val context = LocalContext.current
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
 
@@ -131,19 +137,49 @@ fun HomeScreensLayout(
             )
         },
         topBar = {
-            AppTopBar(
-                backIcon = null,
-                actions = {
-                    NewMainTopBarActions(
-                        onClick = onClick,
-                        notificationState = notificationState,
-                        profileImageUri = profileImageUri,
-                        currentAddressState = currentAddressState,
-                        sessionState = sessionState,
-                        onSession = onWalkingTool
+            Column(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .background(
+                        color = AppTheme.colors.onBackground.copy(
+                            AppTheme.alphaValues.level1
+                        )
                     )
+            ) {
+                AppTopBar(
+                    backIcon = null,
+                    actions = {
+                        NewMainTopBarActions(
+                            onClick = onClick,
+                            notificationState = notificationState,
+                            profileImageUri = profileImageUri,
+                            currentAddressState = currentAddressState,
+                            sessionState = sessionState,
+                            onSession = onWalkingTool
+                        )
+                    }
+                )
+                Row(
+                    modifier = Modifier
+                        .padding(horizontal = AppTheme.spacing.level2)
+                        .fillMaxWidth(),
+                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    CaptionTexts.Level3(
+                        modifier = Modifier.weight(1f),
+                        text = "This is a beta release. Help us improve this app by reporting the bugs you find."
+                    )
+                    AppIconButton(
+                        onClick = {
+                            context.sendBugReportMessage()
+                        }
+                    ) {
+                        AppIcon(imageVector = Icons.Default.KeyboardArrowRight)
+                    }
                 }
-            )
+            }
+
         }
     ) {
         HomeNavHost(
