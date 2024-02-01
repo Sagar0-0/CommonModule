@@ -58,11 +58,13 @@ import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.GenderCode
 import fit.asta.health.data.profile.remote.model.PrimeTypes
+import fit.asta.health.data.profile.remote.model.UserProfileImageTypes
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
@@ -582,7 +584,9 @@ fun ReferralUi(
                             modifier = Modifier
                                 .size(AppTheme.imageSize.level4)
                                 .clip(CircleShape),
-                            model = checkReferralCodeState.data.pic,
+                            model = if (checkReferralCodeState.data.imageType == UserProfileImageTypes.GOOGLE.imageType) checkReferralCodeState.data.pic else getImgUrl(
+                                checkReferralCodeState.data.pic
+                            ),
                         )
                         TitleTexts.Level3(text = checkReferralCodeState.data.name)
                         AppIcon(

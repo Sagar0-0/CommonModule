@@ -2,6 +2,7 @@ package fit.asta.health.data.profile.remote.model
 
 import com.google.gson.annotations.SerializedName
 
+typealias UserProfileImageType = Int
 data class CheckReferralDTO(
     @SerializedName("mail")
     val mail: String = "",
@@ -12,8 +13,15 @@ data class CheckReferralDTO(
     @SerializedName("pic")
     val pic: String = "",
     @SerializedName("prime")
-    val prime: Int = 0
+    val prime: Int = 0,
+    @SerializedName("type")
+    val imageType: UserProfileImageType = 0,
 )
+
+enum class UserProfileImageTypes(val imageType: UserProfileImageType) {
+    GOOGLE(1),
+    SERVER(2)
+}
 
 enum class PrimeTypes(val code: Int) {
     NOT_PRIME(0),
