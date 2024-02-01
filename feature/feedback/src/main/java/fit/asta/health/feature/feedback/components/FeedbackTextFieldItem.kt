@@ -2,10 +2,12 @@ package fit.asta.health.feature.feedback.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import fit.asta.health.data.feedback.remote.modal.Answer
@@ -36,7 +38,14 @@ fun FeedbackTextFieldItem(
         ) {
 
             // This is the Question of this Card
-            TitleTexts.Level3(text = question.questionText)
+            Row {
+                TitleTexts.Level3(text = question.questionText)
+                if (question.isMandatory) TitleTexts.Level3(
+                    modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                    text = "*",
+                    color = Color.Red
+                )
+            }
 
             // This is either the Rating Stars or the Radio Buttons
             when (question.type) {
@@ -68,25 +77,27 @@ fun FeedbackTextFieldItem(
                 }
             }
 
-            // This is the Outlined Text Field for the user to give their Feedbacks
-            AppOutlinedTextField(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .semantics { contentDescription = "AppOutlinedTextField" },
-                value = answer.detailedAnswer,
-                appTextFieldType = AppTextFieldValidator(
-                    AppTextFieldType.Custom(
-                        question.ansType.min, maxCharsAllowed
-                    )
-                ),
-                isValidText = isAnswerValid,
-                minLines = 4,
-                onValueChange = { newText ->
-                    updatedAnswer(
-                        answer.copy(detailedAnswer = newText)
-                    )
-                }
-            )
+            if (question.ansType.isDetailed) {
+                // This is the Outlined Text Field for the user to give their Feedbacks
+                AppOutlinedTextField(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .semantics { contentDescription = "AppOutlinedTextField" },
+                    value = answer.detailedAnswer,
+                    appTextFieldType = AppTextFieldValidator(
+                        AppTextFieldType.Custom(
+                            question.ansType.min, maxCharsAllowed
+                        )
+                    ),
+                    isValidText = isAnswerValid,
+                    minLines = 4,
+                    onValueChange = { newText ->
+                        updatedAnswer(
+                            answer.copy(detailedAnswer = newText)
+                        )
+                    }
+                )
+            }
         }
     }
 }

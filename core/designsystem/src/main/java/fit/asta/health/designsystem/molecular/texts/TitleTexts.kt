@@ -88,8 +88,8 @@ object TitleTexts {
 
     @Composable
     fun Level3(
-        modifier: Modifier = Modifier,
         text: String,
+        modifier: Modifier = Modifier,
         color: Color = AppTheme.colors.onSurface,
         textAlign: TextAlign? = null,
         maxLines: Int = Int.MAX_VALUE,
