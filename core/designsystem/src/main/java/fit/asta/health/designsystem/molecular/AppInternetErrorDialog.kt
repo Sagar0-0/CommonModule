@@ -69,7 +69,7 @@ private fun DefaultPreview() {
 fun AppInternetErrorDialog(
     modifier: Modifier = Modifier,
     title: String = "Whoops !!",
-    text: String = "Second Internet connection was found. Check your connection or try again.",
+    text: String = "No Internet connection found. Check your mobile or Wifi settings and try again!",
     imageId: Int = R.drawable.server_error,
     onTryAgain: () -> Unit = {}
 ) {
