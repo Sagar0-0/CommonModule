@@ -135,7 +135,7 @@ fun ExerciseHomeScreen(
                     CircularSliderInt(
                         modifier = Modifier.size(200.dp),
                         isStarted = uiState.start,
-                        appliedAngleDistanceValue = if (uiState.start) uiState.progress_angle else uiState.targetAngle,
+                        appliedAngleDistanceValue = if (uiState.start) uiState.progressAngle else uiState.targetAngle,
                         indicatorValue = uiState.consume,
                         maxIndicatorValue = 120f,
                         onChangeDistance = {

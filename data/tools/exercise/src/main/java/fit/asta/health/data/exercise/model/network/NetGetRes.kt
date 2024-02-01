@@ -6,7 +6,7 @@ import fit.asta.health.network.data.Status
 
 data class NetGetRes(
     @SerializedName("data")
-    val `data`: Data,
+    val `data`: ExerciseData,
     @SerializedName("status")
     val status: Status
 )

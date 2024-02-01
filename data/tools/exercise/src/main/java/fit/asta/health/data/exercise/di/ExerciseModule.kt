@@ -13,7 +13,7 @@ import fit.asta.health.data.exercise.model.ExerciseLocalRepoImp
 import fit.asta.health.data.exercise.model.ExerciseRepo
 import fit.asta.health.data.exercise.model.ExerciseRepoImp
 import fit.asta.health.data.exercise.model.api.ExerciseApi
-import fit.asta.health.data.exercise.model.api.ExerciseRestApi
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -23,14 +23,15 @@ object ExerciseModule {
 
     @Singleton
     @Provides
-    fun provideApi(client: OkHttpClient): ExerciseApi {
-        return ExerciseRestApi(client)
-    }
+    fun provideExerciseApi(client: OkHttpClient): ExerciseApi =
+        NetworkUtil.getRetrofit(client).create(ExerciseApi::class.java)
+
     @Singleton
     @Provides
     fun provideRepo(api: ExerciseApi): ExerciseRepo {
         return ExerciseRepoImp(api)
     }
+
     @Singleton
     @Provides
     fun provideExerciseDatabase(

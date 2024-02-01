@@ -13,6 +13,8 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
+import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.exercise.db.ExerciseData
 import fit.asta.health.data.exercise.model.ExerciseLocalRepo
 import fit.asta.health.data.exercise.model.ExerciseRepo
@@ -33,6 +35,7 @@ import fit.asta.health.player.domain.utils.convertToProgress
 import fit.asta.health.player.presentation.component.VideoState
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
@@ -45,7 +48,8 @@ import javax.inject.Inject
 class ExerciseViewModel @Inject constructor(
     private val exerciseRepo: ExerciseRepo,
     private val exerciseLocalRepo: ExerciseLocalRepo,
-    private val player: Player
+    private val player: Player,
+    @UID private val uid: String
 ) : ViewModel() {
     private var screen = "dance"
     private val date = LocalDate.now().dayOfMonth
@@ -82,8 +86,8 @@ class ExerciseViewModel @Inject constructor(
     private val _selectedEquipments = MutableStateFlow("Dumbbell")
     val selectedEquipments: StateFlow<String> = _selectedEquipments
 
-    private val _exerciseUiState = mutableStateOf(ExerciseUiState())
-    val exerciseUiState: State<ExerciseUiState> = _exerciseUiState
+    private val _exerciseUiState = MutableStateFlow(ExerciseUiState())
+    val exerciseUiState = _exerciseUiState.asStateFlow()
 
     fun setScreen(value: String) {
         screen = value
@@ -161,44 +165,36 @@ class ExerciseViewModel @Inject constructor(
 
     private fun loadData() {
         viewModelScope.launch {
-            exerciseRepo.getExerciseTool(
-                uid = "6309a9379af54f142c65fbfe",
+            val response = exerciseRepo.getExerciseTool(
+                uid = uid,
                 date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()).toString(),
                 name = screen
-            ).collectLatest { it ->
-                when (it) {
-                    is NetworkResult.Loading -> {}
-                    is NetworkResult.Success -> {
-                        it.data?.let {
-                            val data = it.getExerciseTool()
-                            _exerciseUiState.value = _exerciseUiState.value.copy(
-                                target = data.target,
-                                achieved = data.achieved,
-                                bp = data.bp,
-                                bpm = data.bpm,
-                                recommended = data.recommend,
-                                calories = data.calories,
-                                duration = data.duration,
-                                vit = data.vit,
-                                uid = data.uid,
-                                weather = data.weather,
-                            )
-                            _selectedStyle.value = data.style
-                            _selectedDuration.value = data.durationPrc
-                            _selectedBodyParts.value = data.bodyParts
-                            _selectedChallenges.value = data.challenge
-                            _selectedBodyStretch.value = data.bodyStretch
-                            _selectedQuick.value = data.quick
-                            _selectedLevel.value = data.level
-                            _selectedInstructor.value = data.instructor
-                            _selectedMusic.value = data.music
-                            _selectedLanguage.value = data.language
-                            _selectedEquipments.value = data.equipments
-                        }
-                    }
-
-                    is NetworkResult.Error -> {}
-                }
+            )
+            val data = (response as? ResponseState.Success)?.data?.getExerciseTool()
+            data?.let {
+                _exerciseUiState.value = _exerciseUiState.value.copy(
+                    target = data.target,
+                    achieved = data.achieved,
+                    bp = data.bp,
+                    bpm = data.bpm,
+                    recommended = data.recommend,
+                    calories = data.calories,
+                    duration = data.duration,
+                    vit = data.vit,
+                    uid = data.uid,
+                    weather = data.weather,
+                )
+                _selectedStyle.value = data.style
+                _selectedDuration.value = data.durationPrc
+                _selectedBodyParts.value = data.bodyParts
+                _selectedChallenges.value = data.challenge
+                _selectedBodyStretch.value = data.bodyStretch
+                _selectedQuick.value = data.quick
+                _selectedLevel.value = data.level
+                _selectedInstructor.value = data.instructor
+                _selectedMusic.value = data.music
+                _selectedLanguage.value = data.language
+                _selectedEquipments.value = data.equipments
             }
         }
     }
@@ -212,7 +208,7 @@ class ExerciseViewModel @Inject constructor(
                         _exerciseUiState.value = _exerciseUiState.value.copy(
                             start = result.startDance,
                             targetAngle = result.appliedAngleDistanceDance,
-                            progress_angle = result.appliedAngleDistanceDance,
+                            progressAngle = result.appliedAngleDistanceDance,
                             consume = result.timeDance.toFloat()
                         )
                     }
@@ -221,7 +217,7 @@ class ExerciseViewModel @Inject constructor(
                         _exerciseUiState.value = _exerciseUiState.value.copy(
                             start = result.startYoga,
                             targetAngle = result.appliedAngleDistanceYoga,
-                            progress_angle = result.appliedAngleDistanceYoga,
+                            progressAngle = result.appliedAngleDistanceYoga,
                             consume = result.timeYoga.toFloat()
                         )
                     }
@@ -230,7 +226,7 @@ class ExerciseViewModel @Inject constructor(
                         _exerciseUiState.value = _exerciseUiState.value.copy(
                             start = result.startWorkout,
                             targetAngle = result.appliedAngleDistanceWorkout,
-                            progress_angle = result.appliedAngleDistanceWorkout,
+                            progressAngle = result.appliedAngleDistanceWorkout,
                             consume = result.timeWorkout.toFloat()
                         )
                     }
@@ -239,7 +235,7 @@ class ExerciseViewModel @Inject constructor(
                         _exerciseUiState.value = _exerciseUiState.value.copy(
                             start = result.startHiit,
                             targetAngle = result.appliedAngleDistanceHiit,
-                            progress_angle = result.appliedAngleDistanceHiit,
+                            progressAngle = result.appliedAngleDistanceHiit,
                             consume = result.timeHiit.toFloat()
                         )
                     }
@@ -270,7 +266,7 @@ class ExerciseViewModel @Inject constructor(
 
     private fun loadMusicData(code: String) {
         viewModelScope.launch {
-            exerciseRepo.getStart(uid = "6309a9379af54f142c65fbfe", name = code)
+            exerciseRepo.getStart(uid = uid, name = code)
                 .collectLatest { networkResult ->
                     when (networkResult) {
                         is NetworkResult.Loading -> {}
@@ -433,7 +429,7 @@ class ExerciseViewModel @Inject constructor(
                     code = code,
                     prc = prcList,
                     type = 6,
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uid,
                     weather = true
                 ), name = code
             )
@@ -549,7 +545,7 @@ class ExerciseViewModel @Inject constructor(
                     id = "",
                     part = emptyList(),
                     style = emptyList(),
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uid,
                     vit = 10
                 ), name = code
             )
@@ -564,7 +560,6 @@ class ExerciseViewModel @Inject constructor(
             }
         }
     }
-
 
     fun getStyleList(code: String): List<String> {
         return when (code) {

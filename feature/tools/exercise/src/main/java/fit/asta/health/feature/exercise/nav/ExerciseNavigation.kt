@@ -47,7 +47,7 @@ fun NavGraphBuilder.exerciseNavigation(
             val activity = it.arguments?.getString("activity") ?: "dance"
             val viewModel: ExerciseViewModel = it.sharedViewModel(navController)
             viewModel.setScreen(activity)
-            val uiState = viewModel.exerciseUiState.value
+            val uiState = viewModel.exerciseUiState.collectAsStateWithLifecycle().value
             val style by viewModel.selectedStyle.collectAsStateWithLifecycle()
             val music by viewModel.selectedMusic.collectAsStateWithLifecycle()
             val level by viewModel.selectedLevel.collectAsStateWithLifecycle()
@@ -169,11 +169,15 @@ fun NavGraphBuilder.exerciseNavigation(
         }
         composable(ExerciseScreen.Video.route) {
             val viewModel: ExerciseViewModel = it.sharedViewModel(navController)
+            val exerciseUiState = viewModel.exerciseUiState.collectAsStateWithLifecycle().value
             val uiState by viewModel.uiState
-            VideoScreen(player = viewModel.player(), uiState = uiState,
-                progress = viewModel.exerciseUiState.value.consume,
+            VideoScreen(
+                player = viewModel.player(),
+                uiState = uiState,
+                progress = exerciseUiState.consume,
                 event = viewModel::eventVideo,
-                onBack = { navController.popBackStack() })
+                onBack = navController::popBackStack
+            )
         }
     }
 }
