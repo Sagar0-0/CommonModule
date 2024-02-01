@@ -109,7 +109,7 @@ fun AlarmSettingScreen(
         initialSelectedEndDateMillis = alarmSettingUiState.selectedEndDateMillis,
         yearRange = DatePickerDefaults.YearRange,
     )
-    var currentBottomSheet: AlarmCreateBottomSheetTypes? by remember {
+    var bottomSheetType: AlarmCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
     val areInputsValid by remember(alarmSettingUiState) {
@@ -137,16 +137,13 @@ fun AlarmSettingScreen(
 
 
     val closeSheet = {
-        scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
-            if (!bottomSheetState.isVisible) {
-                bottomSheetVisible = false
-            }
-        }
+        bottomSheetVisible = false
+        scope.launch { bottomSheetState.hide() }
     }
 
     val openSheet = {
-        scope.launch { bottomSheetState.expand() }
         bottomSheetVisible = true
+        scope.launch { bottomSheetState.expand() }
     }
     val snackBarHostState = remember { SnackbarHostState() }
 
@@ -200,7 +197,7 @@ fun AlarmSettingScreen(
                     dayTime = if (alarmSettingUiState.timeHours >= 12) AMPMHoursMin.DayTime.PM else AMPMHoursMin.DayTime.AM
                 )
             ) {
-                currentBottomSheet = TIME
+                bottomSheetType = TIME
                 openSheet()
             }
 
@@ -228,7 +225,7 @@ fun AlarmSettingScreen(
                 } ",
                 color = tagBg,
                 onNavigateAction = {
-                    currentBottomSheet = DATERANGE
+                    bottomSheetType = DATERANGE
                     openSheet()
                 }
             )
@@ -249,7 +246,7 @@ fun AlarmSettingScreen(
                 arrowTitle = alarmSettingUiState.alarmName,
                 color = nameBg,
                 onNavigateAction = {
-                    currentBottomSheet = LABEL
+                    bottomSheetType = LABEL
                     openSheet()
                 }
             )
@@ -259,7 +256,7 @@ fun AlarmSettingScreen(
                 arrowTitle = alarmSettingUiState.alarmDescription,
                 color = descriptionBg,
                 onNavigateAction = {
-                    currentBottomSheet = DESCRIPTION
+                    bottomSheetType = DESCRIPTION
                     openSheet()
                 }
             )
@@ -280,7 +277,7 @@ fun AlarmSettingScreen(
                 title = stringResource(id = StringR.string.reminder_mode),
                 arrowTitle = alarmSettingUiState.mode,
                 onNavigateAction = {
-                    currentBottomSheet = REMINDER
+                    bottomSheetType = REMINDER
                     openSheet()
                 }
             )
@@ -294,7 +291,7 @@ fun AlarmSettingScreen(
                 },
                 switchTitle = alarmSettingUiState.vibration,
                 onNavigateToClickText = {
-                    currentBottomSheet = VIBRATION
+                    bottomSheetType = VIBRATION
                     openSheet()
                 }
             )
@@ -318,22 +315,22 @@ fun AlarmSettingScreen(
 
             Spacer(modifier = Modifier)
         }
-    }
 
-    AppModalBottomSheet(
-        sheetVisible = bottomSheetVisible,
-        sheetState = bottomSheetState,
-        dragHandle = null,
-        onDismissRequest = { closeSheet() },
-    ) {
-        currentBottomSheet?.let {
-            AlarmCreateBtmSheetLayout(
-                sheetLayout = it,
-                closeSheet = { closeSheet() },
-                aSEvent = aSEvent,
-                alarmSettingUiState = alarmSettingUiState,
-                state = state
-            )
+        AppModalBottomSheet(
+            sheetVisible = bottomSheetVisible,
+            sheetState = bottomSheetState,
+            dragHandle = null,
+            onDismissRequest = { closeSheet() },
+        ) {
+            bottomSheetType?.let {
+                AlarmCreateBtmSheetLayout(
+                    sheetLayout = it,
+                    closeSheet = { closeSheet() },
+                    onUiEvent = aSEvent,
+                    alarmSettingUiState = alarmSettingUiState,
+                    state = state
+                )
+            }
         }
     }
 }
@@ -349,7 +346,7 @@ fun AlarmCreateBtmSheetLayout(
     alarmSettingUiState: ASUiState,
     state: DateRangePickerState,
     closeSheet: () -> Unit,
-    aSEvent: (AlarmSettingEvent) -> Unit
+    onUiEvent: (AlarmSettingEvent) -> Unit
 ) {
     val keyboardController = LocalSoftwareKeyboardController.current
     var title by remember {
@@ -362,14 +359,15 @@ fun AlarmCreateBtmSheetLayout(
                     text = stringResource(StringR.string.labels),
                     label = StringR.string.enter_your_label,
                     onNavigateBack = {
-                        keyboardController?.hide()
                         closeSheet()
+                        keyboardController?.hide()
                     },
                     onSave = {
                         closeSheet()
                         keyboardController?.hide()
-                        aSEvent(AlarmSettingEvent.SetLabel(it))
-                    })
+                        onUiEvent(AlarmSettingEvent.SetLabel(it))
+                    }
+                )
             }
         }
 
@@ -385,7 +383,7 @@ fun AlarmCreateBtmSheetLayout(
                     onSave = {
                         closeSheet()
                         keyboardController?.hide()
-                        aSEvent(AlarmSettingEvent.SetDescription(it))
+                        onUiEvent(AlarmSettingEvent.SetDescription(it))
                     })
             }
         }
@@ -397,7 +395,7 @@ fun AlarmCreateBtmSheetLayout(
                     onNavigateBack = closeSheet,
                     onSave = {
                         closeSheet()
-                        aSEvent(AlarmSettingEvent.SetReminderMode(it))
+                        onUiEvent(AlarmSettingEvent.SetReminderMode(it))
                     })
             }
         }
@@ -408,7 +406,7 @@ fun AlarmCreateBtmSheetLayout(
                 onNavigateBack = closeSheet,
                 onSave = {
                     closeSheet()
-                    aSEvent(AlarmSettingEvent.SetVibrationIntensity(it))
+                    onUiEvent(AlarmSettingEvent.SetVibrationIntensity(it))
                 })
         }
 
@@ -441,7 +439,7 @@ fun AlarmCreateBtmSheetLayout(
                         return@TimePickerBottomSheet
                     } else {
                         closeSheet()
-                        aSEvent(
+                        onUiEvent(
                             AlarmSettingEvent.SetAlarmTime(
                                 Time(
                                     hours = time.hour,
@@ -464,7 +462,7 @@ fun AlarmCreateBtmSheetLayout(
                 AppFilledButton(
                     onClick = {
                         state.selectedStartDateMillis?.let { start ->
-                            aSEvent(
+                            onUiEvent(
                                 AlarmSettingEvent.SetDateRange(
                                     start,
                                     state.selectedEndDateMillis

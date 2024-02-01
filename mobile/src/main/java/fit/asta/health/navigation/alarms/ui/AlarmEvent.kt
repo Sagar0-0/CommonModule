@@ -1,4 +1,4 @@
-package fit.asta.health.navigation.today.ui.view
+package fit.asta.health.navigation.alarms.ui
 
 import android.content.Context
 import fit.asta.health.common.utils.HourMinAmPm

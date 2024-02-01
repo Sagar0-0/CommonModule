@@ -9,8 +9,8 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.Constants
 import fit.asta.health.main.view.checkPermissionAndLaunchScheduler
-import fit.asta.health.navigation.today.ui.view.AlarmEvent
-import fit.asta.health.navigation.today.ui.view.AllAlarms
+import fit.asta.health.navigation.alarms.ui.AlarmEvent
+import fit.asta.health.navigation.alarms.ui.AllAlarms
 
 
 private const val ALL_ALARMS_ROUTE = "all_alarms"
@@ -27,39 +27,38 @@ fun NavGraphBuilder.allAlarmsRoute(navController: NavController) {
         val checkPermissionAndLaunchScheduler =
             checkPermissionAndLaunchScheduler(context, navController)
         AllAlarms(
-            list = list,
-            onEvent = {
-                when (it) {
-                    is AlarmEvent.SetAlarmState -> {
-                        vm.changeAlarmState(
-                            state = it.state,
-                            alarm = it.alarm,
-                            context = it.context
-                        )
-                    }
+            list = list
+        ) {
+            when (it) {
+                is AlarmEvent.SetAlarmState -> {
+                    vm.changeAlarmState(
+                        state = it.state,
+                        alarm = it.alarm,
+                        context = it.context
+                    )
+                }
 
-                    is AlarmEvent.SetAlarm -> {
-                        vm.setAlarmPreferences(999)
-                    }
+                is AlarmEvent.SetAlarm -> {
+                    vm.setAlarmPreferences(999)
+                }
 
-                    is AlarmEvent.EditAlarm -> {
-                        vm.setAlarmPreferences(it.alarmId)
-                        checkPermissionAndLaunchScheduler()
-                    }
+                is AlarmEvent.EditAlarm -> {
+                    vm.setAlarmPreferences(it.alarmId)
+                    checkPermissionAndLaunchScheduler()
+                }
 
-                    is AlarmEvent.NavSchedule -> {
-                        navController.currentBackStackEntry?.savedStateHandle?.set(
-                            key = Constants.HourMinAmPmKey,
-                            value = it.hourMinAmPm
-                        )
-                        checkPermissionAndLaunchScheduler()
-                    }
+                is AlarmEvent.NavSchedule -> {
+                    navController.currentBackStackEntry?.savedStateHandle?.set(
+                        key = Constants.HourMinAmPmKey,
+                        value = it.hourMinAmPm
+                    )
+                    checkPermissionAndLaunchScheduler()
+                }
 
-                    is AlarmEvent.OnBack -> {
-                        navController.popBackStack()
-                    }
+                is AlarmEvent.OnBack -> {
+                    navController.popBackStack()
                 }
             }
-        )
+        }
     }
 }
