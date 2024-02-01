@@ -37,7 +37,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 fun AppTopBar(
     modifier: Modifier = Modifier,
     title: String = "",
-    containerColor: Color = Color.Transparent,
+    containerColor: Color = AppTheme.colors.background,
     scrollBehavior: TopAppBarScrollBehavior? = null,
     titleContentColor: Color = AppTheme.colors.onPrimaryContainer,
     backIcon: ImageVector? = Icons.Outlined.NavigateBefore,
