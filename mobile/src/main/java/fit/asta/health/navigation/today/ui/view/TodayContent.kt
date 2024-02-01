@@ -51,7 +51,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
-import com.google.accompanist.pager.ExperimentalPagerApi
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
@@ -79,7 +78,7 @@ import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
 
-@OptIn(ExperimentalFoundationApi::class, ExperimentalPagerApi::class)
+@OptIn(ExperimentalFoundationApi::class)
 @Composable
 fun TodayContent(
     state: UiState<TodayData>,
@@ -214,9 +213,9 @@ fun TodayTabContent(
             .fillMaxSize(),
         state = listState,
         contentPadding = PaddingValues(horizontal = AppTheme.spacing.level2),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
     ) {
-        item { Spacer(modifier = Modifier.height(8.dp)) }
+        item { Spacer(modifier = Modifier) }
         if (calendarUiModel.selectedDate.isToday) {
             when (state) {
                 is UiState.Loading -> {
@@ -302,20 +301,10 @@ fun TodayTabContent(
         }
         if (defaultScheduleVisibility) {
             item {
-                AnimatedVisibility(
-                    visible = true, exit = scaleOut(
-                        targetScale = 0.5f,
-                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                    ),
-                    enter = scaleIn(
-                        initialScale = 0.5f,
-                        animationSpec = tween(durationMillis = 500, delayMillis = 100)
-                    )
-                ) {
-                    AppOutlinedButton(
-                        textToShow = stringResource(R.string.default_schedule)
-                    ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
-                }
+                AppOutlinedButton(
+                    modifier = Modifier.fillMaxWidth(),
+                    textToShow = stringResource(R.string.default_schedule)
+                ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
             }
         }
         if (listMorning.isNotEmpty()) {
@@ -336,7 +325,7 @@ fun TodayTabContent(
             }
 
             items(items = listMorning, key = { it }) { data ->
-                TodayItem2(
+                TodayItem(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
                             durationMillis = 500,
@@ -419,7 +408,7 @@ fun TodayTabContent(
                 }
             }
             items(items = listEvening, key = { it }) { data ->
-                TodayItem1(
+                TodayItem(
                     modifier = Modifier.animateItemPlacement(
                         animationSpec = tween(
                             durationMillis = 500,
@@ -444,7 +433,7 @@ fun TodayTabContent(
                 )
             }
         }
-        item { Spacer(modifier = Modifier.height(16.dp)) }
+        item { Spacer(modifier = Modifier) }
     }
 }
 
