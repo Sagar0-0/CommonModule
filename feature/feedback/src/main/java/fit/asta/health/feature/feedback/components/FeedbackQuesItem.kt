@@ -4,7 +4,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.feedback.remote.modal.Answer
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionType
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionTypes
 import fit.asta.health.data.feedback.remote.modal.Question
 import fit.asta.health.designsystem.molecular.UploadFiles
 
@@ -19,7 +19,7 @@ fun FeedbackQuesItem(
     updatedAnswer: (Answer) -> Unit,
     onAnswerValidityChange: (Boolean) -> Unit
 ) {
-    if (question.type == FeedbackQuestionType.UploadFile.type) {
+    if (question.type == FeedbackQuestionTypes.UploadFile.type) {
         UploadFiles(
             modifier = Modifier.fillMaxWidth(),
             uriList = answer.mediaUri.toList(),

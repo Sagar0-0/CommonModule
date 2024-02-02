@@ -11,7 +11,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import fit.asta.health.data.feedback.remote.modal.Answer
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionType
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestionTypes
 import fit.asta.health.data.feedback.remote.modal.Question
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
@@ -27,7 +27,6 @@ fun FeedbackTextFieldItem(
     updatedAnswer: (Answer) -> Unit,
     isAnswerValid: (Boolean) -> Unit,
 ) {
-    val maxCharsAllowed = question.ansType.max
 
     AppElevatedCard(modifier = Modifier.fillMaxWidth()) {
         Column(
@@ -39,9 +38,15 @@ fun FeedbackTextFieldItem(
 
             // This is the Question of this Card
             Row {
-                TitleTexts.Level3(text = question.questionText)
+                TitleTexts.Level3(
+                    modifier = Modifier.weight(1f),
+                    text = question.questionText
+                )
                 if (question.isMandatory) TitleTexts.Level3(
-                    modifier = Modifier.padding(start = AppTheme.spacing.level1),
+                    modifier = Modifier.padding(
+                        start = AppTheme.spacing.level1,
+                        end = AppTheme.spacing.level2
+                    ),
                     text = "*",
                     color = Color.Red
                 )
@@ -49,7 +54,12 @@ fun FeedbackTextFieldItem(
 
             // This is either the Rating Stars or the Radio Buttons
             when (question.type) {
-                FeedbackQuestionType.Rating.type -> {
+                FeedbackQuestionTypes.Rating.type -> {
+                    if (question.isMandatory && answer.options[0].toIntOrNull() == null) {
+                        isAnswerValid(false)
+                    } else {
+                        isAnswerValid(true)
+                    }
                     Rating(
                         if (answer.options[0].toIntOrNull() == null) {
                             updatedAnswer(answer.copy(options = listOf("0")))
@@ -61,10 +71,16 @@ fun FeedbackTextFieldItem(
                         updatedAnswer(
                             answer.copy(options = listOf(it.toString()))
                         )
+
                     }
                 }
 
-                FeedbackQuestionType.McqCard.type, FeedbackQuestionType.McqCard2.type -> {
+                FeedbackQuestionTypes.McqCard.type, FeedbackQuestionTypes.McqCard2.type -> {
+                    if (question.isMandatory && answer.options[0].isEmpty()) {
+                        isAnswerValid(false)
+                    } else {
+                        isAnswerValid(true)
+                    }
                     McqCard(
                         selectedAnswer = answer.options[0],
                         optionsList = question.options,
@@ -86,10 +102,20 @@ fun FeedbackTextFieldItem(
                     value = answer.detailedAnswer,
                     appTextFieldType = AppTextFieldValidator(
                         AppTextFieldType.Custom(
-                            question.ansType.min, maxCharsAllowed
+                            question.ansType.min, question.ansType.max
                         )
                     ),
-                    isValidText = isAnswerValid,
+                    isValidText = {
+                        if (question.type != FeedbackQuestionTypes.TextField.type) {
+                            if (question.isMandatory && (answer.options[0].isEmpty() || answer.options[0].toIntOrNull() == null)) {
+                                isAnswerValid(false)
+                            } else {
+                                isAnswerValid(it)
+                            }
+                        } else {
+                            isAnswerValid(it)
+                        }
+                    },
                     minLines = 4,
                     onValueChange = { newText ->
                         updatedAnswer(

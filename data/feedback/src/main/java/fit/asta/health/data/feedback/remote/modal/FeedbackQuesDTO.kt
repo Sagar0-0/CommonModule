@@ -29,12 +29,14 @@ data class Question(
     @SerializedName("ttl")
     val title: String = "",
     @SerializedName("type")
-    val type: Int = 0,
+    val type: FeedbackQuesType = 0,
     @SerializedName("isMan")
     val isMandatory: Boolean = false,
     @SerializedName("ansType")
     val ansType: AnsType = AnsType()
 ) : Parcelable
+
+typealias FeedbackQuesType = Int
 
 @Parcelize
 data class AnsType(
@@ -46,9 +48,10 @@ data class AnsType(
     val max: Int = 0,
 ) : Parcelable
 
-sealed class FeedbackQuestionType(val type: Int) {
-    data object UploadFile : FeedbackQuestionType(1)
-    data object Rating : FeedbackQuestionType(2)
-    data object McqCard : FeedbackQuestionType(3)
-    data object McqCard2 : FeedbackQuestionType(5)
+enum class FeedbackQuestionTypes(val type: FeedbackQuesType) {
+    UploadFile(1),
+    Rating(2),
+    McqCard(3),
+    TextField(4),
+    McqCard2(5)
 }

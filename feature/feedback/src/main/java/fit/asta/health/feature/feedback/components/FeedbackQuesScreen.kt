@@ -27,9 +27,11 @@ fun FeedbackQuesScreen(
     feedbackQues: FeedbackQuesDTO,
     onSubmit: (answers: List<Answer>) -> Unit
 ) {
-    val questions = feedbackQues.questions
+    val questions = remember {
+        feedbackQues.questions
+    }
     val validAnswersList = remember { questions.map { !it.isMandatory }.toMutableStateList() }
-    var isSubmitButtonEnabled = validAnswersList.none { !it }
+    var isSubmitButtonEnabled = validAnswersList.all { it }
     val answersList = remember { questions.map { Answer() }.toMutableStateList() }
 
     // Parent Composable which overlaps the Whole Screen
@@ -72,7 +74,6 @@ fun FeedbackQuesScreen(
                 textToShow = "Submit",
                 enabled = isSubmitButtonEnabled
             ) {
-                isSubmitButtonEnabled = false
                 Log.e("ANS", "SessionFeedback: ${answersList.toList()}")
                 feedbackQues.questions.forEachIndexed { idx, ques ->
                     val medias = answersList[idx].mediaUri.map { uri ->
