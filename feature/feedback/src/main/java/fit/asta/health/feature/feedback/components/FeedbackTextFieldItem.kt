@@ -93,7 +93,7 @@ fun FeedbackTextFieldItem(
                 }
             }
 
-            if (question.ansType.isDetailed) {
+            if (question.ansType.isDetailed || question.type == FeedbackQuestionTypes.TextField.type) {
                 // This is the Outlined Text Field for the user to give their Feedbacks
                 AppOutlinedTextField(
                     modifier = Modifier
@@ -101,9 +101,13 @@ fun FeedbackTextFieldItem(
                         .semantics { contentDescription = "AppOutlinedTextField" },
                     value = answer.detailedAnswer,
                     appTextFieldType = AppTextFieldValidator(
-                        AppTextFieldType.Custom(
-                            question.ansType.min, question.ansType.max
-                        )
+                        if (question.ansType.isDetailed) {
+                            AppTextFieldType.Custom(
+                                question.ansType.min, question.ansType.max
+                            )
+                        } else {
+                            AppTextFieldType.Custom()
+                        }
                     ),
                     isValidText = {
                         if (question.type != FeedbackQuestionTypes.TextField.type) {
