@@ -2,7 +2,6 @@ package fit.asta.health.feature.testimonials.components
 
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -11,6 +10,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
+import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -28,7 +28,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 private fun DefaultPreview1() {
     AppTheme {
         AppSurface {
-            UserTestimonialUI(userTestimonial = "Testimonial Is given", userName = "Sagar")
+            UserTestimonialUI(userTestimonial = "Testimonial Is given")
         }
     }
 }
@@ -43,7 +43,6 @@ private fun DefaultPreview1() {
 @Composable
 fun UserTestimonialUI(
     userTestimonial: String,
-    userName: String,
     modifier: Modifier = Modifier,
 ) {
 
@@ -60,24 +59,14 @@ fun UserTestimonialUI(
         )
 
         // User's Testimonials
-        Column(
+        BodyTexts.Level3(
+            text = userTestimonial,
             modifier = Modifier
                 .weight(1f)
                 .fillMaxWidth()
-                .padding(vertical = AppTheme.spacing.level2)
-        ) {
-            BodyTexts.Level3(
-                modifier = Modifier.align(Alignment.CenterHorizontally),
-                text = userTestimonial,
-                textAlign = TextAlign.Center
-            )
-            BodyTexts.Level3(
-                modifier = Modifier.align(Alignment.End),
-                text = "~$userName",
-                textAlign = TextAlign.End
-            )
-        }
-
+                .padding(vertical = 16.dp),
+            textAlign = TextAlign.Center
+        )
 
         // Last Ending Quote
         TitleTexts.Level2(

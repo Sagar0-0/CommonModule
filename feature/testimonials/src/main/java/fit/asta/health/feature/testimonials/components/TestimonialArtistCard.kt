@@ -29,7 +29,7 @@ private fun DefaultPreview1() {
     AppTheme {
         AppSurface {
             TestimonialArtistCard(
-                imageUrl = "",
+                userId = "",
                 name = "Kristin Watson",
                 role = "CTO",
                 organization = "EkoHunt"
@@ -52,7 +52,7 @@ private fun DefaultPreview1() {
 @Composable
 fun TestimonialArtistCard(
     modifier: Modifier = Modifier,
-    imageUrl: String,
+    userId: String,
     name: String,
     role: String,
     organization: String
@@ -67,7 +67,7 @@ fun TestimonialArtistCard(
         // Network Image of the artist
         AppNetworkImage(
             modifier = Modifier.size(AppTheme.imageSize.level9),
-            model = getImgUrl(url = imageUrl),
+            model = getImgUrl(url = "/images/$userId/userProfile/$userId"),
             contentDescription = "Testimonials artist's Profile Pic"
         )
 

@@ -90,9 +90,9 @@ class TestimonialViewModel @Inject constructor(
 
                 testimonialData.value = testimonialData.value.copy(
                     user = testimonialData.value.user.copy(
+                        userId = authRepo.getUserId()!!,
                         name = authRepo.getUser()?.name!!
                     ),
-                    userId = authRepo.getUserId()!!,
                 )
 
                 _testimonialSubmitApiState.value = testimonialRepo

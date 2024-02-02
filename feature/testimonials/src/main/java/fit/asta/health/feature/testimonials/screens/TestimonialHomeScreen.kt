@@ -126,7 +126,6 @@ fun TestimonialHomeScreenControl(
     }
 }
 
-
 @Composable
 private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
 
@@ -155,15 +154,7 @@ private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
                                 TitleTexts.Level2(text = testimonial.title)
 
                                 Spacer(modifier = Modifier.height(16.dp))
-
                                 UserTestimonialUI(userTestimonial = testimonial.testimonial)
-
-                                TestimonialArtistCard(
-                                    imageUrl = testimonial.userId,
-                                    name = testimonial.user.name,
-                                    organization = testimonial.user.org,
-                                    role = testimonial.user.role
-                                )
                             }
 
                             // Testimonial Api which is of type image.
@@ -178,8 +169,6 @@ private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
                                 )
 
                                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-                                // This function makes the user testimonial in the "" Quotes
                                 UserTestimonialUI(userTestimonial = testimonial.testimonial)
                             }
 
@@ -199,17 +188,15 @@ private fun TestimonialListUI(testimonialList: LazyPagingItems<Testimonial>) {
                                         text = "MEDIA FILE NOT FOUND",
                                         color = AppTheme.colors.error
                                     )
-
-                                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-
-                                TestimonialArtistCard(
-                                    imageUrl = testimonial.userId,
-                                    name = testimonial.user.name,
-                                    organization = testimonial.user.org,
-                                    role = testimonial.user.role
-                                )
                             }
                         }
+
+                        TestimonialArtistCard(
+                            userId = testimonial.user.userId,
+                            name = testimonial.user.name,
+                            organization = testimonial.user.org,
+                            role = testimonial.user.role
+                        )
                     }
                 }
             }

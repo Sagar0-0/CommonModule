@@ -20,8 +20,6 @@ data class Testimonial(
     val title: String = "",
     @SerializedName("text")
     val testimonial: String = "",
-    @SerializedName("uid")
-    val userId: String = "",
     @SerializedName("user")
     val user: TestimonialUser = TestimonialUser(),
     @SerializedName("beforeImg")
@@ -34,6 +32,8 @@ data class Testimonial(
 
 @Parcelize
 data class TestimonialUser(
+    @SerializedName("uid")
+    val userId: String = "",
     @SerializedName("name")
     val name: String = "",
     @SerializedName("org")

@@ -36,6 +36,7 @@ import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
+import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
 import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.home.remote.model.ToolsHome
@@ -299,10 +300,18 @@ fun ToolsHomeContent(
                                 )
                                 .fillMaxSize()
                         ) {
+                            val testimonial = testimonials[page]
+
                             UserTestimonialUI(
                                 modifier = Modifier.padding(AppTheme.spacing.level2),
-                                userTestimonial = testimonials[page].testimonial,
-                                userName = testimonials[page].user.name
+                                userTestimonial = testimonial.testimonial
+                            )
+
+                            TestimonialArtistCard(
+                                userId = testimonial.user.userId,
+                                name = testimonial.user.name,
+                                organization = testimonial.user.org,
+                                role = testimonial.user.role
                             )
                         }
                     }
