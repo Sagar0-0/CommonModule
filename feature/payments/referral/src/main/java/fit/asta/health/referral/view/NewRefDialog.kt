@@ -42,7 +42,6 @@ private fun NewRefDialog() {
             // Content of the new referral dialog
             NewReferralDialogContent(
                 shareRefLink = {},
-                closeDialog = {},
                 refCode = "0000",
             )
         }
@@ -54,39 +53,38 @@ private fun NewRefDialog() {
 fun NewReferralDialogContent(
     modifier: Modifier = Modifier,
     refCode: String = "",
-    shareRefLink: (String) -> Unit = {},
-    closeDialog: () -> Unit = {},
+    shareRefLink: (String) -> Unit = {}
 ) {
     AppCard(modifier) {
-        // Header section with a close button
-        HeaderIconButton(closeDialog = closeDialog)
-
         // Main content of the dialog
         Column(
             modifier = Modifier
-                .padding(horizontal = AppTheme.spacing.level2)
-                .fillMaxWidth(), horizontalAlignment = Alignment.CenterHorizontally
+                .padding(
+                    horizontal = AppTheme.spacing.level2
+                )
+                .fillMaxWidth(),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             //Referral Image
             ReferralImage()
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             TitleTexts.Level4(text = "Refer Friends & Earn")
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
             BodyTexts.Level3(
                 text = "Ask your friends to Signup with your referral code. Once done, both you and your friends each earn Cashback.",
                 textAlign = TextAlign.Center,
                 color = AppTheme.colors.onSurface.copy(alpha = 0.5f)
             )
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             // Composable function for displaying the referral code section
             ReferralCodeSection(refCode = refCode)
+            Spacer(modifier = Modifier)
         }
 
         // Button for sharing the referral code
         ShareReferralButton(
             Modifier
                 .fillMaxWidth()
-                .height(AppTheme.spacing.level6), shareRefLink = { shareRefLink(refCode) }
+                .height(AppTheme.spacing.level6),
+            shareRefLink = { shareRefLink(refCode) }
         )
     }
 }

@@ -105,7 +105,10 @@ fun NewReferralDesign(
             )
 
             // Display referral code with a copy button
-            CopyReferralCodeCard(refCode = referralData.referralDetails.refCode)
+            CopyReferralCodeCard(
+                modifier = Modifier.padding(horizontal = AppTheme.spacing.level2),
+                refCode = referralData.referralDetails.refCode
+            )
 
             // Display invitation report
             InvitationReport(
@@ -199,7 +202,8 @@ fun ShareReferralButton(modifier: Modifier = Modifier, shareRefLink: () -> Unit 
  */
 @Composable
 fun CopyReferralCodeCard(
-    refCode: String = "",
+    modifier: Modifier = Modifier,
+    refCode: String = "qwertyuiop",
     colors: CardColors = CardDefaults.cardColors(),
 ) {
     // Access the current context
@@ -207,6 +211,7 @@ fun CopyReferralCodeCard(
 
     // Use AppCard to create a card containing the referral code and copy button
     AppCard(
+        modifier = modifier,
         colors = colors,
         onClick = { context.copyTextToClipboard(refCode) }
     ) {
@@ -218,7 +223,9 @@ fun CopyReferralCodeCard(
         ) {
             // Display the referral code
             HeadingTexts.Level1(
-                modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(end = AppTheme.spacing.level1),
                 text = refCode,
                 textAlign = TextAlign.Center,
                 color = AppTheme.colors.primary
