@@ -10,7 +10,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -32,9 +31,9 @@ import androidx.compose.material.icons.filled.SafetyDivider
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.WorkspacePremium
-import androidx.compose.material.icons.rounded.CameraEnhance
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
+import androidx.compose.material.icons.rounded.PhotoCamera
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
@@ -300,15 +299,16 @@ fun BasicProfileScreenUi(
 
 data class GenderData(
     val name: String,
+    val code: Int,
     val icon: ImageVector
 )
 
 @Composable
-fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
-    val genders = linkedMapOf(
-        GenderData("Male", Icons.Default.Male) to GenderCode.Male.gender,
-        GenderData("Female", Icons.Default.Female) to GenderCode.Female.gender,
-        GenderData("Others", Icons.Default.QuestionMark) to GenderCode.Other.gender
+fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
+    val genders = listOf(
+        GenderData("Male", GenderCode.Male.gender, Icons.Default.Male),
+        GenderData("Female", GenderCode.Female.gender, Icons.Default.Female),
+        GenderData("Others", GenderCode.Other.gender, Icons.Default.QuestionMark)
     )
 
     AppMultiChoiceSegmentedButtonRow(
@@ -322,9 +322,9 @@ fun ColumnScope.GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
                     verticalAlignment = Alignment.CenterVertically
                 ) {
-                    AppIcon(imageVector = entry.key.icon)
+                    AppIcon(imageVector = entry.icon)
                     TitleTexts.Level3(
-                        text = entry.key.name,
+                        text = entry.name,
                         maxLines = 1
                     )
                 }
@@ -373,6 +373,7 @@ fun ProfileImageUi(
                         end.linkTo(parent.end)
                     },
                 model = profileImageUri,
+                errorImage = painterResource(id = R.drawable.ic_person),
                 contentDescription = "Profile"
             )
         } else {
@@ -391,7 +392,7 @@ fun ProfileImageUi(
         }
 
         AppIconButton(
-            imageVector = Icons.Rounded.CameraEnhance,
+            imageVector = Icons.Rounded.PhotoCamera,
             modifier = Modifier
                 .size(AppTheme.buttonSize.level6)
                 .constrainAs(button) {
