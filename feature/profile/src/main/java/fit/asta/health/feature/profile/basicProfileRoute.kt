@@ -110,7 +110,9 @@ fun NavGraphBuilder.basicProfileRoute() {
                 )
             }
             composable(BASIC_PROFILE_PHONE_AUTH_SCREEN) {
-                AuthPhoneSignInScreen(loginState = linkAccountState) { event ->
+                AuthPhoneSignInScreen(
+                    loginState = linkAccountState
+                ) { event ->
                     when (event) {
                         PhoneAuthUiEvent.OnLoginFailed -> {
                             basicProfileViewModel.resetLinkAccountState()
