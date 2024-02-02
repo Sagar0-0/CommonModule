@@ -301,7 +301,8 @@ fun ToolsHomeContent(
                         ) {
                             UserTestimonialUI(
                                 modifier = Modifier.padding(AppTheme.spacing.level2),
-                                userTestimonial = testimonials[page].testimonial
+                                userTestimonial = testimonials[page].testimonial,
+                                userName = testimonials[page].user.name
                             )
                         }
                     }
