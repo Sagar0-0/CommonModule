@@ -11,7 +11,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -75,7 +75,7 @@ fun AppInternetErrorDialog(
 ) {
 
     // This variable says if the dialog is Visible or not
-    var isDialogVisible by remember { mutableStateOf(true) }
+    var isDialogVisible by rememberSaveable { mutableStateOf(true) }
 
     // We are animating the entry and Exit of the Dialog Bars
     AnimatedVisibility(isDialogVisible) {
