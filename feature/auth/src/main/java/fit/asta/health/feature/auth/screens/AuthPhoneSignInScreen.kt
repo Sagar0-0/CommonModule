@@ -4,8 +4,9 @@ import android.app.Activity
 import android.widget.Toast
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -138,50 +139,55 @@ fun AuthPhoneSignInScreen(
         isScreenLoading = loading
     ) { padding ->
 
-        Column(
+        Box(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxWidth()
+                .fillMaxSize()
                 .padding(horizontal = AppTheme.spacing.level2),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-            horizontalAlignment = Alignment.CenterHorizontally
+            contentAlignment = Alignment.Center
         ) {
+            Column(
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
 
-            // heading Text asking user to give his inputs
-            TitleTexts.Level2(text = textToShow)
+                // heading Text asking user to give his inputs
+                TitleTexts.Level2(text = textToShow)
 
-            // This Contains the Phone Number Input UI
-            Crossfade(
-                targetState = otpVisible,
-                label = ""
-            ) { otpScreen ->
-                if (!otpScreen) {
-                    AuthNumberInputUI(
-                        phoneNumber = phoneNumber,
-                        countryCode = countryCode,
-                        onPhoneNumberChange = {
-                            phoneNumber = it
-                        },
-                        onCountryCodeChange = {
-                            countryCode = it
-                        },
-                        onGenerateOtpClick = onSendOtp
-                    )
-                } else {
-                    AuthOtpVerificationUI(
-                        otp = otp,
-                        onOtpTextChange = {
-                            otp = it
-                        },
-                        onWrongNumberButtonClick = {
-                            otp = ""
-                            otpVisible = false
-                        },
-                        onVerifyOtpClick = onOtpSubmit,
-                        onResendOtpClick = onSendOtp
-                    )
+                // This Contains the Phone Number Input UI
+                Crossfade(
+                    targetState = otpVisible,
+                    label = ""
+                ) { otpScreen ->
+                    if (!otpScreen) {
+                        AuthNumberInputUI(
+                            phoneNumber = phoneNumber,
+                            countryCode = countryCode,
+                            onPhoneNumberChange = {
+                                phoneNumber = it
+                            },
+                            onCountryCodeChange = {
+                                countryCode = it
+                            },
+                            onGenerateOtpClick = onSendOtp
+                        )
+                    } else {
+                        AuthOtpVerificationUI(
+                            otp = otp,
+                            onOtpTextChange = {
+                                otp = it
+                            },
+                            onWrongNumberButtonClick = {
+                                otp = ""
+                                otpVisible = false
+                            },
+                            onVerifyOtpClick = onOtpSubmit,
+                            onResendOtpClick = onSendOtp
+                        )
+                    }
                 }
             }
         }
+
     }
 }

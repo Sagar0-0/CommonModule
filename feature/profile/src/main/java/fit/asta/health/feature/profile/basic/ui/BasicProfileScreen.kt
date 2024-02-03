@@ -2,6 +2,7 @@ package fit.asta.health.feature.profile.basic.ui
 
 import android.content.res.Configuration
 import android.net.Uri
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -309,7 +310,7 @@ fun ProfileImageUi(
             .fillMaxSize()
     ) {
         val (image, button) = createRefs()
-
+        Log.d("PRO", "ProfileImageUi: $profileImageUri ,, $googlePicUrl")
         if (profileImageUri == null && googlePicUrl == null) {
             AppLocalImage(
                 modifier = Modifier
@@ -348,6 +349,7 @@ fun ProfileImageUi(
                         end.linkTo(parent.end)
                     },
                 model = googlePicUrl,
+                errorImage = painterResource(id = R.drawable.ic_person),
                 contentDescription = "Profile"
             )
         }
