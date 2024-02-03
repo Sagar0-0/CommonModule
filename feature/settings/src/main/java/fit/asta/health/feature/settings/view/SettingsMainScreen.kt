@@ -17,8 +17,6 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
-import androidx.compose.material.icons.filled.Share
-import androidx.compose.material.icons.filled.ShoppingCart
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
@@ -121,17 +119,17 @@ fun SettingsHomeScreen(
                 title = stringResource(id = R.string.user_pref_support_us_cat_title)
             ) {
 
-                // Share
-                SettingsCardItem(
-                    icon = Icons.Default.Share,
-                    text = stringResource(R.string.user_pref_share_app_title)
-                ) { onUiEvent(SettingsUiEvent.SHARE) }
-
-                // Orders
-                SettingsCardItem(
-                    icon = Icons.Default.ShoppingCart,
-                    text = R.string.orders.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.NavigateToOrders) }
+//                // Share
+//                SettingsCardItem(
+//                    icon = Icons.Default.Share,
+//                    text = stringResource(R.string.user_pref_share_app_title)
+//                ) { onUiEvent(SettingsUiEvent.SHARE) }
+//
+//                // Orders
+//                SettingsCardItem(
+//                    icon = Icons.Default.ShoppingCart,
+//                    text = R.string.orders.toStringFromResId()
+//                ) { onUiEvent(SettingsUiEvent.NavigateToOrders) }
 
                 // Refer and Earn
                 SettingsCardItem(

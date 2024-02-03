@@ -49,11 +49,9 @@ import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
 import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.referral.view.NewReferralDialogContent
 import fit.asta.health.subscription.OffersLoadingCard
-import fit.asta.health.subscription.SubscriptionLoadingCard
 import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.subscription.view.OffersBanner
 import fit.asta.health.subscription.view.OffersUiData
-import fit.asta.health.subscription.view.SubscriptionTypesPager
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import java.util.Locale
 
@@ -125,41 +123,41 @@ fun ToolsHomeContent(
             }
         }
 
-        when (subscriptionCategoryState) {
-            is UiState.Loading -> {
-                item {
-                    SubscriptionLoadingCard(true)
-                }
-            }
-
-            is UiState.Success -> {
-                if (subscriptionCategoryState.data.userPlan == null) {
-                    subscriptionCategoryState.data.plans?.let { plans ->
-                        item {
-                            SubscriptionTypesPager(
-                                subscriptionPlans = plans
-                            ) {
-                                onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
-                            }
-                        }
-                    }
-                }
-//                    subscriptionCategoryState.data.userPlan?.let { plan ->
-//                        UserSubscribedPlanSection(userSubscribedPlan = plan) { catId, prodId ->
-//                            onEvent(ToolsHomeUiEvent.NavigateToFinalPayment(catId, prodId))
+//        when (subscriptionCategoryState) {
+//            is UiState.Loading -> {
+//                item {
+//                    SubscriptionLoadingCard(true)
+//                }
+//            }
+//
+//            is UiState.Success -> {
+//                if (subscriptionCategoryState.data.userPlan == null) {
+//                    subscriptionCategoryState.data.plans?.let { plans ->
+//                        item {
+//                            SubscriptionTypesPager(
+//                                subscriptionPlans = plans
+//                            ) {
+//                                onEvent(ToolsHomeUiEvent.NavigateToSubscriptionDurations(it))
+//                            }
 //                        }
 //                    }
-
-            }
-
-            else -> {
-                item {
-                    SubscriptionLoadingCard(isLoading = false) {
-                        onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
-                    }
-                }
-            }
-        }
+//                }
+////                    subscriptionCategoryState.data.userPlan?.let { plan ->
+////                        UserSubscribedPlanSection(userSubscribedPlan = plan) { catId, prodId ->
+////                            onEvent(ToolsHomeUiEvent.NavigateToFinalPayment(catId, prodId))
+////                        }
+////                    }
+//
+//            }
+//
+//            else -> {
+//                item {
+//                    SubscriptionLoadingCard(isLoading = false) {
+//                        onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
+//                    }
+//                }
+//            }
+//        }
 
         toolsHome.tools?.let { tools ->
             // My Tools text and View All button

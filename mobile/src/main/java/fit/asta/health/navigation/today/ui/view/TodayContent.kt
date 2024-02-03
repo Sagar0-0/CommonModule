@@ -188,7 +188,7 @@ fun OtherDaysTabContent() {
         contentAlignment = Alignment.Center
     ) {
         TitleTexts.Level1(
-            text = "Content Needs to be added."
+            text = "Coming soon..."
         )
     }
 }
