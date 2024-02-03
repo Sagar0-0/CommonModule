@@ -1,7 +1,5 @@
 package fit.asta.health.designsystem.molecular.pager
 
-import androidx.compose.animation.core.FastOutSlowInEasing
-import androidx.compose.animation.core.tween
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
@@ -16,7 +14,6 @@ import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
 import kotlinx.coroutines.delay
-import kotlinx.coroutines.launch
 
 /**
  * The [AppHorizontalPager] composable function is a custom component in Jetpack Compose, a declarative UI
@@ -62,19 +59,13 @@ fun AppHorizontalPager(
     if (enableAutoAnimation) {
 
         LaunchedEffect(key1 = pagerState.currentPage) {
-            launch {
-                delay(animationDelay)
-                with(pagerState) {
-                    val nextPage = if (currentPage < pageCount - 1) currentPage + 1 else 0
+            delay(animationDelay)
+            with(pagerState) {
+                val nextPage = if (currentPage < pageCount - 1) currentPage + 1 else 0
 
-                    animateScrollToPage(
-                        page = nextPage,
-                        animationSpec = tween(
-                            durationMillis = 500,
-                            easing = FastOutSlowInEasing
-                        )
-                    )
-                }
+                scrollToPage(
+                    page = nextPage
+                )
             }
         }
     }
