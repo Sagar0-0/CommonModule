@@ -16,6 +16,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.onboarding.model.OnboardingData
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -46,80 +47,85 @@ fun AuthScreenControl(
         isScreenLoading = loginState is UiState.Loading
     ) { padding ->
         // Parent Composable
-        Box(
+        Column(
             modifier = Modifier
                 .padding(padding)
                 .fillMaxSize()
-                .padding(AppTheme.spacing.level2)
+                .padding(AppTheme.spacing.level2),
+            horizontalAlignment = Alignment.CenterHorizontally,
+            verticalArrangement = Arrangement.SpaceBetween
         ) {
-            Column(
-                modifier = Modifier.fillMaxSize(),
-                horizontalAlignment = Alignment.CenterHorizontally,
-                verticalArrangement = Arrangement.SpaceBetween
+
+            // On Boarding UI
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .padding(bottom = AppTheme.spacing.level2)
             ) {
 
-                // On Boarding UI
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .padding(bottom = AppTheme.spacing.level2)
-                ) {
-
-                    // This handles and shows UI of On Boarding Data Pager
-                    AuthOnboardingControl(
-                        onboardingState = onboardingState,
-                        onUiEvent = onUiEvent
-                    )
-                }
-
-                Column(
-                    verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-
-                    // Login or sign up divider
-                    AuthStringDivider(textToShow = "Login or Sign up")
-
-                    // Sign in with Phone Button
-                    AppOutlinedButton(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(AppTheme.buttonSize.level6),
-                        onClick = {
-                            onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
-                        }
-                    ) {
-                        Icon(
-                            imageVector = Icons.Default.Phone,
-                            contentDescription = null,
-                            modifier = Modifier.padding(end = AppTheme.spacing.level1),
-                        )
-                        // Button Text
-                        CaptionTexts.Level1(
-                            text = "Sign in with Phone",
-                            color = AppTheme.colors.onSurface
-                        )
-                    }
-
-                    // Google Sign In Button
-                    GoogleSignIn(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .height(AppTheme.buttonSize.level6),
-                        textId = R.string.sign_in_with_google
-                    ) {
-                        onUiEvent(AuthUiEvent.SignInWithCredentials(it))
-                    }
-
-                    // Terms and Policy composable function
-                    AuthTermAndPrivacyUI(
-                        modifier = Modifier.fillMaxWidth(),
-                        onClick = { url ->
-                            onUiEvent(AuthUiEvent.NavigateToWebView(url = url))
-                        }
-                    )
-                }
+                // This handles and shows UI of On Boarding Data Pager
+                AuthOnboardingControl(
+                    onboardingState = onboardingState,
+                    onUiEvent = onUiEvent
+                )
             }
+
+            Column(
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+
+                // Login or sign up divider
+                AuthStringDivider(textToShow = "Login or Sign up")
+
+                // Sign in with Phone Button
+                AppOutlinedButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AppTheme.buttonSize.level6),
+                    onClick = {
+                        onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
+                    }
+                ) {
+                    Icon(
+                        imageVector = Icons.Default.Phone,
+                        contentDescription = null,
+                        modifier = Modifier.padding(end = AppTheme.spacing.level1),
+                    )
+                    // Button Text
+                    CaptionTexts.Level1(
+                        text = "Sign in with Phone",
+                        color = AppTheme.colors.onSurface
+                    )
+                }
+
+                // Google Sign In Button
+                GoogleSignIn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AppTheme.buttonSize.level6),
+                    textId = R.string.sign_in_with_google
+                ) {
+                    onUiEvent(AuthUiEvent.SignInWithCredentials(it))
+                }
+
+                // Terms and Policy composable function
+                AuthTermAndPrivacyUI(
+                    modifier = Modifier.fillMaxWidth(),
+                    onClick = { url ->
+                        onUiEvent(AuthUiEvent.NavigateToWebView(url = url))
+                    }
+                )
+            }
+        }
+
+        AppUiStateHandler(
+            uiState = loginState,
+            onErrorRetry = {
+                onUiEvent(AuthUiEvent.OnLoginFailed)
+            }
+        ) {
+
         }
     }
 }
