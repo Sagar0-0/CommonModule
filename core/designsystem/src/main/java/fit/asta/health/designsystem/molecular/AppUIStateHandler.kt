@@ -19,6 +19,7 @@ fun <T> AppUiStateHandler(
     isScreenLoading: Boolean = true,
     onIdle: @Composable () -> Unit = {},
     onLoading: (@Composable () -> Unit)? = null,
+    errorMessageUi: (@Composable () -> Unit)? = null,
     onErrorMessage: () -> Unit = {},
     onErrorRetry: () -> Unit = {},
     onSuccess: @Composable (data: T) -> Unit,
