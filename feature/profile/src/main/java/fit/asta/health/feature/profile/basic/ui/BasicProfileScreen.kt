@@ -226,36 +226,36 @@ fun BasicProfileScreenUi(
                     )
                 )
             }
-        }
 
-        AppUiStateHandler(
-            uiState = createBasicProfileState,
-            onErrorRetry = {
-                onEvent(BasicProfileEvent.ResetCreateProfileState)
-                onEvent(
-                    BasicProfileEvent.CreateBasicProfile(
-                        BasicProfileDTO(
-                            uid = user.uid,
-                            gmailPic = user.photoUrl,
-                            name = name,
-                            gen = genderCode,
-                            mail = email,
-                            ph = phone,
-                            refCode = referralCode
+            AppUiStateHandler(
+                uiState = createBasicProfileState,
+                onErrorRetry = {
+                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                    onEvent(
+                        BasicProfileEvent.CreateBasicProfile(
+                            BasicProfileDTO(
+                                uid = user.uid,
+                                gmailPic = user.photoUrl,
+                                name = name,
+                                gen = genderCode,
+                                mail = email,
+                                ph = phone,
+                                refCode = referralCode
+                            )
                         )
                     )
-                )
-            },
-            onErrorMessage = {
-                onEvent(BasicProfileEvent.ResetCreateProfileState)
-            }
-        ) {
-            LaunchedEffect(Unit) {
-                onEvent(BasicProfileEvent.NavigateToHome)
+                },
+                onErrorMessage = {
+                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                }
+            ) {
+                LaunchedEffect(Unit) {
+                    onEvent(BasicProfileEvent.NavigateToHome)
+                }
             }
         }
-    }
 
+    }
 }
 
 data class GenderData(
@@ -364,6 +364,7 @@ fun ProfileImageUi(
         )
     }
 }
+
 
 @Composable
 fun UsernameUi(name: String, onValueChange: (String) -> Unit) {
@@ -597,5 +598,10 @@ fun CreateButton(
     text: String = "",
     onClick: () -> Unit = {},
 ) {
-    AppFilledButton(enabled = enabled, textToShow = text, modifier = modifier, onClick = onClick)
+    AppFilledButton(
+        enabled = enabled,
+        textToShow = text,
+        modifier = modifier,
+        onClick = onClick
+    )
 }
