@@ -14,7 +14,6 @@ import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -72,7 +71,6 @@ import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import androidx.work.ExistingWorkPolicy
 import androidx.work.WorkManager
-import coil.compose.rememberAsyncImagePainter
 import fit.asta.health.R
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.MainTopBarActions
@@ -89,6 +87,7 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -317,12 +316,11 @@ private fun RowScope.NewMainTopBarActions(
             ) { onClick(MainTopBarActions.Schedule) }
             if (profileImageUri != null) {
                 AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
-                    Image(
+                    AppNetworkImage(
                         modifier = Modifier.clip(CircleShape),
-                        painter = rememberAsyncImagePainter(
-                            model = profileImageUri,
-                            placeholder = painterResource(id = R.drawable.ic_person)
-                        ), contentDescription = "Profile"
+                        model = profileImageUri,
+                        contentDescription = "Profile",
+                        errorImage = painterResource(id = fit.asta.health.resources.drawables.R.drawable.ic_person)
                     )
                 }
             }
