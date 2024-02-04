@@ -89,12 +89,12 @@ fun ToolsHomeContent(
                             )
                         }
                     ) { categoryId, productId ->
-                        onEvent(
-                            ToolsHomeUiEvent.NavigateToFinalPayment(
-                                categoryId = categoryId,
-                                productId = productId
-                            )
-                        )
+//                        onEvent(
+//                            ToolsHomeUiEvent.NavigateToFinalPayment(
+//                                categoryId = categoryId,
+//                                productId = productId
+//                            )
+//                        )
                     }
                 }
 
