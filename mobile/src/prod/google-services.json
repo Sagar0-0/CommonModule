@@ -1,21 +1,20 @@
 {
   "project_info": {
-    "project_number": "385157150874",
-    "firebase_url": "https://asta-health.firebaseio.com",
-    "project_id": "asta-health",
-    "storage_bucket": "asta-health.appspot.com"
+    "project_number": "157725167697",
+    "project_id": "asta-health-pro",
+    "storage_bucket": "asta-health-pro.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:385157150874:android:05a5032bae69a931984723",
+        "mobilesdk_app_id": "1:157725167697:android:aa43a8b01a121f9882e870",
         "android_client_info": {
           "package_name": "fit.asta.health"
         }
       },
       "oauth_client": [
         {
-          "client_id": "385157150874-437gi9qd6lsq52vl2vmm7rv2636hf30d.apps.googleusercontent.com",
+          "client_id": "157725167697-90oni44vbkcoeccb1a85bkdld7bioolr.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
             "package_name": "fit.asta.health",
@@ -23,36 +22,20 @@
           }
         },
         {
-          "client_id": "385157150874-tg61f4qh135849ajnr1ajusaovohu5ui.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fit.asta.health",
-            "certificate_hash": "88a53a3888a7ce507dbf2e0d391466c308d8f674"
-          }
-        },
-        {
-          "client_id": "385157150874-van577mromfcnciof6paudtm3j80hahp.apps.googleusercontent.com",
-          "client_type": 1,
-          "android_info": {
-            "package_name": "fit.asta.health",
-            "certificate_hash": "c90e9e4ed1c389c20440ccb5b7c450f8b2568110"
-          }
-        },
-        {
-          "client_id": "385157150874-kjh2ulf5lom9hgisdd4o3mm7k2r7bane.apps.googleusercontent.com",
+          "client_id": "157725167697-ka89lmf1k8uidk228ahm5rmrtsh7tj1m.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBZdJA2vC4x_4N9imG7V-bqFJsPdyLfQ9c"
+          "current_key": "AIzaSyB1Qef2iduqaD6uGJ2Yt6_bGH2L5H3SgKA"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "385157150874-kjh2ulf5lom9hgisdd4o3mm7k2r7bane.apps.googleusercontent.com",
+              "client_id": "157725167697-ka89lmf1k8uidk228ahm5rmrtsh7tj1m.apps.googleusercontent.com",
               "client_type": 3
             }
           ]
