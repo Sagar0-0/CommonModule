@@ -1,20 +1,22 @@
 package fit.asta.health.feature.sunlight.viewmodel
 
-import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.auth.di.UID
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.sunlight.model.SunlightToolRepo
-import fit.asta.health.data.sunlight.model.network.response.ResponseData
+import fit.asta.health.data.sunlight.model.network.response.SunlightToolData
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.sunlight.view.home.SunlightHomeScreenEvents
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -24,12 +26,14 @@ import javax.inject.Inject
 class SunlightViewModel
 @Inject constructor(
     private val sunlightToolRepo: SunlightToolRepo,
-    private val authRepo: AuthRepo
+    private val prefManager: PrefManager,
+    @UID private val uid: String
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow<SunlightState>(SunlightState.Loading)
-    val state = mutableState.asStateFlow()
-    private val _apiState = mutableStateOf<ResponseData.SunlightToolData?>(null)
-    val apiState: State<ResponseData.SunlightToolData?> = _apiState
+
+    private val _sunlightToolDataState =
+        MutableStateFlow<UiState<SunlightToolData>>(UiState.Loading)
+    val sunlightToolDataState = _sunlightToolDataState.asStateFlow()
+
     val startState = mutableStateOf(false)
 
     init {
@@ -38,20 +42,16 @@ class SunlightViewModel
 
     private fun loadSunlightToolData() {
         viewModelScope.launch {
-
-            authRepo.getUser()?.let {
-                sunlightToolRepo.getSunlightTool(
-                    userId = "62fcd8c098eb9d5ed038b563",
-                    latitude = "28.6353",
-                    longitude = "77.2250",
-                    location = "bangalore",
+            prefManager.address.collectLatest {
+                _sunlightToolDataState.value = sunlightToolRepo.getSunlightTool(
+                    userId = uid,
+                    latitude = it.lat.toString(),
+                    longitude = it.long.toString(),
+                    location = it.currentAddress,
                     date = getCurrentDate()
-                ).catch { exception ->
-                    mutableState.value = SunlightState.Error(exception)
-                }.collect {
-                    mutableState.value = SunlightState.Success(it)
-                }
+                ).toUiState()
             }
+
         }
     }
 
