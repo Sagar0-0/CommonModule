@@ -161,7 +161,11 @@ fun HomeScreensLayout(
                 )
                 Row(
                     modifier = Modifier
+                        .clickable {
+                            context.sendBugReportMessage()
+                        }
                         .padding(horizontal = AppTheme.spacing.level2)
+                        .padding(vertical = AppTheme.spacing.level1)
                         .fillMaxWidth(),
                     horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
                     verticalAlignment = Alignment.CenterVertically
@@ -170,13 +174,9 @@ fun HomeScreensLayout(
                         modifier = Modifier.weight(1f),
                         text = "This is a beta release. Help us improve this app by reporting the bugs you find."
                     )
-                    AppIconButton(
-                        onClick = {
-                            context.sendBugReportMessage()
-                        }
-                    ) {
-                        AppIcon(imageVector = Icons.Default.KeyboardArrowRight)
-                    }
+                    AppIcon(
+                        imageVector = Icons.Default.KeyboardArrowRight
+                    )
                 }
             }
 
