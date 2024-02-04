@@ -1,25 +1,43 @@
 package fit.asta.health.feature.sunlight.view.home
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.data.sunlight.model.network.response.ResponseData.SunlightToolData
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.data.sunlight.model.network.response.SunlightToolData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.sunlight.nav.SunlightScreen
-import fit.asta.health.feature.sunlight.view.components.*
+import fit.asta.health.feature.sunlight.view.components.SunlightBottomSheetGridView
+import fit.asta.health.feature.sunlight.view.components.TotalVitaminDCard
+import fit.asta.health.feature.sunlight.view.components.UpcomingSlotsCard
 import fit.asta.health.feature.sunlight.viewmodel.SunlightViewModel
 import fit.asta.health.resources.drawables.R
 import fit.asta.health.ui.common.PracticeGridView
@@ -40,7 +58,8 @@ fun SunlightHomeScreen(navController: NavController, homeViewModel: SunlightView
             )
         }, content = {
             SunlightBottomSheet(paddingValues = it, navController = navController, homeViewModel)
-        })
+        }
+    )
 }
 
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterial3Api::class)
@@ -51,23 +70,23 @@ fun SunlightBottomSheet(
     homeViewModel: SunlightViewModel = hiltViewModel()
 ) {
     var visible by remember { mutableStateOf(false) }
-    val apiState = homeViewModel.apiState.value
     val scaffoldState = rememberBottomSheetScaffoldState()
+    val sunlightToolDataState =
+        homeViewModel.sunlightToolDataState.collectAsStateWithLifecycle().value
 
     BottomSheetScaffold(
         sheetContent = {
             SunlightPracticeGridView(
                 navController = navController,
-                homeViewModel,
-                visible,
-                apiState
+                homeViewModel = homeViewModel,
+                sunlightToolData = (sunlightToolDataState as? UiState.Success)?.data,
             )
         },
         sheetPeekHeight = 40.dp,
         scaffoldState = scaffoldState
     ) {
         visible = !scaffoldState.bottomSheetState.hasPartiallyExpandedState
-        SunlightHomeScreenLayout(paddingValues, apiState)
+        SunlightHomeScreenLayout(paddingValues, (sunlightToolDataState as? UiState.Success)?.data)
     }
 }
 
@@ -76,8 +95,7 @@ fun SunlightBottomSheet(
 fun SunlightPracticeGridView(
     navController: NavController,
     homeViewModel: SunlightViewModel,
-    visible: Boolean,
-    apiState: SunlightToolData?
+    sunlightToolData: SunlightToolData?
 ) {
     val selectedSunScreen by homeViewModel.seletedSpfSelection.collectAsState("")
     val selectedSkinExposure by homeViewModel.selectedSkinExposure.collectAsState("")
@@ -85,26 +103,26 @@ fun SunlightPracticeGridView(
     val selectedAge by homeViewModel.selectedAgeSelection.collectAsState("")
     val startState = homeViewModel.startState
 
-    if (apiState != null) {
+    if (sunlightToolData != null) {
         val cardList = listOf(
             PracticeGridView(
                 onClick = { navController.navigate(route = SunlightScreen.SPFSelectionScreen.route) },
-                cardTitle = apiState.sunlightTool.prc[0].ttl,
+                cardTitle = sunlightToolData.sunlightTool.prc[0].ttl,
                 cardValue = selectedSunScreen.let {
-                    it.ifBlank { apiState.sunlightTool.prc[0].values[0].name }
+                    it.ifBlank { sunlightToolData.sunlightTool.prc[0].values[0].name }
                 },
                 cardImg = R.drawable.sunscreen_icon
             ),
             PracticeGridView(
                 onClick = { navController.navigate(route = SunlightScreen.SkinExposureScreen.route) },
-                cardTitle = apiState.sunlightTool.prc[1].ttl,
-                cardValue = selectedSkinExposure.let { it.ifBlank { apiState.sunlightTool.prc[1].values[0].name } },
+                cardTitle = sunlightToolData.sunlightTool.prc[1].ttl,
+                cardValue = selectedSkinExposure.let { it.ifBlank { sunlightToolData.sunlightTool.prc[1].values[0].name } },
                 cardImg = R.drawable.skinexposure_icon
             ),
             PracticeGridView(
                 onClick = { navController.navigate(route = SunlightScreen.SkinColorScreen.route) },
-                cardTitle = apiState.sunlightTool.prc[2].ttl,
-                cardValue = selectedSkinColor.let { it.ifBlank { apiState.sunlightTool.prc[2].values[0].name } },
+                cardTitle = sunlightToolData.sunlightTool.prc[2].ttl,
+                cardValue = selectedSkinColor.let { it.ifBlank { sunlightToolData.sunlightTool.prc[2].values[0].name } },
                 cardImg = R.drawable.skincolor_icon
             ),
             PracticeGridView(
@@ -115,8 +133,8 @@ fun SunlightPracticeGridView(
             ),
             PracticeGridView(
                 onClick = { navController.navigate(route = SunlightScreen.AgeSelectionScreen.route) },
-                cardTitle = apiState.sunlightTool.prc[5].ttl,
-                cardValue = selectedAge.let { it.ifBlank { apiState.sunlightTool.prc[5].values[0].name } },
+                cardTitle = sunlightToolData.sunlightTool.prc[5].ttl,
+                cardValue = selectedAge.let { it.ifBlank { sunlightToolData.sunlightTool.prc[5].values[0].name } },
                 cardImg = R.drawable.age_icon
             ),
         )

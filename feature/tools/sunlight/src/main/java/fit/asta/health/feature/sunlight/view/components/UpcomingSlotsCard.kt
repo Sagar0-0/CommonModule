@@ -20,7 +20,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.data.sunlight.model.network.response.ResponseData
+import fit.asta.health.data.sunlight.model.network.response.SunlightToolData
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -29,7 +29,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
 
 @Composable
-fun UpcomingSlotsCard(apiState: ResponseData.SunlightToolData) {
+fun UpcomingSlotsCard(apiState: SunlightToolData) {
 
     AppCard(
         modifier = Modifier

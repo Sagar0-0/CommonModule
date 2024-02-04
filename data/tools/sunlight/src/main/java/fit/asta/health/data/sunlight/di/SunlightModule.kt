@@ -8,7 +8,7 @@ import fit.asta.health.data.sunlight.model.SunlightToolDataMapper
 import fit.asta.health.data.sunlight.model.SunlightToolRepo
 import fit.asta.health.data.sunlight.model.SunlightToolRepoImpl
 import fit.asta.health.data.sunlight.model.api.SunlightApi
-import fit.asta.health.data.sunlight.model.api.SunlightRestApi
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -18,9 +18,8 @@ object SunlightModule {
 
     @Singleton
     @Provides
-    fun provideSunlightApi(client: OkHttpClient): SunlightApi {
-        return SunlightRestApi(client)
-    }
+    fun provideSunlightApi(client: OkHttpClient) =
+        NetworkUtil.getRetrofit(client).create(SunlightApi::class.java)
 
     @Singleton
     @Provides

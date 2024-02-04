@@ -1,12 +1,14 @@
 package fit.asta.health.data.sunlight.model
 
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.sunlight.model.api.SunlightApi
-import fit.asta.health.data.sunlight.model.network.response.ResponseData
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+import fit.asta.health.data.sunlight.model.network.response.SunlightToolData
+import javax.inject.Inject
 
 
-class SunlightToolRepoImpl(
+class SunlightToolRepoImpl
+@Inject constructor(
     private val remoteApi: SunlightApi,
 ) : SunlightToolRepo {
 
@@ -16,16 +18,14 @@ class SunlightToolRepoImpl(
         longitude: String,
         date: String,
         location: String
-    ): Flow<ResponseData.SunlightToolData> {
-        return flow {
-            emit(
-                remoteApi.getSunlightTool(
-                    userId = userId,
-                    latitude = latitude,
-                    longitude = longitude,
-                    date = date,
-                    location = location
-                ).data
+    ): ResponseState<SunlightToolData> {
+        return getApiResponseState {
+            remoteApi.getSunlightTool(
+                userId = userId,
+                latitude = latitude,
+                longitude = longitude,
+                date = date,
+                location = location
             )
         }
     }
