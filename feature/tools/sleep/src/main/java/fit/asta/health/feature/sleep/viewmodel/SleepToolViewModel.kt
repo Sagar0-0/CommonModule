@@ -3,6 +3,7 @@ package fit.asta.health.feature.sleep.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.sleep.model.SleepLocalRepo
 import fit.asta.health.data.sleep.model.SleepRepository
@@ -29,19 +30,10 @@ import javax.inject.Inject
 class SleepToolViewModel @Inject constructor(
     private val remoteRepository: SleepRepository,
     private val localRepository: SleepLocalRepo,
-//    @UID private val uid: UserId
+    @UID private val uid: String
 ) : ViewModel() {
 
-    // This contains the user ID for the Api Calls
-    private var userIdFromHomeScreen = ""
     private var toolDataID = ""
-
-    /**
-     * This function sets the user ID inside the viewModel
-     */
-    fun setUserId(newUserId: String) {
-        userIdFromHomeScreen = newUserId
-    }
 
     /**
      * This variable keeps the user UI Default values which we get from the get Request to the
@@ -77,12 +69,12 @@ class SleepToolViewModel @Inject constructor(
 
         viewModelScope.launch {
 
-                // Local Date time
-                val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
+            // Local Date time
+            val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
 
             // Fetching the data from the server
             val response = remoteRepository.getUserDefaultSettings(
-                userId = userIdFromHomeScreen,
+                userId = uid,
                 date = currentDate
             )
 
@@ -144,7 +136,7 @@ class SleepToolViewModel @Inject constructor(
                     id = toolDataID,
                     prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc!!,
                     type = 1,
-                    uid = userIdFromHomeScreen
+                    uid = uid
                 )
             )
 
@@ -190,7 +182,7 @@ class SleepToolViewModel @Inject constructor(
         viewModelScope.launch {
             // Fetching the Data from the server
             val response = remoteRepository.getPropertyData(
-                userId = userIdFromHomeScreen,
+                userId = uid,
                 property = "sd"
             )
             _sleepDisturbancesData.value = when (response) {
@@ -235,7 +227,7 @@ class SleepToolViewModel @Inject constructor(
 
             // Fetching the Data from the server
             val response = remoteRepository.getPropertyData(
-                userId = userIdFromHomeScreen,
+                userId = uid,
                 property = "sf"
             )
             _sleepFactorsData.value = when (response) {
@@ -357,69 +349,69 @@ class SleepToolViewModel @Inject constructor(
         _userValueUpdate.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-                // Checking if the Timer Status Data is null or not
-                if (_timerStatus.value.data.isNullOrEmpty()) {
+            // Checking if the Timer Status Data is null or not
+            if (_timerStatus.value.data.isNullOrEmpty()) {
 
-                    // Inserting the sleep Data in the Local Storage
-                    localRepository.insert(
-                        data = SleepData(
-                            key = 0,
-                            startTime = LocalDateTime.now()
+                // Inserting the sleep Data in the Local Storage
+                localRepository.insert(
+                    data = SleepData(
+                        key = 0,
+                        startTime = LocalDateTime.now()
+                    )
+                )
+
+                // Fetching the Local Data
+                val data = localRepository.getData()
+                _timerStatus.value = SleepNetworkCall.Success(data = data)
+                _userValueUpdate.value = SleepNetworkCall.Success(data = Unit)
+            } else {
+
+                // Current Time and Start Time
+                val currentTime = LocalDateTime.now()
+                val startTime = _timerStatus.value.data!!.first().startTime
+
+                // Calculating the Hours for which the user was sleeping
+                val hours = startTime.until(currentTime, ChronoUnit.MINUTES) / 60f
+
+                // Posting the Reading to the Server
+                val response = remoteRepository.postUserReading(
+                    userId = uid,
+                    sleepPostRequestBody = SleepPostRequestBody(
+                        id = "",
+                        uid = uid,
+                        dur = hours.toDouble(),
+                        reg = 1.0,
+                        slp = Slp(
+                            deep = 1,
+                            nor = 1,
+                            dly = 1,
+                            dis = 1
                         )
                     )
+                )
 
-                    // Fetching the Local Data
-                    val data = localRepository.getData()
-                    _timerStatus.value = SleepNetworkCall.Success(data = data)
-                    _userValueUpdate.value = SleepNetworkCall.Success(data = Unit)
-                } else {
-
-                    // Current Time and Start Time
-                    val currentTime = LocalDateTime.now()
-                    val startTime = _timerStatus.value.data!!.first().startTime
-
-                    // Calculating the Hours for which the user was sleeping
-                    val hours = startTime.until(currentTime, ChronoUnit.MINUTES) / 60f
-
-                    // Posting the Reading to the Server
-                    val response = remoteRepository.postUserReading(
-                        userId = userIdFromHomeScreen,
-                        sleepPostRequestBody = SleepPostRequestBody(
-                            id = "",
-                            uid = userIdFromHomeScreen,
-                            dur = hours.toDouble(),
-                            reg = 1.0,
-                            slp = Slp(
-                                deep = 1,
-                                nor = 1,
-                                dly = 1,
-                                dis = 1
-                            )
-                        )
-                    )
-
-                    _userValueUpdate.value = when (response) {
-                        is ResponseState.Success -> {
-                            localRepository.deleteData()
-                            SleepNetworkCall.Success(data = Unit)
-                        }
-
-                        is ResponseState.ErrorMessage -> {
-                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
-                        }
-
-                        is ResponseState.ErrorRetry -> {
-                            SleepNetworkCall.Failure(message = "Unsuccessful operation")
-                        }
-
-                        is ResponseState.NoInternet -> {
-                            SleepNetworkCall.Failure(message = "No Internet Present")
-                        }
+                _userValueUpdate.value = when (response) {
+                    is ResponseState.Success -> {
+                        localRepository.deleteData()
+                        SleepNetworkCall.Success(data = Unit)
                     }
-                    // Fetching the Local Data
-                    val data = localRepository.getData()
-                    _timerStatus.value = SleepNetworkCall.Success(data = data)
+
+                    is ResponseState.ErrorMessage -> {
+                        SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                    }
+
+                    is ResponseState.ErrorRetry -> {
+                        SleepNetworkCall.Failure(message = "Unsuccessful operation")
+                    }
+
+                    is ResponseState.NoInternet -> {
+                        SleepNetworkCall.Failure(message = "No Internet Present")
+                    }
                 }
+                // Fetching the Local Data
+                val data = localRepository.getData()
+                _timerStatus.value = SleepNetworkCall.Success(data = data)
+            }
         }
     }
 }
