@@ -1,7 +1,7 @@
 package fit.asta.health.data.sleep.model
 
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.sleep.model.network.common.ToolData
 import fit.asta.health.data.sleep.model.network.disturbance.SleepDisturbanceResponse
 import fit.asta.health.data.sleep.model.network.get.SleepToolGetResponse
@@ -13,7 +13,7 @@ interface SleepRepository {
 
     suspend fun putUserData(
         toolData: ToolData
-    ): ResponseState<PutResponse>
+    ): ResponseState<SubmitProfileResponse>
 
     suspend fun getUserDefaultSettings(
         userId: String,
@@ -23,7 +23,7 @@ interface SleepRepository {
     suspend fun postUserReading(
         userId: String,
         sleepPostRequestBody: SleepPostRequestBody
-    ): ResponseState<PutResponse>
+    ): ResponseState<SubmitProfileResponse>
 
     suspend fun getPropertyData(
         userId: String,

@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile
+package fit.asta.health.feature.profile.basic
 
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue

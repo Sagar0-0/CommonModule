@@ -315,7 +315,11 @@ private fun RowScope.NewMainTopBarActions(
                 imageVector = Icons.Default.Alarm
             ) { onClick(MainTopBarActions.Schedule) }
             if (profileImageUri != null) {
-                AppIconButton(onClick = { onClick(MainTopBarActions.Profile) }) {
+                AppIconButton(
+                    onClick = {
+                        onClick(MainTopBarActions.Profile)
+                    }
+                ) {
                     AppNetworkImage(
                         modifier = Modifier.clip(CircleShape),
                         model = profileImageUri,

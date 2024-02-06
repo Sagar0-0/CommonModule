@@ -54,7 +54,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.model.domain.User
-import fit.asta.health.common.utils.PutResponse
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.toStringFromResId
@@ -114,7 +114,7 @@ fun BasicProfilePreview() {
 fun BasicProfileScreenUi(
     user: User = User(),
     checkReferralCodeState: UiState<CheckReferralDTO>,
-    createBasicProfileState: UiState<PutResponse>,
+    createBasicProfileState: UiState<SubmitProfileResponse>,
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
 ) {

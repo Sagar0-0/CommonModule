@@ -47,6 +47,7 @@ fun AppHorizontalPager(
     pagerState: PagerState,
     modifier: Modifier = Modifier,
     enableAutoAnimation: Boolean = false,
+    enableCarouselSizeTransition: Boolean = true,
     animationDelay: Long = 3500L,
     contentPadding: PaddingValues = PaddingValues(AppTheme.spacing.noSpacing),
     pageSpacing: Dp = AppTheme.spacing.noSpacing,
@@ -79,7 +80,10 @@ fun AppHorizontalPager(
         userScrollEnabled = userScrollEnabled
     ) { page ->
         Box(
-            modifier = modifier.carouselTransition(page, pagerState)
+            modifier = if (enableCarouselSizeTransition) modifier.carouselTransition(
+                page,
+                pagerState
+            ) else modifier
         ) {
             content(page)
         }

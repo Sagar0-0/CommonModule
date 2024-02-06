@@ -38,7 +38,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
-import fit.asta.health.feature.profile.BASIC_PROFILE_GRAPH_ROUTE
+import fit.asta.health.feature.profile.basic.BASIC_PROFILE_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel

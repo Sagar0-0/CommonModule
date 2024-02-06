@@ -316,7 +316,7 @@ fun LifeStyleCreateBottomSheetLayout(
 ) {
 
     val cardIndex = sheetLayout.cardIndex
-    val state by viewModel.stateHp.collectAsStateWithLifecycle()
+    val state by viewModel.healthPropState.collectAsStateWithLifecycle()
 
     when (state) {
         is UiState.Loading -> AppDotTypingAnimation()

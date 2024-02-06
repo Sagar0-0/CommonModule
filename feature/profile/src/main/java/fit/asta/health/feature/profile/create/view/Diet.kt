@@ -3,10 +3,27 @@
 package fit.asta.health.feature.profile.create.view
 
 import android.util.Log
-import androidx.compose.foundation.*
-import androidx.compose.foundation.layout.*
-import androidx.compose.material.*
-import androidx.compose.runtime.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -23,13 +40,18 @@ import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.*
+import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.CUISINES
+import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.DIETARYPREF
+import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.FOODALLERGIES
+import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.FOODRES
+import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.NONVEGDAYS
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.feature.profile.show.view.*
+import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
+import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -145,7 +167,7 @@ fun DietContent(
     navigateBack: () -> Unit,
 ) {
 
-    val events = viewModel.stateSubmit.collectAsStateWithLifecycle().value
+    val events = viewModel.submitProfileState.collectAsStateWithLifecycle().value
 
     var buttonClicked by remember { mutableStateOf(false) }
 
@@ -240,7 +262,7 @@ fun DietCreateBottomSheetLayout(
 ) {
 
     val cardIndex = sheetLayout.cardIndex
-    val state by viewModel.stateHp.collectAsStateWithLifecycle()
+    val state by viewModel.healthPropState.collectAsStateWithLifecycle()
 
     when (state) {
         is UiState.Loading -> AppDotTypingAnimation()

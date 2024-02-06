@@ -12,13 +12,19 @@
 
 package fit.asta.health.feature.profile.create.view
 
-import androidx.compose.foundation.*
+import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.LocalOverscrollConfiguration
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material.*
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.ExperimentalMaterialApi
+import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
@@ -241,7 +247,7 @@ private fun HealthCreateBtmSheetLayout(
     searchQuery: MutableState<String>,
 ) {
     val cardIndex = sheetLayout.cardIndex
-    val state by viewModel.stateHp.collectAsStateWithLifecycle()
+    val state by viewModel.healthPropState.collectAsStateWithLifecycle()
     when (state) {
 
         is UiState.NoInternet -> {

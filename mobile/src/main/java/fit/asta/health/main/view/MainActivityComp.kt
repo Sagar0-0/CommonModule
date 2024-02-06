@@ -38,6 +38,7 @@ import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feature.breathing.nav.navigateToBreathing
 import fit.asta.health.feature.exercise.nav.navigateToExercise
+import fit.asta.health.feature.profile.profile.navigateToProfile
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
@@ -271,7 +272,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     MainTopBarActions.Profile -> {
-                        navController.navigate(Graph.Profile.route)
+                        navController.navigateToProfile()
                     }
 
                     MainTopBarActions.Share -> {

@@ -2,8 +2,8 @@ package fit.asta.health.data.profile.repo
 
 import android.content.ContentResolver
 import fit.asta.health.common.utils.IODispatcher
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
@@ -38,7 +38,7 @@ class ProfileRepoImpl
         }
     }
 
-    override suspend fun createBasicProfile(basicProfileDTO: BasicProfileDTO): ResponseState<PutResponse> {
+    override suspend fun createBasicProfile(basicProfileDTO: BasicProfileDTO): ResponseState<SubmitProfileResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         if (basicProfileDTO.imageLocalUri != null) {
             parts.add(
@@ -69,7 +69,7 @@ class ProfileRepoImpl
             }
         }
 
-    override suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<PutResponse> {
+    override suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
         if (userProfileResponse.contact.url.localUrl != null) {
             parts.add(

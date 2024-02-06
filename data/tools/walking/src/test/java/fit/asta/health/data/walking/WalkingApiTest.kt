@@ -3,8 +3,8 @@ package fit.asta.health.data.walking
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.NetSheetData
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.walking.data.source.api.WalkingApi
 import fit.asta.health.data.walking.data.source.network.response.HomeData
 import io.mockk.mockk
@@ -125,7 +125,7 @@ class WalkingApiTest {
 
     @Test
     fun `putData, returns Success`() = runTest {
-        val dto: Response<PutResponse> = mockk()
+        val dto: Response<SubmitProfileResponse> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -153,7 +153,7 @@ class WalkingApiTest {
 
     @Test
     fun `putDayData, returns Success`() = runTest {
-        val dto: Response<PutResponse> = mockk()
+        val dto: Response<SubmitProfileResponse> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)

@@ -8,7 +8,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
-import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.ui.navigateToWebView
@@ -28,9 +27,8 @@ import fit.asta.health.feature.exercise.nav.exerciseNavigation
 import fit.asta.health.feature.feedback.feedbackRoute
 import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
-import fit.asta.health.feature.profile.ProfileContent
-import fit.asta.health.feature.profile.basicProfileRoute
-import fit.asta.health.feature.profile.create.CreateProfileLayout
+import fit.asta.health.feature.profile.basic.basicProfileRoute
+import fit.asta.health.feature.profile.profile.profileRoute
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
@@ -89,13 +87,7 @@ private fun MainNavHost(startDestination: String) {
         subscriptionDurationRoute(navController)
         subscriptionCheckoutRoute(navController)
 
-        composable(route = Graph.Profile.route) {
-            ProfileContent(onBack = { navController.popBackStack() },
-                onEdit = { navController.navigate(Graph.CreateProfile.route) })
-        }
-        composable(route = Graph.CreateProfile.route) {
-            CreateProfileLayout(onBack = { navController.popBackStack() })
-        }
+        profileRoute(navController)
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })
         waterToolNavigation(navController, onBack = { navController.navigateUp() })

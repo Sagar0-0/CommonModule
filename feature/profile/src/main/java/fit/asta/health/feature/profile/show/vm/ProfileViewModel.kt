@@ -10,8 +10,8 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.InputWrapper
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.toUiState
@@ -49,7 +49,6 @@ import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.network.NetworkHelper
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -67,20 +66,18 @@ class ProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
     private val authRepo: AuthRepo,
-    private val networkHelper: NetworkHelper,
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
-    //States
-    private val _stateSubmit = MutableStateFlow<UiState<PutResponse>>(UiState.Loading)
-    val stateSubmit = _stateSubmit.asStateFlow()
+    private val _submitProfileState = MutableStateFlow<UiState<SubmitProfileResponse>>(UiState.Idle)
+    val submitProfileState = _submitProfileState.asStateFlow()
 
-    private val mutableHPropState =
-        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Loading)
-    val stateHp = mutableHPropState.asStateFlow()
+    private val _healthPropState =
+        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Idle)
+    val healthPropState = _healthPropState.asStateFlow()
 
-    private val _mutableState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
-    val state = _mutableState.asStateFlow()
+    private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
+    val userProfileState = _userProfileState.asStateFlow()
 
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
@@ -262,7 +259,7 @@ class ProfileViewModel
         viewModelScope.launch {
             val result = profileRepo.getUserProfile(userId)
             if (result is ResponseState.Success) handleSuccessResponse(result.data)
-            _mutableState.value = result.toUiState()
+            _userProfileState.value = result.toUiState()
         }
     }
 
@@ -583,14 +580,15 @@ class ProfileViewModel
     //create+edit+update after edit
     private fun updateProfile(userProfileResponse: UserProfileResponse) {
         viewModelScope.launch {
-            _stateSubmit.value = profileRepo.updateUserProfile(userProfileResponse).toUiState()
+            _submitProfileState.value =
+                profileRepo.updateUserProfile(userProfileResponse).toUiState()
         }
 
     }
 
     private fun getHealthProperties(propertyType: String) {
         viewModelScope.launch {
-            mutableHPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
+            _healthPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
         }
     }
 

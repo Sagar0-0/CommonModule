@@ -1,8 +1,8 @@
 package fit.asta.health.data.profile.repo
 
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
@@ -74,7 +74,7 @@ class ProfileRepoImplTest {
                 any(),
                 any()
             )
-        } returns Response(data = PutResponse())
+        } returns Response(data = SubmitProfileResponse())
         val response = repo.createBasicProfile(BasicProfileDTO())
         coVerify { api.createBasicProfile(BasicProfileDTO(), any()) }
         assert(response is ResponseState.Success)

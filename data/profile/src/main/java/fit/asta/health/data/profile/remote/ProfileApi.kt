@@ -1,7 +1,7 @@
 package fit.asta.health.data.profile.remote
 
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.HealthProperties
@@ -28,14 +28,14 @@ interface ProfileApi {
     suspend fun createBasicProfile(
         @Part("json") basicProfileDTO: BasicProfileDTO,
         @Part files: List<MultipartBody.Part>
-    ): Response<PutResponse>
+    ): Response<SubmitProfileResponse>
 
     @PUT("userProfile/put/")
     @Multipart
     suspend fun updateUserProfile(
         @Part("json") userProfileResponse: UserProfileResponse,
         @Part files: List<MultipartBody.Part>,
-    ): Response<PutResponse>
+    ): Response<SubmitProfileResponse>
 
     @GET("userProfile/get/?")
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
