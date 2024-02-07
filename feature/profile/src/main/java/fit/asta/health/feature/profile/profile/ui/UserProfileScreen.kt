@@ -10,13 +10,14 @@ import fit.asta.health.feature.profile.show.UserProfileContent
 
 @ExperimentalMaterial3Api
 @Composable
-fun ProfileScreenState(
-    userProfileState: UiState<UserProfileResponse>,
+fun UserProfileScreen(
+    userProfileState: UserProfileState,
+    userProfileResponseState: UiState<UserProfileResponse>,
     submitProfileState: UiState<SubmitProfileResponse>,
     onUiEvent: (UserProfileUiEvent) -> Unit,
 ) {
     AppUiStateHandler(
-        uiState = userProfileState,
+        uiState = userProfileResponseState,
         onErrorRetry = {
             onUiEvent(UserProfileUiEvent.LoadUserProfile)
         },
@@ -25,6 +26,7 @@ fun ProfileScreenState(
         }
     ) {
         UserProfileContent(
+            userProfileState = userProfileState,
             userProfileResponse = it,
             isScreenLoading = submitProfileState is UiState.Loading
         ) {

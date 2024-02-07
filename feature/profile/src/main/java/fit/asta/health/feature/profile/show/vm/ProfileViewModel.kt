@@ -7,8 +7,7 @@ import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
@@ -65,7 +64,7 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
-    private val authRepo: AuthRepo,
+    @UID private val uid: String,
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
@@ -88,8 +87,6 @@ class ProfileViewModel
     val userImg = savedState.getStateFlow(
         USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")
     )
-
-    private val userID = savedState.getStateFlow(ID, "")
 
     //Physique
     val dob = savedState.getStateFlow(DOB, InputWrapper())
@@ -250,9 +247,7 @@ class ProfileViewModel
     }
 
     fun loadUserProfile() {
-        authRepo.getUser()?.let {
-            loadUserProfileResponse(userId = it.uid)
-        }
+        loadUserProfileResponse(userId = uid)
     }
 
     private fun loadUserProfileResponse(userId: String) {
@@ -458,14 +453,12 @@ class ProfileViewModel
 
 
     private fun submit() {
-        authRepo.getUser()?.let { user ->
-            val userProfile = createUserProfile(user)
-            updateProfile(userProfile)
-        }
+        val userProfile = createUserProfile()
+        updateProfile(userProfile)
     }
 
 
-    private fun createUserProfile(user: User): UserProfileResponse {
+    private fun createUserProfile(): UserProfileResponse {
         val contact = createContact()
         val physique = createPhysique()
         val health = createHealth()
@@ -473,7 +466,7 @@ class ProfileViewModel
         val diet = createDiet()
 
         return UserProfileResponse(
-            uid = user.uid, id = userID.value, contact, physique, health, lifeStyle, diet
+            uid = uid, id = "", contact, physique, health, lifeStyle, diet
         )
     }
 
@@ -484,7 +477,7 @@ class ProfileViewModel
             dob = dob.value.value,
             email = email.value.value.trim(),
             name = name.value.value.trim(),
-            url = ProfileMedia(url = userImg.value.toString()),
+            url = ProfileMedia(url = userImg.value.url),
             localUrl = userImg.value.localUrl
         )
     }
