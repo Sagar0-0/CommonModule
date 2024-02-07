@@ -19,6 +19,9 @@ fun ProfileScreenState(
         uiState = userProfileState,
         onErrorRetry = {
             onUiEvent(UserProfileUiEvent.LoadUserProfile)
+        },
+        onErrorMessage = {
+            onUiEvent(UserProfileUiEvent.OnBack)
         }
     ) {
         UserProfileContent(

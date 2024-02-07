@@ -2,7 +2,13 @@
 
 package fit.asta.health.feature.profile.create
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.Outlined
 import androidx.compose.material.icons.filled.Emergency
@@ -11,8 +17,13 @@ import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.runtime.*
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -23,6 +34,7 @@ import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
 import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
 import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
@@ -78,7 +90,8 @@ fun CreateProfileLayout(
                         stepDescription = step.description,
                         selectedColor = primaryColor,
                         icons = step.icon,
-                        onStepClick = { currentStep = step.step })
+                        onStepClick = { currentStep = step.step }
+                    )
                 }
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
@@ -89,9 +102,10 @@ fun CreateProfileLayout(
         ) {
             when (currentStep) {
                 1 -> {
-//                    DetailsCreateScreen(eventNext = {
-//                        currentStep += 1
-//                    })
+                    DetailsCreateScreen(eventNext = {
+                        currentStep += 1
+                    }
+                    )
                 }
 
                 2 -> {
@@ -125,9 +139,11 @@ fun CreateProfileLayout(
                 }
 
                 5 -> {
-                    DietCreateScreen(eventPrevious = {
-                        currentStep -= 1
-                    }, navigateBack = onBack)
+                    DietCreateScreen(
+                        eventPrevious = {
+                            currentStep -= 1
+                        }, navigateBack = onBack
+                    )
                 }
             }
         }

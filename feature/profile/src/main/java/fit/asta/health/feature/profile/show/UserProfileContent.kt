@@ -14,23 +14,29 @@ import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.DialogData
+import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.background.AppNavigationBar
 import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.feature.profile.show.view.ContactLayout
-import fit.asta.health.feature.profile.show.view.DietLayout
-import fit.asta.health.feature.profile.show.view.HealthLayout
-import fit.asta.health.feature.profile.show.view.LifeStyleLayout
-import fit.asta.health.feature.profile.show.view.PhysiqueLayout
+import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
+import fit.asta.health.feature.profile.create.view.DietCreateScreen
+import fit.asta.health.feature.profile.create.view.HealthCreateScreen
+import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
+import fit.asta.health.feature.profile.create.view.PhysiqueCreateScreen
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 
@@ -41,6 +47,8 @@ fun UserProfileContent(
     isScreenLoading: Boolean = false,
     onBack: () -> Unit,
 ) {
+
+    var showCustomDialogWithResult by remember { mutableStateOf(false) }
     val pagerState = rememberPagerState {
         ProfileNavigationScreen.entries.size
     }
@@ -51,7 +59,9 @@ fun UserProfileContent(
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.profile_screen),
-                onBack = onBack
+                onBack = {
+                    showCustomDialogWithResult = !showCustomDialogWithResult
+                }
             )
         }
     ) { padding ->
@@ -90,27 +100,89 @@ fun UserProfileContent(
             ) { index ->
                 when (ProfileNavigationScreen.entries[index]) {
                     ProfileNavigationScreen.BASIC -> {
-                        ContactLayout(basicDetails = userProfileResponse.contact)
+                        DetailsCreateScreen {
+                            scope.launch {
+                                pagerState.animateScrollToPage(index + 1)
+                            }
+                        }
+//                        ContactLayout(basicDetails = userProfileResponse.contact)
                     }
 
                     ProfileNavigationScreen.Physique -> {
-                        PhysiqueLayout(physique = userProfileResponse.physique)
+                        PhysiqueCreateScreen(
+                            eventNext = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index + 1)
+                                }
+                            },
+                            eventPrevious = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index - 1)
+                                }
+                            },
+                        )
+//                        PhysiqueLayout(physique = userProfileResponse.physique)
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthLayout(health = userProfileResponse.health)
+                        HealthCreateScreen(
+                            eventNext = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index + 1)
+                                }
+                            },
+                            eventPrevious = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index - 1)
+                                }
+                            }
+                        )
+//                        HealthLayout(health = userProfileResponse.health)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifeStyleLayout(lifeStyle = userProfileResponse.lifeStyle)
+                        LifeStyleCreateScreen(
+                            eventNext = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index + 1)
+                                }
+                            },
+                            eventPrevious = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index - 1)
+                                }
+                            },
+                        )
+//                        LifeStyleLayout(lifeStyle = userProfileResponse.lifeStyle)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietLayout(diet = userProfileResponse.diet)
+                        DietCreateScreen(
+                            eventPrevious = {
+                                scope.launch {
+                                    pagerState.animateScrollToPage(index - 1)
+                                }
+                            },
+                            navigateBack = onBack
+                        )
+//                        DietLayout(diet = userProfileResponse.diet)
                     }
                 }
             }
 
+        }
+        if (showCustomDialogWithResult) {
+            ShowCustomConfirmationDialog(
+                onDismiss = { showCustomDialogWithResult = !showCustomDialogWithResult },
+                onNegativeClick = onBack,
+                onPositiveClick = { showCustomDialogWithResult = !showCustomDialogWithResult },
+                dialogData = DialogData(
+                    dialogTitle = stringResource(R.string.discard_profile_creation),
+                    dialogDesc = stringResource(R.string.dialogDesc_profile_creation),
+                    negTitle = stringResource(R.string.negativeTitle_profile_creation),
+                    posTitle = stringResource(R.string.positiveTitle_profile_creation)
+                ),
+            )
         }
     }
 }
