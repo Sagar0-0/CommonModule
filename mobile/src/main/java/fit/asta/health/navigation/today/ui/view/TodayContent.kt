@@ -77,6 +77,7 @@ import fit.asta.health.ui.common.AppDialogPopUp
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
+import java.util.Locale
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
@@ -341,7 +342,7 @@ fun TodayTabContent(
                         )
                     },
                     onDone = {
-                        onNav(goToTool(data.info.tag))
+                        onNav(goToTool(data.info.name.lowercase(Locale.getDefault())))
                     },
                     onReschedule = {
                         onNav(Graph.Scheduler.route)

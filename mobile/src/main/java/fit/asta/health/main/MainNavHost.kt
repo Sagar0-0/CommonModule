@@ -3,7 +3,6 @@ package fit.asta.health.main
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
@@ -67,7 +66,6 @@ fun MainNavHost(
     MainNavHost(startDestination)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 private fun MainNavHost(startDestination: String) {
     val context = LocalContext.current

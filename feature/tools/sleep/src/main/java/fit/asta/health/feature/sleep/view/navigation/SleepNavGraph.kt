@@ -17,7 +17,7 @@ import fit.asta.health.feature.sleep.view.screens.SleepHomeScreen
 import fit.asta.health.feature.sleep.view.screens.SleepJetLagTipsScreen
 import fit.asta.health.feature.sleep.viewmodel.SleepToolViewModel
 
-const val SLEEP_GRAPH_ROUTE = "SLEEP_graph_address"
+private const val SLEEP_GRAPH_ROUTE = "SLEEP_graph_address"
 
 fun NavController.navigateToSleep(navOptions: NavOptions? = null) {
     this.navigate(SLEEP_GRAPH_ROUTE, navOptions)

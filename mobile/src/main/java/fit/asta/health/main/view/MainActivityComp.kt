@@ -29,6 +29,7 @@ import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.HourMinAmPmKey
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SLEEP_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.MainTopBarActions
@@ -41,7 +42,6 @@ import fit.asta.health.feature.exercise.nav.navigateToExercise
 import fit.asta.health.feature.profile.profile.navigateToProfile
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
-import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
 import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
 import fit.asta.health.feature.sunlight.nav.navigateToSunlight
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
@@ -257,7 +257,7 @@ fun NavGraphBuilder.homeScreen(
                     value = hourMinAmPm
                 )
             },
-            onClick = { key ->
+            onTopBarItemClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
                         enableLocationAndUpdateAddress()
@@ -298,11 +298,6 @@ fun checkPermissionAndLaunchScheduler(
             contract = ActivityResultContracts.RequestPermission()
         ) { perms ->
             if (perms) {
-                Toast.makeText(
-                    context,
-                    "Notification is recommended for better functionality.",
-                    Toast.LENGTH_SHORT
-                ).show()
                 PrefManager.setNotificationPermissionRejectedCount(context, 0)
                 navController.navigate(Graph.Scheduler.route)
             } else {

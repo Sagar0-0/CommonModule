@@ -114,7 +114,7 @@ fun HomeScreensLayout(
     toolsHomeDataState: UiState<ToolsHome>,
     notificationState: Boolean,
     sessionState: Boolean,
-    onClick: (key: MainTopBarActions) -> Unit,
+    onTopBarItemClick: (key: MainTopBarActions) -> Unit,
     onNav: (String) -> Unit,
     onEvent: (ToolsHomeUiEvent) -> Unit,
     onSchedule: (HourMinAmPm?) -> Unit,
@@ -149,7 +149,7 @@ fun HomeScreensLayout(
                     backIcon = null,
                     actions = {
                         NewMainTopBarActions(
-                            onClick = onClick,
+                            onClick = onTopBarItemClick,
                             notificationState = notificationState,
                             profileImageUri = profileImageUri,
                             currentAddressState = currentAddressState,
@@ -471,11 +471,6 @@ private fun HomeNavHost(
                     contract = ActivityResultContracts.RequestPermission()
                 ) { perms ->
                     if (perms) {
-                        Toast.makeText(
-                            context,
-                            "Notification is recommended for better functionality.",
-                            Toast.LENGTH_SHORT
-                        ).show()
                         PrefManager.setNotificationPermissionRejectedCount(context, 0)
                     } else {
                         Toast.makeText(

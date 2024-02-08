@@ -27,6 +27,10 @@ object Constants {
     const val SCHEDULER_GRAPH_ROUTE = "graph_today_scheduler"
     const val WALKING_GRAPH_ROUTE = "graph_walking_tool"
     const val EXERCISE_GRAPH_ROUTE = "graph_exercise_tool"
+    const val WORKOUT_GRAPH_ROUTE = "graph_exercise_tool?activity=workout"
+    const val YOGA_GRAPH_ROUTE = "graph_exercise_tool?activity=yoga"
+    const val HIIT_GRAPH_ROUTE = "graph_exercise_tool?activity=HIIT"
+    const val DANCE_GRAPH_ROUTE = "graph_exercise_tool?activity=dance"
     const val WATER_GRAPH_ROUTE = "graph_water_tool"
     const val SUNLIGHT_GRAPH_ROUTE = "graph_sunlight_tool"
     const val PROFILE_GRAPH_ROUTE = "graph_profile_tool"
@@ -86,50 +90,96 @@ object Constants {
     }
 
     fun goToTool(tag: String): String {
+        Log.d("TOOL", "goToTool: $tag")
         return when (tag) {
-            "Breathing" -> {
-                BREATHING_GRAPH_ROUTE
-            }
-//        "Diet" -> {}
-//        "Face Wash" -> {}
-//        "Intermittent" -> {}
-//        "Medicine" -> {}
-            "Meditation" -> {
-                MEDITATION_GRAPH_ROUTE
-            }
-//        "Power Nap" -> {}Graph.ExerciseTool.route + "?activity=dance"
-            "Sleep" -> {
-                SLEEP_GRAPH_ROUTE
-            }
-//        "Sleep Therapy" -> {}
-            "Stretches" -> {
-                ("$EXERCISE_GRAPH_ROUTE?activity=yoga")
-            }
-
-            "SunLight" -> {
-                SUNLIGHT_GRAPH_ROUTE
-            }
-
-            "Walking" -> {
-                WALKING_GRAPH_ROUTE
-            }
-
-            "Water" -> {
+            "water" -> {
                 WATER_GRAPH_ROUTE
             }
 
-            "Workout" -> {
-                ("$EXERCISE_GRAPH_ROUTE?activity=workout")
+            "workout" -> {
+                WORKOUT_GRAPH_ROUTE
             }
 
-            "Yoga" -> {
-                ("$EXERCISE_GRAPH_ROUTE?activity=yoga")
+            "yoga" -> {
+                YOGA_GRAPH_ROUTE
+            }
+
+            "hiit" -> {
+                HIIT_GRAPH_ROUTE
+            }
+
+            "dance" -> {
+                DANCE_GRAPH_ROUTE
+            }
+
+            "meditation" -> {
+                MEDITATION_GRAPH_ROUTE
+            }
+
+            "sleep" -> {
+                SLEEP_GRAPH_ROUTE
+            }
+
+            "breathing" -> {
+                BREATHING_GRAPH_ROUTE
+            }
+
+            "sunlight" -> {
+                SUNLIGHT_GRAPH_ROUTE
             }
 
             else -> {
                 ""
             }
         }
+
+
+//        return when (tag) {
+//            "Breathing" -> {
+//                BREATHING_GRAPH_ROUTE
+//            }
+////        "Diet" -> {}
+////        "Face Wash" -> {}
+////        "Intermittent" -> {}
+////        "Medicines" -> {
+////            WATER_GRAPH_ROUTE
+////        }
+//            "Meditation" -> {
+//                MEDITATION_GRAPH_ROUTE
+//            }
+////        "Power Nap" -> {}Graph.ExerciseTool.route + "?activity=dance"
+//            "Sleep" -> {
+//                SLEEP_GRAPH_ROUTE
+//            }
+////        "Sleep Therapy" -> {}
+//            "Stretches" -> {
+//                ("$EXERCISE_GRAPH_ROUTE?activity=yoga")
+//            }
+//
+//            "SunLight" -> {
+//                SUNLIGHT_GRAPH_ROUTE
+//            }
+//
+//            "Walking" -> {
+//                WALKING_GRAPH_ROUTE
+//            }
+//
+//            "Water" -> {
+//                WATER_GRAPH_ROUTE
+//            }
+//
+//            "Workout" -> {
+//                ("$EXERCISE_GRAPH_ROUTE?activity=workout")
+//            }
+//
+//            "Yoga" -> {
+//                ("$EXERCISE_GRAPH_ROUTE?activity=yoga")
+//            }
+//
+//            else -> {
+//                ""
+//            }
+//        }
     }
 }
 

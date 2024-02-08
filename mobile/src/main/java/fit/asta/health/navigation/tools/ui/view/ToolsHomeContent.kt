@@ -24,6 +24,15 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.BuildConfig
+import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.DANCE_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.HIIT_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SLEEP_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.WORKOUT_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.YOGA_GRAPH_ROUTE
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.designsystem.AppTheme
@@ -35,7 +44,6 @@ import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
-import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
 import fit.asta.health.feature.testimonials.components.UserTestimonialUI
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
@@ -197,7 +205,7 @@ fun ToolsHomeContent(
                         ) { type ->
                             when (type.lowercase(Locale.getDefault())) {
                                 "water" -> {
-                                    onNav(Graph.WaterTool.route)
+                                    onNav(WATER_GRAPH_ROUTE)
                                 }
 
                                 "steps" -> {
@@ -205,23 +213,23 @@ fun ToolsHomeContent(
                                 }
 
                                 "workout" -> {
-                                    onNav(Graph.ExerciseTool.route + "?activity=workout")
+                                    onNav(WORKOUT_GRAPH_ROUTE)
                                 }
 
                                 "yoga" -> {
-                                    onNav(Graph.ExerciseTool.route + "?activity=yoga")
+                                    onNav(YOGA_GRAPH_ROUTE)
                                 }
 
                                 "hiit" -> {
-                                    onNav(Graph.ExerciseTool.route + "?activity=HIIT")
+                                    onNav(HIIT_GRAPH_ROUTE)
                                 }
 
                                 "dance" -> {
-                                    onNav(Graph.ExerciseTool.route + "?activity=dance")
+                                    onNav(DANCE_GRAPH_ROUTE)
                                 }
 
                                 "meditation" -> {
-                                    onNav(Graph.MeditationTool.route)
+                                    onNav(MEDITATION_GRAPH_ROUTE)
                                 }
 
                                 "sleep" -> {
@@ -229,11 +237,11 @@ fun ToolsHomeContent(
                                 }
 
                                 "breathing" -> {
-                                    onNav(Graph.BreathingTool.route)
+                                    onNav(BREATHING_GRAPH_ROUTE)
                                 }
 
                                 "sunlight" -> {
-                                    onNav(Graph.SunlightTool.route)
+                                    onNav(SUNLIGHT_GRAPH_ROUTE)
                                 }
                             }
                         }
