@@ -53,7 +53,7 @@ import fit.asta.health.main.MainViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.alarms.navigateToAllAlarms
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
-import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
+import fit.asta.health.navigation.tools.ui.viewmodel.ToolsHomeViewModel
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.navigateToFinalPaymentScreen
 import fit.asta.health.subscription.navigateToSubscriptionDurations
@@ -76,8 +76,8 @@ fun NavGraphBuilder.homeScreen(
         val offersDataState by
         subscriptionViewModel.offersDataState.collectAsStateWithLifecycle()
 
-        val homeViewModel: HomeViewModel = hiltViewModel()
-        val toolsHomeDataState by homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
+        val toolsHomeViewModel: ToolsHomeViewModel = hiltViewModel()
+        val toolsHomeDataState by toolsHomeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
 
         LaunchedEffect(
             key1 = Unit,
@@ -192,7 +192,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     ToolsHomeUiEvent.LoadToolsData -> {
-                        homeViewModel.loadHomeData()
+                        toolsHomeViewModel.loadHomeData()
                     }
 
                     is ToolsHomeUiEvent.NavigateToFinalPayment -> {

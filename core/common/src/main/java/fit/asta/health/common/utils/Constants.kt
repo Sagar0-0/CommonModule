@@ -90,41 +90,48 @@ object Constants {
     }
 
     fun goToTool(tag: String): String {
-        Log.d("TOOL", "goToTool: $tag")
         return when (tag) {
-            "water" -> {
+            "Medicines" -> {
                 WATER_GRAPH_ROUTE
             }
 
-            "workout" -> {
-                WORKOUT_GRAPH_ROUTE
+            "Water" -> {
+                WATER_GRAPH_ROUTE
             }
 
-            "yoga" -> {
-                YOGA_GRAPH_ROUTE
+            "Drink water" -> {
+                WATER_GRAPH_ROUTE
             }
 
-            "hiit" -> {
+            "Workout" -> {
+                EXERCISE_GRAPH_ROUTE
+            }
+
+            "Stretches" -> {
+                EXERCISE_GRAPH_ROUTE
+            }
+
+            "Hiit" -> {
                 HIIT_GRAPH_ROUTE
             }
 
-            "dance" -> {
+            "Dance" -> {
                 DANCE_GRAPH_ROUTE
             }
 
-            "meditation" -> {
+            "Meditation" -> {
                 MEDITATION_GRAPH_ROUTE
             }
 
-            "sleep" -> {
+            "Sleep" -> {
                 SLEEP_GRAPH_ROUTE
             }
 
-            "breathing" -> {
+            "Breathing" -> {
                 BREATHING_GRAPH_ROUTE
             }
 
-            "sunlight" -> {
+            "SunLight" -> {
                 SUNLIGHT_GRAPH_ROUTE
             }
 
