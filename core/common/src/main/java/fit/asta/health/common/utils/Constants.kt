@@ -12,6 +12,7 @@ import kotlinx.parcelize.Parcelize
 import java.time.LocalDateTime
 import java.time.LocalTime
 import java.time.format.DateTimeFormatter
+import java.util.Locale
 
 object Constants {
     const val DATA_LIMIT = 20L
@@ -90,56 +91,68 @@ object Constants {
     }
 
     fun goToTool(tag: String): String {
-        return when (tag) {
-            "Medicines" -> {
+        return when (tag.lowercase(Locale.ROOT)) {
+
+            "beverage" -> {
                 WATER_GRAPH_ROUTE
             }
 
-            "Water" -> {
-                WATER_GRAPH_ROUTE
-            }
-
-            "Drink water" -> {
-                WATER_GRAPH_ROUTE
-            }
-
-            "Workout" -> {
-                EXERCISE_GRAPH_ROUTE
-            }
-
-            "Stretches" -> {
-                EXERCISE_GRAPH_ROUTE
-            }
-
-            "Hiit" -> {
-                HIIT_GRAPH_ROUTE
-            }
-
-            "Dance" -> {
-                DANCE_GRAPH_ROUTE
-            }
-
-            "Meditation" -> {
-                MEDITATION_GRAPH_ROUTE
-            }
-
-            "Sleep" -> {
-                SLEEP_GRAPH_ROUTE
-            }
-
-            "Breathing" -> {
+            "breathing" -> {
                 BREATHING_GRAPH_ROUTE
             }
 
-            "SunLight" -> {
+            "dance" -> {
+                DANCE_GRAPH_ROUTE
+            }
+
+            "hiit" -> {
+                HIIT_GRAPH_ROUTE
+            }
+
+            "meditation" -> {
+                MEDITATION_GRAPH_ROUTE
+            }
+
+            "nap" -> {
+                SLEEP_GRAPH_ROUTE
+            }
+
+            "sleep" -> {
+                SLEEP_GRAPH_ROUTE
+            }
+
+            "steps" -> {
+                WALKING_GRAPH_ROUTE
+            }
+
+            "stretches" -> {
+                EXERCISE_GRAPH_ROUTE
+            }
+
+            "sunlight" -> {
                 SUNLIGHT_GRAPH_ROUTE
+            }
+
+            "walking" -> {
+                WALKING_GRAPH_ROUTE
+            }
+
+            "water" -> {
+                WATER_GRAPH_ROUTE
+            }
+
+            "workout" -> {
+                EXERCISE_GRAPH_ROUTE
+            }
+
+            "yoga" -> {
+                YOGA_GRAPH_ROUTE
             }
 
             else -> {
                 ""
             }
         }
-
 
 //        return when (tag) {
 //            "Breathing" -> {
