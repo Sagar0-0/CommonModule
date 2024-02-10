@@ -12,7 +12,6 @@ import fit.asta.health.BuildConfig
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
 import fit.asta.health.common.utils.getCurrentBuildVersion
-import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
@@ -144,7 +143,7 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.TERMS -> {
                     val url = URLEncoder.encode(
-                        getImgUrl(context.getString(R.string.url_terms_of_use)),
+                        context.getString(R.string.url_terms_of_use),
                         StandardCharsets.UTF_8.toString()
                     )
                     navController.navigateToWebView(url)
@@ -152,7 +151,7 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.PRIVACY -> {
                     val url = URLEncoder.encode(
-                        getImgUrl(context.getString(R.string.url_privacy_policy)),
+                        context.getString(R.string.url_privacy_policy),
                         StandardCharsets.UTF_8.toString()
                     )
                     navController.navigateToWebView(url)
