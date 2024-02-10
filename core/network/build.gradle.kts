@@ -5,7 +5,7 @@ plugins {
 }
 
 secrets {
-    defaultPropertiesFileName = "secrets.properties"
+    defaultPropertiesFileName = "pro.properties"
 }
 
 android {
