@@ -71,11 +71,11 @@ class ProfileRepoImpl
 
     override suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        if (userProfileResponse.contact.url.localUrl != null) {
+        if (userProfileResponse.userDetail.media.localUrl != null) {
             parts.add(
                 MultipartBody.Part.createFormData(
                     name = "file", body = InputStreamRequestBody(
-                        contentResolver, userProfileResponse.contact.url.localUrl!!
+                        contentResolver, userProfileResponse.userDetail.media.localUrl!!
                     ), filename = userProfileResponse.uid
                 )
             )

@@ -51,7 +51,7 @@ fun AppTextFieldValidate(
     modifier: Modifier = Modifier,
     label: String = "",
     errorMessage: UiString,
-    keyboardActions: KeyboardActions,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
     isError: Boolean = false,
     singleLine: Boolean = false,
     showLenErrorMsg: Boolean? = null,

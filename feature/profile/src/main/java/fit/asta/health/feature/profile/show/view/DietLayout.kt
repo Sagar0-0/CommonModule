@@ -30,7 +30,7 @@ fun DietLayout(
         diet.nonVegDays to UserPropertyType.NvDays,
         diet.allergies to UserPropertyType.FoodAllergies,
         diet.cuisines to UserPropertyType.Cuisines,
-        diet.foodRestrictions to UserPropertyType.FoodRestrictions
+        diet.restrictions to UserPropertyType.FoodRestrictions
     )
 
     LazyColumn(

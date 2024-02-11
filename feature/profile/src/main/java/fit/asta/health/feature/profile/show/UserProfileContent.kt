@@ -6,14 +6,9 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
@@ -35,12 +30,8 @@ import fit.asta.health.resources.strings.R
 @Composable
 fun UserProfileContent(
     userProfileState: UserProfileState,
-    userProfileResponse: UserProfileResponse,
     isScreenLoading: Boolean = false,
-    onBack: () -> Unit,
 ) {
-
-    var showCustomDialogWithResult by remember { mutableStateOf(false) }
 
     AppScaffold(
         isScreenLoading = isScreenLoading,
@@ -48,7 +39,7 @@ fun UserProfileContent(
             AppTopBar(
                 title = stringResource(R.string.profile_screen),
                 onBack = {
-                    showCustomDialogWithResult = !showCustomDialogWithResult
+                    userProfileState.onBackPressed()
                 }
             )
         }
@@ -65,7 +56,7 @@ fun UserProfileContent(
                     AppNavigationBarItem(
                         selected = userProfileState.currentPageIndex == index,
                         onClick = {
-                            userProfileState.updateCurrentPageIndex(index)
+                            userProfileState.currentPageIndex = index
                         },
                         icon = item.icon,
                         label = item.labelId.toStringFromResId(),
@@ -86,18 +77,16 @@ fun UserProfileContent(
             ) {
                 when (userProfileState.profileDataPages[userProfileState.currentPageIndex]) {
                     ProfileNavigationScreen.BASIC -> {
-                        DetailsCreateScreen {
-                            userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex + 1)
-                        }
+                        DetailsCreateScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Physique -> {
                         PhysiqueCreateScreen(
                             eventNext = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex + 1)
+                                userProfileState.currentPageIndex++
                             },
                             eventPrevious = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex - 1)
+                                userProfileState.currentPageIndex--
                             },
                         )
                     }
@@ -105,10 +94,10 @@ fun UserProfileContent(
                     ProfileNavigationScreen.Health -> {
                         HealthCreateScreen(
                             eventNext = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex + 1)
+                                userProfileState.currentPageIndex++
                             },
                             eventPrevious = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex - 1)
+                                userProfileState.currentPageIndex--
                             },
                         )
                     }
@@ -116,10 +105,10 @@ fun UserProfileContent(
                     ProfileNavigationScreen.Lifestyle -> {
                         LifeStyleCreateScreen(
                             eventNext = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex + 1)
+                                userProfileState.currentPageIndex++
                             },
                             eventPrevious = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex - 1)
+                                userProfileState.currentPageIndex--
                             },
                         )
                     }
@@ -127,7 +116,7 @@ fun UserProfileContent(
                     ProfileNavigationScreen.Diet -> {
                         DietCreateScreen(
                             eventPrevious = {
-                                userProfileState.updateCurrentPageIndex(userProfileState.currentPageIndex - 1)
+                                userProfileState.currentPageIndex--
                             },
                             navigateBack = {
                                 userProfileState.onBackPressed()
@@ -141,15 +130,22 @@ fun UserProfileContent(
 
         if (userProfileState.isConfirmDialogVisible) {
             ShowCustomConfirmationDialog(
-                onDismiss = { showCustomDialogWithResult = !showCustomDialogWithResult },
-                onNegativeClick = onBack,
-                onPositiveClick = { showCustomDialogWithResult = !showCustomDialogWithResult },
+                onDismiss = {
+                    userProfileState.isConfirmDialogVisible =
+                        !userProfileState.isConfirmDialogVisible
+                },
+                onNegativeClick = {
+                    userProfileState.forceBackPress()
+                },
+                onPositiveClick = {
+                    userProfileState.saveData()
+                },
                 dialogData = DialogData(
                     dialogTitle = stringResource(R.string.discard_profile_creation),
                     dialogDesc = stringResource(R.string.dialogDesc_profile_creation),
                     negTitle = stringResource(R.string.negativeTitle_profile_creation),
                     posTitle = stringResource(R.string.positiveTitle_profile_creation)
-                ),
+                )
             )
         }
     }

@@ -2,7 +2,10 @@
 
 package fit.asta.health.feature.profile.show.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -30,7 +33,7 @@ fun HealthLayout(health: Health) {
             UserPropertyType.BodyParts to health.bodyPart,
             UserPropertyType.Ailments to health.ailments,
             UserPropertyType.Medications to health.medications,
-            UserPropertyType.HealthTargets to health.healthTargets,
+            UserPropertyType.HealthTargets to health.targets,
             UserPropertyType.Addictions to health.addiction
         )
 

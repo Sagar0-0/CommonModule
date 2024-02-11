@@ -54,13 +54,13 @@ fun LifeStyleLayout(
     ) {
         item {
             ProfileSessionCard(
-                title = SleepSchedule.getTitle(), session = lifeStyle.sleep
+                title = SleepSchedule.getTitle(), sleepSchedule = lifeStyle.sleep
             )
         }
 
         item {
             ProfileSessionCard(
-                title = WorkSchedule.getTitle(), session = lifeStyle.workingTime
+                title = WorkSchedule.getTitle(), sleepSchedule = lifeStyle.workingTime
             )
         }
 

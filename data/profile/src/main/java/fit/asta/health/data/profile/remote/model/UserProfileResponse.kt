@@ -7,37 +7,35 @@ import fit.asta.health.common.utils.UiString
 data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
-    @SerializedName("cont") val contact: Contact = Contact(),
+    @SerializedName("cont") val userDetail: UserDetail = UserDetail(),
     @SerializedName("phq") val physique: Physique = Physique(),
     @SerializedName("hlt") val health: Health = Health(),
     @SerializedName("ls") val lifeStyle: LifeStyle = LifeStyle(),
     @SerializedName("diet") val diet: Diet = Diet(),
 )
 
-data class Contact(
-    @SerializedName("adr") val address: Address = Address(),
+data class UserDetail(
+    @SerializedName("adr") val userProfileAddress: UserProfileAddress = UserProfileAddress(),
     @SerializedName("dob") val dob: String = "",
     @SerializedName("mail") val email: String = "",
     @SerializedName("name") val name: String = "",
-    @SerializedName("ph") val phone: String = "",
-    @SerializedName("media") val url: ProfileMedia = ProfileMedia(),
-    val localUrl: Uri? = null,
+    @SerializedName("ph") val phoneNumber: String = "",
+    @SerializedName("media") val media: ProfileMedia = ProfileMedia()
 )
 
 data class ProfileMedia(
-    val name: String = "",
-    val title: String = "",
     @SerializedName("url") var url: String = "",
+    @SerializedName("mailUrl") var mailUrl: String = "",
     var localUrl: Uri? = null,
     val error: UiString = UiString.Empty,
 )
 
-data class Address(
-    @SerializedName("adr1") val address: String = "",
-    @SerializedName("cnt") val country: String = "",
-    @SerializedName("cty") val city: String = "",
-    @SerializedName("pin") val pin: String = "",
-    @SerializedName("st") val street: String = "",
+data class UserProfileAddress(
+    @SerializedName("adr1") val address: String = "Address Line 1",
+    @SerializedName("cnt") val country: String = "India",
+    @SerializedName("cty") val city: String = "Noida",
+    @SerializedName("pin") val pin: String = "123456",
+    @SerializedName("st") val street: String = "Some Street",
 )
 
 data class Physique(
@@ -53,14 +51,13 @@ data class Physique(
 )
 
 data class Health(
-    @SerializedName("hh") val healthHistory: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("ail") val ailments: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("med") val medications: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("bp")
-    val bodyPart: ArrayList<HealthProperties>? = arrayListOf(),// Body Part healthHisList missing
-    @SerializedName("htg") val healthTargets: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("add") val addiction: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("med") val medications: ArrayList<HealthProperties>? = null,
+    @SerializedName("htg") val targets: ArrayList<HealthProperties>? = null,
+    @SerializedName("ail") val ailments: ArrayList<HealthProperties>? = null,
+    @SerializedName("hh") val healthHistory: ArrayList<HealthProperties>? = null,
+    @SerializedName("inj") val injuries: ArrayList<HealthProperties>? = null,
+    @SerializedName("bp") val bodyPart: ArrayList<HealthProperties>? = null,// Body Part healthHisList missing
+    @SerializedName("add") val addiction: ArrayList<HealthProperties>? = null,
     @SerializedName("is") val injurySince: Int? = 0,
 )
 
@@ -70,23 +67,23 @@ data class LifeStyle(
     @SerializedName("env") var workingEnv: Int? = 0,
     @SerializedName("ws") var workStyle: Int? = 0,
     @SerializedName("whr") var workingHours: Int? = 0,
-    @SerializedName("cat") val curActivities: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("pat") val prefActivities: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("cat") val curActivities: ArrayList<HealthProperties>? = null,
+    @SerializedName("pat") val prefActivities: ArrayList<HealthProperties>? = null,
+    @SerializedName("lst") val lifeStyleTargets: ArrayList<HealthProperties>? = null,
 
-    @SerializedName("wt") var workingTime: Session = Session(),
-    @SerializedName("slp") var sleep: Session = Session(), // missing in UI
+    @SerializedName("wt") var workingTime: TimeSchedule = TimeSchedule(),
+    @SerializedName("slp") var sleep: TimeSchedule = TimeSchedule(), // missing in UI
 )
 
 data class Diet(
-    @SerializedName("pref") var preference: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("nv") val nonVegDays: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("alg") val allergies: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("cns") val cuisines: ArrayList<HealthProperties>? = arrayListOf(),
-    @SerializedName("frs") val foodRestrictions: ArrayList<HealthProperties>? = arrayListOf(),
+    @SerializedName("pref") var preference: ArrayList<HealthProperties>? = null,
+    @SerializedName("nv") val nonVegDays: ArrayList<HealthProperties>? = null,
+    @SerializedName("alg") val allergies: ArrayList<HealthProperties>? = null,
+    @SerializedName("cns") val cuisines: ArrayList<HealthProperties>? = null,
+    @SerializedName("frs") val restrictions: ArrayList<HealthProperties>? = null,
 )
 
-data class Session(
+data class TimeSchedule(
     @SerializedName("str") val from: Float = 0.0f,
     @SerializedName("end") val to: Float = 0.0f,
 )
@@ -97,53 +94,3 @@ data class Injury(
     @SerializedName("name") val name: String = "",
     @SerializedName("dur") val sinceWhen: Double = 0.0,
 )
-
-/*
-data class UserProfileResponse(
-    val uid: String,
-    val contact: Contact,
-    val physique: Physique,
-    val lifestyle: Map<UserPropertyType, ArrayList<HealthProperties>>,
-    val health: Map<UserPropertyType, ArrayList<HealthProperties>>,
-    val diet: Map<UserPropertyType, ArrayList<HealthProperties>>
-)
-
-class Contact(
-    var id: String = "",
-    var name: String = "",
-    var dob: String = "",
-    var email: String = "",
-    var phone: String = "",
-    var imgUrl: String = "",
-    var address: Address
-)
-
-data class Address(
-    val address: String = "",
-    val street: String = "",
-    val city: String = "",
-    val country: String = "",
-    val pin: String = "",
-)
-
-data class Physique(
-    val age: Int = 0,
-    val bodyType: Int = 0,
-    val bmi: Int = 0,
-    val gender: String = "",
-    val height: Int = 0,
-    val isPregnant: Boolean = false,
-    val pregnancyWeek: Int = 0,
-    val weight: Int = 0,
-)
-
-data class HealthProperties(
-    val id: String = "",
-    val type: Int = 0,
-    val code: String = "",
-    val name: String = "",
-    val description: String = "",
-    val from: Double = 0.0,
-    val to: Double = 0.0,
-)
-*/

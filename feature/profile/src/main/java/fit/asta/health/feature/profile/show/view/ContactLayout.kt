@@ -29,9 +29,9 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.data.profile.remote.model.Address
-import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.ProfileMedia
+import fit.asta.health.data.profile.remote.model.UserDetail
+import fit.asta.health.data.profile.remote.model.UserProfileAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
 import fit.asta.health.designsystem.molecular.background.AppSurface
@@ -45,7 +45,7 @@ import fit.asta.health.resources.drawables.R as RDraw
 
 @Composable
 fun ContactLayout(
-    basicDetails: Contact,
+    basicDetails: UserDetail,
 ) {
     Column(
         modifier = Modifier
@@ -59,20 +59,20 @@ fun ContactLayout(
 }
 
 @Composable
-private fun UserProfileSection(basicDetails: Contact) {
+private fun UserProfileSection(basicDetails: UserDetail) {
     Column(
         modifier = Modifier
             .padding(top = AppTheme.spacing.level2)
             .fillMaxWidth(),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
-        UserProfileImg(userProfilePic = basicDetails.url)
+        UserProfileImg(userProfilePic = basicDetails.media)
         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         UserDetails(
             basicDetails.name,
-            basicDetails.phone,
+            basicDetails.phoneNumber,
             basicDetails.email,
-            basicDetails.address,
+            basicDetails.userProfileAddress,
         )
         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
     }
@@ -219,7 +219,7 @@ private fun UserDetails(
     name: String = "Naman",
     phoneNumber: String = "9305243422",
     email: String = "namangr8y@gmail.com",
-    address: Address = Address(
+    userProfileAddress: UserProfileAddress = UserProfileAddress(
         country = "India",
         city = "Kanpur",
         pin = "208016",
@@ -239,17 +239,17 @@ private fun UserDetails(
             BodyTexts.Level2(text = "+91 $phoneNumber")
         }
         BodyTexts.Level2(text = email)
-        if (address.pin.isNotEmpty()) {
+        if (userProfileAddress.pin.isNotEmpty()) {
             BodyTexts.Level3(text = buildString {
-                append(address.address)
+                append(userProfileAddress.address)
                 append(" ")
-                append(address.street)
+                append(userProfileAddress.street)
                 append(" ")
-                append(address.city)
+                append(userProfileAddress.city)
                 append(" ")
-                append(address.country)
+                append(userProfileAddress.country)
                 append(" - ")
-                append(address.pin)
+                append(userProfileAddress.pin)
             }, textAlign = TextAlign.Center)
         }
     }
