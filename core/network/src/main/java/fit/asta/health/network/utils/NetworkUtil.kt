@@ -73,7 +73,7 @@ object NetworkUtil {
         //TODO Make sure its deleted in production release
         //BuildConfig.FLAVOR.contentEquals("dev")
         //For self signed SSL Certificate - Only for dev and test environments
-        builder.hostnameVerifier { _, _ -> true }
+        //builder.hostnameVerifier { _, _ -> true }
 
         return builder.build()
     }
