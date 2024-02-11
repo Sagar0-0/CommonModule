@@ -8,7 +8,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.AnnotatedString
 import androidx.compose.ui.text.buildAnnotatedString
 import androidx.compose.ui.text.style.TextDecoration
-import fit.asta.health.common.utils.getImgUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.resources.strings.R
 import java.net.URLEncoder
@@ -43,7 +42,7 @@ fun AuthTermAndPrivacyUI(
         // Terms of Service Annotated String
         LinkedString(
             textToAnnotate = "terms",
-            annotation = getImgUrl(context.getString(R.string.url_terms_of_use)),
+            annotation = context.getString(R.string.url_terms_of_use),
             startIndex = termStartIndex,
             endIndex = termEndIndex
         )
@@ -54,7 +53,7 @@ fun AuthTermAndPrivacyUI(
         // Privacy Policy Annotated String
         LinkedString(
             textToAnnotate = "privacy",
-            annotation = getImgUrl(context.getString(R.string.url_privacy_policy)),
+            annotation = context.getString(R.string.url_privacy_policy),
             startIndex = privacyStartIndex,
             endIndex = privacyEndIndex
         )

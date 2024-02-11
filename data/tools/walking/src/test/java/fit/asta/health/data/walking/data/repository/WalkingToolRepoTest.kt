@@ -1,8 +1,8 @@
 package fit.asta.health.data.walking.data.repository
 
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.walking.data.source.api.WalkingApi
 import fit.asta.health.data.walking.data.source.network.request.PutData
 import fit.asta.health.data.walking.data.source.network.request.PutDayData
@@ -99,7 +99,7 @@ class WalkingToolRepoTest {
 
     @Test
     fun `putData, returns Success`() = runTest {
-        coEvery { api.putData(any()) } returns Response(data = PutResponse())
+        coEvery { api.putData(any()) } returns Response(data = SubmitProfileResponse())
         val putData: PutData = mockk()
         repo.putData(putData)
         coVerify { api.putData(putData) }
@@ -116,7 +116,7 @@ class WalkingToolRepoTest {
 
     @Test
     fun `putDayData, returns Success`() = runTest {
-        coEvery { api.putDayData(any()) } returns Response(data = PutResponse())
+        coEvery { api.putDayData(any()) } returns Response(data = SubmitProfileResponse())
         val putData: PutDayData = mockk()
         repo.putDayData(putData)
         coVerify { api.putDayData(putData) }

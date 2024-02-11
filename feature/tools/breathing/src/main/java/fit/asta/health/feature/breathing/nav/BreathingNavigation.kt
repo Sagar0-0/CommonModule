@@ -5,7 +5,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
-import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
@@ -23,7 +22,7 @@ fun NavController.navigateToBreathing(navOptions: NavOptions? = null) {
 }
 
 fun NavGraphBuilder.breathingNavigation(
-    navController: NavHostController, onBack: () -> Unit
+    navController: NavController, onBack: () -> Unit
 ) {
     navigation(
         route = BREATHING_GRAPH_ROUTE,

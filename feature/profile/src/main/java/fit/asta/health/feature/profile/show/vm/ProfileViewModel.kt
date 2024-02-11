@@ -1,27 +1,28 @@
 package fit.asta.health.feature.profile.show.vm
 
 import android.net.Uri
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.model.domain.User
-import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.InputWrapper
-import fit.asta.health.common.utils.PutResponse
-import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.profile.remote.model.Contact
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.Health
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
+import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.feature.profile.ProfileConstants.ADDRESS
@@ -49,7 +50,6 @@ import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.network.NetworkHelper
 import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -58,6 +58,7 @@ import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.combine
 import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
@@ -66,21 +67,27 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
-    private val authRepo: AuthRepo,
-    private val networkHelper: NetworkHelper,
+    @UID private val uid: String,
     private val savedState: SavedStateHandle,
 ) : ViewModel() {
 
-    //States
-    private val _stateSubmit = MutableStateFlow<UiState<PutResponse>>(UiState.Loading)
-    val stateSubmit = _stateSubmit.asStateFlow()
+    private val _submitProfileState = MutableStateFlow<UiState<SubmitProfileResponse>>(UiState.Idle)
+    val submitProfileState = _submitProfileState.asStateFlow()
 
-    private val mutableHPropState =
-        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Loading)
-    val stateHp = mutableHPropState.asStateFlow()
+    private val _healthPropState =
+        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Idle)
+    val healthPropState = _healthPropState.asStateFlow()
 
-    private val _mutableState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
-    val state = _mutableState.asStateFlow()
+    private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
+    val userProfileState = _userProfileState.asStateFlow()
+
+    var userProfileResponse by mutableStateOf(
+        UserProfileResponse()
+    )
+
+    fun updateUserProfileData(newUserProfileResponse: UserProfileResponse) {
+        userProfileResponse = newUserProfileResponse
+    }
 
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
@@ -89,10 +96,8 @@ class ProfileViewModel
     )
 
     val userImg = savedState.getStateFlow(
-        USER_IMG, ProfileMedia(name = "user_img", title = "User Profile Image")
+        USER_IMG, ProfileMedia()
     )
-
-    private val userID = savedState.getStateFlow(ID, "")
 
     //Physique
     val dob = savedState.getStateFlow(DOB, InputWrapper())
@@ -131,8 +136,7 @@ class ProfileViewModel
 
     // multiple radio buttons selection handling
     private val _radioButtonSelections = MutableStateFlow<Map<String, Any?>>(emptyMap())
-    val radioButtonSelections: StateFlow<Map<String, Any?>>
-        get() = _radioButtonSelections
+    val radioButtonSelections = _radioButtonSelections.asStateFlow()
 
     // Function to update the selection for a specific radio button
     fun updateRadioButtonSelection(radioButtonName: String, selection: Any) {
@@ -248,34 +252,35 @@ class ProfileViewModel
     }
 
 
-    init {
-        loadUserProfile()
-    }
+//    init {
+//        loadUserProfile()
+//    }
 
     fun loadUserProfile() {
-        authRepo.getUser()?.let {
-            loadUserProfileResponse(userId = it.uid)
-        }
+        loadUserProfileResponse(userId = uid)
     }
 
     private fun loadUserProfileResponse(userId: String) {
+        _userProfileState.value = UiState.Loading
         viewModelScope.launch {
             val result = profileRepo.getUserProfile(userId)
-            if (result is ResponseState.Success) handleSuccessResponse(result.data)
-            _mutableState.value = result.toUiState()
+//            if (result is ResponseState.Success) handleSuccessResponse(result.data)
+            _userProfileState.update {
+                if (it is UiState.Success) userProfileResponse = it.data
+                result.toUiState()
+            }
         }
     }
 
     private fun handleSuccessResponse(data: UserProfileResponse) {
-
         //Profile Data Replica
 //        savedState[PROFILE_DATA] = data
 
         //Access Data
-        handleContactData(data.contact, data.id)
+        handleContactData(data.userDetail, data.id)
         handlePhysiqueData(
             data.physique, dob = InputWrapper(
-                value = data.contact.dob
+                value = data.userDetail.dob
             )
         )
         handleHealthData(data.health)
@@ -283,14 +288,14 @@ class ProfileViewModel
         handleDietData(data.diet)
     }
 
-    private fun handleContactData(contact: Contact, id: String) {
-        savedState[NAME] = InputWrapper(value = contact.name)
-        savedState[EMAIL] = InputWrapper(value = contact.email)
-        savedState[PHONE] = InputWrapper(value = contact.phone)
-        savedState[USER_IMG] = contact.url.toString()
-        savedState[ADDRESS] = contact.address.toString()
+    private fun handleContactData(userDetail: UserDetail, id: String) {
+        savedState[NAME] = InputWrapper(value = userDetail.name)
+        savedState[EMAIL] = InputWrapper(value = userDetail.email)
+        savedState[PHONE] = InputWrapper(value = userDetail.phoneNumber)
+        savedState[USER_IMG] = userDetail.media.toString()
+        savedState[ADDRESS] = userDetail.userProfileAddress.toString()
         savedState[ID] = id
-        savedState[DOB] = InputWrapper(value = contact.dob)
+        savedState[DOB] = InputWrapper(value = userDetail.dob)
     }
 
     private fun handlePhysiqueData(
@@ -337,7 +342,7 @@ class ProfileViewModel
         )
         updateRadioButtonSelection(
             MultiRadioBtnKeys.HEALTHTAR.key,
-            checkTwoRadioBtnSelections(health.healthTargets.isNullOrEmpty())
+            checkTwoRadioBtnSelections(health.targets.isNullOrEmpty())
         )
         updateRadioButtonSelection(
             MultiRadioBtnKeys.ADDICTION.key,
@@ -358,7 +363,7 @@ class ProfileViewModel
                 4, health.medications ?: emptyList(), ComposeIndex.First, add = true
             )
             modifyPropertiesData(
-                5, health.healthTargets ?: emptyList(), ComposeIndex.First, add = true
+                5, health.targets ?: emptyList(), ComposeIndex.First, add = true
             )
             modifyPropertiesData(6, health.addiction ?: emptyList(), ComposeIndex.First, add = true)
         }
@@ -407,12 +412,12 @@ class ProfileViewModel
             modifyPropertiesData(2, diet.allergies ?: emptyList(), ComposeIndex.Third, add = true)
             modifyPropertiesData(3, diet.cuisines ?: emptyList(), ComposeIndex.Third, add = true)
             modifyPropertiesData(
-                4, diet.foodRestrictions ?: emptyList(), ComposeIndex.Third, add = true
+                4, diet.restrictions ?: emptyList(), ComposeIndex.Third, add = true
             )
         }
 
         updateRadioButtonSelection(
-            selection = checkTwoRadioBtnSelections(diet.foodRestrictions.isNullOrEmpty()),
+            selection = checkTwoRadioBtnSelections(diet.restrictions.isNullOrEmpty()),
             radioButtonName = MultiRadioBtnKeys.DIETREST.key
         )
     }
@@ -460,15 +465,13 @@ class ProfileViewModel
     }
 
 
-    private fun submit() {
-        authRepo.getUser()?.let { user ->
-            val userProfile = createUserProfile(user)
-            updateProfile(userProfile)
-        }
+    fun saveProfileData() {
+        val userProfile = createUserProfile()
+        saveProfileData(userProfile)
     }
 
 
-    private fun createUserProfile(user: User): UserProfileResponse {
+    private fun createUserProfile(): UserProfileResponse {
         val contact = createContact()
         val physique = createPhysique()
         val health = createHealth()
@@ -476,19 +479,18 @@ class ProfileViewModel
         val diet = createDiet()
 
         return UserProfileResponse(
-            uid = user.uid, id = userID.value, contact, physique, health, lifeStyle, diet
+            uid = uid, id = "", contact, physique, health, lifeStyle, diet
         )
     }
 
 
-    private fun createContact(): Contact {
-        // Extract the contact creation logic here
-        return Contact(
+    private fun createContact(): UserDetail {
+        // Extract the userDetail creation logic here
+        return UserDetail(
             dob = dob.value.value,
             email = email.value.value.trim(),
             name = name.value.value.trim(),
-            url = ProfileMedia(url = userImg.value.toString()),
-            localUrl = userImg.value.localUrl
+            media = userImg.value
         )
     }
 
@@ -534,7 +536,7 @@ class ProfileViewModel
             bodyPart = getValueAtIndex(ComposeIndex.First, 2)?.let { ArrayList(it) },
             ailments = getValueAtIndex(ComposeIndex.First, 3)?.let { ArrayList(it) },
             medications = getValueAtIndex(ComposeIndex.First, 4)?.let { ArrayList(it) },
-            healthTargets = getValueAtIndex(ComposeIndex.First, 5)?.let { ArrayList(it) },
+            targets = getValueAtIndex(ComposeIndex.First, 5)?.let { ArrayList(it) },
             addiction = getValueAtIndex(ComposeIndex.First, 6)?.let { ArrayList(it) },
             injurySince = if (injuriesSince.value.value == "") {
                 0
@@ -577,20 +579,22 @@ class ProfileViewModel
             nonVegDays = getValueAtIndex(ComposeIndex.Third, 1)?.let { ArrayList(it) },
             allergies = getValueAtIndex(ComposeIndex.Third, 2)?.let { ArrayList(it) },
             cuisines = getValueAtIndex(ComposeIndex.Third, 3)?.let { ArrayList(it) },
-            foodRestrictions = getValueAtIndex(ComposeIndex.Third, 4)?.let { ArrayList(it) })
+            restrictions = getValueAtIndex(ComposeIndex.Third, 4)?.let { ArrayList(it) })
     }
 
     //create+edit+update after edit
-    private fun updateProfile(userProfileResponse: UserProfileResponse) {
+    private fun saveProfileData(userProfileResponse: UserProfileResponse) {
         viewModelScope.launch {
-            _stateSubmit.value = profileRepo.updateUserProfile(userProfileResponse).toUiState()
+            _submitProfileState.update {
+                profileRepo.updateUserProfile(userProfileResponse).toUiState()
+            }
         }
 
     }
 
     private fun getHealthProperties(propertyType: String) {
         viewModelScope.launch {
-            mutableHPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
+            _healthPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
         }
     }
 
@@ -671,7 +675,7 @@ class ProfileViewModel
             is ProfileEvent.OnUserBedTimeChange -> handleUserBedTimeChange(event.bedTime)
             is ProfileEvent.OnUserWakeUpTimeChange -> handleUserWakeUpTimeChange(event.wakeUpTime)
             is ProfileEvent.OnProfilePicClear -> handleProfilePicClear()
-            is ProfileEvent.OnSubmit -> submit()
+            is ProfileEvent.OnSubmit -> saveProfileData()
             is ProfileEvent.GetHealthProperties -> getHealthProperties(event.propertyType)
             is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
                 event.index, event.item, event.composeIndex

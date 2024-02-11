@@ -9,19 +9,22 @@ import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.getNextDate
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.home.repo.ToolsHomeRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-class HomeViewModel @Inject constructor(
+class ToolsHomeViewModel @Inject constructor(
     private val toolsHomeRepo: ToolsHomeRepo,
+    private val prefManager: PrefManager,
     @UID private val uid: String
 ) : ViewModel() {
 
@@ -33,17 +36,20 @@ class HomeViewModel @Inject constructor(
             UiState.Loading
         }
         viewModelScope.launch {
-            _toolsHomeDataState.update {
-                toolsHomeRepo.getHomeData(
-                    userId = uid,
-                    latitude = "28.6353",//TODO: NEEDS TO BE DYNAMIC
-                    longitude = "77.2250",
-                    location = "bangalore",
-                    startDate = getCurrentDate(),
-                    endDate = getNextDate(2),
-                    time = getCurrentTime()
-                ).toUiState()
+            prefManager.address.collectLatest { address ->
+                _toolsHomeDataState.update {
+                    toolsHomeRepo.getHomeData(
+                        userId = uid,
+                        latitude = address.lat.toString(),
+                        longitude = address.long.toString(),
+                        location = address.currentAddress,
+                        startDate = getCurrentDate(),
+                        endDate = getNextDate(2),
+                        time = getCurrentTime()
+                    ).toUiState()
+                }
             }
+
         }
     }
 }

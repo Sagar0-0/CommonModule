@@ -165,6 +165,7 @@ class TodayPlanViewModel @Inject constructor(
     private fun getAlarms() {
         viewModelScope.launch {
             alarmLocalRepo.getAllAlarm().collectLatest { list ->
+                Log.d("TOOL", "getAlarms: ${list.map { it.info.tag }}")
                 _defaultScheduleVisibility.value = list.isEmpty()
                 _alarmListMorning.clear()
                 _alarmListAfternoon.clear()

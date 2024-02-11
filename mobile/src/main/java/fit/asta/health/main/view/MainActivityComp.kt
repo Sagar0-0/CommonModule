@@ -29,6 +29,7 @@ import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.HourMinAmPmKey
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SLEEP_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.SUNLIGHT_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.MainTopBarActions
@@ -38,9 +39,9 @@ import fit.asta.health.common.utils.shareReferralCode
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.feature.breathing.nav.navigateToBreathing
 import fit.asta.health.feature.exercise.nav.navigateToExercise
+import fit.asta.health.feature.profile.profile.navigateToProfile
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
-import fit.asta.health.feature.sleep.view.navigation.SLEEP_GRAPH_ROUTE
 import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
 import fit.asta.health.feature.sunlight.nav.navigateToSunlight
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
@@ -52,7 +53,7 @@ import fit.asta.health.main.MainViewModel
 import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.alarms.navigateToAllAlarms
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
-import fit.asta.health.navigation.tools.ui.viewmodel.HomeViewModel
+import fit.asta.health.navigation.tools.ui.viewmodel.ToolsHomeViewModel
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.navigateToFinalPaymentScreen
 import fit.asta.health.subscription.navigateToSubscriptionDurations
@@ -75,8 +76,8 @@ fun NavGraphBuilder.homeScreen(
         val offersDataState by
         subscriptionViewModel.offersDataState.collectAsStateWithLifecycle()
 
-        val homeViewModel: HomeViewModel = hiltViewModel()
-        val toolsHomeDataState by homeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
+        val toolsHomeViewModel: ToolsHomeViewModel = hiltViewModel()
+        val toolsHomeDataState by toolsHomeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
 
         LaunchedEffect(
             key1 = Unit,
@@ -191,7 +192,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     ToolsHomeUiEvent.LoadToolsData -> {
-                        homeViewModel.loadHomeData()
+                        toolsHomeViewModel.loadHomeData()
                     }
 
                     is ToolsHomeUiEvent.NavigateToFinalPayment -> {
@@ -256,7 +257,7 @@ fun NavGraphBuilder.homeScreen(
                     value = hourMinAmPm
                 )
             },
-            onClick = { key ->
+            onTopBarItemClick = { key ->
                 when (key) {
                     MainTopBarActions.Location -> {
                         enableLocationAndUpdateAddress()
@@ -271,7 +272,7 @@ fun NavGraphBuilder.homeScreen(
                     }
 
                     MainTopBarActions.Profile -> {
-                        navController.navigate(Graph.Profile.route)
+                        navController.navigateToProfile()
                     }
 
                     MainTopBarActions.Share -> {
@@ -297,11 +298,6 @@ fun checkPermissionAndLaunchScheduler(
             contract = ActivityResultContracts.RequestPermission()
         ) { perms ->
             if (perms) {
-                Toast.makeText(
-                    context,
-                    "Notification is recommended for better functionality.",
-                    Toast.LENGTH_SHORT
-                ).show()
                 PrefManager.setNotificationPermissionRejectedCount(context, 0)
                 navController.navigate(Graph.Scheduler.route)
             } else {

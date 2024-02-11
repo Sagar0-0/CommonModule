@@ -37,15 +37,15 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 weather = this.toolData.wea,
                 code = this.toolData.code,
                 style = this.toolData.prc[1].values[0].value,
+                bodyParts = this.toolData.prc[2].values[0].value,
+                challenge = this.toolData.prc[3].values[0].value,
+                bodyStretch = this.toolData.prc[4].values[0].value,
+                quick = this.toolData.prc[5].values[0].value,
+                level = this.toolData.prc[6].values[0].value,
+                instructor = this.toolData.prc[7].values[0].value,
+                music = this.toolData.prc[8].values[0].value,
+                language = this.toolData.prc[9].values[0].value,
                 durationPrc = this.toolData.prc[2].values[0].value,
-                bodyParts = this.toolData.prc[3].values[0].value,
-                challenge = this.toolData.prc[4].values[0].value,
-                bodyStretch = this.toolData.prc[5].values[0].value,
-                quick = this.toolData.prc[6].values[0].value,
-                level = this.toolData.prc[7].values[0].value,
-                instructor = this.toolData.prc[8].values[0].value,
-                music = this.toolData.prc[9].values[0].value,
-                language = this.toolData.prc[10].values[0].value,
             )
         }
         "dance"->{

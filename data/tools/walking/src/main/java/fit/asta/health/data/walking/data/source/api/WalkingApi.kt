@@ -1,8 +1,8 @@
 package fit.asta.health.data.walking.data.source.api
 
 import fit.asta.health.common.utils.NetSheetData
-import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.Response
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.walking.data.source.network.request.PutData
 import fit.asta.health.data.walking.data.source.network.request.PutDayData
 import fit.asta.health.data.walking.data.source.network.response.HomeData
@@ -20,10 +20,10 @@ interface WalkingApi {
 
 
     @PUT("tools/walking/put/")
-    suspend fun putData(@Body putData: PutData): Response<PutResponse>
+    suspend fun putData(@Body putData: PutData): Response<SubmitProfileResponse>
 
     @POST("tools/walking/day/post/")
-    suspend fun putDayData(@Body putDayData: PutDayData): Response<PutResponse>
+    suspend fun putDayData(@Body putDayData: PutDayData): Response<SubmitProfileResponse>
 
     @GET("tools/health/list/get/?")
     suspend fun getSheetData(

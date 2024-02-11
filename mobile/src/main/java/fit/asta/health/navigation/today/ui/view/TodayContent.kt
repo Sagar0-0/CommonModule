@@ -341,7 +341,8 @@ fun TodayTabContent(
                         )
                     },
                     onDone = {
-                        onNav(goToTool(data.info.tag))
+                        val route = goToTool(data.info.tag)
+                        if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
                         onNav(Graph.Scheduler.route)
@@ -383,7 +384,8 @@ fun TodayTabContent(
                         )
                     },
                     onDone = {
-                        onNav(goToTool(data.info.tag))
+                        val route = goToTool(data.info.tag)
+                        if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
                         onNav(Graph.Scheduler.route)
@@ -424,7 +426,8 @@ fun TodayTabContent(
                         )
                     },
                     onDone = {
-                        onNav(goToTool(data.info.tag))
+                        val route = goToTool(data.info.tag)
+                        if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
                         onNav(Graph.Scheduler.route)

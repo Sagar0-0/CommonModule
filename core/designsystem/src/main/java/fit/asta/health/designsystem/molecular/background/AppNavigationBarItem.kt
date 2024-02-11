@@ -113,9 +113,12 @@ fun RowScope.AppNavigationBarItem(
         icon = icon,
         modifier = modifier,
         enabled = enabled,
-        label = {
-            if (label != null) {
-                CaptionTexts.Level2(text = label)
+        label = label?.let {
+            {
+                CaptionTexts.Level2(
+                    maxLines = 1,
+                    text = label
+                )
             }
         },
         alwaysShowLabel = alwaysShowLabel,
@@ -182,9 +185,12 @@ fun RowScope.AppNavigationBarItem(
         },
         modifier = modifier,
         enabled = enabled,
-        label = {
-            if (label != null) {
-                CaptionTexts.Level2(text = label)
+        label = label?.let {
+            {
+                CaptionTexts.Level2(
+                    maxLines = 1,
+                    text = label
+                )
             }
         },
         alwaysShowLabel = alwaysShowLabel,

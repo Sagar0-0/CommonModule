@@ -77,7 +77,6 @@ android {
             isMinifyEnabled = true
             isShrinkResources = true
             isJniDebuggable = false
-            isRenderscriptDebuggable = false
 
             //signingConfig = signingConfigs.getByName("release")
             proguardFiles(

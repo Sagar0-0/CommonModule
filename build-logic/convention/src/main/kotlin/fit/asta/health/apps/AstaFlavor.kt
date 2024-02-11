@@ -37,7 +37,7 @@ enum class AstaFlavor(
 ) {
     dev(contentType, applicationIdSuffix = ".dev"),
     tst(contentType, applicationIdSuffix = ".tst"),
-    prod(contentType, applicationIdSuffix = "")
+    pro(contentType, applicationIdSuffix = "")
 }
 
 fun configureFlavors(

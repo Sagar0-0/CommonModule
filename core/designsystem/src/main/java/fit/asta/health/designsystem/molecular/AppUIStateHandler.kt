@@ -59,13 +59,17 @@ fun <T> AppUiStateHandler(
         }
 
         is UiState.ErrorMessage -> {
-            LaunchedEffect(Unit) {
-                Toast.makeText(
-                    context,
-                    uiState.resId.toStringFromResId(context),
-                    Toast.LENGTH_SHORT
-                ).show()
-                onErrorMessage.invoke()
+            if (errorMessageUi == null) {
+                LaunchedEffect(Unit) {
+                    Toast.makeText(
+                        context,
+                        uiState.resId.toStringFromResId(context),
+                        Toast.LENGTH_SHORT
+                    ).show()
+                    onErrorMessage.invoke()
+                }
+            } else {
+                errorMessageUi.invoke()
             }
         }
 
