@@ -8,6 +8,7 @@ import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.animation.Crossfade
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
@@ -46,6 +47,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.graphics.ImageBitmap
+import androidx.compose.ui.graphics.asAndroidBitmap
+import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -57,7 +61,9 @@ import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.toBitmap
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.common.utils.toUri
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.GenderCode
@@ -66,6 +72,7 @@ import fit.asta.health.data.profile.remote.model.UserProfileImageTypes
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
+import fit.asta.health.designsystem.molecular.ImageCropperScreen
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -118,6 +125,8 @@ fun BasicProfileScreenUi(
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
 ) {
+    val context = LocalContext.current
+
     var name by rememberSaveable(user) { mutableStateOf(user.name ?: "") }
     var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
     var isReferralChanged by rememberSaveable { mutableStateOf(false) }
@@ -140,123 +149,149 @@ fun BasicProfileScreenUi(
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
+    var cropImageBitmap by remember {
+        mutableStateOf<ImageBitmap?>(null)
+    }
+    var showImageCropper by remember {
+        mutableStateOf(false)
+    }
 
     val imagePickerLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
             uri?.let {
                 profileImageUri = it
+                showImageCropper = true
             }
         }
-
-    AppScaffold(
-        isScreenLoading = screenLoading,
-        topBar = {
-            AppTopBar(title = "Create Basic Profile", backIcon = null)
-        }
-    ) { paddingValues ->
-        Column(
-            modifier = Modifier
-                .padding(paddingValues)
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2)
-                .verticalScroll(rememberScrollState()),
-            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-        ) {
-            ProfileImageUi(
-                profileImageUri = profileImageUri,
-                googlePicUrl = user.photoUrl,
-                onClick = { imagePickerLauncher.launch("image/*") }
-            )
-
-            UsernameUi(name) { newName ->
-                name = newName
+    Box(modifier = Modifier.fillMaxSize()) {
+        AppScaffold(
+            isScreenLoading = screenLoading,
+            topBar = {
+                AppTopBar(title = "Create Basic Profile", backIcon = null)
             }
+        ) { paddingValues ->
 
-            GenderUi(genderCode) { newGender ->
-                genderCode = newGender
-            }
-
-            EmailUi(user.email) { cred ->
-                onEvent(BasicProfileEvent.Link(cred))
-            }
-
-            PhoneUi(
-                phoneNumber = phone,
-                navigateToPhoneAuth = {
-                    onEvent(BasicProfileEvent.NavigateToPhoneAuth)
-                }
-            )
-
-            ReferralUi(
-                refCode = referralCode,
-                checkReferralState = checkReferralCodeState,
-                onApplyReferralCode = {
-                    if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
-                        isReferralChanged = false
-                        onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
-                    }
-                },
-                resetCodeState = {
-                    onEvent(BasicProfileEvent.ResetReferralCodeState)
-                }
-            ) {
-                referralCode = it
-                isReferralChanged = true
-            }
-
-            CreateButton(
+            Column(
                 modifier = Modifier
+                    .padding(paddingValues)
                     .fillMaxWidth()
-                    .padding(
-                        bottom = AppTheme.spacing.level2
-                    ),
-                enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
-                text = "Create your Profile",
+                    .padding(horizontal = AppTheme.spacing.level2)
+                    .verticalScroll(rememberScrollState()),
+                verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
             ) {
-                onEvent(
-                    BasicProfileEvent.CreateBasicProfile(
-                        BasicProfileDTO(
-                            uid = user.uid,
-                            gmailPic = user.photoUrl,
-                            name = name,
-                            gen = genderCode,
-                            mail = email,
-                            ph = phone,
-                            refCode = if (checkReferralCodeState is UiState.Success) referralCode else ""
-                        )
-                    )
+                ProfileImageUi(
+                    profileImageUri = profileImageUri,
+                    cropImageBitmap = cropImageBitmap,
+                    googlePicUrl = user.photoUrl,
+                    onClick = { imagePickerLauncher.launch("image/*") }
                 )
-            }
 
-            AppUiStateHandler(
-                uiState = createBasicProfileState,
-                onErrorRetry = {
-                    onEvent(BasicProfileEvent.ResetCreateProfileState)
+                UsernameUi(name) { newName ->
+                    name = newName
+                }
+
+                GenderUi(genderCode) { newGender ->
+                    genderCode = newGender
+                }
+
+                EmailUi(user.email) { cred ->
+                    onEvent(BasicProfileEvent.Link(cred))
+                }
+
+                PhoneUi(
+                    phoneNumber = phone,
+                    navigateToPhoneAuth = {
+                        onEvent(BasicProfileEvent.NavigateToPhoneAuth)
+                    }
+                )
+
+                ReferralUi(
+                    refCode = referralCode,
+                    checkReferralState = checkReferralCodeState,
+                    onApplyReferralCode = {
+                        if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
+                            isReferralChanged = false
+                            onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
+                        }
+                    },
+                    resetCodeState = {
+                        onEvent(BasicProfileEvent.ResetReferralCodeState)
+                    }
+                ) {
+                    referralCode = it
+                    isReferralChanged = true
+                }
+
+                CreateButton(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(
+                            bottom = AppTheme.spacing.level2
+                        ),
+                    enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
+                    text = "Create your Profile",
+                ) {
                     onEvent(
                         BasicProfileEvent.CreateBasicProfile(
                             BasicProfileDTO(
                                 uid = user.uid,
                                 gmailPic = user.photoUrl,
+                                imageLocalUri = cropImageBitmap?.asAndroidBitmap()?.toUri(context)
+                                    ?: profileImageUri,
                                 name = name,
                                 gen = genderCode,
                                 mail = email,
                                 ph = phone,
-                                refCode = referralCode
+                                refCode = if (checkReferralCodeState is UiState.Success) referralCode else ""
                             )
                         )
                     )
-                },
-                onErrorMessage = {
-                    onEvent(BasicProfileEvent.ResetCreateProfileState)
                 }
-            ) {
-                LaunchedEffect(Unit) {
-                    onEvent(BasicProfileEvent.NavigateToHome)
+
+                AppUiStateHandler(
+                    uiState = createBasicProfileState,
+                    onErrorRetry = {
+                        onEvent(BasicProfileEvent.ResetCreateProfileState)
+                        onEvent(
+                            BasicProfileEvent.CreateBasicProfile(
+                                BasicProfileDTO(
+                                    uid = user.uid,
+                                    gmailPic = user.photoUrl,
+                                    imageLocalUri = cropImageBitmap?.asAndroidBitmap()
+                                        ?.toUri(context)
+                                        ?: profileImageUri,
+                                    name = name,
+                                    gen = genderCode,
+                                    mail = email,
+                                    ph = phone,
+                                    refCode = referralCode
+                                )
+                            )
+                        )
+                    },
+                    onErrorMessage = {
+                        onEvent(BasicProfileEvent.ResetCreateProfileState)
+                    }
+                ) {
+                    LaunchedEffect(Unit) {
+                        onEvent(BasicProfileEvent.NavigateToHome)
+                    }
+                }
+            }
+
+        }
+        if (showImageCropper) {
+            profileImageUri!!.toBitmap(context)?.asImageBitmap()?.let {
+                ImageCropperScreen(
+                    imageBitmap = it,
+                ) { image ->
+                    showImageCropper = false
+                    cropImageBitmap = image
                 }
             }
         }
-
     }
+
 }
 
 data class GenderData(
@@ -302,6 +337,7 @@ fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
 fun ProfileImageUi(
     modifier: Modifier = Modifier,
     profileImageUri: Uri? = null,
+    cropImageBitmap: ImageBitmap? = null,
     googlePicUrl: String? = null,
     onClick: () -> Unit = {}
 ) {
@@ -309,9 +345,10 @@ fun ProfileImageUi(
         modifier = modifier
             .fillMaxSize()
     ) {
+
         val (image, button) = createRefs()
         Log.d("PRO", "ProfileImageUi: $profileImageUri ,, $googlePicUrl")
-        if (profileImageUri == null && googlePicUrl == null) {
+        if (cropImageBitmap != null) {
             AppLocalImage(
                 modifier = Modifier
                     .size(AppTheme.boxSize.level8)
@@ -321,7 +358,7 @@ fun ProfileImageUi(
                         start.linkTo(parent.start)
                         end.linkTo(parent.end)
                     },
-                painter = painterResource(id = R.drawable.ic_person),
+                bitmap = cropImageBitmap,
                 contentDescription = "Profile"
             )
         } else if (profileImageUri != null) {
@@ -335,10 +372,9 @@ fun ProfileImageUi(
                         end.linkTo(parent.end)
                     },
                 model = profileImageUri,
-                errorImage = painterResource(id = R.drawable.ic_person),
                 contentDescription = "Profile"
             )
-        } else {
+        } else if (googlePicUrl != null) {
             AppNetworkImage(
                 modifier = Modifier
                     .size(AppTheme.boxSize.level8)
@@ -350,6 +386,19 @@ fun ProfileImageUi(
                     },
                 model = googlePicUrl,
                 errorImage = painterResource(id = R.drawable.ic_person),
+                contentDescription = "Profile"
+            )
+        } else {
+            AppLocalImage(
+                modifier = Modifier
+                    .size(AppTheme.boxSize.level8)
+                    .clip(CircleShape)
+                    .constrainAs(image) {
+                        top.linkTo(parent.top)
+                        start.linkTo(parent.start)
+                        end.linkTo(parent.end)
+                    },
+                painter = painterResource(id = R.drawable.ic_person),
                 contentDescription = "Profile"
             )
         }

@@ -105,6 +105,7 @@
             android:taskAffinity=""
             android:windowSoftInputMode="stateAlwaysHidden"
             tools:targetApi="o_mr1" />
+
         <activity
             android:name=".feature.spotify.SpotifyLoginActivity"
             android:exported="true"

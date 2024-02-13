@@ -1,10 +1,7 @@
 package fit.asta.health.main
 
 import android.widget.Toast
-import androidx.compose.foundation.layout.Box
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
-import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
@@ -15,7 +12,6 @@ import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
-import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.authRoute
@@ -57,11 +53,11 @@ fun MainNavHost(
     isConnected: Boolean,
     startDestination: String
 ) {
-    if (!isConnected) {
-        Box(modifier = Modifier.fillMaxSize()) {
-            AppInternetErrorDialog {}
-        }
-    }
+//    if (!isConnected) {
+//        Box(modifier = Modifier.fillMaxSize()) {
+//            AppInternetErrorDialog {}
+//        }
+//    }
     MainNavHost(startDestination)
 }
 
