@@ -11,6 +11,7 @@ import androidx.compose.ui.graphics.ColorFilter
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import coil.ImageLoader
 import coil.compose.rememberAsyncImagePainter
 import coil.decode.GifDecoder
@@ -36,6 +37,7 @@ fun AppGifImage(
     modifier: Modifier = Modifier,
     url: String,
     @DrawableRes placeholder: Int = R.drawable.placeholder_tag,
+    errorImage: Painter? = painterResource(id = AppConstImages.errorImg),
     contentDescription: String? = null,
     contentScale: ContentScale = ContentScale.FillBounds,
     colorFilter: ColorFilter? = null
@@ -60,7 +62,8 @@ fun AppGifImage(
                 .data(data = url)
                 .apply(block = { size(Size.ORIGINAL) })
                 .build(),
-            imageLoader = imageLoader
+            imageLoader = imageLoader,
+            error = errorImage
         ),
         contentDescription = contentDescription,
         contentScale = contentScale,
