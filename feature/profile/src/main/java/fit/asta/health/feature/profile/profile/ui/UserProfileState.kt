@@ -16,8 +16,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
@@ -41,13 +43,21 @@ fun rememberUserProfileState(
     navController: NavController = rememberNavController(),
     onEvent: (UserProfileEvent) -> Unit
 ): UserProfileState {
-    return remember(
+    return rememberSaveable(
         userProfileResponse,
         submitProfileState,
         pagerState,
         coroutineScope,
         navController,
-//        saver = UserProfileState.Saver(userProfileResponse,submitProfileState,onEvent)
+        saver = UserProfileState
+            .Saver(
+                userProfileResponse,
+                submitProfileState,
+                pagerState,
+                coroutineScope,
+                navController,
+                onEvent
+            )
     ) {
         UserProfileState(
             submitProfileState = submitProfileState,
@@ -86,17 +96,6 @@ class UserProfileState(
     private var isAnythingChanged by mutableStateOf(false)
     var isImageCropperVisible by mutableStateOf(false)
 
-
-//    var userProfileResponse: UserProfileResponse
-//        get() = _userProfileResponse
-//        set(value) {
-//            if (_userProfileResponse != value) {
-//                isAnythingChanged = true
-//            }
-//            onEvent(UserProfileEvent.UpdateUserProfileData(value))
-//        }
-
-
     var currentPageIndex: Int
         get() = pagerState.currentPage
         set(value) {
@@ -104,6 +103,10 @@ class UserProfileState(
                 pagerState.animateScrollToPage(value)
             }
         }
+
+    val profileDataPages: List<ProfileNavigationScreen>
+        get() = ProfileNavigationScreen.entries
+
 
     fun onBackPressed() {
         if (isAnythingChanged) {
@@ -129,30 +132,42 @@ class UserProfileState(
         profileImageUrl = ""
     }
 
-    val profileDataPages: List<ProfileNavigationScreen>
-        get() = ProfileNavigationScreen.entries
-
-
-//    companion object {
-//        fun Saver(
-//            userProfileResponse: UserProfileResponse,
-//            submitProfileState: UiState<SubmitProfileResponse>,
-//            onEvent: (UserProfileEvent) -> Unit
-//        ) : Saver<UserProfileState, *> = listSaver(
-//            save = {
-//                listOf(
-//                    it.isConfirmDialogVisible,
-//                )
-//            },
-//            restore = {
-//                UserProfileState(
-//                    userProfileResponse = userProfileResponse
-//                ).apply {
-//                    this.isConfirmDialogVisible = it[0]
-//                }
-//            }
-//        )
-//    }
+    companion object {
+        fun Saver(
+            userProfileResponse: UserProfileResponse,
+            submitProfileState: UiState<SubmitProfileResponse>,
+            pagerState: PagerState,
+            coroutineScope: CoroutineScope,
+            navController: NavController,
+            onEvent: (UserProfileEvent) -> Unit
+        ): Saver<UserProfileState, *> = listSaver(
+            save = {
+                listOf(
+                    it.userName,
+                    it.profileImageLocalUri,
+                    it.isConfirmDialogVisible,
+                    it.isAnythingChanged,
+                    it.isImageCropperVisible,
+                )
+            },
+            restore = {
+                UserProfileState(
+                    submitProfileState = submitProfileState,
+                    userProfileResponse = userProfileResponse,
+                    pagerState = pagerState,
+                    coroutineScope = coroutineScope,
+                    navController = navController,
+                    onEvent = onEvent
+                ).apply {
+                    this.userName = it[0] as String
+                    this.profileImageLocalUri = it[1] as Uri?
+                    this.isConfirmDialogVisible = it[2] as Boolean
+                    this.isAnythingChanged = it[3] as Boolean
+                    this.isImageCropperVisible = it[4] as Boolean
+                }
+            }
+        )
+    }
 }
 
 
