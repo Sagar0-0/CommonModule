@@ -13,13 +13,11 @@ import androidx.compose.material.icons.outlined.Egg
 import androidx.compose.material.icons.outlined.Face
 import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
@@ -41,63 +39,23 @@ fun rememberUserProfileState(
     },
     coroutineScope: CoroutineScope = rememberCoroutineScope(),
     navController: NavController = rememberNavController(),
-    onSaveData: () -> Unit = {},
-    onDataChange: (UserProfileResponse) -> Unit = {}
+    onEvent: (UserProfileEvent) -> Unit
 ): UserProfileState {
-
-    var isConfirmDialogVisible by rememberSaveable { mutableStateOf(false) }
-    var isAnythingChanged by rememberSaveable { mutableStateOf(false) }
-    var profileImageUri by rememberSaveable { mutableStateOf<Uri?>(null) }
-
-    LaunchedEffect(submitProfileState) {
-        if (submitProfileState is UiState.Success) {
-            isAnythingChanged = false
-            isConfirmDialogVisible = false
-        }
-    }
-
     return remember(
         userProfileResponse,
         submitProfileState,
         pagerState,
         coroutineScope,
         navController,
-        isConfirmDialogVisible,
-        isAnythingChanged,
-        profileImageUri
+//        saver = UserProfileState.Saver(userProfileResponse,submitProfileState,onEvent)
     ) {
         UserProfileState(
             submitProfileState = submitProfileState,
-            _userProfileResponse = userProfileResponse,
+            userProfileResponse = userProfileResponse,
             pagerState = pagerState,
             coroutineScope = coroutineScope,
             navController = navController,
-            _isConfirmDialogVisible = isConfirmDialogVisible,
-            _isAnythingChanged = isAnythingChanged,
-            _profileImageUri = profileImageUri,
-            onEvent = { event ->
-                when (event) {
-                    is UserProfileEvent.UpdateConfirmDialogState -> {
-                        isConfirmDialogVisible = event.newValue
-                    }
-
-                    is UserProfileEvent.UpdateProfileUri -> {
-                        profileImageUri = event.uri
-                    }
-
-                    is UserProfileEvent.UpdateAnythingChanged -> {
-                        isAnythingChanged = event.newValue
-                    }
-
-                    is UserProfileEvent.UpdateUserProfileData -> {
-                        onDataChange(event.userProfileResponse)
-                    }
-
-                    is UserProfileEvent.SaveData -> {
-                        onSaveData()
-                    }
-                }
-            }
+            onEvent = onEvent
         )
     }
 }
@@ -105,24 +63,39 @@ fun rememberUserProfileState(
 @Stable
 class UserProfileState(
     val submitProfileState: UiState<SubmitProfileResponse>,
-    private val _userProfileResponse: UserProfileResponse,
+    private val userProfileResponse: UserProfileResponse,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
     private val navController: NavController,
-    private val _isAnythingChanged: Boolean,
-    private val _profileImageUri: Uri?,
-    private val _isConfirmDialogVisible: Boolean,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
 
-    var userProfileResponse: UserProfileResponse
-        get() = _userProfileResponse
-        set(value) {
-            if (_userProfileResponse != value) {
-                isAnythingChanged = true
-            }
-            onEvent(UserProfileEvent.UpdateUserProfileData(value))
-        }
+    var userName by mutableStateOf(userProfileResponse.userDetail.name)
+    val email: String
+        get() = userProfileResponse.userDetail.email
+    val phoneNumber: String
+        get() = userProfileResponse.userDetail.phoneNumber
+    val address: String
+        get() = userProfileResponse.userDetail.userProfileAddress.toString()
+    var profileImageUrl: String by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
+        private set
+
+    var profileImageLocalUri by mutableStateOf<Uri?>(null)
+
+    var isConfirmDialogVisible by mutableStateOf(false)
+    private var isAnythingChanged by mutableStateOf(false)
+    var isImageCropperVisible by mutableStateOf(false)
+
+
+//    var userProfileResponse: UserProfileResponse
+//        get() = _userProfileResponse
+//        set(value) {
+//            if (_userProfileResponse != value) {
+//                isAnythingChanged = true
+//            }
+//            onEvent(UserProfileEvent.UpdateUserProfileData(value))
+//        }
+
 
     var currentPageIndex: Int
         get() = pagerState.currentPage
@@ -130,25 +103,6 @@ class UserProfileState(
             coroutineScope.launch {
                 pagerState.animateScrollToPage(value)
             }
-        }
-
-
-    private var isAnythingChanged: Boolean
-        get() = _isAnythingChanged
-        set(value) {
-            onEvent(UserProfileEvent.UpdateAnythingChanged(value))
-        }
-
-    var isConfirmDialogVisible: Boolean
-        get() = _isConfirmDialogVisible
-        set(value) {
-            onEvent(UserProfileEvent.UpdateConfirmDialogState(value))
-        }
-
-    var profileImageUri: Uri?
-        get() = _profileImageUri
-        set(value) {
-            onEvent(UserProfileEvent.UpdateProfileUri(value))
         }
 
     fun onBackPressed() {
@@ -171,23 +125,38 @@ class UserProfileState(
     }
 
     fun clearProfile() {
-        TODO("Not yet implemented")
-    }
-
-    fun updateName(it: String) {
-        TODO("Not yet implemented")
+        profileImageLocalUri = null
+        profileImageUrl = ""
     }
 
     val profileDataPages: List<ProfileNavigationScreen>
         get() = ProfileNavigationScreen.entries
 
+
+//    companion object {
+//        fun Saver(
+//            userProfileResponse: UserProfileResponse,
+//            submitProfileState: UiState<SubmitProfileResponse>,
+//            onEvent: (UserProfileEvent) -> Unit
+//        ) : Saver<UserProfileState, *> = listSaver(
+//            save = {
+//                listOf(
+//                    it.isConfirmDialogVisible,
+//                )
+//            },
+//            restore = {
+//                UserProfileState(
+//                    userProfileResponse = userProfileResponse
+//                ).apply {
+//                    this.isConfirmDialogVisible = it[0]
+//                }
+//            }
+//        )
+//    }
 }
 
 
 sealed interface UserProfileEvent {
-    data class UpdateProfileUri(val uri: Uri?) : UserProfileEvent
-    data class UpdateConfirmDialogState(val newValue: Boolean) : UserProfileEvent
-    data class UpdateAnythingChanged(val newValue: Boolean) : UserProfileEvent
     data object SaveData : UserProfileEvent
     data class UpdateUserProfileData(val userProfileResponse: UserProfileResponse) :
         UserProfileEvent

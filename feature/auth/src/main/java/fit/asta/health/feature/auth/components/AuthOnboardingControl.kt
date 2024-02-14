@@ -25,7 +25,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.data.onboarding.model.OnBoardingDataType
 import fit.asta.health.data.onboarding.model.OnboardingData
@@ -134,7 +134,7 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
                     OnBoardingDataType.Image.type, OnBoardingDataType.GIF.type -> {
                         AppGifImage(
                             modifier = Modifier.fillMaxSize(),
-                            url = getImgUrl(url = items[page].url),
+                            url = getImageUrl(url = items[page].url),
                             contentScale = ContentScale.FillBounds
                         )
                     }

@@ -48,8 +48,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.asAndroidBitmap
-import androidx.compose.ui.graphics.asImageBitmap
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
@@ -60,10 +58,8 @@ import com.google.firebase.auth.AuthCredential
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getImgUrl
-import fit.asta.health.common.utils.toBitmap
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.common.utils.toUri
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.GenderCode
@@ -149,9 +145,6 @@ fun BasicProfileScreenUi(
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
     }
-    var cropImageBitmap by remember {
-        mutableStateOf<ImageBitmap?>(null)
-    }
     var showImageCropper by remember {
         mutableStateOf(false)
     }
@@ -181,7 +174,6 @@ fun BasicProfileScreenUi(
             ) {
                 ProfileImageUi(
                     profileImageUri = profileImageUri,
-                    cropImageBitmap = cropImageBitmap,
                     googlePicUrl = user.photoUrl,
                     onClick = { imagePickerLauncher.launch("image/*") }
                 )
@@ -236,8 +228,7 @@ fun BasicProfileScreenUi(
                             BasicProfileDTO(
                                 uid = user.uid,
                                 gmailPic = user.photoUrl,
-                                imageLocalUri = cropImageBitmap?.asAndroidBitmap()?.toUri(context)
-                                    ?: profileImageUri,
+                                imageLocalUri = profileImageUri,
                                 name = name,
                                 gen = genderCode,
                                 mail = email,
@@ -257,9 +248,7 @@ fun BasicProfileScreenUi(
                                 BasicProfileDTO(
                                     uid = user.uid,
                                     gmailPic = user.photoUrl,
-                                    imageLocalUri = cropImageBitmap?.asAndroidBitmap()
-                                        ?.toUri(context)
-                                        ?: profileImageUri,
+                                    imageLocalUri = profileImageUri,
                                     name = name,
                                     gen = genderCode,
                                     mail = email,
@@ -280,15 +269,13 @@ fun BasicProfileScreenUi(
             }
 
         }
-        if (showImageCropper) {
-            profileImageUri!!.toBitmap(context)?.asImageBitmap()?.let {
-                ImageCropperScreen(
-                    imageBitmap = it,
-                ) { image ->
-                    showImageCropper = false
-                    cropImageBitmap = image
-                }
-            }
+        ImageCropperScreen(
+            modifier = Modifier.fillMaxSize(),
+            visible = showImageCropper,
+            uri = profileImageUri,
+        ) { croppedImage ->
+            showImageCropper = false
+            profileImageUri = croppedImage
         }
     }
 
@@ -596,7 +583,7 @@ fun ReferralUi(
                             modifier = Modifier
                                 .size(AppTheme.imageSize.level4)
                                 .clip(CircleShape),
-                            model = if (checkReferralCodeState.data.imageType == UserProfileImageTypes.GOOGLE.imageType) checkReferralCodeState.data.pic else getImgUrl(
+                            model = if (checkReferralCodeState.data.imageType == UserProfileImageTypes.GOOGLE.imageType) checkReferralCodeState.data.pic else getImageUrl(
                                 checkReferralCodeState.data.pic
                             ),
                         )

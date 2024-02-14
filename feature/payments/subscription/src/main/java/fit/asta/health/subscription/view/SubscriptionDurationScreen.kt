@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.alpha
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -248,7 +248,7 @@ fun FeaturesSection(featuresList: List<FeaturesUiData>) {
                         .padding(AppTheme.spacing.level1)
                 ) {
                     AppNetworkImage(
-                        model = getImgUrl(it.url),
+                        model = getImageUrl(it.url),
                         modifier = Modifier
                             .size(AppTheme.imageSize.level11)
                             .aspectRatio(ratio = AppTheme.aspectRatio.square)

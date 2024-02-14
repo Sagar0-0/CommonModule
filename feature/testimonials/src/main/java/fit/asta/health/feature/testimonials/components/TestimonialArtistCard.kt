@@ -10,7 +10,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
@@ -67,7 +67,7 @@ fun TestimonialArtistCard(
         // Network Image of the artist
         AppNetworkImage(
             modifier = Modifier.size(AppTheme.imageSize.level9),
-            model = getImgUrl(url = "/images/$userId/userProfile/$userId"),
+            model = getImageUrl(url = "/images/$userId/userProfile/$userId"),
             contentDescription = "Testimonials artist's Profile Pic"
         )
 

@@ -15,7 +15,7 @@ import androidx.compose.material.icons.filled.Warning
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -54,7 +54,7 @@ fun UserSubscribedPlanSection(
                 verticalAlignment = Alignment.Top
             ) {
                 AppNetworkImage(
-                    model = getImgUrl(userSubscribedPlan.imageUrl),
+                    model = getImageUrl(userSubscribedPlan.imageUrl),
                     modifier = Modifier
                         .padding(end = AppTheme.spacing.level1)
                         .size(AppTheme.imageSize.level11)

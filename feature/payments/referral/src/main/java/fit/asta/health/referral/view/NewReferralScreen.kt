@@ -31,7 +31,7 @@ import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.copyTextToClipboard
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -274,7 +274,7 @@ fun ReferralUserItem(
                         .align(Alignment.CenterVertically)
                         .size(AppTheme.imageSize.level4)
                         .clip(CircleShape),
-                    model = if (userDetails.imageType == UserProfileImageTypes.GOOGLE.imageType) userDetails.pic else getImgUrl(
+                    model = if (userDetails.imageType == UserProfileImageTypes.GOOGLE.imageType) userDetails.pic else getImageUrl(
                         userDetails.pic
                     ),
                 )

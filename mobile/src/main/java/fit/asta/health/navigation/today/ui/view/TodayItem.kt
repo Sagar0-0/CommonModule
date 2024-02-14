@@ -35,7 +35,7 @@ import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.AMPMHoursMin
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
@@ -112,7 +112,7 @@ fun TodayItem(
                 AppNetworkImage(
                     errorImage = painterResource(R.drawable.placeholder_tag),
                     model = ImageRequest.Builder(LocalContext.current)
-                        .data(getImgUrl(url = item.info.url))
+                        .data(getImageUrl(url = item.info.url))
                         .crossfade(true)
                         .build(),
                     contentDescription = null,
@@ -186,7 +186,7 @@ fun TodayItem1(
             AppNetworkImage(
                 errorImage = painterResource(R.drawable.placeholder_tag),
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(getImgUrl(url = item.info.url))
+                    .data(getImageUrl(url = item.info.url))
                     .crossfade(true)
                     .build(),
                 contentDescription = null,
@@ -342,7 +342,7 @@ fun TodayItem2(
                     AppNetworkImage(
                         errorImage = painterResource(R.drawable.placeholder_tag),
                         model = ImageRequest.Builder(LocalContext.current)
-                            .data(getImgUrl(url = item.info.url))
+                            .data(getImageUrl(url = item.info.url))
                             .crossfade(true)
                             .build(),
                         contentDescription = null,

@@ -18,7 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.walking.domain.formatDuration
 import fit.asta.health.designsystem.AppTheme
@@ -52,7 +52,8 @@ fun StepsActivityScreen(
                 modifier = Modifier
                     .aspectRatio(AppTheme.aspectRatio.square)
                     .clip(AppTheme.shape.level1),
-                model = getImgUrl(url = "/tags/Walking+Tag.png"), contentDescription = "cardTitle",
+                model = getImageUrl(url = "/tags/Walking+Tag.png"),
+                contentDescription = "cardTitle",
                 contentScale = ContentScale.Crop,
             )
         }

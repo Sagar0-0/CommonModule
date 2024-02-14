@@ -1,10 +1,7 @@
 package fit.asta.health.feature.profile.show.vm
 
 import android.net.Uri
-import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
 import androidx.lifecycle.ViewModel
@@ -80,14 +77,6 @@ class ProfileViewModel
 
     private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val userProfileState = _userProfileState.asStateFlow()
-
-    var userProfileResponse by mutableStateOf(
-        UserProfileResponse()
-    )
-
-    fun updateUserProfileData(newUserProfileResponse: UserProfileResponse) {
-        userProfileResponse = newUserProfileResponse
-    }
 
     //Details
     val name = savedState.getStateFlow(NAME, InputWrapper())
@@ -266,7 +255,6 @@ class ProfileViewModel
             val result = profileRepo.getUserProfile(userId)
 //            if (result is ResponseState.Success) handleSuccessResponse(result.data)
             _userProfileState.update {
-                if (it is UiState.Success) userProfileResponse = it.data
                 result.toUiState()
             }
         }

@@ -25,7 +25,7 @@ import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.meditation.db.MeditationData
@@ -375,7 +375,7 @@ class MeditationViewModel @Inject constructor(
                     music.value = Song(
                         id = 55,
                         artist = data.music.artist_name,
-                        artworkUri = getImgUrl(data.music.imgUrl).toUri(),
+                        artworkUri = getImageUrl(data.music.imgUrl).toUri(),
                         duration = 4,
                         mediaUri = getVideoUrl(data.music.music_url).toUri(),
                         title = data.music.music_name,
@@ -390,7 +390,7 @@ class MeditationViewModel @Inject constructor(
                             Song(
                                 id = index,
                                 artist = it.artist_name,
-                                artworkUri = getImgUrl(it.imgUrl).toUri(),
+                                artworkUri = getImageUrl(it.imgUrl).toUri(),
                                 duration = duration(it.duration),
                                 mediaUri = getVideoUrl(if (index > 17) url else it.music_url).toUri(),
                                 title = "Day $index",

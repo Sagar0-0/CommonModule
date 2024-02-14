@@ -56,7 +56,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
 import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
@@ -469,7 +469,8 @@ fun TodayItem(
                 modifier = modifier.fillMaxWidth()
             ) {
                 AppNetworkImage(
-                    model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
+                    model = ImageRequest.Builder(LocalContext.current)
+                        .data(getImageUrl(url = image))
                         .crossfade(true).build(),
                     contentDescription = stringResource(R.string.description),
                     contentScale = ContentScale.Crop,

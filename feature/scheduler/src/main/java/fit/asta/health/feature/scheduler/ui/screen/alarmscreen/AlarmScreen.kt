@@ -19,7 +19,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -39,7 +39,7 @@ fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
         Box(modifier = Modifier.fillMaxSize()) {
             AppNetworkImage(
                 model = ImageRequest.Builder(LocalContext.current)
-                    .data(getImgUrl(url = uiState.image))
+                    .data(getImageUrl(url = uiState.image))
                     .crossfade(true)
                     .build(),
                 alpha = 0.8f,

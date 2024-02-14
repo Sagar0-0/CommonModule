@@ -32,7 +32,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
@@ -187,7 +187,7 @@ fun SubscriptionCheckoutScreen(
         ) {
             // AppLocalImage is a custom composable to load and display local images.
             AppNetworkImage(
-                model = getImgUrl(subscriptionCheckoutScreenData.imageUrl),
+                model = getImageUrl(subscriptionCheckoutScreenData.imageUrl),
                 modifier = Modifier
                     .fillMaxWidth()
                     .aspectRatio(AppTheme.aspectRatio.fullScreen)

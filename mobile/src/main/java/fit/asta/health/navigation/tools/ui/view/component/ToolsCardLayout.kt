@@ -16,7 +16,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -40,7 +40,7 @@ fun ToolsCardLayout(
                 modifier = Modifier
                     .aspectRatio(AppTheme.aspectRatio.square)
                     .clip(AppTheme.shape.level1),
-                model = getImgUrl(url = imgUrl), contentDescription = cardTitle,
+                model = getImageUrl(url = imgUrl), contentDescription = cardTitle,
                 contentScale = ContentScale.Crop,
             )
 

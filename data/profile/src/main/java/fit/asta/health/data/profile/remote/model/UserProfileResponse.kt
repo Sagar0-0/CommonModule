@@ -36,7 +36,11 @@ data class UserProfileAddress(
     @SerializedName("cty") val city: String = "Noida",
     @SerializedName("pin") val pin: String = "123456",
     @SerializedName("st") val street: String = "Some Street",
-)
+) {
+    override fun toString(): String {
+        return "$address, $street, $city, $country"
+    }
+}
 
 data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE

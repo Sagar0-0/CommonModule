@@ -30,7 +30,7 @@ import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.HourMinAmPm
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
@@ -169,7 +169,7 @@ fun AlarmItem(
             horizontalArrangement = Arrangement.spacedBy(space = AppTheme.spacing.level1)
         ) {
             AppNetworkImage(
-                model = ImageRequest.Builder(LocalContext.current).data(getImgUrl(url = image))
+                model = ImageRequest.Builder(LocalContext.current).data(getImageUrl(url = image))
                     .crossfade(true).build(),
                 contentDescription = R.string.description.toStringFromResId(),
                 contentScale = ContentScale.Crop,
