@@ -7,6 +7,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.popUpToTop
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.feature.auth.screens.AuthPhoneSignInScreen
@@ -36,12 +37,14 @@ fun NavGraphBuilder.authRoute(
 
     composable(AUTH_GRAPH_ROUTE) {
         val authViewModel: AuthViewModel = it.sharedViewModel(navController = navController)
-        LaunchedEffect(Unit) {
-            authViewModel.getOnboardingData()
-        }
-
         val loginState by authViewModel.loginState.collectAsStateWithLifecycle()
         val onboardingState by authViewModel.onboardingDatState.collectAsStateWithLifecycle()
+        LaunchedEffect(Unit) {
+            if (onboardingState !is UiState.Success) {
+                authViewModel.getOnboardingData()
+            }
+        }
+
 
         AuthScreenControl(
             loginState = loginState,
