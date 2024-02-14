@@ -111,4 +111,6 @@ dependencies {
     implementation(libs.glide)
 
     implementation(libs.androidx.lifecycle.extensions)
+
+    implementation("com.github.SmartToolFactory:Compose-Cropper:0.4.0")
 }

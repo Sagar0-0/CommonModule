@@ -17,7 +17,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -167,7 +167,7 @@ fun SubscriptionPassCard(
             // Display an image using AppNetworkImage
 
             AppNetworkImage(
-                model = getImgUrl(subscriptionData.imageRes),
+                model = getImageUrl(subscriptionData.imageRes),
                 modifier = Modifier
                     .size(AppTheme.imageSize.level11)
                     .aspectRatio(ratio = AppTheme.aspectRatio.square)

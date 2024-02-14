@@ -2,7 +2,7 @@ package fit.asta.health.feature.testimonials.utils
 
 import android.net.Uri
 import androidx.compose.runtime.Composable
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 
 /**[getOneUrl] function is a utility function used in Jetpack Compose for Android development. It is
  *  designed to retrieve a single URL as a String based on the provided localUrl and remoteUrl parameters.
@@ -15,5 +15,5 @@ import fit.asta.health.common.utils.getImgUrl
 
 @Composable
 fun getOneUrl(localUrl: Uri?, remoteUrl: String): String {
-    return localUrl?.toString() ?: getImgUrl(remoteUrl)
+    return localUrl?.toString() ?: getImageUrl(remoteUrl)
 }

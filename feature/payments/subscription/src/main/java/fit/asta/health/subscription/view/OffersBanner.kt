@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -111,7 +111,7 @@ fun OffersBanner(
                     OffersBannerContentType.Image.type -> {
                         // Image content
                         AppNetworkImage(
-                            model = getImgUrl(offersList[page].url),
+                            model = getImageUrl(offersList[page].url),
                             contentDescription = "Offers Banner",
                             modifier = Modifier.fillMaxSize(),
                             contentScale = ContentScale.FillBounds
@@ -122,7 +122,7 @@ fun OffersBanner(
                         // GIF content
                         AppGifImage(
                             modifier = Modifier.fillMaxSize(),
-                            url = getImgUrl(offersList[page].url),
+                            url = getImageUrl(offersList[page].url),
                             contentScale = ContentScale.FillBounds
                         )
                     }

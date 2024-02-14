@@ -2,6 +2,7 @@ package fit.asta.health.feature.profile.show
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.NavigationBarItemDefaults
@@ -11,6 +12,7 @@ import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
+import fit.asta.health.designsystem.molecular.ImageCropperScreen
 import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.background.AppNavigationBar
 import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
@@ -46,6 +48,7 @@ fun UserProfileContent(
     ) { padding ->
         Column(
             modifier = Modifier
+                .fillMaxSize()
                 .padding(padding)
         ) {
 
@@ -149,4 +152,14 @@ fun UserProfileContent(
             )
         }
     }
+
+    ImageCropperScreen(
+        modifier = Modifier.fillMaxSize(),
+        visible = userProfileState.isImageCropperVisible,
+        uri = userProfileState.profileImageLocalUri,
+        onCropClick = { croppedImage ->
+            userProfileState.profileImageLocalUri = croppedImage
+            userProfileState.isImageCropperVisible = false
+        }
+    )
 }

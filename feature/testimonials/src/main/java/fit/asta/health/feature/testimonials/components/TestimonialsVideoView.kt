@@ -17,7 +17,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
 import androidx.media3.common.MediaItem
 import androidx.media3.common.MediaMetadata
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppSurface
@@ -59,7 +59,7 @@ fun TestimonialsVideoView(
     val player by rememberManagedExoPlayer()
     val mediaItem = remember {
         MediaItem.Builder().setUri(videoUri.toUri()).setMediaId(videoUri).setMediaMetadata(
-            MediaMetadata.Builder().setArtworkUri(getImgUrl("/tags/Breathing+Tag.png").toUri())
+            MediaMetadata.Builder().setArtworkUri(getImageUrl("/tags/Breathing+Tag.png").toUri())
                 .build()
         ).build()
     }

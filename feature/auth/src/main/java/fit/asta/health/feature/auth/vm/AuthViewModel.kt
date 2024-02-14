@@ -72,7 +72,7 @@ internal class AuthViewModel
     fun getOnboardingData() {
         _onboardingDataState.value = UiState.Loading
         viewModelScope.launch {
-            _onboardingDataState.value = onboardingRepo.getData().toUiState()
+            _onboardingDataState.update { onboardingRepo.getData().toUiState() }
         }
     }
 

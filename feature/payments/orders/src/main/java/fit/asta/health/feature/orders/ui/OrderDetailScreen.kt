@@ -16,7 +16,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toDateFormat
 import fit.asta.health.data.orders.remote.model.OrderDetailData
 import fit.asta.health.designsystem.AppTheme
@@ -85,7 +85,7 @@ fun OrderDetailScreen(
                     text = orderData.ttl
                 )
                 AppNetworkImage(
-                    model = getImgUrl(orderData.imageUrl),
+                    model = getImageUrl(orderData.imageUrl),
                     modifier = Modifier
                         .size(AppTheme.imageSize.level11)
                         .aspectRatio(ratio = AppTheme.aspectRatio.square)

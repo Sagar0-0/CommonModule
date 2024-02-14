@@ -177,7 +177,7 @@ fun AppTextButton(
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     onClick: () -> Unit
 ) {
-    TextButton(
+    AppOutlinedButton(
         onClick = onClick,
         modifier = modifier,
         enabled = enabled,

@@ -12,7 +12,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.data.testimonials.model.Media
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
@@ -58,7 +58,7 @@ fun TestimonialCardImage(tstImageMedia: List<Media?>) {
                         .clip(AppTheme.shape.level1)
                 ) {
                     AppNetworkImage(
-                        model = getImgUrl(url = tstImageMedia[page]!!.url),
+                        model = getImageUrl(url = tstImageMedia[page]!!.url),
                         contentDescription = "Before and After Images",
                         modifier = Modifier.aspectRatio(AppTheme.aspectRatio.square)
                     )

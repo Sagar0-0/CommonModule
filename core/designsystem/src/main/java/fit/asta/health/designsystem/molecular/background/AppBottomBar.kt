@@ -39,7 +39,7 @@ import fit.asta.health.designsystem.AppTheme
 @Composable
 fun AppBottomBar(
     modifier: Modifier = Modifier,
-    floatingActionButton: @Composable () -> Unit,
+    floatingActionButton: @Composable (() -> Unit)? = null,
     containerColor: Color = AppTheme.colors.surface,
     contentColor: Color = AppTheme.colors.onSurface,
     tonalElevation: Dp = AppTheme.elevation.level1,

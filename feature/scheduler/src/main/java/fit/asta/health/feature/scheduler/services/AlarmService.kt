@@ -35,7 +35,7 @@ import coil.request.ImageRequest
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.datastore.PrefManager
@@ -278,7 +278,7 @@ class AlarmService : Service() {
         try {
             val req = ImageRequest.Builder(this)
                 .data(
-                    if (isConnected) getImgUrl(url = alarm.info.url)
+                    if (isConnected) getImageUrl(url = alarm.info.url)
                     else DrawR.drawable.weatherimage
                 )// demo link
                 .target { result ->

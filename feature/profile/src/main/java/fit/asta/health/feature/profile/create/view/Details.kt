@@ -35,15 +35,16 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.vector.rememberVectorPainter
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.utils.getOneUrl
+import fit.asta.health.common.utils.getImageModel
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
-import fit.asta.health.designsystem.molecular.textfield.AppTextField
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.UserProfileState
@@ -56,23 +57,24 @@ fun DetailsCreateScreen(
 ) {
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            userProfileState.profileImageUri = uri
+            userProfileState.profileImageLocalUri = uri
+            userProfileState.isImageCropperVisible = true
         }
 
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
             .verticalScroll(rememberScrollState()),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
+
         Spacer(modifier = Modifier)
 
         UserCircleImage(
-            url = getOneUrl(
-                localUrl = userProfileState.profileImageUri,
-                remoteUrl = userProfileState.userProfileResponse.userDetail.media.url.ifEmpty { userProfileState.userProfileResponse.userDetail.media.mailUrl }
+            model = getImageModel(
+                uri = userProfileState.profileImageLocalUri,
+                remoteUrl = userProfileState.profileImageUrl
             ),
             onUserProfileSelection = {
                 imgLauncher.launch("image/*")
@@ -82,16 +84,25 @@ fun DetailsCreateScreen(
             }
         )
 
-        AppTextField(
-            value = userProfileState.userProfileResponse.userDetail.name,
+        AppOutlinedTextField(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level2),
+            value = userProfileState.userName,
             onValueChange = {
-                userProfileState.updateName(it)
+                userProfileState.userName = it
             },
             label = stringResource(R.string.name_profile_creation),
             singleLine = true
         )
 
-        TitleTexts.Level2(text = userProfileState.userProfileResponse.userDetail.email)
+        TitleTexts.Level2(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(horizontal = AppTheme.spacing.level3),
+            text = userProfileState.email,
+            textAlign = TextAlign.Center
+        )
 
         PrivacyAndUserConsent()
 
@@ -105,6 +116,7 @@ fun DetailsCreateScreen(
                 userProfileState.currentPageIndex++
             }
         )
+
         Spacer(modifier = Modifier)
     }
 }
@@ -153,19 +165,19 @@ fun PrivacyAndUserConsent() {
 
 @Composable
 fun UserCircleImage(
-    url: String,
+    model: String,
     onUserProfileSelection: () -> Unit,
     onProfilePicClear: () -> Unit,
 ) {
 
-    val isImgNotAvail = url.isEmpty()
+    val isImgNotAvail = model.isEmpty()
 
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
     ) {
         AppNetworkImage(
-            model = url,
+            model = model,
             contentDescription = "User Image",
             contentScale = ContentScale.Crop,
             modifier = Modifier

@@ -28,7 +28,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileAddress
@@ -141,7 +141,7 @@ fun UserProfileImg(userProfilePic: ProfileMedia) {
     val imageUrl = if (userProfilePic.url.isEmpty()) {
         "https://img2.asta.fit/profile/Men_Default.png"
     } else {
-        getImgUrl(url = userProfilePic.url)
+        getImageUrl(url = userProfilePic.url)
     }
 
     Box(

@@ -8,7 +8,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.layout.ContentScale
-import fit.asta.health.common.utils.getImgUrl
+import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -27,7 +27,7 @@ fun ToolsHmScreenTopBanner(
 
         // Image from the Server
         for (i in remember { listOf(bannerDataPages) }) {
-            val imgUrl = getImgUrl(url = i.url)
+            val imgUrl = getImageUrl(url = i.url)
             AppNetworkImage(
                 model = imgUrl,
                 contentDescription = "ToolsHm Banner",

@@ -77,5 +77,6 @@ dependencies {
     //Rating-Bar
     implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")
     implementation("com.github.SmartToolFactory:Compose-RatingBar:2.1.1")
+    implementation("com.github.SmartToolFactory:Compose-Cropper:0.4.0")
     //TODO-------------------Low standard libraries - consider removing later---------------------//
 }
