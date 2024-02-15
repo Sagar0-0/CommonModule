@@ -88,33 +88,15 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthCreateScreen(
-                            userProfileState = userProfileState,
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                        )
+                        HealthCreateScreen(userProfileState = userProfileState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifeStyleCreateScreen(
-                            userProfileState = userProfileState,
-                        )
+                        LifeStyleCreateScreen(userProfileState = userProfileState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietCreateScreen(
-                            userProfileState = userProfileState,
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                            navigateBack = {
-                                userProfileState.onBackPressed()
-                            }
-                        )
+                        DietCreateScreen(userProfileState = userProfileState)
                     }
                 }
             }

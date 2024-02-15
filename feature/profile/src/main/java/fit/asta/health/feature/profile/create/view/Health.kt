@@ -70,9 +70,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun HealthCreateScreen(
     userProfileState: UserProfileState,
-    viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: () -> Unit,
-    eventNext: () -> Unit,
+    viewModel: ProfileViewModel = hiltViewModel()
 ) {
 
     val propertiesDataState by viewModel.propertiesData.collectAsStateWithLifecycle()
@@ -120,32 +118,34 @@ fun HealthCreateScreen(
     }
 
 
-    AppModalBottomSheetLayout(sheetContent = {
-        Spacer(modifier = Modifier.height(1.dp))
-        currentBottomSheet?.let {
-            HealthCreateBtmSheetLayout(
-                sheetLayout = it,
-                sheetState = { closeSheet() },
-                viewModel = viewModel,
-                cardList2 = composeFirstData?.get(it.cardIndex),
-                searchQuery = searchQuery
+    AppModalBottomSheetLayout(
+        sheetContent = {
+            Spacer(modifier = Modifier.height(1.dp))
+            currentBottomSheet?.let {
+                HealthCreateBtmSheetLayout(
+                    sheetLayout = it,
+                    sheetState = { closeSheet() },
+                    viewModel = viewModel,
+                    cardList2 = composeFirstData?.get(it.cardIndex),
+                    searchQuery = searchQuery
+                )
+            }
+        },
+        sheetState = modalBottomSheetState,
+        content = {
+            HealthContent(
+                userProfileState = userProfileState,
+                onHealthHistory = { onItemClick(HEALTHHISTORY, "ailment") },
+                onInjuries = { onItemClick(INJURIES, "injury") },
+                onAilments = { onItemClick(AILMENTS, "ailment") },
+                onMedications = { onItemClick(MEDICATIONS, "med") },
+                onHealthTargets = { onItemClick(HEALTHTARGETS, "tgt") },
+                onBodyInjurySelect = { onItemClick(BODYPARTS, "bp") },
+                onAddictionSelect = { onItemClick(ADDICTION, "add") },
+                composeFirstData = composeFirstData
             )
         }
-    }, sheetState = modalBottomSheetState, content = {
-        HealthContent(
-            userProfileState = userProfileState,
-            eventPrevious = eventPrevious,
-            eventNext = eventNext,
-            onHealthHistory = { onItemClick(HEALTHHISTORY, "ailment") },
-            onInjuries = { onItemClick(INJURIES, "injury") },
-            onAilments = { onItemClick(AILMENTS, "ailment") },
-            onMedications = { onItemClick(MEDICATIONS, "med") },
-            onHealthTargets = { onItemClick(HEALTHTARGETS, "tgt") },
-            onBodyInjurySelect = { onItemClick(BODYPARTS, "bp") },
-            onAddictionSelect = { onItemClick(ADDICTION, "add") },
-            composeFirstData = composeFirstData
-        )
-    })
+    )
 
 
 }
@@ -157,8 +157,6 @@ fun HealthCreateScreen(
 fun HealthContent(
     userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: () -> Unit,
-    eventNext: () -> Unit,
     onHealthHistory: () -> Unit,
     onInjuries: () -> Unit,
     onAilments: () -> Unit,
@@ -233,9 +231,7 @@ fun HealthContent(
             selections = selectionList,
             onItemSelectFunctions = onItemSelectionFunctionList,
             cardTypes = cardTypeList,
-            inputWrappers = listOf(injurySince),
-            eventPrevious = eventPrevious,
-            eventNext = eventNext
+            inputWrappers = listOf(injurySince)
         )
     }
 
@@ -286,8 +282,6 @@ private fun HealthContentLayout(
     onItemSelectFunctions: List<() -> Unit>,
     cardTypes: List<MultiRadioBtnKeys>,
     inputWrappers: List<InputWrapper>,
-    eventPrevious: () -> Unit,
-    eventNext: () -> Unit,
 ) {
     Column(
         modifier = Modifier

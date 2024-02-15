@@ -17,6 +17,7 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
+import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
@@ -86,7 +87,7 @@ fun LifeStyleCreateScreen(
     }
 
     val modalBottomSheetState =
-        androidx.compose.material.rememberModalBottomSheetState(modalBottomSheetValue)
+        rememberModalBottomSheetState(modalBottomSheetValue)
 
     val scope = rememberCoroutineScope()
 
@@ -135,24 +136,28 @@ fun LifeStyleCreateScreen(
         )
     )
 
-    AppModalBottomSheetLayout(sheetContent = {
-        Spacer(modifier = Modifier.height(1.dp))
-        currentBottomSheet?.let {
-            LifeStyleCreateBottomSheetLayout(
+    AppModalBottomSheetLayout(
+        sheetContent = {
+            Spacer(modifier = Modifier.height(1.dp))
+            currentBottomSheet?.let {
+                LifeStyleCreateBottomSheetLayout(
+                    viewModel = viewModel,
+                    sheetLayout = it,
+                    closeSheet = { closeSheet() },
+                    cardList2 = composeSecondData?.get(it.cardIndex),
+                    searchQuery = searchQuery
+                )
+            }
+        },
+        sheetState = modalBottomSheetState,
+        content = {
+            LifeStyleContent(
+                userProfileState = userProfileState,
                 viewModel = viewModel,
-                sheetLayout = it,
-                closeSheet = { closeSheet() },
-                cardList2 = composeSecondData?.get(it.cardIndex),
-                searchQuery = searchQuery
+                cardList = cardDataList
             )
         }
-    }, sheetState = modalBottomSheetState, content = {
-        LifeStyleContent(
-            userProfileState = userProfileState,
-            viewModel = viewModel,
-            cardList = cardDataList
-        )
-    })
+    )
 }
 
 

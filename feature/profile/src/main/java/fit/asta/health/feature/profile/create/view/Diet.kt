@@ -2,7 +2,6 @@
 
 package fit.asta.health.feature.profile.create.view
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
@@ -27,16 +26,15 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
@@ -66,8 +64,6 @@ import kotlinx.coroutines.launch
 fun DietCreateScreen(
     userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: () -> Unit,
-    navigateBack: () -> Unit,
 ) {
 
     //Data
@@ -155,13 +151,11 @@ fun DietCreateScreen(
         }, sheetState = modalBottomSheetState, content = {
             DietContent(
                 userProfileState = userProfileState,
-                eventPrevious = eventPrevious,
                 onFoodRes = {
                     onItemClick(FOODRES, FOODRES.propertyType)
                 },
                 cardList = cardList,
-                composeThirdData = composeThirdData,
-                navigateBack = navigateBack
+                composeThirdData = composeThirdData
             )
         })
 }
@@ -171,16 +165,14 @@ fun DietCreateScreen(
 fun DietContent(
     userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
-    eventPrevious: () -> Unit,
     onFoodRes: () -> Unit,
     cardList: List<OnlySelectionCardData>,
     composeThirdData: Map<Int, SnapshotStateList<HealthProperties>>?,
-    navigateBack: () -> Unit,
 ) {
 
     val events = viewModel.submitProfileState.collectAsStateWithLifecycle().value
 
-    var buttonClicked by remember { mutableStateOf(false) }
+    val buttonClicked by remember { mutableStateOf(false) }
 
     //Radio Button Selection
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
@@ -232,28 +224,8 @@ fun DietContent(
                 userProfileState = userProfileState,
                 titleButton2 = stringResource(R.string.submit)
             )
-
-            val context = LocalContext.current
             if (buttonClicked) {
-                when (events) {
-                    is UiState.ErrorMessage -> {
-                        Log.d(
-                            "validate",
-                            "ErrorMessage -> ${events.resId.toStringFromResId(context)}"
-                        )
-                    }
-
-                    is UiState.Loading -> {
-                        AppDotTypingAnimation()
-                    }
-
-                    is UiState.NoInternet -> AppInternetErrorDialog {}
-                    is UiState.Success -> {
-                        navigateBack()
-                    }
-
-                    else -> {}
-                }
+                AppUiStateHandler(uiState = events) {}
             }
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
