@@ -8,7 +8,13 @@
 
 package fit.asta.health.feature.profile.show.view
 
-import androidx.compose.foundation.layout.*
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.runtime.Composable
@@ -20,12 +26,9 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.ThreeRadioBtnSelections
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
 import fit.asta.health.feature.profile.show.view.components.DisabledChipForList
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -34,98 +37,6 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 data class ButtonListTypes(
     val buttonType: String,
 )
-
-@Composable
-fun TwoTogglesGroup(
-    selectionTypeText: String?,
-    selectedOption: TwoRadioBtnSelections?,
-    onStateChange: (TwoRadioBtnSelections) -> Unit,
-    firstOption: String = "Yes",
-    secondOption: String = "No",
-) {
-    Column(Modifier.fillMaxWidth()) {
-        if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2)
-            ) {
-                TitleTexts.Level3(
-                    text = selectionTypeText, color = AppTheme.colors.onTertiaryContainer
-                )
-            }
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            listOf(
-                TwoRadioBtnSelections.First, TwoRadioBtnSelections.Second
-            ).forEach { option ->
-                Row(
-                    verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
-                ) {
-                    AppRadioButton(
-                        selected = selectedOption == option
-                    ) { onStateChange(option) }
-                    CaptionTexts.Level4(
-                        text = when (option) {
-                            TwoRadioBtnSelections.First -> firstOption
-                            TwoRadioBtnSelections.Second -> secondOption
-                        }, color = AppTheme.colors.onPrimaryContainer
-                    )
-                }
-            }
-        }
-    }
-}
-
-
-@Composable
-fun ThreeTogglesGroups(
-    selectionTypeText: String?,
-    selectedOption: ThreeRadioBtnSelections?,
-    onStateChange: (ThreeRadioBtnSelections) -> Unit,
-    firstOption: String = "Male",
-    secondOption: String = "Female",
-    thirdOption: String = "Others",
-) {
-    Column(Modifier.fillMaxWidth()) {
-        if (!selectionTypeText.isNullOrEmpty()) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-            Row(
-                Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2)
-            ) {
-                TitleTexts.Level2(
-                    text = selectionTypeText, color = AppTheme.colors.onTertiaryContainer
-                )
-            }
-        }
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-            listOf(
-                ThreeRadioBtnSelections.First,
-                ThreeRadioBtnSelections.Second,
-                ThreeRadioBtnSelections.Third
-            ).forEach { option ->
-                Row(
-                    verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
-                ) {
-                    AppRadioButton(
-                        selected = selectedOption == option
-                    ) { onStateChange(option) }
-                    CaptionTexts.Level3(
-                        text = when (option) {
-                            ThreeRadioBtnSelections.First -> firstOption
-                            ThreeRadioBtnSelections.Second -> secondOption
-                            ThreeRadioBtnSelections.Third -> thirdOption
-                        }, color = AppTheme.colors.onPrimaryContainer
-                    )
-                }
-            }
-        }
-    }
-}
-
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
@@ -163,11 +74,11 @@ fun SelectionCardCreateProfile(
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
                 }
-                TwoTogglesGroup(
-                    selectionTypeText = null,
-                    selectedOption = selectedOption,
-                    onStateChange = onStateChange
-                )
+//                TwoTogglesGroup(
+//                    selectionTypeText = null,
+//                    selectedOption = selectedOption,
+//                    onStateChange = onStateChange
+//                )
                 if (selectedOption == TwoRadioBtnSelections.First) {
                     FlowRow(
                         mainAxisSpacing = AppTheme.spacing.level0,

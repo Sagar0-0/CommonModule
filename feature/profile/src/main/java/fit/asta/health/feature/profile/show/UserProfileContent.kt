@@ -24,8 +24,8 @@ import fit.asta.health.feature.profile.create.view.DietCreateScreen
 import fit.asta.health.feature.profile.create.view.HealthCreateScreen
 import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
 import fit.asta.health.feature.profile.create.view.PhysiqueCreateScreen
-import fit.asta.health.feature.profile.profile.ui.ProfileNavigationScreen
 import fit.asta.health.feature.profile.profile.ui.UserProfileState
+import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -84,18 +84,12 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Physique -> {
-                        PhysiqueCreateScreen(
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                        )
+                        PhysiqueCreateScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Health -> {
                         HealthCreateScreen(
+                            userProfileState = userProfileState,
                             eventNext = {
                                 userProfileState.currentPageIndex++
                             },
@@ -107,17 +101,13 @@ fun UserProfileContent(
 
                     ProfileNavigationScreen.Lifestyle -> {
                         LifeStyleCreateScreen(
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
+                            userProfileState = userProfileState,
                         )
                     }
 
                     ProfileNavigationScreen.Diet -> {
                         DietCreateScreen(
+                            userProfileState = userProfileState,
                             eventPrevious = {
                                 userProfileState.currentPageIndex--
                             },

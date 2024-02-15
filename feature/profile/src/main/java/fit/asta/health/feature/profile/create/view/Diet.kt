@@ -50,6 +50,7 @@ import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayou
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
+import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
 import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -63,6 +64,7 @@ import kotlinx.coroutines.launch
 )
 @Composable
 fun DietCreateScreen(
+    userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     navigateBack: () -> Unit,
@@ -139,26 +141,35 @@ fun DietCreateScreen(
         )
     )
 
-    AppModalBottomSheetLayout(sheetContent = {
-        Spacer(modifier = Modifier.height(1.dp))
-        currentBottomSheet?.let {
-            DietCreateBottomSheetLayout(
-                sheetLayout = it,
-                closeSheet = { closeSheet() },
-                cardList2 = composeThirdData?.get(it.cardIndex),
-                searchQuery = searchQuery
+    AppModalBottomSheetLayout(
+        sheetContent = {
+            Spacer(modifier = Modifier.height(1.dp))
+            currentBottomSheet?.let {
+                DietCreateBottomSheetLayout(
+                    sheetLayout = it,
+                    closeSheet = { closeSheet() },
+                    cardList2 = composeThirdData?.get(it.cardIndex),
+                    searchQuery = searchQuery
+                )
+            }
+        }, sheetState = modalBottomSheetState, content = {
+            DietContent(
+                userProfileState = userProfileState,
+                eventPrevious = eventPrevious,
+                onFoodRes = {
+                    onItemClick(FOODRES, FOODRES.propertyType)
+                },
+                cardList = cardList,
+                composeThirdData = composeThirdData,
+                navigateBack = navigateBack
             )
-        }
-    }, sheetState = modalBottomSheetState, content = {
-        DietContent(eventPrevious = eventPrevious, onFoodRes = {
-            onItemClick(FOODRES, FOODRES.propertyType)
-        }, cardList = cardList, composeThirdData = composeThirdData, navigateBack = navigateBack)
-    })
+        })
 }
 
 @OptIn(ExperimentalFoundationApi::class, ExperimentalCoroutinesApi::class)
 @Composable
 fun DietContent(
+    userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     onFoodRes: () -> Unit,
@@ -218,10 +229,8 @@ fun DietContent(
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
 
             CreateProfileTwoButtonLayout(
-                eventPrevious = eventPrevious, eventNext = {
-                    buttonClicked = !buttonClicked
-                    viewModel.onEvent(ProfileEvent.OnSubmit)
-                }, titleButton2 = stringResource(R.string.submit)
+                userProfileState = userProfileState,
+                titleButton2 = stringResource(R.string.submit)
             )
 
             val context = LocalContext.current

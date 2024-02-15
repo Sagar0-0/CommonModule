@@ -1,6 +1,5 @@
 package fit.asta.health.feature.profile.show.vm
 
-import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
@@ -571,13 +570,12 @@ class ProfileViewModel
     }
 
     //create+edit+update after edit
-    private fun saveProfileData(userProfileResponse: UserProfileResponse) {
+    fun saveProfileData(userProfileResponse: UserProfileResponse) {
         viewModelScope.launch {
             _submitProfileState.update {
                 profileRepo.updateUserProfile(userProfileResponse).toUiState()
             }
         }
-
     }
 
     private fun getHealthProperties(propertyType: String) {
@@ -651,7 +649,7 @@ class ProfileViewModel
         when (event) {
             is ProfileEvent.OnEmailChange -> handleEmailChange(event.email)
             is ProfileEvent.OnNameChange -> handleNameChange(event.name)
-            is ProfileEvent.OnUserImgChange -> handleUserImgChange(event.url)
+            is ProfileEvent.OnUserImgChange -> {}
             is ProfileEvent.OnUserHeightChange -> handleUserHeightChange(event.height)
             is ProfileEvent.OnUserWeightChange -> handleUserWeightChange(event.weight)
             is ProfileEvent.OnUserAGEChange -> handleUserAgeChange(event.age)
@@ -662,7 +660,7 @@ class ProfileViewModel
             is ProfileEvent.OnUserJStartTimeChange -> handleUserJStartTimeChange(event.jStartTime)
             is ProfileEvent.OnUserBedTimeChange -> handleUserBedTimeChange(event.bedTime)
             is ProfileEvent.OnUserWakeUpTimeChange -> handleUserWakeUpTimeChange(event.wakeUpTime)
-            is ProfileEvent.OnProfilePicClear -> handleProfilePicClear()
+            is ProfileEvent.OnProfilePicClear -> {}
             is ProfileEvent.OnSubmit -> saveProfileData()
             is ProfileEvent.GetHealthProperties -> getHealthProperties(event.propertyType)
             is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
@@ -675,9 +673,9 @@ class ProfileViewModel
         }
     }
 
-    private fun handleProfilePicClear() {
-        savedState[USER_IMG] = userImg.value.copy(localUrl = null, url = "")
-    }
+//    private fun handleProfilePicClear() {
+//        savedState[USER_IMG] = userImg.value.copy(localUrl = null, url = "")
+//    }
 
     private fun handleEmailChange(email: String) {
         savedState[EMAIL] = InputWrapper(
@@ -691,9 +689,9 @@ class ProfileViewModel
         )
     }
 
-    private fun handleUserImgChange(url: Uri?) {
-        savedState[USER_IMG] = userImg.value.copy(localUrl = url)
-    }
+//    private fun handleUserImgChange(url: Uri?) {
+//        savedState[USER_IMG] = userImg.value.copy(localUrl = url)
+//    }
 
     private fun handleUserHeightChange(eventHeight: String) {
         savedState[HEIGHT] = height.value.copy(

@@ -2,7 +2,6 @@ package fit.asta.health.data.profile.remote.model
 
 import android.net.Uri
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.common.utils.UiString
 
 data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
@@ -26,8 +25,7 @@ data class UserDetail(
 data class ProfileMedia(
     @SerializedName("url") var url: String = "",
     @SerializedName("mailUrl") var mailUrl: String = "",
-    var localUrl: Uri? = null,
-    val error: UiString = UiString.Empty,
+    var localUri: Uri? = null
 )
 
 data class UserProfileAddress(
@@ -46,10 +44,10 @@ data class Physique(
     @SerializedName("age") val age: Int = 0, //NOT DONE
     @SerializedName("bdt") val bodyType: Int = 0,
     @SerializedName("bmi") val bmi: Float = 0f,  //NOT DONE
-    @SerializedName("gen") val gender: Int = 0, //recheck
+    @SerializedName("gen") val gender: Gender = 0, //recheck
     @SerializedName("ht") val height: Float = 0f,
-    @SerializedName("prg") val isPregnant: Int = 0,
-    @SerializedName("prd") val onPeriod: Int = 0,
+    @SerializedName("prg") val isPregnant: BooleanInt = 0,
+    @SerializedName("prd") val onPeriod: BooleanInt = 0,
     @SerializedName("pw") val pregnancyWeek: Int? = 0,
     @SerializedName("wt") val weight: Float = 0f,
 )
@@ -92,9 +90,17 @@ data class TimeSchedule(
     @SerializedName("end") val to: Float = 0.0f,
 )
 
-data class Injury(
-    @SerializedName("id") val id: String = "",
-    @SerializedName("code") val code: String = "",
-    @SerializedName("name") val name: String = "",
-    @SerializedName("dur") val sinceWhen: Double = 0.0,
-)
+typealias Gender = Int
+
+enum class GenderTypes(val gender: Gender, val title: String) {
+    MALE(1, "Male"),
+    FEMALE(2, "Female"),
+    OTHER(3, "Other")
+}
+
+typealias BooleanInt = Int
+
+enum class BooleanIntTypes(val value: BooleanInt, val title: String) {
+    YES(1, "Yes"),
+    NO(0, "No")
+}

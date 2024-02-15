@@ -6,30 +6,26 @@ import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Emergency
-import androidx.compose.material.icons.outlined.AccountCircle
-import androidx.compose.material.icons.outlined.Egg
-import androidx.compose.material.icons.outlined.Face
-import androidx.compose.material.icons.outlined.Favorite
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
-import fit.asta.health.resources.strings.R
+import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
+import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
+import java.util.Calendar
 
 
 @Composable
@@ -80,6 +76,13 @@ class UserProfileState(
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
 
+    //Parent level States
+    var isConfirmDialogVisible by mutableStateOf(false)
+    private var isAnythingChanged by mutableStateOf(false)
+    var isImageCropperVisible by mutableStateOf(false)
+
+
+    //Contact Page
     var userName by mutableStateOf(userProfileResponse.userDetail.name)
     val email: String
         get() = userProfileResponse.userDetail.email
@@ -92,9 +95,31 @@ class UserProfileState(
 
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
-    var isConfirmDialogVisible by mutableStateOf(false)
-    private var isAnythingChanged by mutableStateOf(false)
-    var isImageCropperVisible by mutableStateOf(false)
+    //Physique Page
+    val calendar: Calendar = Calendar.getInstance()
+
+    var userAge by mutableIntStateOf(userProfileResponse.physique.age)
+    var userAgeErrorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var userDob by mutableStateOf(userProfileResponse.userDetail.dob)
+    var userDobErrorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
+    var userWeightErrorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
+    var userHeightErrorMessage by mutableStateOf<String?>(null)
+        private set
+
+    var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
+    var isPregnant by mutableIntStateOf(userProfileResponse.physique.isPregnant)
+    var onPeriod by mutableIntStateOf(userProfileResponse.physique.onPeriod)
+
+    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek)
+    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
     var currentPageIndex: Int
         get() = pagerState.currentPage
@@ -123,7 +148,7 @@ class UserProfileState(
 
     fun saveData() {
         if (isAnythingChanged) {
-            onEvent(UserProfileEvent.SaveData)
+            onEvent(UserProfileEvent.UpdateUserProfileData(userProfileResponse))//TODO: PASS NEW DATA
         }
     }
 
@@ -168,47 +193,4 @@ class UserProfileState(
             }
         )
     }
-}
-
-
-sealed interface UserProfileEvent {
-    data object SaveData : UserProfileEvent
-    data class UpdateUserProfileData(val userProfileResponse: UserProfileResponse) :
-        UserProfileEvent
-}
-
-enum class ProfileNavigationScreen(
-    val icon: ImageVector,
-    val contentDescription: String,
-    val labelId: Int
-) {
-    BASIC(
-        icon = Icons.Outlined.AccountCircle,
-        contentDescription = "Profile Screen 1",
-        labelId = R.string.details
-    ),
-
-    Physique(
-        icon = Icons.Outlined.Face,
-        contentDescription = "Profile Screen 2",
-        labelId = R.string.physique
-    ),
-
-    Health(
-        icon = Icons.Outlined.Favorite,
-        contentDescription = "Profile Screen 3",
-        labelId = R.string.health
-    ),
-
-    Lifestyle(
-        icon = Icons.Default.Emergency,
-        contentDescription = "Profile Screen 4",
-        labelId = R.string.lifestyle
-    ),
-
-    Diet(
-        icon = Icons.Outlined.Egg,
-        contentDescription = "Profile Screen 2",
-        labelId = R.string.diet
-    )
 }

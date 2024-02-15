@@ -12,8 +12,8 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.feature.profile.profile.ui.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.rememberUserProfileState
+import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
 import fit.asta.health.feature.profile.show.UserProfileContent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 
@@ -44,11 +44,7 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             onEvent = { event ->
                 when (event) {
                     is UserProfileEvent.UpdateUserProfileData -> {
-//                        profileViewModel.updateUserProfileData(event.userProfileResponse)
-                    }
-
-                    is UserProfileEvent.SaveData -> {
-                        profileViewModel.saveProfileData()
+                        profileViewModel.saveProfileData(event.userProfileResponse)
                     }
                 }
             }

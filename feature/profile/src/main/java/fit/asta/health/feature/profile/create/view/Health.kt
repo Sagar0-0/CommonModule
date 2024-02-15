@@ -59,6 +59,7 @@ import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayou
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
+import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.feature.profile.show.view.ButtonListTypes
 import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -68,6 +69,7 @@ import kotlinx.coroutines.launch
 @OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 @Composable
 fun HealthCreateScreen(
+    userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
@@ -131,6 +133,7 @@ fun HealthCreateScreen(
         }
     }, sheetState = modalBottomSheetState, content = {
         HealthContent(
+            userProfileState = userProfileState,
             eventPrevious = eventPrevious,
             eventNext = eventNext,
             onHealthHistory = { onItemClick(HEALTHHISTORY, "ailment") },
@@ -152,6 +155,7 @@ fun HealthCreateScreen(
 @ExperimentalCoroutinesApi
 @Composable
 fun HealthContent(
+    userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
     eventPrevious: () -> Unit,
     eventNext: () -> Unit,
@@ -222,6 +226,7 @@ fun HealthContent(
 
     CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
         HealthContentLayout(
+            userProfileState = userProfileState,
             viewModel = hiltViewModel(),
             composeFirstData = composeFirstData,
             radioButtonList = radioButtonList,
@@ -273,6 +278,7 @@ private fun HealthCreateBtmSheetLayout(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 private fun HealthContentLayout(
+    userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
     composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>?,
     radioButtonList: List<ButtonListTypes>,
@@ -313,7 +319,7 @@ private fun HealthContentLayout(
 
             Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
         }
-        CreateProfileTwoButtonLayout(eventPrevious, eventNext)
+        CreateProfileTwoButtonLayout(userProfileState)
         Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
     }
 }
