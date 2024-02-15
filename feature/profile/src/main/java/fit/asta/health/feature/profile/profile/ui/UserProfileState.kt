@@ -173,6 +173,17 @@ class UserProfileState(
                     it.isConfirmDialogVisible,
                     it.isAnythingChanged,
                     it.isImageCropperVisible,
+                    it.userAge,
+                    it.userAgeErrorMessage,
+                    it.userWeight,
+                    it.userWeightErrorMessage,
+                    it.userHeight,
+                    it.userHeightErrorMessage,
+                    it.userGender,
+                    it.onPeriod,
+                    it.isPregnant,
+                    it.userPregnancyWeek,
+                    it.userPregnancyWeekErrorMessage
                 )
             },
             restore = {
@@ -189,6 +200,17 @@ class UserProfileState(
                     this.isConfirmDialogVisible = it[2] as Boolean
                     this.isAnythingChanged = it[3] as Boolean
                     this.isImageCropperVisible = it[4] as Boolean
+                    this.userAge = it[5] as Int
+                    this.userAgeErrorMessage = it[6] as String?
+                    this.userWeight = it[7] as String
+                    this.userWeightErrorMessage = it[8] as String?
+                    this.userHeight = it[9] as String
+                    this.userHeightErrorMessage = it[10] as String?
+                    this.userGender = it[11] as Int
+                    this.onPeriod = it[12] as Int
+                    this.isPregnant = it[13] as Int
+                    this.userPregnancyWeek = it[14] as Int?
+                    this.userPregnancyWeekErrorMessage = it[15] as String?
                 }
             }
         )
