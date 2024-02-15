@@ -28,7 +28,6 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
 import fit.asta.health.feature.profile.show.view.components.DisabledChipForList
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -41,14 +40,10 @@ data class ButtonListTypes(
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun SelectionCardCreateProfile(
-    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>?,
     onItemsSelect: () -> Unit,
     selectedOption: TwoRadioBtnSelections?,
-    onStateChange: (TwoRadioBtnSelections) -> Unit,
-    cardIndex: Int,
-    composeIndex: ComposeIndex,
     listName: String = "",
 ) {
     Column(Modifier.fillMaxWidth()) {
@@ -74,11 +69,6 @@ fun SelectionCardCreateProfile(
                         ProfileAddIcon(onClick = onItemsSelect)
                     }
                 }
-//                TwoTogglesGroup(
-//                    selectionTypeText = null,
-//                    selectedOption = selectedOption,
-//                    onStateChange = onStateChange
-//                )
                 if (selectedOption == TwoRadioBtnSelections.First) {
                     FlowRow(
                         mainAxisSpacing = AppTheme.spacing.level0,
@@ -101,15 +91,11 @@ fun SelectionCardCreateProfile(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun OnlyChipSelectionCard(
-    viewModel: ProfileViewModel = hiltViewModel(),
     cardType: String,
     cardList: SnapshotStateList<HealthProperties>?,
     onItemsSelect: () -> Unit,
-    cardIndex: Int,
-    composeIndex: ComposeIndex,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
         Column(

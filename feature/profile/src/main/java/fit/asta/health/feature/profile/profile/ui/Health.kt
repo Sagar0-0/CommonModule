@@ -10,10 +10,9 @@
     ExperimentalCoroutinesApi::class
 )
 
-package fit.asta.health.feature.profile.create.view
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
-import androidx.compose.foundation.LocalOverscrollConfiguration
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -26,7 +25,6 @@ import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -39,7 +37,6 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
@@ -47,20 +44,18 @@ import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.ADDICTION
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.AILMENTS
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.BODYPARTS
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.HEALTHHISTORY
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.HEALTHTARGETS
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.INJURIES
-import fit.asta.health.feature.profile.create.view.HealthCreateBottomSheetTypes.MEDICATIONS
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
-import fit.asta.health.feature.profile.show.view.ButtonListTypes
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.ADDICTION
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.AILMENTS
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.BODYPARTS
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.HEALTHHISTORY
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.HEALTHTARGETS
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.INJURIES
+import fit.asta.health.feature.profile.profile.ui.HealthCreateBottomSheetTypes.MEDICATIONS
 import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -100,10 +95,6 @@ fun HealthCreateScreen(
         }
     }
 
-    val closeSheet = {
-        scope.launch { modalBottomSheetState.hide() }
-    }
-
     val onBottomSheetItemClick: (String) -> Unit = { propertyType ->
         currentBottomSheet?.let {
             openSheet()
@@ -124,7 +115,6 @@ fun HealthCreateScreen(
             currentBottomSheet?.let {
                 HealthCreateBtmSheetLayout(
                     sheetLayout = it,
-                    sheetState = { closeSheet() },
                     viewModel = viewModel,
                     cardList2 = composeFirstData?.get(it.cardIndex),
                     searchQuery = searchQuery
@@ -150,8 +140,6 @@ fun HealthCreateScreen(
 
 }
 
-
-@OptIn(ExperimentalFoundationApi::class)
 @ExperimentalCoroutinesApi
 @Composable
 fun HealthContent(
@@ -166,11 +154,6 @@ fun HealthContent(
     onAddictionSelect: () -> Unit,
     composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>?,
 ) {
-    val radioButtonList =
-        listOf(ButtonListTypes(buttonType = "First"), ButtonListTypes(buttonType = "Second"))
-
-    // Inputs
-    val injurySince by viewModel.injuriesSince.collectAsStateWithLifecycle()
 
     // Selection Inputs
     val radioButtonSelections by viewModel.radioButtonSelections.collectAsStateWithLifecycle()
@@ -221,19 +204,13 @@ fun HealthContent(
         MultiRadioBtnKeys.ADDICTION
     )
 
-
-    CompositionLocalProvider(LocalOverscrollConfiguration provides null) {
-        HealthContentLayout(
-            userProfileState = userProfileState,
-            viewModel = hiltViewModel(),
-            composeFirstData = composeFirstData,
-            radioButtonList = radioButtonList,
-            selections = selectionList,
-            onItemSelectFunctions = onItemSelectionFunctionList,
-            cardTypes = cardTypeList,
-            inputWrappers = listOf(injurySince)
-        )
-    }
+    HealthContentLayout(
+        userProfileState = userProfileState,
+        composeFirstData = composeFirstData,
+        selections = selectionList,
+        onItemSelectFunctions = onItemSelectionFunctionList,
+        cardTypes = cardTypeList,
+    )
 
 }
 
@@ -243,7 +220,6 @@ fun HealthContent(
 private fun HealthCreateBtmSheetLayout(
     viewModel: ProfileViewModel = hiltViewModel(),
     sheetLayout: HealthCreateBottomSheetTypes,
-    sheetState: () -> Unit,
     cardList2: SnapshotStateList<HealthProperties>?,
     searchQuery: MutableState<String>,
 ) {
@@ -271,17 +247,13 @@ private fun HealthCreateBtmSheetLayout(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 private fun HealthContentLayout(
     userProfileState: UserProfileState,
-    viewModel: ProfileViewModel = hiltViewModel(),
     composeFirstData: Map<Int, SnapshotStateList<HealthProperties>>?,
-    radioButtonList: List<ButtonListTypes>,
     selections: List<Pair<ComposeIndex, TwoRadioBtnSelections?>>,
     onItemSelectFunctions: List<() -> Unit>,
     cardTypes: List<MultiRadioBtnKeys>,
-    inputWrappers: List<InputWrapper>,
 ) {
     Column(
         modifier = Modifier
@@ -303,11 +275,6 @@ private fun HealthContentLayout(
                 cardList = composeFirstData?.get(index),
                 onItemsSelect = onItemSelect,
                 selectedOption = selectedOption,
-                onStateChange = { state ->
-                    viewModel.updateRadioButtonSelection(cardType.key, state)
-                },
-                cardIndex = index,
-                composeIndex = composeIndex,
                 listName = cardType.getListName()
             )
 

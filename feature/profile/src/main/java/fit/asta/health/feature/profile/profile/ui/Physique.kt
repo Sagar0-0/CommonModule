@@ -2,7 +2,7 @@
     ExperimentalMaterial3Api::class
 )
 
-package fit.asta.health.feature.profile.create.view
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.BorderStroke
@@ -53,7 +53,6 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ThreeTogglesGroups
 import fit.asta.health.feature.profile.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R

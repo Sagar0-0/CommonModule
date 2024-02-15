@@ -19,11 +19,11 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
-import fit.asta.health.feature.profile.create.view.DietCreateScreen
-import fit.asta.health.feature.profile.create.view.HealthCreateScreen
-import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
-import fit.asta.health.feature.profile.create.view.PhysiqueCreateScreen
+import fit.asta.health.feature.profile.profile.ui.DetailsCreateScreen
+import fit.asta.health.feature.profile.profile.ui.DietCreateScreen
+import fit.asta.health.feature.profile.profile.ui.HealthCreateScreen
+import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateScreen
+import fit.asta.health.feature.profile.profile.ui.PhysiqueCreateScreen
 import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R

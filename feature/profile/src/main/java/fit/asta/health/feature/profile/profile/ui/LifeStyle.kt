@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 
-package fit.asta.health.feature.profile.create.view
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
@@ -49,14 +49,13 @@ import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayo
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.create.view.LifeStyleCreateBottomSheetType.CURRENTACTIVITIES
-import fit.asta.health.feature.profile.create.view.LifeStyleCreateBottomSheetType.LIFESTYLETARGETS
-import fit.asta.health.feature.profile.create.view.LifeStyleCreateBottomSheetType.PREFERREDACTIVITIES
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
+import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateBottomSheetType.CURRENTACTIVITIES
+import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateBottomSheetType.LIFESTYLETARGETS
+import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateBottomSheetType.PREFERREDACTIVITIES
 import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
 import fit.asta.health.feature.profile.show.view.components.UserSleepCycles
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -291,9 +290,7 @@ fun LifeStyleContent(
                 OnlyChipSelectionCard(
                     cardType = cardData.cardType,
                     cardList = cardData.cardList,
-                    onItemsSelect = cardData.onItemsSelect,
-                    cardIndex = cardData.cardIndex,
-                    composeIndex = ComposeIndex.Second,
+                    onItemsSelect = cardData.onItemsSelect
                 )
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }

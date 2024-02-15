@@ -16,10 +16,12 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
@@ -80,47 +82,6 @@ class UserProfileState(
     var isConfirmDialogVisible by mutableStateOf(false)
     private var isAnythingChanged by mutableStateOf(false)
     var isImageCropperVisible by mutableStateOf(false)
-
-
-    //Contact Page
-    var userName by mutableStateOf(userProfileResponse.userDetail.name)
-    val email: String
-        get() = userProfileResponse.userDetail.email
-    val phoneNumber: String
-        get() = userProfileResponse.userDetail.phoneNumber
-    val address: String
-        get() = userProfileResponse.userDetail.userProfileAddress.toString()
-    var profileImageUrl: String by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
-        private set
-
-    var profileImageLocalUri by mutableStateOf<Uri?>(null)
-
-    //Physique Page
-    val calendar: Calendar = Calendar.getInstance()
-
-    var userAge by mutableIntStateOf(userProfileResponse.physique.age)
-    var userAgeErrorMessage by mutableStateOf<String?>(null)
-        private set
-
-    var userDob by mutableStateOf(userProfileResponse.userDetail.dob)
-    var userDobErrorMessage by mutableStateOf<String?>(null)
-        private set
-
-    var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
-    var userWeightErrorMessage by mutableStateOf<String?>(null)
-        private set
-
-    var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
-    var userHeightErrorMessage by mutableStateOf<String?>(null)
-        private set
-
-    var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
-    var isPregnant by mutableIntStateOf(userProfileResponse.physique.isPregnant)
-    var onPeriod by mutableIntStateOf(userProfileResponse.physique.onPeriod)
-
-    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
-    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
-
     var currentPageIndex: Int
         get() = pagerState.currentPage
         set(value) {
@@ -132,6 +93,63 @@ class UserProfileState(
     val profileDataPages: List<ProfileNavigationScreen>
         get() = ProfileNavigationScreen.entries
 
+    //Contact Page
+    var userName by mutableStateOf(userProfileResponse.userDetail.name)
+    val email: String
+        get() = userProfileResponse.userDetail.email
+    val phoneNumber: String
+        get() = userProfileResponse.userDetail.phoneNumber
+    val address: String
+        get() = userProfileResponse.userDetail.userProfileAddress.toString()
+    var profileImageUrl: String by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
+        private set
+    var profileImageLocalUri by mutableStateOf<Uri?>(null)
+
+    //Physique Page
+    val calendar: Calendar = Calendar.getInstance()
+    var userAge by mutableIntStateOf(userProfileResponse.physique.age)
+    var userAgeErrorMessage by mutableStateOf<String?>(null)
+        private set
+    var userDob by mutableStateOf(userProfileResponse.userDetail.dob)
+    var userDobErrorMessage by mutableStateOf<String?>(null)
+        private set
+    var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
+    var userWeightErrorMessage by mutableStateOf<String?>(null)
+        private set
+    var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
+    var userHeightErrorMessage by mutableStateOf<String?>(null)
+        private set
+    var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
+    var isPregnant by mutableIntStateOf(userProfileResponse.physique.isPregnant)
+    var onPeriod by mutableIntStateOf(userProfileResponse.physique.onPeriod)
+    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
+    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
+
+    //Health Page
+    val medications = userProfileResponse.health.medications?.toMutableStateList()
+    val targets = userProfileResponse.health.targets?.toMutableStateList()
+    val ailments = userProfileResponse.health.ailments?.toMutableStateList()
+    val healthHistory = userProfileResponse.health.healthHistory?.toMutableStateList()
+    val injuries = userProfileResponse.health.injuries?.toMutableStateList()
+    val bodyPart = userProfileResponse.health.bodyPart?.toMutableStateList()
+    val addiction = userProfileResponse.health.addiction?.toMutableStateList()
+    val injurySince by mutableStateOf(userProfileResponse.health.injurySince.toString())
+
+    //Lifestyle Page
+    val sleepStartTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.from.toString())
+    val sleepEndTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.to.toString())
+    val jobStartTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.from.toString())
+    val jobEndTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.to.toString())
+    val currentActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
+    val preferredActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
+    val lifestyleActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
+
+    // Diet Page
+    val dietPreference = userProfileResponse.diet.preference?.toMutableStateList()
+    val nonVegDays = userProfileResponse.diet.nonVegDays?.toMutableStateList()
+    val dietAllergies = userProfileResponse.diet.allergies?.toMutableStateList()
+    val dietCuisines = userProfileResponse.diet.cuisines?.toMutableStateList()
+    val dietRestrictions = userProfileResponse.diet.restrictions?.toMutableStateList()
 
     fun onBackPressed() {
         if (isAnythingChanged) {
@@ -185,7 +203,8 @@ class UserProfileState(
                     it.userPregnancyWeek,
                     it.userPregnancyWeekErrorMessage,
                     it.userDob,
-                    it.userDobErrorMessage
+                    it.userDobErrorMessage,
+                    it.medications?.toList()
                 )
             },
             restore = {
@@ -215,6 +234,10 @@ class UserProfileState(
                     this.userPregnancyWeekErrorMessage = it[15] as String?
                     this.userDob = it[16] as String
                     this.userDobErrorMessage = it[17] as String?
+                    this.medications?.apply {
+                        clear()
+                        (it[18] as List<HealthProperties>?)?.let { it1 -> addAll(it1) }
+                    }
                 }
             }
         )

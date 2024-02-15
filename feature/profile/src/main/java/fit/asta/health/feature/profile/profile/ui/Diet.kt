@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
 
-package fit.asta.health.feature.profile.create.view
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.LocalOverscrollConfiguration
@@ -38,17 +38,16 @@ import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.CUISINES
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.DIETARYPREF
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.FOODALLERGIES
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.FOODRES
-import fit.asta.health.feature.profile.create.view.DietCreateBottomSheetType.NONVEGDAYS
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
+import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.CUISINES
+import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.DIETARYPREF
+import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.FOODALLERGIES
+import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.FOODRES
+import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.NONVEGDAYS
 import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
 import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
@@ -198,9 +197,7 @@ fun DietContent(
                 OnlyChipSelectionCard(
                     cardType = cardData.cardType,
                     cardList = cardData.cardList,
-                    onItemsSelect = cardData.onItemsSelect,
-                    cardIndex = cardData.cardIndex,
-                    composeIndex = ComposeIndex.Second,
+                    onItemsSelect = cardData.onItemsSelect
                 )
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
             }
@@ -210,11 +207,6 @@ fun DietContent(
                 cardList = composeThirdData?.get(4),
                 onItemsSelect = onFoodRes,
                 selectedOption = selectedFoodResDemo,
-                onStateChange = { state ->
-                    viewModel.updateRadioButtonSelection(MultiRadioBtnKeys.DIETREST.key, state)
-                },
-                cardIndex = 4,
-                composeIndex = ComposeIndex.Third,
                 listName = "Diet"
             )
 
