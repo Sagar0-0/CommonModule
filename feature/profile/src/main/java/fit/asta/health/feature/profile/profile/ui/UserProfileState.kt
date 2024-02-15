@@ -118,7 +118,7 @@ class UserProfileState(
     var isPregnant by mutableIntStateOf(userProfileResponse.physique.isPregnant)
     var onPeriod by mutableIntStateOf(userProfileResponse.physique.onPeriod)
 
-    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek)
+    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
     var currentPageIndex: Int
@@ -183,7 +183,9 @@ class UserProfileState(
                     it.onPeriod,
                     it.isPregnant,
                     it.userPregnancyWeek,
-                    it.userPregnancyWeekErrorMessage
+                    it.userPregnancyWeekErrorMessage,
+                    it.userDob,
+                    it.userDobErrorMessage
                 )
             },
             restore = {
@@ -209,8 +211,10 @@ class UserProfileState(
                     this.userGender = it[11] as Int
                     this.onPeriod = it[12] as Int
                     this.isPregnant = it[13] as Int
-                    this.userPregnancyWeek = it[14] as Int?
+                    this.userPregnancyWeek = it[14] as String?
                     this.userPregnancyWeekErrorMessage = it[15] as String?
+                    this.userDob = it[16] as String
+                    this.userDobErrorMessage = it[17] as String?
                 }
             }
         )

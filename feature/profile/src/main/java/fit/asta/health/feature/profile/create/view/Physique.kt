@@ -156,9 +156,9 @@ private fun GenderSection(
                         ) {
                             AppTextField(
                                 modifier = Modifier.fillMaxWidth(),
-                                value = userProfileState.userPregnancyWeek?.toString() ?: "0",
+                                value = userProfileState.userPregnancyWeek ?: "",
                                 onValueChange = {
-                                    userProfileState.userPregnancyWeek = it.toInt()
+                                    userProfileState.userPregnancyWeek = it
                                 },
                                 appTextFieldType = AppTextFieldValidator(
                                     AppTextFieldType.Custom(
@@ -298,12 +298,10 @@ private fun AgeSection(
         TitleTexts.Level3(
             text = stringResource(id = R.string.age), color = AppTheme.colors.onTertiaryContainer
         )
-        if (userProfileState.userAge != 0) {
-            BodyTexts.Level1(
-                text = "${userProfileState.userAge} years old",
-                color = AppTheme.colors.onTertiaryContainer,
-            )
-        }
+        BodyTexts.Level1(
+            text = "${userProfileState.userAge} years old",
+            color = AppTheme.colors.onTertiaryContainer,
+        )
     }
 
     Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -331,7 +329,7 @@ private fun AgeSection(
                 }
             )
             BodyTexts.Level2(
-                text = userProfileState.userDob.ifEmpty { stringResource(R.string.date_of_birth) },
+                text = userProfileState.userDob.ifEmpty { stringResource(R.string.select_date_of_birth) },
                 modifier = Modifier.padding(AppTheme.spacing.level1),
                 color = ageColorSelection
             )
