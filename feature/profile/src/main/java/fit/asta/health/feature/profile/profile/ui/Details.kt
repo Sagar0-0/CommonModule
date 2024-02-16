@@ -51,7 +51,7 @@ import fit.asta.health.resources.strings.R
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsCreateScreen(
+fun DetailsScreen(
     userProfileState: UserProfileState
 ) {
     val imgLauncher =

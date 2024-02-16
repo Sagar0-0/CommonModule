@@ -40,6 +40,6 @@ interface ProfileApi {
     @GET("userProfile/get/?")
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
-    @GET("health/property/get/all/?")
-    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<ArrayList<HealthProperties>>
+    @GET("health/property/get/all/")
+    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<List<HealthProperties>>
 }

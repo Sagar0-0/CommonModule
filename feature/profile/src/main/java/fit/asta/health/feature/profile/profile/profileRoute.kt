@@ -12,9 +12,9 @@ import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
+import fit.asta.health.feature.profile.profile.ui.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.rememberUserProfileState
 import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
-import fit.asta.health.feature.profile.show.UserProfileContent
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 
 const val PROFILE_GRAPH_ROUTE = "graph_profile"
@@ -29,6 +29,7 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
         val submitProfileState by profileViewModel.submitProfileState.collectAsStateWithLifecycle()
+        val healthPropertiesState by profileViewModel.healthPropertiesState.collectAsStateWithLifecycle()
 
         LaunchedEffect(key1 = Unit) {
             if (userProfileResponseState !is UiState.Success) {
@@ -39,12 +40,17 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         val userProfileState = rememberUserProfileState(
             userProfileResponse = (userProfileResponseState as? UiState.Success)?.data
                 ?: UserProfileResponse(),
+            healthPropertiesState = healthPropertiesState,
             submitProfileState = submitProfileState,
             navController = navController,
             onEvent = { event ->
                 when (event) {
                     is UserProfileEvent.UpdateUserProfileData -> {
                         profileViewModel.saveProfileData(event.userProfileResponse)
+                    }
+
+                    is UserProfileEvent.GetHealthProperties -> {
+                        profileViewModel.getHealthProperties(event.id)
                     }
                 }
             }

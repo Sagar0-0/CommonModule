@@ -16,6 +16,6 @@ interface ProfileRepo {
 
     suspend fun getUserProfile(uid: String): ResponseState<UserProfileResponse>
     suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse>
-    suspend fun getHealthProperties(propertyType: String): ResponseState<ArrayList<HealthProperties>>
+    suspend fun getHealthProperties(propertyType: String): ResponseState<List<HealthProperties>>
     suspend fun editUserProfile(uid: String): ResponseState<UserProfileResponse>
 }

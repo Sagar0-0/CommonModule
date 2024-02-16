@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.show
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -19,12 +19,6 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.feature.profile.profile.ui.DetailsCreateScreen
-import fit.asta.health.feature.profile.profile.ui.DietCreateScreen
-import fit.asta.health.feature.profile.profile.ui.HealthCreateScreen
-import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateScreen
-import fit.asta.health.feature.profile.profile.ui.PhysiqueCreateScreen
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
 
@@ -80,23 +74,24 @@ fun UserProfileContent(
             ) {
                 when (userProfileState.profileDataPages[userProfileState.currentPageIndex]) {
                     ProfileNavigationScreen.BASIC -> {
-                        DetailsCreateScreen(userProfileState)
+                        DetailsScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Physique -> {
-                        PhysiqueCreateScreen(userProfileState)
+                        PhysiqueScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthCreateScreen(userProfileState = userProfileState)
+//                        HealthCreateScreen(userProfileState)
+                        HealthScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifeStyleCreateScreen(userProfileState = userProfileState)
+                        LifestyleScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietCreateScreen(userProfileState = userProfileState)
+                        DietScreen(userProfileState)
                     }
                 }
             }

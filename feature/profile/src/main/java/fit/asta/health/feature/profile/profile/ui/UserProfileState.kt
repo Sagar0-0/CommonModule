@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalFoundationApi::class)
+@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
 package fit.asta.health.feature.profile.profile.ui
 
@@ -6,6 +6,8 @@ import android.net.Uri
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
@@ -16,6 +18,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -33,6 +36,7 @@ import java.util.Calendar
 @Composable
 fun rememberUserProfileState(
     userProfileResponse: UserProfileResponse,
+    healthPropertiesState: UiState<List<HealthProperties>>,
     submitProfileState: UiState<SubmitProfileResponse>,
     pagerState: PagerState = rememberPagerState {
         ProfileNavigationScreen.entries.size
@@ -43,6 +47,7 @@ fun rememberUserProfileState(
 ): UserProfileState {
     return rememberSaveable(
         userProfileResponse,
+        healthPropertiesState,
         submitProfileState,
         pagerState,
         coroutineScope,
@@ -50,6 +55,7 @@ fun rememberUserProfileState(
         saver = UserProfileState
             .Saver(
                 userProfileResponse,
+                healthPropertiesState,
                 submitProfileState,
                 pagerState,
                 coroutineScope,
@@ -59,6 +65,7 @@ fun rememberUserProfileState(
     ) {
         UserProfileState(
             submitProfileState = submitProfileState,
+            healthPropertiesState = healthPropertiesState,
             userProfileResponse = userProfileResponse,
             pagerState = pagerState,
             coroutineScope = coroutineScope,
@@ -71,6 +78,7 @@ fun rememberUserProfileState(
 @Stable
 class UserProfileState(
     val submitProfileState: UiState<SubmitProfileResponse>,
+    val healthPropertiesState: UiState<List<HealthProperties>>,
     private val userProfileResponse: UserProfileResponse,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
@@ -89,9 +97,22 @@ class UserProfileState(
                 pagerState.animateScrollToPage(value)
             }
         }
-
     val profileDataPages: List<ProfileNavigationScreen>
         get() = ProfileNavigationScreen.entries
+
+    var bottomSheetVisible by mutableStateOf(false)
+    var bottomSheetSearchQuery by mutableStateOf("")
+
+    private fun openBottomSheet(sheetState: SheetState) {
+        bottomSheetVisible = true
+        coroutineScope.launch { sheetState.expand() }
+    }
+
+    fun closeBottomSheet(sheetState: SheetState) {
+        coroutineScope.launch { sheetState.hide() }
+        bottomSheetVisible = false
+        bottomSheetSearchQuery = ""
+    }
 
     //Contact Page
     var userName by mutableStateOf(userProfileResponse.userDetail.name)
@@ -126,30 +147,71 @@ class UserProfileState(
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
     //Health Page
-    val medications = userProfileResponse.health.medications?.toMutableStateList()
-    val targets = userProfileResponse.health.targets?.toMutableStateList()
-    val ailments = userProfileResponse.health.ailments?.toMutableStateList()
-    val healthHistory = userProfileResponse.health.healthHistory?.toMutableStateList()
-    val injuries = userProfileResponse.health.injuries?.toMutableStateList()
-    val bodyPart = userProfileResponse.health.bodyPart?.toMutableStateList()
-    val addiction = userProfileResponse.health.addiction?.toMutableStateList()
+    val medications = (userProfileResponse.health.medications ?: listOf()).toMutableStateList()
+    val targets = (userProfileResponse.health.targets ?: listOf()).toMutableStateList()
+    val ailments = (userProfileResponse.health.ailments ?: listOf()).toMutableStateList()
+    val healthHistory = (userProfileResponse.health.healthHistory ?: listOf()).toMutableStateList()
+    val injuries = (userProfileResponse.health.injuries ?: listOf()).toMutableStateList()
+    val bodyPart = (userProfileResponse.health.bodyPart ?: listOf()).toMutableStateList()
+    val addiction = (userProfileResponse.health.addiction ?: listOf()).toMutableStateList()
     val injurySince by mutableStateOf(userProfileResponse.health.injurySince.toString())
+    var currentBottomSheetType by mutableStateOf<HealthBottomSheetType?>(null)
+
+    class HealthBottomSheetType(
+        val id: String,
+        val name: String,
+        private val _list: SnapshotStateList<HealthProperties>
+    ) {
+
+        val list: List<HealthProperties>
+            get() = _list.toList()
+
+        fun add(properties: HealthProperties) {
+            _list.add(properties)
+        }
+
+        fun remove(property: HealthProperties) {
+            _list.remove(property)
+        }
+    }
+
+    val healthBottomSheetTypes: List<HealthBottomSheetType> = listOf(
+        HealthBottomSheetType("hh", "Health History", healthHistory),
+        HealthBottomSheetType("injury", "Injuries", injuries),
+        HealthBottomSheetType("ailment", "Ailments", ailments),
+        HealthBottomSheetType("med", "Medications", medications),
+        HealthBottomSheetType("tgt", "Targets", targets),
+        HealthBottomSheetType("bp", "Body parts", bodyPart),
+        HealthBottomSheetType("bp", "Addictions", addiction)
+    )
+
+    fun openHealthBottomSheet(
+        sheetState: SheetState,
+        healthBottomSheetType: HealthBottomSheetType
+    ) {
+        currentBottomSheetType = healthBottomSheetType
+        onEvent(UserProfileEvent.GetHealthProperties(healthBottomSheetType.id))
+        openBottomSheet(sheetState)
+    }
 
     //Lifestyle Page
     val sleepStartTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.from.toString())
     val sleepEndTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.to.toString())
     val jobStartTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.from.toString())
     val jobEndTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.to.toString())
-    val currentActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
-    val preferredActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
-    val lifestyleActivities = userProfileResponse.lifeStyle.curActivities?.toMutableStateList()
+    val currentActivities =
+        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
+    val preferredActivities =
+        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
+    val lifestyleActivities =
+        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
 
     // Diet Page
-    val dietPreference = userProfileResponse.diet.preference?.toMutableStateList()
-    val nonVegDays = userProfileResponse.diet.nonVegDays?.toMutableStateList()
-    val dietAllergies = userProfileResponse.diet.allergies?.toMutableStateList()
-    val dietCuisines = userProfileResponse.diet.cuisines?.toMutableStateList()
-    val dietRestrictions = userProfileResponse.diet.restrictions?.toMutableStateList()
+    val dietPreference = (userProfileResponse.diet.preference ?: listOf()).toMutableStateList()
+    val nonVegDays = (userProfileResponse.diet.nonVegDays ?: listOf()).toMutableStateList()
+    val dietAllergies = (userProfileResponse.diet.allergies ?: listOf()).toMutableStateList()
+    val dietCuisines = (userProfileResponse.diet.cuisines ?: listOf()).toMutableStateList()
+    val dietRestrictions = (userProfileResponse.diet.restrictions ?: listOf()).toMutableStateList()
 
     fun onBackPressed() {
         if (isAnythingChanged) {
@@ -178,6 +240,7 @@ class UserProfileState(
     companion object {
         fun Saver(
             userProfileResponse: UserProfileResponse,
+            healthPropertiesState: UiState<List<HealthProperties>>,
             submitProfileState: UiState<SubmitProfileResponse>,
             pagerState: PagerState,
             coroutineScope: CoroutineScope,
@@ -204,12 +267,13 @@ class UserProfileState(
                     it.userPregnancyWeekErrorMessage,
                     it.userDob,
                     it.userDobErrorMessage,
-                    it.medications?.toList()
+                    it.bottomSheetVisible
                 )
             },
             restore = {
                 UserProfileState(
                     submitProfileState = submitProfileState,
+                    healthPropertiesState = healthPropertiesState,
                     userProfileResponse = userProfileResponse,
                     pagerState = pagerState,
                     coroutineScope = coroutineScope,
@@ -234,10 +298,7 @@ class UserProfileState(
                     this.userPregnancyWeekErrorMessage = it[15] as String?
                     this.userDob = it[16] as String
                     this.userDobErrorMessage = it[17] as String?
-                    this.medications?.apply {
-                        clear()
-                        (it[18] as List<HealthProperties>?)?.let { it1 -> addAll(it1) }
-                    }
+                    this.bottomSheetVisible = it[18] as Boolean
                 }
             }
         )

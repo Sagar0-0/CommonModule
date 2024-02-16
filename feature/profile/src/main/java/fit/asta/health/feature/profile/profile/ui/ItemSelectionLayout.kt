@@ -1,18 +1,12 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalCoroutinesApi::class)
+package fit.asta.health.feature.profile.profile.ui
 
-package fit.asta.health.feature.profile.create.view.components
-
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
@@ -24,66 +18,51 @@ import androidx.compose.material.icons.rounded.Search
 import androidx.compose.material3.AssistChipDefaults
 import androidx.compose.material3.ChipColors
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
-import fit.asta.health.feature.profile.create.vm.ComposeIndex
-import fit.asta.health.feature.profile.create.vm.ProfileEvent
-import fit.asta.health.feature.profile.show.vm.ProfileViewModel
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
-@OptIn(ExperimentalCoroutinesApi::class)
 @Composable
 fun ItemSelectionLayout(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    cardList: List<HealthProperties>,
-    cardList2: SnapshotStateList<HealthProperties>?,
-    cardIndex: Int,
-    composeIndex: ComposeIndex,
-    searchQuery: MutableState<String>,
+    userProfileState: UserProfileState,
+    healthProperties: List<HealthProperties>
 ) {
-    Box(
-        Modifier
-            .fillMaxSize()
-            .background(Color.White)
+    Column(
+        modifier = Modifier
+            .padding(horizontal = AppTheme.spacing.level2),
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
-        Column(
-            Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2)
-        ) {
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-                AppDivider(modifier = Modifier.width(80.dp))
-            }
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-            SearchBar(onSearchQueryChange = { searchQuery.value = it }, searchQuery)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
-            ChipRow(cardList, cardList2, viewModel, cardIndex, composeIndex, searchQuery.value)
-            Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
+        Spacer(modifier = Modifier)
+        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
+            AppDivider(modifier = Modifier.width(80.dp))
         }
+        SearchBar(
+            searchQuery = userProfileState.bottomSheetSearchQuery,
+            onSearchQueryChange = {
+                userProfileState.bottomSheetSearchQuery = it
+            },
+        )
+        ChipRow(userProfileState, healthProperties)
+        Spacer(modifier = Modifier)
     }
 }
 
 @Composable
 fun SearchBar(
     onSearchQueryChange: (String) -> Unit,
-    searchQuery: MutableState<String>,
+    searchQuery: String,
 ) {
     val focusManager = LocalFocusManager.current
     AppOutlinedTextField(
-        value = searchQuery.value,
+        value = searchQuery,
         onValueChange = { onSearchQueryChange(it) },
         modifier = Modifier.fillMaxWidth(),
         keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
@@ -97,39 +76,29 @@ fun SearchBar(
     )
 }
 
-@OptIn(ExperimentalLayoutApi::class, ExperimentalCoroutinesApi::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChipRow(
-    cardList: List<HealthProperties>,
-    cardList2: SnapshotStateList<HealthProperties>?,
-    viewModel: ProfileViewModel,
-    cardIndex: Int,
-    composeIndex: ComposeIndex,
-    searchQuery: String,
+    userProfileState: UserProfileState,
+    healthProperties: List<HealthProperties>
 ) {
 
-    val filteredList = cardList.filter {
-        it.name.contains(searchQuery, ignoreCase = true)
+    val filteredList = healthProperties.filter {
+        it.name.contains(userProfileState.bottomSheetSearchQuery, ignoreCase = true)
     }
 
     FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
         filteredList.forEach { healthProperties ->
-            val isSelected = cardList2?.contains(healthProperties) == true
+            val isSelected =
+                userProfileState.currentBottomSheetType?.list?.contains(healthProperties) == true
             AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {
                 if (isSelected) {
-                    viewModel.onEvent(
-                        ProfileEvent.SetSelectedRemoveItemOption(
-                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
-                        )
-                    )
+                    userProfileState.currentBottomSheetType?.remove(healthProperties)
                 } else {
-                    viewModel.onEvent(
-                        ProfileEvent.SetSelectedAddItemOption(
-                            item = healthProperties, index = cardIndex, composeIndex = composeIndex
-                        )
-                    )
+                    userProfileState.currentBottomSheetType?.add(healthProperties)
                 }
-            })
+            }
+            )
         }
     }
 }

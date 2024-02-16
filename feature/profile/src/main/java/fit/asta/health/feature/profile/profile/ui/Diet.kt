@@ -17,7 +17,6 @@ import androidx.compose.material.ModalBottomSheetValue
 import androidx.compose.material.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -30,16 +29,12 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
-import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.feature.profile.create.MultiRadioBtnKeys
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
-import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.create.vm.TwoRadioBtnSelections
@@ -60,7 +55,7 @@ import kotlinx.coroutines.launch
     ExperimentalMaterialApi::class
 )
 @Composable
-fun DietCreateScreen(
+fun DietScreen(
     userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
@@ -140,12 +135,12 @@ fun DietCreateScreen(
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
-                DietCreateBottomSheetLayout(
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    cardList2 = composeThirdData?.get(it.cardIndex),
-                    searchQuery = searchQuery
-                )
+//                DietCreateBottomSheetLayout(
+//                    sheetLayout = it,
+//                    closeSheet = { closeSheet() },
+//                    cardList2 = composeThirdData?.get(it.cardIndex),
+//                    searchQuery = searchQuery
+//                )
             }
         }, sheetState = modalBottomSheetState, content = {
             DietContent(
@@ -224,33 +219,33 @@ fun DietContent(
     }
 }
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun DietCreateBottomSheetLayout(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    sheetLayout: DietCreateBottomSheetType,
-    closeSheet: () -> Unit,
-    cardList2: SnapshotStateList<HealthProperties>?,
-    searchQuery: MutableState<String>,
-) {
-
-    val cardIndex = sheetLayout.cardIndex
-    val state by viewModel.healthPropState.collectAsStateWithLifecycle()
-
-    when (state) {
-        is UiState.Loading -> AppDotTypingAnimation()
-        is UiState.NoInternet -> AppInternetErrorDialog {}
-        is UiState.Success -> ItemSelectionLayout(
-            cardList = (state as UiState.Success).data,
-            cardList2 = cardList2,
-            cardIndex = cardIndex,
-            composeIndex = ComposeIndex.Third,
-            searchQuery = searchQuery
-        )
-
-        else -> {}
-    }
-}
+//@OptIn(ExperimentalCoroutinesApi::class)
+//@Composable
+//fun DietCreateBottomSheetLayout(
+//    viewModel: ProfileViewModel = hiltViewModel(),
+//    sheetLayout: DietCreateBottomSheetType,
+//    closeSheet: () -> Unit,
+//    cardList2: SnapshotStateList<HealthProperties>?,
+//    searchQuery: MutableState<String>,
+//) {
+//
+//    val cardIndex = sheetLayout.cardIndex
+//    val state by viewModel.healthPropertiesState.collectAsStateWithLifecycle()
+//
+//    when (state) {
+//        is UiState.Loading -> AppDotTypingAnimation()
+//        is UiState.NoInternet -> AppInternetErrorDialog {}
+//        is UiState.Success -> ItemSelectionLayout(
+//            cardList = (state as UiState.Success).data,
+//            cardList2 = cardList2,
+//            cardIndex = cardIndex,
+//            composeIndex = ComposeIndex.Third,
+//            searchQuery = searchQuery
+//        )
+//
+//        else -> {}
+//    }
+//}
 
 sealed class DietCreateBottomSheetType(val cardIndex: Int, val propertyType: String) {
     data object DIETARYPREF : DietCreateBottomSheetType(0, "dp")

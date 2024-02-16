@@ -61,7 +61,7 @@ import java.util.Calendar
 
 
 @Composable
-fun PhysiqueCreateScreen(
+fun PhysiqueScreen(
     userProfileState: UserProfileState
 ) {
     val calendarUseCaseState = rememberUseCaseState()

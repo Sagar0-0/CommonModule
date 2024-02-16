@@ -88,7 +88,7 @@ class ProfileRepoImpl
         }
     }
 
-    override suspend fun getHealthProperties(propertyType: String): ResponseState<ArrayList<HealthProperties>> {
+    override suspend fun getHealthProperties(propertyType: String): ResponseState<List<HealthProperties>> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
                 profileApi.getHealthProperties(propertyType)

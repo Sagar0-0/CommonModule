@@ -40,17 +40,13 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
-import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheetLayout
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
-import fit.asta.health.feature.profile.create.view.components.ItemSelectionLayout
 import fit.asta.health.feature.profile.create.vm.ComposeIndex
 import fit.asta.health.feature.profile.create.vm.ProfileEvent
 import fit.asta.health.feature.profile.profile.ui.LifeStyleCreateBottomSheetType.CURRENTACTIVITIES
@@ -65,7 +61,7 @@ import kotlinx.coroutines.launch
 
 @OptIn(ExperimentalCoroutinesApi::class)
 @Composable
-fun LifeStyleCreateScreen(
+fun LifestyleScreen(
     userProfileState: UserProfileState,
     viewModel: ProfileViewModel = hiltViewModel()
 ) {
@@ -139,13 +135,13 @@ fun LifeStyleCreateScreen(
         sheetContent = {
             Spacer(modifier = Modifier.height(1.dp))
             currentBottomSheet?.let {
-                LifeStyleCreateBottomSheetLayout(
-                    viewModel = viewModel,
-                    sheetLayout = it,
-                    closeSheet = { closeSheet() },
-                    cardList2 = composeSecondData?.get(it.cardIndex),
-                    searchQuery = searchQuery
-                )
+//                LifeStyleCreateBottomSheetLayout(
+//                    viewModel = viewModel,
+//                    sheetLayout = it,
+//                    closeSheet = { closeSheet() },
+//                    cardList2 = composeSecondData?.get(it.cardIndex),
+//                    searchQuery = searchQuery
+//                )
             }
         },
         sheetState = modalBottomSheetState,
@@ -301,33 +297,33 @@ fun LifeStyleContent(
 }
 
 
-@OptIn(ExperimentalCoroutinesApi::class)
-@Composable
-fun LifeStyleCreateBottomSheetLayout(
-    viewModel: ProfileViewModel = hiltViewModel(),
-    sheetLayout: LifeStyleCreateBottomSheetType,
-    closeSheet: () -> Unit,
-    cardList2: SnapshotStateList<HealthProperties>?,
-    searchQuery: MutableState<String>,
-) {
-
-    val cardIndex = sheetLayout.cardIndex
-    val state by viewModel.healthPropState.collectAsStateWithLifecycle()
-
-    when (state) {
-        is UiState.Loading -> AppDotTypingAnimation()
-        is UiState.NoInternet -> AppInternetErrorDialog {}
-        is UiState.Success -> ItemSelectionLayout(
-            cardList = (state as UiState.Success).data,
-            cardList2 = cardList2,
-            cardIndex = cardIndex,
-            composeIndex = ComposeIndex.Second,
-            searchQuery = searchQuery
-        )
-
-        else -> {}
-    }
-}
+//@OptIn(ExperimentalCoroutinesApi::class)
+//@Composable
+//fun LifeStyleCreateBottomSheetLayout(
+//    viewModel: ProfileViewModel = hiltViewModel(),
+//    sheetLayout: LifeStyleCreateBottomSheetType,
+//    closeSheet: () -> Unit,
+//    cardList2: SnapshotStateList<HealthProperties>?,
+//    searchQuery: MutableState<String>,
+//) {
+//
+//    val cardIndex = sheetLayout.cardIndex
+//    val state by viewModel.healthPropertiesState.collectAsStateWithLifecycle()
+//
+//    when (state) {
+//        is UiState.Loading -> AppDotTypingAnimation()
+//        is UiState.NoInternet -> AppInternetErrorDialog {}
+//        is UiState.Success -> ItemSelectionLayout(
+//            cardList = (state as UiState.Success).data,
+//            cardList2 = cardList2,
+//            cardIndex = cardIndex,
+//            composeIndex = ComposeIndex.Second,
+//            searchQuery = searchQuery
+//        )
+//
+//        else -> {}
+//    }
+//}
 
 
 @Composable
