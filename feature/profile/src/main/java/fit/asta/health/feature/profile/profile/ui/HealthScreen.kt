@@ -41,7 +41,7 @@ fun HealthScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier)
-        userProfileState.healthBottomSheetTypes.forEach { type ->
+        userProfileState.healthBottomSheetTypes.forEachIndexed { index, type ->
             AppCard(
                 modifier = Modifier
                     .fillMaxWidth()
@@ -61,7 +61,11 @@ fun HealthScreen(
                         TitleTexts.Level3(text = type.name)
                         AppIconButton(
                             onClick = {
-                                userProfileState.openHealthBottomSheet(bottomSheetState, type)
+                                userProfileState.openHealthBottomSheet(
+                                    bottomSheetState,
+                                    type,
+                                    index
+                                )
                             }
                         ) {
                             AppIcon(imageVector = Icons.Default.AddCircle)
@@ -90,7 +94,9 @@ fun HealthScreen(
             sheetVisible = userProfileState.bottomSheetVisible,
             sheetState = bottomSheetState,
             dragHandle = null,
-            onDismissRequest = { userProfileState.closeBottomSheet(bottomSheetState) },
+            onDismissRequest = {
+                userProfileState.closeBottomSheet(bottomSheetState)
+            },
         ) {
             HealthBottomSheetLayout(
                 userProfileState = userProfileState

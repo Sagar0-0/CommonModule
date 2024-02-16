@@ -18,7 +18,6 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -47,11 +46,12 @@ fun rememberUserProfileState(
 ): UserProfileState {
     return rememberSaveable(
         userProfileResponse,
-        healthPropertiesState,
+//        healthPropertiesState,
         submitProfileState,
         pagerState,
         coroutineScope,
         navController,
+        onEvent,
         saver = UserProfileState
             .Saver(
                 userProfileResponse,
@@ -101,6 +101,7 @@ class UserProfileState(
         get() = ProfileNavigationScreen.entries
 
     var bottomSheetVisible by mutableStateOf(false)
+        private set
     var bottomSheetSearchQuery by mutableStateOf("")
 
     private fun openBottomSheet(sheetState: SheetState) {
@@ -109,8 +110,8 @@ class UserProfileState(
     }
 
     fun closeBottomSheet(sheetState: SheetState) {
-        coroutineScope.launch { sheetState.hide() }
         bottomSheetVisible = false
+        coroutineScope.launch { sheetState.hide() }
         bottomSheetSearchQuery = ""
     }
 
@@ -155,43 +156,71 @@ class UserProfileState(
     val bodyPart = (userProfileResponse.health.bodyPart ?: listOf()).toMutableStateList()
     val addiction = (userProfileResponse.health.addiction ?: listOf()).toMutableStateList()
     val injurySince by mutableStateOf(userProfileResponse.health.injurySince.toString())
-    var currentBottomSheetType by mutableStateOf<HealthBottomSheetType?>(null)
+    var currentHealthBottomSheetTypeIndex by mutableIntStateOf(0)
 
     class HealthBottomSheetType(
         val id: String,
         val name: String,
-        private val _list: SnapshotStateList<HealthProperties>
-    ) {
-
-        val list: List<HealthProperties>
-            get() = _list.toList()
-
-        fun add(properties: HealthProperties) {
-            _list.add(properties)
-        }
-
-        fun remove(property: HealthProperties) {
-            _list.remove(property)
-        }
-    }
+        val list: List<HealthProperties>,
+        val add: (HealthProperties) -> Unit,
+        val remove: (HealthProperties) -> Unit,
+    )
 
     val healthBottomSheetTypes: List<HealthBottomSheetType> = listOf(
-        HealthBottomSheetType("hh", "Health History", healthHistory),
-        HealthBottomSheetType("injury", "Injuries", injuries),
-        HealthBottomSheetType("ailment", "Ailments", ailments),
-        HealthBottomSheetType("med", "Medications", medications),
-        HealthBottomSheetType("tgt", "Targets", targets),
-        HealthBottomSheetType("bp", "Body parts", bodyPart),
-        HealthBottomSheetType("bp", "Addictions", addiction)
+        HealthBottomSheetType(
+            "hh",
+            "Health History",
+            healthHistory.toList(),
+            { healthHistory.add(it) },
+            { healthHistory.remove(it) }),
+        HealthBottomSheetType(
+            "injury",
+            "Injuries",
+            injuries.toList(),
+            { injuries.add(it) },
+            { injuries.remove(it) }),
+        HealthBottomSheetType(
+            "ailment",
+            "Ailments",
+            ailments.toList(),
+            { ailments.add(it) },
+            { ailments.remove(it) }),
+        HealthBottomSheetType(
+            "med",
+            "Medications",
+            medications.toList(),
+            { medications.add(it) },
+            { medications.remove(it) }),
+        HealthBottomSheetType(
+            "tgt",
+            "Targets",
+            targets.toList(),
+            { targets.add(it) },
+            { targets.remove(it) }),
+        HealthBottomSheetType(
+            "bp",
+            "Body parts",
+            bodyPart.toList(),
+            { bodyPart.add(it) },
+            { bodyPart.remove(it) }),
+        HealthBottomSheetType(
+            "bp",
+            "Addictions",
+            addiction.toList(),
+            { addiction.add(it) },
+            { addiction.remove(it) }),
     )
 
     fun openHealthBottomSheet(
         sheetState: SheetState,
-        healthBottomSheetType: HealthBottomSheetType
+        healthBottomSheetType: HealthBottomSheetType,
+        index: Int
     ) {
-        currentBottomSheetType = healthBottomSheetType
-        onEvent(UserProfileEvent.GetHealthProperties(healthBottomSheetType.id))
+        currentHealthBottomSheetTypeIndex = index
+        // Should be before the event below, as it will reset the whole object
+        // and bottomSheetVisible state when healthPropertiesState changes
         openBottomSheet(sheetState)
+        onEvent(UserProfileEvent.GetHealthProperties(healthBottomSheetType.id))
     }
 
     //Lifestyle Page
@@ -267,7 +296,9 @@ class UserProfileState(
                     it.userPregnancyWeekErrorMessage,
                     it.userDob,
                     it.userDobErrorMessage,
-                    it.bottomSheetVisible
+                    it.bottomSheetVisible,
+                    it.bottomSheetSearchQuery,
+                    it.currentHealthBottomSheetTypeIndex
                 )
             },
             restore = {
@@ -299,6 +330,8 @@ class UserProfileState(
                     this.userDob = it[16] as String
                     this.userDobErrorMessage = it[17] as String?
                     this.bottomSheetVisible = it[18] as Boolean
+                    this.bottomSheetSearchQuery = it[19] as String
+                    this.currentHealthBottomSheetTypeIndex = it[20] as Int
                 }
             }
         )

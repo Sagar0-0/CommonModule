@@ -90,14 +90,23 @@ fun ChipRow(
     FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
         filteredList.forEach { healthProperties ->
             val isSelected =
-                userProfileState.currentBottomSheetType?.list?.contains(healthProperties) == true
-            AddChipOnCard(textOnChip = healthProperties.name, isSelected = isSelected, onClick = {
-                if (isSelected) {
-                    userProfileState.currentBottomSheetType?.remove(healthProperties)
-                } else {
-                    userProfileState.currentBottomSheetType?.add(healthProperties)
+                userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].list.contains(
+                    healthProperties
+                )
+            AddChipOnCard(
+                textOnChip = healthProperties.name,
+                isSelected = isSelected,
+                onClick = {
+                    if (isSelected) {
+                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].remove(
+                            healthProperties
+                        )
+                    } else {
+                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].add(
+                            healthProperties
+                        )
+                    }
                 }
-            }
             )
         }
     }
