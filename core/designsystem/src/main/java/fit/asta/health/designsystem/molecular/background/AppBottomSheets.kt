@@ -1,5 +1,6 @@
 package fit.asta.health.designsystem.molecular.background
 
+import android.util.Log
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
@@ -42,6 +43,7 @@ fun AppModalBottomSheet(
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
+    Log.d("SHEET", "AppModalBottomSheet: $sheetVisible")
     if (sheetVisible) {
         ModalBottomSheet(
             modifier = modifier.fillMaxSize(),

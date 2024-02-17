@@ -12,11 +12,11 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+import fit.asta.health.feature.profile.profile.ui.UserProfileState
 
 @Composable
 fun CreateProfileTwoButtonLayout(
-    eventPrevious: () -> Unit,
-    eventNext: () -> Unit,
+    userProfileState: UserProfileState,
     titleButton2: String = "Next",
 ) {
     Row(
@@ -24,7 +24,7 @@ fun CreateProfileTwoButtonLayout(
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
     ) {
         AppOutlinedButton(
-            onClick = eventPrevious,
+            onClick = { userProfileState.currentPageIndex-- },
             modifier = Modifier.weight(1f),
             border = BorderStroke(width = 2.dp, color = AppTheme.colors.onSurface)
         ) {
@@ -34,7 +34,7 @@ fun CreateProfileTwoButtonLayout(
             )
         }
         AppFilledButton(
-            onClick = eventNext,
+            onClick = { userProfileState.currentPageIndex++ },
             modifier = Modifier.weight(1f),
             shape = CircleShape
         ) {

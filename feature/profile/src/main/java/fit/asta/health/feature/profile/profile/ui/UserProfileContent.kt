@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.show
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
@@ -19,13 +19,7 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
-import fit.asta.health.feature.profile.create.view.DetailsCreateScreen
-import fit.asta.health.feature.profile.create.view.DietCreateScreen
-import fit.asta.health.feature.profile.create.view.HealthCreateScreen
-import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
-import fit.asta.health.feature.profile.create.view.PhysiqueCreateScreen
-import fit.asta.health.feature.profile.profile.ui.ProfileNavigationScreen
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
+import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
@@ -80,51 +74,24 @@ fun UserProfileContent(
             ) {
                 when (userProfileState.profileDataPages[userProfileState.currentPageIndex]) {
                     ProfileNavigationScreen.BASIC -> {
-                        DetailsCreateScreen(userProfileState)
+                        DetailsScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Physique -> {
-                        PhysiqueCreateScreen(
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                        )
+                        PhysiqueScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthCreateScreen(
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                        )
+//                        HealthCreateScreen(userProfileState)
+                        HealthScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifeStyleCreateScreen(
-                            eventNext = {
-                                userProfileState.currentPageIndex++
-                            },
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                        )
+                        LifestyleScreen(userProfileState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietCreateScreen(
-                            eventPrevious = {
-                                userProfileState.currentPageIndex--
-                            },
-                            navigateBack = {
-                                userProfileState.onBackPressed()
-                            }
-                        )
+                        DietScreen(userProfileState)
                     }
                 }
             }

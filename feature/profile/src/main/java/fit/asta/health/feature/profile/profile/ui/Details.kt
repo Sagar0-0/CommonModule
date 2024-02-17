@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.create.view
+package fit.asta.health.feature.profile.profile.ui
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -47,12 +47,11 @@ import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
 import fit.asta.health.resources.strings.R
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsCreateScreen(
+fun DetailsScreen(
     userProfileState: UserProfileState
 ) {
     val imgLauncher =

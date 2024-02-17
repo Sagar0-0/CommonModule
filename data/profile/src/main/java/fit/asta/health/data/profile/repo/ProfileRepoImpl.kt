@@ -71,11 +71,11 @@ class ProfileRepoImpl
 
     override suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        if (userProfileResponse.userDetail.media.localUrl != null) {
+        if (userProfileResponse.userDetail.media.localUri != null) {
             parts.add(
                 MultipartBody.Part.createFormData(
                     name = "file", body = InputStreamRequestBody(
-                        contentResolver, userProfileResponse.userDetail.media.localUrl!!
+                        contentResolver, userProfileResponse.userDetail.media.localUri!!
                     ), filename = userProfileResponse.uid
                 )
             )
@@ -88,7 +88,7 @@ class ProfileRepoImpl
         }
     }
 
-    override suspend fun getHealthProperties(propertyType: String): ResponseState<ArrayList<HealthProperties>> {
+    override suspend fun getHealthProperties(propertyType: String): ResponseState<List<HealthProperties>> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
                 profileApi.getHealthProperties(propertyType)

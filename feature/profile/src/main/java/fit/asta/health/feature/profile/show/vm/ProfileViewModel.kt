@@ -1,6 +1,5 @@
 package fit.asta.health.feature.profile.show.vm
 
-import android.net.Uri
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.SavedStateHandle
@@ -71,9 +70,9 @@ class ProfileViewModel
     private val _submitProfileState = MutableStateFlow<UiState<SubmitProfileResponse>>(UiState.Idle)
     val submitProfileState = _submitProfileState.asStateFlow()
 
-    private val _healthPropState =
-        MutableStateFlow<UiState<ArrayList<HealthProperties>>>(UiState.Idle)
-    val healthPropState = _healthPropState.asStateFlow()
+    private val _healthPropertiesState =
+        MutableStateFlow<UiState<List<HealthProperties>>>(UiState.Idle)
+    val healthPropertiesState = _healthPropertiesState.asStateFlow()
 
     private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val userProfileState = _userProfileState.asStateFlow()
@@ -209,9 +208,9 @@ class ProfileViewModel
     private fun getValueAtIndex(
         composeIndex: ComposeIndex,
         cardViewIndex: Int,
-    ): List<HealthProperties>? {
+    ): List<HealthProperties> {
         val composeData = _propertiesData.value[composeIndex]
-        return composeData?.get(cardViewIndex)
+        return composeData!![cardViewIndex]!!.toList()
     }
 
 
@@ -519,13 +518,13 @@ class ProfileViewModel
     private fun createHealth(): Health {
         // Extract the health creation logic here
         return Health(
-            healthHistory = getValueAtIndex(ComposeIndex.First, 0)?.let { ArrayList(it) },
-            injuries = getValueAtIndex(ComposeIndex.First, 1)?.let { ArrayList(it) },
-            bodyPart = getValueAtIndex(ComposeIndex.First, 2)?.let { ArrayList(it) },
-            ailments = getValueAtIndex(ComposeIndex.First, 3)?.let { ArrayList(it) },
-            medications = getValueAtIndex(ComposeIndex.First, 4)?.let { ArrayList(it) },
-            targets = getValueAtIndex(ComposeIndex.First, 5)?.let { ArrayList(it) },
-            addiction = getValueAtIndex(ComposeIndex.First, 6)?.let { ArrayList(it) },
+            healthHistory = getValueAtIndex(ComposeIndex.First, 0),
+            injuries = getValueAtIndex(ComposeIndex.First, 1),
+            bodyPart = getValueAtIndex(ComposeIndex.First, 2),
+            ailments = getValueAtIndex(ComposeIndex.First, 3),
+            medications = getValueAtIndex(ComposeIndex.First, 4),
+            targets = getValueAtIndex(ComposeIndex.First, 5),
+            addiction = getValueAtIndex(ComposeIndex.First, 6),
             injurySince = if (injuriesSince.value.value == "") {
                 0
             } else {
@@ -537,9 +536,9 @@ class ProfileViewModel
     private fun createLifeStyle(): LifeStyle {
         // Extract the lifestyle creation logic here
         return LifeStyle(
-            curActivities = getValueAtIndex(ComposeIndex.Second, 0)?.let { ArrayList(it) },
-            prefActivities = getValueAtIndex(ComposeIndex.Second, 1)?.let { ArrayList(it) },
-            lifeStyleTargets = getValueAtIndex(ComposeIndex.Second, 2)?.let { ArrayList(it) },
+            curActivities = getValueAtIndex(ComposeIndex.Second, 0),
+            prefActivities = getValueAtIndex(ComposeIndex.Second, 1),
+            lifeStyleTargets = getValueAtIndex(ComposeIndex.Second, 2),
             physicalActivity = uploadThreeRadioBtnSelection(
                 getSelectedValueForRadioButton(MultiRadioBtnKeys.PHYACTIVE.key)
             ),
@@ -563,26 +562,28 @@ class ProfileViewModel
 
     private fun createDiet(): Diet {
         // Extract the diet creation logic here
-        return Diet(preference = getValueAtIndex(ComposeIndex.Third, 0)?.let { ArrayList(it) },
-            nonVegDays = getValueAtIndex(ComposeIndex.Third, 1)?.let { ArrayList(it) },
-            allergies = getValueAtIndex(ComposeIndex.Third, 2)?.let { ArrayList(it) },
-            cuisines = getValueAtIndex(ComposeIndex.Third, 3)?.let { ArrayList(it) },
-            restrictions = getValueAtIndex(ComposeIndex.Third, 4)?.let { ArrayList(it) })
+        return Diet(
+            preference = getValueAtIndex(ComposeIndex.Third, 0),
+            nonVegDays = getValueAtIndex(ComposeIndex.Third, 1),
+            allergies = getValueAtIndex(ComposeIndex.Third, 2),
+            cuisines = getValueAtIndex(ComposeIndex.Third, 3),
+            restrictions = getValueAtIndex(ComposeIndex.Third, 4)
+        )
     }
 
     //create+edit+update after edit
-    private fun saveProfileData(userProfileResponse: UserProfileResponse) {
+    fun saveProfileData(userProfileResponse: UserProfileResponse) {
         viewModelScope.launch {
             _submitProfileState.update {
                 profileRepo.updateUserProfile(userProfileResponse).toUiState()
             }
         }
-
     }
 
-    private fun getHealthProperties(propertyType: String) {
+    fun getHealthProperties(propertyType: String) {
+        _healthPropertiesState.value = UiState.Loading
         viewModelScope.launch {
-            _healthPropState.value = profileRepo.getHealthProperties(propertyType).toUiState()
+            _healthPropertiesState.value = profileRepo.getHealthProperties(propertyType).toUiState()
         }
     }
 
@@ -651,7 +652,7 @@ class ProfileViewModel
         when (event) {
             is ProfileEvent.OnEmailChange -> handleEmailChange(event.email)
             is ProfileEvent.OnNameChange -> handleNameChange(event.name)
-            is ProfileEvent.OnUserImgChange -> handleUserImgChange(event.url)
+            is ProfileEvent.OnUserImgChange -> {}
             is ProfileEvent.OnUserHeightChange -> handleUserHeightChange(event.height)
             is ProfileEvent.OnUserWeightChange -> handleUserWeightChange(event.weight)
             is ProfileEvent.OnUserAGEChange -> handleUserAgeChange(event.age)
@@ -662,7 +663,7 @@ class ProfileViewModel
             is ProfileEvent.OnUserJStartTimeChange -> handleUserJStartTimeChange(event.jStartTime)
             is ProfileEvent.OnUserBedTimeChange -> handleUserBedTimeChange(event.bedTime)
             is ProfileEvent.OnUserWakeUpTimeChange -> handleUserWakeUpTimeChange(event.wakeUpTime)
-            is ProfileEvent.OnProfilePicClear -> handleProfilePicClear()
+            is ProfileEvent.OnProfilePicClear -> {}
             is ProfileEvent.OnSubmit -> saveProfileData()
             is ProfileEvent.GetHealthProperties -> getHealthProperties(event.propertyType)
             is ProfileEvent.SetSelectedAddItemOption -> healthAdd(
@@ -675,9 +676,9 @@ class ProfileViewModel
         }
     }
 
-    private fun handleProfilePicClear() {
-        savedState[USER_IMG] = userImg.value.copy(localUrl = null, url = "")
-    }
+//    private fun handleProfilePicClear() {
+//        savedState[USER_IMG] = userImg.value.copy(localUrl = null, url = "")
+//    }
 
     private fun handleEmailChange(email: String) {
         savedState[EMAIL] = InputWrapper(
@@ -691,9 +692,9 @@ class ProfileViewModel
         )
     }
 
-    private fun handleUserImgChange(url: Uri?) {
-        savedState[USER_IMG] = userImg.value.copy(localUrl = url)
-    }
+//    private fun handleUserImgChange(url: Uri?) {
+//        savedState[USER_IMG] = userImg.value.copy(localUrl = url)
+//    }
 
     private fun handleUserHeightChange(eventHeight: String) {
         savedState[HEIGHT] = height.value.copy(
