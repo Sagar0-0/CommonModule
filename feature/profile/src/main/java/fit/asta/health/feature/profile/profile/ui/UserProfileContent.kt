@@ -33,7 +33,6 @@ fun UserProfileContent(
     submitProfileState: UiState<SubmitProfileResponse>,
     userPropertiesState: UiState<List<UserProperties>>
 ) {
-
     AppScaffold(
         isScreenLoading = submitProfileState is UiState.Loading,
         topBar = {

@@ -48,15 +48,18 @@ data class UserProfileAddress(
 
 @Parcelize
 data class Physique(
-    @SerializedName("age") val age: Int = 0, //NOT DONE
+    @SerializedName("age") val age: Int = 0,
     @SerializedName("bdt") val bodyType: Int = 0,
-    @SerializedName("bmi") val bmi: Float = 0f,  //NOT DONE
-    @SerializedName("gen") val gender: Gender = 0, //recheck
+    @SerializedName("bmi") val bmi: Float = 0f,
+    @SerializedName("bmiUnit") val bmiUnit: Int = 0,
+    @SerializedName("gen") val gender: Gender = 0,
     @SerializedName("ht") val height: Float = 0f,
+    @SerializedName("htUnit") val heightUnit: Int = 0,
     @SerializedName("prg") val isPregnant: BooleanInt = 0,
     @SerializedName("prd") val onPeriod: BooleanInt = 0,
     @SerializedName("pw") val pregnancyWeek: Int? = 0,
     @SerializedName("wt") val weight: Float = 0f,
+    @SerializedName("wtUnit") val weightUnit: Int = 0,
 ) : Parcelable
 
 @Parcelize
@@ -74,7 +77,7 @@ data class Health(
 //working env missing
 @Parcelize
 data class LifeStyle(
-    @SerializedName("act") var physicalActivity: Int? = 0,
+    @SerializedName("act") var physicalActive: Int? = 0,
     @SerializedName("env") var workingEnv: Int? = 0,
     @SerializedName("ws") var workStyle: Int? = 0,
     @SerializedName("whr") var workingHours: Int? = 0,

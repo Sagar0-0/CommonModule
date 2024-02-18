@@ -33,7 +33,7 @@ class LifestyleScreenState(
         (lifeStyle.lifeStyleTargets ?: listOf()).toMutableStateList()
 
     private val updateLifestyle = LifeStyle(
-        physicalActivity = lifeStyle.physicalActivity,
+        physicalActive = lifeStyle.physicalActive,
         workingEnv = lifeStyle.workingEnv,
         workStyle = lifeStyle.workStyle,
         workingHours = lifeStyle.workingHours,

@@ -68,7 +68,7 @@ fun LifeStyleLayout(
             SingleSelectionProfileCard(
                 icon = PhysActive.icon,
                 title = PhysActive.getTitle(),
-                value = lifeStyle.physicalActivity,
+                value = lifeStyle.physicalActive,
                 valueMap = physicalActivityMap
             )
         }

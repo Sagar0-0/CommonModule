@@ -168,9 +168,11 @@ class UserProfileState(
     var userDobErrorMessage by mutableStateOf<String?>(null)
         private set
     var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
+    var weightUnit by mutableIntStateOf(userProfileResponse.physique.weightUnit)
     var userWeightErrorMessage by mutableStateOf<String?>(null)
         private set
     var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
+    var heightUnit by mutableIntStateOf(userProfileResponse.physique.heightUnit)
     var userHeightErrorMessage by mutableStateOf<String?>(null)
         private set
     var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
@@ -214,12 +216,15 @@ class UserProfileState(
                 age = userAge,
                 bodyType = userProfileResponse.physique.bodyType,
                 bmi = userProfileResponse.physique.bmi,
+                bmiUnit = userProfileResponse.physique.bmiUnit,
                 gender = userGender,
                 height = userHeight.toFloat(),
+                heightUnit = heightUnit,
                 isPregnant = isPregnant,
                 onPeriod = onPeriod,
                 pregnancyWeek = userPregnancyWeek?.toIntOrNull(),
-                weight = userWeight.toFloat()
+                weight = userWeight.toFloat(),
+                weightUnit = weightUnit
             ),
             health = healthScreenState.getHealthData(),
             lifeStyle = lifestyleScreenState.getLifestyleData(),

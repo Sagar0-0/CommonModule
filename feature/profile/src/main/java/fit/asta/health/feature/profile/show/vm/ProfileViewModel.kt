@@ -362,7 +362,7 @@ class ProfileViewModel
         savedState[BEDTIME] = InputWrapper(value = lifeStyle.sleep.to.toString())
 
         loadThreeRadioBtnSelection(
-            lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE.key
+            lifeStyle.physicalActive, MultiRadioBtnKeys.PHYACTIVE.key
         )
 
         loadTwoRadioBtnSelection(
@@ -539,7 +539,7 @@ class ProfileViewModel
             curActivities = getValueAtIndex(ComposeIndex.Second, 0),
             prefActivities = getValueAtIndex(ComposeIndex.Second, 1),
             lifeStyleTargets = getValueAtIndex(ComposeIndex.Second, 2),
-            physicalActivity = uploadThreeRadioBtnSelection(
+            physicalActive = uploadThreeRadioBtnSelection(
                 getSelectedValueForRadioButton(MultiRadioBtnKeys.PHYACTIVE.key)
             ),
             workingEnv = uploadTwoRadioBtnSelection(
