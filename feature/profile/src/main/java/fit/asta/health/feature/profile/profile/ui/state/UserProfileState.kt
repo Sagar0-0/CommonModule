@@ -65,6 +65,21 @@ fun rememberUserProfileState(
             onEvent = onEvent
         )
     }
+
+    val lifestyleScreenState = rememberSaveable(
+        healthPropertiesState,
+        saver = LifestyleScreenState
+            .Saver(
+                healthPropertiesState, coroutineScope, onEvent
+            )
+    ) {
+        LifestyleScreenState(
+            lifeStyle = userProfileResponse.lifeStyle,
+            healthPropertiesState = healthPropertiesState,
+            coroutineScope = coroutineScope,
+            onEvent = onEvent
+        )
+    }
     return rememberSaveable(
         userProfileResponse,
         healthPropertiesState,
@@ -74,8 +89,10 @@ fun rememberUserProfileState(
         navController,
         onEvent,
         healthScreenState,
+        lifestyleScreenState,
         saver = UserProfileState.Saver(
             healthScreenState,
+            lifestyleScreenState,
             userProfileResponse,
             healthPropertiesState,
             submitProfileState,
@@ -87,6 +104,7 @@ fun rememberUserProfileState(
     ) {
         UserProfileState(
             healthScreenState = healthScreenState,
+            lifestyleScreenState = lifestyleScreenState,
             submitProfileState = submitProfileState,
             healthPropertiesState = healthPropertiesState,
             userProfileResponse = userProfileResponse,
@@ -101,6 +119,7 @@ fun rememberUserProfileState(
 @Stable
 class UserProfileState(
     val healthScreenState: HealthScreenState,
+    val lifestyleScreenState: LifestyleScreenState,
     val submitProfileState: UiState<SubmitProfileResponse>,
     private val healthPropertiesState: UiState<List<HealthProperties>>,
     private val userProfileResponse: UserProfileResponse,
@@ -109,13 +128,6 @@ class UserProfileState(
     private val navController: NavController,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
-
-    val lifestyleScreenState = LifestyleScreenState(
-        lifeStyle = userProfileResponse.lifeStyle,
-        healthPropertiesState = healthPropertiesState,
-        coroutineScope = coroutineScope,
-        onEvent = onEvent
-    )
 
     init {
         Log.d(
@@ -262,6 +274,7 @@ class UserProfileState(
     companion object {
         fun Saver(
             healthScreenState: HealthScreenState,
+            lifestyleScreenState: LifestyleScreenState,
             userProfileResponse: UserProfileResponse,
             healthPropertiesState: UiState<List<HealthProperties>>,
             submitProfileState: UiState<SubmitProfileResponse>,
@@ -298,6 +311,7 @@ class UserProfileState(
                 Log.d("SHEET", "Restore: ${it[0]}")
                 UserProfileState(
                     healthScreenState = healthScreenState,
+                    lifestyleScreenState = lifestyleScreenState,
                     submitProfileState = submitProfileState,
                     healthPropertiesState = healthPropertiesState,
                     userProfileResponse = userProfileResponse,

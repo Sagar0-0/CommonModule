@@ -19,6 +19,7 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -45,9 +46,10 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 fun LifestyleScreen(
     userProfileState: UserProfileState
 ) {
-
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+    val currentBottomSheetIndex = rememberSaveable { mutableIntStateOf(0) }
+    val currentTimerIndex = rememberSaveable { mutableIntStateOf(0) }
     val useCaseState = rememberUseCaseState()
 
     Column(
@@ -67,9 +69,11 @@ fun LifestyleScreen(
                 startTime = it.startTime.value,
                 endTime = it.endTime.value,
                 onStartClick = {
+                    currentTimerIndex.intValue = it.startIndex
                     useCaseState.show()
                 },
                 onEndClick = {
+                    currentTimerIndex.intValue = it.endIndex
                     useCaseState.show()
                 }
             )
@@ -84,9 +88,10 @@ fun LifestyleScreen(
                     type.list.remove(it)
                 }
             ) {
+                currentBottomSheetIndex.intValue = index
                 userProfileState.lifestyleScreenState.openLifestyleBottomSheet(
                     bottomSheetState,
-                    index,
+                    currentBottomSheetIndex,
                     bottomSheetVisible
                 )
             }
@@ -99,7 +104,10 @@ fun LifestyleScreen(
             state = useCaseState,
             selection = ClockSelection.HoursMinutes(
                 onPositiveClick = { hrs, mins ->
-                    userProfileState.lifestyleScreenState.setCurrentItemTime("${hrs}:${mins}")
+                    userProfileState.lifestyleScreenState.setCurrentItemTime(
+                        currentTimerIndex.intValue,
+                        "${hrs}:${mins}"
+                    )
                 }
             )
         )
@@ -125,13 +133,22 @@ fun LifestyleScreen(
                         userProfileState.bottomSheetSearchQuery = query
                     },
                     isItemSelected = { prop ->
-                        userProfileState.lifestyleScreenState.isPropertySelected(prop)
+                        userProfileState.lifestyleScreenState.isPropertySelected(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                     onAdd = { prop ->
-                        userProfileState.lifestyleScreenState.addProperty(prop)
+                        userProfileState.lifestyleScreenState.addProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                     onRemove = { prop ->
-                        userProfileState.lifestyleScreenState.removeProperty(prop)
+                        userProfileState.lifestyleScreenState.removeProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                 )
             }

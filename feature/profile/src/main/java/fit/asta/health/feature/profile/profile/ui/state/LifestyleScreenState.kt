@@ -3,10 +3,9 @@ package fit.asta.health.feature.profile.profile.ui.state
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.setValue
+import androidx.compose.runtime.saveable.Saver
+import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
@@ -27,7 +26,6 @@ class LifestyleScreenState(
     private var sleepEndTime = mutableStateOf(lifeStyle.sleep.to.toString())
     private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from.toString())
     private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to.toString())
-    private var currentTimerIndex by mutableIntStateOf(0)
 
     private val currentActivities =
         (lifeStyle.curActivities ?: listOf()).toMutableStateList()
@@ -35,7 +33,6 @@ class LifestyleScreenState(
         (lifeStyle.prefActivities ?: listOf()).toMutableStateList()
     private val lifestyleTargets =
         (lifeStyle.lifeStyleTargets ?: listOf()).toMutableStateList()
-    private var currentBottomSheetIndex = 0
 
     private val updateLifestyle = LifeStyle(
         physicalActivity = lifeStyle.physicalActivity,
@@ -81,6 +78,7 @@ class LifestyleScreenState(
             "Select Wakeup Time",
             sleepStartTime,
             sleepEndTime,
+            0, 1
         ),
         ProfileTimePicker(
             "Job Schedule",
@@ -88,44 +86,73 @@ class LifestyleScreenState(
             "Select Job End Time",
             jobStartTime,
             jobEndTime,
+            2, 3
         )
+    )
+    private val timersList = listOf(
+        sleepStartTime,
+        sleepEndTime,
+        jobStartTime,
+        jobEndTime
     )
 
 
-    fun addProperty(healthProperties: HealthProperties) {
-        bottomSheets[currentBottomSheetIndex].list.add(healthProperties)
+    fun addProperty(sheetIndex: Int, healthProperties: HealthProperties) {
+        bottomSheets[sheetIndex].list.add(healthProperties)
     }
 
-    fun removeProperty(healthProperties: HealthProperties) {
-        bottomSheets[currentBottomSheetIndex].list.remove(healthProperties)
+    fun removeProperty(sheetIndex: Int, healthProperties: HealthProperties) {
+        bottomSheets[sheetIndex].list.remove(healthProperties)
     }
 
-    fun isPropertySelected(healthProperties: HealthProperties): Boolean {
-        return bottomSheets[currentBottomSheetIndex].list.contains(healthProperties)
+    fun isPropertySelected(sheetIndex: Int, healthProperties: HealthProperties): Boolean {
+        return bottomSheets[sheetIndex].list.contains(healthProperties)
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     fun openLifestyleBottomSheet(
         sheetState: SheetState,
-        index: Int,
+        index: MutableState<Int>,
         bottomSheetVisible: MutableState<Boolean>
     ) {
-        currentBottomSheetIndex = index
+//        currentBottomSheetIndex = index
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
-        getHealthProperties()
+        getHealthProperties(index.value)
     }
 
-    private fun getHealthProperties() {
-        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[currentBottomSheetIndex].id))
+    private fun getHealthProperties(sheetIndex: Int) {
+        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
     fun getLifestyleData(): LifeStyle {
         return updateLifestyle
     }
 
-    fun setCurrentItemTime(time: String) {
+    fun setCurrentItemTime(index: Int, time: String) {
+        timersList[index].value = time
+    }
 
+    companion object {
+        fun Saver(
+            healthPropertiesState: UiState<List<HealthProperties>>,
+            coroutineScope: CoroutineScope,
+            onEvent: (UserProfileEvent) -> Unit
+        ): Saver<LifestyleScreenState, *> = listSaver(
+            save = {
+                listOf(
+                    it.updateLifestyle
+                )
+            },
+            restore = {
+                LifestyleScreenState(
+                    lifeStyle = it[0] as LifeStyle,
+                    healthPropertiesState,
+                    coroutineScope,
+                    onEvent
+                )
+            }
+        )
     }
 
     data class ProfileTimePicker(
@@ -133,12 +160,8 @@ class LifestyleScreenState(
         val startButtonTitle: String,
         val endButtonTitle: String,
         val startTime: MutableState<String>,
-        val endTime: MutableState<String>
+        val endTime: MutableState<String>,
+        val startIndex: Int,
+        val endIndex: Int
     )
-
-    data class TimerType(
-        val title: String,
-        val onTimeChange: (String) -> Unit
-    )
-
 }
