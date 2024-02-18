@@ -12,7 +12,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.feature.profile.profile.ui.UserProfileState
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @Composable
 fun CreateProfileTwoButtonLayout(

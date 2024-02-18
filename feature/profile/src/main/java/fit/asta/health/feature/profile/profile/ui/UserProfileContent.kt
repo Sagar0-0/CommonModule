@@ -19,6 +19,7 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
 

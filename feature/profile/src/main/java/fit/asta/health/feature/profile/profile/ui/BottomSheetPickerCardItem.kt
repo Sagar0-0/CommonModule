@@ -1,0 +1,73 @@
+package fit.asta.health.feature.profile.profile.ui
+
+import androidx.compose.animation.AnimatedVisibility
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.AddCircle
+import androidx.compose.material.icons.filled.RemoveCircle
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.chip.AppAssistChip
+import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
+
+@Composable
+fun BottomSheetPickerCardItem(
+    name: String,
+    list: SnapshotStateList<HealthProperties>,
+    onRemove: (HealthProperties) -> Unit,
+    onOpenClick: () -> Unit
+) {
+    AppCard(
+        modifier = Modifier
+            .fillMaxWidth()
+            .padding(horizontal = AppTheme.spacing.level2)
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2)
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween,
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                TitleTexts.Level3(text = name)
+                AppIconButton(
+                    onClick = onOpenClick
+                ) {
+                    AppIcon(imageVector = Icons.Default.AddCircle)
+                }
+            }
+            AnimatedVisibility(list.isNotEmpty()) {
+                FlowRow(
+                    mainAxisSpacing = AppTheme.spacing.level0,
+                    modifier = Modifier.padding(top = AppTheme.spacing.level2),
+                ) {
+                    list.forEach {
+                        AppAssistChip(
+                            textToShow = it.name,
+                            trailingIcon = Icons.Default.RemoveCircle
+                        ) {
+                            list.add(it)
+//                            onRemove(it)
+                        }
+                    }
+                }
+            }
+        }
+    }
+}

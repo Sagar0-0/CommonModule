@@ -13,8 +13,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.UserProfileContent
-import fit.asta.health.feature.profile.profile.ui.rememberUserProfileState
-import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
+import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 
 const val PROFILE_GRAPH_ROUTE = "graph_profile"

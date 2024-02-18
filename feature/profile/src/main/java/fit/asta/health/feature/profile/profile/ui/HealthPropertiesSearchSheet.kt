@@ -31,9 +31,13 @@ import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 
 @Composable
-fun ItemSelectionLayout(
-    userProfileState: UserProfileState,
-    healthProperties: List<HealthProperties>
+fun HealthPropertiesSearchSheet(
+    healthProperties: List<HealthProperties>,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    isItemSelected: (HealthProperties) -> Boolean,
+    onAdd: (HealthProperties) -> Unit,
+    onRemove: (HealthProperties) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -45,12 +49,16 @@ fun ItemSelectionLayout(
             AppDivider(modifier = Modifier.width(80.dp))
         }
         SearchBar(
-            searchQuery = userProfileState.bottomSheetSearchQuery,
-            onSearchQueryChange = {
-                userProfileState.bottomSheetSearchQuery = it
-            },
+            searchQuery = searchQuery,
+            onSearchQueryChange = onSearchQueryChange,
         )
-        ChipRow(userProfileState, healthProperties)
+        ChipRow(
+            healthProperties = healthProperties,
+            searchQuery = searchQuery,
+            isItemSelected = isItemSelected,
+            onAdd = onAdd,
+            onRemove = onRemove
+        )
         Spacer(modifier = Modifier)
     }
 }
@@ -79,30 +87,30 @@ fun SearchBar(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChipRow(
-    userProfileState: UserProfileState,
-    healthProperties: List<HealthProperties>
+    healthProperties: List<HealthProperties>,
+    searchQuery: String,
+    isItemSelected: (HealthProperties) -> Boolean,
+    onAdd: (HealthProperties) -> Unit,
+    onRemove: (HealthProperties) -> Unit
 ) {
 
     val filteredList = healthProperties.filter {
-        it.name.contains(userProfileState.bottomSheetSearchQuery, ignoreCase = true)
+        it.name.contains(searchQuery, ignoreCase = true)
     }
 
     FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
         filteredList.forEach { healthProperties ->
-            val isSelected =
-                userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].list.contains(
-                    healthProperties
-                )
+            val isSelected = isItemSelected(healthProperties)
             AddChipOnCard(
                 textOnChip = healthProperties.name,
                 isSelected = isSelected,
                 onClick = {
                     if (isSelected) {
-                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].remove(
+                        onRemove(
                             healthProperties
                         )
                     } else {
-                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].add(
+                        onAdd(
                             healthProperties
                         )
                     }

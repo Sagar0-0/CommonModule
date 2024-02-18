@@ -43,6 +43,7 @@ import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.DIET
 import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.FOODALLERGIES
 import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.FOODRES
 import fit.asta.health.feature.profile.profile.ui.DietCreateBottomSheetType.NONVEGDAYS
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.show.view.OnlyChipSelectionCard
 import fit.asta.health.feature.profile.show.view.SelectionCardCreateProfile
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
