@@ -1,19 +1,19 @@
 package fit.asta.health.feature.profile.create.vm
 
 import android.net.Uri
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 
 sealed class ProfileEvent {
     data class GetHealthProperties(val propertyType: String) : ProfileEvent()
 
     data class SetSelectedAddItemOption(
-        val item: HealthProperties,
+        val item: UserProperties,
         val index: Int,
         val composeIndex: ComposeIndex,
     ) : ProfileEvent()
 
     data class SetSelectedRemoveItemOption(
-        val item: HealthProperties,
+        val item: UserProperties,
         val index: Int,
         val composeIndex: ComposeIndex,
     ) : ProfileEvent()

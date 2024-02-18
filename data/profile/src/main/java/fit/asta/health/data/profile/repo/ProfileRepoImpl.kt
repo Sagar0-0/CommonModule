@@ -7,9 +7,9 @@ import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.network.utils.InputStreamRequestBody
@@ -88,7 +88,7 @@ class ProfileRepoImpl
         }
     }
 
-    override suspend fun getHealthProperties(propertyType: String): ResponseState<List<HealthProperties>> {
+    override suspend fun getHealthProperties(propertyType: String): ResponseState<List<UserProperties>> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
                 profileApi.getHealthProperties(propertyType)

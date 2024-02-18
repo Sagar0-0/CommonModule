@@ -1,38 +1,37 @@
 package fit.asta.health.feature.profile.profile.ui
 
-import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.google.accompanist.flowlayout.FlowRow
+import fit.asta.health.common.utils.UiState
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
-import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.chip.AppAssistChip
-import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun HealthScreen(
-    userProfileState: UserProfileState
+    userProfileState: UserProfileState,
+    userPropertiesState: UiState<List<UserProperties>>
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+    val currentBottomSheetIndex = rememberSaveable { mutableIntStateOf(0) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,66 +40,65 @@ fun HealthScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier)
-        userProfileState.healthBottomSheetTypes.forEachIndexed { index, type ->
-            AppCard(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(horizontal = AppTheme.spacing.level2)
-            ) {
-                Column(
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AppTheme.spacing.level2)
-                ) {
-                    Row(
-                        modifier = Modifier
-                            .fillMaxWidth(),
-                        horizontalArrangement = Arrangement.SpaceBetween,
-                        verticalAlignment = Alignment.CenterVertically
-                    ) {
-                        TitleTexts.Level3(text = type.name)
-                        AppIconButton(
-                            onClick = {
-                                userProfileState.openHealthBottomSheet(
-                                    bottomSheetState,
-                                    type,
-                                    index
-                                )
-                            }
-                        ) {
-                            AppIcon(imageVector = Icons.Default.AddCircle)
-                        }
-                    }
-                    AnimatedVisibility(type.list.isNotEmpty()) {
-                        FlowRow(
-                            mainAxisSpacing = AppTheme.spacing.level0,
-                            modifier = Modifier.padding(top = AppTheme.spacing.level2),
-                        ) {
-                            type.list.forEach {
-                                AppAssistChip(
-                                    textToShow = it.name,
-                                    trailingIcon = Icons.Default.RemoveCircle
-                                ) {
-                                    type.remove(it)
-                                }
-                            }
-                        }
-                    }
+        userProfileState.healthScreenState.bottomSheets.forEachIndexed { index, type ->
+            BottomSheetPickerCardItem(
+                name = type.name,
+                list = type.list,
+                onRemove = {
+                    type.list.remove(it)
                 }
+            ) {
+                currentBottomSheetIndex.intValue = index
+                userProfileState.healthScreenState.openHealthBottomSheet(
+                    bottomSheetState,
+                    currentBottomSheetIndex,
+                    bottomSheetVisible
+                )
             }
         }
+        CreateProfileTwoButtonLayout(userProfileState)
         Spacer(modifier = Modifier)
         AppModalBottomSheet(
-            sheetVisible = userProfileState.bottomSheetVisible,
+            sheetVisible = bottomSheetVisible.value,
             sheetState = bottomSheetState,
             dragHandle = null,
             onDismissRequest = {
-                userProfileState.closeBottomSheet(bottomSheetState)
-            },
+                userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
+            }
         ) {
-            HealthBottomSheetLayout(
-                userProfileState = userProfileState
-            )
+            AppUiStateHandler(
+                uiState = userPropertiesState,
+                isScreenLoading = false,
+                onErrorMessage = {
+                    userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
+                }
+            ) {
+                PropertiesSearchSheet(
+                    userProperties = it,
+                    searchQuery = userProfileState.bottomSheetSearchQuery,
+                    onSearchQueryChange = { query ->
+                        userProfileState.bottomSheetSearchQuery = query
+                    },
+                    isItemSelected = { prop ->
+                        userProfileState.healthScreenState.isPropertySelected(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
+                    },
+                    onAdd = { prop ->
+                        userProfileState.healthScreenState.addProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
+                    },
+                    onRemove = { prop ->
+                        userProfileState.healthScreenState.removeProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
+                    },
+                )
+            }
         }
     }
 }

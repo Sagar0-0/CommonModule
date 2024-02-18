@@ -14,12 +14,12 @@ import fit.asta.health.common.utils.UiString
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.Health
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.repo.ProfileRepo
 import fit.asta.health.feature.profile.ProfileConstants.ADDRESS
 import fit.asta.health.feature.profile.ProfileConstants.AGE
@@ -70,9 +70,9 @@ class ProfileViewModel
     private val _submitProfileState = MutableStateFlow<UiState<SubmitProfileResponse>>(UiState.Idle)
     val submitProfileState = _submitProfileState.asStateFlow()
 
-    private val _healthPropertiesState =
-        MutableStateFlow<UiState<List<HealthProperties>>>(UiState.Idle)
-    val healthPropertiesState = _healthPropertiesState.asStateFlow()
+    private val _userPropertiesState =
+        MutableStateFlow<UiState<List<UserProperties>>>(UiState.Idle)
+    val healthPropertiesState = _userPropertiesState.asStateFlow()
 
     private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val userProfileState = _userProfileState.asStateFlow()
@@ -157,17 +157,17 @@ class ProfileViewModel
                 1 to mutableStateListOf(),
                 2 to mutableStateListOf(),
                 3 to mutableStateListOf(),
-                4 to mutableStateListOf<HealthProperties>()
+                4 to mutableStateListOf<UserProperties>()
             )
         )
     )
 
-    val propertiesData: StateFlow<Map<ComposeIndex, Map<Int, SnapshotStateList<HealthProperties>>>> =
+    val propertiesData: StateFlow<Map<ComposeIndex, Map<Int, SnapshotStateList<UserProperties>>>> =
         _propertiesData
 
     private fun modifyPropertiesData(
         cardViewIndex: Int,
-        item: HealthProperties,
+        item: UserProperties,
         composeIndex: ComposeIndex,
         add: Boolean,
     ) {
@@ -191,7 +191,7 @@ class ProfileViewModel
     // Functions for adding and removing items from properties data
     private fun healthAdd(
         cardViewIndex: Int,
-        item: HealthProperties,
+        item: UserProperties,
         composeIndex: ComposeIndex,
     ) {
         modifyPropertiesData(cardViewIndex, item, composeIndex, add = true)
@@ -199,7 +199,7 @@ class ProfileViewModel
 
     private fun healthRemove(
         cardViewIndex: Int,
-        item: HealthProperties,
+        item: UserProperties,
         composeIndex: ComposeIndex,
     ) {
         modifyPropertiesData(cardViewIndex, item, composeIndex, add = false)
@@ -208,7 +208,7 @@ class ProfileViewModel
     private fun getValueAtIndex(
         composeIndex: ComposeIndex,
         cardViewIndex: Int,
-    ): List<HealthProperties> {
+    ): List<UserProperties> {
         val composeData = _propertiesData.value[composeIndex]
         return composeData!![cardViewIndex]!!.toList()
     }
@@ -216,7 +216,7 @@ class ProfileViewModel
 
     private fun modifyPropertiesData(
         cardViewIndex: Int,
-        items: List<HealthProperties>,
+        items: List<UserProperties>,
         composeIndex: ComposeIndex,
         add: Boolean = true,
     ) {
@@ -362,7 +362,7 @@ class ProfileViewModel
         savedState[BEDTIME] = InputWrapper(value = lifeStyle.sleep.to.toString())
 
         loadThreeRadioBtnSelection(
-            lifeStyle.physicalActivity, MultiRadioBtnKeys.PHYACTIVE.key
+            lifeStyle.physicalActive, MultiRadioBtnKeys.PHYACTIVE.key
         )
 
         loadTwoRadioBtnSelection(
@@ -539,7 +539,7 @@ class ProfileViewModel
             curActivities = getValueAtIndex(ComposeIndex.Second, 0),
             prefActivities = getValueAtIndex(ComposeIndex.Second, 1),
             lifeStyleTargets = getValueAtIndex(ComposeIndex.Second, 2),
-            physicalActivity = uploadThreeRadioBtnSelection(
+            physicalActive = uploadThreeRadioBtnSelection(
                 getSelectedValueForRadioButton(MultiRadioBtnKeys.PHYACTIVE.key)
             ),
             workingEnv = uploadTwoRadioBtnSelection(
@@ -581,9 +581,9 @@ class ProfileViewModel
     }
 
     fun getHealthProperties(propertyType: String) {
-        _healthPropertiesState.value = UiState.Loading
+        _userPropertiesState.value = UiState.Loading
         viewModelScope.launch {
-            _healthPropertiesState.value = profileRepo.getHealthProperties(propertyType).toUiState()
+            _userPropertiesState.value = profileRepo.getHealthProperties(propertyType).toUiState()
         }
     }
 
@@ -639,7 +639,7 @@ class ProfileViewModel
     }
 
     fun validateDataList(
-        list: SnapshotStateList<HealthProperties>,
+        list: SnapshotStateList<UserProperties>,
         listName: String,
     ): UiString {
         return when {
@@ -757,6 +757,10 @@ class ProfileViewModel
         savedState[WAKEUPTIME] = wakeUpTime.value.copy(
             value = eventWakeUpTime
         )
+    }
+
+    fun resetHealthProperties() {
+        _userPropertiesState.value = UiState.Idle
     }
 
     //Profile Validations

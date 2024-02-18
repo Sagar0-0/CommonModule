@@ -1,14 +1,16 @@
 @file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
 
-package fit.asta.health.feature.profile.profile.ui
+package fit.asta.health.feature.profile.profile.ui.state
 
 import android.net.Uri
+import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -18,15 +20,16 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.toMutableStateList
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.common.utils.SubmitProfileResponse
-import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.Physique
+import fit.asta.health.data.profile.remote.model.ProfileMedia
+import fit.asta.health.data.profile.remote.model.UserDetail
+import fit.asta.health.data.profile.remote.model.UserProfileAddress
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
-import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -35,8 +38,6 @@ import java.util.Calendar
 @Composable
 fun rememberUserProfileState(
     userProfileResponse: UserProfileResponse,
-    healthPropertiesState: UiState<List<HealthProperties>>,
-    submitProfileState: UiState<SubmitProfileResponse>,
     pagerState: PagerState = rememberPagerState {
         ProfileNavigationScreen.entries.size
     },
@@ -44,28 +45,51 @@ fun rememberUserProfileState(
     navController: NavController = rememberNavController(),
     onEvent: (UserProfileEvent) -> Unit
 ): UserProfileState {
+    val healthScreenState = rememberSaveable(
+        saver = HealthScreenState
+            .Saver(
+                coroutineScope, onEvent
+            )
+    ) {
+        HealthScreenState(
+            health = userProfileResponse.health,
+            coroutineScope = coroutineScope,
+            onEvent = onEvent
+        )
+    }
+
+    val lifestyleScreenState = rememberSaveable(
+        saver = LifestyleScreenState
+            .Saver(
+                coroutineScope, onEvent
+            )
+    ) {
+        LifestyleScreenState(
+            lifeStyle = userProfileResponse.lifeStyle,
+            coroutineScope = coroutineScope,
+            onEvent = onEvent
+        )
+    }
+
     return rememberSaveable(
         userProfileResponse,
-//        healthPropertiesState,
-        submitProfileState,
         pagerState,
         coroutineScope,
         navController,
         onEvent,
-        saver = UserProfileState
-            .Saver(
-                userProfileResponse,
-                healthPropertiesState,
-                submitProfileState,
-                pagerState,
-                coroutineScope,
-                navController,
-                onEvent
-            )
+        saver = UserProfileState.Saver(
+            healthScreenState,
+            lifestyleScreenState,
+            userProfileResponse,
+            pagerState,
+            coroutineScope,
+            navController,
+            onEvent
+        )
     ) {
         UserProfileState(
-            submitProfileState = submitProfileState,
-            healthPropertiesState = healthPropertiesState,
+            healthScreenState = healthScreenState,
+            lifestyleScreenState = lifestyleScreenState,
             userProfileResponse = userProfileResponse,
             pagerState = pagerState,
             coroutineScope = coroutineScope,
@@ -77,14 +101,30 @@ fun rememberUserProfileState(
 
 @Stable
 class UserProfileState(
-    val submitProfileState: UiState<SubmitProfileResponse>,
-    val healthPropertiesState: UiState<List<HealthProperties>>,
+    val healthScreenState: HealthScreenState,
+    val lifestyleScreenState: LifestyleScreenState,
     private val userProfileResponse: UserProfileResponse,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
     private val navController: NavController,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
+
+    val dietScreenState = DietScreenState(
+        userProfileResponse.diet,
+        coroutineScope, onEvent
+    )
+
+    init {
+        Log.d(
+            "UserProfileState", "init: \n" +
+                    "userProfileResponse = $userProfileResponse\n" +
+                    "pagerState = $pagerState\n" +
+                    "coroutineScope = $coroutineScope\n" +
+                    "navController = $navController\n" +
+                    "onEvent = $onEvent"
+        )
+    }
 
     //Parent level States
     var isConfirmDialogVisible by mutableStateOf(false)
@@ -100,18 +140,11 @@ class UserProfileState(
     val profileDataPages: List<ProfileNavigationScreen>
         get() = ProfileNavigationScreen.entries
 
-    var bottomSheetVisible by mutableStateOf(false)
-        private set
     var bottomSheetSearchQuery by mutableStateOf("")
 
-    private fun openBottomSheet(sheetState: SheetState) {
-        bottomSheetVisible = true
-        coroutineScope.launch { sheetState.expand() }
-    }
-
-    fun closeBottomSheet(sheetState: SheetState) {
-        bottomSheetVisible = false
+    fun closeBottomSheet(sheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
         coroutineScope.launch { sheetState.hide() }
+        bottomSheetVisible.value = false
         bottomSheetSearchQuery = ""
     }
 
@@ -123,8 +156,7 @@ class UserProfileState(
         get() = userProfileResponse.userDetail.phoneNumber
     val address: String
         get() = userProfileResponse.userDetail.userProfileAddress.toString()
-    var profileImageUrl: String by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
-        private set
+    var profileImageUrl by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
     //Physique Page
@@ -136,9 +168,11 @@ class UserProfileState(
     var userDobErrorMessage by mutableStateOf<String?>(null)
         private set
     var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
+    var weightUnit by mutableIntStateOf(userProfileResponse.physique.weightUnit)
     var userWeightErrorMessage by mutableStateOf<String?>(null)
         private set
     var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
+    var heightUnit by mutableIntStateOf(userProfileResponse.physique.heightUnit)
     var userHeightErrorMessage by mutableStateOf<String?>(null)
         private set
     var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
@@ -147,108 +181,9 @@ class UserProfileState(
     var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
-    //Health Page
-    val medications = (userProfileResponse.health.medications ?: listOf()).toMutableStateList()
-    val targets = (userProfileResponse.health.targets ?: listOf()).toMutableStateList()
-    val ailments = (userProfileResponse.health.ailments ?: listOf()).toMutableStateList()
-    val healthHistory = (userProfileResponse.health.healthHistory ?: listOf()).toMutableStateList()
-    val injuries = (userProfileResponse.health.injuries ?: listOf()).toMutableStateList()
-    val bodyPart = (userProfileResponse.health.bodyPart ?: listOf()).toMutableStateList()
-    val addiction = (userProfileResponse.health.addiction ?: listOf()).toMutableStateList()
-    val injurySince by mutableStateOf(userProfileResponse.health.injurySince.toString())
-    var currentHealthBottomSheetTypeIndex by mutableIntStateOf(0)
-
-    class HealthBottomSheetType(
-        val id: String,
-        val name: String,
-        val list: List<HealthProperties>,
-        val add: (HealthProperties) -> Unit,
-        val remove: (HealthProperties) -> Unit,
-    )
-
-    val healthBottomSheetTypes: List<HealthBottomSheetType> = listOf(
-        HealthBottomSheetType(
-            "hh",
-            "Health History",
-            healthHistory.toList(),
-            { healthHistory.add(it) },
-            { healthHistory.remove(it) }),
-        HealthBottomSheetType(
-            "injury",
-            "Injuries",
-            injuries.toList(),
-            { injuries.add(it) },
-            { injuries.remove(it) }),
-        HealthBottomSheetType(
-            "ailment",
-            "Ailments",
-            ailments.toList(),
-            { ailments.add(it) },
-            { ailments.remove(it) }),
-        HealthBottomSheetType(
-            "med",
-            "Medications",
-            medications.toList(),
-            { medications.add(it) },
-            { medications.remove(it) }),
-        HealthBottomSheetType(
-            "tgt",
-            "Targets",
-            targets.toList(),
-            { targets.add(it) },
-            { targets.remove(it) }),
-        HealthBottomSheetType(
-            "bp",
-            "Body parts",
-            bodyPart.toList(),
-            { bodyPart.add(it) },
-            { bodyPart.remove(it) }),
-        HealthBottomSheetType(
-            "bp",
-            "Addictions",
-            addiction.toList(),
-            { addiction.add(it) },
-            { addiction.remove(it) }),
-    )
-
-    fun openHealthBottomSheet(
-        sheetState: SheetState,
-        healthBottomSheetType: HealthBottomSheetType,
-        index: Int
-    ) {
-        currentHealthBottomSheetTypeIndex = index
-        // Should be before the event below, as it will reset the whole object
-        // and bottomSheetVisible state when healthPropertiesState changes
-        openBottomSheet(sheetState)
-        onEvent(UserProfileEvent.GetHealthProperties(healthBottomSheetType.id))
-    }
-
-    //Lifestyle Page
-    val sleepStartTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.from.toString())
-    val sleepEndTime by mutableStateOf(userProfileResponse.lifeStyle.sleep.to.toString())
-    val jobStartTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.from.toString())
-    val jobEndTime by mutableStateOf(userProfileResponse.lifeStyle.workingTime.to.toString())
-    val currentActivities =
-        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
-    val preferredActivities =
-        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
-    val lifestyleActivities =
-        (userProfileResponse.lifeStyle.curActivities ?: listOf()).toMutableStateList()
-
-    // Diet Page
-    val dietPreference = (userProfileResponse.diet.preference ?: listOf()).toMutableStateList()
-    val nonVegDays = (userProfileResponse.diet.nonVegDays ?: listOf()).toMutableStateList()
-    val dietAllergies = (userProfileResponse.diet.allergies ?: listOf()).toMutableStateList()
-    val dietCuisines = (userProfileResponse.diet.cuisines ?: listOf()).toMutableStateList()
-    val dietRestrictions = (userProfileResponse.diet.restrictions ?: listOf()).toMutableStateList()
-
     fun onBackPressed() {
-        if (isAnythingChanged) {
-            isConfirmDialogVisible = true
-        } else {
-            isConfirmDialogVisible = false
-            navController.popBackStack()
-        }
+        saveData()
+        navController.popBackStack()
     }
 
     fun forceBackPress() {
@@ -256,9 +191,46 @@ class UserProfileState(
     }
 
     fun saveData() {
-        if (isAnythingChanged) {
-            onEvent(UserProfileEvent.UpdateUserProfileData(userProfileResponse))//TODO: PASS NEW DATA
-        }
+        val newProfileData = UserProfileResponse(
+            uid = userProfileResponse.uid,
+            id = userProfileResponse.id,
+            userDetail = UserDetail(
+                userProfileAddress = UserProfileAddress(
+                    address = address,
+                    country = userProfileResponse.userDetail.userProfileAddress.country,
+                    city = userProfileResponse.userDetail.userProfileAddress.city,
+                    pin = userProfileResponse.userDetail.userProfileAddress.pin,
+                    street = userProfileResponse.userDetail.userProfileAddress.street
+                ),
+                dob = userDob,
+                email = email,
+                name = userName,
+                phoneNumber = phoneNumber,
+                media = ProfileMedia(
+                    url = userProfileResponse.userDetail.media.url,
+                    mailUrl = userProfileResponse.userDetail.media.mailUrl,
+                    localUri = profileImageLocalUri
+                )
+            ),
+            physique = Physique(
+                age = userAge,
+                bodyType = userProfileResponse.physique.bodyType,
+                bmi = userProfileResponse.physique.bmi,
+                bmiUnit = userProfileResponse.physique.bmiUnit,
+                gender = userGender,
+                height = userHeight.toFloat(),
+                heightUnit = heightUnit,
+                isPregnant = isPregnant,
+                onPeriod = onPeriod,
+                pregnancyWeek = userPregnancyWeek?.toIntOrNull(),
+                weight = userWeight.toFloat(),
+                weightUnit = weightUnit
+            ),
+            health = healthScreenState.getHealthData(),
+            lifeStyle = lifestyleScreenState.getLifestyleData(),
+            diet = dietScreenState.getDietData()
+        )
+        onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
     }
 
     fun clearProfile() {
@@ -266,11 +238,15 @@ class UserProfileState(
         profileImageUrl = ""
     }
 
+    fun resetHealthProperties() {
+        onEvent(UserProfileEvent.ResetHealthProperties)
+    }
+
     companion object {
         fun Saver(
+            healthScreenState: HealthScreenState,
+            lifestyleScreenState: LifestyleScreenState,
             userProfileResponse: UserProfileResponse,
-            healthPropertiesState: UiState<List<HealthProperties>>,
-            submitProfileState: UiState<SubmitProfileResponse>,
             pagerState: PagerState,
             coroutineScope: CoroutineScope,
             navController: NavController,
@@ -296,15 +272,15 @@ class UserProfileState(
                     it.userPregnancyWeekErrorMessage,
                     it.userDob,
                     it.userDobErrorMessage,
-                    it.bottomSheetVisible,
                     it.bottomSheetSearchQuery,
-                    it.currentHealthBottomSheetTypeIndex
+                    it.profileImageUrl
                 )
             },
             restore = {
+                Log.d("SHEET", "Restore: ${it[0]}")
                 UserProfileState(
-                    submitProfileState = submitProfileState,
-                    healthPropertiesState = healthPropertiesState,
+                    healthScreenState = healthScreenState,
+                    lifestyleScreenState = lifestyleScreenState,
                     userProfileResponse = userProfileResponse,
                     pagerState = pagerState,
                     coroutineScope = coroutineScope,
@@ -329,11 +305,16 @@ class UserProfileState(
                     this.userPregnancyWeekErrorMessage = it[15] as String?
                     this.userDob = it[16] as String
                     this.userDobErrorMessage = it[17] as String?
-                    this.bottomSheetVisible = it[18] as Boolean
-                    this.bottomSheetSearchQuery = it[19] as String
-                    this.currentHealthBottomSheetTypeIndex = it[20] as Int
+                    this.bottomSheetSearchQuery = it[18] as String
+                    this.profileImageUrl = it[19] as String
                 }
             }
         )
     }
+
+    data class ProfileBottomSheetPicker(
+        val id: String,
+        val name: String,
+        val list: SnapshotStateList<UserProperties>
+    )
 }

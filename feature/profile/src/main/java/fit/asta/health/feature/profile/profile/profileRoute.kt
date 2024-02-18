@@ -13,8 +13,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.UserProfileContent
-import fit.asta.health.feature.profile.profile.ui.rememberUserProfileState
-import fit.asta.health.feature.profile.profile.utils.UserProfileEvent
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
+import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
 import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 
 const val PROFILE_GRAPH_ROUTE = "graph_profile"
@@ -40,8 +40,6 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         val userProfileState = rememberUserProfileState(
             userProfileResponse = (userProfileResponseState as? UiState.Success)?.data
                 ?: UserProfileResponse(),
-            healthPropertiesState = healthPropertiesState,
-            submitProfileState = submitProfileState,
             navController = navController,
             onEvent = { event ->
                 when (event) {
@@ -51,6 +49,10 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
 
                     is UserProfileEvent.GetHealthProperties -> {
                         profileViewModel.getHealthProperties(event.id)
+                    }
+
+                    is UserProfileEvent.ResetHealthProperties -> {
+                        profileViewModel.resetHealthProperties()
                     }
                 }
             }
@@ -67,7 +69,8 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         ) {
             UserProfileContent(
                 userProfileState = userProfileState,
-                isScreenLoading = submitProfileState is UiState.Loading
+                submitProfileState = submitProfileState,
+                userPropertiesState = healthPropertiesState
             )
         }
     }

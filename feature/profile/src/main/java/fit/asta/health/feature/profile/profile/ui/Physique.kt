@@ -53,6 +53,7 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ThreeTogglesGroups
 import fit.asta.health.feature.profile.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R
@@ -204,8 +205,9 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
+                        primarySelection = userProfileState.weightUnit,
                         buttonCount = 2,
-                        onButtonClick = { index -> println(index) },
+                        onButtonClick = { index -> userProfileState.weightUnit = index },
                         buttonTexts = arrayOf("kg", "lb"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary
@@ -248,8 +250,9 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
+                        primarySelection = userProfileState.heightUnit,
                         buttonCount = 2,
-                        onButtonClick = { index -> println(index) },
+                        onButtonClick = { index -> userProfileState.heightUnit = index },
                         buttonTexts = arrayOf("cm", "in"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary

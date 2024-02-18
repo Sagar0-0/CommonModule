@@ -9,7 +9,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import fit.asta.health.common.utils.SubmitProfileResponse
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
@@ -19,6 +22,7 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
 
@@ -26,11 +30,11 @@ import fit.asta.health.resources.strings.R
 @Composable
 fun UserProfileContent(
     userProfileState: UserProfileState,
-    isScreenLoading: Boolean = false,
+    submitProfileState: UiState<SubmitProfileResponse>,
+    userPropertiesState: UiState<List<UserProperties>>
 ) {
-
     AppScaffold(
-        isScreenLoading = isScreenLoading,
+        isScreenLoading = submitProfileState is UiState.Loading,
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.profile_screen),
@@ -82,16 +86,15 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Health -> {
-//                        HealthCreateScreen(userProfileState)
-                        HealthScreen(userProfileState)
+                        HealthScreen(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifestyleScreen(userProfileState)
+                        LifestyleScreen(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietScreen(userProfileState)
+                        DietScreen(userProfileState, userPropertiesState)
                     }
                 }
             }

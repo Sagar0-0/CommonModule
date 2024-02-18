@@ -24,16 +24,20 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 
 @Composable
-fun ItemSelectionLayout(
-    userProfileState: UserProfileState,
-    healthProperties: List<HealthProperties>
+fun PropertiesSearchSheet(
+    userProperties: List<UserProperties>,
+    searchQuery: String,
+    onSearchQueryChange: (String) -> Unit,
+    isItemSelected: (UserProperties) -> Boolean,
+    onAdd: (UserProperties) -> Unit,
+    onRemove: (UserProperties) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -45,12 +49,16 @@ fun ItemSelectionLayout(
             AppDivider(modifier = Modifier.width(80.dp))
         }
         SearchBar(
-            searchQuery = userProfileState.bottomSheetSearchQuery,
-            onSearchQueryChange = {
-                userProfileState.bottomSheetSearchQuery = it
-            },
+            searchQuery = searchQuery,
+            onSearchQueryChange = onSearchQueryChange,
         )
-        ChipRow(userProfileState, healthProperties)
+        ChipRow(
+            userProperties = userProperties,
+            searchQuery = searchQuery,
+            isItemSelected = isItemSelected,
+            onAdd = onAdd,
+            onRemove = onRemove
+        )
         Spacer(modifier = Modifier)
     }
 }
@@ -79,30 +87,30 @@ fun SearchBar(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChipRow(
-    userProfileState: UserProfileState,
-    healthProperties: List<HealthProperties>
+    userProperties: List<UserProperties>,
+    searchQuery: String,
+    isItemSelected: (UserProperties) -> Boolean,
+    onAdd: (UserProperties) -> Unit,
+    onRemove: (UserProperties) -> Unit
 ) {
 
-    val filteredList = healthProperties.filter {
-        it.name.contains(userProfileState.bottomSheetSearchQuery, ignoreCase = true)
+    val filteredList = userProperties.filter {
+        it.name.contains(searchQuery, ignoreCase = true)
     }
 
     FlowRow(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
         filteredList.forEach { healthProperties ->
-            val isSelected =
-                userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].list.contains(
-                    healthProperties
-                )
+            val isSelected = isItemSelected(healthProperties)
             AddChipOnCard(
                 textOnChip = healthProperties.name,
                 isSelected = isSelected,
                 onClick = {
                     if (isSelected) {
-                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].remove(
+                        onRemove(
                             healthProperties
                         )
                     } else {
-                        userProfileState.healthBottomSheetTypes[userProfileState.currentHealthBottomSheetTypeIndex].add(
+                        onAdd(
                             healthProperties
                         )
                     }

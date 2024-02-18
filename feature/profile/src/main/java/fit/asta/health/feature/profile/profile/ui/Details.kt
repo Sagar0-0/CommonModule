@@ -47,6 +47,7 @@ import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.resources.strings.R
 
 @ExperimentalMaterial3Api
