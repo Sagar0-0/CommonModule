@@ -30,6 +30,7 @@ import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
@@ -44,7 +45,8 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun LifestyleScreen(
-    userProfileState: UserProfileState
+    userProfileState: UserProfileState,
+    healthPropertiesState: UiState<List<HealthProperties>>
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
@@ -120,7 +122,7 @@ fun LifestyleScreen(
             },
         ) {
             AppUiStateHandler(
-                uiState = userProfileState.lifestyleScreenState.healthPropertiesState,
+                uiState = healthPropertiesState,
                 isScreenLoading = false,
                 onErrorMessage = {
                     userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)

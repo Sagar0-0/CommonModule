@@ -10,7 +10,6 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.Health
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import kotlinx.coroutines.CoroutineScope
@@ -19,7 +18,6 @@ import kotlinx.coroutines.launch
 @Stable
 class HealthScreenState(
     val health: Health,
-    val healthPropertiesState: UiState<List<HealthProperties>>,
     val coroutineScope: CoroutineScope,
     val onEvent: (UserProfileEvent) -> Unit
 ) {
@@ -119,7 +117,6 @@ class HealthScreenState(
 
     companion object {
         fun Saver(
-            healthPropertiesState: UiState<List<HealthProperties>>,
             coroutineScope: CoroutineScope,
             onEvent: (UserProfileEvent) -> Unit
         ): Saver<HealthScreenState, *> = listSaver(
@@ -131,7 +128,6 @@ class HealthScreenState(
             restore = {
                 HealthScreenState(
                     health = it[0] as Health,
-                    healthPropertiesState,
                     coroutineScope,
                     onEvent
                 )

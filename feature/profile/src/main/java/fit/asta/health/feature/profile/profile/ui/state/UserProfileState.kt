@@ -24,8 +24,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.common.utils.SubmitProfileResponse
-import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.Physique
@@ -42,8 +40,6 @@ import java.util.Calendar
 @Composable
 fun rememberUserProfileState(
     userProfileResponse: UserProfileResponse,
-    healthPropertiesState: UiState<List<HealthProperties>>,
-    submitProfileState: UiState<SubmitProfileResponse>,
     pagerState: PagerState = rememberPagerState {
         ProfileNavigationScreen.entries.size
     },
@@ -52,38 +48,33 @@ fun rememberUserProfileState(
     onEvent: (UserProfileEvent) -> Unit
 ): UserProfileState {
     val healthScreenState = rememberSaveable(
-        healthPropertiesState,
         saver = HealthScreenState
             .Saver(
-                healthPropertiesState, coroutineScope, onEvent
+                coroutineScope, onEvent
             )
     ) {
         HealthScreenState(
             health = userProfileResponse.health,
-            healthPropertiesState = healthPropertiesState,
             coroutineScope = coroutineScope,
             onEvent = onEvent
         )
     }
 
     val lifestyleScreenState = rememberSaveable(
-        healthPropertiesState,
         saver = LifestyleScreenState
             .Saver(
-                healthPropertiesState, coroutineScope, onEvent
+                coroutineScope, onEvent
             )
     ) {
         LifestyleScreenState(
             lifeStyle = userProfileResponse.lifeStyle,
-            healthPropertiesState = healthPropertiesState,
             coroutineScope = coroutineScope,
             onEvent = onEvent
         )
     }
+
     return rememberSaveable(
         userProfileResponse,
-        healthPropertiesState,
-        submitProfileState,
         pagerState,
         coroutineScope,
         navController,
@@ -94,8 +85,6 @@ fun rememberUserProfileState(
             healthScreenState,
             lifestyleScreenState,
             userProfileResponse,
-            healthPropertiesState,
-            submitProfileState,
             pagerState,
             coroutineScope,
             navController,
@@ -105,8 +94,6 @@ fun rememberUserProfileState(
         UserProfileState(
             healthScreenState = healthScreenState,
             lifestyleScreenState = lifestyleScreenState,
-            submitProfileState = submitProfileState,
-            healthPropertiesState = healthPropertiesState,
             userProfileResponse = userProfileResponse,
             pagerState = pagerState,
             coroutineScope = coroutineScope,
@@ -120,8 +107,6 @@ fun rememberUserProfileState(
 class UserProfileState(
     val healthScreenState: HealthScreenState,
     val lifestyleScreenState: LifestyleScreenState,
-    val submitProfileState: UiState<SubmitProfileResponse>,
-    private val healthPropertiesState: UiState<List<HealthProperties>>,
     private val userProfileResponse: UserProfileResponse,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
@@ -132,8 +117,6 @@ class UserProfileState(
     init {
         Log.d(
             "UserProfileState", "init: \n" +
-                    "submitProfileState = $submitProfileState\n" +
-                    "healthPropertiesState = $healthPropertiesState\n" +
                     "userProfileResponse = $userProfileResponse\n" +
                     "pagerState = $pagerState\n" +
                     "coroutineScope = $coroutineScope\n" +
@@ -141,8 +124,6 @@ class UserProfileState(
                     "onEvent = $onEvent"
         )
     }
-
-    val isScreenLoading by mutableStateOf(submitProfileState is UiState.Loading)
 
     //Parent level States
     var isConfirmDialogVisible by mutableStateOf(false)
@@ -276,8 +257,6 @@ class UserProfileState(
             healthScreenState: HealthScreenState,
             lifestyleScreenState: LifestyleScreenState,
             userProfileResponse: UserProfileResponse,
-            healthPropertiesState: UiState<List<HealthProperties>>,
-            submitProfileState: UiState<SubmitProfileResponse>,
             pagerState: PagerState,
             coroutineScope: CoroutineScope,
             navController: NavController,
@@ -312,8 +291,6 @@ class UserProfileState(
                 UserProfileState(
                     healthScreenState = healthScreenState,
                     lifestyleScreenState = lifestyleScreenState,
-                    submitProfileState = submitProfileState,
-                    healthPropertiesState = healthPropertiesState,
                     userProfileResponse = userProfileResponse,
                     pagerState = pagerState,
                     coroutineScope = coroutineScope,

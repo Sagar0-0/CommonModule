@@ -29,6 +29,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
@@ -58,6 +59,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun DietScreen(
     userProfileState: UserProfileState,
+    healthPropertiesState: UiState<List<HealthProperties>>,
     viewModel: ProfileViewModel = hiltViewModel(),
 ) {
 

@@ -40,8 +40,6 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         val userProfileState = rememberUserProfileState(
             userProfileResponse = (userProfileResponseState as? UiState.Success)?.data
                 ?: UserProfileResponse(),
-            healthPropertiesState = healthPropertiesState,
-            submitProfileState = submitProfileState,
             navController = navController,
             onEvent = { event ->
                 when (event) {
@@ -70,7 +68,9 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             }
         ) {
             UserProfileContent(
-                userProfileState = userProfileState
+                userProfileState = userProfileState,
+                submitProfileState = submitProfileState,
+                healthPropertiesState = healthPropertiesState
             )
         }
     }

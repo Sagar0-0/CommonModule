@@ -9,7 +9,10 @@ import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
+import fit.asta.health.common.utils.SubmitProfileResponse
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
@@ -26,11 +29,13 @@ import fit.asta.health.resources.strings.R
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun UserProfileContent(
-    userProfileState: UserProfileState
+    userProfileState: UserProfileState,
+    submitProfileState: UiState<SubmitProfileResponse>,
+    healthPropertiesState: UiState<List<HealthProperties>>
 ) {
 
     AppScaffold(
-        isScreenLoading = userProfileState.isScreenLoading,
+        isScreenLoading = submitProfileState is UiState.Loading,
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.profile_screen),
@@ -82,15 +87,15 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthScreen(userProfileState)
+                        HealthScreen(userProfileState, healthPropertiesState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifestyleScreen(userProfileState)
+                        LifestyleScreen(userProfileState, healthPropertiesState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietScreen(userProfileState)
+                        DietScreen(userProfileState, healthPropertiesState)
                     }
                 }
             }
