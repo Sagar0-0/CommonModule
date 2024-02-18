@@ -52,6 +52,10 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
                     is UserProfileEvent.GetHealthProperties -> {
                         profileViewModel.getHealthProperties(event.id)
                     }
+
+                    is UserProfileEvent.ResetHealthProperties -> {
+                        profileViewModel.resetHealthProperties()
+                    }
                 }
             }
         )
@@ -66,8 +70,7 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             }
         ) {
             UserProfileContent(
-                userProfileState = userProfileState,
-                isScreenLoading = submitProfileState is UiState.Loading
+                userProfileState = userProfileState
             )
         }
     }

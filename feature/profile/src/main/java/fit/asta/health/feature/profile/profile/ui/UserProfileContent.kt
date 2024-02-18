@@ -25,12 +25,11 @@ import fit.asta.health.resources.strings.R
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun UserProfileContent(
-    userProfileState: UserProfileState,
-    isScreenLoading: Boolean = false,
+    userProfileState: UserProfileState
 ) {
 
     AppScaffold(
-        isScreenLoading = isScreenLoading,
+        isScreenLoading = userProfileState.isScreenLoading,
         topBar = {
             AppTopBar(
                 title = stringResource(R.string.profile_screen),
@@ -82,7 +81,6 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Health -> {
-//                        HealthCreateScreen(userProfileState)
                         HealthScreen(userProfileState)
                     }
 

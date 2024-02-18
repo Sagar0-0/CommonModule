@@ -16,10 +16,13 @@ import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -33,6 +36,7 @@ fun HealthScreen(
     userProfileState: UserProfileState
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -63,8 +67,8 @@ fun HealthScreen(
                             onClick = {
                                 userProfileState.openHealthBottomSheet(
                                     bottomSheetState,
-                                    type,
-                                    index
+                                    index,
+                                    bottomSheetVisible
                                 )
                             }
                         ) {
@@ -91,16 +95,25 @@ fun HealthScreen(
         }
         Spacer(modifier = Modifier)
         AppModalBottomSheet(
-            sheetVisible = userProfileState.bottomSheetVisible,
+            sheetVisible = bottomSheetVisible.value,
             sheetState = bottomSheetState,
             dragHandle = null,
             onDismissRequest = {
-                userProfileState.closeBottomSheet(bottomSheetState)
+                userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
             },
         ) {
-            HealthBottomSheetLayout(
-                userProfileState = userProfileState
-            )
+            AppUiStateHandler(
+                uiState = userProfileState.healthPropertiesState,
+                isScreenLoading = false,
+                onErrorMessage = {
+                    userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
+                }
+            ) {
+                ItemSelectionLayout(
+                    userProfileState = userProfileState,
+                    healthProperties = it
+                )
+            }
         }
     }
 }

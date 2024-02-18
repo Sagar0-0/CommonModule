@@ -759,6 +759,10 @@ class ProfileViewModel
         )
     }
 
+    fun resetHealthProperties() {
+        _healthPropertiesState.value = UiState.Idle
+    }
+
     //Profile Validations
     val areDetailsInputsValid = combine(name, email) { name, email ->
         name.value.isNotEmpty() && name.error is UiString.Empty && email.value.isNotEmpty() && email.error is UiString.Empty
