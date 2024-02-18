@@ -24,20 +24,20 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 
 @Composable
-fun HealthPropertiesSearchSheet(
-    healthProperties: List<HealthProperties>,
+fun PropertiesSearchSheet(
+    userProperties: List<UserProperties>,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
-    isItemSelected: (HealthProperties) -> Boolean,
-    onAdd: (HealthProperties) -> Unit,
-    onRemove: (HealthProperties) -> Unit
+    isItemSelected: (UserProperties) -> Boolean,
+    onAdd: (UserProperties) -> Unit,
+    onRemove: (UserProperties) -> Unit
 ) {
     Column(
         modifier = Modifier
@@ -53,7 +53,7 @@ fun HealthPropertiesSearchSheet(
             onSearchQueryChange = onSearchQueryChange,
         )
         ChipRow(
-            healthProperties = healthProperties,
+            userProperties = userProperties,
             searchQuery = searchQuery,
             isItemSelected = isItemSelected,
             onAdd = onAdd,
@@ -87,14 +87,14 @@ fun SearchBar(
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun ChipRow(
-    healthProperties: List<HealthProperties>,
+    userProperties: List<UserProperties>,
     searchQuery: String,
-    isItemSelected: (HealthProperties) -> Boolean,
-    onAdd: (HealthProperties) -> Unit,
-    onRemove: (HealthProperties) -> Unit
+    isItemSelected: (UserProperties) -> Boolean,
+    onAdd: (UserProperties) -> Unit,
+    onRemove: (UserProperties) -> Unit
 ) {
 
-    val filteredList = healthProperties.filter {
+    val filteredList = userProperties.filter {
         it.name.contains(searchQuery, ignoreCase = true)
     }
 

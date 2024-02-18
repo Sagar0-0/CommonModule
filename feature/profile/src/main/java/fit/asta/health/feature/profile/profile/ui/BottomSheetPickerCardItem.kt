@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -24,8 +24,8 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun BottomSheetPickerCardItem(
     name: String,
-    list: List<HealthProperties>,
-    onRemove: (HealthProperties) -> Unit,
+    list: List<UserProperties>,
+    onRemove: (UserProperties) -> Unit,
     onOpenClick: () -> Unit
 ) {
     AppCard(

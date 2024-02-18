@@ -4,9 +4,9 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 
 interface ProfileRepo {
     suspend fun setProfilePresent()
@@ -16,6 +16,6 @@ interface ProfileRepo {
 
     suspend fun getUserProfile(uid: String): ResponseState<UserProfileResponse>
     suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse>
-    suspend fun getHealthProperties(propertyType: String): ResponseState<List<HealthProperties>>
+    suspend fun getHealthProperties(propertyType: String): ResponseState<List<UserProperties>>
     suspend fun editUserProfile(uid: String): ResponseState<UserProfileResponse>
 }

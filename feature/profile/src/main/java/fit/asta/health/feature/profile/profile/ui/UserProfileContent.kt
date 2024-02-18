@@ -12,7 +12,7 @@ import androidx.compose.ui.res.stringResource
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
@@ -31,7 +31,7 @@ import fit.asta.health.resources.strings.R
 fun UserProfileContent(
     userProfileState: UserProfileState,
     submitProfileState: UiState<SubmitProfileResponse>,
-    healthPropertiesState: UiState<List<HealthProperties>>
+    userPropertiesState: UiState<List<UserProperties>>
 ) {
 
     AppScaffold(
@@ -87,15 +87,15 @@ fun UserProfileContent(
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthScreen(userProfileState, healthPropertiesState)
+                        HealthScreen(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifestyleScreen(userProfileState, healthPropertiesState)
+                        LifestyleScreen(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietScreen(userProfileState, healthPropertiesState)
+                        DietScreen(userProfileState, userPropertiesState)
                     }
                 }
             }

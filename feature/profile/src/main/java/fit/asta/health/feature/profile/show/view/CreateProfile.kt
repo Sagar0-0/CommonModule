@@ -23,7 +23,7 @@ import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import com.google.accompanist.flowlayout.FlowRow
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -41,7 +41,7 @@ data class ButtonListTypes(
 @Composable
 fun SelectionCardCreateProfile(
     cardType: String,
-    cardList: SnapshotStateList<HealthProperties>?,
+    cardList: SnapshotStateList<UserProperties>?,
     onItemsSelect: () -> Unit,
     selectedOption: TwoRadioBtnSelections?,
     listName: String = "",
@@ -94,7 +94,7 @@ fun SelectionCardCreateProfile(
 @Composable
 fun OnlyChipSelectionCard(
     cardType: String,
-    cardList: SnapshotStateList<HealthProperties>?,
+    cardList: SnapshotStateList<UserProperties>?,
     onItemsSelect: () -> Unit,
 ) {
     AppCard(modifier = Modifier.fillMaxWidth()) {
@@ -145,7 +145,7 @@ private fun ProfileAddIcon(
 private fun ValidateListError(
     viewModel: ProfileViewModel = hiltViewModel(),
     selectedOption: TwoRadioBtnSelections?,
-    cardList: SnapshotStateList<HealthProperties>,
+    cardList: SnapshotStateList<UserProperties>,
     listName: String,
 ) {
     Row(Modifier.fillMaxWidth()) {

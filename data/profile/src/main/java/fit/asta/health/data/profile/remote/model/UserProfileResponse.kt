@@ -61,13 +61,13 @@ data class Physique(
 
 @Parcelize
 data class Health(
-    @SerializedName("med") val medications: List<HealthProperties>? = null,
-    @SerializedName("htg") val targets: List<HealthProperties>? = null,
-    @SerializedName("ail") val ailments: List<HealthProperties>? = null,
-    @SerializedName("hh") val healthHistory: List<HealthProperties>? = null,
-    @SerializedName("inj") val injuries: List<HealthProperties>? = null,
-    @SerializedName("bp") val bodyPart: List<HealthProperties>? = null,// Body Part healthHisList missing
-    @SerializedName("add") val addiction: List<HealthProperties>? = null,
+    @SerializedName("med") val medications: List<UserProperties>? = null,
+    @SerializedName("htg") val targets: List<UserProperties>? = null,
+    @SerializedName("ail") val ailments: List<UserProperties>? = null,
+    @SerializedName("hh") val healthHistory: List<UserProperties>? = null,
+    @SerializedName("inj") val injuries: List<UserProperties>? = null,
+    @SerializedName("bp") val bodyPart: List<UserProperties>? = null,// Body Part healthHisList missing
+    @SerializedName("add") val addiction: List<UserProperties>? = null,
     @SerializedName("is") val injurySince: Int? = 0,
 ) : Parcelable
 
@@ -78,20 +78,20 @@ data class LifeStyle(
     @SerializedName("env") var workingEnv: Int? = 0,
     @SerializedName("ws") var workStyle: Int? = 0,
     @SerializedName("whr") var workingHours: Int? = 0,
-    @SerializedName("cat") val curActivities: List<HealthProperties>? = null,
-    @SerializedName("pat") val prefActivities: List<HealthProperties>? = null,
-    @SerializedName("lst") val lifeStyleTargets: List<HealthProperties>? = null,
+    @SerializedName("cat") val curActivities: List<UserProperties>? = null,
+    @SerializedName("pat") val prefActivities: List<UserProperties>? = null,
+    @SerializedName("lst") val lifeStyleTargets: List<UserProperties>? = null,
     @SerializedName("wt") var workingTime: TimeSchedule = TimeSchedule(),
     @SerializedName("slp") var sleep: TimeSchedule = TimeSchedule(), // missing in UI
 ) : Parcelable
 
 @Parcelize
 data class Diet(
-    @SerializedName("pref") var preference: List<HealthProperties>? = null,
-    @SerializedName("nv") val nonVegDays: List<HealthProperties>? = null,
-    @SerializedName("alg") val allergies: List<HealthProperties>? = null,
-    @SerializedName("cns") val cuisines: List<HealthProperties>? = null,
-    @SerializedName("frs") val restrictions: List<HealthProperties>? = null,
+    @SerializedName("pref") var preference: List<UserProperties>? = null,
+    @SerializedName("nv") val nonVegDays: List<UserProperties>? = null,
+    @SerializedName("alg") val allergies: List<UserProperties>? = null,
+    @SerializedName("cns") val cuisines: List<UserProperties>? = null,
+    @SerializedName("frs") val restrictions: List<UserProperties>? = null,
 ) : Parcelable
 
 @Parcelize

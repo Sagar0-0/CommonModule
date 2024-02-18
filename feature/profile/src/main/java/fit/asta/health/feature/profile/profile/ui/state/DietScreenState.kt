@@ -4,82 +4,65 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
-import fit.asta.health.data.profile.remote.model.Health
+import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
 @Stable
-class HealthScreenState(
-    val health: Health,
-    val coroutineScope: CoroutineScope,
+class DietScreenState(
+    val diet: Diet,
+    private val coroutineScope: CoroutineScope,
     val onEvent: (UserProfileEvent) -> Unit
 ) {
 
-    //Health Page
-    private val medications = (health.medications ?: listOf()).toMutableStateList()
-    private val targets = (health.targets ?: listOf()).toMutableStateList()
-    private val ailments = (health.ailments ?: listOf()).toMutableStateList()
-    private val healthHistory = (health.healthHistory ?: listOf()).toMutableStateList()
-    private val injuries = (health.injuries ?: listOf()).toMutableStateList()
-    private val bodyPart = (health.bodyPart ?: listOf()).toMutableStateList()
-    private val addiction = (health.addiction ?: listOf()).toMutableStateList()
-    private val injurySince by mutableStateOf(health.injurySince?.toString())
+    // Diet Page
+    private val dietPreference =
+        (diet.preference ?: listOf()).toMutableStateList()
+    private val nonVegDays = (diet.nonVegDays ?: listOf()).toMutableStateList()
+    private val dietAllergies =
+        (diet.allergies ?: listOf()).toMutableStateList()
+    private val dietCuisines = (diet.cuisines ?: listOf()).toMutableStateList()
+    private val dietRestrictions =
+        (diet.restrictions ?: listOf()).toMutableStateList()
 
-    private val updatedHealth = Health(
-        medications = medications,
-        targets = targets,
-        ailments = ailments,
-        healthHistory = healthHistory,
-        injuries = injuries,
-        bodyPart = bodyPart,
-        addiction = addiction,
-        injurySince = injurySince?.toIntOrNull()
+    private val updatedDiet = Diet(
+        preference = dietPreference,
+        nonVegDays = nonVegDays,
+        allergies = dietAllergies,
+        cuisines = dietCuisines,
+        restrictions = dietRestrictions
     )
-
-//    private var currentBottomSheetIndex = 0
 
     val bottomSheets: List<HealthBottomSheet> = listOf(
         HealthBottomSheet(
-            "hh",
-            "Health History",
-            healthHistory,
+            "dp",
+            "Dietary Preferences",
+            dietPreference,
         ),
         HealthBottomSheet(
-            "injury",
-            "Injuries",
-            injuries,
+            "dp",
+            "Non Veg Days",
+            nonVegDays,
         ),
         HealthBottomSheet(
-            "ailment",
-            "Ailments",
-            ailments,
+            "food",
+            "Food Allergies",
+            dietAllergies,
         ),
         HealthBottomSheet(
-            "med",
-            "Medications",
-            medications,
+            "cu",
+            "Cuisines",
+            dietCuisines,
         ),
         HealthBottomSheet(
-            "tgt",
-            "Targets",
-            targets,
-        ),
-        HealthBottomSheet(
-            "bp",
-            "Body parts",
-            bodyPart,
-        ),
-        HealthBottomSheet(
-            "bp",
-            "Addictions",
-            addiction,
+            "dp",
+            "Diet Restrictions",
+            dietRestrictions,
         ),
     )
 
@@ -96,37 +79,38 @@ class HealthScreenState(
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
-    fun openHealthBottomSheet(
+    fun openPropertiesBottomSheet(
         sheetState: SheetState,
         index: MutableState<Int>,
         bottomSheetVisible: MutableState<Boolean>
     ) {
+//        currentBottomSheetIndex = index.value
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
-        getUserProperties(index.value)
+        getHealthProperties(index.value)
     }
 
-    private fun getUserProperties(sheetIndex: Int) {
+    private fun getHealthProperties(sheetIndex: Int) {
         onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
-    fun getHealthData(): Health {
-        return updatedHealth
+    fun getDietData(): Diet {
+        return updatedDiet
     }
 
     companion object {
         fun Saver(
             coroutineScope: CoroutineScope,
             onEvent: (UserProfileEvent) -> Unit
-        ): Saver<HealthScreenState, *> = listSaver(
+        ): Saver<DietScreenState, *> = listSaver(
             save = {
                 listOf(
-                    it.updatedHealth
+                    it.updatedDiet
                 )
             },
             restore = {
-                HealthScreenState(
-                    health = it[0] as Health,
+                DietScreenState(
+                    diet = it[0] as Diet,
                     coroutineScope,
                     onEvent
                 )

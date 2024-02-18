@@ -15,7 +15,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
@@ -26,7 +26,7 @@ import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 @Composable
 fun HealthScreen(
     userProfileState: UserProfileState,
-    healthPropertiesState: UiState<List<HealthProperties>>
+    userPropertiesState: UiState<List<UserProperties>>
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
@@ -67,14 +67,14 @@ fun HealthScreen(
             }
         ) {
             AppUiStateHandler(
-                uiState = healthPropertiesState,
+                uiState = userPropertiesState,
                 isScreenLoading = false,
                 onErrorMessage = {
                     userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
                 }
             ) {
-                HealthPropertiesSearchSheet(
-                    healthProperties = it,
+                PropertiesSearchSheet(
+                    userProperties = it,
                     searchQuery = userProfileState.bottomSheetSearchQuery,
                     onSearchQueryChange = { query ->
                         userProfileState.bottomSheetSearchQuery = query

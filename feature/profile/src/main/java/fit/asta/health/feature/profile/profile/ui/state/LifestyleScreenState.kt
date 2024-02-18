@@ -7,9 +7,9 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.TimeSchedule
+import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -95,16 +95,16 @@ class LifestyleScreenState(
     )
 
 
-    fun addProperty(sheetIndex: Int, healthProperties: HealthProperties) {
-        bottomSheets[sheetIndex].list.add(healthProperties)
+    fun addProperty(sheetIndex: Int, userProperties: UserProperties) {
+        bottomSheets[sheetIndex].list.add(userProperties)
     }
 
-    fun removeProperty(sheetIndex: Int, healthProperties: HealthProperties) {
-        bottomSheets[sheetIndex].list.remove(healthProperties)
+    fun removeProperty(sheetIndex: Int, userProperties: UserProperties) {
+        bottomSheets[sheetIndex].list.remove(userProperties)
     }
 
-    fun isPropertySelected(sheetIndex: Int, healthProperties: HealthProperties): Boolean {
-        return bottomSheets[sheetIndex].list.contains(healthProperties)
+    fun isPropertySelected(sheetIndex: Int, userProperties: UserProperties): Boolean {
+        return bottomSheets[sheetIndex].list.contains(userProperties)
     }
 
     @OptIn(ExperimentalMaterial3Api::class)

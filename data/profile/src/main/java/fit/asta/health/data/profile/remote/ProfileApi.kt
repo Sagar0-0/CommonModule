@@ -4,9 +4,9 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 import okhttp3.MultipartBody
 import retrofit2.http.GET
 import retrofit2.http.Multipart
@@ -41,5 +41,5 @@ interface ProfileApi {
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
     @GET("health/property/get/all/")
-    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<List<HealthProperties>>
+    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<List<UserProperties>>
 }

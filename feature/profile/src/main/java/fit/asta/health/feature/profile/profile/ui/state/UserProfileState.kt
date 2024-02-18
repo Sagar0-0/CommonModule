@@ -21,16 +21,14 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.data.profile.remote.model.Diet
-import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileAddress
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -79,8 +77,6 @@ fun rememberUserProfileState(
         coroutineScope,
         navController,
         onEvent,
-        healthScreenState,
-        lifestyleScreenState,
         saver = UserProfileState.Saver(
             healthScreenState,
             lifestyleScreenState,
@@ -113,6 +109,11 @@ class UserProfileState(
     private val navController: NavController,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
+
+    val dietScreenState = DietScreenState(
+        userProfileResponse.diet,
+        coroutineScope, onEvent
+    )
 
     init {
         Log.d(
@@ -178,16 +179,6 @@ class UserProfileState(
     var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
-    // Diet Page
-    private val dietPreference =
-        (userProfileResponse.diet.preference ?: listOf()).toMutableStateList()
-    private val nonVegDays = (userProfileResponse.diet.nonVegDays ?: listOf()).toMutableStateList()
-    private val dietAllergies =
-        (userProfileResponse.diet.allergies ?: listOf()).toMutableStateList()
-    private val dietCuisines = (userProfileResponse.diet.cuisines ?: listOf()).toMutableStateList()
-    private val dietRestrictions =
-        (userProfileResponse.diet.restrictions ?: listOf()).toMutableStateList()
-
     fun onBackPressed() {
         saveData()
         navController.popBackStack()
@@ -232,13 +223,7 @@ class UserProfileState(
             ),
             health = healthScreenState.getHealthData(),
             lifeStyle = lifestyleScreenState.getLifestyleData(),
-            diet = Diet(
-                preference = dietPreference,
-                nonVegDays = nonVegDays,
-                allergies = dietAllergies,
-                cuisines = dietCuisines,
-                restrictions = dietRestrictions
-            )
+            diet = dietScreenState.getDietData()
         )
         onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
     }
@@ -325,6 +310,6 @@ class UserProfileState(
     data class ProfileBottomSheetPicker(
         val id: String,
         val name: String,
-        val list: SnapshotStateList<HealthProperties>
+        val list: SnapshotStateList<UserProperties>
     )
 }

@@ -17,7 +17,8 @@ import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 @Composable
 fun CreateProfileTwoButtonLayout(
     userProfileState: UserProfileState,
-    titleButton2: String = "Next",
+    isLastButtonSubmit: Boolean = false,
+    onSubmitClick: () -> Unit = {}
 ) {
     Row(
         modifier = Modifier.fillMaxWidth(),
@@ -34,12 +35,12 @@ fun CreateProfileTwoButtonLayout(
             )
         }
         AppFilledButton(
-            onClick = { userProfileState.currentPageIndex++ },
+            onClick = { if (isLastButtonSubmit) onSubmitClick() else userProfileState.currentPageIndex++ },
             modifier = Modifier.weight(1f),
             shape = CircleShape
         ) {
             CaptionTexts.Level3(
-                text = titleButton2,
+                text = if (isLastButtonSubmit) "Submit" else "Next",
                 color = AppTheme.colors.onPrimary
             )
         }

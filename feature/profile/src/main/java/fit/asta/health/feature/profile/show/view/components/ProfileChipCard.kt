@@ -20,7 +20,7 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.painterResource
 import androidx.hilt.navigation.compose.hiltViewModel
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
@@ -33,7 +33,7 @@ fun ProfileChipCard(
     viewModel: ProfileViewModel = hiltViewModel(),
     icon: Int,
     title: String,
-    list: List<HealthProperties>,
+    list: List<UserProperties>,
 ) {
     AppCard {
         Column(
@@ -72,7 +72,7 @@ private fun ProfileHeader(icon: Int, title: String) {
 
 @OptIn(ExperimentalLayoutApi::class)
 @Composable
-private fun ChipList(list: List<HealthProperties>) {
+private fun ChipList(list: List<UserProperties>) {
     FlowRow(
         horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0)

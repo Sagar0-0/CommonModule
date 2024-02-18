@@ -31,7 +31,7 @@ import com.maxkeppeler.sheets.clock.ClockDialog
 import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.profile.remote.model.HealthProperties
+import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
@@ -46,7 +46,7 @@ import kotlinx.coroutines.ExperimentalCoroutinesApi
 @Composable
 fun LifestyleScreen(
     userProfileState: UserProfileState,
-    healthPropertiesState: UiState<List<HealthProperties>>
+    userPropertiesState: UiState<List<UserProperties>>
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
@@ -122,14 +122,14 @@ fun LifestyleScreen(
             },
         ) {
             AppUiStateHandler(
-                uiState = healthPropertiesState,
+                uiState = userPropertiesState,
                 isScreenLoading = false,
                 onErrorMessage = {
                     userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
                 }
             ) {
-                HealthPropertiesSearchSheet(
-                    healthProperties = it,
+                PropertiesSearchSheet(
+                    userProperties = it,
                     searchQuery = userProfileState.bottomSheetSearchQuery,
                     onSearchQueryChange = { query ->
                         userProfileState.bottomSheetSearchQuery = query
@@ -213,7 +213,7 @@ private fun LifeStyleTimePicker(
 
 data class OnlySelectionCardData(
     val cardType: String,
-    val cardList: SnapshotStateList<HealthProperties>?,
+    val cardList: SnapshotStateList<UserProperties>?,
     val onItemsSelect: () -> Unit,
     val cardIndex: Int,
 )

@@ -70,7 +70,7 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             UserProfileContent(
                 userProfileState = userProfileState,
                 submitProfileState = submitProfileState,
-                healthPropertiesState = healthPropertiesState
+                userPropertiesState = healthPropertiesState
             )
         }
     }
