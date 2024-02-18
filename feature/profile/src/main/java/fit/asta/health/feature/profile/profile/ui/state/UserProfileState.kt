@@ -20,6 +20,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -333,21 +334,6 @@ class UserProfileState(
     data class ProfileBottomSheetPicker(
         val id: String,
         val name: String,
-        val list: List<HealthProperties>
-    )
-
-    data class ProfileTimePicker(
-        val title: String,
-        val startButtonTitle: String,
-        val endButtonTitle: String,
-        val startTime: String,
-        val endTime: String,
-        val startTimerIndex: Int,
-        val endTimerIndex: Int,
-    )
-
-    data class TimerType(
-        val title: String,
-        val onTimeChange: (String) -> Unit
+        val list: SnapshotStateList<HealthProperties>
     )
 }

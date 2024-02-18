@@ -9,6 +9,7 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -26,6 +27,8 @@ fun HealthScreen(
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+    val currentBottomSheetIndex = rememberSaveable { mutableIntStateOf(0) }
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -39,16 +42,15 @@ fun HealthScreen(
                 name = type.name,
                 list = type.list,
                 onRemove = {
-                    userProfileState.healthScreenState.removeProperty(it)
+                    type.list.remove(it)
                 }
             ) {
-                userProfileState
-                    .healthScreenState
-                    .openHealthBottomSheet(
-                        bottomSheetState,
-                        index,
-                        bottomSheetVisible
-                    )
+                currentBottomSheetIndex.intValue = index
+                userProfileState.healthScreenState.openHealthBottomSheet(
+                    bottomSheetState,
+                    currentBottomSheetIndex,
+                    bottomSheetVisible
+                )
             }
         }
         CreateProfileTwoButtonLayout(userProfileState)
@@ -75,13 +77,22 @@ fun HealthScreen(
                         userProfileState.bottomSheetSearchQuery = query
                     },
                     isItemSelected = { prop ->
-                        userProfileState.healthScreenState.isPropertySelected(prop)
+                        userProfileState.healthScreenState.isPropertySelected(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                     onAdd = { prop ->
-                        userProfileState.healthScreenState.addProperty(prop)
+                        userProfileState.healthScreenState.addProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                     onRemove = { prop ->
-                        userProfileState.healthScreenState.removeProperty(prop)
+                        userProfileState.healthScreenState.removeProperty(
+                            currentBottomSheetIndex.intValue,
+                            prop
+                        )
                     },
                 )
             }

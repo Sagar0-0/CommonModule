@@ -45,7 +45,7 @@ class HealthScreenState(
         injurySince = injurySince?.toIntOrNull()
     )
 
-    private var currentBottomSheetIndex = 0
+//    private var currentBottomSheetIndex = 0
 
     val bottomSheets: List<HealthBottomSheet> = listOf(
         HealthBottomSheet(
@@ -85,32 +85,32 @@ class HealthScreenState(
         ),
     )
 
-    fun addProperty(healthProperties: HealthProperties) {
-        bottomSheets[currentBottomSheetIndex].list.add(healthProperties)
+    fun addProperty(sheetIndex: Int, healthProperties: HealthProperties) {
+        bottomSheets[sheetIndex].list.add(healthProperties)
     }
 
-    fun removeProperty(healthProperties: HealthProperties) {
-        bottomSheets[currentBottomSheetIndex].list.remove(healthProperties)
+    fun removeProperty(sheetIndex: Int, healthProperties: HealthProperties) {
+        bottomSheets[sheetIndex].list.remove(healthProperties)
     }
 
-    fun isPropertySelected(healthProperties: HealthProperties): Boolean {
-        return bottomSheets[currentBottomSheetIndex].list.contains(healthProperties)
+    fun isPropertySelected(sheetIndex: Int, healthProperties: HealthProperties): Boolean {
+        return bottomSheets[sheetIndex].list.contains(healthProperties)
     }
 
     @OptIn(ExperimentalMaterial3Api::class)
     fun openHealthBottomSheet(
         sheetState: SheetState,
-        index: Int,
+        index: MutableState<Int>,
         bottomSheetVisible: MutableState<Boolean>
     ) {
-        currentBottomSheetIndex = index
+//        currentBottomSheetIndex = index.value
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
-        getHealthProperties()
+        getHealthProperties(index.value)
     }
 
-    private fun getHealthProperties() {
-        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[currentBottomSheetIndex].id))
+    private fun getHealthProperties(sheetIndex: Int) {
+        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
     fun getHealthData(): Health {
@@ -125,8 +125,7 @@ class HealthScreenState(
         ): Saver<HealthScreenState, *> = listSaver(
             save = {
                 listOf(
-                    it.updatedHealth,
-                    it.currentBottomSheetIndex
+                    it.updatedHealth
                 )
             },
             restore = {
@@ -135,9 +134,7 @@ class HealthScreenState(
                     healthPropertiesState,
                     coroutineScope,
                     onEvent
-                ).apply {
-                    this.currentBottomSheetIndex = it[1] as Int
-                }
+                )
             }
         )
     }

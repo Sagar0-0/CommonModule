@@ -8,7 +8,6 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.HealthProperties
 import fit.asta.health.data.profile.remote.model.LifeStyle
@@ -24,10 +23,10 @@ class LifestyleScreenState(
 ) {
 
     //Lifestyle Page
-    private var sleepStartTime by mutableStateOf(lifeStyle.sleep.from.toString())
-    private var sleepEndTime by mutableStateOf(lifeStyle.sleep.to.toString())
-    private var jobStartTime by mutableStateOf(lifeStyle.workingTime.from.toString())
-    private var jobEndTime by mutableStateOf(lifeStyle.workingTime.to.toString())
+    private var sleepStartTime = mutableStateOf(lifeStyle.sleep.from.toString())
+    private var sleepEndTime = mutableStateOf(lifeStyle.sleep.to.toString())
+    private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from.toString())
+    private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to.toString())
     private var currentTimerIndex by mutableIntStateOf(0)
 
     private val currentActivities =
@@ -36,62 +35,74 @@ class LifestyleScreenState(
         (lifeStyle.prefActivities ?: listOf()).toMutableStateList()
     private val lifestyleTargets =
         (lifeStyle.lifeStyleTargets ?: listOf()).toMutableStateList()
-    private var currentBottomSheetIndex by mutableIntStateOf(0)
+    private var currentBottomSheetIndex = 0
+
+    private val updateLifestyle = LifeStyle(
+        physicalActivity = lifeStyle.physicalActivity,
+        workingEnv = lifeStyle.workingEnv,
+        workStyle = lifeStyle.workStyle,
+        workingHours = lifeStyle.workingHours,
+        curActivities = currentActivities,
+        prefActivities = preferredActivities,
+        lifeStyleTargets = lifestyleTargets,
+        workingTime = TimeSchedule(
+            from = jobStartTime.value.toFloat(),
+            to = jobEndTime.value.toFloat()
+        ),
+        sleep = TimeSchedule(
+            from = sleepStartTime.value.toFloat(),
+            to = sleepEndTime.value.toFloat()
+        )
+    )
 
 
-    val lifestyleBottomSheetTypes: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
+    val bottomSheets: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
         UserProfileState.ProfileBottomSheetPicker(
             "activity",
             "Current Activities",
-            currentActivities.toList()
+            currentActivities
         ),
         UserProfileState.ProfileBottomSheetPicker(
             "activity",
             "Preferred Activities",
-            preferredActivities.toList()
+            preferredActivities
         ),
         UserProfileState.ProfileBottomSheetPicker(
             "goal",
             "Lifestyle Targets",
-            lifestyleTargets.toList()
+            lifestyleTargets
         )
     )
-    private val lifestyleTimers: List<UserProfileState.TimerType> = listOf(
-        UserProfileState.TimerType("Sleep start") {
-            sleepStartTime = it
-        },
-        UserProfileState.TimerType("Sleep End") {
-            sleepEndTime = it
-        },
-        UserProfileState.TimerType("Job start") {
-            jobStartTime = it
-        },
-        UserProfileState.TimerType("Job End") {
-            jobEndTime = it
-        },
-    )
-    private var currentLifestyleTimerTypeIndex by mutableIntStateOf(0)
 
-    val lifestyleTimePickers: List<UserProfileState.ProfileTimePicker> = listOf(
-        UserProfileState.ProfileTimePicker(
+    val lifestyleTimePickers: List<ProfileTimePicker> = listOf(
+        ProfileTimePicker(
             "Sleep Schedule",
             "Select Bed Time",
             "Select Wakeup Time",
             sleepStartTime,
             sleepEndTime,
-            0,
-            1
         ),
-        UserProfileState.ProfileTimePicker(
+        ProfileTimePicker(
             "Job Schedule",
             "Select Job Start Time",
             "Select Job End Time",
             jobStartTime,
             jobEndTime,
-            2,
-            3
-        ),
+        )
     )
+
+
+    fun addProperty(healthProperties: HealthProperties) {
+        bottomSheets[currentBottomSheetIndex].list.add(healthProperties)
+    }
+
+    fun removeProperty(healthProperties: HealthProperties) {
+        bottomSheets[currentBottomSheetIndex].list.remove(healthProperties)
+    }
+
+    fun isPropertySelected(healthProperties: HealthProperties): Boolean {
+        return bottomSheets[currentBottomSheetIndex].list.contains(healthProperties)
+    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     fun openLifestyleBottomSheet(
@@ -102,36 +113,32 @@ class LifestyleScreenState(
         currentBottomSheetIndex = index
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
-//        getHealthProperties()
+        getHealthProperties()
     }
 
-    fun openLifestyleTimeSelection(index: Int, useCaseState: UseCaseState) {
-        currentLifestyleTimerTypeIndex = index
-        useCaseState.show()
-    }
-
-    fun saveLifestyleTime(time: String) {
-        lifestyleTimers[currentLifestyleTimerTypeIndex].onTimeChange(time)
+    private fun getHealthProperties() {
+        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[currentBottomSheetIndex].id))
     }
 
     fun getLifestyleData(): LifeStyle {
-        return LifeStyle(
-            physicalActivity = lifeStyle.physicalActivity,
-            workingEnv = lifeStyle.workingEnv,
-            workStyle = lifeStyle.workStyle,
-            workingHours = lifeStyle.workingHours,
-            curActivities = currentActivities,
-            prefActivities = preferredActivities,
-            lifeStyleTargets = lifestyleTargets,
-            workingTime = TimeSchedule(
-                from = jobStartTime.toFloat(),
-                to = jobEndTime.toFloat()
-            ),
-            sleep = TimeSchedule(
-                from = sleepStartTime.toFloat(),
-                to = sleepEndTime.toFloat()
-            )
-        )
+        return updateLifestyle
     }
+
+    fun setCurrentItemTime(time: String) {
+
+    }
+
+    data class ProfileTimePicker(
+        val title: String,
+        val startButtonTitle: String,
+        val endButtonTitle: String,
+        val startTime: MutableState<String>,
+        val endTime: MutableState<String>
+    )
+
+    data class TimerType(
+        val title: String,
+        val onTimeChange: (String) -> Unit
+    )
 
 }

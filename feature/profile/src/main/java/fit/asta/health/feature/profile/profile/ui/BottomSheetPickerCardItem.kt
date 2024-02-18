@@ -10,7 +10,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.material.icons.filled.RemoveCircle
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.google.accompanist.flowlayout.FlowRow
@@ -25,7 +24,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun BottomSheetPickerCardItem(
     name: String,
-    list: SnapshotStateList<HealthProperties>,
+    list: List<HealthProperties>,
     onRemove: (HealthProperties) -> Unit,
     onOpenClick: () -> Unit
 ) {
@@ -62,8 +61,7 @@ fun BottomSheetPickerCardItem(
                             textToShow = it.name,
                             trailingIcon = Icons.Default.RemoveCircle
                         ) {
-                            list.add(it)
-//                            onRemove(it)
+                            onRemove(it)
                         }
                     }
                 }
