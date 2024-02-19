@@ -88,14 +88,12 @@ class BillingActivity : AppCompatActivity() {
     private var billingClient =
         HealthCareApp.mContext?.let {
             BillingClient.newBuilder(it)
-                .setListener(object : PurchasesUpdatedListener {
-                    override fun onPurchasesUpdated(
-                        p0: BillingResult,
-                        p1: MutableList<Purchase>?
-                    ) {
-                        Log.e("BillingActivity", "po  " + p0.responseCode + "  p1: " + p1)
-                    }
-                }).enablePendingPurchases().build()
+                .setListener { p0, p1 ->
+                    Log.e(
+                        "BillingActivity",
+                        "po  " + p0.responseCode + "  p1: " + p1
+                    )
+                }.enablePendingPurchases().build()
         }
 
     private fun querySkuDetails() {

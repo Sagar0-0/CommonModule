@@ -776,4 +776,35 @@
     <string name="differential_changes_type_sleep_stage">Sleep stage</string>
     <string name="differential_changes_type_distance">Distance</string>
     <string name="differential_changes_type_weight">Weight</string>
+
+
+    <!--    sunlight tool-->
+    <string name="weather_icon">weather icon</string>
+    <string name="time_icon">time icon</string>
+    <string name="app_background">app background</string>
+    <string name="upcoming_slots">Upcoming Slots</string>
+    <string name="total_duration">TotalDuration</string>
+    <string name="sunrise">Sunrise :-</string>
+    <string name="sunset">Sunset :-</string>
+    <string name="permission_granted">permission granted</string>
+    <string name="done">done</string>
+    <string name="menu">menu</string>
+    <string name="icon">icon</string>
+    <string name="skin_exposure">Skin Exposure</string>
+    <string name="skin_color">skin_color</string>
+    <string name="sunscreen">Sunscreen</string>
+    <string name="skin_exposure_dec">Please select skin exposure percentage based on clothing</string>
+    <string name="light">Light</string>
+    <string name="fair">Fair</string>
+    <string name="medium_light">Medium Light</string>
+    <string name="medium">Medium</string>
+    <string name="medium_dark">Medium Dark</string>
+    <string name="dark">Dark</string>
+    <string name="please_select_your_skin_color">Please select your skin color</string>
+    <string name="back">Back</string>
+    <string name="please_select_your_sunscreen_spf">Choose SPF level of your sunscreen</string>
+    <string name="please_select_your_age_range">Select your age range</string>
+    <string name="please_select_your_skin_type">Please select your skin type</string>
+    <string name="skin_type">Skin Type</string>
+    <string name="supplements">Supplements</string>
 </resources>

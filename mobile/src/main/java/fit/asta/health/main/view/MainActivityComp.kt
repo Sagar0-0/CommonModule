@@ -43,7 +43,6 @@ import fit.asta.health.feature.profile.profile.navigateToProfile
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
-import fit.asta.health.feature.sunlight.nav.navigateToSunlight
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.navigateToStepsCounter
 import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
@@ -57,6 +56,7 @@ import fit.asta.health.navigation.tools.ui.viewmodel.ToolsHomeViewModel
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.navigateToFinalPaymentScreen
 import fit.asta.health.subscription.navigateToSubscriptionDurations
+import fit.asta.health.sunlight.feature.navigation.navigateToSunlight
 
 const val HOME_ROUTE = "home_route"
 

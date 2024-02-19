@@ -28,7 +28,6 @@ import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.feature.sleep.view.navigation.sleepNavGraph
-import fit.asta.health.feature.sunlight.nav.sunlightNavigation
 import fit.asta.health.feature.testimonials.navigation.testimonialNavGraph
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.stepsCounterNavigation
@@ -43,6 +42,7 @@ import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.navigateToSubscription
 import fit.asta.health.subscription.subscriptionCheckoutRoute
 import fit.asta.health.subscription.subscriptionDurationRoute
+import fit.asta.health.sunlight.feature.navigation.sunlightNavigation
 import fit.asta.health.wallet.navigateToWallet
 import fit.asta.health.wallet.walletRoute
 import java.net.URLEncoder
