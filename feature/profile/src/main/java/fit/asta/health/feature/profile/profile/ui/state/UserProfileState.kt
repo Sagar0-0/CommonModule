@@ -13,7 +13,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.Saver
@@ -23,7 +22,6 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
-import fit.asta.health.data.profile.remote.model.Physique
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileAddress
@@ -32,7 +30,6 @@ import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
-import java.util.Calendar
 
 
 @Composable
@@ -71,6 +68,19 @@ fun rememberUserProfileState(
         )
     }
 
+    val physiqueScreenState = rememberSaveable(
+        saver = PhysiqueScreenState
+            .Saver(
+                coroutineScope, onEvent
+            )
+    ) {
+        PhysiqueScreenState(
+            physique = userProfileResponse.physique,
+            coroutineScope = coroutineScope,
+            onEvent = onEvent
+        )
+    }
+
     return rememberSaveable(
         userProfileResponse,
         pagerState,
@@ -80,6 +90,7 @@ fun rememberUserProfileState(
         saver = UserProfileState.Saver(
             healthScreenState,
             lifestyleScreenState,
+            physiqueScreenState,
             userProfileResponse,
             pagerState,
             coroutineScope,
@@ -90,6 +101,7 @@ fun rememberUserProfileState(
         UserProfileState(
             healthScreenState = healthScreenState,
             lifestyleScreenState = lifestyleScreenState,
+            physiqueScreenState = physiqueScreenState,
             userProfileResponse = userProfileResponse,
             pagerState = pagerState,
             coroutineScope = coroutineScope,
@@ -103,6 +115,7 @@ fun rememberUserProfileState(
 class UserProfileState(
     val healthScreenState: HealthScreenState,
     val lifestyleScreenState: LifestyleScreenState,
+    val physiqueScreenState: PhysiqueScreenState,
     private val userProfileResponse: UserProfileResponse,
     val pagerState: PagerState,
     private val coroutineScope: CoroutineScope,
@@ -159,28 +172,7 @@ class UserProfileState(
     var profileImageUrl by mutableStateOf(userProfileResponse.userDetail.media.mailUrl.ifEmpty { userProfileResponse.userDetail.media.url })
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
-    //Physique Page
-    val calendar: Calendar = Calendar.getInstance()
-    var userAge by mutableIntStateOf(userProfileResponse.physique.age)
-    var userAgeErrorMessage by mutableStateOf<String?>(null)
-        private set
     var userDob by mutableStateOf(userProfileResponse.userDetail.dob)
-    var userDobErrorMessage by mutableStateOf<String?>(null)
-        private set
-    var userWeight by mutableStateOf(userProfileResponse.physique.weight.toString())
-    var weightUnit by mutableIntStateOf(userProfileResponse.physique.weightUnit)
-    var userWeightErrorMessage by mutableStateOf<String?>(null)
-        private set
-    var userHeight by mutableStateOf(userProfileResponse.physique.height.toString())
-    var heightUnit by mutableIntStateOf(userProfileResponse.physique.heightUnit)
-    var userHeightErrorMessage by mutableStateOf<String?>(null)
-        private set
-    var userGender by mutableIntStateOf(userProfileResponse.physique.gender)
-    var isPregnant by mutableIntStateOf(userProfileResponse.physique.isPregnant)
-    var onPeriod by mutableIntStateOf(userProfileResponse.physique.onPeriod)
-    var userPregnancyWeek by mutableStateOf(userProfileResponse.physique.pregnancyWeek?.toString())
-    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
-
     fun onBackPressed() {
         saveData()
         navController.popBackStack()
@@ -191,46 +183,37 @@ class UserProfileState(
     }
 
     fun saveData() {
-        val newProfileData = UserProfileResponse(
-            uid = userProfileResponse.uid,
-            id = userProfileResponse.id,
-            userDetail = UserDetail(
-                userProfileAddress = UserProfileAddress(
-                    address = address,
-                    country = userProfileResponse.userDetail.userProfileAddress.country,
-                    city = userProfileResponse.userDetail.userProfileAddress.city,
-                    pin = userProfileResponse.userDetail.userProfileAddress.pin,
-                    street = userProfileResponse.userDetail.userProfileAddress.street
+        if (!physiqueScreenState.isValid()) {
+            currentPageIndex = 1
+        } else {
+            val newProfileData = UserProfileResponse(
+                uid = userProfileResponse.uid,
+                id = userProfileResponse.id,
+                userDetail = UserDetail(
+                    userProfileAddress = UserProfileAddress(
+                        address = address,
+                        country = userProfileResponse.userDetail.userProfileAddress.country,
+                        city = userProfileResponse.userDetail.userProfileAddress.city,
+                        pin = userProfileResponse.userDetail.userProfileAddress.pin,
+                        street = userProfileResponse.userDetail.userProfileAddress.street
+                    ),
+                    dob = userDob,
+                    email = email,
+                    name = userName,
+                    phoneNumber = phoneNumber,
+                    media = ProfileMedia(
+                        url = userProfileResponse.userDetail.media.url,
+                        mailUrl = userProfileResponse.userDetail.media.mailUrl,
+                        localUri = profileImageLocalUri
+                    )
                 ),
-                dob = userDob,
-                email = email,
-                name = userName,
-                phoneNumber = phoneNumber,
-                media = ProfileMedia(
-                    url = userProfileResponse.userDetail.media.url,
-                    mailUrl = userProfileResponse.userDetail.media.mailUrl,
-                    localUri = profileImageLocalUri
-                )
-            ),
-            physique = Physique(
-                age = userAge,
-                bodyType = userProfileResponse.physique.bodyType,
-                bmi = userProfileResponse.physique.bmi,
-                bmiUnit = userProfileResponse.physique.bmiUnit,
-                gender = userGender,
-                height = userHeight.toFloat(),
-                heightUnit = heightUnit,
-                isPregnant = isPregnant,
-                onPeriod = onPeriod,
-                pregnancyWeek = userPregnancyWeek?.toIntOrNull(),
-                weight = userWeight.toFloat(),
-                weightUnit = weightUnit
-            ),
-            health = healthScreenState.getHealthData(),
-            lifeStyle = lifestyleScreenState.getLifestyleData(),
-            diet = dietScreenState.getDietData()
-        )
-        onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
+                physique = physiqueScreenState.getPhysiqueData(),
+                health = healthScreenState.getHealthData(),
+                lifeStyle = lifestyleScreenState.getLifestyleData(),
+                diet = dietScreenState.getDietData()
+            )
+            onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
+        }
     }
 
     fun clearProfile() {
@@ -238,14 +221,11 @@ class UserProfileState(
         profileImageUrl = ""
     }
 
-    fun resetHealthProperties() {
-        onEvent(UserProfileEvent.ResetHealthProperties)
-    }
-
     companion object {
         fun Saver(
             healthScreenState: HealthScreenState,
             lifestyleScreenState: LifestyleScreenState,
+            physiqueScreenState: PhysiqueScreenState,
             userProfileResponse: UserProfileResponse,
             pagerState: PagerState,
             coroutineScope: CoroutineScope,
@@ -259,19 +239,7 @@ class UserProfileState(
                     it.isConfirmDialogVisible,
                     it.isAnythingChanged,
                     it.isImageCropperVisible,
-                    it.userAge,
-                    it.userAgeErrorMessage,
-                    it.userWeight,
-                    it.userWeightErrorMessage,
-                    it.userHeight,
-                    it.userHeightErrorMessage,
-                    it.userGender,
-                    it.onPeriod,
-                    it.isPregnant,
-                    it.userPregnancyWeek,
-                    it.userPregnancyWeekErrorMessage,
                     it.userDob,
-                    it.userDobErrorMessage,
                     it.bottomSheetSearchQuery,
                     it.profileImageUrl
                 )
@@ -281,6 +249,7 @@ class UserProfileState(
                 UserProfileState(
                     healthScreenState = healthScreenState,
                     lifestyleScreenState = lifestyleScreenState,
+                    physiqueScreenState = physiqueScreenState,
                     userProfileResponse = userProfileResponse,
                     pagerState = pagerState,
                     coroutineScope = coroutineScope,
@@ -292,21 +261,9 @@ class UserProfileState(
                     this.isConfirmDialogVisible = it[2] as Boolean
                     this.isAnythingChanged = it[3] as Boolean
                     this.isImageCropperVisible = it[4] as Boolean
-                    this.userAge = it[5] as Int
-                    this.userAgeErrorMessage = it[6] as String?
-                    this.userWeight = it[7] as String
-                    this.userWeightErrorMessage = it[8] as String?
-                    this.userHeight = it[9] as String
-                    this.userHeightErrorMessage = it[10] as String?
-                    this.userGender = it[11] as Int
-                    this.onPeriod = it[12] as Int
-                    this.isPregnant = it[13] as Int
-                    this.userPregnancyWeek = it[14] as String?
-                    this.userPregnancyWeekErrorMessage = it[15] as String?
-                    this.userDob = it[16] as String
-                    this.userDobErrorMessage = it[17] as String?
-                    this.bottomSheetSearchQuery = it[18] as String
-                    this.profileImageUrl = it[19] as String
+                    this.userDob = it[5] as String
+                    this.bottomSheetSearchQuery = it[6] as String
+                    this.profileImageUrl = it[7] as String
                 }
             }
         )

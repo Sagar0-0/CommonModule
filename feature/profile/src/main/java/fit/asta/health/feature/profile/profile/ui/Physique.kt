@@ -95,8 +95,9 @@ private fun CalendarSection(
         state = useCaseState, selection = CalendarSelection.Date {
             userProfileState.userDob =
                 it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-            userProfileState.userAge =
-                (userProfileState.calendar.get(Calendar.YEAR) - it.year)
+            userProfileState.physiqueScreenState.setAge(
+                (userProfileState.physiqueScreenState.calendar.get(Calendar.YEAR) - it.year)
+            )
         },
         config = CalendarConfig(monthSelection = true, yearSelection = true)
     )
@@ -115,28 +116,28 @@ private fun GenderSection(
         ) {
             ThreeTogglesGroups(
                 title = R.string.gender.toStringFromResId(),
-                selectedOption = userProfileState.userGender,
+                selectedOption = userProfileState.physiqueScreenState.userGender,
             ) {
-                userProfileState.userGender = it
+                userProfileState.physiqueScreenState.userGender = it
             }
 
-            AnimatedVisibility(userProfileState.userGender == GenderTypes.FEMALE.gender) {
+            AnimatedVisibility(userProfileState.physiqueScreenState.userGender == GenderTypes.FEMALE.gender) {
                 Column {
                     TwoTogglesGroup(
                         selectionTypeText = stringResource(R.string.periodTitle_profile_creation),
-                        selectedOption = userProfileState.onPeriod,
+                        selectedOption = userProfileState.physiqueScreenState.onPeriod,
                         onStateChange = { state ->
-                            userProfileState.onPeriod = state
+                            userProfileState.physiqueScreenState.onPeriod = state
                         }
                     )
                     TwoTogglesGroup(
                         selectionTypeText = stringResource(R.string.pregnantTitle_profile_creation),
-                        selectedOption = userProfileState.isPregnant,
+                        selectedOption = userProfileState.physiqueScreenState.isPregnant,
                         onStateChange = { state ->
-                            userProfileState.isPregnant = state
+                            userProfileState.physiqueScreenState.isPregnant = state
                         }
                     )
-                    AnimatedVisibility(userProfileState.isPregnant == BooleanIntTypes.YES.value) {
+                    AnimatedVisibility(userProfileState.physiqueScreenState.isPregnant == BooleanIntTypes.YES.value) {
                         Row(
                             modifier = Modifier
                                 .fillMaxWidth()
@@ -156,17 +157,19 @@ private fun GenderSection(
                         ) {
                             AppTextField(
                                 modifier = Modifier.fillMaxWidth(),
-                                value = userProfileState.userPregnancyWeek ?: "",
+                                value = userProfileState.physiqueScreenState.userPregnancyWeek
+                                    ?: "",
                                 onValueChange = {
-                                    userProfileState.userPregnancyWeek = it
+                                    userProfileState.physiqueScreenState.userPregnancyWeek = it
                                 },
                                 appTextFieldType = AppTextFieldValidator(
                                     AppTextFieldType.Custom(
                                         isInvalidLogic = { _, _ ->
-                                            userProfileState.userPregnancyWeekErrorMessage != null
+                                            userProfileState.physiqueScreenState.userPregnancyWeekErrorMessage != null
                                         },
                                         getErrorMessageLogic = { _, _ ->
-                                            userProfileState.userPregnancyWeekErrorMessage ?: ""
+                                            userProfileState.physiqueScreenState.userPregnancyWeekErrorMessage
+                                                ?: ""
                                         }
                                     )
                                 ),
@@ -205,9 +208,11 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = userProfileState.weightUnit,
+                        primarySelection = userProfileState.physiqueScreenState.weightUnit,
                         buttonCount = 2,
-                        onButtonClick = { index -> userProfileState.weightUnit = index },
+                        onButtonClick = { index ->
+                            userProfileState.physiqueScreenState.weightUnit = index
+                        },
                         buttonTexts = arrayOf("kg", "lb"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary
@@ -215,14 +220,14 @@ private fun MeasurementSection(
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 AppOutlinedTextField(
-                    value = userProfileState.userWeight,
+                    value = userProfileState.physiqueScreenState.userWeight,
                     keyboardActions = KeyboardActions(
                         onNext = {
                             focusManager.moveFocus(FocusDirection.Next)
                         }
                     ),
                     onValueChange = {
-                        userProfileState.userWeight = it
+                        userProfileState.physiqueScreenState.setWeight(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
@@ -232,10 +237,10 @@ private fun MeasurementSection(
                         unfocusedBorderColor = AppTheme.colors.onSurface
                     )
                 )
-                userProfileState.userWeightErrorMessage?.let {
+                userProfileState.physiqueScreenState.userWeightErrorMessage?.let {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                     BodyTexts.Level1(
-                        text = userProfileState.userWeightErrorMessage!!,
+                        text = userProfileState.physiqueScreenState.userWeightErrorMessage!!,
                         color = AppTheme.colors.error
                     )
                 }
@@ -250,9 +255,11 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = userProfileState.heightUnit,
+                        primarySelection = userProfileState.physiqueScreenState.heightUnit,
                         buttonCount = 2,
-                        onButtonClick = { index -> userProfileState.heightUnit = index },
+                        onButtonClick = { index ->
+                            userProfileState.physiqueScreenState.heightUnit = index
+                        },
                         buttonTexts = arrayOf("cm", "in"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary
@@ -260,9 +267,9 @@ private fun MeasurementSection(
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 AppOutlinedTextField(
-                    value = userProfileState.userHeight,
+                    value = userProfileState.physiqueScreenState.userHeight,
                     onValueChange = {
-                        userProfileState.userHeight = it
+                        userProfileState.physiqueScreenState.setHeight(it)
                     },
                     keyboardOptions = KeyboardOptions(
                         keyboardType = KeyboardType.Number,
@@ -271,10 +278,10 @@ private fun MeasurementSection(
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
                     colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
                 )
-                userProfileState.userHeightErrorMessage?.let {
+                userProfileState.physiqueScreenState.userHeightErrorMessage?.let {
                     Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
                     BodyTexts.Level1(
-                        text = userProfileState.userHeightErrorMessage!!,
+                        text = userProfileState.physiqueScreenState.userHeightErrorMessage!!,
                         color = AppTheme.colors.error
                     )
                 }
@@ -288,7 +295,7 @@ private fun AgeSection(
     userProfileState: UserProfileState,
     calendarUseCaseState: UseCaseState
 ) {
-    val ageColorSelection = if (userProfileState.userAgeErrorMessage == null) {
+    val ageColorSelection = if (userProfileState.physiqueScreenState.userAgeErrorMessage == null) {
         AppTheme.colors.onSurface
     } else {
         AppTheme.colors.error
@@ -301,7 +308,7 @@ private fun AgeSection(
             text = stringResource(id = R.string.age), color = AppTheme.colors.onTertiaryContainer
         )
         BodyTexts.Level1(
-            text = "${userProfileState.userAge} years old",
+            text = "${userProfileState.physiqueScreenState.userAge} years old",
             color = AppTheme.colors.onTertiaryContainer,
         )
     }
@@ -324,7 +331,7 @@ private fun AgeSection(
             AppIcon(
                 imageVector = Icons.Rounded.EditCalendar,
                 contentDescription = "Calendar Icon",
-                tint = if (userProfileState.userAgeErrorMessage == null) {
+                tint = if (userProfileState.physiqueScreenState.userAgeErrorMessage == null) {
                     AppTheme.colors.onBackground
                 } else {
                     AppTheme.colors.error
@@ -338,7 +345,7 @@ private fun AgeSection(
         }
     }
 
-    userProfileState.userAgeErrorMessage?.let {
+    userProfileState.physiqueScreenState.userAgeErrorMessage?.let {
         Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
         Row(
             Modifier.fillMaxWidth(),

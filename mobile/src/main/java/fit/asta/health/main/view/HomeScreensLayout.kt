@@ -318,7 +318,7 @@ private fun RowScope.NewMainTopBarActions(
             if (profileImageUri != null) {
                 AppIconButton(
                     onClick = {
-                        //onClick(MainTopBarActions.Profile)
+                        onClick(MainTopBarActions.Profile)
                     }
                 ) {
                     AppNetworkImage(
