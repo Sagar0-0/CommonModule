@@ -1,6 +1,8 @@
 package fit.asta.health.network.di
 
 import android.content.Context
+import com.chuckerteam.chucker.api.ChuckerCollector
+import com.chuckerteam.chucker.api.ChuckerInterceptor
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -47,11 +49,24 @@ object NetworkModule {
 
     @Singleton
     @Provides
+    fun provideChuckerInterceptor(@ApplicationContext context: Context?): ChuckerInterceptor? =
+        context?.let {
+            ChuckerInterceptor.Builder(it)
+                .collector(ChuckerCollector(context))
+                .maxContentLength(250000L)
+                .redactHeaders(emptySet())
+                .alwaysReadResponseBody(true)
+                .build()
+        }
+
+    @Singleton
+    @Provides
     fun provideOkHttpClient(
         networkHelper: NetworkHelper,
         cache: Cache,
         token: TokenProvider,
-        languageProvider: LanguageProvider
+        languageProvider: LanguageProvider,
+        chuckerInterceptor: ChuckerInterceptor?
     ): OkHttpClient {
 
         val builder = AstaNetwork.Builder()
@@ -66,6 +81,9 @@ object NetworkModule {
                 HttpLoggingInterceptor()
                     .setLevel(HttpLoggingInterceptor.Level.BODY)
             )
+            chuckerInterceptor?.let {
+                builder.addInterceptor(it)
+            }
         }
 
         return builder.build()

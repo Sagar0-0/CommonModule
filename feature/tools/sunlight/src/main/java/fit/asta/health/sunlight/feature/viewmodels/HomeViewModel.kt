@@ -215,7 +215,8 @@ class HomeViewModel @Inject constructor(
 
                         updateDataMapper(data)
                         data.data.let {
-                            if (it.sunLightData?.prc.isNullOrEmpty() ||
+                            if (it.sunLightData?.prc.isNullOrEmpty()
+                                ||
                                 it.sunLightData?.uid?.equals("000000000000000000000000") == true
                             ) {
                                 skinConditionData.addAll(

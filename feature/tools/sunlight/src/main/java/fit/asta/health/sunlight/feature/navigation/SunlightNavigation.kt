@@ -1,9 +1,13 @@
 package fit.asta.health.sunlight.feature.navigation
 
 import android.util.Log
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -52,7 +56,7 @@ fun NavController.navigateToSunlight(navOptions: NavOptions? = null) {
 
 fun NavGraphBuilder.sunlightNavigation(
     navController: NavHostController,
-    onBack:()->Unit={}
+    onBack: () -> Unit = {}
 ) {
     navigation(
         route = Constants.SUNLIGHT_GRAPH_ROUTE,
@@ -90,11 +94,17 @@ fun NavGraphBuilder.sunlightNavigation(
                         //retry
                     }
                 }
+
                 is UiState.Loading -> {
-                    AppLoadingScreen()
+                    Box(
+                        modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center
+                    ) {
+                        AppLoadingScreen()
+                    }
                 }
 
-               is UiState.Success -> {
+                is UiState.Success -> {
                     SunHomeScreen(
                         homeState = state,
                         navigateToSkinCondition = { screen ->
@@ -107,8 +117,9 @@ fun NavGraphBuilder.sunlightNavigation(
                         onBack = onBack
                     )
                 }
-                else->{
 
+                else -> {
+                    Box(modifier = Modifier.fillMaxSize())
                 }
             }
 

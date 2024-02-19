@@ -163,6 +163,8 @@ ui = "1.5.4"
 uiGraphics = "1.5.4"
 uiTestJunit4Android = "1.5.4"
 uiToolingPreview = "1.5.4"
+chucker="3.5.2"
+
 
 
 [libraries]
@@ -347,6 +349,8 @@ transformationlayout = { group = "com.github.skydoves", name = "transformationla
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
 mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
+debugchucker={group= "com.github.chuckerteam.chucker",name="library",version.ref="chucker" }
+chucker={group= "com.github.chuckerteam.chucker",name="library-no-op",version.ref="chucker" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

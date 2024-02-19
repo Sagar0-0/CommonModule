@@ -36,4 +36,6 @@ dependencies {
     //Json parsers
     implementation(libs.gson)
     implementation(libs.moshi.kotlin)
+    //chucker
+    debugImplementation(libs.debugchucker)
 }
