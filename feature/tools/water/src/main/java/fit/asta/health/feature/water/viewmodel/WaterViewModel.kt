@@ -14,7 +14,7 @@ import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.data.water.db.WaterData
 import fit.asta.health.data.water.model.WaterLocalRepo
 import fit.asta.health.data.water.model.WaterToolRepo
-import fit.asta.health.data.water.model.domain.BeverageDetails
+import fit.asta.health.data.water.model.domain.BeverageDetailsData
 import fit.asta.health.data.water.model.domain.WaterTool
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.TodayActivityData
@@ -28,7 +28,6 @@ import kotlinx.coroutines.flow.catch
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
-
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
@@ -48,7 +47,7 @@ class WaterViewModel
     private val _modifiedWaterTool = MutableStateFlow<WaterTool?>(null)
     val modifiedWaterTool = _modifiedWaterTool.asStateFlow()
 
-    private val _beverageList = mutableStateListOf<BeverageDetails>()
+    private val _beverageList = mutableStateListOf<BeverageDetailsData>()
     val beverageList = MutableStateFlow(_beverageList)
 
     private val _todayActivity = mutableStateListOf<TodayActivityData>()
@@ -143,7 +142,7 @@ class WaterViewModel
 
             is WTEvent.Start -> {
                 if (_uiState.value.target < 0f) {
-                    mToast(context = event.context, text = "select target value of water")
+//                    mToast(context = event.context, text = "select target value of water")
                 } else {
                     setTargetData()
                 }
@@ -154,14 +153,15 @@ class WaterViewModel
                 _uiState.value = _uiState.value.copy(showCustomDialog = event.state)
                 _containerIndex.value = -1
             }
+            else -> {}
         }
     }
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
-            authRepo.getUser()?.let { user ->
-                Log.i("User Id", "------------------>${user.uid}")
-                Log.d("subhash", "user: ${user.uid}")
+          //  authRepo.getUser()?.let { user ->
+//                Log.i("User Id", "------------------>${user.uid}")
+//                Log.d("subhash", "user: ${user.uid}")
                 val result = waterToolRepo.getWaterTool(
                     userId = "6309a9379af54f142c65fbfe",
                     latitude = "28.6353",
@@ -170,7 +170,7 @@ class WaterViewModel
                     date = getCurrentDate()
                 ).catch { exception ->
                     Log.d("subhash", "loadWaterToolData: ${exception.message}")
-                    mutableState.value = WaterState.Error(exception)
+                    mutableState.value = WaterState.Error("$exception + loadWaterTool")
                 }.collect {
                     _modifiedWaterTool.value = it
                     _uiState.value= _uiState.value.copy(
@@ -188,7 +188,7 @@ class WaterViewModel
                     Log.d("subhash", "loadWaterToolData: ${it}")
                 }
                 Log.d("subhash", "result: ${result}")
-            }
+         //   }
 
         }
     }
@@ -196,7 +196,7 @@ class WaterViewModel
     private fun updateUi() {
 
         viewModelScope.launch {
-            authRepo.getUser()?.let { user ->
+           // authRepo.getUser()?.let { user ->
                 val result = waterToolRepo.getWaterTool(
                     userId = "6309a9379af54f142c65fbfe",
                     latitude = "28.6353",
@@ -221,7 +221,7 @@ class WaterViewModel
                     _todayActivity.addAll(it.todayActivityData)
                 }
                 Log.d("subhash", "result: ${result}")
-            }
+          //  }
 
         }
     }
@@ -258,7 +258,7 @@ class WaterViewModel
             BD.code == _selectedBeverage.value
         }?.title
         viewModelScope.launch {
-            authRepo.getUserId()?.let {
+          //  authRepo.getUserId()?.let {
                 waterToolRepo.updateBeverageQty(
                     NetBevQtyPut(
                         bev = title!!,
@@ -272,11 +272,10 @@ class WaterViewModel
                     updateUi()
                     Log.d("subhash", "updateBeverageData: ${it.msg}")
                 }
-            }
+          //  }
         }
     }
 }
-
 private fun mToast(context: Context, text: String) {
     Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

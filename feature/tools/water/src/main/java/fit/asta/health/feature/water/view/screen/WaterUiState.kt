@@ -21,3 +21,8 @@ data class WaterUiState(
     val water: Water = Water(),
     val meta: Meta = Meta(),
 )
+
+data class WaterToolUiState(
+    val totalConsumed : Int = 0,
+    val remainingToConsume : Int = 0
+)
