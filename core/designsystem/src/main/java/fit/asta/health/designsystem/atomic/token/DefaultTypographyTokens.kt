@@ -44,7 +44,7 @@ object DefaultTypographyTokens {
         fontFamily = astaFontFamily
     )
     val headingLevel4: TextStyle = TextStyle(
-        fontSize = 20.sp,
+        fontSize = 16.sp,
         fontWeight = FontWeight.SemiBold,
         fontFamily = astaFontFamily
     )

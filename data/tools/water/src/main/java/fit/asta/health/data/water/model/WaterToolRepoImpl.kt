@@ -1,5 +1,6 @@
 package fit.asta.health.data.water.model
 
+import fit.asta.health.data.water.model.network.WaterDetailsData
 import fit.asta.health.data.water.model.api.WaterApi
 import fit.asta.health.data.water.model.domain.WaterTool
 import fit.asta.health.data.water.model.network.NetBevQtyPut
@@ -42,6 +43,22 @@ class WaterToolRepoImpl(
 
     override suspend fun updateWaterTool(waterToolData: WaterToolData): Flow<Status> {
         return flow { emit(remoteApi.updateWaterTool(waterToolData)) }
+    }
+
+    override suspend fun getWaterData() : Flow<List<WaterDetailsData>> {
+        val result = remoteApi.getWaterData()
+        return if (result.isSuccessful) {
+            val response = result.body()
+            flow {
+                if (response != null) {
+                    emit(response.data)
+                }
+            }
+        } else {
+            flow {
+                emit(listOf())
+            }
+        }
     }
 
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool):Flow<Status>{

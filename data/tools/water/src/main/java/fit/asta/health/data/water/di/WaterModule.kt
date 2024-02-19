@@ -7,7 +7,9 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
+import fit.asta.health.data.water.db.HistoryDatabase
 import fit.asta.health.data.water.db.WaterToolDatabase
+import fit.asta.health.data.water.model.HistoryRepo
 import fit.asta.health.data.water.model.WaterLocalRepo
 import fit.asta.health.data.water.model.WaterLocalRepoImpl
 import fit.asta.health.data.water.model.WaterToolDataMapper
@@ -59,7 +61,24 @@ object WaterModule {
 
     @Singleton
     @Provides
+    fun provideHistoryDatabase(
+        @ApplicationContext context: Context,
+    ) = Room.databaseBuilder(
+        context,
+        HistoryDatabase::class.java,
+        "HistoryDatabase"
+    ).build()
+
+
+    @Singleton
+    @Provides
     fun provideRepo(db: WaterToolDatabase): WaterLocalRepo {
         return WaterLocalRepoImpl(db.waterDao())
+    }
+
+    @Singleton
+    @Provides
+    fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
+        return HistoryRepo(db.historyDao())
     }
 }

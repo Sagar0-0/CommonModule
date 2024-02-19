@@ -127,7 +127,7 @@ data class TodayActivityData(
 )
 data class UserBeverageInfo(
     @SerializedName("bev")
-    val bev: List<Bev>,
+    val bev: List<BeverageInfo>,
     @SerializedName("id")
     val id: String,
     @SerializedName("uid")
@@ -146,6 +146,25 @@ data class Bev(
     val name: String,
     @SerializedName("qty")
     val qty: Int,
+    @SerializedName("rank")
+    val rank: Int,
+    @SerializedName("ttl")
+    val title: String,
+    @SerializedName("unit")
+    val unit: String
+)
+
+data class BeverageInfo(
+    @SerializedName("code")
+    val code: String,
+    @SerializedName("count")
+    val count: Int,
+    @SerializedName("icon")
+    val icon: String,
+    @SerializedName("id")
+    val id: String,
+    @SerializedName("name")
+    val name: String,
     @SerializedName("rank")
     val rank: Int,
     @SerializedName("ttl")
