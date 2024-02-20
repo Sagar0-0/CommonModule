@@ -215,6 +215,25 @@ class HomeViewModel @Inject constructor(
 
                         updateDataMapper(data)
                         data.data.let {
+                            it.sunLightProgressData?.achIu.let { ach ->
+                                achievedIU = ach ?: 0
+                            }
+                            it.sunLightProgressData?.rem?.let { time ->
+                                totalTime.longValue = ((time / 60000))
+                                totalTimeMillis = time
+                                updateTimerText(time)
+                            }
+                            dPerMin = it.sunLightData?.iuPerMin ?: 0
+                            _sunlightDataState.emit(
+                                _sunlightDataState.value.copy(
+                                    sunlightHomeResponse = it,
+                                    isLoading = false,
+                                    skinConditionData = skinConditionData,
+                                    supplementData = mutableStateOf(it.sunLightData?.sup),
+                                    totalTime = totalTime
+                                )
+                            )
+
                             if (it.sunLightData?.prc.isNullOrEmpty()
                                 ||
                                 it.sunLightData?.uid?.equals("000000000000000000000000") == true
@@ -257,24 +276,6 @@ class HomeViewModel @Inject constructor(
                                 )
                                 navigateToCondition.invoke()
                             }
-                            it.sunLightProgressData?.achIu.let { ach ->
-                                achievedIU = ach ?: 0
-                            }
-                            it.sunLightProgressData?.rem?.let { time ->
-                                totalTime.longValue = ((time / 60000))
-                                totalTimeMillis = time
-                                updateTimerText(time)
-                            }
-                            dPerMin = it.sunLightData?.iuPerMin ?: 0
-                            _sunlightDataState.emit(
-                                _sunlightDataState.value.copy(
-                                    sunlightHomeResponse = it,
-                                    isLoading = false,
-                                    skinConditionData = skinConditionData,
-                                    supplementData = mutableStateOf(it.sunLightData?.sup),
-                                    totalTime = totalTime
-                                )
-                            )
 
                         }
                     }

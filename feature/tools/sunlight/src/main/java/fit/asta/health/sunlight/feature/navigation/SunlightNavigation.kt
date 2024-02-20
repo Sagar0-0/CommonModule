@@ -13,6 +13,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import androidx.navigation.NavOptionsBuilder
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
@@ -46,7 +47,7 @@ fun RootNavGraph(navController: NavHostController = rememberNavController()) {
     }
 }
 
-fun NavController.navigateToSunlight(navOptions: NavOptions? = null) {
+fun NavController.navigateToSunlight(navOptions: (NavOptionsBuilder) -> Unit = { }) {
     this.navigate(
         Constants.SUNLIGHT_GRAPH_ROUTE,
         navOptions
@@ -70,7 +71,11 @@ fun NavGraphBuilder.sunlightNavigation(
                 homeViewModel.getHomeScreenData()
             }
             homeViewModel.navigateToCondition = {
-                navController.navigateToSkinConditionScreen("-")
+                navController.navigateToSkinConditionScreen("-", navOptions = { navOptionsBuilder ->
+                    navOptionsBuilder.popUpTo(SunlightScreens.SunlightHomeScreen.route) {
+                        inclusive = true
+                    }
+                })
             }
             homeViewModel.navigateToResultScreen = {
                 Log.d("navigateResult", "sunlightNavigation: ")
@@ -83,6 +88,15 @@ fun NavGraphBuilder.sunlightNavigation(
                         errorTitle = (homeState.value as UiState.ErrorMessage).resId,
                         errorMessage = "Please try again later"
                     )
+                    /* LaunchedEffect(Unit) {
+                         navController.navigateToSkinConditionScreen(
+                             "-",
+                             navOptions = { navOptionsBuilder ->
+                                 navOptionsBuilder.popUpTo(SunlightScreens.SunlightHomeScreen.route) {
+                                     inclusive = true
+                                 }
+                             })
+                     }*/
                 }
 
                 is UiState.NoInternet -> {
@@ -152,7 +166,15 @@ fun NavGraphBuilder.sunlightNavigation(
                 skinConditionViewModel.updateDataState.collectAsState()
             val exposureState = skinConditionViewModel.skinExposureState.collectAsState()
             skinConditionViewModel.popBackStack = {
-                navController.popBackStack()
+                if (skinConditionViewModel.id.value.equals("000000000000000000000000")) {
+                    navController.navigateToSunlight {
+                        it.popUpTo(SunlightScreens.SkinConditionScreen.route) {
+                            inclusive = true
+                        }
+                    }
+                } else {
+                    navController.popBackStack()
+                }
             }
             if (id != null) {
                 if (id == -1) {
@@ -238,7 +260,10 @@ fun NavGraphBuilder.sunlightNavigation(
 
 }
 
-fun NavController.navigateToSkinConditionScreen(id: String, navOptions: NavOptions? = null) {
+fun NavController.navigateToSkinConditionScreen(
+    id: String,
+    navOptions: (NavOptionsBuilder) -> Unit = {}
+) {
     this.navigate(
         SunlightScreens.SkinConditionScreen.route + "?id=${id.getScreenIndex()}",
         navOptions
@@ -252,11 +277,12 @@ fun NavController.navigateToSessionResultScreen(navOptions: NavOptions? = null) 
     )
 }
 
-fun NavController.navigateToHelpAndSuggestionScreen(navOptions: NavOptions? = null) {
+fun NavController.navigateToHelpAndSuggestionScreen(navOptions: (NavOptionsBuilder) -> Unit = {}) {
     this.navigate(
-        SunlightScreens.HelpAndSuggestionScreen.route,
-        navOptions
-    )
+        SunlightScreens.HelpAndSuggestionScreen.route
+    ) {
+        navOptions(this)
+    }
 }
 
 
