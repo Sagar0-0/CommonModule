@@ -1,6 +1,8 @@
 package fit.asta.health.feature.water.viewmodel
 
+import android.content.Context
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
@@ -9,6 +11,16 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
+import java.time.LocalDate
+import javax.inject.Inject
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.data.water.check.model.BevDataDetails
@@ -21,22 +33,14 @@ import fit.asta.health.data.water.model.WaterToolRepo
 import fit.asta.health.data.water.model.domain.BeverageDetailsData
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.TodayActivityData
+import fit.asta.health.feature.water.WaterState
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
-import java.time.LocalDate
-import javax.inject.Inject
+import kotlinx.coroutines.delay
 
 @HiltViewModel
 class WaterToolViewModel @Inject constructor(
-    private val repo : WaterToolRepo,
+    private val repo: WaterToolRepo,
     private val authRepo: AuthRepo,
     private val historyRepo: HistoryRepo
 ) : ViewModel() {
@@ -81,7 +85,7 @@ class WaterToolViewModel @Inject constructor(
     private var isStartingSearch = true
 
     private var _totalConsumed = MutableStateFlow(0f)
-    val totalConsumed  = _totalConsumed.asStateFlow()
+    val totalConsumed = _totalConsumed.asStateFlow()
 
     private var _remainingConsumption = MutableStateFlow(_goal.value.toInt())
     val remainingConsumption = _remainingConsumption.asStateFlow()
@@ -90,6 +94,8 @@ class WaterToolViewModel @Inject constructor(
     val sliderColor = _sliderColor.asStateFlow()
 
     private var isSearching = mutableStateOf(false)
+    var _isLoading = mutableStateOf(false)
+        private set
 
     val filteredHistory: MutableStateFlow<List<History>> = MutableStateFlow(emptyList())
 
@@ -97,6 +103,7 @@ class WaterToolViewModel @Inject constructor(
 
 
     private val todayDate = LocalDate.now()
+
     // Initialization
     init {
         loadGoal()
@@ -104,14 +111,14 @@ class WaterToolViewModel @Inject constructor(
         loadLocalBevDetail()
         loadConsumptionHistoryDetail()
         loadWaterToolData()
-        Log.d("rishi","InitsearchList called")
-        Log.d("rishi","bevListInit : ${bevList.value}")
+        Log.d("rishi", "InitsearchList called")
+        Log.d("rishi", "bevListInit : ${bevList.value}")
     }
 
 
     // Searching Methods
     fun searchList(query: String) {
-        Log.d("rishi","searchList called")
+        Log.d("rishi", "searchList called")
         val listToSearch = if (isStartingSearch) {
             bevList.value
         } else {
@@ -135,8 +142,9 @@ class WaterToolViewModel @Inject constructor(
                 isSearching.value = true
             }
         }
-        Log.d("rishi","bevListSearch : ${bevList.value}")
+        Log.d("rishi", "bevListSearch : ${bevList.value}")
     }
+
     fun searchHistory(query: String) {
         viewModelScope.launch {
             // Collect the recent history list
@@ -159,18 +167,18 @@ class WaterToolViewModel @Inject constructor(
 
 
     // Data Loading and Fetching
-    private fun loadLocalBevDetail(){
-        Log.d("rishi","loadLocalDetailCalled")
-        val list : StateFlow<List<BevDataDetails>> = historyRepo.getAllLocalBevHistory().stateIn(
+    private fun loadLocalBevDetail() {
+        Log.d("rishi", "loadLocalDetailCalled")
+        val list: StateFlow<List<BevDataDetails>> = historyRepo.getAllLocalBevHistory().stateIn(
             viewModelScope, SharingStarted.Lazily, emptyList()
         )
         viewModelScope.launch {
             list.catch {
-                Log.d("rishi","Error while fetching local Bev detials ${it.message}")
+                Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
                 .collect { list ->
-                    Log.d("rishi","localList : ${list}")
-                    if(list.isNotEmpty()) {
+                    Log.d("rishi", "localList : ${list}")
+                    if (list.isNotEmpty()) {
                         val bevDetails = list[0]
                         _waterQuantity.value = bevDetails.waterQuantity.toFloat()
                         _coconutQuantity.value = bevDetails.coconutQuantity.toFloat()
@@ -183,18 +191,18 @@ class WaterToolViewModel @Inject constructor(
 
     }
 
-    private fun loadGoal(){
-        Log.d("rishi","loadGoalCalled")
-        val list : StateFlow<List<Goal>> = historyRepo.getGoal().stateIn(
+    private fun loadGoal() {
+        Log.d("rishi", "loadGoalCalled")
+        val list: StateFlow<List<Goal>> = historyRepo.getGoal().stateIn(
             viewModelScope, SharingStarted.Lazily, emptyList()
         )
         viewModelScope.launch {
             list.catch {
-                Log.d("rishi","Error while fetching local Bev detials ${it.message}")
+                Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
                 .collect { list ->
-                    Log.d("rishi","GoalList : ${list}")
-                    if(list.isNotEmpty()) {
+                    Log.d("rishi", "GoalList : ${list}")
+                    if (list.isNotEmpty()) {
                         val goalData = list[0]
                         _goal.value = goalData.goal
                     }
@@ -204,18 +212,20 @@ class WaterToolViewModel @Inject constructor(
                 }
         }
     }
-    private fun loadConsumptionHistoryDetail(){
-        Log.d("rishi","loadLocalDetailCalled")
-        val list : StateFlow<List<ConsumptionHistory>> = historyRepo.getAllConsumptionHistory(todayDate.toString()).stateIn(
-            viewModelScope, SharingStarted.Lazily, emptyList()
-        )
+
+    private fun loadConsumptionHistoryDetail() {
+        Log.d("rishi", "loadLocalDetailCalled")
+        val list: StateFlow<List<ConsumptionHistory>> =
+            historyRepo.getAllConsumptionHistory(todayDate.toString()).stateIn(
+                viewModelScope, SharingStarted.Lazily, emptyList()
+            )
         viewModelScope.launch {
             list.catch {
-                Log.d("rishi","Error while fetching local Bev detials ${it.message}")
+                Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
                 .collect { list ->
-                    Log.d("rishi","localConsumptionList : ${list}")
-                    if(list.isNotEmpty()) {
+                    Log.d("rishi", "localConsumptionList : ${list}")
+                    if (list.isNotEmpty()) {
                         val bevData = list[0]
                         _goal.value = bevData.goal
                         _totalConsumed.value = bevData.totalConsumed.toFloat()
@@ -232,8 +242,8 @@ class WaterToolViewModel @Inject constructor(
 
     }
 
-    private fun loadWaterDetail(){
-        Log.d("rishi","loadWaterDetailCalled")
+    private fun loadWaterDetail() {
+        Log.d("rishi", "loadWaterDetailCalled")
 
         viewModelScope.launch {
             authRepo.getUserId()?.let {
@@ -245,7 +255,7 @@ class WaterToolViewModel @Inject constructor(
                     .collect {
                         bevList.value = it
                         Log.d("rishi", "bevList : ${it}")
-                        mutableState.value = WaterState.Success
+                        //mutableState.value = WaterState.Success
                     }
                 Log.d("rishi", result.toString())
             }
@@ -254,32 +264,36 @@ class WaterToolViewModel @Inject constructor(
 
     private fun loadWaterToolData() {
         viewModelScope.launch {
-              authRepo.getUser()?.let { user ->
+            _isLoading.value = true
+            authRepo.getUser()?.let { user ->
 //                Log.i("User Id", "------------------>${user.uid}")
 //                Log.d("subhash", "user: ${user.uid}")
-                  val result = repo.getWaterTool(
-                      userId = "6309a9379af54f142c65fbfe",
-                      latitude = "28.6353",
-                      longitude = "77.2250",
-                      location = "bangalore",
-                      date = getCurrentDate()
-                  ).catch { exception ->
-                      Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
-                      mutableState.value = WaterState.Error("$exception + loadWaterTool")
-                  }.collect {
-                      _beverageList.addAll(it.beveragesDetails)
-                      _todayActivity.addAll(it.todayActivityData)
-                      mutableState.value = WaterState.Success
-                      Log.i("Water Tool", it.toString())
-                      Log.d("rishi", "loadWaterToolData: ${it.beveragesDetails}")
-                  }
-                  Log.d("rishi", "result: ${result}")
-              }
+                val result = repo.getWaterTool(
+                    userId = "6309a9379af54f142c65fbfe",
+                    latitude = "28.6353",
+                    longitude = "77.2250",
+                    location = "bangalore",
+                    date = getCurrentDate()
+                ).catch { exception ->
+                    Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
+                    mutableState.value = WaterState.Error("$exception + loadWaterTool")
+                    delay(1000)
+                    _isLoading.value = false
+                }.collect {
+                    _beverageList.addAll(it.beveragesDetails)
+                    _todayActivity.addAll(it.todayActivityData)
+                    mutableState.value = WaterState.Success
+                    _isLoading.value = false
+                    Log.i("Water Tool", it.toString())
+                    Log.d("rishi", "loadWaterToolData: ${it.beveragesDetails}")
+                }
+                Log.d("rishi", "result: ${result}")
+            }
         }
     }
     // Room DB Insert,Update,GET methods
 
-    var recentHistory : StateFlow<List<History>> = historyRepo.getAllHistory().stateIn(
+    var recentHistory: StateFlow<List<History>> = historyRepo.getAllHistory().stateIn(
         viewModelScope, SharingStarted.Lazily, emptyList()
     )
 
@@ -287,15 +301,15 @@ class WaterToolViewModel @Inject constructor(
         historyRepo.insertRecentAdded(history)
     }
 
-    private fun insertBevData(bevDetails : BevDataDetails) = viewModelScope.launch {
+    private fun insertBevData(bevDetails: BevDataDetails) = viewModelScope.launch {
         historyRepo.insertBevData(bevDetails)
     }
 
-    private fun insertConsumptionHistory(bevData : ConsumptionHistory) = viewModelScope.launch {
+    private fun insertConsumptionHistory(bevData: ConsumptionHistory) = viewModelScope.launch {
         historyRepo.insertConsumptionData(bevData)
     }
 
-    private fun insertGoal(goal : Goal) = viewModelScope.launch {
+    private fun insertGoal(goal: Goal) = viewModelScope.launch {
         historyRepo.insertGoal(goal)
     }
 
@@ -303,30 +317,30 @@ class WaterToolViewModel @Inject constructor(
         val title = _bevTitle.value
         val quantity = _bevQuantity.intValue
         viewModelScope.launch {
-              authRepo.getUserId()?.let {
-            Log.d("rishi","BevTitle : ${title} BevQuantity : ${quantity}")
-            repo.updateBeverageQty(
-                NetBevQtyPut(
-                    bev = title,
-                    id = "",
-                    uid = "6309a9379af54f142c65fbfe",
-                    qty = quantity.toDouble() / 1000
-                )
-            ).catch { exception ->
-                Log.d("rishi", "updateBeverageDataException: ${exception.message}")
-            }.collect {
+            authRepo.getUserId()?.let {
+                Log.d("rishi", "BevTitle : ${title} BevQuantity : ${quantity}")
+                repo.updateBeverageQty(
+                    NetBevQtyPut(
+                        bev = title,
+                        id = "",
+                        uid = "6309a9379af54f142c65fbfe",
+                        qty = quantity.toDouble() / 1000
+                    )
+                ).catch { exception ->
+                    Log.d("rishi", "updateBeverageDataException: ${exception.message}")
+                }.collect {
 //
-                Log.d("rishi", "updateBeverageData: ${it.msg}")
+                    Log.d("rishi", "updateBeverageData: ${it.msg}")
+                }
             }
-              }
         }
     }
 
-    fun event(event : WTEvent){
-        when(event){
+    fun event(event: WTEvent) {
+        when (event) {
             WTEvent.UpdateBevQuantity -> updateBeverageData()
             is WTEvent.UpdateBevDetails -> {
-                Log.d("rishi","Event UpdateBev called")
+                Log.d("rishi", "Event UpdateBev called")
                 _bevTitle.value = event.title
                 _bevQuantity.intValue = event.quantity
                 _totalConsumed.value += _bevQuantity.intValue
@@ -335,39 +349,78 @@ class WaterToolViewModel @Inject constructor(
                     totalConsumed = _totalConsumed.value.toInt(),
                     remainingToConsume = _remainingConsumption.value
                 )
-                insertConsumptionHistory(ConsumptionHistory(todayDate.toString(),_goal.value,_totalConsumed.value.toInt(),_remainingConsumption.value))
-                Log.d("rishi","Addition: ${_totalConsumed.value.toString()} ${_remainingConsumption.value.toString()}")
+                insertConsumptionHistory(
+                    ConsumptionHistory(
+                        todayDate.toString(),
+                        _goal.value,
+                        _totalConsumed.value.toInt(),
+                        _remainingConsumption.value
+                    )
+                )
+                Log.d(
+                    "rishi",
+                    "Addition: ${_totalConsumed.value.toString()} ${_remainingConsumption.value.toString()}"
+                )
             }
+
             is WTEvent.UpdateOnSliderChangeQuantity -> {
-                Log.d("rishi","sliderCall : ${_waterQuantity.value} ${_coconutQuantity.value} ${_firstPrefQuantity.value}" +
-                        " ${_recentAddedQuantity.value}")
-                when(event.bevTitle){
+                Log.d(
+                    "rishi",
+                    "sliderCall : ${_waterQuantity.value} ${_coconutQuantity.value} ${_firstPrefQuantity.value}" +
+                            " ${_recentAddedQuantity.value}"
+                )
+                when (event.bevTitle) {
                     "Water" -> _waterQuantity.value = event.sliderValue
                     "Coconut" -> _coconutQuantity.value = event.sliderValue
                     "FirstPref" -> _firstPrefQuantity.value = event.sliderValue
                     "SecondPref" -> _secondPrefQuantity.value = event.sliderValue
                     "RecentAdd" -> _recentAddedQuantity.value = event.sliderValue
                 }
-                insertBevData(BevDataDetails(0,_waterQuantity.value.toInt(),_coconutQuantity.value.toInt(),_firstPrefQuantity.value.toInt(),
-                    _secondPrefQuantity.value.toInt(),_recentAddedQuantity.value.toInt()))
+                insertBevData(
+                    BevDataDetails(
+                        0,
+                        _waterQuantity.value.toInt(),
+                        _coconutQuantity.value.toInt(),
+                        _firstPrefQuantity.value.toInt(),
+                        _secondPrefQuantity.value.toInt(),
+                        _recentAddedQuantity.value.toInt()
+                    )
+                )
 
-                Log.d("rishi","sliderCall : ${_waterQuantity.value} ${_coconutQuantity.value} ${_firstPrefQuantity.value}" +
-                        " ${_recentAddedQuantity.value}")
+                Log.d(
+                    "rishi",
+                    "sliderCall : ${_waterQuantity.value} ${_coconutQuantity.value} ${_firstPrefQuantity.value}" +
+                            " ${_recentAddedQuantity.value}"
+                )
             }
 
             is WTEvent.GoalChange -> {
                 _goal.value = event.goal
-                insertGoal(Goal(0,_goal.value))
+                insertGoal(Goal(0, _goal.value))
                 _remainingConsumption.value = _goal.value.toInt() - _totalConsumed.value.toInt()
-                insertConsumptionHistory(ConsumptionHistory(todayDate.toString(),_goal.value,_totalConsumed.value.toInt(),_remainingConsumption.value))
-                // After triggering goal change, reflect live changes.
-                //loadConsumptionHistoryDetail()
+                insertConsumptionHistory(
+                    ConsumptionHistory(
+                        todayDate.toString(),
+                        _goal.value,
+                        _totalConsumed.value.toInt(),
+                        _remainingConsumption.value
+                    )
+                )
+
             }
 
             is WTEvent.colorChange -> {
                 _sliderColor.value = event.color
             }
+
+            is WTEvent.RetrySection -> {
+                loadWaterToolData()
+            }
             else -> {}
         }
     }
+}
+
+private fun mToast(context: Context, text: String) {
+    Toast.makeText(context, text, Toast.LENGTH_LONG).show()
 }

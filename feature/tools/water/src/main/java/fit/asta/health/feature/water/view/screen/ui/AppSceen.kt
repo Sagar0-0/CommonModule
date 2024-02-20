@@ -1,8 +1,9 @@
-@file:OptIn(ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
 
 package fit.asta.health.feature.water.view.screen.ui
 
 import android.util.Log
+import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -31,6 +32,7 @@ import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
+import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ExtendedFloatingActionButton
 import androidx.compose.material3.Icon
@@ -52,15 +54,21 @@ import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
@@ -112,7 +120,7 @@ fun AppHomeScreen(
             verticalArrangement = Arrangement.Center
         ) {
             WaterDataCard(totalConsumed, remainingToConsume, goal)
-            GoalCard() {
+            GoalCard {
                 onClickGoal()
             }
             HintsOnScreen()
@@ -237,7 +245,7 @@ fun SetOfDefaultChips(
 
     val list by viewModel.beverageList.collectAsStateWithLifecycle()
     val listSize = list.size
-    Log.d("rishi","List size : ${listSize.toString()} \n ${list.toList()}")
+    Log.d("rishi", "List size : $listSize \n ${list.toList()}")
 
     Card(
         modifier = Modifier
@@ -256,9 +264,9 @@ fun SetOfDefaultChips(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
                 BevChips(
-                    if(listSize==0) "Water" else list[0].name,
-                    containerColor = backGroundContainerColor(Color(0xFF092251),Color(0xFF99DDFF)),
-                    contentColor = backGroundContentColor(Color(0xFF092251),Color(0xFF99DDFF)),
+                    if (listSize == 0) "Water" else list[0].name,
+                    containerColor = backGroundContainerColor(Color(0xFF092251), Color(0xFF99DDFF)),
+                    contentColor = backGroundContentColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     R.drawable.water,
                     waterQuantity,
                     onClick = {
@@ -278,9 +286,9 @@ fun SetOfDefaultChips(
             ) {
 
                 BevChips(
-                    if(listSize==0) "Water" else list[1].name,
-                    containerColor = backGroundContainerColor(Color(0xFF398300),Color(0xFFB6D83D)),
-                    contentColor = backGroundContentColor(Color(0xFF398300),Color(0xFFB6D83D)),
+                    if (listSize == 0) "Water" else list[1].name,
+                    containerColor = backGroundContainerColor(Color(0xFF398300), Color(0xFFB6D83D)),
+                    contentColor = backGroundContentColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     R.drawable.coconut,
                     coconutQuantity,
                     onClick = {
@@ -303,8 +311,10 @@ fun SetOfDefaultChips(
                 containerColor = Color.Transparent,
             )
         ) {
-            HeadingTexts.Level4(text = "Your Most Frequent Used :",modifier = Modifier.
-            padding(AppTheme.spacing.level1))
+            HeadingTexts.Level4(
+                text = "Your Most Frequent Used :",
+                modifier = Modifier.padding(AppTheme.spacing.level1)
+            )
             Row(
                 modifier = Modifier.fillMaxWidth(),
                 horizontalArrangement = Arrangement.SpaceEvenly
@@ -314,9 +324,12 @@ fun SetOfDefaultChips(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     BevChips(
-                        if(listSize==0) "Water" else list[2].name,
-                        containerColor = backGroundContainerColor(Color(0xFFE85714),Color(0xFFE9B077)),
-                        contentColor = backGroundContentColor(Color(0xFFE85714),Color(0xFFE9B077)),
+                        if (listSize == 0) "Water" else list[2].name,
+                        containerColor = backGroundContainerColor(
+                            Color(0xFFE85714),
+                            Color(0xFFE9B077)
+                        ),
+                        contentColor = backGroundContentColor(Color(0xFFE85714), Color(0xFFE9B077)),
                         R.drawable.tea,
                         firstPrefQuantity,
                         onClick = {
@@ -335,9 +348,12 @@ fun SetOfDefaultChips(
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
                     BevChips(
-                        if(listSize==0) "Water" else list[3].name,
-                        containerColor = backGroundContainerColor(Color(0xFFE9980B),Color(0xFFEACE7F)),
-                        contentColor = backGroundContentColor(Color(0xFFE9980B),Color(0xFFEACE7F)),
+                        if (listSize == 0) "Water" else list[3].name,
+                        containerColor = backGroundContainerColor(
+                            Color(0xFFE9980B),
+                            Color(0xFFEACE7F)
+                        ),
+                        contentColor = backGroundContentColor(Color(0xFFE9980B), Color(0xFFEACE7F)),
                         R.drawable.coffee,
                         secondPrefQuantity,
                         onClick = {
@@ -376,8 +392,11 @@ fun SetOfDefaultChips(
                 if (addedName.isNotEmpty()) {
                     BevChips(
                         addedName,
-                        containerColor = backGroundContainerColor( Color(0xFF9d9ad9),Color(0xFFcedef0)),
-                        contentColor = backGroundContentColor( Color(0xFF9d9ad9),Color(0xFFcedef0)),
+                        containerColor = backGroundContainerColor(
+                            Color(0xFF9d9ad9),
+                            Color(0xFFcedef0)
+                        ),
+                        contentColor = backGroundContentColor(Color(0xFF9d9ad9), Color(0xFFcedef0)),
                         R.drawable.unfocusedcontainer,
                         recentAddedQuantity,
                         onClick = {
@@ -423,8 +442,13 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
         lightBackgroundColor
     }
 
-    Column() {
-        Box(modifier = Modifier.padding(start = AppTheme.spacing.level2, top = AppTheme.spacing.level1)) {
+    Column {
+        Box(
+            modifier = Modifier.padding(
+                start = AppTheme.spacing.level2,
+                top = AppTheme.spacing.level1
+            )
+        ) {
             TitleTexts.Level3(
                 text = "Make Yourself Hydrated!",
             )
@@ -443,9 +467,10 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
         ) {
             Row(
                 modifier = Modifier
-                    .padding(AppTheme.spacing.level1), verticalAlignment = Alignment.CenterVertically
+                    .padding(AppTheme.spacing.level1),
+                verticalAlignment = Alignment.CenterVertically
             ) {
-                Box() {
+                Box {
                     Column {
                         HeadingTexts.Level4(
                             text = "Drinking in %",
@@ -459,7 +484,8 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                                         (totalConsumed.toFloat() / if (goal != 0) goal else 1) * 100
                                     )
                                 )
-                            } %", color = Color(0xFF008970),
+                            } %",
+                            color = Color(0xFF008970),
                         )
                         Spacer(modifier = Modifier.weight(1f))
                         Row(horizontalArrangement = Arrangement.Center) {
@@ -484,7 +510,7 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
 
                         }
                         BodyTexts.Level3(
-                            text = "${totalConsumed}",
+                            text = "$totalConsumed",
                             color = Color.Gray,
                         )
                         Spacer(modifier = Modifier.weight(1f))
@@ -496,7 +522,7 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                     }
                 }
                 Spacer(modifier = Modifier.weight(1f))
-                Box() {
+                Box {
                     CircularProgressBar(
                         percentage = (totalConsumed.toFloat() / if (goal != 0) goal else 1),
                         number = if (goal != 0) goal else 1
@@ -696,7 +722,7 @@ fun BevSearchBar(
 
         } else {
             if (bevListSize == 0 && filteredListSize == 0) {
-                BodyTexts.Level3(text = "Not Found, What looking For, Click here to Add this beverage. ${bevListSize}",
+                BodyTexts.Level3(text = "Not Found, What looking For, Click here to Add this beverage. $bevListSize",
                     color = Color(0xFF00458B),
                     modifier = Modifier
                         .padding(AppTheme.spacing.level1)
@@ -796,7 +822,7 @@ fun CustomBevCard(
 }
 
 @Composable
-fun backGroundContentColor(darkColor: Color, lightColor: Color) : Color{
+fun backGroundContentColor(darkColor: Color, lightColor: Color): Color {
 
     val backgroundContentColor = if (isSystemInDarkTheme()) {
         lightColor
@@ -805,12 +831,71 @@ fun backGroundContentColor(darkColor: Color, lightColor: Color) : Color{
     }
     return backgroundContentColor
 }
+
 @Composable
-fun backGroundContainerColor(darkColor: Color, lightColor: Color) : Color {
+fun backGroundContainerColor(darkColor: Color, lightColor: Color): Color {
     val backgroundContainerColor = if (isSystemInDarkTheme()) {
         darkColor
     } else {
         lightColor
     }
     return backgroundContainerColor
+}
+
+@Composable
+fun ErrorUi(
+    viewModel: WaterToolViewModel = hiltViewModel(),
+    event: (WTEvent) -> Unit
+) {
+    val isLoading by remember {
+        viewModel._isLoading
+    }
+    AppSurface {
+        Box(
+            contentAlignment = Alignment.Center,
+            modifier = Modifier.fillMaxSize(1f)
+        ) {
+            Column(
+                verticalArrangement = Arrangement.Center,
+                horizontalAlignment = Alignment.CenterHorizontally
+            ) {
+                Image(
+                    painter = painterResource(id = R.drawable.ic_error_not_found),
+                    contentDescription = null,
+                    alignment = Alignment.Center,
+                    contentScale = ContentScale.Fit,
+                    modifier = Modifier.scale(.8f)
+                )
+                Text(text = "An Unknown Error Occurred", textAlign = TextAlign.Center)
+                AppFilledButton(
+                    modifier = Modifier
+                        .fillMaxWidth(1f)
+                        .padding(AppTheme.spacing.level2),
+                    onClick = { event(WTEvent.RetrySection) }
+                ) {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        horizontalArrangement = Arrangement.SpaceBetween
+                    ) {
+                        if (isLoading) {
+                            Log.d("rishi", "CircularProgressCalled")
+                            CircularProgressIndicator(
+                                color = Color.White,
+                                modifier = Modifier
+                                    .scale(0.6f)
+                                    .clipToBounds()
+                            )
+                        }
+                        CaptionTexts.Level2(
+                            text = "Tap to Retry",
+                            textAlign = TextAlign.Center
+                        )
+                    }
+
+                }
+
+            }
+        }
+    }
+
 }

@@ -1,13 +1,14 @@
 package fit.asta.health.data.water.model
 
+import kotlinx.coroutines.flow.Flow
+import kotlinx.coroutines.flow.flow
 import fit.asta.health.data.water.model.network.WaterDetailsData
 import fit.asta.health.data.water.model.api.WaterApi
 import fit.asta.health.data.water.model.domain.WaterTool
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.network.data.Status
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
+
 
 
 class WaterToolRepoImpl(
@@ -45,7 +46,7 @@ class WaterToolRepoImpl(
         return flow { emit(remoteApi.updateWaterTool(waterToolData)) }
     }
 
-    override suspend fun getWaterData() : Flow<List<WaterDetailsData>> {
+    override suspend fun getWaterData(): Flow<List<WaterDetailsData>> {
         val result = remoteApi.getWaterData()
         return if (result.isSuccessful) {
             val response = result.body()

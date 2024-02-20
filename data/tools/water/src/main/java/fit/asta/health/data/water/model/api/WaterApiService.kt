@@ -1,8 +1,8 @@
 package fit.asta.health.data.water.model.api
 
-import fit.asta.health.data.water.model.network.WaterToolDetailsData
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterToolData
+import fit.asta.health.data.water.model.network.WaterToolDetailsData
 import fit.asta.health.data.water.model.network.WaterToolResult
 import fit.asta.health.network.data.Status
 import retrofit2.Response
@@ -21,7 +21,8 @@ interface WaterApiService {
     ): WaterToolResult
 
     @GET("tools/water/beverages/get/all")
-    suspend fun getWaterData() : Response<WaterToolDetailsData>
+    suspend fun getWaterData(): Response<WaterToolDetailsData>
+
     @POST("tools/water/beverage/quantity/post")
     suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): Status
 

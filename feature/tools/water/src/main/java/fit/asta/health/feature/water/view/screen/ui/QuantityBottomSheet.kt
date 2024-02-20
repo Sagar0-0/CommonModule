@@ -17,15 +17,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Scoreboard
-import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.icons.filled.Star
-import androidx.compose.material3.BottomSheetScaffold
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
@@ -45,7 +41,6 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.input.ImeAction
@@ -128,7 +123,9 @@ fun CustomBevBottomSheet(
             AppTopBarWithHelp(
                 title = "Water Tool",
                 onBack = onBack,
-                onHelp = { Toast.makeText(context,"Beverage Tracking Tool",Toast.LENGTH_SHORT).show() }
+                onHelp = {
+                    Toast.makeText(context, "Beverage Tracking Tool", Toast.LENGTH_SHORT).show()
+                }
             )
         },
         sheetContent = {
@@ -153,8 +150,11 @@ fun CustomBevBottomSheet(
             }
         }
     ) {
-        Column(modifier = Modifier.verticalScroll(scrollState)
-            .fillMaxSize()) {
+        Column(
+            modifier = Modifier
+                .verticalScroll(scrollState)
+                .fillMaxSize()
+        ) {
             AppHomeScreen(
                 totalConsumed = totalConsumed.toInt(),
                 waterQuantity = sliderValueWater.toInt(),
@@ -231,7 +231,8 @@ fun SheetLayout(
                     Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue.toString()}")
                     onSliderValueChanged(Pair(it, currentScreen.bevName))
                 },
-                color = color)
+                color = color
+            )
 
             is BottomSheetScreen.Screen2 -> Screen2(
                 viewModel,
@@ -244,12 +245,14 @@ fun SheetLayout(
                 onNameChange = {
                     onNameChange(it)
                 },
-                color = color)
+                color = color
+            )
 
             is BottomSheetScreen.Screen3 -> Screen3(viewModel,
                 onGoalChange = {
                     onGoalChange(it)
                 })
+
             else -> {}
         }
     }
@@ -257,26 +260,12 @@ fun SheetLayout(
 
 
 @Composable
-fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit,color: Color) {
+fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit, color: Color) {
     var sliderPosition by remember { mutableStateOf(sliderValue) }
     Column {
-//        PlainTooltipBox(
-//            tooltip = { Text("Set the Quantity as per your needs" ) },
-//            contentColor = Color.Black,
-//            containerColor = Color.White
-//        ) {
-//            IconButton(
-//                onClick = { /* Icon button's click event */ },
-//                modifier = Modifier.tooltipAnchor()
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Filled.Info,
-//                    contentDescription = "Localized Description"
-//                )
-//            }
-//        }
         val title = "Set Beverage Quantity"
-        val description = "Adjust the quantity for each beverage to track your consumption accurately. Slide the bar to set the desired amount."
+        val description =
+            "Adjust the quantity for each beverage to track your consumption accurately. Slide the bar to set the desired amount."
         AnimatedContentField(title = title, description = description)
         DaysSlider(
             sliderValue = sliderPosition,
@@ -301,24 +290,11 @@ fun Screen2(
 ) {
     var sliderPosition by remember { mutableStateOf(sliderValue) }
     Column {
-//        PlainTooltipBox(
-//            tooltip = { Text("Add to favorites" ) },
-//            contentColor = Color.White,
-//        ) {
-//            IconButton(
-//                onClick = { /* Icon button's click event */ },
-//                modifier = Modifier.tooltipAnchor()
-//            ) {
-//                Icon(
-//                    imageVector = Icons.Filled.Info,
-//                    contentDescription = "Localized Description"
-//                )
-//            }
-//        }
         val title = "Search and Set Beverage Quantity"
-        val description =  "Find your favorite beverages quickly by searching. Once found, set the quantity to monitor your intake. Use the search bar to explore."
+        val description =
+            "Find your favorite beverages quickly by searching. Once found, set the quantity to monitor your intake. Use the search bar to explore."
         AnimatedContentField(title = title, description = description)
-        CustomBevCard( onNameChange = {
+        CustomBevCard(onNameChange = {
             onNameChange(it)
         }) {
         }
@@ -330,14 +306,7 @@ fun Screen2(
             },
             color = color,
         ) {
-//        try {
-//            scope.launch {
-//                delay(5000)
-//                bottomSheetState.bottomSheetState.hide()
-//            }
-//        }catch (e : Exception){
-//            Log.e("ErrorMethod",e.message.toString())
-//        }
+            // fnc invoked when we change the slider value
         }
     }
 
@@ -346,7 +315,7 @@ fun Screen2(
 @Composable
 fun Screen3(
     viewModel: WaterToolViewModel = hiltViewModel(),
-    onGoalChange : (Int) -> Unit
+    onGoalChange: (Int) -> Unit
 ) {
     var text by remember {
         mutableStateOf("")
@@ -354,17 +323,21 @@ fun Screen3(
     val goal by viewModel.goal.collectAsState()
     Column {
         val title = "Set Daily Goal"
-        val description =  "Define your daily hydration goal to stay on track with your beverage intake. Adjust the goal according to your preferences and health recommendations."
+        val description =
+            "Define your daily hydration goal to stay on track with your beverage intake. Adjust the goal according to your preferences and health recommendations."
         AnimatedContentField(title = title, description = description)
 
-        HeadingTexts.Level3("Current Goal is : $goal",modifier = Modifier.padding(AppTheme.spacing.level1))
+        HeadingTexts.Level3(
+            "Current Goal is : $goal",
+            modifier = Modifier.padding(AppTheme.spacing.level1)
+        )
 
 
         AppOutlinedTextField(
             value = text,
             onValueChange = {
                 text = it
-                onGoalChange(if(it.isEmpty()) 0 else it.toInt())
+                onGoalChange(if (it.isEmpty()) 0 else it.toInt())
             },
             leadingIcon = {
                 AppIcon(
@@ -399,7 +372,7 @@ fun Screen3(
 fun DaysSlider(
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
-    color : Color,
+    color: Color,
     OnClick: () -> Unit,
 ) {
     val darkBackgroundColor = (Color(0xFF092251))
@@ -436,8 +409,7 @@ fun DaysSlider(
                     },
                     modifier = Modifier
                         .fillMaxWidth(1f)
-                        .padding(AppTheme.spacing.level0)
-                    ,
+                        .padding(AppTheme.spacing.level0),
                     colors = SliderDefaults.colors(
                         thumbColor = color,
                         activeTrackColor = color,
@@ -454,19 +426,23 @@ fun DaysSlider(
 }
 
 @Composable
-fun AnimatedContentField(title: String,description:String) {
-    var showDetails by remember{
+fun AnimatedContentField(title: String, description: String) {
+    var showDetails by remember {
         mutableStateOf(false)
     }
     val context = LocalContext.current
     Column {
-//
-        Row(verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly) {
+        Row(
+            verticalAlignment = Alignment.CenterVertically,
+            horizontalArrangement = Arrangement.SpaceEvenly
+        ) {
             Icon(imageVector = Icons.Default.Info, contentDescription = "Info",
-                modifier = Modifier.clickable {
-                    Toast.makeText(context,"Click on text",Toast.LENGTH_SHORT).show()
-                }
+                modifier = Modifier
+                    .clickable {
+                        Toast
+                            .makeText(context, "Click on text", Toast.LENGTH_SHORT)
+                            .show()
+                    }
                     .padding(10.dp))
             HeadingTexts.Level3(text = title, modifier = Modifier.clickable {
                 showDetails = !showDetails
@@ -474,7 +450,7 @@ fun AnimatedContentField(title: String,description:String) {
         }
 
         AnimatedVisibility(visible = showDetails) {
-            BodyTexts.Level2(text = description,modifier = Modifier.padding(10.dp))
+            BodyTexts.Level2(text = description, modifier = Modifier.padding(10.dp))
         }
     }
 

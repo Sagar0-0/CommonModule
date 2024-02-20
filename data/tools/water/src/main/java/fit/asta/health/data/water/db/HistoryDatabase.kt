@@ -8,8 +8,10 @@ import fit.asta.health.data.water.check.model.Goal
 import fit.asta.health.data.water.check.model.History
 
 
-@Database(entities = [History::class, BevDataDetails::class,ConsumptionHistory::class,
-                     Goal::class], version = 1)
+@Database(
+    entities = [History::class, BevDataDetails::class, ConsumptionHistory::class,
+        Goal::class], version = 1
+)
 abstract class HistoryDatabase : RoomDatabase() {
-    abstract fun historyDao() : HistoryDao
+    abstract fun historyDao(): HistoryDao
 }

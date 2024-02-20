@@ -17,12 +17,13 @@ data class Data(
     @SerializedName("progressData")
     val progressData: ProgressData,
     @SerializedName("todayActivityData")
-    val todayActivityData: List<TodayActivityData>?=null,
+    val todayActivityData: List<TodayActivityData>? = null,
     @SerializedName("userBeverageInfo")
     val userBeverageInfo: UserBeverageInfo,
     @SerializedName("waterToolData")
     val waterToolData: WaterToolData
 )
+
 data class Beverage(
     @SerializedName("code")
     val code: String,
@@ -37,6 +38,7 @@ data class Beverage(
     @SerializedName("ttl")
     val title: String
 )
+
 data class ProgressData(
     @SerializedName("bMilk")
     val butterMilk: ButterMilk,
@@ -57,62 +59,69 @@ data class ProgressData(
     @SerializedName("water")
     val water: Water
 )
+
 data class ButterMilk(
     @SerializedName("con")
-    val consume: Double=0.0,
+    val consume: Double = 0.0,
     @SerializedName("rcm")
-    val recommend: Double=0.0,
+    val recommend: Double = 0.0,
     @SerializedName("rem")
-    val remaining: Double=0.0,
+    val remaining: Double = 0.0,
     @SerializedName("tgt")
-    val target: Double=0.0,
+    val target: Double = 0.0,
 )
+
 data class Coconut(
     @SerializedName("con")
-    val consume: Double=0.0,
+    val consume: Double = 0.0,
     @SerializedName("rcm")
-    val recommend: Double=0.0,
+    val recommend: Double = 0.0,
     @SerializedName("rem")
-    val remaining: Double=0.0,
+    val remaining: Double = 0.0,
     @SerializedName("tgt")
-    val target: Double=0.0
+    val target: Double = 0.0
 )
+
 data class FruitJuice(
     @SerializedName("con")
-    val consume:Double=0.0,
+    val consume: Double = 0.0,
     @SerializedName("rcm")
-    val recommend: Double=0.0,
+    val recommend: Double = 0.0,
     @SerializedName("rem")
-    val remaining: Double=0.0,
+    val remaining: Double = 0.0,
     @SerializedName("tgt")
-    val target: Double=0.0
+    val target: Double = 0.0
 )
+
 data class Milk(
     @SerializedName("con")
-    val consume: Double=0.0,
+    val consume: Double = 0.0,
     @SerializedName("rcm")
-    val recommend: Double=0.0,
+    val recommend: Double = 0.0,
     @SerializedName("rem")
-    val remaining: Double=0.0,
+    val remaining: Double = 0.0,
     @SerializedName("tgt")
-    val target: Double=0.0
+    val target: Double = 0.0
 )
+
 data class Water(
     @SerializedName("con")
-    val consume:Double=0.0,
+    val consume: Double = 0.0,
     @SerializedName("rcm")
-    val recommend: Double=0.0,
+    val recommend: Double = 0.0,
     @SerializedName("rem")
-    val remaining:Double=0.0,
+    val remaining: Double = 0.0,
     @SerializedName("tgt")
-    val target: Double=0.0,
+    val target: Double = 0.0,
 )
+
 data class Meta(
     @SerializedName("max")
-    val max: String="6",
+    val max: String = "6",
     @SerializedName("min")
-    val min: String="0"
+    val min: String = "0"
 )
+
 data class TodayActivityData(
     @SerializedName("bev")
     val bev: String,
@@ -125,6 +134,7 @@ data class TodayActivityData(
     @SerializedName("uid")
     val uid: String
 )
+
 data class UserBeverageInfo(
     @SerializedName("bev")
     val bev: List<BeverageInfo>,
@@ -133,6 +143,7 @@ data class UserBeverageInfo(
     @SerializedName("uid")
     val uid: String
 )
+
 data class Bev(
     @SerializedName("code")
     val code: String,
