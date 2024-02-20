@@ -40,7 +40,7 @@ package fit.asta.health.feature.profile.create
 //import fit.asta.health.feature.profile.create.view.LifeStyleCreateScreen
 //import fit.asta.health.feature.profile.create.view.PhysiqueCreateScreen
 //import fit.asta.health.feature.profile.create.view.components.Stepper
-//import fit.asta.health.feature.profile.show.vm.ProfileViewModel
+//import fit.asta.health.feature.profile.profile.ProfileViewModel
 //import fit.asta.health.resources.strings.R
 //import kotlinx.coroutines.ExperimentalCoroutinesApi
 //

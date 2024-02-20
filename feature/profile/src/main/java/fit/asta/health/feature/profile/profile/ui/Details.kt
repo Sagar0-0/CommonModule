@@ -37,23 +37,32 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImageModel
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.resources.strings.R
+import fit.asta.health.subscription.remote.model.UserSubscribedPlan
+import fit.asta.health.wallet.remote.model.WalletResponse
 
 @ExperimentalMaterial3Api
 @Composable
 fun DetailsScreen(
-    userProfileState: UserProfileState
+    userProfileState: UserProfileState,
+    walletDataState: UiState<WalletResponse>,
+    subscriptionDataState: UiState<UserSubscribedPlan>,
 ) {
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
@@ -64,7 +73,8 @@ fun DetailsScreen(
     Column(
         modifier = Modifier
             .fillMaxWidth()
-            .verticalScroll(rememberScrollState()),
+            .verticalScroll(rememberScrollState())
+            .padding(horizontal = AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally,
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
     ) {
@@ -86,8 +96,7 @@ fun DetailsScreen(
 
         AppOutlinedTextField(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2),
+                .fillMaxWidth(),
             value = userProfileState.userName,
             onValueChange = {
                 userProfileState.userName = it
@@ -98,11 +107,54 @@ fun DetailsScreen(
 
         TitleTexts.Level2(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level3),
+                .fillMaxWidth(),
             text = userProfileState.email,
             textAlign = TextAlign.Center
         )
+
+        AppUiStateHandler(
+            uiState = subscriptionDataState,
+            onLoading = {
+                AppCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AppTheme.cardHeight.level3)
+                        .appShimmerAnimation(true)
+                ) { }
+            }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                CaptionTexts.Level2(text = "Current active plan:")
+                CaptionTexts.Level2(text = it.ttl)
+            }
+        }
+
+        AppUiStateHandler(
+            uiState = walletDataState,
+            onLoading = {
+                AppCard(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .height(AppTheme.cardHeight.level3)
+                        .appShimmerAnimation(true)
+                ) { }
+            }
+        ) {
+            Row(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
+                CaptionTexts.Level2(text = "Wallet balance:")
+                CaptionTexts.Level2(text = "${it.walletData.money}/${it.walletData.points}")
+            }
+        }
 
         PrivacyAndUserConsent()
 
@@ -165,6 +217,7 @@ fun PrivacyAndUserConsent() {
 
 @Composable
 fun UserCircleImage(
+    modifier: Modifier = Modifier,
     model: String,
     onUserProfileSelection: () -> Unit,
     onProfilePicClear: () -> Unit,
@@ -174,7 +227,7 @@ fun UserCircleImage(
 
     Box(
         contentAlignment = Alignment.Center,
-        modifier = Modifier.padding(horizontal = AppTheme.spacing.level1)
+        modifier = modifier
     ) {
         AppNetworkImage(
             model = model,

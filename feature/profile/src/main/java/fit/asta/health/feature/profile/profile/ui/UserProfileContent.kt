@@ -25,12 +25,16 @@ import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
+import fit.asta.health.subscription.remote.model.UserSubscribedPlan
+import fit.asta.health.wallet.remote.model.WalletResponse
 
 @OptIn(ExperimentalMaterial3Api::class, ExperimentalFoundationApi::class)
 @Composable
 fun UserProfileContent(
     userProfileState: UserProfileState,
     submitProfileState: UiState<SubmitProfileResponse>,
+    walletDataState: UiState<WalletResponse>,
+    subscriptionDataState: UiState<UserSubscribedPlan>,
     userPropertiesState: UiState<List<UserProperties>>
 ) {
     AppScaffold(
@@ -78,7 +82,11 @@ fun UserProfileContent(
             ) {
                 when (userProfileState.profileDataPages[userProfileState.currentPageIndex]) {
                     ProfileNavigationScreen.BASIC -> {
-                        DetailsScreen(userProfileState)
+                        DetailsScreen(
+                            userProfileState = userProfileState,
+                            walletDataState = walletDataState,
+                            subscriptionDataState = subscriptionDataState,
+                        )
                     }
 
                     ProfileNavigationScreen.Physique -> {

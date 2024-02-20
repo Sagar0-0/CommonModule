@@ -15,7 +15,6 @@ import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
-import fit.asta.health.feature.profile.show.vm.ProfileViewModel
 
 const val PROFILE_GRAPH_ROUTE = "graph_profile"
 
@@ -28,12 +27,20 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
     composable(route = PROFILE_GRAPH_ROUTE) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
+        val walletDataState by profileViewModel.walletDataState.collectAsStateWithLifecycle()
+        val subscriptionDataState by profileViewModel.subscriptionDataState.collectAsStateWithLifecycle()
         val submitProfileState by profileViewModel.submitProfileState.collectAsStateWithLifecycle()
         val healthPropertiesState by profileViewModel.healthPropertiesState.collectAsStateWithLifecycle()
 
         LaunchedEffect(key1 = Unit) {
             if (userProfileResponseState !is UiState.Success) {
-                profileViewModel.loadUserProfile()
+                profileViewModel.getProfileData()
+            }
+            if (walletDataState !is UiState.Success) {
+                profileViewModel.getWalletData()
+            }
+            if (subscriptionDataState !is UiState.Success) {
+                profileViewModel.getSubscriptionData()
             }
         }
 
@@ -61,7 +68,7 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
         AppUiStateHandler(
             uiState = userProfileResponseState,
             onErrorRetry = {
-                profileViewModel.loadUserProfile()
+                profileViewModel.getProfileData()
             },
             onErrorMessage = {
                 userProfileState.onBackPressed()
@@ -70,6 +77,8 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             UserProfileContent(
                 userProfileState = userProfileState,
                 submitProfileState = submitProfileState,
+                walletDataState = walletDataState,
+                subscriptionDataState = subscriptionDataState,
                 userPropertiesState = healthPropertiesState
             )
         }
