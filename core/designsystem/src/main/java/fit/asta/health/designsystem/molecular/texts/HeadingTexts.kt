@@ -116,7 +116,7 @@ object HeadingTexts {
     ) {
         Text(
             text = text,
-            style = AppTheme.customTypography.heading.level3,
+            style = AppTheme.customTypography.heading.level4,
             modifier = modifier,
             color = color,
             textAlign = textAlign,
