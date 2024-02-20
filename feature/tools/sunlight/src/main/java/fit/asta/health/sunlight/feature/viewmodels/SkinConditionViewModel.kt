@@ -270,7 +270,7 @@ class SkinConditionViewModel @Inject constructor(
 
     val conditionUpdateData = mutableStateListOf<Prc>()
     val supplementData = mutableStateOf<Sup?>(null)
-    val id = mutableStateOf("")
+    val id = mutableStateOf<String?>(null)
 
     private val _updateDataState: MutableStateFlow<UiState<PutResponse>> =
         MutableStateFlow(UiState.Idle)
