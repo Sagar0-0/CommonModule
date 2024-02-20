@@ -95,7 +95,7 @@ private fun CalendarSection(
 ) {
     CalendarDialog(
         state = useCaseState, selection = CalendarSelection.Date {
-            userProfileState.userDob =
+            userProfileState.basicDetailScreenState.userDob =
                 it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
             userProfileState.physiqueScreenState.setAge(
                 (userProfileState.physiqueScreenState.calendar.get(Calendar.YEAR) - it.year)
@@ -210,7 +210,7 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = WeightUnit.indexOf(userProfileState.physiqueScreenState.weightUnit),
+                        selectedIndex = WeightUnit.indexOf(userProfileState.physiqueScreenState.weightUnit),
                         onButtonClick = { index ->
                             userProfileState.physiqueScreenState.weightUnit =
                                 WeightUnit.entries[index].value
@@ -261,7 +261,7 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = HeightUnit.indexOf(userProfileState.physiqueScreenState.heightUnit),
+                        selectedIndex = HeightUnit.indexOf(userProfileState.physiqueScreenState.heightUnit),
                         buttonTexts = HeightUnit.entries.map { it.title },
                         onButtonClick = { index ->
                             userProfileState.physiqueScreenState.heightUnit =
@@ -348,7 +348,7 @@ private fun AgeSection(
                 }
             )
             BodyTexts.Level2(
-                text = userProfileState.userDob.ifEmpty { stringResource(R.string.select_date_of_birth) },
+                text = userProfileState.basicDetailScreenState.userDob.ifEmpty { stringResource(R.string.select_date_of_birth) },
                 modifier = Modifier.padding(AppTheme.spacing.level1),
                 color = ageColorSelection
             )

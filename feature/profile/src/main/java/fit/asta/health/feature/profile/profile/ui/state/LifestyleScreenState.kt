@@ -3,6 +3,7 @@ package fit.asta.health.feature.profile.profile.ui.state
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableState
+import androidx.compose.runtime.Stable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
@@ -14,6 +15,7 @@ import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
+@Stable
 class LifestyleScreenState(
     val lifeStyle: LifeStyle,
     val coroutineScope: CoroutineScope,
@@ -125,7 +127,7 @@ class LifestyleScreenState(
         onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
-    fun getLifestyleData(): LifeStyle {
+    fun getUpdatedData(): LifeStyle {
         return updateLifestyle
     }
 

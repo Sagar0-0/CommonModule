@@ -80,9 +80,9 @@ fun UserProfileContent(
                 userScrollEnabled = false,
                 enableCarouselSizeTransition = false
             ) {
-                when (userProfileState.profileDataPages[userProfileState.currentPageIndex]) {
+                when (userProfileState.profileDataPages[it]) {
                     ProfileNavigationScreen.BASIC -> {
-                        DetailsScreen(
+                        BasicDetailsScreen(
                             userProfileState = userProfileState,
                             walletDataState = walletDataState,
                             subscriptionDataState = subscriptionDataState,
@@ -134,9 +134,9 @@ fun UserProfileContent(
     ImageCropperScreen(
         modifier = Modifier.fillMaxSize(),
         visible = userProfileState.isImageCropperVisible,
-        uri = userProfileState.profileImageLocalUri,
+        uri = userProfileState.basicDetailScreenState.profileImageLocalUri,
         onCropClick = { croppedImage ->
-            userProfileState.profileImageLocalUri = croppedImage
+            userProfileState.basicDetailScreenState.profileImageLocalUri = croppedImage
             userProfileState.isImageCropperVisible = false
         }
     )

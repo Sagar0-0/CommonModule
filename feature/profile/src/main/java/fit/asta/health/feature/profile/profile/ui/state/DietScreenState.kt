@@ -6,10 +6,10 @@ import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.runtime.toMutableStateList
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.feature.profile.profile.ui.state.UserProfileState.ProfileBottomSheetPicker
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -38,29 +38,29 @@ class DietScreenState(
         restrictions = dietRestrictions
     )
 
-    val bottomSheets: List<HealthBottomSheet> = listOf(
-        HealthBottomSheet(
+    val bottomSheets: List<ProfileBottomSheetPicker> = listOf(
+        ProfileBottomSheetPicker(
             "dp",
             "Dietary Preferences",
             dietPreference,
         ),
-        HealthBottomSheet(
-//TODO: HANDLE DAYS
+        ProfileBottomSheetPicker(
+            //TODO: HANDLE DAYS
             "dp",
             "Non Veg Days",
             nonVegDays,
         ),
-        HealthBottomSheet(
+        ProfileBottomSheetPicker(
             "food",
             "Food Allergies",
             dietAllergies,
         ),
-        HealthBottomSheet(
+        ProfileBottomSheetPicker(
             "cu",
             "Cuisines",
             dietCuisines,
         ),
-        HealthBottomSheet(
+        ProfileBottomSheetPicker(
             "food",
             "Food Restrictions",
             dietRestrictions,
@@ -85,7 +85,6 @@ class DietScreenState(
         index: MutableState<Int>,
         bottomSheetVisible: MutableState<Boolean>
     ) {
-//        currentBottomSheetIndex = index.value
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
         getHealthProperties(index.value)
@@ -95,9 +94,7 @@ class DietScreenState(
         onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
-    fun getDietData(): Diet {
-        return updatedDiet
-    }
+    fun getUpdatedData() = updatedDiet
 
     companion object {
         fun Saver(
@@ -111,17 +108,11 @@ class DietScreenState(
             },
             restore = {
                 DietScreenState(
-                    diet = it[0] as Diet,
+                    diet = it[0],
                     coroutineScope,
                     onEvent
                 )
             }
         )
     }
-
-    data class HealthBottomSheet(
-        val id: String,
-        val name: String,
-        val list: SnapshotStateList<UserProperties>
-    )
 }

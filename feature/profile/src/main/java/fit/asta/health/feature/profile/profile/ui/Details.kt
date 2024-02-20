@@ -59,14 +59,15 @@ import fit.asta.health.wallet.remote.model.WalletResponse
 
 @ExperimentalMaterial3Api
 @Composable
-fun DetailsScreen(
+fun BasicDetailsScreen(
     userProfileState: UserProfileState,
     walletDataState: UiState<WalletResponse>,
     subscriptionDataState: UiState<UserSubscribedPlan>,
 ) {
+
     val imgLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            userProfileState.profileImageLocalUri = uri
+            userProfileState.basicDetailScreenState.profileImageLocalUri = uri
             userProfileState.isImageCropperVisible = true
         }
 
@@ -83,23 +84,23 @@ fun DetailsScreen(
 
         UserCircleImage(
             model = getImageModel(
-                uri = userProfileState.profileImageLocalUri,
-                remoteUrl = userProfileState.profileImageUrl
+                uri = userProfileState.basicDetailScreenState.profileImageLocalUri,
+                remoteUrl = userProfileState.basicDetailScreenState.profileImageUrl
             ),
             onUserProfileSelection = {
                 imgLauncher.launch("image/*")
             },
             onProfilePicClear = {
-                userProfileState.clearProfile()
+                userProfileState.basicDetailScreenState.clearProfile()
             }
         )
 
         AppOutlinedTextField(
             modifier = Modifier
                 .fillMaxWidth(),
-            value = userProfileState.userName,
+            value = userProfileState.basicDetailScreenState.userName,
             onValueChange = {
-                userProfileState.userName = it
+                userProfileState.basicDetailScreenState.userName = it
             },
             label = stringResource(R.string.name_profile_creation),
             singleLine = true
@@ -108,7 +109,7 @@ fun DetailsScreen(
         TitleTexts.Level2(
             modifier = Modifier
                 .fillMaxWidth(),
-            text = userProfileState.email,
+            text = userProfileState.basicDetailScreenState.email,
             textAlign = TextAlign.Center
         )
 
@@ -117,9 +118,9 @@ fun DetailsScreen(
             onLoading = {
                 AppCard(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(AppTheme.cardHeight.level3)
                         .appShimmerAnimation(true)
+                        .fillMaxWidth()
+                        .height(AppTheme.cardHeight.level1)
                 ) { }
             }
         ) {
@@ -139,9 +140,9 @@ fun DetailsScreen(
             onLoading = {
                 AppCard(
                     modifier = Modifier
-                        .fillMaxWidth()
-                        .height(AppTheme.cardHeight.level3)
                         .appShimmerAnimation(true)
+                        .fillMaxWidth()
+                        .height(AppTheme.cardHeight.level1)
                 ) { }
             }
         ) {

@@ -98,7 +98,7 @@ class PhysiqueScreenState(
                 && userPregnancyWeekErrorMessage == null
     }
 
-    fun getPhysiqueData(): Physique {
+    fun getUpdatedData(): Physique {
         return Physique(
             age = userAge,
             bodyType = physique.bodyType,
@@ -122,7 +122,7 @@ class PhysiqueScreenState(
         ): Saver<PhysiqueScreenState, *> = listSaver(
             save = {
                 listOf(
-                    it.getPhysiqueData()
+                    it.getUpdatedData()
                 )
             },
             restore = {

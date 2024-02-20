@@ -108,7 +108,7 @@ class HealthScreenState(
         onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
     }
 
-    fun getHealthData(): Health {
+    fun getUpdatedData(): Health {
         return updatedHealth
     }
 

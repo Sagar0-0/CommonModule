@@ -101,7 +101,7 @@ fun ColumnToggleButtonGroup(
 @Composable
 fun RowToggleButtonGroup(
     modifier: Modifier = Modifier,
-    primarySelection: Int = -1,
+    selectedIndex: Int = -1,
     selectedColor: Color = Color.White,
     unselectedColor: Color = Color.Unspecified,
     selectedContentColor: Color = Color.Black,
@@ -110,7 +110,7 @@ fun RowToggleButtonGroup(
     unselectedButtonIconTint: Color = unselectedContentColor,
     borderColor: Color = Color.Gray,
     buttonTexts: List<String> = listOf(),
-    buttonIcons: List<Painter> = listOf(),
+    buttonIcons: List<Painter> = listOf(emptyPainter),
     shape: CornerBasedShape = MaterialTheme.shapes.small,
     borderSize: Dp = 1.dp,
     border: BorderStroke = BorderStroke(borderSize, borderColor),
@@ -122,9 +122,8 @@ fun RowToggleButtonGroup(
 ) {
     Row(modifier = modifier) {
         val squareCorner = CornerSize(0.dp)
-        var selectionIndex by rememberSaveable { mutableIntStateOf(primarySelection) }
 
-        repeat(buttonTexts.size) { index ->
+        buttonTexts.forEachIndexed { index, _ ->
             val buttonShape = when (index) {
                 0 -> shape.copy(bottomEnd = squareCorner, topEnd = squareCorner)
                 buttonTexts.size - 1 -> shape.copy(
@@ -134,7 +133,7 @@ fun RowToggleButtonGroup(
 
                 else -> shape.copy(all = squareCorner)
             }
-            val isButtonSelected = selectionIndex == index
+            val isButtonSelected = selectedIndex == index
             val containerColor = if (isButtonSelected) selectedColor else unselectedColor
             val contentColor =
                 if (isButtonSelected) selectedContentColor else unselectedContentColor
@@ -158,7 +157,6 @@ fun RowToggleButtonGroup(
                 iconTintColor = iconTintColor,
                 iconPosition = iconPosition,
                 onClick = {
-                    selectionIndex = index
                     onButtonClick.invoke(index)
                 },
             )
