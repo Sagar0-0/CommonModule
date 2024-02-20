@@ -25,15 +25,15 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 @Composable
 fun CircularProgressBar(
     percentage: Float,
-    number : Int,
-    fontSize : TextUnit = 28.sp,
+    number: Int,
+    fontSize: TextUnit = 28.sp,
     radius: Dp = 50.dp,
     color: Color = Color.Green,
     strokeWidth: Dp = 8.dp,
-    animDuration:Int = 1000,
-    animDelay:Int = 0
+    animDuration: Int = 1000,
+    animDelay: Int = 0
 ) {
-    var animationPlayed by remember{
+    var animationPlayed by remember {
         mutableStateOf(false)
     }
     val percent = try {
@@ -42,21 +42,23 @@ fun CircularProgressBar(
         0f
     }
     val currPercent = animateFloatAsState(
-        targetValue = if(animationPlayed) percent else 0f, label = "",
+        targetValue = if (animationPlayed) percent else 0f, label = "",
         animationSpec = tween(
             durationMillis = animDuration,
             delayMillis = animDelay
         )
     )
     val remPercent = 1f - percentage
-    LaunchedEffect(key1 = true){
+    LaunchedEffect(key1 = true) {
         animationPlayed = true
     }
 
-    Box(modifier = Modifier.size(radius*2f),
-        contentAlignment = Alignment.Center){
-        Canvas(modifier = Modifier.size(radius*2f)){
-            if(remPercent > currPercent.value) {
+    Box(
+        modifier = Modifier.size(radius * 2f),
+        contentAlignment = Alignment.Center
+    ) {
+        Canvas(modifier = Modifier.size(radius * 2f)) {
+            if (remPercent > currPercent.value) {
                 drawArc(
                     color = Color(0xffF4AF1B),
                     -90f,
@@ -71,8 +73,7 @@ fun CircularProgressBar(
                     useCenter = false,
                     style = Stroke(strokeWidth.toPx(), cap = StrokeCap.Round)
                 )
-            }
-            else{
+            } else {
                 drawArc(
                     color = Color(0xff6b9bd1),
                     -90f,
@@ -90,7 +91,7 @@ fun CircularProgressBar(
             }
         }
 
-        val text = when(number){
+        val text = when (number) {
             1 -> "Goal"
             else -> (currPercent.value * number).toInt().toString()
         }

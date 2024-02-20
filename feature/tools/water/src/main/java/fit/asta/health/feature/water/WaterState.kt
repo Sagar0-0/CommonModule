@@ -1,4 +1,4 @@
-package fit.asta.health.feature.water.viewmodel
+package fit.asta.health.feature.water
 
 sealed class WaterState {
     data object Loading : WaterState()

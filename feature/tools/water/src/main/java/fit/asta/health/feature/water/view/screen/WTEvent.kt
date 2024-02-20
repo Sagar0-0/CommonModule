@@ -19,4 +19,6 @@ sealed class WTEvent {
     data object UpdateQuantity : WTEvent()
     data object Schedule : WTEvent()
     data object UpdateBevQuantity : WTEvent()
+
+    data object RetrySection : WTEvent()
 }
