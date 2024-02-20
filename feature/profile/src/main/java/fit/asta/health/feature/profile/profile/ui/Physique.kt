@@ -118,7 +118,7 @@ private fun GenderSection(
         ) {
             GenderSelector(
                 title = R.string.gender.toStringFromResId(),
-                selectedOption = userProfileState.physiqueScreenState.userGender,
+                selectedOption = userProfileState.physiqueScreenState.userGender ?: -1,
             ) {
                 userProfileState.physiqueScreenState.userGender = it
             }
@@ -127,14 +127,14 @@ private fun GenderSection(
                 Column {
                     TwoTogglesGroup(
                         selectionTypeText = stringResource(R.string.periodTitle_profile_creation),
-                        selectedOption = userProfileState.physiqueScreenState.onPeriod,
+                        selectedOption = userProfileState.physiqueScreenState.onPeriod ?: -1,
                         onStateChange = { state ->
                             userProfileState.physiqueScreenState.onPeriod = state
                         }
                     )
                     TwoTogglesGroup(
                         selectionTypeText = stringResource(R.string.pregnantTitle_profile_creation),
-                        selectedOption = userProfileState.physiqueScreenState.isPregnant,
+                        selectedOption = userProfileState.physiqueScreenState.isPregnant ?: -1,
                         onStateChange = { state ->
                             userProfileState.physiqueScreenState.isPregnant = state
                         }
