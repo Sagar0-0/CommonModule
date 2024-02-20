@@ -41,6 +41,8 @@ import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BooleanIntTypes
 import fit.asta.health.data.profile.remote.model.GenderTypes
+import fit.asta.health.data.profile.remote.model.HeightUnit
+import fit.asta.health.data.profile.remote.model.WeightUnit
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.RowToggleButtonGroup
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
@@ -54,7 +56,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
-import fit.asta.health.feature.profile.profile.utils.ThreeTogglesGroups
+import fit.asta.health.feature.profile.profile.utils.GenderSelector
 import fit.asta.health.feature.profile.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R
 import java.time.format.DateTimeFormatter
@@ -114,7 +116,7 @@ private fun GenderSection(
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2)
         ) {
-            ThreeTogglesGroups(
+            GenderSelector(
                 title = R.string.gender.toStringFromResId(),
                 selectedOption = userProfileState.physiqueScreenState.userGender,
             ) {
@@ -208,19 +210,19 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = userProfileState.physiqueScreenState.weightUnit,
-                        buttonCount = 2,
+                        primarySelection = WeightUnit.indexOf(userProfileState.physiqueScreenState.weightUnit),
                         onButtonClick = { index ->
-                            userProfileState.physiqueScreenState.weightUnit = index
+                            userProfileState.physiqueScreenState.weightUnit =
+                                WeightUnit.entries[index].value
                         },
-                        buttonTexts = arrayOf("kg", "lb"),
+                        buttonTexts = WeightUnit.entries.map { it.title },
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 AppOutlinedTextField(
-                    value = userProfileState.physiqueScreenState.userWeight,
+                    value = userProfileState.physiqueScreenState.userWeight ?: "",
                     keyboardActions = KeyboardActions(
                         onNext = {
                             focusManager.moveFocus(FocusDirection.Next)
@@ -235,15 +237,19 @@ private fun MeasurementSection(
                     ),
                     colors = OutlinedTextFieldDefaults.colors(
                         unfocusedBorderColor = AppTheme.colors.onSurface
-                    )
+                    ),
+                    appTextFieldType = AppTextFieldValidator(
+                        AppTextFieldType.Custom(
+                            isInvalidLogic = { _, _ ->
+                                userProfileState.physiqueScreenState.userWeightErrorMessage != null
+                            },
+                            getErrorMessageLogic = { _, _ ->
+                                userProfileState.physiqueScreenState.userWeightErrorMessage
+                                    ?: ""
+                            }
+                        )
+                    ),
                 )
-                userProfileState.physiqueScreenState.userWeightErrorMessage?.let {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                    BodyTexts.Level1(
-                        text = userProfileState.physiqueScreenState.userWeightErrorMessage!!,
-                        color = AppTheme.colors.error
-                    )
-                }
             }
             Column(modifier = Modifier.weight(1f)) {
                 Row(
@@ -255,19 +261,19 @@ private fun MeasurementSection(
                         color = AppTheme.colors.onTertiaryContainer
                     )
                     RowToggleButtonGroup(
-                        primarySelection = userProfileState.physiqueScreenState.heightUnit,
-                        buttonCount = 2,
+                        primarySelection = HeightUnit.indexOf(userProfileState.physiqueScreenState.heightUnit),
+                        buttonTexts = HeightUnit.entries.map { it.title },
                         onButtonClick = { index ->
-                            userProfileState.physiqueScreenState.heightUnit = index
+                            userProfileState.physiqueScreenState.heightUnit =
+                                HeightUnit.entries[index].value
                         },
-                        buttonTexts = arrayOf("cm", "in"),
                         modifier = Modifier.size(width = 80.dp, height = 24.dp),
                         selectedColor = AppTheme.colors.primary
                     )
                 }
                 Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
                 AppOutlinedTextField(
-                    value = userProfileState.physiqueScreenState.userHeight,
+                    value = userProfileState.physiqueScreenState.userHeight ?: "",
                     onValueChange = {
                         userProfileState.physiqueScreenState.setHeight(it)
                     },
@@ -276,15 +282,19 @@ private fun MeasurementSection(
                         imeAction = ImeAction.Done,
                     ),
                     keyboardActions = KeyboardActions(onDone = { focusManager.clearFocus() }),
-                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
+                    colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface),
+                    appTextFieldType = AppTextFieldValidator(
+                        AppTextFieldType.Custom(
+                            isInvalidLogic = { _, _ ->
+                                userProfileState.physiqueScreenState.userHeightErrorMessage != null
+                            },
+                            getErrorMessageLogic = { _, _ ->
+                                userProfileState.physiqueScreenState.userHeightErrorMessage
+                                    ?: ""
+                            }
+                        )
+                    ),
                 )
-                userProfileState.physiqueScreenState.userHeightErrorMessage?.let {
-                    Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                    BodyTexts.Level1(
-                        text = userProfileState.physiqueScreenState.userHeightErrorMessage!!,
-                        color = AppTheme.colors.error
-                    )
-                }
             }
         }
     }

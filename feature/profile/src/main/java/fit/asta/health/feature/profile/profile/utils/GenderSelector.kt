@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.Gender
@@ -18,11 +19,14 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
-fun ThreeTogglesGroups(
+fun GenderSelector(
     title: String,
-    selectedOption: Gender,
+    selectedOption: Gender?,
     onStateChange: (Gender) -> Unit,
 ) {
+    val currentOption = remember {
+        selectedOption ?: -1
+    }
     Column(modifier = Modifier.fillMaxWidth()) {
         Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
         Row(
@@ -40,7 +44,7 @@ fun ThreeTogglesGroups(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
                     AppRadioButton(
-                        selected = selectedOption == option.gender
+                        selected = currentOption == option.gender
                     ) {
                         onStateChange(option.gender)
                     }

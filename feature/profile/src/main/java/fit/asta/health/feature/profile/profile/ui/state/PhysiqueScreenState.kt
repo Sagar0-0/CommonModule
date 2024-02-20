@@ -2,11 +2,11 @@ package fit.asta.health.feature.profile.profile.ui.state
 
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
+import fit.asta.health.data.profile.remote.model.BMIUnit
 import fit.asta.health.data.profile.remote.model.Physique
 import kotlinx.coroutines.CoroutineScope
 import java.util.Calendar
@@ -20,7 +20,7 @@ class PhysiqueScreenState(
 
     //Physique Page
     val calendar: Calendar = Calendar.getInstance()
-    var userAge by mutableIntStateOf(physique.age)
+    var userAge by mutableStateOf(physique.age)
         private set
     var userAgeErrorMessage by mutableStateOf<String?>(null)
         private set
@@ -37,10 +37,10 @@ class PhysiqueScreenState(
     }
 
 
-    var userWeight by mutableStateOf(physique.weight.toString())
+    var userWeight by mutableStateOf(physique.weight?.toString())
         private set
     private var weightInFloat = physique.weight
-    var weightUnit by mutableIntStateOf(physique.weightUnit)
+    var weightUnit by mutableStateOf(physique.weightUnit)
     var userWeightErrorMessage by mutableStateOf<String?>(null)
         private set
 
@@ -57,9 +57,9 @@ class PhysiqueScreenState(
         userWeight = value
     }
 
-    var userHeight by mutableStateOf(physique.height.toString())
+    var userHeight by mutableStateOf(physique.height?.toString())
         private set
-    var heightUnit by mutableIntStateOf(physique.heightUnit)
+    var heightUnit by mutableStateOf(physique.heightUnit)
     private var heightInFloat = physique.height
     var userHeightErrorMessage by mutableStateOf<String?>(null)
         private set
@@ -77,17 +77,24 @@ class PhysiqueScreenState(
         userHeight = value
     }
 
-    var userGender by mutableIntStateOf(physique.gender)
-    var isPregnant by mutableIntStateOf(physique.isPregnant)
-    var onPeriod by mutableIntStateOf(physique.onPeriod)
+    var userGender by mutableStateOf(physique.gender)
+    var isPregnant by mutableStateOf(physique.isPregnant)
+    var onPeriod by mutableStateOf(physique.onPeriod)
     var userPregnancyWeek by mutableStateOf(physique.pregnancyWeek?.toString())
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
+    var bmiUnit = BMIUnit.BMI.value
 
 
     fun isValid(): Boolean {
-        return userAgeErrorMessage == null
-                && userHeightErrorMessage == null
+        return userAge != null
+                && userAgeErrorMessage == null
+                && userWeight != null
                 && userWeightErrorMessage == null
+                && weightUnit != null
+                && userHeight != null
+                && userHeightErrorMessage == null
+                && heightUnit != null
+                && userGender != null
                 && userPregnancyWeekErrorMessage == null
     }
 
@@ -96,7 +103,7 @@ class PhysiqueScreenState(
             age = userAge,
             bodyType = physique.bodyType,
             bmi = physique.bmi,
-            bmiUnit = physique.bmiUnit,
+            bmiUnit = bmiUnit,
             gender = userGender,
             height = heightInFloat,
             heightUnit = heightUnit,

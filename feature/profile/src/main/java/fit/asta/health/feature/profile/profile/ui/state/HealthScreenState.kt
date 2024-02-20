@@ -43,11 +43,9 @@ class HealthScreenState(
         injurySince = injurySince?.toIntOrNull()
     )
 
-//    private var currentBottomSheetIndex = 0
-
     val bottomSheets: List<HealthBottomSheet> = listOf(
         HealthBottomSheet(
-            "hh",
+            "ailment",
             "Health History",
             healthHistory,
         ),

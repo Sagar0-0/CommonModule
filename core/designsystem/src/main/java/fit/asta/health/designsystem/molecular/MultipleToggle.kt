@@ -45,8 +45,8 @@ fun ColumnToggleButtonGroup(
     buttonIconTint: Color = selectedContentColor,
     unselectedButtonIconTint: Color = unselectedContentColor,
     borderColor: Color = Color.Gray,
-    buttonTexts: Array<String> = Array(buttonCount) { "" },
-    buttonIcons: Array<Painter> = Array(buttonCount) { emptyPainter },
+    buttonTexts: List<String> = List(buttonCount) { "" },
+    buttonIcons: List<Painter> = List(buttonCount) { emptyPainter },
     shape: CornerBasedShape = MaterialTheme.shapes.small,
     borderSize: Dp = 1.dp,
     border: BorderStroke = BorderStroke(borderSize, borderColor),
@@ -101,7 +101,6 @@ fun ColumnToggleButtonGroup(
 @Composable
 fun RowToggleButtonGroup(
     modifier: Modifier = Modifier,
-    buttonCount: Int,
     primarySelection: Int = -1,
     selectedColor: Color = Color.White,
     unselectedColor: Color = Color.Unspecified,
@@ -110,8 +109,8 @@ fun RowToggleButtonGroup(
     buttonIconTint: Color = selectedContentColor,
     unselectedButtonIconTint: Color = unselectedContentColor,
     borderColor: Color = Color.Gray,
-    buttonTexts: Array<String> = Array(buttonCount) { "" },
-    buttonIcons: Array<Painter> = Array(buttonCount) { ColorPainter(Color.Transparent) },
+    buttonTexts: List<String> = listOf(),
+    buttonIcons: List<Painter> = listOf(),
     shape: CornerBasedShape = MaterialTheme.shapes.small,
     borderSize: Dp = 1.dp,
     border: BorderStroke = BorderStroke(borderSize, borderColor),
@@ -125,10 +124,14 @@ fun RowToggleButtonGroup(
         val squareCorner = CornerSize(0.dp)
         var selectionIndex by rememberSaveable { mutableIntStateOf(primarySelection) }
 
-        repeat(buttonCount) { index ->
+        repeat(buttonTexts.size) { index ->
             val buttonShape = when (index) {
                 0 -> shape.copy(bottomEnd = squareCorner, topEnd = squareCorner)
-                buttonCount - 1 -> shape.copy(topStart = squareCorner, bottomStart = squareCorner)
+                buttonTexts.size - 1 -> shape.copy(
+                    topStart = squareCorner,
+                    bottomStart = squareCorner
+                )
+
                 else -> shape.copy(all = squareCorner)
             }
             val isButtonSelected = selectionIndex == index
@@ -171,8 +174,8 @@ private fun ToggleButton(
     backgroundColor: Color,
     elevation: ButtonElevation,
     enabled: Boolean,
-    buttonTexts: Array<String>,
-    buttonIcons: Array<Painter>,
+    buttonTexts: List<String>,
+    buttonIcons: List<Painter>,
     index: Int,
     contentColor: Color,
     iconTintColor: Color,
@@ -202,8 +205,8 @@ private fun ToggleButton(
 
 @Composable
 private fun RowScope.ButtonContent(
-    buttonTexts: Array<String>,
-    buttonIcons: Array<Painter>,
+    buttonTexts: List<String>,
+    buttonIcons: List<Painter>,
     index: Int,
     contentColor: Color,
     iconTintColor: Color,
@@ -238,8 +241,8 @@ private fun RowScope.ButtonContent(
 @Composable
 private fun RowScope.ButtonWithIconAndText(
     iconTintColor: Color,
-    buttonIcons: Array<Painter>,
-    buttonTexts: Array<String>,
+    buttonIcons: List<Painter>,
+    buttonTexts: List<String>,
     index: Int,
     contentColor: Color,
     iconPosition: IconPosition,
@@ -287,7 +290,7 @@ private fun RowScope.ButtonWithIconAndText(
 private fun IconContent(
     modifier: Modifier,
     iconTintColor: Color,
-    buttonIcons: Array<Painter>,
+    buttonIcons: List<Painter>,
     index: Int,
 ) {
     if (iconTintColor == Color.Transparent || iconTintColor == Color.Unspecified) {
@@ -309,7 +312,7 @@ private fun IconContent(
 @Composable
 private fun TextContent(
     modifier: Modifier,
-    buttonTexts: Array<String>,
+    buttonTexts: List<String>,
     index: Int,
     contentColor: Color,
 ) {

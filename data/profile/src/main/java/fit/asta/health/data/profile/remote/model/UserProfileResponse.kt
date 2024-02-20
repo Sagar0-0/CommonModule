@@ -48,18 +48,18 @@ data class UserProfileAddress(
 
 @Parcelize
 data class Physique(
-    @SerializedName("age") val age: Int = 0,
-    @SerializedName("bdt") val bodyType: Int = 0,
-    @SerializedName("bmi") val bmi: Float = 0f,
-    @SerializedName("bmiUnit") val bmiUnit: Int = 0,
-    @SerializedName("gen") val gender: Gender = 0,
-    @SerializedName("ht") val height: Float = 0f,
-    @SerializedName("htUnit") val heightUnit: Int = 0,
-    @SerializedName("prg") val isPregnant: BooleanInt = 0,
-    @SerializedName("prd") val onPeriod: BooleanInt = 0,
+    @SerializedName("age") val age: Int? = 0,
+    @SerializedName("bdt") val bodyType: Int? = 0,
+    @SerializedName("bmi") val bmi: Float? = 0f,
+    @SerializedName("bmiUnit") val bmiUnit: Int? = 0,
+    @SerializedName("gen") val gender: Gender? = 0,
+    @SerializedName("ht") val height: Float? = 0f,
+    @SerializedName("htUnit") val heightUnit: Int? = 0,
+    @SerializedName("prg") val isPregnant: BooleanInt? = 0,
+    @SerializedName("prd") val onPeriod: BooleanInt? = 0,
     @SerializedName("pw") val pregnancyWeek: Int? = 0,
-    @SerializedName("wt") val weight: Float = 0f,
-    @SerializedName("wtUnit") val weightUnit: Int = 0,
+    @SerializedName("wt") val weight: Float? = 0f,
+    @SerializedName("wtUnit") val weightUnit: Int? = 0,
 ) : Parcelable
 
 @Parcelize
@@ -116,4 +116,54 @@ typealias BooleanInt = Int
 enum class BooleanIntTypes(val value: BooleanInt, val title: String) {
     YES(1, "Yes"),
     NO(0, "No")
+}
+
+enum class HeightUnit(val title: String, val value: Int) {
+    CM("cm", 1),
+    Inch("in", 6);
+
+    companion object {
+        fun indexOf(newValue: Int?): Int {
+            if (newValue == null) return -1
+            HeightUnit.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return -1
+        }
+    }
+
+}
+
+enum class WeightUnit(val title: String, val value: Int) {
+    KG("kg", 7),
+    LB("lb", 8);
+
+    companion object {
+        fun indexOf(newValue: Int?): Int {
+            if (newValue == null) return -1
+            WeightUnit.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return -1
+        }
+    }
+}
+
+enum class PhysicallyActive(val title: String, val value: Int) {
+    LOW("Low", 1),
+    Moderate("Moderate", 2),
+    VeryActive("Very Active", 3);
+
+    companion object {
+        fun indexOf(newValue: Int): Int {
+            PhysicallyActive.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return -1
+        }
+    }
+}
+
+enum class BMIUnit(val value: Int) {
+    BMI(19)
 }

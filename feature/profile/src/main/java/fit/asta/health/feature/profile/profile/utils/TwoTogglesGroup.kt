@@ -8,6 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment.Companion.CenterVertically
 import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.BooleanInt
@@ -20,9 +21,12 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun TwoTogglesGroup(
     selectionTypeText: String?,
-    selectedOption: BooleanInt,
+    selectedOption: BooleanInt?,
     onStateChange: (BooleanInt) -> Unit,
 ) {
+    val currentOption = remember {
+        selectedOption ?: -1
+    }
     Column(Modifier.fillMaxWidth()) {
         if (!selectionTypeText.isNullOrEmpty()) {
             Spacer(modifier = Modifier.height(AppTheme.spacing.level1))
@@ -45,7 +49,7 @@ fun TwoTogglesGroup(
                     verticalAlignment = CenterVertically, modifier = Modifier.weight(1f)
                 ) {
                     AppRadioButton(
-                        selected = selectedOption == option.value
+                        selected = currentOption == option.value
                     ) { onStateChange(option.value) }
                     CaptionTexts.Level4(
                         text = option.title,

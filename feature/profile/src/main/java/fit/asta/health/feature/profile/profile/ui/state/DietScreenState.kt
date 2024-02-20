@@ -45,6 +45,7 @@ class DietScreenState(
             dietPreference,
         ),
         HealthBottomSheet(
+//TODO: HANDLE DAYS
             "dp",
             "Non Veg Days",
             nonVegDays,
@@ -60,8 +61,8 @@ class DietScreenState(
             dietCuisines,
         ),
         HealthBottomSheet(
-            "dp",
-            "Diet Restrictions",
+            "food",
+            "Food Restrictions",
             dietRestrictions,
         ),
     )

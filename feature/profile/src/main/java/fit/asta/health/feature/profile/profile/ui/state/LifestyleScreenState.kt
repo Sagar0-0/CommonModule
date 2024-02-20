@@ -8,6 +8,7 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
 import fit.asta.health.data.profile.remote.model.LifeStyle
+import fit.asta.health.data.profile.remote.model.PhysicallyActive
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
@@ -31,9 +32,10 @@ class LifestyleScreenState(
         (lifeStyle.prefActivities ?: listOf()).toMutableStateList()
     private val lifestyleTargets =
         (lifeStyle.lifeStyleTargets ?: listOf()).toMutableStateList()
+    private val physicallyActive = PhysicallyActive.LOW.value
 
     private val updateLifestyle = LifeStyle(
-        physicalActive = lifeStyle.physicalActive,
+        physicalActive = physicallyActive,
         workingEnv = lifeStyle.workingEnv,
         workStyle = lifeStyle.workStyle,
         workingHours = lifeStyle.workingHours,
