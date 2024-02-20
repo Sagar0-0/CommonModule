@@ -8,6 +8,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
 import fit.asta.health.common.ui.navigateToWebView
 import fit.asta.health.common.ui.webView
+import fit.asta.health.common.utils.getBaseUrl
 import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
@@ -139,7 +140,7 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.TERMS -> {
                     val url = URLEncoder.encode(
-                        context.getString(R.string.url_terms_of_use),
+                        getBaseUrl(context.getString(R.string.url_terms_of_use)),
                         StandardCharsets.UTF_8.toString()
                     )
                     navController.navigateToWebView(url)
@@ -147,7 +148,7 @@ private fun MainNavHost(startDestination: String) {
 
                 SettingsUiEvent.PRIVACY -> {
                     val url = URLEncoder.encode(
-                        context.getString(R.string.url_privacy_policy),
+                        getBaseUrl(context.getString(R.string.url_privacy_policy)),
                         StandardCharsets.UTF_8.toString()
                     )
                     navController.navigateToWebView(url)

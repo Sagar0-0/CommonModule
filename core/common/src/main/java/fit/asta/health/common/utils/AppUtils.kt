@@ -301,17 +301,18 @@ fun Context.shareReferralCode(code: String, appId: String) {
                 sharingIntent, resources.getString(StringR.string.share_app_choose_text)
             )
         )
-
     } catch (e: Exception) {
         showToastMessage(e.message)
     }
 }
 
+fun getBaseUrl(url: String) = BuildConfig.BASE_URL + url
+
 fun getImageUrl(url: String) = if (url.startsWith("http")) url else BuildConfig.BASE_IMAGE_URL + url
 
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url
-fun getVideoUrlTools(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
+fun getVideoUrlTools(url: String) = BuildConfig.BASE_IMAGE_URL + url
 
 fun getFileName(context: Context, uri: Uri) = DocumentFile.fromSingleUri(context, uri)?.name ?: ""
 
