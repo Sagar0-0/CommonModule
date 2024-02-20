@@ -38,4 +38,5 @@ dependencies {
     implementation(libs.moshi.kotlin)
     //chucker
     debugImplementation(libs.debugchucker)
+    releaseImplementation(libs.chucker)
 }
