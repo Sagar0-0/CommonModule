@@ -283,7 +283,7 @@ class SkinConditionViewModel @Inject constructor(
                 id = id.value,
                 uid = uid,
                 type = 4,
-                prc = conditionUpdateData.distinctBy { it.code },
+                prc = conditionUpdateData.filter { it.code.isNotEmpty() }.distinctBy { it.code },
                 code = "sunlight",
                 sup = supplementData.value?.copy(
                     unit = selectedUOM.value,
