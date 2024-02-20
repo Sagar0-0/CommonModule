@@ -168,8 +168,16 @@ fun NavGraphBuilder.sunlightNavigation(
                     )
                     skinConditionViewModel.supplementData.value = homeViewModel.supplementData.value
                     skinConditionViewModel.id.value =
-                        homeViewModel.sunlightDataState.value.sunlightHomeResponse?.sunLightData?.id
-                            ?: ""
+                        if (homeViewModel.sunlightDataState.value.sunlightHomeResponse?.sunLightData?.uid?.equals(
+                                "000000000000000000000000"
+                            ) == true
+                        ) {
+                            null
+
+                        } else {
+                            homeViewModel.sunlightDataState.value.sunlightHomeResponse?.sunLightData?.id
+                                ?: ""
+                        }
                 }
                 SkinConditionScreen(
                     goto = id,
