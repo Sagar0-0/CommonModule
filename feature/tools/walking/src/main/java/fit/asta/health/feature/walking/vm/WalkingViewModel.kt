@@ -91,7 +91,6 @@ class WalkingViewModel @Inject constructor(
         HealthPermission.getReadPermission(DistanceRecord::class),
         HealthPermission.getReadPermission(TotalCaloriesBurnedRecord::class),
     )
-
     var permissionsGranted = mutableStateOf(false)
         private set
 
@@ -192,18 +191,18 @@ class WalkingViewModel @Inject constructor(
                     UiState.Success(stepsUiState)
                 }
 
-                    is ResponseState.ErrorMessage -> {
-                        UiState.ErrorMessage(result.resId)
-                    }
-
-                    is ResponseState.ErrorRetry -> {
-                        UiState.ErrorRetry(result.resId)
-                    }
-
-                    else -> {
-                        UiState.NoInternet
-                    }
+                is ResponseState.ErrorMessage -> {
+                    UiState.ErrorMessage(result.resId)
                 }
+
+                is ResponseState.ErrorRetry -> {
+                    UiState.ErrorRetry(result.resId)
+                }
+
+                else -> {
+                    UiState.NoInternet
+                }
+            }
         }
     }
 

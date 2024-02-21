@@ -35,6 +35,8 @@ import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
+import kotlin.math.ceil
+import kotlin.math.floor
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -197,98 +199,98 @@ class HomeViewModel @Inject constructor(
     fun getHomeScreenData() {
         _sunlightDataState.value = _sunlightDataState.value.copy(isLoading = true)
         viewModelScope.launch {
-            prefManager.address.collectLatest {pref->
-            repository.getSunlightHomeData(
-                uid,
-                pref.lat.toString(), pref.long.toString(),
-                DateUtil.getCurrentDateFormatted(),
-                pref.currentAddress
-            ).onEach { dataState ->
-                _homeState.emit(dataState.toUiState())
-                when (val data = dataState.toUiState()) {
-                    UiState.Loading -> {
-                        _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = true))
-                    }
+            prefManager.address.collectLatest { pref ->
+                repository.getSunlightHomeData(
+                    uid,
+                    pref.lat.toString(), pref.long.toString(),
+                    DateUtil.getCurrentDateFormatted(),
+                    pref.currentAddress
+                ).onEach { dataState ->
+                    _homeState.emit(dataState.toUiState())
+                    when (val data = dataState.toUiState()) {
+                        UiState.Loading -> {
+                            _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = true))
+                        }
 
-                    is UiState.Success -> {
-                        skinConditionData.clear()
+                        is UiState.Success -> {
+                            skinConditionData.clear()
 
-                        updateDataMapper(data)
-                        data.data.let {
-                            it.sunLightProgressData?.achIu.let { ach ->
-                                achievedIU = ach ?: 0
-                            }
-                            it.sunLightProgressData?.rem?.let { time ->
-                                totalTime.longValue = ((time / 60000))
-                                totalTimeMillis = time
-                                updateTimerText(time)
-                            }
-                            dPerMin = it.sunLightData?.iuPerMin ?: 0
-                            _sunlightDataState.emit(
-                                _sunlightDataState.value.copy(
-                                    sunlightHomeResponse = it,
-                                    isLoading = false,
-                                    skinConditionData = skinConditionData,
-                                    supplementData = mutableStateOf(it.sunLightData?.sup),
-                                    totalTime = totalTime
-                                )
-                            )
-
-                            if (it.sunLightData?.prc.isNullOrEmpty()
-                                ||
-                                it.sunLightData?.uid?.equals("000000000000000000000000") == true
-                            ) {
-                                skinConditionData.addAll(
-                                    listOf(
-                                        Prc(
-                                            "",
-                                            "",
-                                            false,
-                                            "",
-                                            4,
-                                            listOf(Value("", "", "", "", ""))
-                                        ),
-                                        Prc(
-                                            "",
-                                            "",
-                                            false,
-                                            "",
-                                            4,
-                                            listOf(Value("", "", "", "", ""))
-                                        ),
-                                        Prc(
-                                            "",
-                                            "",
-                                            false,
-                                            "",
-                                            4,
-                                            listOf(Value("", "", "", "", ""))
-                                        ),
-                                        Prc(
-                                            "",
-                                            "",
-                                            false,
-                                            "",
-                                            4,
-                                            listOf(Value("", "", "", "", ""))
-                                        ),
+                            updateDataMapper(data)
+                            data.data.let {
+                                it.sunLightProgressData?.achIu.let { ach ->
+                                    achievedIU = ach ?: 0
+                                }
+                                it.sunLightProgressData?.rem?.let { time ->
+                                    totalTime.longValue = ((time / 60000))
+                                    totalTimeMillis = time
+                                    updateTimerText(time)
+                                }
+                                dPerMin = it.sunLightData?.iuPerMin ?: 0
+                                _sunlightDataState.emit(
+                                    _sunlightDataState.value.copy(
+                                        sunlightHomeResponse = it,
+                                        isLoading = false,
+                                        skinConditionData = skinConditionData,
+                                        supplementData = mutableStateOf(it.sunLightData?.sup),
+                                        totalTime = totalTime
                                     )
                                 )
-                                navigateToCondition.invoke()
-                            }
 
+                                if (it.sunLightData?.prc.isNullOrEmpty()
+                                    ||
+                                    it.sunLightData?.uid?.equals("000000000000000000000000") == true
+                                ) {
+                                    skinConditionData.addAll(
+                                        listOf(
+                                            Prc(
+                                                "",
+                                                "",
+                                                false,
+                                                "",
+                                                4,
+                                                listOf(Value("", "", "", "", ""))
+                                            ),
+                                            Prc(
+                                                "",
+                                                "",
+                                                false,
+                                                "",
+                                                4,
+                                                listOf(Value("", "", "", "", ""))
+                                            ),
+                                            Prc(
+                                                "",
+                                                "",
+                                                false,
+                                                "",
+                                                4,
+                                                listOf(Value("", "", "", "", ""))
+                                            ),
+                                            Prc(
+                                                "",
+                                                "",
+                                                false,
+                                                "",
+                                                4,
+                                                listOf(Value("", "", "", "", ""))
+                                            ),
+                                        )
+                                    )
+                                    navigateToCondition.invoke()
+                                }
+
+                            }
+                        }
+
+                        is UiState.ErrorMessage -> {
+                            _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
+                        }
+
+                        else -> {
+                            _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
                         }
                     }
-
-                    is UiState.ErrorMessage -> {
-                        _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
-                    }
-
-                    else -> {
-                        _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
-                    }
-                }
-            }.launchIn(viewModelScope)
+                }.launchIn(viewModelScope)
             }
         }
     }
@@ -315,8 +317,8 @@ class HomeViewModel @Inject constructor(
                 uid = uid,
                 dur = sessionState.value.getDuration(),
                 temp = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currTemp
-                    ?: 0.0).toInt(),
-                uv = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
+                    ?: 0.0),
+                uv = ceil(sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
                     ?: 0.0).toInt(),
                 spf = skinConditionDataMapper[SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN]?.code
                     ?: "",
