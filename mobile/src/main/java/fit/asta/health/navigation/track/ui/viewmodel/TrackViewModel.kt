@@ -3,8 +3,10 @@ package fit.asta.health.navigation.track.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
+import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
@@ -19,6 +21,7 @@ import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.format.DateTimeFormatter
@@ -27,7 +30,9 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrackViewModel @Inject constructor(
-    private val trackingRepo: TrackingRepo
+    private val trackingRepo: TrackingRepo,
+    private val prefManager : PrefManager,
+    @UID private val uid : String
 ) : ViewModel() {
 
     /**
@@ -71,7 +76,7 @@ class TrackViewModel @Inject constructor(
 
     // User Id For testing
     // TODO : To be changed according to the user
-    private val uid = "6309a9379af54f142c65fbfe"
+//    private val uid = "6309a9379af54f142c65fbfe"
 
     // This variable contains the Home Screen Menu Details
     private val _homeScreenDetails = MutableStateFlow<UiState<HomeMenuResponse>>(UiState.Idle)
@@ -88,12 +93,14 @@ class TrackViewModel @Inject constructor(
         _homeScreenDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _homeScreenDetails.value = trackingRepo.getHomeDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _homeScreenDetails.value = trackingRepo.getHomeDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -112,12 +119,14 @@ class TrackViewModel @Inject constructor(
         _waterDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _waterDetails.value = trackingRepo.getWaterDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _waterDetails.value = trackingRepo.getWaterDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -135,14 +144,15 @@ class TrackViewModel @Inject constructor(
             return
 
         _stepsDetails.value = UiState.Loading
-
         viewModelScope.launch {
-            _stepsDetails.value = trackingRepo.getStepsDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _stepsDetails.value = trackingRepo.getStepsDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -159,12 +169,14 @@ class TrackViewModel @Inject constructor(
         _meditationDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _meditationDetails.value = trackingRepo.getMeditationDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _meditationDetails.value = trackingRepo.getMeditationDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -184,12 +196,14 @@ class TrackViewModel @Inject constructor(
         _breathingDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _breathingDetails.value = trackingRepo.getBreathingDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _breathingDetails.value = trackingRepo.getBreathingDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -208,12 +222,14 @@ class TrackViewModel @Inject constructor(
         _sleepDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _sleepDetails.value = trackingRepo.getSleepDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _sleepDetails.value = trackingRepo.getSleepDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -232,12 +248,14 @@ class TrackViewModel @Inject constructor(
         _sunlightDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _sunlightDetails.value = trackingRepo.getSunlightDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _sunlightDetails.value = trackingRepo.getSunlightDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
@@ -257,13 +275,15 @@ class TrackViewModel @Inject constructor(
         _exerciseDetails.value = UiState.Loading
 
         viewModelScope.launch {
-            _exerciseDetails.value = trackingRepo.getExerciseDetails(
-                uid = uid,
-                date = date,
-                location = "bangalore",
-                exercise = exercise,
-                status = status
-            ).toUiState()
+            prefManager.address.collectLatest { pref ->
+                _exerciseDetails.value = trackingRepo.getExerciseDetails(
+                    uid = uid,
+                    date = date,
+                    location = pref.currentAddress,
+                    exercise = exercise,
+                    status = status
+                ).toUiState()
+            }
         }
     }
 
