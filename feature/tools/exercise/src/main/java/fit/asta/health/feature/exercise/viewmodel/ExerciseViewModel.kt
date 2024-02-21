@@ -170,7 +170,9 @@ class ExerciseViewModel @Inject constructor(
                 date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()).toString(),
                 name = screen
             )
+            Log.d("rishi","Data :  ${response}")
             val data = (response as? ResponseState.Success)?.data?.getExerciseTool()
+
             data?.let {
                 _exerciseUiState.value = _exerciseUiState.value.copy(
                     target = data.target,
@@ -325,8 +327,10 @@ class ExerciseViewModel @Inject constructor(
             values = listOf(
                 Value(
                     id = "",
-                    name = _exerciseUiState.value.targetValue.toInt().toString(),
-                    value = _exerciseUiState.value.targetValue.toInt().toString()
+                    code = "",
+                    title = _exerciseUiState.value.targetValue.toInt().toString(),
+                    description = _exerciseUiState.value.targetValue.toInt().toString(),
+                    url = ""
                 )
             ),
             id = ""
@@ -334,77 +338,121 @@ class ExerciseViewModel @Inject constructor(
         val style = PrcX(
             dsc = "style", title = "style", values = listOf(
                 Value(
-                    id = "", name = _selectedStyle.value, value = _selectedStyle.value
+                    id = "",
+                    code = "",
+                    title = _selectedStyle.value,
+                    description = _selectedStyle.value,
+                    url = ""
                 )
             ), id = ""
         )
         val duration = PrcX(
             dsc = "Duration", title = "Duration", values = listOf(
                 Value(
-                    id = "", name = _selectedDuration.value, value = _selectedDuration.value
+                    id = "",
+                    code = "",
+                    title = _selectedDuration.value,
+                    description = _selectedDuration.value,
+                    url = ""
                 )
             ), id = ""
         )
         val bodyParts = PrcX(
             dsc = "Body Parts", title = "Body Parts", values = listOf(
                 Value(
-                    id = "", name = _selectedBodyParts.value, value = _selectedBodyParts.value
+                    id = "",
+                    code = "",
+                    title = _selectedBodyParts.value,
+                    description = _selectedBodyParts.value,
+                    url = ""
                 )
             ), id = ""
         )
         val challenge = PrcX(
             dsc = "Challenges", title = "Challenges", values = listOf(
                 Value(
-                    id = "", name = _selectedChallenges.value, value = _selectedChallenges.value
+                    id = "",
+                    code = "",
+                    title = _selectedChallenges.value,
+                    description = _selectedChallenges.value,
+                    url = ""
                 )
             ), id = ""
         )
         val bodyStretch = PrcX(
             dsc = "Body Stretch", title = "Body Stretch", values = listOf(
                 Value(
-                    id = "", name = _selectedBodyStretch.value, value = _selectedBodyStretch.value
+                    id = "",
+                    code = "",
+                    title = _selectedBodyStretch.value,
+                    description = _selectedBodyStretch.value,
+                    url = ""
                 )
             ), id = ""
         )
         val goals = PrcX(
             dsc = "Quick", title = "Quick", values = listOf(
                 Value(
-                    id = "", name = _selectedQuick.value, value = _selectedQuick.value
+                    id = "",
+                    code = "",
+                    title = _selectedQuick.value,
+                    description = _selectedQuick.value,
+                    url = ""
                 )
             ), id = ""
         )
         val level = PrcX(
             dsc = "Level", title = "Level", values = listOf(
                 Value(
-                    id = "", name = _selectedLevel.value, value = _selectedLevel.value
+                    id = "",
+                    code = "",
+                    title = _selectedLevel.value,
+                    description = _selectedLevel.value,
+                    url = ""
                 )
             ), id = ""
         )
         val equipment = PrcX(
             dsc = "Equipments", title = "Equipments", values = listOf(
                 Value(
-                    id = "", name = _selectedEquipments.value, value = _selectedEquipments.value
+                    id = "",
+                    code = "",
+                    title = _selectedEquipments.value,
+                    description = _selectedEquipments.value,
+                    url = ""
                 )
             ), id = ""
         )
         val instructor = PrcX(
             dsc = "instructor", title = "instructor", values = listOf(
                 Value(
-                    id = "", name = _selectedInstructor.value, value = _selectedInstructor.value
+                    id = "",
+                    code = "",
+                    title = _selectedInstructor.value,
+                    description = _selectedInstructor.value,
+                    url = ""
                 )
             ), id = ""
         )
         val music = PrcX(
             dsc = "Music", title = "Music", values = listOf(
                 Value(
-                    id = "", name = _selectedMusic.value, value = _selectedMusic.value
+                    id = "",
+                    code = "",
+                    title = _selectedMusic.value,
+                    description = _selectedMusic.value,
+                    url = ""
                 )
             ), id = ""
         )
         val language = PrcX(
             dsc = "language", title = "language", values = listOf(
                 Value(
-                    id = "", name = _selectedLanguage.value, value = _selectedLanguage.value
+                    id = "",
+                    code = "",
+                    title = _selectedLanguage.value,
+                    description = _selectedLanguage.value,
+                    url = ""
                 )
             ), id = ""
         )
