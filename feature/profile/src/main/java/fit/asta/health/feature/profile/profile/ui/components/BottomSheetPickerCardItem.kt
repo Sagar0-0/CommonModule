@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.profile.ui
+package fit.asta.health.feature.profile.profile.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement

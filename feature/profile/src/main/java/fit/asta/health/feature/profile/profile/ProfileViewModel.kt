@@ -8,6 +8,7 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.profile.local.entity.ProfileEntity
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -49,6 +50,18 @@ class ProfileViewModel
     private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val userProfileState = _userProfileState.asStateFlow()
 
+    private val _localProfile = MutableStateFlow<ProfileEntity?>(null)
+    val localProfile = _localProfile.asStateFlow()
+
+    fun getLocalProfile() = viewModelScope.launch {
+        _localProfile.value = profileRepo.getLocalProfile()
+    }
+
+    fun updateLocalProfile(profileEntity: ProfileEntity?) = viewModelScope.launch {
+        if (profileEntity != null) {
+            profileRepo.updateLocalProfile(profileEntity)
+        }
+    }
 
     fun getWalletData() {
         _walletDataState.value = UiState.Loading

@@ -11,6 +11,7 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
+import fit.asta.health.data.profile.remote.model.mergeWithLocalData
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
@@ -27,26 +28,24 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
     composable(route = PROFILE_GRAPH_ROUTE) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
-        val walletDataState by profileViewModel.walletDataState.collectAsStateWithLifecycle()
-        val subscriptionDataState by profileViewModel.subscriptionDataState.collectAsStateWithLifecycle()
+        val localProfile by profileViewModel.localProfile.collectAsStateWithLifecycle()
         val submitProfileState by profileViewModel.submitProfileState.collectAsStateWithLifecycle()
         val healthPropertiesState by profileViewModel.healthPropertiesState.collectAsStateWithLifecycle()
 
         LaunchedEffect(key1 = Unit) {
+            if (localProfile == null) {
+                profileViewModel.getLocalProfile()
+            }
             if (userProfileResponseState !is UiState.Success) {
                 profileViewModel.getProfileData()
-            }
-            if (walletDataState !is UiState.Success) {
-                profileViewModel.getWalletData()
-            }
-            if (subscriptionDataState !is UiState.Success) {
-                profileViewModel.getSubscriptionData()
             }
         }
 
         val userProfileState = rememberUserProfileState(
-            userProfileResponse = (userProfileResponseState as? UiState.Success)?.data
-                ?: UserProfileResponse(),
+            userProfileResponse =
+            (userProfileResponseState as? UiState.Success)?.data?.mergeWithLocalData(
+                localProfile
+            ) ?: UserProfileResponse(),
             navController = navController,
             onEvent = { event ->
                 when (event) {
@@ -60,6 +59,12 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
 
                     is UserProfileEvent.ResetHealthProperties -> {
                         profileViewModel.resetHealthProperties()
+                    }
+
+                    is UserProfileEvent.SaveUserName -> {
+                        profileViewModel.updateLocalProfile(
+                            localProfile?.copy(name = event.userName)
+                        )
                     }
                 }
             }
@@ -77,8 +82,6 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
             UserProfileContent(
                 userProfileState = userProfileState,
                 submitProfileState = submitProfileState,
-                walletDataState = walletDataState,
-                subscriptionDataState = subscriptionDataState,
                 userPropertiesState = healthPropertiesState
             )
         }

@@ -9,7 +9,6 @@ import androidx.compose.runtime.setValue
 import fit.asta.health.data.profile.remote.model.BMIUnit
 import fit.asta.health.data.profile.remote.model.Physique
 import kotlinx.coroutines.CoroutineScope
-import java.util.Calendar
 
 @Stable
 class PhysiqueScreenState(
@@ -19,24 +18,6 @@ class PhysiqueScreenState(
 ) {
 
     //Physique Page
-    val calendar: Calendar = Calendar.getInstance()
-    var userAge by mutableStateOf(physique.age)
-        private set
-    var userAgeErrorMessage by mutableStateOf<String?>(null)
-        private set
-
-    fun setAge(value: Int) {
-        userAgeErrorMessage = if (value == 0) {
-            "Invalid age"
-        } else if (value < 10) {
-            "Age should be more than 10"
-        } else {
-            null
-        }
-        userAge = value
-    }
-
-
     var userWeight by mutableStateOf(physique.weight?.toString())
         private set
     private var weightInFloat = physique.weight
@@ -77,39 +58,25 @@ class PhysiqueScreenState(
         userHeight = value
     }
 
-    var userGender by mutableStateOf(physique.gender)
-    var isPregnant by mutableStateOf(physique.isPregnant)
-    var onPeriod by mutableStateOf(physique.onPeriod)
-    var userPregnancyWeek by mutableStateOf(physique.pregnancyWeek?.toString())
-    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
     var bmiUnit = BMIUnit.BMI.value
 
 
     fun isValid(): Boolean {
-        return userAge != null
-                && userAgeErrorMessage == null
-                && userWeight != null
+        return userWeight != null
                 && userWeightErrorMessage == null
                 && weightUnit != null
                 && userHeight != null
                 && userHeightErrorMessage == null
                 && heightUnit != null
-                && userGender != null
-                && userPregnancyWeekErrorMessage == null
     }
 
     fun getUpdatedData(): Physique {
         return Physique(
-            age = userAge,
             bodyType = physique.bodyType,
             bmi = physique.bmi,
             bmiUnit = bmiUnit,
-            gender = userGender,
             height = heightInFloat,
             heightUnit = heightUnit,
-            isPregnant = isPregnant,
-            onPeriod = onPeriod,
-            pregnancyWeek = userPregnancyWeek?.toIntOrNull(),
             weight = weightInFloat,
             weightUnit = weightUnit
         )
@@ -127,7 +94,7 @@ class PhysiqueScreenState(
             },
             restore = {
                 PhysiqueScreenState(
-                    physique = it[0] as Physique,
+                    physique = it[0],
                     coroutineScope,
                     onEvent
                 )

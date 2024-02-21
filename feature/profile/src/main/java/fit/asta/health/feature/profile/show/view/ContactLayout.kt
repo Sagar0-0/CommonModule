@@ -29,8 +29,8 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.data.profile.remote.model.BasicDetail
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import fit.asta.health.data.profile.remote.model.UserDetail
 import fit.asta.health.data.profile.remote.model.UserProfileAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
@@ -45,7 +45,7 @@ import fit.asta.health.resources.drawables.R as RDraw
 
 @Composable
 fun ContactLayout(
-    basicDetails: UserDetail,
+    basicDetails: BasicDetail,
 ) {
     Column(
         modifier = Modifier
@@ -59,7 +59,7 @@ fun ContactLayout(
 }
 
 @Composable
-private fun UserProfileSection(basicDetails: UserDetail) {
+private fun UserProfileSection(basicDetails: BasicDetail) {
     Column(
         modifier = Modifier
             .padding(top = AppTheme.spacing.level2)

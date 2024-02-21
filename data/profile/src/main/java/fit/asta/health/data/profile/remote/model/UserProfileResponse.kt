@@ -3,27 +3,41 @@ package fit.asta.health.data.profile.remote.model
 import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import fit.asta.health.data.profile.local.entity.ProfileEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
-    @SerializedName("cont") val userDetail: UserDetail = UserDetail(),
+    @SerializedName("bscDtl") val basicDetail: BasicDetail = BasicDetail(),
     @SerializedName("phq") val physique: Physique = Physique(),
     @SerializedName("hlt") val health: Health = Health(),
     @SerializedName("ls") val lifeStyle: LifeStyle = LifeStyle(),
     @SerializedName("diet") val diet: Diet = Diet(),
 ) : Parcelable
 
+fun UserProfileResponse.mergeWithLocalData(
+    profileEntity: ProfileEntity?
+): UserProfileResponse {
+    if (profileEntity == null) return this
+    this.basicDetail.name = profileEntity.name
+    return this
+}
+
 @Parcelize
-data class UserDetail(
+data class BasicDetail(
     @SerializedName("adr") val userProfileAddress: UserProfileAddress = UserProfileAddress(),
     @SerializedName("dob") val dob: String = "",
     @SerializedName("mail") val email: String = "",
-    @SerializedName("name") val name: String = "",
+    @SerializedName("name") var name: String = "",
     @SerializedName("ph") val phoneNumber: String = "",
-    @SerializedName("media") val media: ProfileMedia = ProfileMedia()
+    @SerializedName("media") val media: ProfileMedia = ProfileMedia(),
+    @SerializedName("age") val age: Int? = 0,
+    @SerializedName("gen") val gender: Gender? = 0,
+    @SerializedName("prg") val isPregnant: BooleanInt? = 0,
+    @SerializedName("prd") val onPeriod: BooleanInt? = 0,
+    @SerializedName("pw") val pregnancyWeek: Int? = 0,
 ) : Parcelable
 
 @Parcelize
@@ -48,16 +62,11 @@ data class UserProfileAddress(
 
 @Parcelize
 data class Physique(
-    @SerializedName("age") val age: Int? = 0,
     @SerializedName("bdt") val bodyType: Int? = 0,
     @SerializedName("bmi") val bmi: Float? = 0f,
     @SerializedName("bmiUnit") val bmiUnit: Int? = 0,
-    @SerializedName("gen") val gender: Gender? = 0,
     @SerializedName("ht") val height: Float? = 0f,
     @SerializedName("htUnit") val heightUnit: Int? = 0,
-    @SerializedName("prg") val isPregnant: BooleanInt? = 0,
-    @SerializedName("prd") val onPeriod: BooleanInt? = 0,
-    @SerializedName("pw") val pregnancyWeek: Int? = 0,
     @SerializedName("wt") val weight: Float? = 0f,
     @SerializedName("wtUnit") val weightUnit: Int? = 0,
 ) : Parcelable
