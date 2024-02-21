@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.Value
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.sunlight.feature.components.SelectableImageBox
 import fit.asta.health.sunlight.feature.event.SkinConditionEvents
@@ -36,6 +37,9 @@ fun SkinExposureScreen(
 ) {
     LaunchedEffect(Unit){
         onEvent.invoke(SkinConditionEvents.OnSkinExposure)
+    }
+    if(state.value.isLoading){
+        AppDotTypingAnimation()
     }
     var selected by remember {
         mutableStateOf(skinConditionDataMapper[SkinConditionScreenCode.EXPOSURE_SCREEN]?.code ?: "")

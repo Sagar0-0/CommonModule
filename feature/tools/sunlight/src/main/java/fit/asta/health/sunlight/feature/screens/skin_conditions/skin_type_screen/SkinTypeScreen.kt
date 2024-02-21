@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -13,6 +14,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.Value
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.sunlight.feature.components.SelectableRow
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinConditionScreenCode
@@ -27,10 +29,14 @@ fun SkinTypeScreen(
     skinConditionDataMapper: MutableMap<String, Value?>,
     onSelect: (SkinConditionResponseData) -> Unit
 ) {
+    val type=skinTypeState.collectAsState()
     var selected by remember {
         mutableStateOf(
             skinConditionDataMapper[SkinConditionScreenCode.SKIN_TYPE_SCREEN]?.code ?: ""
         )
+    }
+    if(type.value.isLoading){
+        AppDotTypingAnimation()
     }
     LazyColumn(
         Modifier
@@ -43,7 +49,7 @@ fun SkinTypeScreen(
                 modifier = Modifier.padding(8.dp)
             )
         }
-        itemsIndexed(skinTypeState.value.skinConditionResponse ?: emptyList()) { index, item ->
+        itemsIndexed(type.value.skinConditionResponse ?: emptyList()) { index, item ->
             SelectableRow(
                 title = item.name ?: "",
                 isSelected = item.code == selected

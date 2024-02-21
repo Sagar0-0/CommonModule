@@ -15,6 +15,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.Value
+import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.sunlight.feature.components.SelectableRowSkinColor
 import fit.asta.health.sunlight.feature.event.SkinConditionEvents
@@ -35,6 +36,9 @@ fun SelectSkinColorScreen(
     onSelect: (SkinConditionResponseData) -> Unit
 ) {
     val skinColor=skinColorState.collectAsState()
+    if(skinColor.value.isLoading){
+        AppDotTypingAnimation()
+    }
     LaunchedEffect(Unit){
         onEvent.invoke(SkinConditionEvents.OnSkinColor)
     }

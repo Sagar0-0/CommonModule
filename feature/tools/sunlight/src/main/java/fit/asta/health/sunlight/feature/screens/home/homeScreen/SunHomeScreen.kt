@@ -11,6 +11,8 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -25,6 +27,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.sunlight.feature.components.SunlightTopBar
 import fit.asta.health.sunlight.feature.components.UvBarChartCard
@@ -59,6 +62,7 @@ fun SunHomeScreen(
         bottomSheetState = sheetState
     )
     val scope = rememberCoroutineScope()
+    val snackbarHostState = remember { SnackbarHostState() }
     var showDialogue by remember {
         mutableStateOf(false)
     }
@@ -67,117 +71,128 @@ fun SunHomeScreen(
             scaffoldState.bottomSheetState.partialExpand()
         }
     }
-    AppBottomSheetScaffold(
-        modifier = Modifier.fillMaxSize(),
-        scaffoldState = scaffoldState,
-        sheetPeekHeight = 120.dp,
-        topBar = {
-            SunlightTopBar(
-                title = "Sunlight Tool",
-                onBack = onBack,
-                onHelp = { onMenu ->
-                    when (onMenu) {
-                        OnHomeMenu.OnSkinConditionEdit -> {
-                            if (!homeState.value.sunlightHomeResponse?.sunLightData?.prc.isNullOrEmpty()) {
-                                navigateToSkinCondition.invoke("-")
+    AppScaffold(snackBarHostState = snackbarHostState) {
+        AppBottomSheetScaffold(
+            modifier = Modifier.fillMaxSize(),
+            scaffoldState = scaffoldState,
+            sheetPeekHeight = 120.dp,
+            topBar = {
+                SunlightTopBar(
+                    title = "Sunlight Tool",
+                    onBack = onBack,
+                    onHelp = { onMenu ->
+                        when (onMenu) {
+                            OnHomeMenu.OnSkinConditionEdit -> {
+                                if (!homeState.value.sunlightHomeResponse?.sunLightData?.prc.isNullOrEmpty()) {
+                                    navigateToSkinCondition.invoke("-")
+                                }
+                            }
+
+                            OnHomeMenu.OnHelpAndSuggestion -> {
+                                navigateToHelpAndSuggestion.invoke()
                             }
                         }
-
-                        OnHomeMenu.OnHelpAndSuggestion -> {
-                            navigateToHelpAndSuggestion.invoke()
+                    },
+                )
+            },
+            sheetContent = {
+                SunlightBottomSheet(
+                    selectedData = homeState.value.skinConditionData,
+                    timerState = homeState.value.isTimerRunning,
+                    timerPauseState = homeState.value.isTimerPaused,
+                    scaffoldState = scaffoldState,
+                    supplementData = homeState.value.supplementData,
+                    goToList = { _, code ->
+                        navigateToSkinCondition.invoke(code)
+                    },
+                    onTarget = {
+                        navigateToSkinCondition.invoke(SkinConditionScreenCode.SUPPLEMENT_SCREEN)
+                    },
+                    onStart = {
+                        val time =
+                            homeState.value.sunlightHomeResponse?.sunLightProgressData?.rem ?: 0
+                        if (homeState.value.isTimerRunning.value) {
+                            onEvent(SunlightHomeEvent.OnStopTimer)
+                        } else {
+                            if (!DateUtil.isCurrentTimeLaterThan(
+                                    homeState.value.sunlightHomeResponse?.sunSlotData?.toChartData()
+                                        ?.lastOrNull()?.time ?: ""
+                                )
+                            ) {
+                                onEvent(SunlightHomeEvent.OnStartTimer(time))
+                            } else {
+                                scope.launch {
+                                    snackbarHostState.showSnackbar(
+                                        message = "Timer can be only started during the given time slots.Thank you.",
+                                        duration = SnackbarDuration.Short,
+                                        withDismissAction = true
+                                    )
+                                }
+                            }
+                        }
+                    },
+                    onPause = {
+                        if (homeState.value.isTimerPaused.value) {
+                            onEvent(SunlightHomeEvent.OnResume)
+                        } else {
+                            onEvent(SunlightHomeEvent.OnPause)
                         }
                     }
-                },
-            )
-        },
-        sheetContent = {
-            SunlightBottomSheet(
-                selectedData = homeState.value.skinConditionData,
-                timerState = homeState.value.isTimerRunning,
-                timerPauseState = homeState.value.isTimerPaused,
-                scaffoldState = scaffoldState,
-                supplementData = homeState.value.supplementData,
-                goToList = { _, code ->
-                    navigateToSkinCondition.invoke(code)
-                },
-                onTarget = {
-                    navigateToSkinCondition.invoke(SkinConditionScreenCode.SUPPLEMENT_SCREEN)
-                },
-                onStart = {
-                    val time = homeState.value.sunlightHomeResponse?.sunLightProgressData?.rem ?: 0
-                    if (homeState.value.isTimerRunning.value) {
-                        onEvent(SunlightHomeEvent.OnStopTimer)
-                    } else {
-                        if (!DateUtil.isCurrentTimeLaterThan(
-                                homeState.value.sunlightHomeResponse?.sunSlotData?.toChartData()
-                                    ?.lastOrNull()?.time ?: ""
-                            )
-                        ) {
-                            onEvent(SunlightHomeEvent.OnStartTimer(time))
-                        }
-                    }
-                },
-                onPause = {
-                    if (homeState.value.isTimerPaused.value) {
-                        onEvent(SunlightHomeEvent.OnResume)
-                    } else {
-                        onEvent(SunlightHomeEvent.OnPause)
-                    }
+                ) {
+                    //schedule
+                    //showDialogue = true
                 }
-            ) {
-                //schedule
-                showDialogue = true
             }
-        },
-    ) { padding ->
-        Box(modifier = Modifier.fillMaxSize()) {
-            /*AppLocalImage(
+        ) { padding ->
+            Box(modifier = Modifier.fillMaxSize()) {
+                /*AppLocalImage(
                 painter = painterResource(id = DrawR.drawable.after_noon),
                 contentScale = ContentScale.FillBounds,
                 modifier = Modifier.fillMaxSize()
             )*/
-            Column(
-                modifier = Modifier
-                    .padding(
-                        top = padding.calculateTopPadding(),
-                        start = 20.dp,
-                        end = 20.dp,
-                        bottom = 120.dp
-                    )
-                    .verticalScroll(scrollState)
-            ) {
-                AnimatedVisibility(homeState.value.isLoading) {
-                    Box(
-                        modifier = Modifier
-                            .fillMaxSize()
-                            .height(600.dp),
-                        contentAlignment = Alignment.Center
-                    ) {
-                        AppDotTypingAnimation()
+                Column(
+                    modifier = Modifier
+                        .padding(
+                            top = padding.calculateTopPadding(),
+                            start = 20.dp,
+                            end = 20.dp,
+                            bottom = 120.dp
+                        )
+                        .verticalScroll(scrollState)
+                ) {
+                    AnimatedVisibility(homeState.value.isLoading) {
+                        Box(
+                            modifier = Modifier
+                                .fillMaxSize()
+                                .height(600.dp),
+                            contentAlignment = Alignment.Center
+                        ) {
+                            AppDotTypingAnimation()
+                        }
                     }
-                }
 
-                UvIndexLocationCard(homeState.value.sunlightHomeResponse?.sunSlotData) {
-                    showDialogue = true
-                }
+                    UvIndexLocationCard(homeState.value.sunlightHomeResponse?.sunSlotData) {
+                        showDialogue = true
+                    }
 //                GaugeChart()
-                //  WeatherContent(homeState.value.sunlightHomeResponse?.sunSlotData)
-                DurationContent(homeState)
-                if (!homeState.value.sunlightHomeResponse?.tips?.tips.isNullOrEmpty()) {
-                    HomePageSugBanner(homeState.value.sunlightHomeResponse?.tips?.tips)
-                    UvBarChartCard(
-                        homeState.value.sunlightHomeResponse?.sunSlotData,
-                    )
+                    //  WeatherContent(homeState.value.sunlightHomeResponse?.sunSlotData)
+                    DurationContent(homeState)
+                    if (!homeState.value.sunlightHomeResponse?.tips?.tips.isNullOrEmpty()) {
+                        HomePageSugBanner(homeState.value.sunlightHomeResponse?.tips?.tips)
+                        UvBarChartCard(
+                            homeState.value.sunlightHomeResponse?.sunSlotData,
+                        )
+                    }
                 }
             }
         }
-    }
-    if (showDialogue) {
-        AppDialog(onDismissRequest = { showDialogue = false }) {
-            SpfDialogueContent(onContinue = { showDialogue = false }, onUpdate = {
-                showDialogue = false
-                navigateToSkinCondition.invoke(SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN)
-            })
+        if (showDialogue) {
+            AppDialog(onDismissRequest = { showDialogue = false }) {
+                SpfDialogueContent(onContinue = { showDialogue = false }, onUpdate = {
+                    showDialogue = false
+                    navigateToSkinCondition.invoke(SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN)
+                })
+            }
         }
     }
 }
