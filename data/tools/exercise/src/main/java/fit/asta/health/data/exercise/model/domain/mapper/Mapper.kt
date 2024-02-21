@@ -1,5 +1,6 @@
 package fit.asta.health.data.exercise.model.domain.mapper
 
+import android.util.Log
 import fit.asta.health.data.exercise.model.domain.model.ExerciseTool
 import fit.asta.health.data.exercise.model.network.ExerciseData
 import fit.asta.health.data.exercise.model.network.NetGetStart
@@ -36,16 +37,16 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 vit = this.progressData.vit,
                 weather = this.toolData.wea,
                 code = this.toolData.code,
-                style = this.toolData.prc[1].values[0].value,
-                bodyParts = this.toolData.prc[2].values[0].value,
-                challenge = this.toolData.prc[3].values[0].value,
-                bodyStretch = this.toolData.prc[4].values[0].value,
-                quick = this.toolData.prc[5].values[0].value,
-                level = this.toolData.prc[6].values[0].value,
-                instructor = this.toolData.prc[7].values[0].value,
-                music = this.toolData.prc[8].values[0].value,
-                language = this.toolData.prc[9].values[0].value,
-                durationPrc = this.toolData.prc[2].values[0].value,
+                style = this.toolData.prc[1].values[0].title,
+                bodyParts = this.toolData.prc[2].values[0].title,
+                challenge = this.toolData.prc[3].values[0].title,
+                bodyStretch = this.toolData.prc[4].values[0].title,
+                quick = this.toolData.prc[5].values[0].title,
+                level = this.toolData.prc[6].values[0].title,
+                instructor = this.toolData.prc[9].values[0].title,
+                music = this.toolData.prc[8].values[0].title,
+//                language = this.toolData.prc[9].values[0].title,
+                durationPrc = this.toolData.prc[0].values[0].title,
             )
         }
         "dance"->{
@@ -63,15 +64,15 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 vit = this.progressData.vit,
                 weather = this.toolData.wea,
                 code = this.toolData.code,
-                style = this.toolData.prc[1].values[0].value,
-                bodyParts = this.toolData.prc[2].values[0].value,
-                challenge = this.toolData.prc[3].values[0].value,
-                bodyStretch = this.toolData.prc[4].values[0].value,
-                quick = this.toolData.prc[5].values[0].value,
-                level = this.toolData.prc[6].values[0].value,
-                instructor = this.toolData.prc[7].values[0].value,
-                music = this.toolData.prc[8].values[0].value,
-                language = this.toolData.prc[9].values[0].value,
+                style = this.toolData.prc[1].values[0].title,
+                bodyParts = this.toolData.prc[2].values[0].title,
+                challenge = this.toolData.prc[3].values[0].title,
+                bodyStretch = this.toolData.prc[4].values[0].title,
+                quick = this.toolData.prc[5].values[0].title,
+                level = this.toolData.prc[6].values[0].title,
+                instructor = this.toolData.prc[9].values[0].title,
+                music = this.toolData.prc[8].values[0].title,
+//                language = this.toolData.prc[9].values[0].title,
             )
         }
         "workout"->{
@@ -89,17 +90,17 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 vit = this.progressData.vit,
                 weather = this.toolData.wea,
                 code = this.toolData.code,
-                style = this.toolData.prc[1].values[0].value,
-                durationPrc = this.toolData.prc[2].values[0].value,
-                bodyParts = this.toolData.prc[3].values[0].value,
-                challenge = this.toolData.prc[4].values[0].value,
-                bodyStretch = this.toolData.prc[5].values[0].value,
-                quick = this.toolData.prc[6].values[0].value,
-                level = this.toolData.prc[7].values[0].value,
-                equipments = this.toolData.prc[8].values[0].value,
-                instructor = this.toolData.prc[9].values[0].value,
-                music = this.toolData.prc[10].values[0].value,
-                language = this.toolData.prc[11].values[0].value,
+                style = this.toolData.prc[1].values[0].title,
+                durationPrc = this.toolData.prc[0].values[0].title,
+                bodyParts = this.toolData.prc[2].values[0].title,
+                challenge = this.toolData.prc[3].values[0].title,
+                bodyStretch = this.toolData.prc[4].values[0].title,
+                quick = this.toolData.prc[5].values[0].title,
+                level = this.toolData.prc[6].values[0].title,
+                equipments = this.toolData.prc[7].values[0].title,
+                instructor = this.toolData.prc[9].values[0].title,
+                music = this.toolData.prc[8].values[0].title,
+//                language = this.toolData.prc[11].values[0].title,
             )
         }
         "HIIT"->{
@@ -117,16 +118,16 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 vit = this.progressData.vit,
                 weather = this.toolData.wea,
                 code = this.toolData.code,
-                style = this.toolData.prc[1].values[0].value,
-                durationPrc = this.toolData.prc[2].values[0].value,
-                bodyParts = this.toolData.prc[3].values[0].value,
-                challenge = this.toolData.prc[4].values[0].value,
-                bodyStretch = this.toolData.prc[5].values[0].value,
-                quick = this.toolData.prc[6].values[0].value,
-                level = this.toolData.prc[7].values[0].value,
-                equipments = this.toolData.prc[1].values[0].value,
-                instructor = this.toolData.prc[8].values[0].value,
-                music = this.toolData.prc[9].values[0].value
+                style = this.toolData.prc[1].values[0].title,
+                durationPrc = this.toolData.prc[0].values[0].title,
+                bodyParts = this.toolData.prc[2].values[0].title,
+                challenge = this.toolData.prc[3].values[0].title,
+                bodyStretch = this.toolData.prc[4].values[0].title,
+                quick = this.toolData.prc[5].values[0].title,
+                level = this.toolData.prc[6].values[0].title,
+                equipments = this.toolData.prc[7].values[0].title,
+                instructor = this.toolData.prc[9].values[0].title,
+                music = this.toolData.prc[8].values[0].title
             )
         }
 
@@ -145,16 +146,16 @@ fun ExerciseData.getExerciseTool(): ExerciseTool {
                 vit = this.progressData.vit,
                 weather = this.toolData.wea,
                 code = this.toolData.code,
-                style = this.toolData.prc[1].values[0].value,
-                durationPrc = this.toolData.prc[2].values[0].value,
-                bodyParts = this.toolData.prc[3].values[0].value,
-                challenge = this.toolData.prc[4].values[0].value,
-                bodyStretch = this.toolData.prc[5].values[0].value,
-                quick = this.toolData.prc[6].values[0].value,
-                level = this.toolData.prc[7].values[0].value,
-                equipments = this.toolData.prc[1].values[0].value,
-                instructor = this.toolData.prc[8].values[0].value,
-                music = this.toolData.prc[9].values[0].value
+                style = this.toolData.prc[1].values[0].title,
+                durationPrc = this.toolData.prc[0].values[0].title,
+                bodyParts = this.toolData.prc[2].values[0].title,
+                challenge = this.toolData.prc[3].values[0].title,
+                bodyStretch = this.toolData.prc[4].values[0].title,
+                quick = this.toolData.prc[5].values[0].title,
+                level = this.toolData.prc[6].values[0].title,
+                equipments = this.toolData.prc[7].values[0].title,
+                instructor = this.toolData.prc[9].values[0].title,
+                music = this.toolData.prc[8].values[0].title
             )
         }
     }
