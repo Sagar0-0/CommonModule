@@ -30,7 +30,7 @@ import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.profile.ui.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.resources.strings.R
 
@@ -48,7 +48,14 @@ fun PhysiqueScreen(
     ) {
         Spacer(modifier = Modifier)
         MeasurementSection(userProfileState)
-        CreateProfileTwoButtonLayout(userProfileState)
+        PageNavigationButtons(
+            onPrevious = {
+                userProfileState.currentPageIndex--
+            },
+            onNext = {
+                userProfileState.currentPageIndex++
+            }
+        )
         Spacer(modifier = Modifier)
     }
 }

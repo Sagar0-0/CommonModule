@@ -19,8 +19,8 @@ import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
-import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPickerCardItem
-import fit.asta.health.feature.profile.profile.ui.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
+import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
@@ -43,12 +43,9 @@ fun DietScreen(
     ) {
         Spacer(modifier = Modifier)
         userProfileState.dietScreenState.bottomSheets.forEachIndexed { index, type ->
-            BottomSheetPickerCardItem(
+            BottomSheetListItemPicker(
                 name = type.name,
                 list = type.list,
-                onRemove = {
-                    type.list.remove(it)
-                }
             ) {
                 currentBottomSheetIndex.intValue = index
                 userProfileState.dietScreenState.openPropertiesBottomSheet(
@@ -58,12 +55,14 @@ fun DietScreen(
                 )
             }
         }
-        CreateProfileTwoButtonLayout(
-            userProfileState,
-            isLastButtonSubmit = true
-        ) {
-            userProfileState.saveData()
-        }
+        PageNavigationButtons(
+            onPrevious = {
+                userProfileState.currentPageIndex--
+            },
+            onSubmitClick = {
+                userProfileState.saveData()
+            }
+        )
         Spacer(modifier = Modifier)
         AppModalBottomSheet(
             sheetVisible = bottomSheetVisible.value,

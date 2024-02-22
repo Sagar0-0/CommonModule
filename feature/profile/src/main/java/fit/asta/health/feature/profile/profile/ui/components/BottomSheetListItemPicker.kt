@@ -15,23 +15,22 @@ import androidx.compose.ui.Modifier
 import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
-fun BottomSheetPickerCardItem(
+fun BottomSheetListItemPicker(
     name: String,
     list: List<UserProperties>,
-    onRemove: (UserProperties) -> Unit,
     onOpenClick: () -> Unit
 ) {
     AppCard(
         modifier = Modifier
             .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2)
+            .padding(horizontal = AppTheme.spacing.level2),
+        onClick = onOpenClick
     ) {
         Column(
             modifier = Modifier
@@ -45,11 +44,7 @@ fun BottomSheetPickerCardItem(
                 verticalAlignment = Alignment.CenterVertically
             ) {
                 TitleTexts.Level3(text = name)
-                AppIconButton(
-                    onClick = onOpenClick
-                ) {
-                    AppIcon(imageVector = Icons.Default.AddCircle)
-                }
+                AppIcon(imageVector = Icons.Default.AddCircle)
             }
             AnimatedVisibility(list.isNotEmpty()) {
                 FlowRow(
@@ -60,9 +55,7 @@ fun BottomSheetPickerCardItem(
                         AppAssistChip(
                             textToShow = it.name,
                             trailingIcon = Icons.Default.RemoveCircle
-                        ) {
-                            onRemove(it)
-                        }
+                        )
                     }
                 }
             }

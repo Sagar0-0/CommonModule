@@ -61,7 +61,6 @@ import fit.asta.health.data.profile.remote.model.BooleanIntTypes
 import fit.asta.health.data.profile.remote.model.GenderTypes
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
-import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -73,6 +72,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTextField
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
+import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.GenderSelector
 import fit.asta.health.feature.profile.profile.utils.TwoTogglesGroup
@@ -168,11 +168,8 @@ fun BasicDetailsScreen(
             userProfileState.navigateToOrders()
         }
 
-        AppFilledButton(
-            textToShow = stringResource(R.string.next_button),
-            modifier = Modifier
-                .fillMaxWidth(),
-            onClick = {
+        PageNavigationButtons(
+            onNext = {
                 userProfileState.currentPageIndex++
             }
         )
