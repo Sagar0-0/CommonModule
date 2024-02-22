@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.profile.ui
+package fit.asta.health.feature.profile.profile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -26,7 +26,7 @@ import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun HealthScreen(
+fun DietScreen(
     userProfileState: UserProfileState,
     userPropertiesState: UiState<List<UserProperties>>
 ) {
@@ -42,13 +42,13 @@ fun HealthScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier)
-        userProfileState.healthScreenState.bottomSheets.forEachIndexed { index, type ->
+        userProfileState.dietScreenState.bottomSheets.forEachIndexed { index, type ->
             BottomSheetListItemPicker(
                 name = type.name,
-                list = type.list
+                list = type.list,
             ) {
                 currentBottomSheetIndex.intValue = index
-                userProfileState.healthScreenState.openHealthBottomSheet(
+                userProfileState.dietScreenState.openPropertiesBottomSheet(
                     bottomSheetState,
                     currentBottomSheetIndex,
                     bottomSheetVisible
@@ -59,8 +59,8 @@ fun HealthScreen(
             onPrevious = {
                 userProfileState.currentPageIndex--
             },
-            onNext = {
-                userProfileState.currentPageIndex++
+            onSubmitClick = {
+                userProfileState.saveData()
             }
         )
         Spacer(modifier = Modifier)
@@ -86,23 +86,23 @@ fun HealthScreen(
                         userProfileState.bottomSheetSearchQuery = query
                     },
                     isItemSelected = { prop ->
-                        userProfileState.healthScreenState.isPropertySelected(
+                        userProfileState.dietScreenState.isPropertySelected(
                             currentBottomSheetIndex.intValue,
                             prop
                         )
                     },
                     onAdd = { prop ->
-                        userProfileState.healthScreenState.addProperty(
+                        userProfileState.dietScreenState.addProperty(
                             currentBottomSheetIndex.intValue,
                             prop
                         )
                     },
                     onRemove = { prop ->
-                        userProfileState.healthScreenState.removeProperty(
+                        userProfileState.dietScreenState.removeProperty(
                             currentBottomSheetIndex.intValue,
                             prop
                         )
-                    },
+                    }
                 )
             }
         }

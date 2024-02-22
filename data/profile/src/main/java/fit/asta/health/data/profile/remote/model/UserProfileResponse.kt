@@ -120,11 +120,39 @@ enum class GenderTypes(val gender: Gender, val title: String) {
     OTHER(3, "Other")
 }
 
+fun Gender?.isMale(): Boolean {
+    if (this == null) return false
+    return this == GenderTypes.MALE.gender
+}
+
+fun Gender?.isFemale(): Boolean {
+    if (this == null) return false
+    return this == GenderTypes.FEMALE.gender
+}
+
+fun Gender?.isOther(): Boolean {
+    if (this == null) return false
+    return this == GenderTypes.OTHER.gender
+}
+
+fun Gender?.getGenderName(): String {
+    if (this == null) return ""
+    GenderTypes.entries.forEach {
+        if (it.gender == this) return it.title
+    }
+    return ""
+}
+
 typealias BooleanInt = Int
 
 enum class BooleanIntTypes(val value: BooleanInt, val title: String) {
     YES(1, "Yes"),
     NO(0, "No")
+}
+
+fun BooleanInt?.isTrue(): Boolean {
+    if (this == null) return false
+    return this == BooleanIntTypes.YES.value
 }
 
 enum class HeightUnit(val title: String, val value: Int) {

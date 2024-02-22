@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 
-package fit.asta.health.feature.profile.profile.ui
+package fit.asta.health.feature.profile.profile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column

@@ -13,7 +13,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.mergeWithLocalData
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.feature.profile.profile.ui.UserProfileContent
+import fit.asta.health.feature.profile.profile.ui.screens.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
 
