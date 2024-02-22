@@ -27,8 +27,8 @@ fun UserProfileResponse.mergeWithLocalData(
 
 @Parcelize
 data class BasicDetail(
-    @SerializedName("adr") val userProfileAddress: UserProfileAddress = UserProfileAddress(),
-    @SerializedName("dob") val dob: String = "",
+    @SerializedName("adr") val userProfileAddress: UserProfileAddress? = null,
+    @SerializedName("dob") val dob: String? = null,
     @SerializedName("mail") val email: String = "",
     @SerializedName("name") var name: String = "",
     @SerializedName("ph") val phoneNumber: String = "",
@@ -86,14 +86,14 @@ data class Health(
 //working env missing
 @Parcelize
 data class LifeStyle(
-    @SerializedName("act") var physicalActive: Int? = 0,
-    @SerializedName("env") var workingEnv: Int? = 0,
-    @SerializedName("ws") var workStyle: Int? = 0,
-    @SerializedName("whr") var workingHours: Int? = 0,
+    @SerializedName("act") var physicalActive: Int? = null,
+    @SerializedName("we") var workingEnv: Int? = null,
+    @SerializedName("ws") var workStyle: Int? = null,
+    @SerializedName("whr") var workingHours: Int? = null,
     @SerializedName("cat") val curActivities: List<UserProperties>? = null,
     @SerializedName("pat") val prefActivities: List<UserProperties>? = null,
     @SerializedName("lst") val lifeStyleTargets: List<UserProperties>? = null,
-    @SerializedName("wt") var workingTime: TimeSchedule = TimeSchedule(),
+    @SerializedName("job") var workingTime: TimeSchedule = TimeSchedule(),
     @SerializedName("slp") var sleep: TimeSchedule = TimeSchedule(), // missing in UI
 ) : Parcelable
 
@@ -108,8 +108,8 @@ data class Diet(
 
 @Parcelize
 data class TimeSchedule(
-    @SerializedName("str") val from: Float = 0.0f,
-    @SerializedName("end") val to: Float = 0.0f,
+    @SerializedName("str") val from: Float? = null,
+    @SerializedName("end") val to: Float? = null,
 ) : Parcelable
 
 typealias Gender = Int

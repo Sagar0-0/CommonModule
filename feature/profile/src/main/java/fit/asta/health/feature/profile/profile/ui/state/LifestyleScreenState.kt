@@ -23,10 +23,10 @@ class LifestyleScreenState(
 ) {
 
     //Lifestyle Page
-    private var sleepStartTime = mutableStateOf(lifeStyle.sleep.from.toString())
-    private var sleepEndTime = mutableStateOf(lifeStyle.sleep.to.toString())
-    private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from.toString())
-    private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to.toString())
+    private var sleepStartTime = mutableStateOf(lifeStyle.sleep.from?.toString())
+    private var sleepEndTime = mutableStateOf(lifeStyle.sleep.to?.toString())
+    private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from?.toString())
+    private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to?.toString())
 
     private val currentActivities =
         (lifeStyle.curActivities ?: listOf()).toMutableStateList()
@@ -45,12 +45,12 @@ class LifestyleScreenState(
         prefActivities = preferredActivities,
         lifeStyleTargets = lifestyleTargets,
         workingTime = TimeSchedule(
-            from = jobStartTime.value.toFloat(),
-            to = jobEndTime.value.toFloat()
+            from = jobStartTime.value?.toFloat(),
+            to = jobEndTime.value?.toFloat()
         ),
         sleep = TimeSchedule(
-            from = sleepStartTime.value.toFloat(),
-            to = sleepEndTime.value.toFloat()
+            from = sleepStartTime.value?.toFloat(),
+            to = sleepEndTime.value?.toFloat()
         )
     )
 
@@ -159,8 +159,8 @@ class LifestyleScreenState(
         val title: String,
         val startButtonTitle: String,
         val endButtonTitle: String,
-        val startTime: MutableState<String>,
-        val endTime: MutableState<String>,
+        val startTime: MutableState<String?>,
+        val endTime: MutableState<String?>,
         val startIndex: Int,
         val endIndex: Int
     )
