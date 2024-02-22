@@ -13,7 +13,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.mergeWithLocalData
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.feature.profile.profile.ui.UserProfileContent
+import fit.asta.health.feature.profile.profile.ui.screens.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
 
@@ -24,7 +24,12 @@ fun NavController.navigateToProfile(navOptions: NavOptions? = null) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun NavGraphBuilder.profileRoute(navController: NavController) {
+fun NavGraphBuilder.profileRoute(
+    navController: NavController,
+    navigateToWallet: () -> Unit,
+    navigateToOrders: () -> Unit,
+    navigateToSubscription: () -> Unit,
+) {
     composable(route = PROFILE_GRAPH_ROUTE) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
@@ -65,6 +70,18 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
                         profileViewModel.updateLocalProfile(
                             localProfile?.copy(name = event.userName)
                         )
+                    }
+
+                    is UserProfileEvent.NavigateToOrders -> {
+                        navigateToOrders()
+                    }
+
+                    is UserProfileEvent.NavigateToWallet -> {
+                        navigateToWallet()
+                    }
+
+                    is UserProfileEvent.NavigateToSubscription -> {
+                        navigateToSubscription()
                     }
                 }
             }

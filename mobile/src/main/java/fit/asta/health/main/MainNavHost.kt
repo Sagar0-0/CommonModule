@@ -81,7 +81,18 @@ private fun MainNavHost(startDestination: String) {
         subscriptionDurationRoute(navController)
         subscriptionCheckoutRoute(navController)
 
-        profileRoute(navController)
+        profileRoute(
+            navController = navController,
+            navigateToOrders = {
+                navController.navigateToOrders()
+            },
+            navigateToWallet = {
+                navController.navigateToWallet()
+            },
+            navigateToSubscription = {
+                navController.navigateToSubscription()
+            }
+        )
 
         breathingNavigation(navController, onBack = { navController.navigateUp() })
         waterToolNavigation(navController, onBack = { navController.navigateUp() })

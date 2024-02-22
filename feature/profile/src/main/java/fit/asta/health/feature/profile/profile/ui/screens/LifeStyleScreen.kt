@@ -1,6 +1,6 @@
 @file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
 
-package fit.asta.health.feature.profile.profile.ui
+package fit.asta.health.feature.profile.profile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -38,8 +38,8 @@ import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPickerCardItem
-import fit.asta.health.feature.profile.profile.ui.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
+import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
@@ -85,12 +85,9 @@ fun LifestyleScreen(
 
 
         userProfileState.lifestyleScreenState.bottomSheets.forEachIndexed { index, type ->
-            BottomSheetPickerCardItem(
+            BottomSheetListItemPicker(
                 name = type.name,
-                list = type.list,
-                onRemove = {
-                    type.list.remove(it)
-                }
+                list = type.list
             ) {
                 currentBottomSheetIndex.intValue = index
                 userProfileState.lifestyleScreenState.openLifestyleBottomSheet(
@@ -101,7 +98,15 @@ fun LifestyleScreen(
             }
         }
 
-        CreateProfileTwoButtonLayout(userProfileState)
+        PageNavigationButtons(
+            onPrevious = {
+                userProfileState.currentPageIndex--
+            },
+            onNext = {
+                userProfileState.currentPageIndex++
+            }
+        )
+
         Spacer(modifier = Modifier)
 
         ClockDialog(

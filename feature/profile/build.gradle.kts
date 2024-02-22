@@ -25,8 +25,6 @@ dependencies {
 
     implementation(project(":data:profile"))
     implementation(project(":data:auth"))
-    implementation(project(":data:payments:wallet"))
-    implementation(project(":data:payments:subscription"))
 
     implementation(project(":feature:auth"))
 

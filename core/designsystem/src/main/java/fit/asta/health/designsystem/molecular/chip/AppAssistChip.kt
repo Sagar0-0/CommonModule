@@ -99,10 +99,9 @@ fun AppAssistChip(
     shape: Shape = AppTheme.shape.level2,
     colors: ChipColors = AssistChipDefaults.assistChipColors(),
     elevation: ChipElevation? = AssistChipDefaults.assistChipElevation(),
-    //border: BorderStroke? = null,
     border: ChipBorder? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
-    onClick: () -> Unit
+    onClick: (() -> Unit)? = null
 ) {
 
     val textLabelComposable: @Composable (() -> Unit) = {
@@ -138,7 +137,7 @@ fun AppAssistChip(
     }
 
     AssistChip(
-        onClick = onClick,
+        onClick = onClick ?: {},
         label = textLabelComposable,
         modifier = modifier,
         enabled = enabled,
