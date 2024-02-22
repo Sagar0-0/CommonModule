@@ -143,11 +143,11 @@ fun BasicDetailsScreen(
 
         ClickableTextBox(
             label = "Subscription",
-            value = "Check your current plan",
+            value = "Check your plan",
             leadingIcon = Icons.Default.Subscriptions,
             trailingIcon = Icons.Default.ArrowForward
         ) {
-            //Navigate to Subscriptions
+            userProfileState.navigateToSubscriptions()
         }
 
         ClickableTextBox(
@@ -156,7 +156,16 @@ fun BasicDetailsScreen(
             leadingIcon = Icons.Default.AccountBalanceWallet,
             trailingIcon = Icons.Default.ArrowForward
         ) {
-            //Navigate to Wallet
+            userProfileState.navigateToWallet()
+        }
+
+        ClickableTextBox(
+            label = "Orders",
+            value = "Check order history",
+            leadingIcon = Icons.Default.AccountBalanceWallet,
+            trailingIcon = Icons.Default.ArrowForward
+        ) {
+            userProfileState.navigateToOrders()
         }
 
         AppFilledButton(

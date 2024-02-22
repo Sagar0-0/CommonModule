@@ -204,6 +204,18 @@ class UserProfileState(
         }
     }
 
+    fun navigateToOrders() {
+        onEvent(UserProfileEvent.NavigateToOrders)
+    }
+
+    fun navigateToWallet() {
+        onEvent(UserProfileEvent.NavigateToWallet)
+    }
+
+    fun navigateToSubscriptions() {
+        onEvent(UserProfileEvent.NavigateToSubscription)
+    }
+
     companion object {
         fun Saver(
             basicDetailScreenState: BasicDetailScreenState,

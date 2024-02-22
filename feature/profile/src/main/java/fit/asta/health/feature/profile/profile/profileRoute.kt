@@ -24,7 +24,12 @@ fun NavController.navigateToProfile(navOptions: NavOptions? = null) {
 }
 
 @OptIn(ExperimentalFoundationApi::class)
-fun NavGraphBuilder.profileRoute(navController: NavController) {
+fun NavGraphBuilder.profileRoute(
+    navController: NavController,
+    navigateToWallet: () -> Unit,
+    navigateToOrders: () -> Unit,
+    navigateToSubscription: () -> Unit,
+) {
     composable(route = PROFILE_GRAPH_ROUTE) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
@@ -65,6 +70,18 @@ fun NavGraphBuilder.profileRoute(navController: NavController) {
                         profileViewModel.updateLocalProfile(
                             localProfile?.copy(name = event.userName)
                         )
+                    }
+
+                    is UserProfileEvent.NavigateToOrders -> {
+                        navigateToOrders()
+                    }
+
+                    is UserProfileEvent.NavigateToWallet -> {
+                        navigateToWallet()
+                    }
+
+                    is UserProfileEvent.NavigateToSubscription -> {
+                        navigateToSubscription()
                     }
                 }
             }
