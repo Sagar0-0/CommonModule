@@ -48,6 +48,7 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -64,7 +65,8 @@ import kotlinx.coroutines.launch
 fun CustomBevBottomSheet(
     viewModel: WaterToolViewModel = hiltViewModel(),
     onBack: () -> Unit,
-    event: (WTEvent) -> Unit
+    event: (WTEvent) -> Unit,
+    onClickSchedule : () -> Unit
 ) {
     Log.d("rishiRecomposed", "CustomBevSheet called")
     val bottomSheetState = rememberBottomSheetScaffoldState(
@@ -208,6 +210,10 @@ fun CustomBevBottomSheet(
                 event = event,
                 uiState = uiState
             )
+            ButtonWithColor(color = Color.Blue, text = "Schedule",
+                modifier = Modifier.padding(AppTheme.spacing.level1)) {
+                onClickSchedule()
+            }
         }
     }
 }

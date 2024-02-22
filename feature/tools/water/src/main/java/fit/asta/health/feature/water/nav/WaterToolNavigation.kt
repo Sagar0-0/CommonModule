@@ -13,6 +13,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
@@ -25,6 +26,10 @@ import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 
 fun NavController.navigateToWater(navOptions: NavOptions? = null) {
     this.navigate(WATER_GRAPH_ROUTE, navOptions)
+}
+fun NavController.navigateToAllAlarmsFromWater() {
+    this.navigate(SCHEDULER_GRAPH_ROUTE)
+//    ALL_ALARMS_ROUTE
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -51,7 +56,8 @@ fun NavGraphBuilder.waterToolNavigation(
                 else ->
                     CustomBevBottomSheet(
                         onBack = onBack,
-                        event = viewModel::event
+                        event = viewModel::event,
+                        onClickSchedule = {navController.navigateToAllAlarmsFromWater()}
                     )
             }
 
