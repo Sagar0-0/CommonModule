@@ -87,7 +87,7 @@ fun AppFilledButton(
     onClick: () -> Unit,
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    shape: Shape = AppTheme.shape.level1,
+    shape: Shape = AppTheme.shape.circle,
     colors: ButtonColors = ButtonDefaults.buttonColors(
         containerColor = AppTheme.colors.primary,
         contentColor = AppTheme.colors.onPrimary,

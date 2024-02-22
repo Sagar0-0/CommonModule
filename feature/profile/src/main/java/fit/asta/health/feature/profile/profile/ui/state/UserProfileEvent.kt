@@ -9,4 +9,6 @@ sealed interface UserProfileEvent {
         UserProfileEvent
 
     data class GetHealthProperties(val id: String) : UserProfileEvent
+
+    data class SaveUserName(val userName: String) : UserProfileEvent
 }

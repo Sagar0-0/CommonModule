@@ -19,7 +19,9 @@ import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
-import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPickerCardItem
+import fit.asta.health.feature.profile.profile.ui.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @OptIn(ExperimentalMaterial3Api::class)

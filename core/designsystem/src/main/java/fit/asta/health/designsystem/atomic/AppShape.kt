@@ -1,5 +1,6 @@
 package fit.asta.health.designsystem.atomic
 
+import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.CornerBasedShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.runtime.Immutable
@@ -14,6 +15,7 @@ import androidx.compose.ui.unit.dp
 @Immutable
 data class AppShape(
     val rectangle: Shape = RectangleShape,
+    val circle: Shape = CircleShape,
     val level0: CornerBasedShape = RoundedCornerShape(4.dp),
     val level1: CornerBasedShape = RoundedCornerShape(8.dp),
     val level2: CornerBasedShape = RoundedCornerShape(16.dp),

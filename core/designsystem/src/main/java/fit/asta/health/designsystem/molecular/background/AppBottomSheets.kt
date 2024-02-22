@@ -44,7 +44,7 @@ fun AppModalBottomSheet(
 ) {
     if (sheetVisible) {
         ModalBottomSheet(
-            modifier = modifier.fillMaxSize(),
+            modifier = modifier,
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
             windowInsets = windowInsets,

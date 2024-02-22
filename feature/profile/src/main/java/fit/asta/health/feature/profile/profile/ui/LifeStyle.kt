@@ -38,7 +38,9 @@ import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.create.view.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPickerCardItem
+import fit.asta.health.feature.profile.profile.ui.components.CreateProfileTwoButtonLayout
+import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 

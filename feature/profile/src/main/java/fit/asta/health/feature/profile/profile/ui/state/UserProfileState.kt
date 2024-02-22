@@ -97,10 +97,11 @@ fun rememberUserProfileState(
 
     val basicDetailScreenState = rememberSaveable(
         userProfileResponse,
-        saver = BasicDetailScreenState.Saver(onEvent)
+        saver = BasicDetailScreenState.Saver(coroutineScope, onEvent)
     ) {
         BasicDetailScreenState(
-            userDetail = userProfileResponse.userDetail,
+            basicDetail = userProfileResponse.basicDetail,
+            scope = coroutineScope,
             onEvent = onEvent
         )
     }
@@ -193,7 +194,7 @@ class UserProfileState(
             currentPageIndex = 1
         } else {
             val newProfileData = UserProfileResponse(
-                userDetail = basicDetailScreenState.getUpdatedData(),
+                basicDetail = basicDetailScreenState.getUpdatedData(),
                 physique = physiqueScreenState.getUpdatedData(),
                 health = healthScreenState.getUpdatedData(),
                 lifeStyle = lifestyleScreenState.getUpdatedData(),

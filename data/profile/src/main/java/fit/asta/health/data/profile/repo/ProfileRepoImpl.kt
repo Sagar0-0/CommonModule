@@ -5,6 +5,8 @@ import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.getApiResponseState
+import fit.asta.health.data.profile.local.ProfileDao
+import fit.asta.health.data.profile.local.entity.ProfileEntity
 import fit.asta.health.data.profile.remote.ProfileApi
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
@@ -22,6 +24,7 @@ import javax.inject.Inject
 class ProfileRepoImpl
 @Inject constructor(
     private val profileApi: ProfileApi,
+    private val profileDao: ProfileDao,
     private val prefManager: PrefManager,
     private val contentResolver: ContentResolver,
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
@@ -69,13 +72,18 @@ class ProfileRepoImpl
             }
         }
 
+    override suspend fun updateLocalProfile(profileEntity: ProfileEntity) =
+        profileDao.updateProfile(profileEntity)
+
+    override suspend fun getLocalProfile(): ProfileEntity? = profileDao.getProfile()
+
     override suspend fun updateUserProfile(userProfileResponse: UserProfileResponse): ResponseState<SubmitProfileResponse> {
         val parts: ArrayList<MultipartBody.Part> = ArrayList()
-        if (userProfileResponse.userDetail.media.localUri != null) {
+        if (userProfileResponse.basicDetail.media.localUri != null) {
             parts.add(
                 MultipartBody.Part.createFormData(
                     name = "file", body = InputStreamRequestBody(
-                        contentResolver, userProfileResponse.userDetail.media.localUri!!
+                        contentResolver, userProfileResponse.basicDetail.media.localUri!!
                     ), filename = userProfileResponse.uid
                 )
             )
