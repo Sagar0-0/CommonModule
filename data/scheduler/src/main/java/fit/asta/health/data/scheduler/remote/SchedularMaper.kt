@@ -10,7 +10,7 @@ import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
 fun TodaySchedules.getTodayData(): TodayData {
     return TodayData(
-        temperature = this.weather.currentWeather.temperature.toString(),
+        temperature = this.weather.temp.toString(),
         location = this.weather.loc,
         date = this.weather.date,
         weatherCode = this.weather.currentWeather.weatherCode,

@@ -35,7 +35,9 @@ data class TodaySchedules(
         @SerializedName("timezone_abbreviation")
         val timezoneAbbreviation: String = "",
         @SerializedName("utc_offset_seconds")
-        val utcOffsetSeconds: Int = 0
+        val utcOffsetSeconds: Int = 0 ,
+        @SerializedName("temp")
+        val temp: Double = 0.0
     )
 
     data class DailyUnits(
@@ -90,7 +92,7 @@ data class TodaySchedules(
         @SerializedName("time")
         val time: String,
         @SerializedName("uv")
-        val uv: Int
+        val uv: Double
     )
 
 }
