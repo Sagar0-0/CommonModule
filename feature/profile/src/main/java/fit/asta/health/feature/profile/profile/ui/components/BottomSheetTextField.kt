@@ -8,10 +8,17 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppTextButton
@@ -28,9 +35,21 @@ fun BottomSheetTextField(
     onDismissRequest: () -> Unit,
     onSaveClick: (String) -> Unit
 ) {
-    val (updatedText, onValueChange) = rememberSaveable {
-        mutableStateOf(text)
+    var textFieldValue by remember {
+        mutableStateOf(TextFieldValue(text = text))
     }
+
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(isVisible) {
+        if (isVisible) {
+            focusRequester.requestFocus()
+            //Move cursor at the end
+            textFieldValue = textFieldValue.copy(
+                selection = TextRange(textFieldValue.text.length)
+            )
+        }
+    }
+
     AppModalBottomSheet(
         modifier = Modifier.fillMaxWidth(),
         sheetVisible = isVisible,
@@ -41,14 +60,17 @@ fun BottomSheetTextField(
         Column(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
+                .padding(AppTheme.spacing.level2)
+                .focusRequester(focusRequester),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
             CaptionTexts.Level2(text = label)
             AppOutlinedTextField(
                 modifier = Modifier.fillMaxWidth(),
-                value = updatedText,
-                onValueChange = onValueChange,
+                value = textFieldValue,
+                onValueChange = {
+                    textFieldValue = it
+                },
             )
             Row(
                 modifier = Modifier.align(Alignment.End),
@@ -58,7 +80,7 @@ fun BottomSheetTextField(
                     onDismissRequest()
                 }
                 AppTextButton(textToShow = "Save") {
-                    onSaveClick(updatedText)
+                    onSaveClick(textFieldValue.text)
                 }
             }
         }

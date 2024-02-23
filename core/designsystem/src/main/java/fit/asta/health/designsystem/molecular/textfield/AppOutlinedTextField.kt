@@ -23,6 +23,7 @@ import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import androidx.compose.ui.text.input.VisualTransformation
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
@@ -136,6 +137,88 @@ fun AppOutlinedTextField(
         } else null,
         isError = isError,
         visualTransformation = visualTransformation,
+        keyboardOptions = keyboardOptions,
+        keyboardActions = keyboardActions,
+        singleLine = singleLine,
+        maxLines = maxLines,
+        minLines = minLines,
+        interactionSource = interactionSource,
+        shape = shape,
+        colors = colors,
+        supportingText = {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = if (isError) Arrangement.SpaceBetween else Arrangement.End
+            ) {
+                if (isError) CaptionTexts.Level3(errorMessage)
+
+                CaptionTexts.Level3(text = stringCounter)
+            }
+        },
+        placeholder = placeholder
+    )
+}
+
+@Composable
+fun AppOutlinedTextField(
+    value: TextFieldValue,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    label: String = "",
+    leadingIcon: @Composable (() -> Unit)? = null,
+    trailingIcon: @Composable (() -> Unit)? = null,
+    keyboardOptions: KeyboardOptions = KeyboardOptions.Default,
+    keyboardActions: KeyboardActions = KeyboardActions.Default,
+    singleLine: Boolean = false,
+    maxLines: Int = if (singleLine) 1 else Int.MAX_VALUE,
+    minLines: Int = 1,
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    shape: Shape = AppTheme.shape.level1,
+    colors: TextFieldColors = TextFieldDefaults.colors(),
+    appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
+    isValidText: (Boolean) -> Unit = {},
+    placeholder: @Composable (() -> Unit)? = null,
+    onValueChange: (TextFieldValue) -> Unit,
+) {
+
+    // This variable keeps if the user is typing or not
+    val isTyping = remember { mutableStateOf(false) }
+    isTyping.value = value.text.isNotEmpty()
+
+    // This formulates if the user Input is valid or not
+    val isError = appTextFieldType.isInvalid(value.text, isTyping.value)
+
+    // Formulating what will be the error Message of the text Field Type
+    val errorMessage = appTextFieldType.getErrorMessage(value.text)
+
+    // This variable contains the Counter for the String
+    val stringCounter = appTextFieldType.getStringCounter(value.text)
+
+
+    // Outlined Text Field from Material 3
+    OutlinedTextField(
+        value = value,
+        onValueChange = {
+            onValueChange(it)
+            isValidText(appTextFieldType.isTextValid(it.text))
+        },
+        modifier = modifier,
+        enabled = enabled,
+        textStyle = AppTheme.customTypography.caption.level2,
+        label = { BodyTexts.Level3(text = label) },
+        leadingIcon = leadingIcon,
+        trailingIcon = if (isError) {
+            {
+                Icon(
+                    imageVector = Icons.Filled.Error, contentDescription = "ErrorMessage Icon"
+                )
+            }
+        } else if (trailingIcon != null) {
+            {
+                trailingIcon()
+            }
+        } else null,
+        isError = isError,
         keyboardOptions = keyboardOptions,
         keyboardActions = keyboardActions,
         singleLine = singleLine,

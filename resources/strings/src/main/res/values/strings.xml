@@ -449,6 +449,7 @@
     //Profile String Resources
     //View Profile
     <string name="profile_screen">Profile Screen</string>
+    <string name="profile">Profile</string>
     <string name="details">Details</string>
     <string name="physique">Physique</string>
     <string name="health">Health</string>

@@ -37,7 +37,7 @@ fun UserProfileContent(
         isScreenLoading = submitProfileState is UiState.Loading,
         topBar = {
             AppTopBar(
-                title = stringResource(R.string.profile_screen),
+                title = stringResource(R.string.profile),
                 onBack = {
                     userProfileState.onBackPressed()
                 }
