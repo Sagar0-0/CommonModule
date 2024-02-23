@@ -1,5 +1,3 @@
-@file:OptIn(ExperimentalCoroutinesApi::class, ExperimentalMaterialApi::class)
-
 package fit.asta.health.feature.profile.profile.ui.screens
 
 import androidx.compose.foundation.layout.Arrangement
@@ -13,7 +11,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -42,7 +39,6 @@ import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItem
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
@@ -70,8 +66,8 @@ fun LifestyleScreen(
                 title = it.title,
                 startButtonTitle = it.startButtonTitle,
                 endButtonTitle = it.endButtonTitle,
-                startTime = it.startTime.value,
-                endTime = it.endTime.value,
+                startTime = it.startTime.value ?: "",
+                endTime = it.endTime.value ?: "",
                 onStartClick = {
                     currentTimerIndex.intValue = it.startIndex
                     useCaseState.show()

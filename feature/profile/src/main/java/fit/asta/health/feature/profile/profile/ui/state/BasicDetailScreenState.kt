@@ -12,7 +12,6 @@ import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import fit.asta.health.data.profile.remote.model.BasicDetail
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import fit.asta.health.data.profile.remote.model.UserProfileAddress
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 import java.util.Calendar
@@ -57,21 +56,13 @@ class BasicDetailScreenState(
         get() = basicDetail.email
     private val phoneNumber: String
         get() = basicDetail.phoneNumber
-    private val address: String
-        get() = basicDetail.userProfileAddress.toString()
     var profileImageUrl by mutableStateOf(basicDetail.media.mailUrl.ifEmpty { basicDetail.media.url })
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
     var userDob by mutableStateOf(basicDetail.dob)
 
     private val updatedData = BasicDetail(
-        userProfileAddress = UserProfileAddress(
-            address = address,
-            country = basicDetail.userProfileAddress.country,
-            city = basicDetail.userProfileAddress.city,
-            pin = basicDetail.userProfileAddress.pin,
-            street = basicDetail.userProfileAddress.street
-        ),
+        userProfileAddress = basicDetail.userProfileAddress,
         dob = userDob,
         email = email,
         name = userName,
