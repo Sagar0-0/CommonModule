@@ -393,6 +393,7 @@ fun AlarmCreateBtmSheetLayout(
                 NotificationBottomSheetLayout(
                     text = stringResource(id = StringR.string.select_reminder_mode),
                     onNavigateBack = closeSheet,
+                    selected = alarmSettingUiState.mode,
                     onSave = {
                         closeSheet()
                         onUiEvent(AlarmSettingEvent.SetReminderMode(it))

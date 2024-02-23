@@ -15,7 +15,7 @@ data class ASUiState(
     val week: Weekdays = Weekdays.NONE,
 
     //status
-    var status: Boolean = false,
+    var status: Boolean = true,
 
     //tag, label,description
     var alarmDescription: String = "",
@@ -67,7 +67,7 @@ data class TimeUi(
 )
 
 data class AdvUiState(
-    val status: Boolean = false,
+    val status: Boolean = true,
     val time: Int = 0
 )
 

@@ -100,6 +100,9 @@ fun TodayContent(
     val index = remember { mutableIntStateOf(1) }
     var eventType by remember { mutableStateOf(Event.Morning) }
 
+    if (defaultScheduleVisibility){
+        hSEvent(HomeEvent.SetDefaultSchedule(context))
+    }
 
     if (deleteDialog) {
         AppDialogPopUp(
@@ -299,14 +302,14 @@ fun TodayTabContent(
                 else -> {}
             }
         }
-        if (defaultScheduleVisibility) {
+       /* if (defaultScheduleVisibility) {
             item {
                 AppOutlinedButton(
                     modifier = Modifier.fillMaxWidth(),
                     textToShow = stringResource(R.string.default_schedule)
                 ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
             }
-        }
+        }*/
         if (listMorning.isNotEmpty()) {
             item {
                 AnimatedVisibility(

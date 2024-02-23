@@ -47,7 +47,7 @@ fun OnlyToggleButton(
     switchTitle: String = "",
     onNavigateToClickText: (() -> Unit)? = null,
     onCheckClicked: (Boolean) -> Unit = {},
-    mCheckedState: Boolean = false,
+    mCheckedState: Boolean = true,
     testTag: String
 ) {
     AppCard(

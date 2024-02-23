@@ -7,6 +7,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.RingtoneManager
@@ -20,6 +21,7 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
+import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.AudioAttributes
 import androidx.media3.common.C
@@ -56,6 +58,7 @@ import fit.asta.health.resources.drawables.R as DrawR
 
 
 @AndroidEntryPoint
+@RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
 class AlarmService : Service() {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -231,6 +234,7 @@ class AlarmService : Service() {
         else splashAlarm(alarm)
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun notificationAlarm(
         alarm: AlarmEntity
     ) {
@@ -306,6 +310,7 @@ class AlarmService : Service() {
         }
     }
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun splashAlarm(
         alarm: AlarmEntity
     ) {
@@ -334,6 +339,7 @@ class AlarmService : Service() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun startForGroundService(
         notification: Notification?, id: Int, vibrationPattern: LongArray
     ) {
@@ -347,7 +353,17 @@ class AlarmService : Service() {
             vibrator.vibrate(vibrationPattern, 0)
         }
         Log.d("alarmtest", "startForGroundService")
-        startForeground(id, notification)
+
+        if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
+            startForeground(id, notification)
+        } else {
+            if (notification != null) {
+                startForeground(
+                    id, notification,
+                    FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                )
+            }
+        }
     }
 
 
