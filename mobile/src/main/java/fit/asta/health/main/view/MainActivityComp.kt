@@ -171,12 +171,13 @@ fun NavGraphBuilder.homeScreen(
                 }
             }
         }
-        LaunchedEffect(key1 = Unit,
-            block = {
-                if ((currentAddressName as UiState.Success<String>).data.isEmpty()) {
-                    enableLocationAndUpdateAddress()
-                }
-            })
+
+            LaunchedEffect(key1 = Unit,
+                block = {
+                    if ((currentAddressName !is UiState.Success)) {
+                        enableLocationAndUpdateAddress()
+                    }
+                })
         val checkPermissionAndLaunchScheduler =
             checkPermissionAndLaunchScheduler(context, navController)
 
