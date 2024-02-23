@@ -65,6 +65,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetGenderSelector
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTextField
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
@@ -78,8 +79,12 @@ import java.util.Calendar
 fun BasicDetailsScreen(
     userProfileState: UserProfileState,
 ) {
-    val bottomSheetState = rememberModalBottomSheetState()
-    val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+    val nameBottomSheetState = rememberModalBottomSheetState()
+    val nameBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+
+    val genderBottomSheetState = rememberModalBottomSheetState()
+    val genderBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
+
     val calendarUseCaseState = rememberUseCaseState()
 
     val imgLauncher =
@@ -117,9 +122,9 @@ fun BasicDetailsScreen(
             value = userProfileState.basicDetailScreenState.userName,
             leadingIcon = Icons.Default.Person
         ) {
-            userProfileState.basicDetailScreenState.openNameSheet(
-                bottomSheetState,
-                bottomSheetVisible
+            userProfileState.openSheet(
+                nameBottomSheetState,
+                nameBottomSheetVisible,
             )
         }
 
@@ -132,7 +137,8 @@ fun BasicDetailsScreen(
 
         ClickableTextBox(
             label = "Gender",
-            value = userProfileState.basicDetailScreenState.userGender.getGenderName(),
+            value = userProfileState.basicDetailScreenState.userGender.getGenderName()
+                ?: "Select Gender",
             leadingIcon =
             if (userProfileState.basicDetailScreenState.userGender.isMale()) {
                 Icons.Default.Male
@@ -147,9 +153,17 @@ fun BasicDetailsScreen(
             } else {
                 Icons.Default.Transgender
             }
-        )
+        ) {
+            userProfileState.openSheet(
+                genderBottomSheetState,
+                genderBottomSheetVisible
+            )
+        }
 
-        AgeSection(userProfileState, calendarUseCaseState)
+        AgeSection(
+            userProfileState,
+            calendarUseCaseState
+        )
 
         ClickableTextBox(
             label = "Subscription",
@@ -189,22 +203,40 @@ fun BasicDetailsScreen(
 
         //Dialogs
         BottomSheetTextField(
-            isVisible = bottomSheetVisible.value,
-            sheetState = bottomSheetState,
+            isVisible = nameBottomSheetVisible.value,
+            sheetState = nameBottomSheetState,
             label = "Enter your Name",
             text = userProfileState.basicDetailScreenState.userName,
             onDismissRequest = {
-                userProfileState.basicDetailScreenState.closeNameSheet(
-                    bottomSheetState,
-                    bottomSheetVisible
+                userProfileState.closeSheet(
+                    nameBottomSheetState,
+                    nameBottomSheetVisible,
                 )
             },
             onSaveClick = {
                 userProfileState.basicDetailScreenState.saveName(it)
-                userProfileState.basicDetailScreenState.closeNameSheet(
-                    bottomSheetState,
-                    bottomSheetVisible
+                userProfileState.closeSheet(
+                    nameBottomSheetState,
+                    nameBottomSheetVisible,
                 )
+            }
+        )
+
+        BottomSheetGenderSelector(
+            isVisible = genderBottomSheetVisible.value,
+            sheetState = genderBottomSheetState,
+            gender = userProfileState.basicDetailScreenState.userGender,
+            isPregnant = userProfileState.basicDetailScreenState.isPregnant,
+            onPeriod = userProfileState.basicDetailScreenState.onPeriod,
+            pregnancyWeek = userProfileState.basicDetailScreenState.userPregnancyWeek,
+            onDismissRequest = {
+                userProfileState.closeSheet(
+                    genderBottomSheetState,
+                    genderBottomSheetVisible
+                )
+            },
+            onSaveClick = { _, _, _, _ ->
+
             }
         )
 
@@ -286,7 +318,7 @@ private fun AgeSection(
 
     ClickableTextBox(
         label = "DOB",
-        value = userProfileState.basicDetailScreenState.userAge?.toString() ?: "",
+        value = userProfileState.basicDetailScreenState.userDob ?: "Select DOB",
         leadingIcon = Icons.Rounded.EditCalendar
     ) {
         calendarUseCaseState.show()

@@ -54,7 +54,6 @@ fun BottomSheetTextField(
         modifier = Modifier.fillMaxWidth(),
         sheetVisible = isVisible,
         sheetState = sheetState,
-        dragHandle = null,
         onDismissRequest = onDismissRequest
     ) {
         Column(

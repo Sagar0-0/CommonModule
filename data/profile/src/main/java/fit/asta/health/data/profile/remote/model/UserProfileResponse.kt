@@ -135,12 +135,11 @@ fun Gender?.isOther(): Boolean {
     return this == GenderTypes.OTHER.gender
 }
 
-fun Gender?.getGenderName(): String {
-    if (this == null) return ""
+fun Gender?.getGenderName(): String? {
     GenderTypes.entries.forEach {
         if (it.gender == this) return it.title
     }
-    return ""
+    return null
 }
 
 typealias BooleanInt = Int

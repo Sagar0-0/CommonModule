@@ -1,9 +1,6 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
 import android.net.Uri
-import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetState
-import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -13,7 +10,6 @@ import androidx.compose.runtime.setValue
 import fit.asta.health.data.profile.remote.model.BasicDetail
 import fit.asta.health.data.profile.remote.model.ProfileMedia
 import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @Stable
@@ -86,21 +82,6 @@ class BasicDetailScreenState(
 
     fun getUpdatedData() = updatedData
 
-    @OptIn(ExperimentalMaterial3Api::class)
-    fun openNameSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
-        bottomSheetVisible.value = true
-        scope.launch {
-            bottomSheetState.expand()
-        }
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    fun closeNameSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
-        bottomSheetVisible.value = false
-        scope.launch {
-            bottomSheetState.hide()
-        }
-    }
 
     companion object {
         fun Saver(

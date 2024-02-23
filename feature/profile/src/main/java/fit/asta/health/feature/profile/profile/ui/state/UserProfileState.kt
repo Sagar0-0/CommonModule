@@ -180,6 +180,22 @@ class UserProfileState(
         bottomSheetSearchQuery = ""
     }
 
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun openSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
+        bottomSheetVisible.value = true
+        coroutineScope.launch {
+            bottomSheetState.expand()
+        }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun closeSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
+        bottomSheetVisible.value = false
+        coroutineScope.launch {
+            bottomSheetState.hide()
+        }
+    }
+
     fun onBackPressed() {
         saveData()
         navController.popBackStack()
