@@ -2,20 +2,13 @@ package fit.asta.health.feature.profile.profile.ui.screens
 
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.compose.foundation.BorderStroke
-import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.size
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
@@ -34,43 +27,30 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.EditCalendar
-import androidx.compose.material.icons.rounded.PrivacyTip
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.vector.rememberVectorPainter
-import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.unit.dp
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.calendar.CalendarDialog
-import com.maxkeppeler.sheets.calendar.models.CalendarConfig
-import com.maxkeppeler.sheets.calendar.models.CalendarSelection
 import fit.asta.health.common.utils.getImageModel
 import fit.asta.health.data.profile.remote.model.getGenderName
 import fit.asta.health.data.profile.remote.model.isFemale
 import fit.asta.health.data.profile.remote.model.isMale
 import fit.asta.health.data.profile.remote.model.isTrue
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.button.AppCheckBoxButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetGenderSelector
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTextField
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
+import fit.asta.health.feature.profile.profile.ui.components.DatePicker
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
+import fit.asta.health.feature.profile.profile.ui.components.ProfileImagePicker
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
-import fit.asta.health.resources.strings.R
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
@@ -104,7 +84,7 @@ fun BasicDetailsScreen(
 
         Spacer(modifier = Modifier)
 
-        UserCircleImage(
+        ProfileImagePicker(
             model = getImageModel(
                 uri = userProfileState.basicDetailScreenState.profileImageLocalUri,
                 remoteUrl = userProfileState.basicDetailScreenState.profileImageUrl
@@ -240,66 +220,12 @@ fun BasicDetailsScreen(
             }
         )
 
-        CalendarSection(userProfileState, calendarUseCaseState)
-    }
-}
-
-@Composable
-@OptIn(ExperimentalMaterial3Api::class)
-private fun CalendarSection(
-    userProfileState: UserProfileState,
-    useCaseState: UseCaseState
-) {
-    CalendarDialog(
-        state = useCaseState, selection = CalendarSelection.Date {
+        DatePicker(calendarUseCaseState) {
             userProfileState.basicDetailScreenState.userDob =
                 it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
             userProfileState.basicDetailScreenState.setAge(
                 (userProfileState.basicDetailScreenState.calendar.get(Calendar.YEAR) - it.year)
             )
-        },
-        config = CalendarConfig(monthSelection = true, yearSelection = true)
-    )
-}
-
-@Composable
-fun PrivacyAndUserConsent() {
-
-    val checkedState = remember { mutableStateOf(false) }
-
-    Column(
-        Modifier.fillMaxWidth(),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
-        ) {
-            AppIcon(
-                imageVector = Icons.Rounded.PrivacyTip,
-                contentDescription = "App Privacy",
-                tint = AppTheme.colors.primary
-            )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-            Column {
-                TitleTexts.Level2(text = stringResource(R.string.privacy_statement_title))
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level0))
-                BodyTexts.Level2(text = stringResource(R.string.privacy_statement))
-            }
-        }
-        Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.Top
-        ) {
-            AppCheckBoxButton(
-                checked = checkedState.value,
-                onCheckedChange = { checkedState.value = it },
-                modifier = Modifier.size(AppTheme.imageSize.level3)
-            )
-            Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-            BodyTexts.Level2(text = stringResource(R.string.user_consent))
         }
     }
 }
@@ -335,44 +261,6 @@ private fun AgeSection(
     }
 }
 
-@Composable
-fun UserCircleImage(
-    modifier: Modifier = Modifier,
-    model: String,
-    onUserProfileSelection: () -> Unit,
-    onProfilePicClear: () -> Unit,
-) {
-
-    val isImgNotAvail = model.isEmpty()
-
-    Box(
-        contentAlignment = Alignment.Center,
-        modifier = modifier
-    ) {
-        AppNetworkImage(
-            model = model,
-            contentDescription = "User Image",
-            contentScale = ContentScale.Crop,
-            modifier = Modifier
-                .size(AppTheme.customSize.level11)
-                .clip(CircleShape)
-                .border(
-                    border = BorderStroke(
-                        width = 4.dp, color = AppTheme.colors.primary
-                    ), shape = CircleShape
-                ),
-            errorImage = rememberVectorPainter(image = Icons.Filled.Person)
-        )
-        if (!isImgNotAvail) {
-            DeleteImageButton(onProfilePicClear, modifier = Modifier.align(Alignment.TopEnd))
-        }
-        EditProfileImageButton(
-            isImgNotAvail,
-            onUserProfileSelection,
-            modifier = Modifier.align(alignment = Alignment.BottomEnd)
-        )
-    }
-}
 
 @Composable
 fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifier) {

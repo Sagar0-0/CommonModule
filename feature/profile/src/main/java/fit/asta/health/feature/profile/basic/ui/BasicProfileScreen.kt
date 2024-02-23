@@ -21,12 +21,10 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Female
-import androidx.compose.material.icons.filled.Male
+import androidx.compose.material.icons.filled.EditCalendar
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PersonSearch
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material.icons.filled.QuestionMark
 import androidx.compose.material.icons.filled.SafetyDivider
 import androidx.compose.material.icons.filled.Verified
 import androidx.compose.material.icons.filled.VerifiedUser
@@ -55,6 +53,7 @@ import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.constraintlayout.compose.ConstraintLayout
 import com.google.firebase.auth.AuthCredential
+import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
@@ -73,7 +72,6 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.button.AppMultiChoiceSegmentedButtonRow
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -85,8 +83,13 @@ import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.util.GoogleSignIn
+import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
+import fit.asta.health.feature.profile.profile.ui.components.DatePicker
+import fit.asta.health.feature.profile.profile.ui.components.GenderSelector
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
+import java.time.format.DateTimeFormatter
+import java.util.Calendar
 
 @Preview("Light Button")
 @Preview(
@@ -121,9 +124,11 @@ fun BasicProfileScreenUi(
     autoFetchedReferralCode: String,
     onEvent: (BasicProfileEvent) -> Unit,
 ) {
-    val context = LocalContext.current
+    val calendarUseCaseState = rememberUseCaseState()
 
     var name by rememberSaveable(user) { mutableStateOf(user.name ?: "") }
+    var dob by rememberSaveable(user) { mutableStateOf("Select DOB") }
+    var age by rememberSaveable(user) { mutableStateOf(0) }
     var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
     var isReferralChanged by rememberSaveable { mutableStateOf(false) }
     var genderCode by rememberSaveable { mutableIntStateOf(GenderCode.Other.gender) }
@@ -197,6 +202,24 @@ fun BasicProfileScreenUi(
                     }
                 )
 
+                ClickableTextBox(
+                    modifier = Modifier.fillMaxWidth(),
+                    label = "DOB",
+                    value = dob,
+                    leadingIcon = Icons.Default.EditCalendar
+                ) {
+                    calendarUseCaseState.show()
+                }
+
+                DatePicker(
+                    useCaseState = calendarUseCaseState,
+                    onSelection = {
+                        dob =
+                            it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
+                        age = Calendar.getInstance().get(Calendar.YEAR) - it.year
+                    }
+                )
+
                 ReferralUi(
                     refCode = referralCode,
                     checkReferralState = checkReferralCodeState,
@@ -233,7 +256,9 @@ fun BasicProfileScreenUi(
                                 gen = genderCode,
                                 mail = email,
                                 ph = phone,
-                                refCode = if (checkReferralCodeState is UiState.Success) referralCode else ""
+                                refCode = if (checkReferralCodeState is UiState.Success) referralCode else "",
+                                dob = dob,
+                                age = age
                             )
                         )
                     )
@@ -267,8 +292,8 @@ fun BasicProfileScreenUi(
                     }
                 }
             }
-
         }
+
         ImageCropperScreen(
             modifier = Modifier.fillMaxSize(),
             visible = showImageCropper,
@@ -289,35 +314,7 @@ data class GenderData(
 
 @Composable
 fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
-    val genders = listOf(
-        GenderData("Male", GenderCode.Male.gender, Icons.Default.Male),
-        GenderData("Female", GenderCode.Female.gender, Icons.Default.Female),
-        GenderData("Others", GenderCode.Other.gender, Icons.Default.QuestionMark)
-    )
-
-    AppMultiChoiceSegmentedButtonRow(
-        modifier = Modifier
-            .fillMaxWidth(),
-        items = genders.map { entry ->
-            {
-                Row(
-                    modifier = Modifier
-                        .padding(AppTheme.spacing.level0),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    AppIcon(imageVector = entry.icon)
-                    TitleTexts.Level3(
-                        text = entry.name,
-                        maxLines = 1
-                    )
-                }
-            }
-        },
-        checked = gender,
-        onCheckedChange = onValueChange
-    )
-
+    GenderSelector(selectedOption = gender, onStateChange = onValueChange)
 }
 
 @Composable

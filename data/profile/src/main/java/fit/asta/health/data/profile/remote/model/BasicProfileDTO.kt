@@ -9,6 +9,8 @@ data class BasicProfileDTO(
     @SerializedName("mailUrl") val gmailPic: String? = null,
     val imageLocalUri: Uri? = null,
     @SerializedName("name") val name: String = "",
+    @SerializedName("age") val age: Int = 0,
+    @SerializedName("dob") val dob: String = "",
     @SerializedName("gen") val gen: Int = GenderCode.Other.gender,
     @SerializedName("mail") val mail: String = "",
     @SerializedName("ph") val ph: String = "",
