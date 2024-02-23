@@ -28,6 +28,7 @@ import fit.asta.health.resources.strings.R as StringR
 fun NotificationBottomSheetLayout(
     text: String,
     onNavigateBack: () -> Unit,
+    selected:String= stringResource(id = StringR.string.notification),
     onSave:(String)->Unit={}
 ) {
 
@@ -36,7 +37,7 @@ fun NotificationBottomSheetLayout(
             stringResource(id = StringR.string.notification),
             stringResource(id = StringR.string.splash)
         )
-    val (selectedOption, onOptionSelected) = remember { mutableStateOf(radioOptions[0]) }
+    val (selectedOption, onOptionSelected) = remember { mutableStateOf(selected) }
 
 
     Column(
