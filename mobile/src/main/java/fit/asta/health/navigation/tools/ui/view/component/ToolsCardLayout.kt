@@ -45,9 +45,10 @@ fun ToolsCardLayout(
             )
 
             // Tools Card Right Top Button
-            ScheduleButtonIcon {
-                /*TODO Schedule Button Click*/
-            }
+//            ScheduleButtonIcon {
+//                /*TODO Schedule Button Click*/
+//
+//            }
         }
 
         // Tools Card Texts
