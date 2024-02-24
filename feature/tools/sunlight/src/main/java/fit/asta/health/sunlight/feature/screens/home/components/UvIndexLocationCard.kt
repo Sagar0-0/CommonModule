@@ -27,7 +27,7 @@ fun UvIndexLocationCard(
     onHighUv: () -> Unit
 ) {
 //        AppCard {
-    if (sunSlotData != null) {
+    if (sunSlotData?.slot != null) {
         LaunchedEffect(Unit) {
             sunSlotData.toChartData()
             if ((sunSlotData.currUv ?: 0.0) > 4.0) {

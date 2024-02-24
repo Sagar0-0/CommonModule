@@ -57,16 +57,16 @@ data class SunSlotData(
     @SerializedName("loc") var loc: String? = null,
     @SerializedName("currUv") var currUv: Double? = 0.0,
     @SerializedName("currTemp") var currTemp: Double? = 0.0,
-    @SerializedName("day1") var slot: ArrayList<Slot> = arrayListOf(),
+    @SerializedName("day1") var slot: ArrayList<Slot>? = null,
 
 
     ) {
     fun toChartData(): List<PieChartInput> {
         val list = ArrayList<PieChartInput>()
-        slot.sortBy {
+        slot?.sortBy {
             it.time ?: ""
         }
-        slot.forEach { slotData ->
+        slot?.forEach { slotData ->
             list.add(
                 PieChartInput(
                     1, "", slotData.time,

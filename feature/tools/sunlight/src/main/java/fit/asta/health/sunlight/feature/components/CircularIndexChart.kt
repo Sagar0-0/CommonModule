@@ -180,7 +180,7 @@ fun PieChart(
                 }
             }
 
-            if (inputList.first().isTapped) {
+            if (inputList.firstOrNull()?.isTapped == true) {
                 rotate(-90f) {
                     drawRoundRect(
                         topLeft = circleCenter,

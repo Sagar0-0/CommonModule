@@ -28,8 +28,8 @@ import fit.asta.health.sunlight.remote.model.SunSlotData
 @Composable
 fun UvBarChartCard(sunSlotData: SunSlotData?) {
     if (sunSlotData != null) {
-        val yAxis = sunSlotData?.slot?.map { ChartPoint((it.temp ?: 0).toFloat()) } ?: emptyList()
-        val xAxis = sunSlotData?.slot?.map { ChartPoint((it.time.splitAmPm() ?: "")) }
+        val yAxis = sunSlotData.slot?.map { ChartPoint((it.temp ?: 0).toFloat()) } ?: emptyList()
+        val xAxis = sunSlotData.slot?.map { ChartPoint((it.time.splitAmPm() ?: "")) }
             ?: emptyList()
         val yAxisReadings = listOf(
             yAxis,
@@ -39,31 +39,37 @@ fun UvBarChartCard(sunSlotData: SunSlotData?) {
 //    val xAxisReadings = ChartPoint()
 
         // Creating LinearStringData object with the dummy data
-        val linearStringData = LinearStringData(
-            yAxisReadings = yAxisReadings,
-            xAxisReadings = xAxis
-        )
+        if (yAxis.isNotEmpty() && xAxis.isNotEmpty()) {
+            val linearStringData = LinearStringData(
+                yAxisReadings = yAxisReadings,
+                xAxisReadings = xAxis
+            )
 
-        // Passing the LinearStringData object to the BarChart composable
-        AppCard {
-            Column(modifier = Modifier.padding(top = AppTheme.spacing.level2,
-                bottom = AppTheme.spacing.level2)) {
-                /*HeadingTexts.Level3(
+            // Passing the LinearStringData object to the BarChart composable
+            AppCard {
+                Column(
+                    modifier = Modifier.padding(
+                        top = AppTheme.spacing.level2,
+                        bottom = AppTheme.spacing.level2
+                    )
+                ) {
+                    /*HeadingTexts.Level3(
                     text = stringResource(id = R.string.upcoming_slots),
                     modifier = Modifier.padding(vertical = AppTheme.spacing.level2)
                 )*/
-                BarChart(
-                    linearData = linearStringData,
-                    plot = LinearBarPlot(barWidth = 60f),
-                    decoration = LinearDecoration.barDecorationColors(
-                        plotPrimaryColor = listOf(Color.Red, Color.Yellow)
+                    BarChart(
+                        linearData = linearStringData,
+                        plot = LinearBarPlot(barWidth = 60f),
+                        decoration = LinearDecoration.barDecorationColors(
+                            plotPrimaryColor = listOf(Color.Red, Color.Yellow)
+                        )
                     )
-                )
-                CaptionTexts.Level3(
-                    text = "Temperature based on sun slots",
-                    modifier = Modifier.fillMaxWidth(),
-                    textAlign = TextAlign.Center
-                )
+                    CaptionTexts.Level3(
+                        text = "Temperature based on sun slots",
+                        modifier = Modifier.fillMaxWidth(),
+                        textAlign = TextAlign.Center
+                    )
+                }
             }
         }
     }
