@@ -61,7 +61,6 @@ import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
-import fit.asta.health.data.profile.remote.model.GenderCode
 import fit.asta.health.data.profile.remote.model.PrimeTypes
 import fit.asta.health.data.profile.remote.model.UserProfileImageTypes
 import fit.asta.health.designsystem.AppTheme
@@ -131,7 +130,7 @@ fun BasicProfileScreenUi(
     var age by rememberSaveable(user) { mutableStateOf(0) }
     var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
     var isReferralChanged by rememberSaveable { mutableStateOf(false) }
-    var genderCode by rememberSaveable { mutableIntStateOf(GenderCode.Other.gender) }
+    var genderCode by rememberSaveable { mutableIntStateOf(-1) }
     val phone by rememberSaveable(user) { mutableStateOf(user.phoneNumber ?: "") }
     val email by rememberSaveable(user) {
         mutableStateOf(user.email ?: "")
@@ -266,6 +265,7 @@ fun BasicProfileScreenUi(
 
                 AppUiStateHandler(
                     uiState = createBasicProfileState,
+                    onLoading = {},
                     onErrorRetry = {
                         onEvent(BasicProfileEvent.ResetCreateProfileState)
                         onEvent(
