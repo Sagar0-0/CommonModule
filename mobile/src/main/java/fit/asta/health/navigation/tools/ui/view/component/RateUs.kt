@@ -6,12 +6,11 @@ import androidx.compose.animation.fadeOut
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
-import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -74,9 +73,10 @@ fun RateAppCard(
             ) {
 
                 // Close Button
-                ScheduleButtonIcon(imageVector = Icons.Filled.Close) {
-                    isVisible = false
-                }
+//                ScheduleButtonIcon(imageVector = Icons.Filled.Close) {
+//                    isVisible = false
+//                }
+                Spacer(modifier = Modifier.weight(1f))
 
                 // Rating Image
                 AppLocalImage(
