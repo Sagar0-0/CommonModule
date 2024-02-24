@@ -77,5 +77,10 @@ private fun Context.syncWorkNotification(): Notification {
         )
         .setContentTitle(getString(StringR.string.app_name))
         .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+        .setContentTitle("Syncing alarms")
+        .setContentText(
+            "We are syncing your local alarms to the servers." +
+                    "Thanks for using asta."
+        )
         .build()
 }
