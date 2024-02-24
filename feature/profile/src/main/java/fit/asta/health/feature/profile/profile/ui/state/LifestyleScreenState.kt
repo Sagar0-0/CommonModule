@@ -23,8 +23,8 @@ class LifestyleScreenState(
 ) {
 
     //Lifestyle Page
-    private var sleepStartTime = mutableStateOf(lifeStyle.sleep.from?.toString())
-    private var sleepEndTime = mutableStateOf(lifeStyle.sleep.to?.toString())
+    private var sleepStartTime = mutableStateOf(lifeStyle.sleepTime.from?.toString())
+    private var sleepEndTime = mutableStateOf(lifeStyle.sleepTime.to?.toString())
     private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from?.toString())
     private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to?.toString())
 
@@ -48,7 +48,7 @@ class LifestyleScreenState(
             from = jobStartTime.value?.toFloat(),
             to = jobEndTime.value?.toFloat()
         ),
-        sleep = TimeSchedule(
+        sleepTime = TimeSchedule(
             from = sleepStartTime.value?.toFloat(),
             to = sleepEndTime.value?.toFloat()
         )

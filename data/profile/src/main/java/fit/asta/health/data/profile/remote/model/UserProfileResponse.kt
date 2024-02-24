@@ -3,57 +3,48 @@ package fit.asta.health.data.profile.remote.model
 import android.net.Uri
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.data.profile.local.entity.ProfileEntity
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
 data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
-    @SerializedName("bscDtl") val basicDetail: BasicDetail = BasicDetail(),
-    @SerializedName("phq") val physique: Physique = Physique(),
-    @SerializedName("hlt") val health: Health = Health(),
-    @SerializedName("ls") val lifeStyle: LifeStyle = LifeStyle(),
-    @SerializedName("diet") val diet: Diet = Diet(),
+    @SerializedName(BasicDetail_Screen_Name) val basicDetail: BasicDetail = BasicDetail(),
+    @SerializedName(Physique_Screen_Name) val physique: Physique = Physique(),
+    @SerializedName(Health_Screen_Name) val health: Health = Health(),
+    @SerializedName(Lifestyle_Screen_Name) val lifeStyle: LifeStyle = LifeStyle(),
+    @SerializedName(Diet_Screen_name) val diet: Diet = Diet(),
 ) : Parcelable
-
-fun UserProfileResponse.mergeWithLocalData(
-    profileEntity: ProfileEntity?
-): UserProfileResponse {
-    if (profileEntity == null) return this
-    this.basicDetail.name = profileEntity.name
-    return this
-}
 
 @Parcelize
 data class BasicDetail(
-    @SerializedName("adr") val userProfileAddress: UserProfileAddress? = null,
-    @SerializedName("dob") val dob: String? = null,
-    @SerializedName("mail") val email: String = "",
-    @SerializedName("name") var name: String = "",
-    @SerializedName("ph") val phoneNumber: String = "",
-    @SerializedName("media") val media: ProfileMedia = ProfileMedia(),
-    @SerializedName("age") val age: Int? = 0,
-    @SerializedName("gen") val gender: Gender? = 0,
-    @SerializedName("prg") val isPregnant: BooleanInt? = 0,
-    @SerializedName("prd") val onPeriod: BooleanInt? = 0,
-    @SerializedName("pw") val pregnancyWeek: Int? = 0,
+    @SerializedName(Address_Field_Name) val userProfileAddress: UserProfileAddress? = null,
+    @SerializedName(DOB_Field_Name) val dob: String? = null,
+    @SerializedName(Mail_Field_Name) val email: String = "",
+    @SerializedName(Name_Field_Name) var name: String = "",
+    @SerializedName(Phone_Field_Name) val phoneNumber: String = "",
+    @SerializedName(Media_Field_Name) val media: ProfileMedia = ProfileMedia(),
+    @SerializedName(Age_Field_Name) val age: Int? = 0,
+    @SerializedName(Gender_Field_Name) val gender: Gender? = 0,
+    @SerializedName(IsPregnant_Field_Name) val isPregnant: BooleanInt? = 0,
+    @SerializedName(OnPeriod_Field_Name) val onPeriod: BooleanInt? = 0,
+    @SerializedName(PeriodWeek_Field_Name) val pregnancyWeek: Int? = 0,
 ) : Parcelable
 
 @Parcelize
 data class ProfileMedia(
-    @SerializedName("url") var url: String = "",
-    @SerializedName("mailUrl") var mailUrl: String = "",
+    @SerializedName(MediaUrl_Field_Name) var url: String = "",
+    @SerializedName(MediaMailUrl_Field_Name) var mailUrl: String = "",
     var localUri: Uri? = null
 ) : Parcelable
 
 @Parcelize
 data class UserProfileAddress(
-    @SerializedName("adr1") val address: String = "Address Line 1",
-    @SerializedName("cnt") val country: String = "India",
-    @SerializedName("cty") val city: String = "Noida",
-    @SerializedName("pin") val pin: String = "123456",
-    @SerializedName("st") val street: String = "Some Street",
+    @SerializedName(Address_Inner_Field_Name) val address: String = "Address Line 1",
+    @SerializedName(Country_Field_Name) val country: String = "India",
+    @SerializedName(City_Field_Name) val city: String = "Noida",
+    @SerializedName(Pin_Field_Name) val pin: String = "123456",
+    @SerializedName(Street_Field_Name) val street: String = "Some Street",
 ) : Parcelable {
     override fun toString(): String {
         return "$address, $street, $city, $country"
@@ -62,144 +53,51 @@ data class UserProfileAddress(
 
 @Parcelize
 data class Physique(
-    @SerializedName("bdt") val bodyType: Int? = 0,
-    @SerializedName("bmi") val bmi: Float? = 0f,
-    @SerializedName("bmiUnit") val bmiUnit: Int? = 0,
-    @SerializedName("ht") val height: Float? = 0f,
-    @SerializedName("htUnit") val heightUnit: Int? = 0,
-    @SerializedName("wt") val weight: Float? = 0f,
-    @SerializedName("wtUnit") val weightUnit: Int? = 0,
+    @SerializedName(BodyType_Field_Name) val bodyType: Int? = 0,
+    @SerializedName(Bmi_Field_Name) val bmi: Float? = 0f,
+    @SerializedName(BmiUnit_Field_Name) val bmiUnit: Int? = 0,
+    @SerializedName(Height_Field_Name) val height: Float? = 0f,
+    @SerializedName(HeightUnit_Field_Name) val heightUnit: Int? = 0,
+    @SerializedName(Weight_Field_Name) val weight: Float? = 0f,
+    @SerializedName(WeightUnit_Field_Name) val weightUnit: Int? = 0,
 ) : Parcelable
 
 @Parcelize
 data class Health(
-    @SerializedName("med") val medications: List<UserProperties>? = null,
-    @SerializedName("htg") val targets: List<UserProperties>? = null,
-    @SerializedName("ail") val ailments: List<UserProperties>? = null,
-    @SerializedName("hh") val healthHistory: List<UserProperties>? = null,
-    @SerializedName("inj") val injuries: List<UserProperties>? = null,
-    @SerializedName("bp") val bodyPart: List<UserProperties>? = null,// Body Part healthHisList missing
-    @SerializedName("add") val addiction: List<UserProperties>? = null,
-    @SerializedName("is") val injurySince: Int? = 0,
+    @SerializedName(Medications_Field_Name) val medications: List<UserProperties>? = null,
+    @SerializedName(Targets_Field_Name) val targets: List<UserProperties>? = null,
+    @SerializedName(Ailments_Field_Name) val ailments: List<UserProperties>? = null,
+    @SerializedName(HealthHistory_Field_Name) val healthHistory: List<UserProperties>? = null,
+    @SerializedName(Injuries_Field_Name) val injuries: List<UserProperties>? = null,
+    @SerializedName(BodyParts_Field_Name) val bodyPart: List<UserProperties>? = null,
+    @SerializedName(Addictions_Field_Name) val addiction: List<UserProperties>? = null,
+    @SerializedName(InjurySince_Field_Name) val injurySince: Int? = 0,
 ) : Parcelable
 
-//working env missing
 @Parcelize
 data class LifeStyle(
-    @SerializedName("act") var physicalActive: Int? = null,
-    @SerializedName("we") var workingEnv: Int? = null,
-    @SerializedName("ws") var workStyle: Int? = null,
-    @SerializedName("whr") var workingHours: Int? = null,
-    @SerializedName("cat") val curActivities: List<UserProperties>? = null,
-    @SerializedName("pat") val prefActivities: List<UserProperties>? = null,
-    @SerializedName("lst") val lifeStyleTargets: List<UserProperties>? = null,
-    @SerializedName("job") var workingTime: TimeSchedule = TimeSchedule(),
-    @SerializedName("slp") var sleep: TimeSchedule = TimeSchedule(), // missing in UI
+    @SerializedName(PhysicallyActive_Field_Name) var physicalActive: Int? = null,
+    @SerializedName(WorkEnvironment_Field_Name) var workingEnv: Int? = null,
+    @SerializedName(WorkStyle_Field_Name) var workStyle: Int? = null,
+    @SerializedName(WorkHours_Field_Name) var workingHours: Int? = null,
+    @SerializedName(CurrentActivities_Field_Name) val curActivities: List<UserProperties>? = null,
+    @SerializedName(PrefActivities_Field_Name) val prefActivities: List<UserProperties>? = null,
+    @SerializedName(LifestyleTargets_Field_Name) val lifeStyleTargets: List<UserProperties>? = null,
+    @SerializedName(WorkingTime_Field_Name) var workingTime: TimeSchedule = TimeSchedule(),
+    @SerializedName(SleepTime_Field_Name) var sleepTime: TimeSchedule = TimeSchedule(), // missing in UI
 ) : Parcelable
 
 @Parcelize
 data class Diet(
-    @SerializedName("pref") var preference: List<UserProperties>? = null,
-    @SerializedName("nv") val nonVegDays: List<UserProperties>? = null,
-    @SerializedName("alg") val allergies: List<UserProperties>? = null,
-    @SerializedName("cns") val cuisines: List<UserProperties>? = null,
-    @SerializedName("frs") val restrictions: List<UserProperties>? = null,
+    @SerializedName(Preference_Field_Name) var preference: List<UserProperties>? = null,
+    @SerializedName(NonVeg_Field_Name) val nonVegDays: List<UserProperties>? = null,
+    @SerializedName(Allergies_Field_Name) val allergies: List<UserProperties>? = null,
+    @SerializedName(Cuisines_Field_Name) val cuisines: List<UserProperties>? = null,
+    @SerializedName(Restrictions_Field_Name) val restrictions: List<UserProperties>? = null,
 ) : Parcelable
 
 @Parcelize
 data class TimeSchedule(
-    @SerializedName("str") val from: Float? = null,
-    @SerializedName("end") val to: Float? = null,
+    @SerializedName(FromTime_Field_Name) val from: Float? = null,
+    @SerializedName(ToTime_Field_Name) val to: Float? = null,
 ) : Parcelable
-
-typealias Gender = Int
-
-enum class GenderTypes(val gender: Gender, val title: String) {
-    MALE(1, "Male"),
-    FEMALE(2, "Female"),
-    OTHER(3, "Other")
-}
-
-fun Gender?.isMale(): Boolean {
-    if (this == null) return false
-    return this == GenderTypes.MALE.gender
-}
-
-fun Gender?.isFemale(): Boolean {
-    if (this == null) return false
-    return this == GenderTypes.FEMALE.gender
-}
-
-fun Gender?.isOther(): Boolean {
-    if (this == null) return false
-    return this == GenderTypes.OTHER.gender
-}
-
-fun Gender?.getGenderName(): String? {
-    GenderTypes.entries.forEach {
-        if (it.gender == this) return it.title
-    }
-    return null
-}
-
-typealias BooleanInt = Int
-
-enum class BooleanIntTypes(val value: BooleanInt, val title: String) {
-    YES(1, "Yes"),
-    NO(0, "No")
-}
-
-fun BooleanInt?.isTrue(): Boolean {
-    if (this == null) return false
-    return this == BooleanIntTypes.YES.value
-}
-
-enum class HeightUnit(val title: String, val value: Int) {
-    CM("cm", 1),
-    Inch("in", 6);
-
-    companion object {
-        fun indexOf(newValue: Int?): Int {
-            if (newValue == null) return -1
-            HeightUnit.entries.forEachIndexed { index, unit ->
-                if (unit.value == newValue) return index
-            }
-            return -1
-        }
-    }
-
-}
-
-enum class WeightUnit(val title: String, val value: Int) {
-    KG("kg", 7),
-    LB("lb", 8);
-
-    companion object {
-        fun indexOf(newValue: Int?): Int {
-            if (newValue == null) return -1
-            WeightUnit.entries.forEachIndexed { index, unit ->
-                if (unit.value == newValue) return index
-            }
-            return -1
-        }
-    }
-}
-
-enum class PhysicallyActive(val title: String, val value: Int) {
-    LOW("Low", 1),
-    Moderate("Moderate", 2),
-    VeryActive("Very Active", 3);
-
-    companion object {
-        fun indexOf(newValue: Int): Int {
-            PhysicallyActive.entries.forEachIndexed { index, unit ->
-                if (unit.value == newValue) return index
-            }
-            return -1
-        }
-    }
-}
-
-enum class BMIUnit(val value: Int) {
-    BMI(19)
-}

@@ -54,7 +54,7 @@ fun LifeStyleLayout(
     ) {
         item {
             ProfileSessionCard(
-                title = SleepSchedule.getTitle(), sleepSchedule = lifeStyle.sleep
+                title = SleepSchedule.getTitle(), sleepSchedule = lifeStyle.sleepTime
             )
         }
 
