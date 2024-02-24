@@ -24,7 +24,8 @@ fun TodaySchedules.getTodayData(): TodayData {
                 title = dayAndTime.day
             )
         } ?: emptyList(),
-        weatherType = this.weather.weather ?: "Sunny"
+        weatherType = this.weather.weather ?: "Sunny",
+        message = this.slot?.message
     )
 }
 

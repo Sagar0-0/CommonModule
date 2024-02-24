@@ -87,7 +87,9 @@ data class TodaySchedules(
         @SerializedName("lon")
         val longitude: String,
         @SerializedName("slot")
-        val slot: List<Slot>
+        val slot: List<Slot> ,
+        @SerializedName("msg")
+        val message: String?=null
     )
 
     data class Slot(
