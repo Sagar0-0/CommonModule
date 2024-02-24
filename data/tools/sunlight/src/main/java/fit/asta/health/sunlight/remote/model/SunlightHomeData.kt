@@ -58,6 +58,7 @@ data class SunSlotData(
     @SerializedName("currUv") var currUv: Double? = 0.0,
     @SerializedName("currTemp") var currTemp: Double? = 0.0,
     @SerializedName("day1") var slot: ArrayList<Slot>? = null,
+    @SerializedName("msg") var message: String? = null,
 
 
     ) {

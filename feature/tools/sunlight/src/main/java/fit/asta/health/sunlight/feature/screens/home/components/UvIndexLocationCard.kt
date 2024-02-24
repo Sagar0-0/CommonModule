@@ -95,6 +95,12 @@ fun UvIndexLocationCard(
                 )
             }
         }
+    }else{
+        CaptionTexts.Level4(
+            text = sunSlotData?.message?:"",
+            textAlign = TextAlign.Center,
+            modifier = Modifier.fillMaxWidth()
+        )
     }
 }
 //    }
