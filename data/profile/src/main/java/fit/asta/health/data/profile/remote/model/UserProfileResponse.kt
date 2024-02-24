@@ -28,7 +28,7 @@ data class BasicDetail(
     @SerializedName(Gender_Field_Name) val gender: Gender? = 0,
     @SerializedName(IsPregnant_Field_Name) val isPregnant: BooleanInt? = 0,
     @SerializedName(OnPeriod_Field_Name) val onPeriod: BooleanInt? = 0,
-    @SerializedName(PeriodWeek_Field_Name) val pregnancyWeek: Int? = 0,
+    @SerializedName(PregWeek_Field_Name) val pregnancyWeek: Int? = 0,
 ) : Parcelable
 
 @Parcelize

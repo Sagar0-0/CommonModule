@@ -7,7 +7,8 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.profile.local.entity.ProfileEntity
+import fit.asta.health.data.profile.remote.model.BooleanInt
+import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -36,19 +37,6 @@ class ProfileViewModel
     private val _userProfileState = MutableStateFlow<UiState<UserProfileResponse>>(UiState.Loading)
     val userProfileState = _userProfileState.asStateFlow()
 
-    private val _localProfile = MutableStateFlow<ProfileEntity?>(null)
-    val localProfile = _localProfile.asStateFlow()
-
-    fun getLocalProfile() = viewModelScope.launch {
-        _localProfile.value = profileRepo.getLocalProfile()
-    }
-
-    fun updateLocalProfile(profileEntity: ProfileEntity?) = viewModelScope.launch {
-        if (profileEntity != null) {
-            profileRepo.updateLocalProfile(profileEntity)
-        }
-    }
-
 
     fun getProfileData() {
         _userProfileState.value = UiState.Loading
@@ -60,11 +48,32 @@ class ProfileViewModel
         }
     }
 
-    fun saveProfileData(userProfileResponse: UserProfileResponse) {
+    fun setName(name: String) {
         viewModelScope.launch {
-            _submitProfileState.update {
-                profileRepo.updateUserProfile(userProfileResponse).toUiState()
-            }
+            profileRepo.setName(uid, name)
+        }
+    }
+
+    fun setGender(
+        gender: Gender?,
+        isPregnant: BooleanInt?,
+        onPeriod: BooleanInt?,
+        pregnancyWeek: Int?
+    ) {
+        viewModelScope.launch {
+            profileRepo.setGenderDetails(
+                uid = uid,
+                gender = gender,
+                isPregnant = isPregnant,
+                onPeriod = onPeriod,
+                pregnancyWeek = pregnancyWeek
+            )
+        }
+    }
+
+    fun setDob(dob: String, age: Int) {
+        viewModelScope.launch {
+            profileRepo.setDob(uid = uid, dob = dob, age = age)
         }
     }
 

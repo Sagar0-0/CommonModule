@@ -54,7 +54,7 @@ class ProfileRepoImplTest {
     @Test
     fun `isProfileAvailable, returns Success`() = runTest {
         coEvery { api.isUserProfileAvailable(any()) } returns mockk()
-        val response = repo.isUserProfileAvailable("")
+        val response = repo.isBasicProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
         assert(response is ResponseState.Success)
     }
@@ -62,7 +62,7 @@ class ProfileRepoImplTest {
     @Test
     fun `isProfileAvailable with random exception, return Error Response`() = runTest {
         coEvery { api.isUserProfileAvailable(any()) } throws Exception()
-        val response = repo.isUserProfileAvailable("")
+        val response = repo.isBasicProfileAvailable("")
         coVerify { api.isUserProfileAvailable("") }
         assert(response is ResponseState.ErrorMessage)
     }

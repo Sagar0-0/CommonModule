@@ -4,6 +4,7 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
+import fit.asta.health.data.profile.remote.model.UpdateProfileRequest
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -33,8 +34,8 @@ interface ProfileApi {
     @PUT("userProfile/put/")
     @Multipart
     suspend fun updateUserProfile(
-        @Part("json") userProfileResponse: UserProfileResponse,
-        @Part files: List<MultipartBody.Part>,
+        @Part("json") updateProfileRequest: UpdateProfileRequest,
+        @Part files: List<MultipartBody.Part>? = null,
     ): Response<SubmitProfileResponse>
 
     @GET("userProfile/get/?")

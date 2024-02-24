@@ -48,10 +48,10 @@ fun BottomSheetGenderSelector(
     gender: Gender?,
     isPregnant: BooleanInt?,
     onPeriod: BooleanInt?,
-    pregnancyWeek: String?,
+    pregnancyWeek: Int?,
     pregWeekErrorMessage: String? = null,
     onDismissRequest: () -> Unit,
-    onSaveClick: (Gender?, BooleanInt?, BooleanInt?, String?) -> Unit
+    onSaveClick: (gender: Gender?, isPregnant: BooleanInt?, onPeriod: BooleanInt?, pregnancyWeek: Int?) -> Unit
 ) {
 
     val (updatedGender, onGenderChange) = rememberSaveable {
@@ -65,7 +65,7 @@ fun BottomSheetGenderSelector(
     }
 
     var pregWeekTextFieldValue by remember {
-        mutableStateOf(TextFieldValue(text = pregnancyWeek ?: ""))
+        mutableStateOf(TextFieldValue(text = pregnancyWeek?.toString() ?: ""))
     }
 
     val isPeriodVisible by remember {
@@ -183,9 +183,9 @@ fun BottomSheetGenderSelector(
                 AppTextButton(textToShow = "Save") {
                     onSaveClick(
                         updatedGender,
-                        periodStatus,
                         pregnantStatus,
-                        pregWeekTextFieldValue.text
+                        periodStatus,
+                        pregWeekTextFieldValue.text?.toIntOrNull()
                     )
                 }
             }

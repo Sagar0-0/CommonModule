@@ -8,44 +8,68 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import fit.asta.health.data.profile.remote.model.BasicDetail
+import fit.asta.health.data.profile.remote.model.BooleanInt
+import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.ProfileMedia
-import kotlinx.coroutines.CoroutineScope
 import java.util.Calendar
 
 @Stable
 class BasicDetailScreenState(
     val basicDetail: BasicDetail,
-    private val scope: CoroutineScope,
     val onEvent: (UserProfileEvent) -> Unit
 ) {
 
     var userName by mutableStateOf(basicDetail.name)
+        private set
 
     fun saveName(name: String) {
-        onEvent(UserProfileEvent.SaveUserName(name))
+        userName = name
+        onEvent(UserProfileEvent.SaveName(name))
     }
 
     val calendar: Calendar = Calendar.getInstance()
-    var userAge by mutableStateOf(basicDetail.age)
+    var userDob by mutableStateOf(basicDetail.dob)
         private set
+    private var userAge by mutableStateOf(basicDetail.age)
+
+    fun saveDob(dob: String, age: Int) {
+        userDob = dob
+        userAge = age
+        onEvent(UserProfileEvent.SaveDob(dob, age))
+    }
+
     var userAgeErrorMessage by mutableStateOf<String?>(null)
         private set
 
-    fun setAge(value: Int) {
-        userAgeErrorMessage = if (value == 0) {
-            "Invalid age"
-        } else if (value < 10) {
-            "Age should be more than 10"
-        } else {
-            null
-        }
-        userAge = value
+    var userGender by mutableStateOf(basicDetail.gender)
+        private set
+    var isPregnant by mutableStateOf(basicDetail.isPregnant)
+        private set
+    var onPeriod by mutableStateOf(basicDetail.onPeriod)
+        private set
+    var userPregnancyWeek by mutableStateOf(basicDetail.pregnancyWeek)
+        private set
+
+    fun saveGender(
+        gender: Gender?,
+        isPregnant: BooleanInt?,
+        onPeriod: BooleanInt?,
+        pregnancyWeek: Int?
+    ) {
+        userGender = gender
+        this.isPregnant = isPregnant
+        this.onPeriod = onPeriod
+        userPregnancyWeek = pregnancyWeek
+        onEvent(
+            UserProfileEvent.SaveGender(
+                gender = gender,
+                isPregnant = isPregnant,
+                onPeriod = onPeriod,
+                pregnancyWeek = pregnancyWeek
+            )
+        )
     }
 
-    var userGender by mutableStateOf(basicDetail.gender)
-    var isPregnant by mutableStateOf(basicDetail.isPregnant)
-    var onPeriod by mutableStateOf(basicDetail.onPeriod)
-    var userPregnancyWeek by mutableStateOf(basicDetail.pregnancyWeek?.toString())
     var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
 
     val email: String
@@ -54,8 +78,6 @@ class BasicDetailScreenState(
         get() = basicDetail.phoneNumber
     var profileImageUrl by mutableStateOf(basicDetail.media.mailUrl.ifEmpty { basicDetail.media.url })
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
-
-    var userDob by mutableStateOf(basicDetail.dob)
 
     private val updatedData = BasicDetail(
         userProfileAddress = basicDetail.userProfileAddress,
@@ -72,7 +94,7 @@ class BasicDetailScreenState(
         gender = userGender,
         isPregnant = isPregnant,
         onPeriod = onPeriod,
-        pregnancyWeek = userPregnancyWeek?.toIntOrNull(),
+        pregnancyWeek = userPregnancyWeek,
     )
 
     fun clearProfile() {
@@ -85,7 +107,6 @@ class BasicDetailScreenState(
 
     companion object {
         fun Saver(
-            scope: CoroutineScope,
             onEvent: (UserProfileEvent) -> Unit
         ): Saver<BasicDetailScreenState, *> = listSaver(
             save = {
@@ -96,7 +117,6 @@ class BasicDetailScreenState(
             restore = {
                 BasicDetailScreenState(
                     basicDetail = it[0],
-                    scope,
                     onEvent
                 )
             }

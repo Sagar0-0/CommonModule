@@ -18,7 +18,7 @@ const val Age_Field_Name = "age"
 const val Gender_Field_Name = "gen"
 const val IsPregnant_Field_Name = "prg"
 const val OnPeriod_Field_Name = "prd"
-const val PeriodWeek_Field_Name = "pw"
+const val PregWeek_Field_Name = "pw"
 
 const val MediaUrl_Field_Name = "url"
 const val MediaMailUrl_Field_Name = "mailUrl"

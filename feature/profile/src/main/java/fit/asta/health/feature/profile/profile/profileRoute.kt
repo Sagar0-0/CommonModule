@@ -11,7 +11,6 @@ import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
-import fit.asta.health.data.profile.remote.model.mergeWithLocalData
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.screens.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
@@ -33,14 +32,10 @@ fun NavGraphBuilder.profileRoute(
     composable(route = PROFILE_GRAPH_ROUTE) {
         val profileViewModel: ProfileViewModel = hiltViewModel()
         val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
-        val localProfile by profileViewModel.localProfile.collectAsStateWithLifecycle()
         val submitProfileState by profileViewModel.submitProfileState.collectAsStateWithLifecycle()
         val healthPropertiesState by profileViewModel.healthPropertiesState.collectAsStateWithLifecycle()
 
         LaunchedEffect(key1 = Unit) {
-            if (localProfile == null) {
-                profileViewModel.getLocalProfile()
-            }
             if (userProfileResponseState !is UiState.Success) {
                 profileViewModel.getProfileData()
             }
@@ -48,28 +43,16 @@ fun NavGraphBuilder.profileRoute(
 
         val userProfileState = rememberUserProfileState(
             userProfileResponse =
-            (userProfileResponseState as? UiState.Success)?.data?.mergeWithLocalData(
-                localProfile
-            ) ?: UserProfileResponse(),
+            (userProfileResponseState as? UiState.Success)?.data ?: UserProfileResponse(),
             navController = navController,
             onEvent = { event ->
                 when (event) {
-                    is UserProfileEvent.UpdateUserProfileData -> {
-                        profileViewModel.saveProfileData(event.userProfileResponse)
-                    }
-
                     is UserProfileEvent.GetHealthProperties -> {
                         profileViewModel.getHealthProperties(event.id)
                     }
 
                     is UserProfileEvent.ResetHealthProperties -> {
                         profileViewModel.resetHealthProperties()
-                    }
-
-                    is UserProfileEvent.SaveUserName -> {
-                        profileViewModel.updateLocalProfile(
-                            localProfile?.copy(name = event.userName)
-                        )
                     }
 
                     is UserProfileEvent.NavigateToOrders -> {
@@ -82,6 +65,28 @@ fun NavGraphBuilder.profileRoute(
 
                     is UserProfileEvent.NavigateToSubscription -> {
                         navigateToSubscription()
+                    }
+
+                    is UserProfileEvent.SaveName -> {
+                        profileViewModel.setName(
+                            event.userName
+                        )
+                    }
+
+                    is UserProfileEvent.SaveGender -> {
+                        profileViewModel.setGender(
+                            event.gender,
+                            event.isPregnant,
+                            event.onPeriod,
+                            event.pregnancyWeek
+                        )
+                    }
+
+                    is UserProfileEvent.SaveDob -> {
+                        profileViewModel.setDob(
+                            event.dob,
+                            event.age
+                        )
                     }
                 }
             }

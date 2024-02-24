@@ -86,7 +86,7 @@ internal class AuthViewModel
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
             _isProfileAvailable.update {
-                profileRepo.isUserProfileAvailable(userId).toUiState()
+                profileRepo.isBasicProfileAvailable(userId).toUiState()
             }
         }
     }
@@ -109,7 +109,7 @@ internal class AuthViewModel
                     }
 
                     val res =
-                        profileRepo.isUserProfileAvailable(it.data.uid) //Check Profile available or not
+                        profileRepo.isBasicProfileAvailable(it.data.uid) //Check Profile available or not
                     _isProfileAvailable.value = res.toUiState()
                     if (res is ResponseState.Success) {//If profile available request is success then navigate accordingly
                         _loginState.value = UiState.Success(Unit)

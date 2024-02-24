@@ -215,15 +215,23 @@ fun BasicDetailsScreen(
                     genderBottomSheetVisible
                 )
             },
-            onSaveClick = { _, _, _, _ ->
-
+            onSaveClick = { gender, isPregnant, onPeriod, pregnancyWeek ->
+                userProfileState.basicDetailScreenState.saveGender(
+                    gender = gender,
+                    isPregnant = isPregnant,
+                    onPeriod = onPeriod,
+                    pregnancyWeek = pregnancyWeek
+                )
+                userProfileState.closeSheet(
+                    genderBottomSheetState,
+                    genderBottomSheetVisible
+                )
             }
         )
 
         DatePicker(calendarUseCaseState) {
-            userProfileState.basicDetailScreenState.userDob =
-                it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-            userProfileState.basicDetailScreenState.setAge(
+            userProfileState.basicDetailScreenState.saveDob(
+                it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString(),
                 (userProfileState.basicDetailScreenState.calendar.get(Calendar.YEAR) - it.year)
             )
         }

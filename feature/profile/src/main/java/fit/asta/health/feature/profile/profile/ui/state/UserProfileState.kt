@@ -97,11 +97,10 @@ fun rememberUserProfileState(
 
     val basicDetailScreenState = rememberSaveable(
         userProfileResponse,
-        saver = BasicDetailScreenState.Saver(coroutineScope, onEvent)
+        saver = BasicDetailScreenState.Saver(onEvent)
     ) {
         BasicDetailScreenState(
             basicDetail = userProfileResponse.basicDetail,
-            scope = coroutineScope,
             onEvent = onEvent
         )
     }
@@ -216,7 +215,7 @@ class UserProfileState(
                 lifeStyle = lifestyleScreenState.getUpdatedData(),
                 diet = dietScreenState.getUpdatedData()
             )
-            onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
+//            onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
         }
     }
 
