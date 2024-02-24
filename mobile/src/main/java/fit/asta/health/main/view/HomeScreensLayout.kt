@@ -418,17 +418,17 @@ private fun onNavigate(
 ) {
     if (route != currentDestination?.route) {
         navController.navigate(route) {
-            if (currentDestination != null) {
-                popUpTo(currentDestination.id) {
-                    saveState = true
-                    inclusive = true
-                }
-            } else {
-                popUpTo(navController.graph.startDestinationId) {
-                    saveState = true
-                    inclusive = true
-                }
+//            if (currentDestination != null) {
+//                popUpTo(currentDestination.id) {
+//                    saveState = true
+//                    inclusive = true
+//                }
+//            } else {
+            popUpTo(navController.graph.startDestinationId) {
+                saveState = true
+//                    inclusive = true
             }
+//            }
             // reselecting the same item
             launchSingleTop = true
             // Restore state when reselecting a previously selected item
