@@ -13,7 +13,6 @@ import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
-import androidx.compose.runtime.derivedStateOf
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -68,22 +67,16 @@ fun BottomSheetGenderSelector(
         mutableStateOf(TextFieldValue(text = pregnancyWeek?.toString() ?: ""))
     }
 
-    val isPeriodVisible by remember {
-        derivedStateOf {
-            updatedGender == GenderTypes.FEMALE.gender
-        }
+    val isPeriodVisible = rememberSaveable(updatedGender) {
+        updatedGender == GenderTypes.FEMALE.gender
     }
 
-    val isPregnantVisible by remember {
-        derivedStateOf {
-            isPeriodVisible && periodStatus == BooleanIntTypes.NO.value
-        }
+    val isPregnantVisible = rememberSaveable(isPeriodVisible, periodStatus) {
+        isPeriodVisible && periodStatus == BooleanIntTypes.NO.value
     }
 
-    val isPregnantWeekFieldVisible by remember {
-        derivedStateOf {
-            isPregnantVisible && pregnantStatus == BooleanIntTypes.YES.value
-        }
+    val isPregnantWeekFieldVisible = rememberSaveable(isPregnantVisible, pregnantStatus) {
+        isPregnantVisible && pregnantStatus == BooleanIntTypes.YES.value
     }
 
     AppModalBottomSheet(
