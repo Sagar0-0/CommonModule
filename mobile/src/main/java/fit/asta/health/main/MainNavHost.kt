@@ -1,8 +1,21 @@
 package fit.asta.health.main
 
+import android.app.AlarmManager
+import android.content.Intent
+import android.os.Build
+import android.provider.Settings
 import android.widget.Toast
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.window.DialogProperties
+import androidx.compose.ui.window.SecureFlagPolicy
+import androidx.core.content.ContextCompat
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.rememberNavController
 import fit.asta.health.BuildConfig
@@ -13,6 +26,7 @@ import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
+import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
 import fit.asta.health.feature.auth.authRoute
@@ -33,6 +47,7 @@ import fit.asta.health.feature.testimonials.navigation.testimonialNavGraph
 import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.feature.walking.nav.stepsCounterNavigation
 import fit.asta.health.feature.water.nav.waterToolNavigation
+import fit.asta.health.main.view.AlarmPermDialogue
 import fit.asta.health.main.view.homeScreen
 import fit.asta.health.meditation.nav.meditationNavigation
 import fit.asta.health.navigation.alarms.allAlarmsRoute
@@ -59,6 +74,34 @@ fun MainNavHost(
 //            AppInternetErrorDialog {}
 //        }
 //    }
+    var showDialogue by remember {
+        mutableStateOf(false)
+    }
+    val context = LocalContext.current
+    LifecycleEventEffect(event = Lifecycle.Event.ON_RESUME) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            val alarmManager = ContextCompat.getSystemService(context, AlarmManager::class.java)
+            showDialogue = alarmManager?.canScheduleExactAlarms() == false
+        }
+    }
+    if (showDialogue)
+        AppDialog(
+            onDismissRequest = { },
+            properties = DialogProperties(
+                dismissOnBackPress = false,
+                dismissOnClickOutside = false,
+                securePolicy = SecureFlagPolicy.SecureOn
+            )
+        ) {
+            AlarmPermDialogue {
+                Intent().also { intent ->
+                    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+                        intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                        context.startActivity(intent)
+                    }
+                }
+            }
+        }
     MainNavHost(startDestination)
 }
 

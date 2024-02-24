@@ -89,7 +89,7 @@ class MainActivity : ComponentActivity(),
         //https://developer.android.com/develop/ui/views/layout/edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
         checkUiStateAndStartApp(splashScreen)
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
             val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
             if (alarmManager?.canScheduleExactAlarms() == false) {
                 Intent().also { intent ->
@@ -97,7 +97,7 @@ class MainActivity : ComponentActivity(),
                     this.startActivity(intent)
                 }
             }
-        }
+        }*/
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
