@@ -13,16 +13,22 @@ import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.DOB_Field_Name
 import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.Gender_Field_Name
+import fit.asta.health.data.profile.remote.model.HeightUnit_Field_Name
+import fit.asta.health.data.profile.remote.model.Height_Field_Name
 import fit.asta.health.data.profile.remote.model.IsPregnant_Field_Name
 import fit.asta.health.data.profile.remote.model.Name_Field_Name
 import fit.asta.health.data.profile.remote.model.OnPeriod_Field_Name
+import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.PregWeek_Field_Name
+import fit.asta.health.data.profile.remote.model.UpdateObjectFloat
 import fit.asta.health.data.profile.remote.model.UpdateObjectInt
 import fit.asta.health.data.profile.remote.model.UpdateObjectString
 import fit.asta.health.data.profile.remote.model.UpdateProfileRequest
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.data.profile.remote.model.WeightUnit_Field_Name
+import fit.asta.health.data.profile.remote.model.Weight_Field_Name
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.network.utils.InputStreamRequestBody
@@ -128,6 +134,58 @@ class ProfileRepoImpl
                             fieldName = Name_Field_Name,
                             value = name
                         )
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveHeight(
+        uid: String,
+        height: Float,
+        unit: Int
+    ): ResponseState<SubmitProfileResponse> {
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = listOf(
+                        UpdateObjectFloat(
+                            screenName = Physique_Screen_Name,
+                            fieldName = Height_Field_Name,
+                            value = height
+                        ),
+                        UpdateObjectInt(
+                            screenName = Physique_Screen_Name,
+                            fieldName = HeightUnit_Field_Name,
+                            value = unit
+                        ),
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveWeight(
+        uid: String,
+        weight: Float,
+        unit: Int
+    ): ResponseState<SubmitProfileResponse> {
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = listOf(
+                        UpdateObjectFloat(
+                            screenName = Physique_Screen_Name,
+                            fieldName = Weight_Field_Name,
+                            value = weight
+                        ),
+                        UpdateObjectInt(
+                            screenName = Physique_Screen_Name,
+                            fieldName = WeightUnit_Field_Name,
+                            value = unit
+                        ),
                     )
                 )
             )

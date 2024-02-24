@@ -88,6 +88,20 @@ fun NavGraphBuilder.profileRoute(
                             event.age
                         )
                     }
+
+                    is UserProfileEvent.SaveHeight -> {
+                        profileViewModel.saveHeight(
+                            event.height,
+                            event.unit
+                        )
+                    }
+
+                    is UserProfileEvent.SaveWeight -> {
+                        profileViewModel.saveWeight(
+                            event.weight,
+                            event.unit
+                        )
+                    }
                 }
             }
         )

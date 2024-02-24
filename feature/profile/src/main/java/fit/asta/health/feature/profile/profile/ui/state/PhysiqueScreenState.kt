@@ -82,6 +82,18 @@ class PhysiqueScreenState(
         )
     }
 
+    fun saveHeight(height: Float, unit: Int) {
+        userHeight = height.toString()
+        heightUnit = unit
+        onEvent(UserProfileEvent.SaveHeight(height, unit))
+    }
+
+    fun saveWeight(weight: Float, unit: Int) {
+        userWeight = weight.toString()
+        weightUnit = unit
+        onEvent(UserProfileEvent.SaveWeight(weight, unit))
+    }
+
     companion object {
         fun Saver(
             coroutineScope: CoroutineScope,

@@ -116,33 +116,51 @@ fun BooleanInt?.isTrue(): Boolean {
     return this == BooleanIntTypes.YES.value
 }
 
-enum class HeightUnit(val title: String, val value: Int) {
+interface PhysiqueUnit {
+    val title: String
+    val value: Int
+}
+
+enum class HeightUnit(override val title: String, override val value: Int) : PhysiqueUnit {
     CM("cm", 1),
     Inch("in", 6);
 
     companion object {
-        fun indexOf(newValue: Int?): Int {
-            if (newValue == null) return -1
+
+        fun getName(value: Int): String {
+            WeightUnit.entries.forEach { unit ->
+                if (unit.value == value) return unit.title
+            }
+            return ""
+        }
+
+        fun indexOf(newValue: Int?): Int? {
             HeightUnit.entries.forEachIndexed { index, unit ->
                 if (unit.value == newValue) return index
             }
-            return -1
+            return null
         }
     }
 
 }
 
-enum class WeightUnit(val title: String, val value: Int) {
+enum class WeightUnit(override val title: String, override val value: Int) : PhysiqueUnit {
     KG("kg", 7),
     LB("lb", 8);
 
     companion object {
-        fun indexOf(newValue: Int?): Int {
-            if (newValue == null) return -1
+        fun getName(value: Int): String {
+            WeightUnit.entries.forEach { unit ->
+                if (unit.value == value) return unit.title
+            }
+            return ""
+        }
+
+        fun indexOf(newValue: Int?): Int? {
             WeightUnit.entries.forEachIndexed { index, unit ->
                 if (unit.value == newValue) return index
             }
-            return -1
+            return null
         }
     }
 }

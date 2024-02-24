@@ -32,4 +32,16 @@ interface ProfileRepo {
         dob: String,
         age: Int
     ): ResponseState<SubmitProfileResponse>
+
+    suspend fun saveHeight(
+        uid: String,
+        height: Float,
+        unit: Int
+    ): ResponseState<SubmitProfileResponse>
+
+    suspend fun saveWeight(
+        uid: String,
+        weight: Float,
+        unit: Int
+    ): ResponseState<SubmitProfileResponse>
 }

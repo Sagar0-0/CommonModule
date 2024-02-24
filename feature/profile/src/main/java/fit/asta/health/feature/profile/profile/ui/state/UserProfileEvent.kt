@@ -17,4 +17,7 @@ sealed interface UserProfileEvent {
         val onPeriod: BooleanInt?,
         val pregnancyWeek: Int?
     ) : UserProfileEvent
+
+    data class SaveHeight(val height: Float, val unit: Int) : UserProfileEvent
+    data class SaveWeight(val weight: Float, val unit: Int) : UserProfileEvent
 }

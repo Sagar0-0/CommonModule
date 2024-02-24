@@ -1,0 +1,110 @@
+package fit.asta.health.feature.profile.profile.ui.components
+
+import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxWidth
+import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.layout.size
+import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetState
+import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
+import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.focus.focusRequester
+import androidx.compose.ui.text.TextRange
+import androidx.compose.ui.text.input.TextFieldValue
+import androidx.compose.ui.unit.dp
+import fit.asta.health.data.profile.remote.model.PhysiqueUnit
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.RowToggleButtonGroup
+import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
+import fit.asta.health.designsystem.molecular.button.AppTextButton
+import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun BottomSheetPhysique(
+    isVisible: Boolean,
+    sheetState: SheetState,
+    label: String,
+    text: String,
+    units: List<PhysiqueUnit>,
+    selectedUnitIndex: Int,
+    onDismissRequest: () -> Unit,
+    onSaveClick: (value: Float, unit: Int) -> Unit
+) {
+    var textFieldValue by remember(text) {
+        mutableStateOf(TextFieldValue(text = text))
+    }
+    var updatedUnitIndex by rememberSaveable(selectedUnitIndex) {
+        mutableIntStateOf(selectedUnitIndex)
+    }
+
+    val focusRequester = remember { FocusRequester() }
+    LaunchedEffect(isVisible) {
+        if (isVisible) {
+            focusRequester.requestFocus()
+            //Move cursor at the end
+            textFieldValue = textFieldValue.copy(
+                selection = TextRange(textFieldValue.text.length)
+            )
+        }
+    }
+
+    AppModalBottomSheet(
+        modifier = Modifier.fillMaxWidth(),
+        sheetVisible = isVisible,
+        sheetState = sheetState,
+        onDismissRequest = onDismissRequest
+    ) {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(AppTheme.spacing.level2)
+                .focusRequester(focusRequester),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
+            CaptionTexts.Level2(text = label)
+            RowToggleButtonGroup(
+                selectedIndex = updatedUnitIndex,
+                buttonTexts = units.map { it.title },
+                onButtonClick = { index ->
+                    updatedUnitIndex = index
+                },
+                modifier = Modifier.size(width = 80.dp, height = 24.dp),
+                selectedColor = AppTheme.colors.primary
+            )
+            AppOutlinedTextField(
+                modifier = Modifier.fillMaxWidth(),
+                value = textFieldValue,
+                onValueChange = {
+                    textFieldValue = it
+                },
+            )
+            Row(
+                modifier = Modifier.align(Alignment.End),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+            ) {
+                AppTextButton(textToShow = "Cancel") {
+                    onDismissRequest()
+                }
+                AppTextButton(textToShow = "Save") {
+                    onSaveClick(
+                        textFieldValue.text.toFloat(),
+                        units[updatedUnitIndex].value
+                    )
+                }
+            }
+        }
+    }
+}

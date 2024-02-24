@@ -87,4 +87,16 @@ class ProfileViewModel
     fun resetHealthProperties() {
         _userPropertiesState.value = UiState.Idle
     }
+
+    fun saveHeight(height: Float, unit: Int) {
+        viewModelScope.launch {
+            profileRepo.saveHeight(uid, height, unit)
+        }
+    }
+
+    fun saveWeight(weight: Float, unit: Int) {
+        viewModelScope.launch {
+            profileRepo.saveWeight(uid, weight, unit)
+        }
+    }
 }
