@@ -37,7 +37,11 @@ data class TodaySchedules(
         @SerializedName("utc_offset_seconds")
         val utcOffsetSeconds: Int = 0 ,
         @SerializedName("temp")
-        val temp: Double = 0.0
+        val temp: Double = 0.0,
+        @SerializedName("wea")
+        val weather: String ?= null,
+        @SerializedName("code")
+        val weatherCode: Int = 0,
     )
 
     data class DailyUnits(

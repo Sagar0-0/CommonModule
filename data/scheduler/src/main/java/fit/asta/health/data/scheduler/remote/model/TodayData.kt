@@ -7,6 +7,7 @@ data class TodayData(
     val weatherCode: Int = 0,
     val location: String = "wait",
     val date: String = "01-01-23",
+    val weatherType :String="Sunny",
     @SerializedName("slot")
     val slots: List<WeatherData> = emptyList()
 )

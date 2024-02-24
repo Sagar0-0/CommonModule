@@ -1,5 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.components
 
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -17,6 +18,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
+import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.model.WeatherData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -27,12 +29,13 @@ import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
-import fit.asta.health.resources.drawables.R as DrawR
+import fit.asta.health.feature.scheduler.util.WeatherUtil
 
 @Composable
 fun WeatherCardHome(
     temperature: String,
     modifier: Modifier = Modifier,
+    data: TodayData,
 ) {
     AppCard(
         modifier = modifier,
@@ -49,13 +52,14 @@ fun WeatherCardHome(
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)
             ) {
                 HeadingTexts.Level1(text = "$temperature °C")
-                BodyTexts.Level2(text = "Cloudy")
+                BodyTexts.Level2(text = data.weatherType)
             }
             Box(modifier = Modifier.weight(.5f), contentAlignment = Alignment.Center) {
                 AppLocalImage(
-                    painter = painterResource(id = DrawR.drawable.weather_sun_cloud_angled_rain),
+                    painter = painterResource(id = WeatherUtil.getWeatherIcon(data.weatherCode)),
                     contentDescription = null,
-                    modifier = Modifier.size(70.dp),
+                    modifier = Modifier
+                        .size(70.dp),
                     contentScale = ContentScale.FillBounds
                 )
             }

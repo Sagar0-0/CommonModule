@@ -100,7 +100,7 @@ fun TodayContent(
     val index = remember { mutableIntStateOf(1) }
     var eventType by remember { mutableStateOf(Event.Morning) }
 
-    if (defaultScheduleVisibility){
+    if (defaultScheduleVisibility) {
         hSEvent(HomeEvent.SetDefaultSchedule(context))
     }
 
@@ -265,6 +265,7 @@ fun TodayTabContent(
                                     )
                                 ),
                             temperature = state.data.temperature,
+                            data=state.data,
                         )
                     }
                     item { TitleTexts.Level2(text = "SunSlots") }
@@ -302,14 +303,14 @@ fun TodayTabContent(
                 else -> {}
             }
         }
-       /* if (defaultScheduleVisibility) {
-            item {
-                AppOutlinedButton(
-                    modifier = Modifier.fillMaxWidth(),
-                    textToShow = stringResource(R.string.default_schedule)
-                ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
-            }
-        }*/
+        /* if (defaultScheduleVisibility) {
+             item {
+                 AppOutlinedButton(
+                     modifier = Modifier.fillMaxWidth(),
+                     textToShow = stringResource(R.string.default_schedule)
+                 ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
+             }
+         }*/
         if (listMorning.isNotEmpty()) {
             item {
                 AnimatedVisibility(

@@ -13,7 +13,7 @@ fun TodaySchedules.getTodayData(): TodayData {
         temperature = this.weather.temp.toString(),
         location = this.weather.loc,
         date = this.weather.date,
-        weatherCode = this.weather.currentWeather.weatherCode,
+        weatherCode = this.weather.weatherCode,
         slots = this.slot?.slot?.sortedBy { it.time }?.map {
             val dayAndTime = Constants.getDayAndTime(it.time)
             WeatherData(
@@ -23,7 +23,8 @@ fun TodaySchedules.getTodayData(): TodayData {
                 timeSlot = dayAndTime.timeOfDay,
                 title = dayAndTime.day
             )
-        } ?: emptyList()
+        } ?: emptyList(),
+        weatherType = this.weather.weather ?: "Sunny"
     )
 }
 
