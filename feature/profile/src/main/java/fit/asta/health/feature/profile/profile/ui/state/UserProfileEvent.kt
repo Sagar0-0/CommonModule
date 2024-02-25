@@ -2,6 +2,7 @@ package fit.asta.health.feature.profile.profile.ui.state
 
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
+import fit.asta.health.data.profile.remote.model.UserProperties
 
 sealed interface UserProfileEvent {
     data object ResetHealthProperties : UserProfileEvent
@@ -20,4 +21,6 @@ sealed interface UserProfileEvent {
 
     data class SaveHeight(val height: Float, val unit: Int) : UserProfileEvent
     data class SaveWeight(val weight: Float, val unit: Int) : UserProfileEvent
+    data class SavePropertiesList(val fieldName: String, val list: List<UserProperties>) :
+        UserProfileEvent
 }

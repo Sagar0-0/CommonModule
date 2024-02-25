@@ -102,6 +102,13 @@ fun NavGraphBuilder.profileRoute(
                             event.unit
                         )
                     }
+
+                    is UserProfileEvent.SavePropertiesList -> {
+                        profileViewModel.saveHealthScreenPropertiesList(
+                            event.fieldName,
+                            event.list
+                        )
+                    }
                 }
             }
         )

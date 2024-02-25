@@ -2,7 +2,6 @@ package fit.asta.health.feature.profile.profile.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -13,7 +12,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
@@ -21,7 +19,6 @@ import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.TextFieldValue
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
-import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
@@ -71,16 +68,8 @@ fun BottomSheetTextField(
                     textFieldValue = it
                 },
             )
-            Row(
-                modifier = Modifier.align(Alignment.End),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-            ) {
-                AppTextButton(textToShow = "Cancel") {
-                    onDismissRequest()
-                }
-                AppTextButton(textToShow = "Save") {
-                    onSaveClick(textFieldValue.text)
-                }
+            BottomSheetSaveButtons(onSave = { onSaveClick(textFieldValue.text) }) {
+                onDismissRequest()
             }
         }
     }

@@ -1,14 +1,10 @@
 package fit.asta.health.feature.profile.profile.ui.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.padding
-import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
@@ -23,15 +19,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import androidx.compose.ui.unit.dp
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 
 @Composable
-fun PropertiesSearchSheet(
+fun ColumnScope.PropertiesSearchSheet(
     userProperties: List<UserProperties>,
     searchQuery: String,
     onSearchQueryChange: (String) -> Unit,
@@ -39,28 +33,17 @@ fun PropertiesSearchSheet(
     onAdd: (UserProperties) -> Unit,
     onRemove: (UserProperties) -> Unit
 ) {
-    Column(
-        modifier = Modifier
-            .padding(horizontal = AppTheme.spacing.level2),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-    ) {
-        Spacer(modifier = Modifier)
-        Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.Center) {
-            AppDivider(modifier = Modifier.width(80.dp))
-        }
-        SearchBar(
-            searchQuery = searchQuery,
-            onSearchQueryChange = onSearchQueryChange,
-        )
-        ChipRow(
-            userProperties = userProperties,
-            searchQuery = searchQuery,
-            isItemSelected = isItemSelected,
-            onAdd = onAdd,
-            onRemove = onRemove
-        )
-        Spacer(modifier = Modifier)
-    }
+    SearchBar(
+        searchQuery = searchQuery,
+        onSearchQueryChange = onSearchQueryChange,
+    )
+    ChipRow(
+        userProperties = userProperties,
+        searchQuery = searchQuery,
+        isItemSelected = isItemSelected,
+        onAdd = onAdd,
+        onRemove = onRemove
+    )
 }
 
 @Composable

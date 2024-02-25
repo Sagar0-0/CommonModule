@@ -9,6 +9,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
+import fit.asta.health.data.profile.remote.model.Health_Screen_Name
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -97,6 +98,17 @@ class ProfileViewModel
     fun saveWeight(weight: Float, unit: Int) {
         viewModelScope.launch {
             profileRepo.saveWeight(uid, weight, unit)
+        }
+    }
+
+    fun saveHealthScreenPropertiesList(fieldName: String, list: List<UserProperties>) {
+        viewModelScope.launch {
+            profileRepo.savePropertiesList(
+                uid,
+                Health_Screen_Name,
+                fieldName,
+                list
+            )
         }
     }
 }

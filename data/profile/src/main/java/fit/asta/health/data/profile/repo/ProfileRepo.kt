@@ -44,4 +44,8 @@ interface ProfileRepo {
         weight: Float,
         unit: Int
     ): ResponseState<SubmitProfileResponse>
+
+    suspend fun savePropertiesList(
+        uid: String, screenName: String, fieldName: String, list: List<UserProperties>
+    ): ResponseState<SubmitProfileResponse>
 }

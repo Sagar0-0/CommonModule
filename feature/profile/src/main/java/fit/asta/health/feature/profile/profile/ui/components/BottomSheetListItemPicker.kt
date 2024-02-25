@@ -8,7 +8,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material.icons.filled.RemoveCircle
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -16,8 +16,8 @@ import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
-import fit.asta.health.designsystem.molecular.chip.AppAssistChip
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
@@ -28,8 +28,7 @@ fun BottomSheetListItemPicker(
 ) {
     AppCard(
         modifier = Modifier
-            .fillMaxWidth()
-            .padding(horizontal = AppTheme.spacing.level2),
+            .fillMaxWidth(),
         onClick = onOpenClick
     ) {
         Column(
@@ -52,10 +51,17 @@ fun BottomSheetListItemPicker(
                     modifier = Modifier.padding(top = AppTheme.spacing.level2),
                 ) {
                     list.forEach {
-                        AppAssistChip(
-                            textToShow = it.name,
-                            trailingIcon = Icons.Default.RemoveCircle
-                        )
+                        AppCard(
+                            modifier = Modifier.padding(AppTheme.spacing.level1),
+                            colors = CardDefaults.cardColors(
+                                contentColor = AppTheme.colors.surfaceVariant
+                            )
+                        ) {
+                            BodyTexts.Level3(
+                                text = it.name,
+                                modifier = Modifier.padding(AppTheme.spacing.level1),
+                            )
+                        }
                     }
                 }
             }
