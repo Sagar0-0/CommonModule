@@ -4,13 +4,16 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
+import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import fit.asta.health.data.profile.remote.model.CurrentActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.LifestyleTargets_Field_Name
+import fit.asta.health.data.profile.remote.model.Lifestyle_Screen_Name
 import fit.asta.health.data.profile.remote.model.PhysicallyActive
 import fit.asta.health.data.profile.remote.model.PreferredActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
@@ -57,6 +60,7 @@ class LifestyleScreenState(
         )
     )
 
+    private val currentListIndex = mutableIntStateOf(0)
 
     val bottomSheets: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
         UserProfileState.ProfileBottomSheetPicker(
@@ -79,6 +83,43 @@ class LifestyleScreenState(
         )
     )
 
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun openLifestyleBottomSheet(
+        sheetState: SheetState,
+        index: Int,
+        bottomSheetVisible: MutableState<Boolean>
+    ) {
+        currentListIndex.intValue = index
+        bottomSheetVisible.value = true
+        coroutineScope.launch { sheetState.expand() }
+        getHealthProperties()
+    }
+
+    private fun getHealthProperties() {
+        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[currentListIndex.intValue].getQueryParam))
+    }
+
+
+    fun saveProperties(list: List<UserProperties>) {
+        bottomSheets[currentListIndex.intValue].list.apply {
+            clear()
+            addAll(list)
+        }
+        onEvent(
+            UserProfileEvent.SavePropertiesList(
+                Lifestyle_Screen_Name,
+                bottomSheets[currentListIndex.intValue].fieldName,
+                list
+            )
+        )
+    }
+
+    fun getUpdatedData(): LifeStyle {
+        return updateLifestyle
+    }
+
+    private val currentTimerIndex = mutableIntStateOf(0)
+
     val lifestyleTimePickers: List<ProfileTimePicker> = listOf(
         ProfileTimePicker(
             "Sleep Schedule",
@@ -97,6 +138,7 @@ class LifestyleScreenState(
             2, 3
         )
     )
+
     private val timersList = listOf(
         sleepStartTime,
         sleepEndTime,
@@ -104,41 +146,15 @@ class LifestyleScreenState(
         jobEndTime
     )
 
-
-    fun addProperty(sheetIndex: Int, userProperties: UserProperties) {
-        bottomSheets[sheetIndex].list.add(userProperties)
+    fun setCurrentItemTime(time: String) {
+        timersList[currentTimerIndex.intValue].value = time
     }
 
-    fun removeProperty(sheetIndex: Int, userProperties: UserProperties) {
-        bottomSheets[sheetIndex].list.remove(userProperties)
-    }
+    fun getCurrentList() = bottomSheets[currentListIndex.intValue].list.toList()
 
-    fun isPropertySelected(sheetIndex: Int, userProperties: UserProperties): Boolean {
-        return bottomSheets[sheetIndex].list.contains(userProperties)
-    }
-
-    @OptIn(ExperimentalMaterial3Api::class)
-    fun openLifestyleBottomSheet(
-        sheetState: SheetState,
-        index: MutableState<Int>,
-        bottomSheetVisible: MutableState<Boolean>
-    ) {
-//        currentBottomSheetIndex = index
-        bottomSheetVisible.value = true
-        coroutineScope.launch { sheetState.expand() }
-        getHealthProperties(index.value)
-    }
-
-    private fun getHealthProperties(sheetIndex: Int) {
-        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].getQueryParam))
-    }
-
-    fun getUpdatedData(): LifeStyle {
-        return updateLifestyle
-    }
-
-    fun setCurrentItemTime(index: Int, time: String) {
-        timersList[index].value = time
+    fun openTimer(index: Int, useCaseState: UseCaseState) {
+        currentTimerIndex.intValue = index
+        useCaseState.show()
     }
 
     companion object {
@@ -148,7 +164,9 @@ class LifestyleScreenState(
         ): Saver<LifestyleScreenState, *> = listSaver(
             save = {
                 listOf(
-                    it.updateLifestyle
+                    it.updateLifestyle,
+                    it.currentListIndex.intValue,
+                    it.currentTimerIndex.intValue
                 )
             },
             restore = {
@@ -156,7 +174,10 @@ class LifestyleScreenState(
                     lifeStyle = it[0] as LifeStyle,
                     coroutineScope,
                     onEvent
-                )
+                ).apply {
+                    this.currentListIndex.intValue = it[1] as Int
+                    this.currentTimerIndex.intValue = it[2] as Int
+                }
             }
         )
     }

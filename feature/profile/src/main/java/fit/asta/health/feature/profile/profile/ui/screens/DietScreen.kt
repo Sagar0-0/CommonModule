@@ -55,9 +55,6 @@ fun DietScreen(
         PageNavigationButtons(
             onPrevious = {
                 userProfileState.currentPageIndex--
-            },
-            onSubmitClick = {
-                userProfileState.saveData()
             }
         )
         Spacer(modifier = Modifier)
@@ -69,7 +66,7 @@ fun DietScreen(
             sheetState = bottomSheetState,
             currentList = userProfileState.dietScreenState.getCurrentList(),
             onDismissRequest = {
-                userProfileState.closeBottomSheet(
+                userProfileState.closeSheet(
                     bottomSheetState,
                     bottomSheetVisible
                 )
@@ -77,7 +74,7 @@ fun DietScreen(
             userPropertiesState = userPropertiesState
         ) {
             userProfileState.dietScreenState.saveProperties(it)
-            userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
+            userProfileState.closeSheet(bottomSheetState, bottomSheetVisible)
         }
     }
 }

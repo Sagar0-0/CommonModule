@@ -2,7 +2,6 @@
 
 package fit.asta.health.feature.profile.profile.ui.state
 
-import android.util.Log
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
@@ -148,18 +147,6 @@ class UserProfileState(
     private val navController: NavController,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
-    init {
-        Log.d(
-            "INIT UserProfileState", "pagerState = $pagerState\n" +
-                    "coroutineScope = $coroutineScope\n" +
-                    "navController = $navController\n" +
-                    "onEvent = $onEvent"
-        )
-    }
-
-    //Parent level States
-    var isConfirmDialogVisible by mutableStateOf(false)
-    private var isAnythingChanged by mutableStateOf(false)
     var isImageCropperVisible by mutableStateOf(false)
     var currentPageIndex: Int
         get() = pagerState.currentPage
@@ -171,13 +158,6 @@ class UserProfileState(
     val profileDataPages: List<ProfileNavigationScreen>
         get() = ProfileNavigationScreen.entries
 
-    var bottomSheetSearchQuery by mutableStateOf("")
-
-    fun closeBottomSheet(sheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
-        coroutineScope.launch { sheetState.hide() }
-        bottomSheetVisible.value = false
-        bottomSheetSearchQuery = ""
-    }
 
     @OptIn(ExperimentalMaterial3Api::class)
     fun openSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
@@ -196,27 +176,7 @@ class UserProfileState(
     }
 
     fun onBackPressed() {
-        saveData()
         navController.popBackStack()
-    }
-
-    fun forceBackPress() {
-        navController.popBackStack()
-    }
-
-    fun saveData() {
-        if (!physiqueScreenState.isValid()) {
-            currentPageIndex = 1
-        } else {
-            val newProfileData = UserProfileResponse(
-                basicDetail = basicDetailScreenState.getUpdatedData(),
-                physique = physiqueScreenState.getUpdatedData(),
-                health = healthScreenState.getUpdatedData(),
-                lifeStyle = lifestyleScreenState.getUpdatedData(),
-                diet = dietScreenState.getUpdatedData()
-            )
-//            onEvent(UserProfileEvent.UpdateUserProfileData(newProfileData))
-        }
     }
 
     fun navigateToOrders() {
@@ -245,14 +205,10 @@ class UserProfileState(
         ): Saver<UserProfileState, *> = listSaver(
             save = {
                 listOf(
-                    it.isConfirmDialogVisible,
-                    it.isAnythingChanged,
                     it.isImageCropperVisible,
-                    it.bottomSheetSearchQuery,
                 )
             },
             restore = {
-                Log.d("SHEET", "Restore: ${it[0]}")
                 UserProfileState(
                     basicDetailScreenState = basicDetailScreenState,
                     healthScreenState = healthScreenState,
@@ -264,10 +220,7 @@ class UserProfileState(
                     navController = navController,
                     onEvent = onEvent
                 ).apply {
-                    this.isConfirmDialogVisible = it[0] as Boolean
-                    this.isAnythingChanged = it[1] as Boolean
-                    this.isImageCropperVisible = it[2] as Boolean
-                    this.bottomSheetSearchQuery = it[3] as String
+                    this.isImageCropperVisible = it[0]
                 }
             }
         )

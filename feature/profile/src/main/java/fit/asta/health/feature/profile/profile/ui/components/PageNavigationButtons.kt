@@ -25,10 +25,12 @@ fun PageNavigationButtons(
                 modifier = Modifier.weight(1f),
             )
         }
-        AppFilledButton(
-            textToShow = if (onSubmitClick != null) "Submit" else "Next",
-            onClick = { if (onSubmitClick != null) onSubmitClick.invoke() else onNext?.invoke() },
-            modifier = Modifier.weight(1f),
-        )
+        if (onSubmitClick != null || onNext != null) {
+            AppFilledButton(
+                textToShow = if (onSubmitClick != null) "Submit" else "Next",
+                onClick = { if (onSubmitClick != null) onSubmitClick.invoke() else onNext?.invoke() },
+                modifier = Modifier.weight(1f),
+            )
+        }
     }
 }

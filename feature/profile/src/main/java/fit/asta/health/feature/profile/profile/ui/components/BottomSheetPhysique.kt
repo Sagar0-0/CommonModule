@@ -40,10 +40,10 @@ fun BottomSheetPhysique(
     onDismissRequest: () -> Unit,
     onSaveClick: (value: Float, unit: Int) -> Unit
 ) {
-    var textFieldValue by remember(text) {
+    var textFieldValue by remember(isVisible, text) {
         mutableStateOf(TextFieldValue(text = text))
     }
-    var updatedUnitIndex by rememberSaveable(selectedUnitIndex) {
+    var updatedUnitIndex by rememberSaveable(isVisible, selectedUnitIndex) {
         mutableIntStateOf(selectedUnitIndex)
     }
 

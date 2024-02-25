@@ -70,7 +70,7 @@ fun HealthScreen(
             sheetState = bottomSheetState,
             currentList = userProfileState.healthScreenState.getCurrentList(),
             onDismissRequest = {
-                userProfileState.closeBottomSheet(
+                userProfileState.closeSheet(
                     bottomSheetState,
                     bottomSheetVisible
                 )
@@ -78,7 +78,7 @@ fun HealthScreen(
             userPropertiesState = userPropertiesState
         ) {
             userProfileState.healthScreenState.saveProperties(it)
-            userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
+            userProfileState.closeSheet(bottomSheetState, bottomSheetVisible)
         }
     }
 }

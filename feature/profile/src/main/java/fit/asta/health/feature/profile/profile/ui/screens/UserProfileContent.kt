@@ -14,9 +14,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
-import fit.asta.health.designsystem.molecular.ShowCustomConfirmationDialog
 import fit.asta.health.designsystem.molecular.background.AppNavigationBar
 import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -100,28 +98,6 @@ fun UserProfileContent(
                     }
                 }
             }
-
-        }
-
-        if (userProfileState.isConfirmDialogVisible) {
-            ShowCustomConfirmationDialog(
-                onDismiss = {
-                    userProfileState.isConfirmDialogVisible =
-                        !userProfileState.isConfirmDialogVisible
-                },
-                onNegativeClick = {
-                    userProfileState.forceBackPress()
-                },
-                onPositiveClick = {
-                    userProfileState.saveData()
-                },
-                dialogData = DialogData(
-                    dialogTitle = stringResource(R.string.discard_profile_creation),
-                    dialogDesc = stringResource(R.string.dialogDesc_profile_creation),
-                    negTitle = stringResource(R.string.negativeTitle_profile_creation),
-                    posTitle = stringResource(R.string.positiveTitle_profile_creation)
-                )
-            )
         }
     }
 

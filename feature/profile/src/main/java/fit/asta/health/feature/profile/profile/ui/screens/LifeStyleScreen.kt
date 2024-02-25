@@ -16,7 +16,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.State
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -30,14 +29,12 @@ import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetProperties
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
-import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -48,8 +45,6 @@ fun LifestyleScreen(
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
-    val currentBottomSheetIndex = rememberSaveable { mutableIntStateOf(0) }
-    val currentTimerIndex = rememberSaveable { mutableIntStateOf(0) }
     val useCaseState = rememberUseCaseState()
 
     Column(
@@ -66,15 +61,19 @@ fun LifestyleScreen(
                 title = it.title,
                 startButtonTitle = it.startButtonTitle,
                 endButtonTitle = it.endButtonTitle,
-                startTime = it.startTime.value ?: "",
-                endTime = it.endTime.value ?: "",
+                startTime = it.startTime.value ?: "Select Time",
+                endTime = it.endTime.value ?: "Select Time",
                 onStartClick = {
-                    currentTimerIndex.intValue = it.startIndex
-                    useCaseState.show()
+                    userProfileState.lifestyleScreenState.openTimer(
+                        it.startIndex,
+                        useCaseState
+                    )
                 },
                 onEndClick = {
-                    currentTimerIndex.intValue = it.endIndex
-                    useCaseState.show()
+                    userProfileState.lifestyleScreenState.openTimer(
+                        it.endIndex,
+                        useCaseState
+                    )
                 }
             )
         }
@@ -85,10 +84,9 @@ fun LifestyleScreen(
                 name = type.name,
                 list = type.list
             ) {
-                currentBottomSheetIndex.intValue = index
                 userProfileState.lifestyleScreenState.openLifestyleBottomSheet(
                     bottomSheetState,
-                    currentBottomSheetIndex,
+                    index,
                     bottomSheetVisible
                 )
             }
@@ -105,59 +103,34 @@ fun LifestyleScreen(
 
         Spacer(modifier = Modifier)
 
+
+        //Dialogs
+        BottomSheetProperties(
+            isVisible = bottomSheetVisible.value,
+            sheetState = bottomSheetState,
+            currentList = userProfileState.lifestyleScreenState.getCurrentList(),
+            onDismissRequest = {
+                userProfileState.closeSheet(
+                    bottomSheetState,
+                    bottomSheetVisible
+                )
+            },
+            userPropertiesState = userPropertiesState
+        ) {
+            userProfileState.lifestyleScreenState.saveProperties(it)
+            userProfileState.closeSheet(bottomSheetState, bottomSheetVisible)
+        }
+
         ClockDialog(
             state = useCaseState,
             selection = ClockSelection.HoursMinutes(
                 onPositiveClick = { hrs, mins ->
                     userProfileState.lifestyleScreenState.setCurrentItemTime(
-                        currentTimerIndex.intValue,
                         "${hrs}:${mins}"
                     )
                 }
             )
         )
-        AppModalBottomSheet(
-            sheetVisible = bottomSheetVisible.value,
-            sheetState = bottomSheetState,
-            dragHandle = null,
-            onDismissRequest = {
-                userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
-            },
-        ) {
-            AppUiStateHandler(
-                uiState = userPropertiesState,
-                isScreenLoading = false,
-                onErrorMessage = {
-                    userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
-                }
-            ) {
-                PropertiesSearchSheet(
-                    userProperties = it,
-                    searchQuery = userProfileState.bottomSheetSearchQuery,
-                    onSearchQueryChange = { query ->
-                        userProfileState.bottomSheetSearchQuery = query
-                    },
-                    isItemSelected = { prop ->
-                        userProfileState.lifestyleScreenState.isPropertySelected(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    },
-                    onAdd = { prop ->
-                        userProfileState.lifestyleScreenState.addProperty(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    },
-                    onRemove = { prop ->
-                        userProfileState.lifestyleScreenState.removeProperty(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    },
-                )
-            }
-        }
     }
 }
 

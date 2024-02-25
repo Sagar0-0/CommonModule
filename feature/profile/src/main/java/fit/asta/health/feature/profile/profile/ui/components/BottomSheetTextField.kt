@@ -32,7 +32,7 @@ fun BottomSheetTextField(
     onDismissRequest: () -> Unit,
     onSaveClick: (String) -> Unit
 ) {
-    var textFieldValue by remember {
+    var textFieldValue by remember(isVisible) {
         mutableStateOf(TextFieldValue(text = text))
     }
 

@@ -51,31 +51,32 @@ fun BottomSheetGenderSelector(
     onSaveClick: (gender: Gender?, isPregnant: BooleanInt?, onPeriod: BooleanInt?, pregnancyWeek: Int?) -> Unit
 ) {
 
-    val (updatedGender, onGenderChange) = rememberSaveable {
+    val (updatedGender, onGenderChange) = rememberSaveable(isVisible) {
         mutableStateOf(gender)
     }
-    val (pregnantStatus, onPregnantChange) = rememberSaveable {
+    val (pregnantStatus, onPregnantChange) = rememberSaveable(isVisible) {
         mutableStateOf(isPregnant)
     }
-    val (periodStatus, onPeriodChange) = rememberSaveable {
+    val (periodStatus, onPeriodChange) = rememberSaveable(isVisible) {
         mutableStateOf(onPeriod)
     }
 
-    var pregWeekTextFieldValue by remember {
+    var pregWeekTextFieldValue by remember(isVisible) {
         mutableStateOf(TextFieldValue(text = pregnancyWeek?.toString() ?: ""))
     }
 
-    val isPeriodVisible = rememberSaveable(updatedGender) {
+    val isPeriodVisible = rememberSaveable(isVisible, updatedGender) {
         updatedGender == GenderTypes.FEMALE.gender
     }
 
-    val isPregnantVisible = rememberSaveable(isPeriodVisible, periodStatus) {
+    val isPregnantVisible = rememberSaveable(isVisible, isPeriodVisible, periodStatus) {
         isPeriodVisible && periodStatus == BooleanIntTypes.NO.value
     }
 
-    val isPregnantWeekFieldVisible = rememberSaveable(isPregnantVisible, pregnantStatus) {
-        isPregnantVisible && pregnantStatus == BooleanIntTypes.YES.value
-    }
+    val isPregnantWeekFieldVisible =
+        rememberSaveable(isVisible, isPregnantVisible, pregnantStatus) {
+            isPregnantVisible && pregnantStatus == BooleanIntTypes.YES.value
+        }
 
     AppModalBottomSheet(
         modifier = Modifier.fillMaxWidth(),
