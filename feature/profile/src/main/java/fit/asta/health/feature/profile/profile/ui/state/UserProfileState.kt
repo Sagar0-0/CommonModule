@@ -274,7 +274,8 @@ class UserProfileState(
     }
 
     data class ProfileBottomSheetPicker(
-        val id: String,
+        val fieldName: String,
+        val getQueryParam: String,
         val name: String,
         val list: SnapshotStateList<UserProperties>
     )

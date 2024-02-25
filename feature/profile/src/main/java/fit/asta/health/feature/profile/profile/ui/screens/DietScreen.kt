@@ -4,12 +4,12 @@ import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
@@ -17,11 +17,9 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetProperties
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
-import fit.asta.health.feature.profile.profile.ui.components.PropertiesSearchSheet
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -32,11 +30,11 @@ fun DietScreen(
 ) {
     val bottomSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
-    val currentBottomSheetIndex = rememberSaveable { mutableIntStateOf(0) }
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(AppTheme.spacing.level2)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
@@ -47,10 +45,9 @@ fun DietScreen(
                 name = type.name,
                 list = type.list,
             ) {
-                currentBottomSheetIndex.intValue = index
                 userProfileState.dietScreenState.openPropertiesBottomSheet(
                     bottomSheetState,
-                    currentBottomSheetIndex,
+                    index,
                     bottomSheetVisible
                 )
             }
@@ -64,47 +61,23 @@ fun DietScreen(
             }
         )
         Spacer(modifier = Modifier)
-        AppModalBottomSheet(
-            sheetVisible = bottomSheetVisible.value,
+
+
+        //Dialogs
+        BottomSheetProperties(
+            isVisible = bottomSheetVisible.value,
             sheetState = bottomSheetState,
-            dragHandle = null,
+            currentList = userProfileState.dietScreenState.getCurrentList(),
             onDismissRequest = {
-                userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
-            }
-        ) {
-            AppUiStateHandler(
-                uiState = userPropertiesState,
-                isScreenLoading = false,
-                onErrorMessage = {
-                    userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
-                }
-            ) {
-                PropertiesSearchSheet(
-                    userProperties = it,
-                    searchQuery = userProfileState.bottomSheetSearchQuery,
-                    onSearchQueryChange = { query ->
-                        userProfileState.bottomSheetSearchQuery = query
-                    },
-                    isItemSelected = { prop ->
-                        userProfileState.dietScreenState.isPropertySelected(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    },
-                    onAdd = { prop ->
-                        userProfileState.dietScreenState.addProperty(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    },
-                    onRemove = { prop ->
-                        userProfileState.dietScreenState.removeProperty(
-                            currentBottomSheetIndex.intValue,
-                            prop
-                        )
-                    }
+                userProfileState.closeBottomSheet(
+                    bottomSheetState,
+                    bottomSheetVisible
                 )
-            }
+            },
+            userPropertiesState = userPropertiesState
+        ) {
+            userProfileState.dietScreenState.saveProperties(it)
+            userProfileState.closeBottomSheet(bottomSheetState, bottomSheetVisible)
         }
     }
 }

@@ -104,7 +104,8 @@ fun NavGraphBuilder.profileRoute(
                     }
 
                     is UserProfileEvent.SavePropertiesList -> {
-                        profileViewModel.saveHealthScreenPropertiesList(
+                        profileViewModel.savePropertiesList(
+                            event.screenName,
                             event.fieldName,
                             event.list
                         )

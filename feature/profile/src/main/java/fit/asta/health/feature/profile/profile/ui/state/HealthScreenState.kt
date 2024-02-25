@@ -16,9 +16,10 @@ import fit.asta.health.data.profile.remote.model.Ailments_Field_Name
 import fit.asta.health.data.profile.remote.model.BodyParts_Field_Name
 import fit.asta.health.data.profile.remote.model.Health
 import fit.asta.health.data.profile.remote.model.HealthHistory_Field_Name
+import fit.asta.health.data.profile.remote.model.HealthTargets_Field_Name
+import fit.asta.health.data.profile.remote.model.Health_Screen_Name
 import fit.asta.health.data.profile.remote.model.Injuries_Field_Name
 import fit.asta.health.data.profile.remote.model.Medications_Field_Name
-import fit.asta.health.data.profile.remote.model.Targets_Field_Name
 import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -68,7 +69,7 @@ class HealthScreenState(
             medications,
         ),
         HealthBottomSheet(
-            Targets_Field_Name,
+            HealthTargets_Field_Name,
             "tgt",
             "Targets",
             targets,
@@ -125,6 +126,7 @@ class HealthScreenState(
         }
         onEvent(
             UserProfileEvent.SavePropertiesList(
+                Health_Screen_Name,
                 bottomSheets[currentListIndex.intValue].fieldName,
                 list
             )

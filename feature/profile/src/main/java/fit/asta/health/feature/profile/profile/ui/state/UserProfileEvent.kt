@@ -21,6 +21,10 @@ sealed interface UserProfileEvent {
 
     data class SaveHeight(val height: Float, val unit: Int) : UserProfileEvent
     data class SaveWeight(val weight: Float, val unit: Int) : UserProfileEvent
-    data class SavePropertiesList(val fieldName: String, val list: List<UserProperties>) :
+    data class SavePropertiesList(
+        val screenName: String,
+        val fieldName: String,
+        val list: List<UserProperties>
+    ) :
         UserProfileEvent
 }

@@ -65,7 +65,7 @@ data class Physique(
 @Parcelize
 data class Health(
     @SerializedName(Medications_Field_Name) val medications: List<UserProperties>? = null,
-    @SerializedName(Targets_Field_Name) val targets: List<UserProperties>? = null,
+    @SerializedName(HealthTargets_Field_Name) val targets: List<UserProperties>? = null,
     @SerializedName(Ailments_Field_Name) val ailments: List<UserProperties>? = null,
     @SerializedName(HealthHistory_Field_Name) val healthHistory: List<UserProperties>? = null,
     @SerializedName(Injuries_Field_Name) val injuries: List<UserProperties>? = null,
@@ -81,7 +81,7 @@ data class LifeStyle(
     @SerializedName(WorkStyle_Field_Name) var workStyle: Int? = null,
     @SerializedName(WorkHours_Field_Name) var workingHours: Int? = null,
     @SerializedName(CurrentActivities_Field_Name) val curActivities: List<UserProperties>? = null,
-    @SerializedName(PrefActivities_Field_Name) val prefActivities: List<UserProperties>? = null,
+    @SerializedName(PreferredActivities_Field_Name) val prefActivities: List<UserProperties>? = null,
     @SerializedName(LifestyleTargets_Field_Name) val lifeStyleTargets: List<UserProperties>? = null,
     @SerializedName(WorkingTime_Field_Name) var workingTime: TimeSchedule = TimeSchedule(),
     @SerializedName(SleepTime_Field_Name) var sleepTime: TimeSchedule = TimeSchedule(), // missing in UI

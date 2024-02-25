@@ -8,8 +8,11 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
+import fit.asta.health.data.profile.remote.model.CurrentActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.LifeStyle
+import fit.asta.health.data.profile.remote.model.LifestyleTargets_Field_Name
 import fit.asta.health.data.profile.remote.model.PhysicallyActive
+import fit.asta.health.data.profile.remote.model.PreferredActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
 import kotlinx.coroutines.CoroutineScope
@@ -57,16 +60,19 @@ class LifestyleScreenState(
 
     val bottomSheets: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
         UserProfileState.ProfileBottomSheetPicker(
+            CurrentActivities_Field_Name,
             "activity",
             "Current Activities",
             currentActivities
         ),
         UserProfileState.ProfileBottomSheetPicker(
+            PreferredActivities_Field_Name,
             "activity",
             "Preferred Activities",
             preferredActivities
         ),
         UserProfileState.ProfileBottomSheetPicker(
+            LifestyleTargets_Field_Name,
             "goal",
             "Lifestyle Targets",
             lifestyleTargets
@@ -124,7 +130,7 @@ class LifestyleScreenState(
     }
 
     private fun getHealthProperties(sheetIndex: Int) {
-        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].id))
+        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].getQueryParam))
     }
 
     fun getUpdatedData(): LifeStyle {
