@@ -50,7 +50,6 @@ import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard
-import fit.asta.health.navigation.tools.ui.view.component.RateAppCard
 import fit.asta.health.navigation.tools.ui.view.component.ToolsCardLayout
 import fit.asta.health.navigation.tools.ui.view.component.ToolsHmScreenTopBanner
 import fit.asta.health.navigation.tools.ui.view.component.ViewAllLayout
@@ -76,7 +75,6 @@ fun ToolsHomeContent(
     onNav: (String) -> Unit,
 ) {
     val context = LocalContext.current
-
     LazyColumn(
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
     ) {
@@ -334,11 +332,11 @@ fun ToolsHomeContent(
         }
 
         // rate my app Card
-        item {
-            Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
-                RateAppCard()
-            }
-        }
+//        item {
+//            Column(modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)) {
+//                RateAppCard()
+//            }
+//        }
 
         // Feedback Card
         item {
