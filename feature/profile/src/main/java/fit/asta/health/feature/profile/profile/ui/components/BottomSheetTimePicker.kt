@@ -21,7 +21,7 @@ fun BottomSheetTimePicker(
     isVisible: Boolean,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
-    onSaveClick: (from: Float, to: Float) -> Unit
+    onSaveClick: (startHour: Int, startMinute: Int, endHour: Int, endMinute: Int) -> Unit
 ) {
     var pickerNumber by rememberSaveable(isVisible) {
         mutableIntStateOf(1)
@@ -75,8 +75,7 @@ fun BottomSheetTimePicker(
                         endHour = hours
                         endMinutes = minutes
                         onSaveClick(
-                            (startHour + startMinutes).toFloat(),
-                            (endHour + endMinutes).toFloat()
+                            startHour, startMinutes, endHour, endMinutes
                         )
                     }
                 )

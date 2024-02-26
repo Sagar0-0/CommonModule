@@ -10,6 +10,7 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.snapshots.SnapshotStateList
@@ -99,7 +100,7 @@ fun rememberUserProfileState(
         )
     }
 
-    return rememberSaveable(
+    return remember(
         pagerState,
         coroutineScope,
         navController,

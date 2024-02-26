@@ -78,7 +78,13 @@ class BasicDetailScreenState(
         get() = basicDetail.email
     private val phoneNumber: String
         get() = basicDetail.phoneNumber
-    var profileImageUrl by mutableStateOf(basicDetail.media.mailUrl.ifEmpty { basicDetail.media.url })
+    var profileImageUrl by mutableStateOf(
+        if (basicDetail.media.mailUrl.isNullOrEmpty()) {
+            basicDetail.media.url
+        } else {
+            basicDetail.media.mailUrl
+        }
+    )
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
     private val updatedData = BasicDetail(

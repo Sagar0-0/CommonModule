@@ -5,11 +5,10 @@ import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Work
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
-import androidx.compose.runtime.MutableFloatState
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableFloatStateOf
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
@@ -26,7 +25,7 @@ import fit.asta.health.data.profile.remote.model.PreferredActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.SleepTime_Field_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
-import fit.asta.health.data.profile.remote.model.WorkingTime_Field_Name
+import fit.asta.health.data.profile.remote.model.WorkTime_Field_Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -101,30 +100,37 @@ class LifestyleScreenState(
 
 
     //Timer Content Logic
+    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime.startHour ?: 0)
+    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime.startMinute ?: 0)
+    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime.endHour ?: 0)
+    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime.endMinute ?: 0)
 
-
-    private val sleepStartTime = mutableFloatStateOf(lifeStyle.sleepTime.from ?: 0.0f)
-    private val sleepEndTime = mutableFloatStateOf(lifeStyle.sleepTime.to ?: 0.0f)
-    private val jobStartTime = mutableFloatStateOf(lifeStyle.workingTime.from ?: 0.0f)
-    private val jobEndTime = mutableFloatStateOf(lifeStyle.workingTime.to ?: 0.0f)
+    private val workStartHour = mutableIntStateOf(lifeStyle.workTime.startHour ?: 0)
+    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime.startMinute ?: 0)
+    private val workEndHour = mutableIntStateOf(lifeStyle.workTime.endHour ?: 0)
+    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime.endMinute ?: 0)
 
     private var currentTimerIndex by mutableIntStateOf(0)
     var timerSheetVisible by mutableStateOf(false)
 
     val timersList: List<ProfileTimePicker> = listOf(
         ProfileTimePicker(
-            SleepTime_Field_Name,
-            "Sleep Schedule",
-            sleepStartTime,
-            sleepEndTime,
-            Icons.Default.Bedtime
+            fieldName = SleepTime_Field_Name,
+            title = "Sleep Schedule",
+            startHour = sleepStartHour,
+            startMinute = sleepStartMinute,
+            endHour = sleepEndHour,
+            endMinute = sleepEndMinute,
+            imageVector = Icons.Default.Bedtime
         ),
         ProfileTimePicker(
-            WorkingTime_Field_Name,
-            "Work Schedule",
-            jobStartTime,
-            jobEndTime,
-            Icons.Default.Work
+            fieldName = WorkTime_Field_Name,
+            title = "Work Schedule",
+            startHour = workStartHour,
+            startMinute = workStartMinute,
+            endHour = workEndHour,
+            endMinute = workEndMinute,
+            imageVector = Icons.Default.Work
         )
     )
 
@@ -141,15 +147,21 @@ class LifestyleScreenState(
         coroutineScope.launch { sheetState.hide() }
     }
 
-    fun saveTime(from: Float, to: Float) {
-        timersList[currentTimerIndex].startTime.floatValue = from
-        timersList[currentTimerIndex].endTime.floatValue = to
+    fun saveTime(startHour: Int, startMinute: Int, endHour: Int, endMinute: Int) {
+        timersList[currentTimerIndex].startHour.intValue = startHour
+        timersList[currentTimerIndex].endHour.intValue = endHour
+        timersList[currentTimerIndex].startMinute.intValue = startMinute
+        timersList[currentTimerIndex].endMinute.intValue = endMinute
         onEvent(
             UserProfileEvent.SaveTimeSchedule(
                 Lifestyle_Screen_Name,
                 timersList[currentTimerIndex].fieldName,
                 TimeSchedule(
-                    from, to
+                    startHour = startHour,
+                    startMinute = startMinute,
+                    endHour = endHour,
+                    endMinute = endMinute
+
                 )
             )
         )
@@ -163,13 +175,17 @@ class LifestyleScreenState(
         curActivities = currentActivities,
         prefActivities = preferredActivities,
         lifeStyleTargets = lifestyleTargets,
-        workingTime = TimeSchedule(
-            from = jobStartTime.floatValue,
-            to = jobEndTime.floatValue
+        workTime = TimeSchedule(
+            startHour = workStartHour.intValue,
+            startMinute = workStartMinute.intValue,
+            endHour = workEndHour.intValue,
+            endMinute = workEndMinute.intValue,
         ),
         sleepTime = TimeSchedule(
-            from = sleepStartTime.floatValue,
-            to = sleepEndTime.floatValue
+            startHour = sleepStartHour.intValue,
+            startMinute = sleepStartMinute.intValue,
+            endHour = sleepEndHour.intValue,
+            endMinute = sleepEndMinute.intValue,
         )
     )
 
@@ -203,8 +219,10 @@ class LifestyleScreenState(
     data class ProfileTimePicker(
         val fieldName: String,
         val title: String,
-        var startTime: MutableFloatState,
-        var endTime: MutableFloatState,
+        var startHour: MutableIntState,
+        var startMinute: MutableIntState,
+        var endHour: MutableIntState,
+        var endMinute: MutableIntState,
         val imageVector: ImageVector
     )
 }

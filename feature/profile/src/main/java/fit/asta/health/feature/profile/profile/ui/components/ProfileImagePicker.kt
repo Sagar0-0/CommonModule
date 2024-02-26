@@ -26,7 +26,7 @@ import fit.asta.health.feature.profile.profile.ui.screens.EditProfileImageButton
 @Composable
 fun ProfileImagePicker(
     modifier: Modifier = Modifier,
-    model: String,
+    model: String?,
     onLauncherResult: (Uri?) -> Unit,
     onProfilePicClear: () -> Unit,
 ) {
@@ -36,7 +36,7 @@ fun ProfileImagePicker(
         }
 
     val isImgNotAvail = remember(model) {
-        model.isEmpty()
+        model.isNullOrEmpty()
     }
 
     Box(
