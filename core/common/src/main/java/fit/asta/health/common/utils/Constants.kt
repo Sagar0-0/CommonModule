@@ -201,6 +201,72 @@ object Constants {
 //            }
 //        }
     }
+
+    fun getDataForSchedule(toolName : String) : List<String> {
+        return when (toolName.lowercase(Locale.ROOT)){
+            "water" -> {
+                listOf(/*desc = */ "water, a substance composed of the chemical elements hydrogen and oxygen and existing in gaseous, liquid, and solid states. It is one of the most plentiful and essential of compounds. A tasteless and odourless liquid at room temperature, it has the important ability to dissolve many other substances."
+                    ,/* label = */ "Water")
+            }
+
+            "breathing" -> {
+                listOf(/*desc = */ "Breathing is usually an unconscious process. However, there are some optimal ways to breathe",
+                    /* label = */ "Breathing")
+            }
+            "dance" -> {
+                listOf("There are many forms of dance, from ballroom to barn dancing and disco to Morris dancing. Dance has always been a part of human culture, rituals and celebrations. Today, most dancing is about recreation and self-expression, although it can also be done as a competitive activity.",
+                    "Dance")
+            }
+
+            "hiit" -> {
+                listOf("High Intensity Workout","Workout")
+            }
+
+            "meditation" -> {
+                listOf("Meditation can improve well-being and quality of life.",
+                    "Meditation")
+            }
+
+            "sleep" -> {
+                listOf("Sleep impacts every aspect of our lives. Here are some of the main points you might want to take into consideration in order to get a good night’s sleep.",
+                    "Sleep")
+            }
+
+            "nap" -> {
+                listOf("Nap boosts Activity","Nap")
+            }
+
+            "steps" -> {
+                listOf("Steps","Steps")
+            }
+
+            "stretches" -> {
+                listOf("WarmUp","Stretches")
+            }
+
+            "sunlight" -> {
+                listOf(/*desc = */ "If you think sunbathing is a sheer waste of time, then you are sadly mistaken. FYI, it has more benefits than you could ever imagine. According to WHO , getting anywhere from 5 to 15 minutes of sunlight on your arms, hands, and face 2-3 times a week is enough to enjoy the vitamin D-boosting benefits of the sun.",
+                    /* label = */ "SunLight")
+            }
+
+            "walking" -> {
+                listOf("Walking is free to do and easy to fit into your daily routine. All you need to start walking is a sturdy pair of walking shoes.",
+                    "Walking")
+            }
+            "workout" -> {
+                listOf("Regular exercise is one of the best things you can do for your health. In fact, you’ll begin to see and feel the benefits consistent physical activity can have on your body and well-being quickly.",
+                    "Workout")
+            }
+
+            "yoga" -> {
+                listOf("Yoga is a practice that connects the body, breath, and mind. It uses physical postures, breathing exercises, and meditation to improve overall health. Yoga was developed as a spiritual practice thousands of years ago. Today, most Westerners do yoga for exercise or to reduce stress.",
+                    "Yoga")
+            }
+            else -> {
+                emptyList()
+            }
+        }
+    }
 }
 
 data class DayAndTime(val day: String, val time: String, val timeOfDay: String)

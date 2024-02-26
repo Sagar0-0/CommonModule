@@ -1,5 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.navigation
 
+import android.util.Log
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
@@ -7,8 +8,10 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
+import androidx.navigation.NavType
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import androidx.navigation.navArgument
 import fit.asta.health.common.utils.Constants.HourMinAmPmKey
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import fit.asta.health.common.utils.HourMinAmPm
@@ -173,6 +176,41 @@ fun NavGraphBuilder.schedulerNavigation(
                 },
                 navBack = { navController.popBackStack() }
             )
+        }
+
+        composable(route = "$SCHEDULER_GRAPH_ROUTE?desc={desc}&label={label}",
+            arguments = listOf(
+                navArgument("desc") {
+                    type = NavType.StringType
+                },
+                navArgument("label"){
+                    type = NavType.StringType
+                }
+            )
+        ) {
+            val desc = it.arguments?.getString("desc")!!
+            val label = it.arguments?.getString("label")!!
+            val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
+            val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
+            LaunchedEffect(key1 = it) {
+                if (((alarmSettingUiState.timeHours * 60) + alarmSettingUiState.timeMinutes) <= 0) {
+                    schedulerViewModel.setHourMin(
+                        navController.previousBackStackEntry?.savedStateHandle?.get<HourMinAmPm>(key = HourMinAmPmKey)
+                    )
+                }
+                AlarmSettingEvent.SetDescription(desc)
+                AlarmSettingEvent.SetLabel(label)
+                schedulerViewModel.setDescription(desc)
+                schedulerViewModel.setLabel(label)
+                Log.d("rishi", "$desc + $label  but --")
+
+                navController.navigate(AlarmSchedulerScreen.AlarmSettingHome.route) {
+                    popUpTo(SCHEDULER_GRAPH_ROUTE) {
+                        inclusive = false
+                    }
+                }
+
+            }
         }
     }
 }
