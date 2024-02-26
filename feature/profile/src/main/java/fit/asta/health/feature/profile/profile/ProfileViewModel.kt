@@ -1,5 +1,6 @@
 package fit.asta.health.feature.profile.profile
 
+import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -108,6 +109,12 @@ class ProfileViewModel
                 fieldName,
                 list
             )
+        }
+    }
+
+    fun saveProfileImage(profileImageLocalUri: Uri?) {
+        viewModelScope.launch {
+            profileRepo.saveProfileImage(uid, profileImageLocalUri)
         }
     }
 }

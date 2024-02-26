@@ -1,7 +1,5 @@
 package fit.asta.health.feature.profile.profile.ui.screens
 
-import androidx.activity.compose.rememberLauncherForActivityResult
-import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
@@ -67,12 +65,6 @@ fun BasicDetailsScreen(
 
     val calendarUseCaseState = rememberUseCaseState()
 
-    val imgLauncher =
-        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
-            userProfileState.basicDetailScreenState.profileImageLocalUri = uri
-            userProfileState.isImageCropperVisible = true
-        }
-
     Column(
         modifier = Modifier
             .fillMaxWidth()
@@ -89,11 +81,12 @@ fun BasicDetailsScreen(
                 uri = userProfileState.basicDetailScreenState.profileImageLocalUri,
                 remoteUrl = userProfileState.basicDetailScreenState.profileImageUrl
             ),
-            onUserProfileSelection = {
-                imgLauncher.launch("image/*")
-            },
             onProfilePicClear = {
                 userProfileState.basicDetailScreenState.clearProfile()
+            },
+            onLauncherResult = {
+                userProfileState.basicDetailScreenState.profileImageLocalUri = it
+                userProfileState.basicDetailScreenState.isImageCropperVisible = true
             }
         )
 
@@ -286,8 +279,8 @@ fun DeleteImageButton(onProfilePicClear: () -> Unit, modifier: Modifier = Modifi
 @Composable
 fun EditProfileImageButton(
     isImgNotAvail: Boolean,
-    onUserProfileSelection: () -> Unit,
     modifier: Modifier = Modifier,
+    onClick: () -> Unit,
 ) {
     val editIcon = if (isImgNotAvail) Icons.Rounded.AddAPhoto else Icons.Rounded.Edit
     Row(
@@ -296,7 +289,7 @@ fun EditProfileImageButton(
         AppIconButton(
             imageVector = editIcon,
             iconTint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
-            onClick = onUserProfileSelection
+            onClick = onClick
         )
     }
 }

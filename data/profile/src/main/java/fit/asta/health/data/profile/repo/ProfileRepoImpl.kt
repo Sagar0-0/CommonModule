@@ -1,6 +1,7 @@
 package fit.asta.health.data.profile.repo
 
 import android.content.ContentResolver
+import android.net.Uri
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
@@ -162,6 +163,31 @@ class ProfileRepoImpl
                             value = unit
                         ),
                     )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveProfileImage(
+        uid: String,
+        profileImageLocalUri: Uri?
+    ): ResponseState<SubmitProfileResponse> {
+        val files: ArrayList<MultipartBody.Part> = ArrayList()
+        if (profileImageLocalUri != null) {
+            files.add(
+                MultipartBody.Part.createFormData(
+                    name = "file",
+                    filename = uid,
+                    body = InputStreamRequestBody(contentResolver, profileImageLocalUri)
+                )
+            )
+        }
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                files = files,
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = null
                 )
             )
         }

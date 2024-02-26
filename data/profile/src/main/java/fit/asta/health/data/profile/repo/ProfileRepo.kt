@@ -1,5 +1,6 @@
 package fit.asta.health.data.profile.repo
 
+import android.net.Uri
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.BasicProfileDTO
@@ -47,5 +48,10 @@ interface ProfileRepo {
 
     suspend fun savePropertiesList(
         uid: String, screenName: String, fieldName: String, list: List<UserProperties>
+    ): ResponseState<SubmitProfileResponse>
+
+    suspend fun saveProfileImage(
+        uid: String,
+        profileImageLocalUri: Uri?
     ): ResponseState<SubmitProfileResponse>
 }

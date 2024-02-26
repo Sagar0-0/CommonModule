@@ -1,5 +1,6 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
+import android.net.Uri
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -25,6 +26,7 @@ sealed interface UserProfileEvent {
         val screenName: String,
         val fieldName: String,
         val list: List<UserProperties>
-    ) :
-        UserProfileEvent
+    ) : UserProfileEvent
+
+    data class SaveImage(val profileImageLocalUri: Uri?) : UserProfileEvent
 }

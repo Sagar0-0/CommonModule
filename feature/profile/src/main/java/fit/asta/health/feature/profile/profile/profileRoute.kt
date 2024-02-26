@@ -110,6 +110,10 @@ fun NavGraphBuilder.profileRoute(
                             event.list
                         )
                     }
+
+                    is UserProfileEvent.SaveImage -> {
+                        profileViewModel.saveProfileImage(event.profileImageLocalUri)
+                    }
                 }
             }
         )
