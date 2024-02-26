@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.ui.view
 
+import android.util.Log
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.core.LinearOutSlowInEasing
 import androidx.compose.animation.core.tween
@@ -366,6 +367,7 @@ fun TodayTabContent(
                     },
                     onDone = {
                         val route = goToTool(data.info.tag)
+                        Log.e("routeIndo", "TodayTabContent:$route ")
                         if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
@@ -409,6 +411,7 @@ fun TodayTabContent(
                     },
                     onDone = {
                         val route = goToTool(data.info.tag)
+                        Log.e("routeIndo", "TodayTabContent:$route ")
                         if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
@@ -451,6 +454,7 @@ fun TodayTabContent(
                     },
                     onDone = {
                         val route = goToTool(data.info.tag)
+                        Log.e("routeIndo", "TodayTabContent:$route ")
                         if (route.isNotEmpty()) onNav(route)
                     },
                     onReschedule = {
