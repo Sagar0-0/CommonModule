@@ -3,9 +3,7 @@ package fit.asta.health.feature.water.nav
 
 import android.util.Log
 import android.widget.Toast
-import androidx.compose.material3.Text
 import androidx.compose.runtime.collectAsState
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -16,6 +14,7 @@ import androidx.navigation.compose.navigation
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.water.WaterState
@@ -28,8 +27,11 @@ fun NavController.navigateToWater(navOptions: NavOptions? = null) {
     this.navigate(WATER_GRAPH_ROUTE, navOptions)
 }
 fun NavController.navigateToAllAlarmsFromWater() {
-    this.navigate(SCHEDULER_GRAPH_ROUTE)
-//    ALL_ALARMS_ROUTE
+    val list = getDataForSchedule("Water")
+    val desc = list[0]
+    val label = list[1]
+    this.navigate("$SCHEDULER_GRAPH_ROUTE?desc=${desc}&label=${label}")
+
 }
 
 @OptIn(ExperimentalCoroutinesApi::class)
@@ -55,10 +57,11 @@ fun NavGraphBuilder.waterToolNavigation(
 
                 else ->
                     CustomBevBottomSheet(
-                        onBack = onBack,
-                        event = viewModel::event,
-                        onClickSchedule = {navController.navigateToAllAlarmsFromWater()}
-                    )
+                            onBack = onBack,
+                            event = viewModel::event,
+                            onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
+                        )
+
             }
 
 

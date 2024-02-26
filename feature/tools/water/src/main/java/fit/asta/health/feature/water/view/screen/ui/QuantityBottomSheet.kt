@@ -164,7 +164,14 @@ fun CustomBevBottomSheet(
                 firstPrefQuantity = sliderValueFirstPreference.toInt(),
                 secondPrefQuantity = sliderValueSecondPreference.toInt(),
                 recentAddedQuantity = sliderValueRecentAdded.toInt(),
-                onClickWater = { openSheet(BottomSheetScreen.Screen1(sliderValueWater, "Water")) },
+                onClickWater = {
+                    openSheet(
+                        BottomSheetScreen.Screen1(
+                            sliderValueWater,
+                            "Water"
+                        )
+                    )
+                },
                 onClickCoconut = {
                     openSheet(
                         BottomSheetScreen.Screen1(
@@ -210,8 +217,10 @@ fun CustomBevBottomSheet(
                 event = event,
                 uiState = uiState
             )
-            ButtonWithColor(color = Color.Blue, text = "Schedule",
-                modifier = Modifier.padding(AppTheme.spacing.level1)) {
+            ButtonWithColor(
+                color = Color.Blue, text = "Schedule",
+                modifier = Modifier.padding(AppTheme.spacing.level1)
+            ) {
                 onClickSchedule()
             }
         }
