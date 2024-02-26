@@ -1,12 +1,10 @@
 package fit.asta.health
 
 import android.Manifest
-import android.app.AlarmManager
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Bundle
-import android.provider.Settings
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
@@ -34,6 +32,7 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants
+import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
@@ -53,8 +52,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
-class MainActivity : ComponentActivity(),
-    FirebaseAuth.IdTokenListener {
+class MainActivity : ComponentActivity(), FirebaseAuth.IdTokenListener {
 
     companion object {
         private const val REQUEST_FLEXIBLE_UPDATE: Int = 1369
@@ -88,16 +86,15 @@ class MainActivity : ComponentActivity(),
         // This app draws behind the system bars, so we want to handle fitting system windows
         //https://developer.android.com/develop/ui/views/layout/edge-to-edge
         WindowCompat.setDecorFitsSystemWindows(window, false)
-        checkUiStateAndStartApp(splashScreen)
-     /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
-            val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
-            if (alarmManager?.canScheduleExactAlarms() == false) {
-                Intent().also { intent ->
-                    intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
-                    this.startActivity(intent)
-                }
-            }
-        }*/
+        checkUiStateAndStartApp(splashScreen)/*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+               val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
+               if (alarmManager?.canScheduleExactAlarms() == false) {
+                   Intent().also { intent ->
+                       intent.action = Settings.ACTION_REQUEST_SCHEDULE_EXACT_ALARM
+                       this.startActivity(intent)
+                   }
+               }
+           }*/
 
         lifecycleScope.launch {
             lifecycle.repeatOnLifecycle(Lifecycle.State.STARTED) {
@@ -134,7 +131,7 @@ class MainActivity : ComponentActivity(),
                     else -> {
                         if (intent != null && intent.getStringExtra(Constants.NOTIFICATION_TAG) == "walking") {
                             STEPS_GRAPH_ROUTE
-                        } else {
+                        }else {
                             HOME_ROUTE
                         }
                     }
@@ -223,8 +220,10 @@ class MainActivity : ComponentActivity(),
     private fun askNotificationPermission() {//TODO: ASK NOTIFICATION PERMISSION ON app startup
         // This is only necessary for API level >= 33 (TIRAMISU)
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
-            if (ContextCompat.checkSelfPermission(this, Manifest.permission.POST_NOTIFICATIONS) ==
-                PackageManager.PERMISSION_GRANTED
+            if (ContextCompat.checkSelfPermission(
+                    this,
+                    Manifest.permission.POST_NOTIFICATIONS
+                ) == PackageManager.PERMISSION_GRANTED
             ) {
                 // FCM SDK (and your app) can post notifications.
             } else if (shouldShowRequestPermissionRationale(Manifest.permission.POST_NOTIFICATIONS)) {

@@ -21,6 +21,8 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
+import android.widget.RemoteViews
+import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
 import androidx.media3.common.AudioAttributes
@@ -35,6 +37,7 @@ import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import coil.ImageLoader
 import coil.request.ImageRequest
 import dagger.hilt.android.AndroidEntryPoint
+import fit.asta.health.common.utils.Constants.ALARM_NOTIFICATION_TAG
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
 import fit.asta.health.common.utils.getImageUrl
@@ -234,6 +237,7 @@ class AlarmService : Service() {
         else splashAlarm(alarm)
     }
 
+    @OptIn(UnstableApi::class)
     @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     private fun notificationAlarm(
         alarm: AlarmEntity
@@ -257,22 +261,33 @@ class AlarmService : Service() {
             snoozeIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-
+        val remoteViews = RemoteViews(this.packageName, DrawR.layout.notification_alarm_small)
+        remoteViews.setOnClickPendingIntent(DrawR.id.btnStop, pendingIntentStop)
+        remoteViews.setOnClickPendingIntent(DrawR.id.btn_snooze, pendingIntentSnooze)
         val alarmName: String = alarm.info.name
-        val pendingIntent = getMainActivityPendingIntent(applicationContext)
+        remoteViews.setTextViewText(DrawR.id.tv_title, alarmName)
+        remoteViews.setTextViewText(DrawR.id.tv_content, alarm.info.tag)
+        val pendingIntent = getMainActivityPendingIntent(applicationContext, alarm.info.tag)
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
             .setSound(null)
+            .setAutoCancel(false)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
             .setContentIntent(pendingIntent)
             .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
             .setOngoing(true)
+            .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setPriority(NotificationCompat.PRIORITY_MAX)
             .addAction(0, "Snooze", pendingIntentSnooze)
             .addAction(0, "Stop", pendingIntentStop)
             .setContentTitle(alarmName)
+//            .setAllowSystemGeneratedContextualActions(true)
+//            .setCustomContentView(remoteViews)
             .setContentText(alarm.info.tag)
+            .setCustomHeadsUpContentView(remoteViews)
+            .setCustomContentView(remoteViews)
+
         startForGroundService(
             notification = builder.build(),
             id = alarm.hashCode(),
@@ -398,8 +413,9 @@ class AlarmService : Service() {
     }
 }
 
-fun getMainActivityPendingIntent(context: Context): PendingIntent {
+fun getMainActivityPendingIntent(context: Context, tag: String): PendingIntent {
     val intent = Intent(context, Class.forName("fit.asta.health.MainActivity"))
+    intent.putExtra(ALARM_NOTIFICATION_TAG, tag)
     intent.flags = Intent.FLAG_ACTIVITY_CLEAR_TOP or Intent.FLAG_ACTIVITY_SINGLE_TOP
     return PendingIntent.getActivity(
         context, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
