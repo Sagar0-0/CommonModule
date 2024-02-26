@@ -21,10 +21,12 @@ import fit.asta.health.data.profile.remote.model.Name_Field_Name
 import fit.asta.health.data.profile.remote.model.OnPeriod_Field_Name
 import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.PregWeek_Field_Name
+import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UpdateObjectFloat
 import fit.asta.health.data.profile.remote.model.UpdateObjectInt
 import fit.asta.health.data.profile.remote.model.UpdateObjectPropertiesList
 import fit.asta.health.data.profile.remote.model.UpdateObjectString
+import fit.asta.health.data.profile.remote.model.UpdateObjectTimeSchedule
 import fit.asta.health.data.profile.remote.model.UpdateProfileRequest
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
@@ -162,6 +164,28 @@ class ProfileRepoImpl
                             fieldName = HeightUnit_Field_Name,
                             value = unit
                         ),
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveTimeSchedule(
+        uid: String,
+        screenName: String,
+        fieldName: String,
+        timeSchedule: TimeSchedule
+    ): ResponseState<SubmitProfileResponse> {
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = listOf(
+                        UpdateObjectTimeSchedule(
+                            screenName = screenName,
+                            fieldName = fieldName,
+                            value = timeSchedule
+                        )
                     )
                 )
             )

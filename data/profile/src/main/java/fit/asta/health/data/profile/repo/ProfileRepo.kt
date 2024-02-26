@@ -7,6 +7,7 @@ import fit.asta.health.data.profile.remote.model.BasicProfileDTO
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.CheckReferralDTO
 import fit.asta.health.data.profile.remote.model.Gender
+import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -53,5 +54,12 @@ interface ProfileRepo {
     suspend fun saveProfileImage(
         uid: String,
         profileImageLocalUri: Uri?
+    ): ResponseState<SubmitProfileResponse>
+
+    suspend fun saveTimeSchedule(
+        uid: String,
+        screenName: String,
+        fieldName: String,
+        timeSchedule: TimeSchedule
     ): ResponseState<SubmitProfileResponse>
 }

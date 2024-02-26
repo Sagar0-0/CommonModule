@@ -10,6 +10,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
+import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -115,6 +116,12 @@ class ProfileViewModel
     fun saveProfileImage(profileImageLocalUri: Uri?) {
         viewModelScope.launch {
             profileRepo.saveProfileImage(uid, profileImageLocalUri)
+        }
+    }
+
+    fun saveTimeSchedule(screenName: String, fieldName: String, timeSchedule: TimeSchedule) {
+        viewModelScope.launch {
+            profileRepo.saveTimeSchedule(uid, screenName, fieldName, timeSchedule)
         }
     }
 }

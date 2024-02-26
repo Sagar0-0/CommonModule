@@ -39,6 +39,15 @@ data class UpdateObjectFloat(
     val value: Float = 0.0f,
 ) : UpdateObject
 
+data class UpdateObjectTimeSchedule(
+    @SerializedName("obj")
+    val screenName: String = "",
+    @SerializedName("field")
+    val fieldName: String = "",
+    @SerializedName("val")
+    val value: TimeSchedule = TimeSchedule(),
+) : UpdateObject
+
 data class UpdateObjectPropertiesList(
     @SerializedName("obj")
     val screenName: String = "",

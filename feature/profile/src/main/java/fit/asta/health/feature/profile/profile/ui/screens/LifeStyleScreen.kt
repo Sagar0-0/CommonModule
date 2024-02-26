@@ -22,9 +22,6 @@ import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
-import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
-import com.maxkeppeler.sheets.clock.ClockDialog
-import com.maxkeppeler.sheets.clock.models.ClockSelection
 import fit.asta.health.common.utils.InputWrapper
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -34,6 +31,8 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetProperties
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTimePicker
+import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
@@ -43,49 +42,36 @@ fun LifestyleScreen(
     userProfileState: UserProfileState,
     userPropertiesState: UiState<List<UserProperties>>
 ) {
-    val bottomSheetState = rememberModalBottomSheetState()
+    val propertiesSheetState = rememberModalBottomSheetState()
+    val timerSheetState = rememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
-    val useCaseState = rememberUseCaseState()
 
     Column(
         modifier = Modifier
             .fillMaxSize()
+            .padding(horizontal = AppTheme.spacing.level2)
             .verticalScroll(rememberScrollState()),
         verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier)
 
-        userProfileState.lifestyleScreenState.lifestyleTimePickers.forEach {
-            LifeStyleTimePicker(
-                title = it.title,
-                startButtonTitle = it.startButtonTitle,
-                endButtonTitle = it.endButtonTitle,
-                startTime = it.startTime.value ?: "Select Time",
-                endTime = it.endTime.value ?: "Select Time",
-                onStartClick = {
-                    userProfileState.lifestyleScreenState.openTimer(
-                        it.startIndex,
-                        useCaseState
-                    )
-                },
-                onEndClick = {
-                    userProfileState.lifestyleScreenState.openTimer(
-                        it.endIndex,
-                        useCaseState
-                    )
-                }
-            )
+        userProfileState.lifestyleScreenState.timersList.forEachIndexed { index, it ->
+            ClickableTextBox(
+                label = it.title, value = "${it.startTime.floatValue} - ${it.endTime.floatValue}",
+                leadingIcon = it.imageVector
+            ) {
+                userProfileState.lifestyleScreenState.openTimerSheet(index, timerSheetState)
+            }
         }
 
-
-        userProfileState.lifestyleScreenState.bottomSheets.forEachIndexed { index, type ->
+        userProfileState.lifestyleScreenState.propertiesList.forEachIndexed { index, type ->
             BottomSheetListItemPicker(
                 name = type.name,
                 list = type.list
             ) {
-                userProfileState.lifestyleScreenState.openLifestyleBottomSheet(
-                    bottomSheetState,
+                userProfileState.lifestyleScreenState.openPropertiesBottomSheet(
+                    propertiesSheetState,
                     index,
                     bottomSheetVisible
                 )
@@ -107,29 +93,29 @@ fun LifestyleScreen(
         //Dialogs
         BottomSheetProperties(
             isVisible = bottomSheetVisible.value,
-            sheetState = bottomSheetState,
-            currentList = userProfileState.lifestyleScreenState.getCurrentList(),
+            sheetState = propertiesSheetState,
+            currentList = userProfileState.lifestyleScreenState.getCurrentPropertiesList(),
             onDismissRequest = {
                 userProfileState.closeSheet(
-                    bottomSheetState,
+                    propertiesSheetState,
                     bottomSheetVisible
                 )
             },
             userPropertiesState = userPropertiesState
         ) {
             userProfileState.lifestyleScreenState.saveProperties(it)
-            userProfileState.closeSheet(bottomSheetState, bottomSheetVisible)
+            userProfileState.closeSheet(propertiesSheetState, bottomSheetVisible)
         }
 
-        ClockDialog(
-            state = useCaseState,
-            selection = ClockSelection.HoursMinutes(
-                onPositiveClick = { hrs, mins ->
-                    userProfileState.lifestyleScreenState.setCurrentItemTime(
-                        "${hrs}:${mins}"
-                    )
-                }
-            )
+        BottomSheetTimePicker(
+            isVisible = userProfileState.lifestyleScreenState.timerSheetVisible,
+            sheetState = timerSheetState,
+            onDismissRequest = {
+                userProfileState.lifestyleScreenState.closeTimerSheet(timerSheetState)
+            },
+            onSaveClick = { from, to ->
+                userProfileState.lifestyleScreenState.saveTime(from, to)
+            }
         )
     }
 }
