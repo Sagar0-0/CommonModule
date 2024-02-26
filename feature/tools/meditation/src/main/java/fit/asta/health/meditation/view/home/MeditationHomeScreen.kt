@@ -67,8 +67,8 @@ fun MeditationHomeScreen(
     onDNDPermission: () -> Boolean,
     onBack: () -> Unit,
     goToList: (Int) -> Unit,
+    onClickSchedule : () -> Unit
 ) {
-
     val requestPermissionLauncher = rememberLauncherForActivityResult(
         ActivityResultContracts.StartActivityForResult()
     ) { result ->
@@ -113,7 +113,8 @@ fun MeditationHomeScreen(
                         selectedData = selectedData,
                         scaffoldState = scaffoldState,
                         event = event,
-                        goToList = goToList
+                        goToList = goToList,
+                        onClickSchedule = onClickSchedule
                     )
                 }
             ) {
@@ -220,6 +221,7 @@ fun MeditationBottomSheet(
     scaffoldState: BottomSheetScaffoldState,
     goToList: (Int) -> Unit,
     event: (MEvent) -> Unit,
+    onClickSchedule:() -> Unit
 ) {
     val context = LocalContext.current
     if (selectedData.isNotEmpty()) {
@@ -288,7 +290,9 @@ fun MeditationBottomSheet(
             Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
-                ) { }
+                ) {
+                    onClickSchedule()
+                }
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f),
                     color = if (!uiState.start) Color.Blue else Color.Red,

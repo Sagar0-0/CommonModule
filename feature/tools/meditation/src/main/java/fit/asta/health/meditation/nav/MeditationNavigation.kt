@@ -9,7 +9,9 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
 import fit.asta.health.meditation.view.home.MEvent
@@ -21,7 +23,13 @@ import fit.asta.health.player.presentation.screens.player.PlayerScreen
 fun NavController.navigateToMeditation(navOptions: NavOptions? = null) {
     this.navigate(MEDITATION_GRAPH_ROUTE, navOptions)
 }
+fun NavController.navigateToScheduleFromMeditation() {
+    val list = getDataForSchedule("meditation")
+    val desc = list[0]
+    val label = list[1]
+    this.navigate("${SCHEDULER_GRAPH_ROUTE}?desc=${desc}&label=${label}")
 
+}
 fun NavGraphBuilder.meditationNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
@@ -44,7 +52,8 @@ fun NavGraphBuilder.meditationNavigation(
                 onClickMusic = { navController.navigate(route = MeditationScreen.AudioMeditation.route) },
                 goToList = { navController.navigate(route = MeditationScreen.SheetScreen.route + "/$it") },
                 onBack = onBack,
-                onDNDPermission = viewModel::checkDNDStatus
+                onDNDPermission = viewModel::checkDNDStatus,
+                onClickSchedule = { navController.navigateToScheduleFromMeditation() }
             )
         }
         composable(MeditationScreen.SheetScreen.route + "/{id}") { navBackStack ->

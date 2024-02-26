@@ -12,6 +12,8 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.data.walking.service.StepCounterService
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
@@ -25,6 +27,13 @@ const val STEPS_GRAPH_ROUTE = "steps_graph_address"
 
 fun NavController.navigateToStepsCounter(navOptions: NavOptions? = null) {
     this.navigate(STEPS_GRAPH_ROUTE, navOptions)
+}
+
+fun NavController.navigateToScheduleFromWalking() {
+    val list = getDataForSchedule("Walking")
+    val desc = list[0]
+    val label = list[1]
+    this.navigate("${SCHEDULER_GRAPH_ROUTE}?desc=${desc}&label=${label}")
 }
 
 fun NavController.navigateToStepsCounterProgress(navOptions: NavOptions? = null) {
@@ -92,7 +101,7 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 },
                 setTarget = { dis, dur -> walkingViewModel.setTarget(dis, dur) },
                 onBack = onBack,
-                onScheduler = onScheduler,
+                onScheduler = {navController.navigateToScheduleFromWalking()},
                 healthConnectAvailability = availability,
                 onResumeAvailabilityCheck = {
                     walkingViewModel.checkAvailability()

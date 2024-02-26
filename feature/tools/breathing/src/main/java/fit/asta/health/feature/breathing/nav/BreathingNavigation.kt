@@ -8,6 +8,7 @@ import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
@@ -21,6 +22,13 @@ fun NavController.navigateToBreathing(navOptions: NavOptions? = null) {
     this.navigate(BREATHING_GRAPH_ROUTE, navOptions)
 }
 
+fun NavController.navigateToScheduleFromBreathing() {
+    val list = Constants.getDataForSchedule("Breathing")
+    val desc = list[0]
+    val label = list[1]
+    this.navigate("${Constants.SCHEDULER_GRAPH_ROUTE}?desc=${desc}&label=${label}")
+
+}
 fun NavGraphBuilder.breathingNavigation(
     navController: NavController, onBack: () -> Unit
 ) {
@@ -43,7 +51,8 @@ fun NavGraphBuilder.breathingNavigation(
                 onClickExe = { navController.navigate(route = BreathingScreen.ExerciseScreen.route) },
                 goToList = { navController.navigate(route = BreathingScreen.SheetScreen.route + "/$it") },
                 onBack = onBack,
-                onDNDPermission = { viewModel.checkDNDStatus() }
+                onDNDPermission = { viewModel.checkDNDStatus() },
+                onClickSchedule = {navController.navigateToScheduleFromBreathing()}
             )
         }
         composable(BreathingScreen.SheetScreen.route + "/{id}") { navBackStack ->

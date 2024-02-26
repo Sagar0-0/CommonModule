@@ -66,6 +66,7 @@ fun BreathingHomeScreen(
     selectedData: SnapshotStateList<Prc>,
     onClickExe: () -> Unit,
     onDNDPermission: () -> Boolean,
+    onClickSchedule: () -> Unit,
     onBack: () -> Unit,
     goToList: (Int) -> Unit,
 ) {
@@ -114,7 +115,8 @@ fun BreathingHomeScreen(
                         scaffoldState = scaffoldState,
                         event = event,
                         goToList = goToList,
-                        onClickExe = onClickExe
+                        onClickExe = onClickExe,
+                        onClickSchedule = onClickSchedule
                     )
                 },
             ) {
@@ -215,6 +217,7 @@ fun BreathingBottomSheet(
     scaffoldState: BottomSheetScaffoldState,
     goToList: (Int) -> Unit,
     event: (UiEvent) -> Unit,
+    onClickSchedule : () -> Unit,
     onClickExe: () -> Unit,
 ) {
     val context = LocalContext.current
@@ -285,7 +288,9 @@ fun BreathingBottomSheet(
             Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f), color = Color.Green, text = "SCHEDULE"
-                ) { }
+                ) {
+                    onClickSchedule()
+                }
                 ButtonWithColor(
                     modifier = Modifier.weight(0.5f),
                     color = if (!uiState.start) Color.Blue else Color.Red,
