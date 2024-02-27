@@ -18,6 +18,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.ArrowDropDown
 import androidx.compose.material.icons.filled.Delete
+import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -45,6 +46,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
+import java.time.LocalDate
 
 @Composable
 fun TodayItem(
@@ -80,7 +82,6 @@ fun TodayItem(
         Box(
             modifier = Modifier.fillMaxWidth()
         ) {
-
             AppIconButton(
                 modifier = Modifier
                     .align(Alignment.TopEnd)
@@ -141,6 +142,15 @@ fun TodayItem(
                             if (time.minutes < 10) "0" else ""
                         }${time.minutes} ${time.dayTime.name}"
                     )
+                    if (item.skipDate == LocalDate.now().dayOfMonth) {
+                        AppCard(colors = CardDefaults.cardColors(containerColor = AppTheme.colors.errorContainer)) {
+                            CaptionTexts.Level2(
+                                text = "missed",
+                                color = AppTheme.colors.onErrorContainer,
+                                modifier = Modifier.padding(horizontal = AppTheme.spacing.level2)
+                            )
+                        }
+                    }
                 }
             }
         }
