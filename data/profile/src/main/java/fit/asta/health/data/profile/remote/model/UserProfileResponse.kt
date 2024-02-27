@@ -98,8 +98,12 @@ data class Diet(
 
 @Parcelize
 data class TimeSchedule(
-    val startHour: Int? = null,
-    val startMinute: Int? = null,
-    val endHour: Int? = null,
-    val endMinute: Int? = null,
+    @SerializedName(StartTime_Field_Name) val startTime: Time? = null,
+    @SerializedName(EndTime_Field_Name) val endTime: Time? = null,
+) : Parcelable
+
+@Parcelize
+data class Time(
+    @SerializedName(Hour_Field_Name) val hour: Int = 0,
+    @SerializedName(Minute_Field_Name) val minute: Int = 0
 ) : Parcelable

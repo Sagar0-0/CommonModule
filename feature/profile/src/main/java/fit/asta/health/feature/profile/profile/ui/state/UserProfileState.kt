@@ -182,6 +182,10 @@ class UserProfileState(
         onEvent(UserProfileEvent.NavigateToWallet)
     }
 
+    fun navigateToReferral() {
+        onEvent(UserProfileEvent.NavigateToReferral)
+    }
+
     fun navigateToSubscriptions() {
         onEvent(UserProfileEvent.NavigateToSubscription)
     }

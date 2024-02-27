@@ -132,6 +132,9 @@ private fun MainNavHost(startDestination: String) {
             navigateToWallet = {
                 navController.navigateToWallet()
             },
+            navigateToReferral = {
+                navController.navigateToReferral()
+            },
             navigateToSubscription = {
                 Toast.makeText(context, "Feature not implemented yet!", Toast.LENGTH_SHORT).show()
 //                navController.navigateToSubscription()

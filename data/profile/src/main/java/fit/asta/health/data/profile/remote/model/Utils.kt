@@ -62,8 +62,10 @@ const val Allergies_Field_Name = "alg"
 const val Cuisines_Field_Name = "cns"
 const val Restrictions_Field_Name = "frs"
 
-const val FromTime_Field_Name = "str"
-const val ToTime_Field_Name = "end"
+const val StartTime_Field_Name = "str"
+const val EndTime_Field_Name = "end"
+const val Hour_Field_Name = "hr"
+const val Minute_Field_Name = "min"
 
 fun UserProfileResponse.mergeWithLocalData(
     profileEntity: ProfileEntity?

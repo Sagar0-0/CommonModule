@@ -35,4 +35,6 @@ sealed interface UserProfileEvent {
         val fieldName: String,
         val timeSchedule: TimeSchedule
     ) : UserProfileEvent
+
+    data object NavigateToReferral : UserProfileEvent
 }
