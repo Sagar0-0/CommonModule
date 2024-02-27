@@ -17,6 +17,7 @@ import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.TAG_NAME
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.sharedViewModel
+import fit.asta.health.designsystem.molecular.other.HandleBackPress
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmSettingEvent
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmSettingScreen
 import fit.asta.health.feature.scheduler.ui.screen.tagscreen.TagsEvent
@@ -38,6 +39,10 @@ fun NavGraphBuilder.schedulerNavigation(
     ) {
         composable(route = AlarmSchedulerScreen.AlarmSettingHome.route) {
             val schedulerViewModel: SchedulerViewModel = it.sharedViewModel(navController)
+            HandleBackPress {
+                schedulerViewModel.resetUi()
+                onBack()
+            }
             val alarmSettingUiState by schedulerViewModel.alarmSettingUiState.collectAsStateWithLifecycle()
             LaunchedEffect(key1 = it) {
                 if (((alarmSettingUiState.timeHours * 60) + alarmSettingUiState.timeMinutes) <= 0) {

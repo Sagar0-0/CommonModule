@@ -78,8 +78,8 @@ class SchedulerViewModel
 
     init {
 //        resetUi()
-        getTagData()
         getEditUiData()
+        getTagData()
         getAlarmList()
     }
 
@@ -357,6 +357,7 @@ class SchedulerViewModel
     fun resetUi() {
         _alarmSettingUiState.value = ASUiState()
         interval.value = IvlUiState()
+        setAlarmPreferences(999L)
         _isToolTag.value = false
         _toolTag.value = null
     }
@@ -420,12 +421,14 @@ class SchedulerViewModel
     }
 
     fun setToolData(name: String) {
+        _toolTag.value = name
+        if (tagsList.value.isEmpty()){
+            getTagData()
+        }
         val tag = tagsList.value.firstOrNull { it.name.equals(name, ignoreCase = true) }
-        Log.d("toolData", "setToolData:${tag?.name} ")
         if (tag != null) {
             selectedTag(tag)
             _isToolTag.value = true
-            _toolTag.value = name
         }
         //we already set desc and all from tags if you want to still change it you can fetch the data set in contants and set here
         // setDescription("your desc")
