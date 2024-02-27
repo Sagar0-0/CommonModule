@@ -63,6 +63,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppSearchBar
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
@@ -657,7 +658,7 @@ fun BevSearchBar(
     }
     val filteredHistory by viewModel.filteredHistory.collectAsState()
 
-    SearchBar(
+    AppSearchBar(
         query = text,
         onQueryChange = {
             text = it
