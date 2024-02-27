@@ -23,13 +23,10 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.Slider
 import androidx.compose.material3.SliderDefaults
-import androidx.compose.material3.Text
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -49,11 +46,14 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
+import fit.asta.health.designsystem.molecular.LinearSlider
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
@@ -118,8 +118,8 @@ fun CustomBevBottomSheet(
 
     AppBottomSheetScaffold(
         scaffoldState = bottomSheetState,
-        sheetPeekHeight = 0.dp,
-        sheetSwipeEnabled = false,
+        //sheetPeekHeight = 0.dp,
+        //sheetSwipeEnabled = true,
         sheetContainerColor = backgroundColor,
         topBar = {
             AppTopBarWithHelp(
@@ -150,78 +150,80 @@ fun CustomBevBottomSheet(
                         event(WTEvent.GoalChange(it))
                     })
             }
-        }
+        },
     ) {
-        Column(
-            modifier = Modifier
-                .verticalScroll(scrollState)
-                .fillMaxSize()
-        ) {
-            AppHomeScreen(
-                totalConsumed = totalConsumed.toInt(),
-                waterQuantity = sliderValueWater.toInt(),
-                coconutQuantity = sliderValueCoconut.toInt(),
-                firstPrefQuantity = sliderValueFirstPreference.toInt(),
-                secondPrefQuantity = sliderValueSecondPreference.toInt(),
-                recentAddedQuantity = sliderValueRecentAdded.toInt(),
-                onClickWater = {
-                    openSheet(
-                        BottomSheetScreen.Screen1(
-                            sliderValueWater,
-                            "Water"
-                        )
-                    )
-                },
-                onClickCoconut = {
-                    openSheet(
-                        BottomSheetScreen.Screen1(
-                            sliderValueCoconut,
-                            "Coconut"
-                        )
-                    )
-                },
-                onClickFirstPref = {
-                    openSheet(
-                        BottomSheetScreen.Screen1(
-                            sliderValueFirstPreference,
-                            "FirstPref"
-                        )
-                    )
-                },
-                onClickSecondPref = {
-                    openSheet(
-                        BottomSheetScreen.Screen1(
-                            sliderValueSecondPreference,
-                            "SecondPref"
-                        )
-                    )
-                },
-                onClickRecentAdded = {
-                    openSheet(
-                        BottomSheetScreen.Screen1(
-                            sliderValueRecentAdded,
-                            "RecentAdd"
-                        )
-                    )
-                },
-                onClickCustomize = {
-                    openSheet(
-                        BottomSheetScreen.Screen2(
-                            sliderValueRecentAdded,
-                            "RecentAdd"
-                        )
-                    )
-                },
-                addedName = addedName,
-                onClickGoal = { openSheet(BottomSheetScreen.Screen3()) },
-                event = event,
-                uiState = uiState
-            )
-            ButtonWithColor(
-                color = Color.Blue, text = "Schedule",
-                modifier = Modifier.padding(AppTheme.spacing.level1)
+        AppScreen {
+            Column(
+                modifier = Modifier
+                    .verticalScroll(scrollState)
+                    .fillMaxSize()
             ) {
-                onClickSchedule()
+                AppHomeScreen(
+                    totalConsumed = totalConsumed.toInt(),
+                    waterQuantity = sliderValueWater.toInt(),
+                    coconutQuantity = sliderValueCoconut.toInt(),
+                    firstPrefQuantity = sliderValueFirstPreference.toInt(),
+                    secondPrefQuantity = sliderValueSecondPreference.toInt(),
+                    recentAddedQuantity = sliderValueRecentAdded.toInt(),
+                    onClickWater = {
+                        openSheet(
+                            BottomSheetScreen.Screen1(
+                                sliderValueWater,
+                                "Water"
+                            )
+                        )
+                    },
+                    onClickCoconut = {
+                        openSheet(
+                            BottomSheetScreen.Screen1(
+                                sliderValueCoconut,
+                                "Coconut"
+                            )
+                        )
+                    },
+                    onClickFirstPref = {
+                        openSheet(
+                            BottomSheetScreen.Screen1(
+                                sliderValueFirstPreference,
+                                "FirstPref"
+                            )
+                        )
+                    },
+                    onClickSecondPref = {
+                        openSheet(
+                            BottomSheetScreen.Screen1(
+                                sliderValueSecondPreference,
+                                "SecondPref"
+                            )
+                        )
+                    },
+                    onClickRecentAdded = {
+                        openSheet(
+                            BottomSheetScreen.Screen1(
+                                sliderValueRecentAdded,
+                                "RecentAdd"
+                            )
+                        )
+                    },
+                    onClickCustomize = {
+                        openSheet(
+                            BottomSheetScreen.Screen2(
+                                sliderValueRecentAdded,
+                                "RecentAdd"
+                            )
+                        )
+                    },
+                    addedName = addedName,
+                    onClickGoal = { openSheet(BottomSheetScreen.Screen3()) },
+                    event = event,
+                    uiState = uiState
+                )
+                ButtonWithColor(
+                    color = Color.Blue, text = "Schedule",
+                    modifier = Modifier.padding(AppTheme.spacing.level1)
+                ) {
+                    onClickSchedule()
+                }
             }
         }
     }
@@ -409,14 +411,14 @@ fun DaysSlider(
 
         Column {
             Row {
-                Text(text = "Set Quantity For : ")
-                Text(
+                CaptionTexts.Level2(text = "Set Quantity : ")
+                CaptionTexts.Level2(
                     text = "${sliderPosition.toInt()} ml",
-                    color = Color(0xFF00458B)
+                    color = AppTheme.colors.primary
                 )
             }
             Row {
-                Slider(
+                LinearSlider(
                     value = sliderPosition,
                     onValueChange = {
                         sliderPosition = it
@@ -425,15 +427,10 @@ fun DaysSlider(
                     modifier = Modifier
                         .fillMaxWidth(1f)
                         .padding(AppTheme.spacing.level0),
-                    colors = SliderDefaults.colors(
-                        thumbColor = color,
-                        activeTrackColor = color,
-                        activeTickColor = color,
-                        inactiveTickColor = Color(0xFF99DDFF),
-                        inactiveTrackColor = Color(0xFF99DDFF),
-                    ),
                     steps = 3000,
-                    valueRange = 0f..3000f
+                    minimumValue = 0f,
+                    maximumValue = 3000f,
+                   // valueRange = 0f..3000f
                 )
             }
         }
@@ -451,7 +448,7 @@ fun AnimatedContentField(title: String, description: String) {
             verticalAlignment = Alignment.CenterVertically,
             horizontalArrangement = Arrangement.SpaceEvenly
         ) {
-            Icon(imageVector = Icons.Default.Info, contentDescription = "Info",
+            AppIcon(imageVector = Icons.Default.Info, contentDescription = "Info",
                 modifier = Modifier
                     .clickable {
                         Toast
