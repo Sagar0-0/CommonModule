@@ -166,7 +166,7 @@ fun NavGraphBuilder.sunlightNavigation(
                 skinConditionViewModel.updateDataState.collectAsState()
             val exposureState = skinConditionViewModel.skinExposureState.collectAsState()
             skinConditionViewModel.popBackStack = {
-                if (skinConditionViewModel.id.value.equals("000000000000000000000000")) {
+                if (skinConditionViewModel.id.value.equals("000000000000000000000000") || skinConditionViewModel.id.value == null) {
                     navController.navigateToSunlight {
                         it.popUpTo(SunlightScreens.SkinConditionScreen.route) {
                             inclusive = true
@@ -207,6 +207,7 @@ fun NavGraphBuilder.sunlightNavigation(
                     skinConditionDataMapper = homeViewModel.skinConditionDataMapper,
                     updateDataState = updateDataState,
                     isForUpdate = skinConditionViewModel.isForUpdate,
+                    navigateBack = { skinConditionViewModel.popBackStack.invoke() },
                     onEvent = skinConditionViewModel::onEvent,
                     exposureState = exposureState,
                     colorState = exposureState,

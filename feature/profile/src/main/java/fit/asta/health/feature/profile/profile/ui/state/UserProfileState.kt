@@ -10,13 +10,9 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
-import androidx.compose.runtime.saveable.Saver
-import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.saveable.rememberSaveable
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
@@ -104,22 +100,22 @@ fun rememberUserProfileState(
         )
     }
 
-    return rememberSaveable(
+    return remember(
         pagerState,
         coroutineScope,
         navController,
         onEvent,
-        saver = UserProfileState.Saver(
-            basicDetailScreenState,
-            healthScreenState,
-            lifestyleScreenState,
-            physiqueScreenState,
-            dietScreenState,
-            pagerState,
-            coroutineScope,
-            navController,
-            onEvent
-        )
+//        saver = UserProfileState.Saver(
+//            basicDetailScreenState,
+//            healthScreenState,
+//            lifestyleScreenState,
+//            physiqueScreenState,
+//            dietScreenState,
+//            pagerState,
+//            coroutineScope,
+//            navController,
+//            onEvent
+//        )
     ) {
         UserProfileState(
             basicDetailScreenState = basicDetailScreenState,
@@ -147,7 +143,6 @@ class UserProfileState(
     private val navController: NavController,
     private val onEvent: (UserProfileEvent) -> Unit,
 ) {
-    var isImageCropperVisible by mutableStateOf(false)
     var currentPageIndex: Int
         get() = pagerState.currentPage
         set(value) {
@@ -192,38 +187,34 @@ class UserProfileState(
     }
 
     companion object {
-        fun Saver(
-            basicDetailScreenState: BasicDetailScreenState,
-            healthScreenState: HealthScreenState,
-            lifestyleScreenState: LifestyleScreenState,
-            physiqueScreenState: PhysiqueScreenState,
-            dietScreenState: DietScreenState,
-            pagerState: PagerState,
-            coroutineScope: CoroutineScope,
-            navController: NavController,
-            onEvent: (UserProfileEvent) -> Unit
-        ): Saver<UserProfileState, *> = listSaver(
-            save = {
-                listOf(
-                    it.isImageCropperVisible,
-                )
-            },
-            restore = {
-                UserProfileState(
-                    basicDetailScreenState = basicDetailScreenState,
-                    healthScreenState = healthScreenState,
-                    lifestyleScreenState = lifestyleScreenState,
-                    physiqueScreenState = physiqueScreenState,
-                    dietScreenState = dietScreenState,
-                    pagerState = pagerState,
-                    coroutineScope = coroutineScope,
-                    navController = navController,
-                    onEvent = onEvent
-                ).apply {
-                    this.isImageCropperVisible = it[0]
-                }
-            }
-        )
+//        fun Saver(
+//            basicDetailScreenState: BasicDetailScreenState,
+//            healthScreenState: HealthScreenState,
+//            lifestyleScreenState: LifestyleScreenState,
+//            physiqueScreenState: PhysiqueScreenState,
+//            dietScreenState: DietScreenState,
+//            pagerState: PagerState,
+//            coroutineScope: CoroutineScope,
+//            navController: NavController,
+//            onEvent: (UserProfileEvent) -> Unit
+//        ): Saver<UserProfileState, *> = listSaver(
+//            save = {
+//                listOf()
+//            },
+//            restore = {
+//                UserProfileState(
+//                    basicDetailScreenState = basicDetailScreenState,
+//                    healthScreenState = healthScreenState,
+//                    lifestyleScreenState = lifestyleScreenState,
+//                    physiqueScreenState = physiqueScreenState,
+//                    dietScreenState = dietScreenState,
+//                    pagerState = pagerState,
+//                    coroutineScope = coroutineScope,
+//                    navController = navController,
+//                    onEvent = onEvent
+//                )
+//            }
+//        )
     }
 
     data class ProfileBottomSheetPicker(

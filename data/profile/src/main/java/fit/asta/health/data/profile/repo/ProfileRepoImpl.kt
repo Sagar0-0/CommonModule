@@ -1,6 +1,7 @@
 package fit.asta.health.data.profile.repo
 
 import android.content.ContentResolver
+import android.net.Uri
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
@@ -20,10 +21,12 @@ import fit.asta.health.data.profile.remote.model.Name_Field_Name
 import fit.asta.health.data.profile.remote.model.OnPeriod_Field_Name
 import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.PregWeek_Field_Name
+import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UpdateObjectFloat
 import fit.asta.health.data.profile.remote.model.UpdateObjectInt
 import fit.asta.health.data.profile.remote.model.UpdateObjectPropertiesList
 import fit.asta.health.data.profile.remote.model.UpdateObjectString
+import fit.asta.health.data.profile.remote.model.UpdateObjectTimeSchedule
 import fit.asta.health.data.profile.remote.model.UpdateProfileRequest
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
@@ -162,6 +165,53 @@ class ProfileRepoImpl
                             value = unit
                         ),
                     )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveTimeSchedule(
+        uid: String,
+        screenName: String,
+        fieldName: String,
+        timeSchedule: TimeSchedule
+    ): ResponseState<SubmitProfileResponse> {
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = listOf(
+                        UpdateObjectTimeSchedule(
+                            screenName = screenName,
+                            fieldName = fieldName,
+                            value = timeSchedule
+                        )
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveProfileImage(
+        uid: String,
+        profileImageLocalUri: Uri?
+    ): ResponseState<SubmitProfileResponse> {
+        val files: ArrayList<MultipartBody.Part> = ArrayList()
+        if (profileImageLocalUri != null) {
+            files.add(
+                MultipartBody.Part.createFormData(
+                    name = "file",
+                    filename = uid,
+                    body = InputStreamRequestBody(contentResolver, profileImageLocalUri)
+                )
+            )
+        }
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                files = files,
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = null
                 )
             )
         }

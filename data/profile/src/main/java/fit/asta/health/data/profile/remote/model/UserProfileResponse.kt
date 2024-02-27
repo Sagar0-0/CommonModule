@@ -33,8 +33,8 @@ data class BasicDetail(
 
 @Parcelize
 data class ProfileMedia(
-    @SerializedName(MediaUrl_Field_Name) var url: String = "",
-    @SerializedName(MediaMailUrl_Field_Name) var mailUrl: String = "",
+    @SerializedName(MediaUrl_Field_Name) var url: String? = null,
+    @SerializedName(MediaMailUrl_Field_Name) var mailUrl: String? = null,
     var localUri: Uri? = null
 ) : Parcelable
 
@@ -83,7 +83,7 @@ data class LifeStyle(
     @SerializedName(CurrentActivities_Field_Name) val curActivities: List<UserProperties>? = null,
     @SerializedName(PreferredActivities_Field_Name) val prefActivities: List<UserProperties>? = null,
     @SerializedName(LifestyleTargets_Field_Name) val lifeStyleTargets: List<UserProperties>? = null,
-    @SerializedName(WorkingTime_Field_Name) var workingTime: TimeSchedule = TimeSchedule(),
+    @SerializedName(WorkTime_Field_Name) var workTime: TimeSchedule = TimeSchedule(),
     @SerializedName(SleepTime_Field_Name) var sleepTime: TimeSchedule = TimeSchedule(), // missing in UI
 ) : Parcelable
 
@@ -98,6 +98,8 @@ data class Diet(
 
 @Parcelize
 data class TimeSchedule(
-    @SerializedName(FromTime_Field_Name) val from: Float? = null,
-    @SerializedName(ToTime_Field_Name) val to: Float? = null,
+    val startHour: Int? = null,
+    val startMinute: Int? = null,
+    val endHour: Int? = null,
+    val endMinute: Int? = null,
 ) : Parcelable

@@ -110,6 +110,18 @@ fun NavGraphBuilder.profileRoute(
                             event.list
                         )
                     }
+
+                    is UserProfileEvent.SaveImage -> {
+                        profileViewModel.saveProfileImage(event.profileImageLocalUri)
+                    }
+
+                    is UserProfileEvent.SaveTimeSchedule -> {
+                        profileViewModel.saveTimeSchedule(
+                            event.screenName,
+                            event.fieldName,
+                            event.timeSchedule
+                        )
+                    }
                 }
             }
         )

@@ -103,11 +103,10 @@ fun UserProfileContent(
 
     ImageCropperScreen(
         modifier = Modifier.fillMaxSize(),
-        visible = userProfileState.isImageCropperVisible,
+        visible = userProfileState.basicDetailScreenState.isImageCropperVisible,
         uri = userProfileState.basicDetailScreenState.profileImageLocalUri,
         onCropClick = { croppedImage ->
-            userProfileState.basicDetailScreenState.profileImageLocalUri = croppedImage
-            userProfileState.isImageCropperVisible = false
+            userProfileState.basicDetailScreenState.saveProfileImage(croppedImage)
         }
     )
 }

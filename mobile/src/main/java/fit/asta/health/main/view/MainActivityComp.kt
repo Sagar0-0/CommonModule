@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -18,12 +19,15 @@ import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
 import androidx.core.content.ContextCompat
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.compose.LifecycleEventEffect
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.compose.composable
 import fit.asta.health.BuildConfig
 import fit.asta.health.R
+import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.Constants.BREATHING_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.EXERCISE_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.HourMinAmPmKey
@@ -53,6 +57,7 @@ import fit.asta.health.meditation.nav.navigateToMeditation
 import fit.asta.health.navigation.alarms.navigateToAllAlarms
 import fit.asta.health.navigation.tools.ui.view.ToolsHomeUiEvent
 import fit.asta.health.navigation.tools.ui.viewmodel.ToolsHomeViewModel
+import fit.asta.health.player.domain.utils.findActivity
 import fit.asta.health.subscription.SubscriptionViewModel
 import fit.asta.health.subscription.navigateToFinalPaymentScreen
 import fit.asta.health.subscription.navigateToSubscriptionDurations
@@ -79,6 +84,20 @@ fun NavGraphBuilder.homeScreen(
         val toolsHomeViewModel: ToolsHomeViewModel = hiltViewModel()
         val toolsHomeDataState by toolsHomeViewModel.toolsHomeDataState.collectAsStateWithLifecycle()
 
+        LifecycleEventEffect(event = Lifecycle.Event.ON_RESUME) {
+            Log.d("tool", "homeScreen: ")
+            val intent = context.findActivity()?.intent
+            if (intent != null && !intent.getStringExtra(Constants.ALARM_NOTIFICATION_TAG)
+                    .isNullOrEmpty()
+            ) {
+                val tool = Constants.goToTool(
+                    intent.getStringExtra(Constants.ALARM_NOTIFICATION_TAG) ?: ""
+                )
+                Log.d("tool", "homeScreen: $tool")
+                navigateTools(navController, tool)
+                intent.removeExtra(Constants.ALARM_NOTIFICATION_TAG)
+            }
+        }
         LaunchedEffect(
             key1 = Unit,
             block = {
@@ -87,7 +106,6 @@ fun NavGraphBuilder.homeScreen(
                 }
             }
         )
-
         val notificationState by mainViewModel.notificationState.collectAsStateWithLifecycle()
         val sessionState by mainViewModel.sessionState.collectAsStateWithLifecycle()
         val currentAddressName by mainViewModel.currentAddressName.collectAsStateWithLifecycle()
@@ -172,12 +190,12 @@ fun NavGraphBuilder.homeScreen(
             }
         }
 
-            LaunchedEffect(key1 = Unit,
-                block = {
-                    if ((currentAddressName !is UiState.Success)) {
-                        enableLocationAndUpdateAddress()
-                    }
-                })
+        LaunchedEffect(key1 = Unit,
+            block = {
+                if ((currentAddressName !is UiState.Success)) {
+                    enableLocationAndUpdateAddress()
+                }
+            })
         val checkPermissionAndLaunchScheduler =
             checkPermissionAndLaunchScheduler(context, navController)
 
@@ -355,4 +373,36 @@ fun checkPermissionAndLaunchScheduler(
         }
     }
     return checkPermissionAndLaunchScheduler
+}
+
+fun navigateTools(navController: NavController, id: String) {
+    when (id) {
+        SUNLIGHT_GRAPH_ROUTE -> {
+            navController.navigateToSunlight()
+        }
+
+        WATER_GRAPH_ROUTE -> {
+            navController.navigateToWater()
+        }
+
+        SLEEP_GRAPH_ROUTE -> {
+            navController.navigateToSleep()
+        }
+
+        MEDITATION_GRAPH_ROUTE -> {
+            navController.navigateToMeditation()
+        }
+
+        BREATHING_GRAPH_ROUTE -> {
+            navController.navigateToBreathing()
+        }
+
+        EXERCISE_GRAPH_ROUTE -> {
+            navController.navigateToExercise()
+        }
+
+        STEPS_GRAPH_ROUTE -> {
+            navController.navigateToStepsCounter()
+        }
+    }
 }

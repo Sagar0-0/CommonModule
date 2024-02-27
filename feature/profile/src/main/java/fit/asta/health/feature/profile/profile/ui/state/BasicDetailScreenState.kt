@@ -19,6 +19,8 @@ class BasicDetailScreenState(
     val onEvent: (UserProfileEvent) -> Unit
 ) {
 
+    var isImageCropperVisible by mutableStateOf(false)
+
     var userName by mutableStateOf(basicDetail.name)
         private set
 
@@ -76,7 +78,13 @@ class BasicDetailScreenState(
         get() = basicDetail.email
     private val phoneNumber: String
         get() = basicDetail.phoneNumber
-    var profileImageUrl by mutableStateOf(basicDetail.media.mailUrl.ifEmpty { basicDetail.media.url })
+    var profileImageUrl by mutableStateOf(
+        if (basicDetail.media.mailUrl.isNullOrEmpty()) {
+            basicDetail.media.url
+        } else {
+            basicDetail.media.mailUrl
+        }
+    )
     var profileImageLocalUri by mutableStateOf<Uri?>(null)
 
     private val updatedData = BasicDetail(
@@ -103,6 +111,11 @@ class BasicDetailScreenState(
     }
 
     fun getUpdatedData() = updatedData
+    fun saveProfileImage(croppedImage: Uri?) {
+        profileImageLocalUri = croppedImage
+        isImageCropperVisible = false
+        onEvent(UserProfileEvent.SaveImage(profileImageLocalUri))
+    }
 
 
     companion object {
@@ -111,14 +124,17 @@ class BasicDetailScreenState(
         ): Saver<BasicDetailScreenState, *> = listSaver(
             save = {
                 listOf(
-                    it.updatedData
+                    it.updatedData,
+                    it.isImageCropperVisible
                 )
             },
             restore = {
                 BasicDetailScreenState(
-                    basicDetail = it[0],
+                    basicDetail = it[0] as BasicDetail,
                     onEvent
-                )
+                ).apply {
+                    this.isImageCropperVisible = it[1] as Boolean
+                }
             }
         )
     }

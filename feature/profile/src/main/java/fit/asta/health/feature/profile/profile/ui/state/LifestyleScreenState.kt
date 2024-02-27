@@ -1,23 +1,31 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Bedtime
+import androidx.compose.material.icons.filled.Work
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
+import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.toMutableStateList
-import com.maxkeppeker.sheets.core.models.base.UseCaseState
+import androidx.compose.ui.graphics.vector.ImageVector
 import fit.asta.health.data.profile.remote.model.CurrentActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.LifeStyle
 import fit.asta.health.data.profile.remote.model.LifestyleTargets_Field_Name
 import fit.asta.health.data.profile.remote.model.Lifestyle_Screen_Name
 import fit.asta.health.data.profile.remote.model.PhysicallyActive
 import fit.asta.health.data.profile.remote.model.PreferredActivities_Field_Name
+import fit.asta.health.data.profile.remote.model.SleepTime_Field_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.data.profile.remote.model.WorkTime_Field_Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
 
@@ -28,12 +36,7 @@ class LifestyleScreenState(
     val onEvent: (UserProfileEvent) -> Unit
 ) {
 
-    //Lifestyle Page
-    private var sleepStartTime = mutableStateOf(lifeStyle.sleepTime.from?.toString())
-    private var sleepEndTime = mutableStateOf(lifeStyle.sleepTime.to?.toString())
-    private var jobStartTime = mutableStateOf(lifeStyle.workingTime.from?.toString())
-    private var jobEndTime = mutableStateOf(lifeStyle.workingTime.to?.toString())
-
+    //Properties content logic
     private val currentActivities =
         (lifeStyle.curActivities ?: listOf()).toMutableStateList()
     private val preferredActivities =
@@ -42,27 +45,8 @@ class LifestyleScreenState(
         (lifeStyle.lifeStyleTargets ?: listOf()).toMutableStateList()
     private val physicallyActive = PhysicallyActive.LOW.value
 
-    private val updateLifestyle = LifeStyle(
-        physicalActive = physicallyActive,
-        workingEnv = lifeStyle.workingEnv,
-        workStyle = lifeStyle.workStyle,
-        workingHours = lifeStyle.workingHours,
-        curActivities = currentActivities,
-        prefActivities = preferredActivities,
-        lifeStyleTargets = lifestyleTargets,
-        workingTime = TimeSchedule(
-            from = jobStartTime.value?.toFloat(),
-            to = jobEndTime.value?.toFloat()
-        ),
-        sleepTime = TimeSchedule(
-            from = sleepStartTime.value?.toFloat(),
-            to = sleepEndTime.value?.toFloat()
-        )
-    )
-
-    private val currentListIndex = mutableIntStateOf(0)
-
-    val bottomSheets: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
+    private var currentPropertyIndex by mutableIntStateOf(0)
+    val propertiesList: List<UserProfileState.ProfileBottomSheetPicker> = listOf(
         UserProfileState.ProfileBottomSheetPicker(
             CurrentActivities_Field_Name,
             "activity",
@@ -84,78 +68,126 @@ class LifestyleScreenState(
     )
 
     @OptIn(ExperimentalMaterial3Api::class)
-    fun openLifestyleBottomSheet(
+    fun openPropertiesBottomSheet(
         sheetState: SheetState,
         index: Int,
         bottomSheetVisible: MutableState<Boolean>
     ) {
-        currentListIndex.intValue = index
+        currentPropertyIndex = index
         bottomSheetVisible.value = true
         coroutineScope.launch { sheetState.expand() }
         getHealthProperties()
     }
 
     private fun getHealthProperties() {
-        onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[currentListIndex.intValue].getQueryParam))
+        onEvent(UserProfileEvent.GetHealthProperties(propertiesList[currentPropertyIndex].getQueryParam))
     }
 
-
+    fun getCurrentPropertiesList() = propertiesList[currentPropertyIndex].list.toList()
     fun saveProperties(list: List<UserProperties>) {
-        bottomSheets[currentListIndex.intValue].list.apply {
+        propertiesList[currentPropertyIndex].list.apply {
             clear()
             addAll(list)
         }
         onEvent(
             UserProfileEvent.SavePropertiesList(
                 Lifestyle_Screen_Name,
-                bottomSheets[currentListIndex.intValue].fieldName,
+                propertiesList[currentPropertyIndex].fieldName,
                 list
             )
         )
     }
 
-    fun getUpdatedData(): LifeStyle {
-        return updateLifestyle
-    }
 
-    private val currentTimerIndex = mutableIntStateOf(0)
+    //Timer Content Logic
+    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime.startHour ?: 0)
+    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime.startMinute ?: 0)
+    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime.endHour ?: 0)
+    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime.endMinute ?: 0)
 
-    val lifestyleTimePickers: List<ProfileTimePicker> = listOf(
+    private val workStartHour = mutableIntStateOf(lifeStyle.workTime.startHour ?: 0)
+    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime.startMinute ?: 0)
+    private val workEndHour = mutableIntStateOf(lifeStyle.workTime.endHour ?: 0)
+    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime.endMinute ?: 0)
+
+    private var currentTimerIndex by mutableIntStateOf(0)
+    var timerSheetVisible by mutableStateOf(false)
+
+    val timersList: List<ProfileTimePicker> = listOf(
         ProfileTimePicker(
-            "Sleep Schedule",
-            "Select Bed Time",
-            "Select Wakeup Time",
-            sleepStartTime,
-            sleepEndTime,
-            0, 1
+            fieldName = SleepTime_Field_Name,
+            title = "Sleep Schedule",
+            startHour = sleepStartHour,
+            startMinute = sleepStartMinute,
+            endHour = sleepEndHour,
+            endMinute = sleepEndMinute,
+            imageVector = Icons.Default.Bedtime
         ),
         ProfileTimePicker(
-            "Job Schedule",
-            "Select Job Start Time",
-            "Select Job End Time",
-            jobStartTime,
-            jobEndTime,
-            2, 3
+            fieldName = WorkTime_Field_Name,
+            title = "Work Schedule",
+            startHour = workStartHour,
+            startMinute = workStartMinute,
+            endHour = workEndHour,
+            endMinute = workEndMinute,
+            imageVector = Icons.Default.Work
         )
     )
 
-    private val timersList = listOf(
-        sleepStartTime,
-        sleepEndTime,
-        jobStartTime,
-        jobEndTime
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun openTimerSheet(index: Int, sheetState: SheetState) {
+        currentTimerIndex = index
+        timerSheetVisible = true
+        coroutineScope.launch { sheetState.expand() }
+    }
+
+    @OptIn(ExperimentalMaterial3Api::class)
+    fun closeTimerSheet(sheetState: SheetState) {
+        timerSheetVisible = false
+        coroutineScope.launch { sheetState.hide() }
+    }
+
+    fun saveTime(startHour: Int, startMinute: Int, endHour: Int, endMinute: Int) {
+        timersList[currentTimerIndex].startHour.intValue = startHour
+        timersList[currentTimerIndex].endHour.intValue = endHour
+        timersList[currentTimerIndex].startMinute.intValue = startMinute
+        timersList[currentTimerIndex].endMinute.intValue = endMinute
+        onEvent(
+            UserProfileEvent.SaveTimeSchedule(
+                Lifestyle_Screen_Name,
+                timersList[currentTimerIndex].fieldName,
+                TimeSchedule(
+                    startHour = startHour,
+                    startMinute = startMinute,
+                    endHour = endHour,
+                    endMinute = endMinute
+
+                )
+            )
+        )
+    }
+
+    private val updateLifestyle = LifeStyle(
+        physicalActive = physicallyActive,
+        workingEnv = lifeStyle.workingEnv,
+        workStyle = lifeStyle.workStyle,
+        workingHours = lifeStyle.workingHours,
+        curActivities = currentActivities,
+        prefActivities = preferredActivities,
+        lifeStyleTargets = lifestyleTargets,
+        workTime = TimeSchedule(
+            startHour = workStartHour.intValue,
+            startMinute = workStartMinute.intValue,
+            endHour = workEndHour.intValue,
+            endMinute = workEndMinute.intValue,
+        ),
+        sleepTime = TimeSchedule(
+            startHour = sleepStartHour.intValue,
+            startMinute = sleepStartMinute.intValue,
+            endHour = sleepEndHour.intValue,
+            endMinute = sleepEndMinute.intValue,
+        )
     )
-
-    fun setCurrentItemTime(time: String) {
-        timersList[currentTimerIndex.intValue].value = time
-    }
-
-    fun getCurrentList() = bottomSheets[currentListIndex.intValue].list.toList()
-
-    fun openTimer(index: Int, useCaseState: UseCaseState) {
-        currentTimerIndex.intValue = index
-        useCaseState.show()
-    }
 
     companion object {
         fun Saver(
@@ -165,8 +197,9 @@ class LifestyleScreenState(
             save = {
                 listOf(
                     it.updateLifestyle,
-                    it.currentListIndex.intValue,
-                    it.currentTimerIndex.intValue
+                    it.currentPropertyIndex,
+                    it.currentTimerIndex,
+                    it.timerSheetVisible
                 )
             },
             restore = {
@@ -175,20 +208,21 @@ class LifestyleScreenState(
                     coroutineScope,
                     onEvent
                 ).apply {
-                    this.currentListIndex.intValue = it[1] as Int
-                    this.currentTimerIndex.intValue = it[2] as Int
+                    this.currentPropertyIndex = it[1] as Int
+                    this.currentTimerIndex = it[2] as Int
+                    this.timerSheetVisible = it[3] as Boolean
                 }
             }
         )
     }
 
     data class ProfileTimePicker(
+        val fieldName: String,
         val title: String,
-        val startButtonTitle: String,
-        val endButtonTitle: String,
-        val startTime: MutableState<String?>,
-        val endTime: MutableState<String?>,
-        val startIndex: Int,
-        val endIndex: Int
+        var startHour: MutableIntState,
+        var startMinute: MutableIntState,
+        var endHour: MutableIntState,
+        var endMinute: MutableIntState,
+        val imageVector: ImageVector
     )
 }

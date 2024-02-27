@@ -1,5 +1,8 @@
 package fit.asta.health.feature.profile.profile.ui.components
 
+import android.net.Uri
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.border
 import androidx.compose.foundation.layout.Box
@@ -8,6 +11,7 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -22,12 +26,18 @@ import fit.asta.health.feature.profile.profile.ui.screens.EditProfileImageButton
 @Composable
 fun ProfileImagePicker(
     modifier: Modifier = Modifier,
-    model: String,
-    onUserProfileSelection: () -> Unit,
+    model: String?,
+    onLauncherResult: (Uri?) -> Unit,
     onProfilePicClear: () -> Unit,
 ) {
+    val imgLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.GetContent()) { uri ->
+            onLauncherResult(uri)
+        }
 
-    val isImgNotAvail = model.isEmpty()
+    val isImgNotAvail = remember(model) {
+        model.isNullOrEmpty()
+    }
 
     Box(
         contentAlignment = Alignment.Center,
@@ -52,8 +62,9 @@ fun ProfileImagePicker(
         }
         EditProfileImageButton(
             isImgNotAvail,
-            onUserProfileSelection,
             modifier = Modifier.align(alignment = Alignment.BottomEnd)
-        )
+        ) {
+            imgLauncher.launch("image/*")
+        }
     }
 }

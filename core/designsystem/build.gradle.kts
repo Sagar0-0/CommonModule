@@ -69,6 +69,9 @@ dependencies {
     implementation(libs.accompanist.systemuicontroller)
     implementation(libs.accompanist.flowlayout)
 
+    //Number Picker
+    implementation(libs.numberpicker)
+
     //Image - Coil library
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.gif)

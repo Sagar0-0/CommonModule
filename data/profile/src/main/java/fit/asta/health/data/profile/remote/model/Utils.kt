@@ -53,7 +53,7 @@ const val WorkHours_Field_Name = "whr"
 const val CurrentActivities_Field_Name = "cat"
 const val PreferredActivities_Field_Name = "pat"
 const val LifestyleTargets_Field_Name = "lst"
-const val WorkingTime_Field_Name = "job"
+const val WorkTime_Field_Name = "job"
 const val SleepTime_Field_Name = "slp"
 
 const val Preference_Field_Name = "pref"
