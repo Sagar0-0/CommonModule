@@ -17,6 +17,7 @@ import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Female
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Male
+import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Person
 import androidx.compose.material.icons.filled.PregnantWoman
 import androidx.compose.material.icons.filled.Subscriptions
@@ -154,6 +155,15 @@ fun BasicDetailsScreen(
             trailingIcon = Icons.Default.ArrowForward
         ) {
             userProfileState.navigateToWallet()
+        }
+
+        ClickableTextBox(
+            label = "Refer and Earn",
+            value = "Refer your Friend",
+            leadingIcon = Icons.Default.MonetizationOn,
+            trailingIcon = Icons.Default.ArrowForward
+        ) {
+            userProfileState.navigateToReferral()
         }
 
         ClickableTextBox(

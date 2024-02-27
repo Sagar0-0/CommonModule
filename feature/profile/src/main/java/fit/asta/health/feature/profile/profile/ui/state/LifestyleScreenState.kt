@@ -23,6 +23,7 @@ import fit.asta.health.data.profile.remote.model.Lifestyle_Screen_Name
 import fit.asta.health.data.profile.remote.model.PhysicallyActive
 import fit.asta.health.data.profile.remote.model.PreferredActivities_Field_Name
 import fit.asta.health.data.profile.remote.model.SleepTime_Field_Name
+import fit.asta.health.data.profile.remote.model.Time
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.data.profile.remote.model.WorkTime_Field_Name
@@ -100,15 +101,15 @@ class LifestyleScreenState(
 
 
     //Timer Content Logic
-    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime.startHour ?: 0)
-    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime.startMinute ?: 0)
-    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime.endHour ?: 0)
-    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime.endMinute ?: 0)
+    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime.startTime?.hour ?: 0)
+    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime.startTime?.minute ?: 0)
+    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime.endTime?.hour ?: 0)
+    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime.endTime?.minute ?: 0)
 
-    private val workStartHour = mutableIntStateOf(lifeStyle.workTime.startHour ?: 0)
-    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime.startMinute ?: 0)
-    private val workEndHour = mutableIntStateOf(lifeStyle.workTime.endHour ?: 0)
-    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime.endMinute ?: 0)
+    private val workStartHour = mutableIntStateOf(lifeStyle.workTime.startTime?.hour ?: 0)
+    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime.startTime?.minute ?: 0)
+    private val workEndHour = mutableIntStateOf(lifeStyle.workTime.endTime?.hour ?: 0)
+    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime.endTime?.minute ?: 0)
 
     private var currentTimerIndex by mutableIntStateOf(0)
     var timerSheetVisible by mutableStateOf(false)
@@ -157,11 +158,14 @@ class LifestyleScreenState(
                 Lifestyle_Screen_Name,
                 timersList[currentTimerIndex].fieldName,
                 TimeSchedule(
-                    startHour = startHour,
-                    startMinute = startMinute,
-                    endHour = endHour,
-                    endMinute = endMinute
-
+                    startTime = Time(
+                        hour = startHour,
+                        minute = startMinute
+                    ),
+                    endTime = Time(
+                        hour = endHour,
+                        minute = endMinute
+                    )
                 )
             )
         )
@@ -176,16 +180,24 @@ class LifestyleScreenState(
         prefActivities = preferredActivities,
         lifeStyleTargets = lifestyleTargets,
         workTime = TimeSchedule(
-            startHour = workStartHour.intValue,
-            startMinute = workStartMinute.intValue,
-            endHour = workEndHour.intValue,
-            endMinute = workEndMinute.intValue,
+            startTime = Time(
+                hour = workStartHour.intValue,
+                minute = workStartMinute.intValue
+            ),
+            endTime = Time(
+                hour = workEndHour.intValue,
+                minute = workEndMinute.intValue
+            )
         ),
         sleepTime = TimeSchedule(
-            startHour = sleepStartHour.intValue,
-            startMinute = sleepStartMinute.intValue,
-            endHour = sleepEndHour.intValue,
-            endMinute = sleepEndMinute.intValue,
+            startTime = Time(
+                hour = sleepStartHour.intValue,
+                minute = sleepStartMinute.intValue
+            ),
+            endTime = Time(
+                hour = sleepEndHour.intValue,
+                minute = sleepEndMinute.intValue
+            )
         )
     )
 

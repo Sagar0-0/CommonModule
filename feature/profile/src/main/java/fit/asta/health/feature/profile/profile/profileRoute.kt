@@ -26,6 +26,7 @@ fun NavController.navigateToProfile(navOptions: NavOptions? = null) {
 fun NavGraphBuilder.profileRoute(
     navController: NavController,
     navigateToWallet: () -> Unit,
+    navigateToReferral: () -> Unit,
     navigateToOrders: () -> Unit,
     navigateToSubscription: () -> Unit,
 ) {
@@ -61,6 +62,10 @@ fun NavGraphBuilder.profileRoute(
 
                     is UserProfileEvent.NavigateToWallet -> {
                         navigateToWallet()
+                    }
+
+                    is UserProfileEvent.NavigateToReferral -> {
+                        navigateToReferral()
                     }
 
                     is UserProfileEvent.NavigateToSubscription -> {

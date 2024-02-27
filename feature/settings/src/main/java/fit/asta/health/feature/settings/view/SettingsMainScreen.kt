@@ -8,13 +8,11 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.BugReport
 import androidx.compose.material.icons.filled.ColorLens
 import androidx.compose.material.icons.filled.DeleteForever
 import androidx.compose.material.icons.filled.FileCopy
 import androidx.compose.material.icons.filled.Logout
-import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
 import androidx.compose.material3.ExperimentalMaterial3Api
@@ -115,9 +113,9 @@ fun SettingsHomeScreen(
         ) {
 
             // support Us Group Card
-            SettingsGroupCard(
-                title = stringResource(id = R.string.user_pref_support_us_cat_title)
-            ) {
+//            SettingsGroupCard(
+//                title = stringResource(id = R.string.user_pref_support_us_cat_title)
+//            ) {
 
 //                // Share
 //                SettingsCardItem(
@@ -131,11 +129,11 @@ fun SettingsHomeScreen(
 //                    text = R.string.orders.toStringFromResId()
 //                ) { onUiEvent(SettingsUiEvent.NavigateToOrders) }
 
-                // Refer and Earn
-                SettingsCardItem(
-                    icon = Icons.Default.MonetizationOn,
-                    text = R.string.refer_and_earn.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.REFERRAL) }
+            // Refer and Earn
+//                SettingsCardItem(
+//                    icon = Icons.Default.MonetizationOn,
+//                    text = R.string.refer_and_earn.toStringFromResId()
+//                ) { onUiEvent(SettingsUiEvent.REFERRAL) }
 
 //                // Saved Addresses
 //                SettingsCardItem(
@@ -143,12 +141,12 @@ fun SettingsHomeScreen(
 //                    text = R.string.saved_address.toStringFromResId()
 //                ) { onUiEvent(SettingsUiEvent.ADDRESS) }
 
-                // Wallet
-                SettingsCardItem(
-                    icon = Icons.Default.AccountBalanceWallet,
-                    text = R.string.wallet.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.WALLET) }
-            }
+            // Wallet
+//                SettingsCardItem(
+//                    icon = Icons.Default.AccountBalanceWallet,
+//                    text = R.string.wallet.toStringFromResId()
+//                ) { onUiEvent(SettingsUiEvent.WALLET) }
+//            }
 
             // This is the Display card section
             SettingsGroupCard(title = R.string.user_pref_display_cat_title.toStringFromResId()) {
