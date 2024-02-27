@@ -37,6 +37,7 @@ object Constants {
     const val SUNLIGHT_GRAPH_ROUTE = "graph_sunlight_tool"
     const val PROFILE_GRAPH_ROUTE = "graph_profile_tool"
     const val CREATE_PROFILE_GRAPH_ROUTE = "graph_create_profile_tool"
+    const val TAG_NAME="tag_name"
     fun getDayAndTime(inputDateString: String = "2023-07-03T12:00"): DayAndTime {
         val inputFormat = DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm")
         val dayFormat = DateTimeFormatter.ofPattern("MMMM dd")
@@ -267,6 +268,22 @@ object Constants {
                 emptyList()
             }
         }
+    }
+    object ToolTag {
+        const val SUNLIGHT = "sunlight"
+        const val BEVERAGE = "beverage"
+        const val BREATHING = "breathing"
+        const val DANCE = "dance"
+        const val HIIT = "hiit"
+        const val MEDITATION = "meditation"
+        const val NAP = "nap"
+        const val SLEEP = "sleep"
+        const val STEPS = "steps"
+        const val STRETCHES = "stretches"
+        const val WALKING = "walking"
+        const val WATER = "water"
+        const val WORKOUT = "workout"
+        const val YOGA = "yoga"
     }
 }
 

@@ -23,11 +23,16 @@ fun NavController.navigateToBreathing(navOptions: NavOptions? = null) {
 }
 
 fun NavController.navigateToScheduleFromBreathing() {
-    val list = Constants.getDataForSchedule("Breathing")
-    val desc = list[0]
-    val label = list[1]
-    this.navigate("${Constants.SCHEDULER_GRAPH_ROUTE}?desc=${desc}&label=${label}")
-
+//    val list = Constants.getDataForSchedule("Breathing")
+//    val desc = list[0]
+//    val label = list[1]
+    this.currentBackStackEntry?.savedStateHandle?.set(
+        key = Constants.TAG_NAME,
+        value = Constants.ToolTag.BREATHING
+    )
+    this.navigate(
+        Constants.SCHEDULER_GRAPH_ROUTE
+    )
 }
 fun NavGraphBuilder.breathingNavigation(
     navController: NavController, onBack: () -> Unit

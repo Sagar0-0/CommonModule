@@ -69,12 +69,17 @@ class SchedulerViewModel
     val tagsList = MutableStateFlow(_tagsList)
     private val _customTagList = mutableStateListOf<TagEntity>()
     val customTagList = MutableStateFlow(_customTagList)
+    private val _isToolTag = MutableStateFlow(false)
+    val isToolTag = _isToolTag.asStateFlow()
+    private val _toolTag = MutableStateFlow<String?>(null)
+    val toolTag = _toolTag.asStateFlow()
 
 //    private val userId = "6309a9379af54f142c65fbfe"
 
     init {
-        getEditUiData()
+//        resetUi()
         getTagData()
+        getEditUiData()
         getAlarmList()
     }
 
@@ -95,7 +100,8 @@ class SchedulerViewModel
         )
     }
 
-    private fun getEditUiData() {
+
+    fun getEditUiData() {
         viewModelScope.launch {
             prefManager.userData.map { it.alarmId }
                 .collectLatest { alarmId ->
@@ -189,6 +195,14 @@ class SchedulerViewModel
                 _tagsList.clear()
                 _customTagList.clear()
                 it.forEach { tagEntity ->
+                    if (!toolTag.value.isNullOrEmpty() && tagEntity.name.equals(
+                            toolTag.value,
+                            ignoreCase = true
+                        )
+                    ) {
+                        selectedTag(tagEntity)
+                        _isToolTag.value = true
+                    }
                     if (tagEntity.uid == uId) {
                         _customTagList.add(tagEntity)
                     } else {
@@ -220,10 +234,14 @@ class SchedulerViewModel
 
 
     fun selectedTag(tag: TagEntity) {
-        _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
-            tagId = tag.id, tagName = tag.name, tagUrl = tag.url,
-            alarmName = tag.ttl, alarmDescription = tag.dsc
-        )
+        viewModelScope.launch {
+            _alarmSettingUiState.emit(
+                _alarmSettingUiState.value.copy(
+                    tagId = tag.id, tagName = tag.name, tagUrl = tag.url,
+                    alarmName = tag.ttl, alarmDescription = tag.dsc
+                )
+            )
+        }
     }
 
 
@@ -339,6 +357,8 @@ class SchedulerViewModel
     fun resetUi() {
         _alarmSettingUiState.value = ASUiState()
         interval.value = IvlUiState()
+        _isToolTag.value = false
+        _toolTag.value = null
     }
 
 //timeSettingActivity
@@ -391,5 +411,23 @@ class SchedulerViewModel
 
     fun deleteEndAlarm() {
         interval.value = interval.value.copy(endAlarmTime = TimeUi())
+    }
+
+    fun setAlarmPreferences(value: Long) {
+        viewModelScope.launch {
+            prefManager.setAlarmId(value)
+        }
+    }
+
+    fun setToolData(name: String) {
+        val tag = tagsList.value.firstOrNull { it.name.equals(name, ignoreCase = true) }
+        Log.d("toolData", "setToolData:${tag?.name} ")
+        if (tag != null) {
+            selectedTag(tag)
+            _isToolTag.value = true
+            _toolTag.value = name
+        }
+        //we already set desc and all from tags if you want to still change it you can fetch the data set in contants and set here
+        // setDescription("your desc")
     }
 }

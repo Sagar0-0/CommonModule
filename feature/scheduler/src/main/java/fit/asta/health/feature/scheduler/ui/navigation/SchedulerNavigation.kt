@@ -14,6 +14,7 @@ import androidx.navigation.compose.navigation
 import androidx.navigation.navArgument
 import fit.asta.health.common.utils.Constants.HourMinAmPmKey
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.TAG_NAME
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AlarmSettingEvent
@@ -43,6 +44,14 @@ fun NavGraphBuilder.schedulerNavigation(
                     schedulerViewModel.setHourMin(
                         navController.previousBackStackEntry?.savedStateHandle?.get<HourMinAmPm>(key = HourMinAmPmKey)
                     )
+                }
+                val toolTag =
+                    navController.previousBackStackEntry?.savedStateHandle?.get<String>(key = TAG_NAME)
+                Log.d("toolTag", "schedulerNavigation: $toolTag")
+                if (!toolTag.isNullOrEmpty()) {
+                    Log.d("toolTag", "schedulerNavigation: $toolTag")
+                    schedulerViewModel.setAlarmPreferences(999L)
+                    schedulerViewModel.setToolData(toolTag)
                 }
             }
             AlarmSettingScreen(
@@ -102,7 +111,12 @@ fun NavGraphBuilder.schedulerNavigation(
                         }
                     }
                 },
-                navTagSelection = { navController.navigate(route = AlarmSchedulerScreen.TagSelection.route) },
+                navTagSelection = {
+                    Log.d("nav", "schedulerNavigation: ${schedulerViewModel.isToolTag.value}")
+                    if (!schedulerViewModel.isToolTag.value) {
+                        navController.navigate(route = AlarmSchedulerScreen.TagSelection.route)
+                    }
+                },
                 navTimeSetting = {
                     navController.navigate(route = AlarmSchedulerScreen.IntervalSettingsSelection.route)
                 },
@@ -183,7 +197,7 @@ fun NavGraphBuilder.schedulerNavigation(
                 navArgument("desc") {
                     type = NavType.StringType
                 },
-                navArgument("label"){
+                navArgument("label") {
                     type = NavType.StringType
                 }
             )

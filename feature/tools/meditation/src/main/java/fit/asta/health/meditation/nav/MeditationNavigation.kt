@@ -9,9 +9,11 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
-import fit.asta.health.common.utils.Constants.getDataForSchedule
+import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.Constants.MEDITATION_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
+import fit.asta.health.common.utils.Constants.TAG_NAME
+import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
 import fit.asta.health.meditation.view.home.MEvent
@@ -23,13 +25,21 @@ import fit.asta.health.player.presentation.screens.player.PlayerScreen
 fun NavController.navigateToMeditation(navOptions: NavOptions? = null) {
     this.navigate(MEDITATION_GRAPH_ROUTE, navOptions)
 }
-fun NavController.navigateToScheduleFromMeditation() {
-    val list = getDataForSchedule("meditation")
-    val desc = list[0]
-    val label = list[1]
-    this.navigate("${SCHEDULER_GRAPH_ROUTE}?desc=${desc}&label=${label}")
 
+fun NavController.navigateToScheduleFromMeditation() {
+    //if these values are getting from constants only we will fetch them directly in schedular by providing tool tag here
+//    val list = getDataForSchedule("meditation")
+//    val desc = list[0]
+//    val label = list[1]
+    this.currentBackStackEntry?.savedStateHandle?.set(
+        key = TAG_NAME,
+        value = Constants.ToolTag.MEDITATION
+    )
+    this.navigate(
+        SCHEDULER_GRAPH_ROUTE
+    )
 }
+
 fun NavGraphBuilder.meditationNavigation(
     navController: NavHostController, onBack: () -> Unit
 ) {
