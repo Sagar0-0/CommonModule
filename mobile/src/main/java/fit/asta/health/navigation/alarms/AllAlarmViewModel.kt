@@ -7,6 +7,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.getCurrentTime
+import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
@@ -22,6 +23,7 @@ class AllAlarmViewModel @Inject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val stateManager: StateManager,
     private val prefManager: PrefManager,
+    private val alarmInstanceDao: AlarmInstanceDao,
 
     ) : ViewModel() {
     private val _alarmList = mutableStateListOf<AlarmEntity>()
@@ -55,6 +57,30 @@ class AllAlarmViewModel @Inject constructor(
             } else {
                 stateManager.deleteAlarm(context, alarm)
             }
+        }
+    }
+    fun deleteAlarm(alarmItem: AlarmEntity, context: Context) {
+        viewModelScope.launch {
+            if (alarmItem.status) stateManager.deleteAlarm(context, alarmItem)
+            if (alarmItem.idFromServer.isNotEmpty()) {
+                alarmLocalRepo.updateAlarm(
+                    alarmItem.copy(
+                        status = false,
+                        meta = Meta(
+                            cBy = alarmItem.meta.cBy,
+                            cDate = alarmItem.meta.cDate,
+                            sync = 2,
+                            uDate = getCurrentTime()
+                        )
+                    )
+                )
+            } else {
+                alarmLocalRepo.deleteAlarm(alarmItem)
+                alarmInstanceDao.getInstancesByAlarmId(alarmItem.alarmId)?.let {
+                    alarmInstanceDao.delete(it)
+                }
+            }
+            Log.d("today", "deleteAlarm: done")
         }
     }
 

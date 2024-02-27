@@ -58,6 +58,9 @@ fun NavGraphBuilder.allAlarmsRoute(navController: NavController) {
                 is AlarmEvent.OnBack -> {
                     navController.popBackStack()
                 }
+                is AlarmEvent.DeleteAlarm->{
+                    vm.deleteAlarm(it.alarm,it.context)
+                }
             }
         }
     }
