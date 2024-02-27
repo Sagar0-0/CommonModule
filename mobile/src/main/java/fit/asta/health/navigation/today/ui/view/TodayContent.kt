@@ -59,6 +59,7 @@ import fit.asta.health.common.utils.Constants.getHourMinAmPm
 import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.common.utils.isCurrentTimeLaterThan
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
@@ -273,37 +274,39 @@ fun TodayTabContent(
                         )
                     }
                     if (state.data.slots.isNotEmpty()) {
-                        item { TitleTexts.Level2(text = "SunSlots") }
-                        item {
-                            LazyRow(
-                                modifier = Modifier.fillMaxWidth(),
-                                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-                            ) {
-                                items(items = state.data.slots) { slot ->
-                                    SunSlotsProgressCard(
-                                        modifier = Modifier.animateItemPlacement(
-                                            animationSpec = tween(
-                                                durationMillis = 500,
-                                                easing = LinearOutSlowInEasing,
-                                            )
-                                        ),
-                                        title = slot.temperature,
-                                        titleValue = slot.time,
-                                        onSchedule = {
-                                            hSEvent(
-                                                HomeEvent.NavSchedule(
-                                                    getHourMinAmPm(
-                                                        slot.time, slot.title
+                        if (!isCurrentTimeLaterThan(state.data.slots.lastOrNull()?.time)) {
+                            item { TitleTexts.Level2(text = "SunSlots") }
+                            item {
+                                LazyRow(
+                                    modifier = Modifier.fillMaxWidth(),
+                                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+                                ) {
+                                    items(items = state.data.slots) { slot ->
+                                        SunSlotsProgressCard(
+                                            modifier = Modifier.animateItemPlacement(
+                                                animationSpec = tween(
+                                                    durationMillis = 500,
+                                                    easing = LinearOutSlowInEasing,
+                                                )
+                                            ),
+                                            title = slot.temperature,
+                                            titleValue = slot.time,
+                                            onSchedule = {
+                                                hSEvent(
+                                                    HomeEvent.NavSchedule(
+                                                        getHourMinAmPm(
+                                                            slot.time, slot.title
+                                                        )
                                                     )
                                                 )
-                                            )
-                                            onNav(Graph.Scheduler.route)
-                                        }
-                                    )
+                                                onNav(Graph.Scheduler.route)
+                                            }
+                                        )
+                                    }
                                 }
                             }
                         }
-                    } else {
+                    } else{
                         item {
                             AppExpandableColumnWithTitle(
                                 title = "SunSlots are unavailable",

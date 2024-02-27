@@ -1,6 +1,7 @@
 package fit.asta.health.common.utils
 
 import android.os.Build
+import android.util.Log
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
@@ -59,4 +60,13 @@ fun getNextDate(days: Int, format: String = "yyyy-MM-dd"): String {
         val sdf = SimpleDateFormat(format, Locale.getDefault())
         sdf.format(Date(calendar.timeInMillis))
     }
+}
+fun isCurrentTimeLaterThan(inputTime: String?,format: String="HH:mm a"): Boolean {
+    if (inputTime.isNullOrEmpty()) return true
+    Log.d("inputTime", "isCurrentTimeLaterThan:$inputTime ")
+    if (inputTime.isEmpty()) return true
+    val inputDateTime = SimpleDateFormat(format, Locale.getDefault()).parse(inputTime)
+    val currentTime = Calendar.getInstance().time
+    Log.d("inputTime", "isCurrentTimeLaterThan:${currentTime.after(inputDateTime)} ")
+    return currentTime.after(inputDateTime)
 }
