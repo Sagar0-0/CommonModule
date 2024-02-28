@@ -17,7 +17,8 @@
     <uses-permission
         android:name="android.permission.FOREGROUND_SERVICE_LOCATION"
         android:minSdkVersion="34" />
-
+    <uses-permission android:name="com.android.MaliciousApp.RECEIVE_BROADCAST" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -179,11 +180,26 @@
         <receiver
             android:name=".feature.scheduler.services.AlarmBroadcastReceiver"
             android:exported="false"
-            android:foregroundServiceType="specialUse">
+            android:foregroundServiceType="specialUse"
+            android:enabled="true"
+            android:permission="android.permission.BOOT_COMPLETED"
+            >
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
                 <action android:name="android.intent.action.TIMEZONE_CHANGED" />
+                <action android:name="android.intent.action.REBOOT" />
+            </intent-filter>
+        </receiver>
+
+        <receiver
+            android:name=".feature.scheduler.services.ShutdownBroadcastReceiver"
+            android:exported="false"
+            android:enabled="true">
+            <intent-filter>
+                <action android:name="android.intent.action.ACTION_SHUTDOWN" />
+                <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
+                <action android:name="android.intent.action.BOOT_COMPLETED" />
             </intent-filter>
         </receiver>
 

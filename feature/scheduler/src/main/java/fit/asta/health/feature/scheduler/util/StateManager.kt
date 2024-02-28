@@ -8,12 +8,14 @@ import android.content.Intent
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
+import fit.asta.health.common.utils.convertToMilliseconds
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.AlarmInstance
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
+import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.services.AlarmBroadcastReceiver
 import fit.asta.health.feature.scheduler.services.AlarmService
 import fit.asta.health.feature.scheduler.util.Utils.ALARM_STATE_EXTRA
@@ -42,7 +44,8 @@ class StateManager @Inject constructor(
     private val alarmDao: AlarmDao,
     private val alarmInstanceDao: AlarmInstanceDao,
     private val alarmManager: AlarmManager,
-    private val notificationManager: NotificationManager
+    private val notificationManager: NotificationManager,
+    private val pref: PrefManager
 ) {
     private val scope = CoroutineScope(SupervisorJob() + Dispatchers.Main)
 
@@ -53,6 +56,13 @@ class StateManager @Inject constructor(
                     registerAlarm(context, alarm, (alarm.skipDate == LocalDate.now().dayOfMonth))
                 }
             }
+        }
+    }
+
+    fun setShutDownTime() {
+        scope.launch {
+            val currentTime: Calendar = Calendar.getInstance()
+            pref.setShutdownTime(currentTime.timeInMillis)
         }
     }
 
@@ -67,6 +77,18 @@ class StateManager @Inject constructor(
             currentTime.timeInMillis = alarm.selectedStartDateMillis
         }
         LogUtils.v("register  ${AlarmUtils.getFormattedTime(context, currentTime)}")
+        if (!skipToday) {
+            scope.launch {
+                if (alarm.isMissed == null && convertToMilliseconds(
+                        alarm.time.hours,
+                        alarm.time.minutes
+                    ) < currentTime.timeInMillis
+
+                ) {
+                    alarmDao.updateAlarm(alarm.copy(isMissed = true))
+                }
+            }
+        }
         val time: Calendar
         val state: Int
         if (alarm.interval.advancedReminder.status) {
@@ -85,7 +107,7 @@ class StateManager @Inject constructor(
             mMonth = time[Calendar.MONTH],
             mDay = time[Calendar.DAY_OF_MONTH],
             mHour = time[Calendar.HOUR_OF_DAY],
-            mMinute = time[Calendar.MINUTE]
+            mMinute = time[Calendar.MINUTE],
         )
         scope.launch {
             withContext(scope.coroutineContext) {
@@ -118,6 +140,7 @@ class StateManager @Inject constructor(
     }
 
     private fun checkDateRange(alarmItem: AlarmEntity, time: Calendar): Boolean {
+        alarmItem.time
         if (alarmItem.selectedEndDateMillis == null) return true
         if (time.timeInMillis < alarmItem.selectedEndDateMillis!!) return true
         return false
@@ -451,14 +474,29 @@ class StateManager @Inject constructor(
         }
     }
 
+    fun updateMissedAlarm(alarmItem: AlarmEntity, isMissed: Boolean = true) {
+        LogUtils.v("deleteAlarm ${alarmItem.alarmId}")
+        scope.launch {
+            alarmDao.getAlarm(alarmItem.alarmId)?.let {
+                alarmDao.updateAlarm(it.copy(isMissed = isMissed))
+            }
+        }
+    }
+
     fun skipAlarmTodayOnly(context: Context, alarmItem: AlarmEntity) {
         registerAlarm(context, alarmItem, true)
     }
 
     fun missedAlarm(context: Context, alarmItem: AlarmEntity) {
         scope.launch {
-            alarmDao.updateAlarm(alarmItem.copy(skipDate = LocalDate.now().dayOfMonth))
+            alarmDao.updateAlarm(
+                alarmItem.copy(
+                    skipDate = LocalDate.now().dayOfMonth,
+                    isMissed = true
+                )
+            )
             skipAlarmTodayOnly(context, alarmItem)
+            updateMissedAlarm(alarmItem, isMissed = true)
         }
     }
 }

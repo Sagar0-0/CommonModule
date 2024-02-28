@@ -1,5 +1,6 @@
 package fit.asta.health.navigation.today.ui.view
 
+import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -142,7 +143,7 @@ fun TodayItem(
                             if (time.minutes < 10) "0" else ""
                         }${time.minutes} ${time.dayTime.name}"
                     )
-                    if (item.skipDate == LocalDate.now().dayOfMonth) {
+                    if (item.isMissed==true) {
                         AppCard(colors = CardDefaults.cardColors(containerColor = AppTheme.colors.errorContainer)) {
                             CaptionTexts.Level2(
                                 text = "missed",

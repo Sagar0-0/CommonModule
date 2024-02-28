@@ -5,6 +5,8 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
+import java.time.LocalTime
+import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
@@ -61,12 +63,21 @@ fun getNextDate(days: Int, format: String = "yyyy-MM-dd"): String {
         sdf.format(Date(calendar.timeInMillis))
     }
 }
-fun isCurrentTimeLaterThan(inputTime: String?,format: String="HH:mm a"): Boolean {
+fun isCurrentTimeLaterThan(inputTime: String?,format: String="yyyy-MM-dd'T'HH:mm"): Boolean {
     if (inputTime.isNullOrEmpty()) return true
     Log.d("inputTime", "isCurrentTimeLaterThan:$inputTime ")
-    if (inputTime.isEmpty()) return true
     val inputDateTime = SimpleDateFormat(format, Locale.getDefault()).parse(inputTime)
     val currentTime = Calendar.getInstance().time
     Log.d("inputTime", "isCurrentTimeLaterThan:${currentTime.after(inputDateTime)} ")
     return currentTime.after(inputDateTime)
+}
+
+fun convertToMilliseconds(hour: Int, minute: Int): Long {
+    val calendar = Calendar.getInstance()
+    calendar.timeInMillis = System.currentTimeMillis()
+    calendar.set(Calendar.HOUR_OF_DAY, hour)
+    calendar.set(Calendar.MINUTE, minute)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+    return calendar.timeInMillis
 }

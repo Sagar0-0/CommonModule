@@ -8,9 +8,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.IntentFilter
 import android.os.Build
+import androidx.annotation.RequiresApi
 import dagger.hilt.android.HiltAndroidApp
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
+import fit.asta.health.feature.scheduler.services.ShutdownBroadcastReceiver
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.time.LocalDate
 
@@ -39,6 +41,7 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
 //            ).build()
 //        )
     }
+
 
     private fun createNotificationChannel() {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {

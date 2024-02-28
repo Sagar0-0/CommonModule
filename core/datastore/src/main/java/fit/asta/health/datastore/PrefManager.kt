@@ -30,7 +30,8 @@ class PrefManager
             referralCode = it.referralCode,
             trackLanguage = it.trackLanguage,
             stepsPermissionRejectedCount = it.stepsPermissionRejectedCount,
-            sessionState = it.sessionState
+            sessionState = it.sessionState,
+            shutdownTime = it.shutdownTime.let { time -> if (time.isEmpty()) 0L else time.toLong() }
         )
     }
     val address: Flow<UserPreferencesDataAddress> = userPreferences.data.map {
@@ -212,4 +213,18 @@ class PrefManager
             Log.e("Pref", "Failed to update user preferences", ioException)
         }
     }
+
+    suspend fun setShutdownTime(value: Long) {
+        try {
+            userPreferences.updateData {
+                Log.d("missed", "setShutdownTime: $value")
+                it.copy {
+                    this.shutdownTime = value.toString()
+                }
+            }
+        } catch (ioException: IOException) {
+            Log.e("Pref", "Failed to update user preferences", ioException)
+        }
+    }
+
 }

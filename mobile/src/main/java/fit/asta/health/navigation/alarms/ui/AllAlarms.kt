@@ -32,6 +32,7 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
+import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
@@ -51,6 +52,7 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.ui.common.AppDialogPopUp
 import java.time.LocalTime
@@ -80,10 +82,17 @@ fun AllAlarms(
     AppScaffold(
         modifier = Modifier.fillMaxSize(),
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.all_events),
-                onBack = { onEvent(AlarmEvent.OnBack) }
-            )
+//            Column {
+                AppTopBar(
+                    title = stringResource(R.string.all_events),
+                    onBack = { onEvent(AlarmEvent.OnBack) }
+                )
+//                CaptionTexts.Level5(
+//                    text = "Please edit default alarms as per your needs!",
+//                    modifier = Modifier.fillMaxWidth(),
+//                    textAlign = TextAlign.Center
+//                )
+//            }
         },
         floatingActionButton = {
             AppFloatingActionButton(

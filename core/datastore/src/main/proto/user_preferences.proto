@@ -19,4 +19,5 @@ message UserPreferences {
   string trackLanguage = 13;
   int32 stepsPermissionRejectedCount = 14;
   bool sessionState = 15;
+  string shutdownTime=16;
 }

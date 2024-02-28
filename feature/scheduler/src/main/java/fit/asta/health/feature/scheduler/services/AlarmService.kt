@@ -195,11 +195,13 @@ class AlarmService : Service() {
                         nId = alarmEntity!!.hashCode()
                     )
                     stateManager.dismissAlarm(applicationContext, alarmEntity!!.alarmId)
+                    stateManager.missedAlarm(applicationContext,alarmEntity!!)
                 }
             } else {
                 scope.launch {
                     alarmDao.getAlarm(id)?.let { alarm ->
                         alarmEntity = alarm
+                        stateManager.updateMissedAlarm(alarm,false)
                         try {
                             player.apply {
 //                                if (isConnected) setMediaItem(MediaItem.fromUri(alarm.tone.uri))
@@ -225,6 +227,7 @@ class AlarmService : Service() {
                             alarmEntity = null
                         }
                     }
+
                 }
             }
         }
