@@ -201,6 +201,7 @@ class SchedulerViewModel
                         )
                     ) {
                         selectedTag(tagEntity)
+                        setDescription("description")
                         _isToolTag.value = true
                     }
                     if (tagEntity.uid == uId) {
@@ -429,6 +430,7 @@ class SchedulerViewModel
         if (tag != null) {
             selectedTag(tag)
             _isToolTag.value = true
+            setDescription("description")
         }
         //we already set desc and all from tags if you want to still change it you can fetch the data set in contants and set here
         // setDescription("your desc")

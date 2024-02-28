@@ -21,7 +21,8 @@ fun TodaySchedules.getTodayData(): TodayData {
                 temperature = "${it.temp}°C",
                 uvDetails = "${it.uv} Uv",
                 timeSlot = dayAndTime.timeOfDay,
-                title = dayAndTime.day
+                title = dayAndTime.day,
+                dateTime=it.time
             )
         } ?: emptyList(),
         weatherType = this.weather.weather ?: "Sunny",

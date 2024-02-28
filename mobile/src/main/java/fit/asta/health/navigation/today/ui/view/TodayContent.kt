@@ -274,7 +274,7 @@ fun TodayTabContent(
                         )
                     }
                     if (state.data.slots.isNotEmpty()) {
-                        if (!isCurrentTimeLaterThan(state.data.slots.lastOrNull()?.time)) {
+                        if (!isCurrentTimeLaterThan(state.data.slots.lastOrNull()?.dateTime)) {
                             item { TitleTexts.Level2(text = "SunSlots") }
                             item {
                                 LazyRow(

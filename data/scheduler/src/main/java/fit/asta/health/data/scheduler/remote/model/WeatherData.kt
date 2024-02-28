@@ -6,4 +6,5 @@ data class WeatherData(
     val temperature: String,
     val uvDetails: String,
     val timeSlot: String,
+    val dateTime: String,
 )
