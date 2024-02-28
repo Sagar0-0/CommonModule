@@ -6,7 +6,6 @@ import android.content.Context
 import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
@@ -26,7 +25,6 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.SliderDefaults
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -118,7 +116,7 @@ fun CustomBevBottomSheet(
 
     AppBottomSheetScaffold(
         scaffoldState = bottomSheetState,
-        //sheetPeekHeight = 0.dp,
+        sheetPeekHeight = 0.dp,
         //sheetSwipeEnabled = true,
         sheetContainerColor = backgroundColor,
         topBar = {
@@ -140,7 +138,7 @@ fun CustomBevBottomSheet(
                     onSliderValueChanged = {
                         val currValue = it.first
                         val currString = it.second
-                        Log.d("ValueChanges", "sliderChange ${currValue} ${currString}")
+                        Log.d("ValueChanges", "sliderChange $currValue ${currString}")
                         event(WTEvent.UpdateOnSliderChangeQuantity(currString, currValue))
                     },
                     onNameChange = {
@@ -245,7 +243,7 @@ fun SheetLayout(
                 sliderValue = currentScreen.sliderValue,
                 onSliderValueChanged = {
                     currentScreen.sliderValue = it
-                    Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue.toString()}")
+                    Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue}")
                     onSliderValueChanged(Pair(it, currentScreen.bevName))
                 },
                 color = color
@@ -403,7 +401,7 @@ fun DaysSlider(
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-            .background(color = backgroundColor, AppTheme.shape.level2)
+//            .background(color = backgroundColor, AppTheme.shape.level2)
             .padding(AppTheme.spacing.level1)
             .fillMaxWidth(),
     ) {

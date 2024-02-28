@@ -1,4 +1,4 @@
-@file:OptIn(ExperimentalMaterial3Api::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package fit.asta.health.feature.water.view.screen.ui
 
@@ -30,17 +30,10 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.Card
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.ExtendedFloatingActionButton
-import androidx.compose.material3.Icon
-import androidx.compose.material3.IconButton
-import androidx.compose.material3.PlainTooltipBox
-import androidx.compose.material3.SearchBar
 import androidx.compose.material3.SearchBarDefaults
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -52,10 +45,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.clipToBounds
 import androidx.compose.ui.draw.scale
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -63,9 +54,12 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppPlainToolTipBox
 import fit.asta.health.designsystem.molecular.AppSearchBar
 import fit.asta.health.designsystem.molecular.background.AppSurface
+import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -248,7 +242,7 @@ fun SetOfDefaultChips(
     val listSize = list.size
     Log.d("rishi", "List size : $listSize \n ${list.toList()}")
 
-    Card(
+    AppCard(
         modifier = Modifier
             .fillMaxWidth(),
         colors = CardDefaults.cardColors(
@@ -305,7 +299,7 @@ fun SetOfDefaultChips(
             }
 
         }
-        Card(
+        AppCard(
             modifier = Modifier
                 .fillMaxWidth(),
             colors = CardDefaults.cardColors(
@@ -417,7 +411,7 @@ fun SetOfDefaultChips(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
-                ExtendedFloatingActionButton(
+                AppExtendedFloatingActionButton(
                     text = { BodyTexts.Level3(text = "Customize") },
                     icon = { AppIcon(imageVector = Icons.Default.Add, contentDescription = null) },
                     onClick = { onClickCustomize() },
@@ -491,22 +485,19 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                         Spacer(modifier = Modifier.weight(1f))
                         Row(horizontalArrangement = Arrangement.Center) {
                             HeadingTexts.Level4(text = "Total Consumed ( ml )")
-                            PlainTooltipBox(
-                                tooltip = { Text(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
+                            AppPlainToolTipBox(
+                                tooltip = { CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
                                 contentColor = Color.Black,
                                 containerColor = Color(0xff6b9bd1),
                                 modifier = Modifier.clipToBounds()
                             ) {
-                                IconButton(
-                                    onClick = { /* Icon button's click event */ },
-                                    modifier = Modifier.tooltipAnchor()
-                                ) {
-                                    Icon(
+
+                                    AppIcon(
                                         imageVector = Icons.Filled.Info,
                                         contentDescription = "Localized Description",
-                                        modifier = Modifier.scale(.8f)
+                                        modifier = Modifier.scale(.8f).tooltipAnchor()
                                     )
-                                }
+
                             }
 
                         }
@@ -693,11 +684,11 @@ fun BevSearchBar(
         },
         shape = AppTheme.shape.level2,
         modifier = Modifier
-            .fillMaxWidth(1f)
-            .shadow(AppTheme.spacing.level0),
+            .fillMaxWidth(1f),
+//            .shadow(AppTheme.spacing.level0),
         colors = SearchBarDefaults.colors(
-            containerColor = backgroundColor,
-            dividerColor = Color(0xFF00458B)
+           // containerColor = backgroundColor,
+            dividerColor = AppTheme.colors.onPrimaryContainer
         )
     ) {
 
@@ -789,7 +780,7 @@ fun CustomBevCard(
         Box(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(2.dp)
+                .padding(AppTheme.spacing.level2)
                 .background(color = backgroundColor, AppTheme.shape.level3),
             contentAlignment = Alignment.Center
         ) {
@@ -867,7 +858,7 @@ fun ErrorUi(
                     contentScale = ContentScale.Fit,
                     modifier = Modifier.scale(.8f)
                 )
-                Text(text = "An Unknown Error Occurred", textAlign = TextAlign.Center)
+                BodyTexts.Level2(text = "An Unknown Error Occurred", textAlign = TextAlign.Center)
                 AppFilledButton(
                     modifier = Modifier
                         .fillMaxWidth(1f)
