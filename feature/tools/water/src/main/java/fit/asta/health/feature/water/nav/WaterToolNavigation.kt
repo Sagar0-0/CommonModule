@@ -11,10 +11,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.navigation
+import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
-import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.water.WaterState
@@ -27,10 +27,17 @@ fun NavController.navigateToWater(navOptions: NavOptions? = null) {
     this.navigate(WATER_GRAPH_ROUTE, navOptions)
 }
 fun NavController.navigateToAllAlarmsFromWater() {
-    val list = getDataForSchedule("Water")
-    val desc = list[0]
-    val label = list[1]
-    this.navigate("$SCHEDULER_GRAPH_ROUTE?desc=${desc}&label=${label}")
+//    val list = getDataForSchedule("Water")
+//    val desc = list[0]
+//    val label = list[1]
+//    this.navigate("$SCHEDULER_GRAPH_ROUTE?desc=${desc}&label=${label}")
+    this.currentBackStackEntry?.savedStateHandle?.set(
+        key = Constants.TAG_NAME,
+        value = Constants.ToolTag.WATER
+    )
+    this.navigate(
+        SCHEDULER_GRAPH_ROUTE
+    )
 
 }
 

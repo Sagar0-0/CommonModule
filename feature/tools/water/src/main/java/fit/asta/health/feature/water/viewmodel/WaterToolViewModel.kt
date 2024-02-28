@@ -295,6 +295,8 @@ class WaterToolViewModel @Inject constructor(
             }
         }
     }
+
+
     // Room DB Insert,Update,GET methods
 
     var recentHistory: StateFlow<List<History>> = historyRepo.getAllHistory().stateIn(
@@ -317,6 +319,7 @@ class WaterToolViewModel @Inject constructor(
         historyRepo.insertGoal(goal)
     }
 
+    // Data Updation
     private fun updateBeverageData() {
         val title = _bevTitle.value
         val quantity = _bevQuantity.intValue
@@ -340,6 +343,7 @@ class WaterToolViewModel @Inject constructor(
         }
     }
 
+    // Event Handler
     fun event(event: WTEvent) {
         when (event) {
             WTEvent.UpdateBevQuantity -> updateBeverageData()
