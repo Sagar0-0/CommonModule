@@ -195,7 +195,7 @@ class AlarmService : Service() {
                         nId = alarmEntity!!.hashCode()
                     )
                     stateManager.dismissAlarm(applicationContext, alarmEntity!!.alarmId)
-                    stateManager.missedAlarm(applicationContext,alarmEntity!!)
+                    stateManager.updateMissedAlarm(alarmEntity!!)
                 }
             } else {
                 scope.launch {

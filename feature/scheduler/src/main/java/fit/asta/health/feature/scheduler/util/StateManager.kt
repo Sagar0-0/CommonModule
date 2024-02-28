@@ -59,12 +59,12 @@ class StateManager @Inject constructor(
         }
     }
 
-    fun setShutDownTime() {
+   /* fun setShutDownTime() {
         scope.launch {
             val currentTime: Calendar = Calendar.getInstance()
             pref.setShutdownTime(currentTime.timeInMillis)
         }
-    }
+    }*/
 
     @Synchronized
     fun registerAlarm(
@@ -79,11 +79,11 @@ class StateManager @Inject constructor(
         LogUtils.v("register  ${AlarmUtils.getFormattedTime(context, currentTime)}")
         if (!skipToday) {
             scope.launch {
-                if (alarm.isMissed == null && convertToMilliseconds(
+                if (
+                    (alarm.isMissed == null && convertToMilliseconds(
                         alarm.time.hours,
                         alarm.time.minutes
-                    ) < currentTime.timeInMillis
-
+                    ) < currentTime.timeInMillis)
                 ) {
                     alarmDao.updateAlarm(alarm.copy(isMissed = true))
                 }
@@ -496,7 +496,6 @@ class StateManager @Inject constructor(
                 )
             )
             skipAlarmTodayOnly(context, alarmItem)
-            updateMissedAlarm(alarmItem, isMissed = true)
         }
     }
 }
