@@ -61,6 +61,7 @@ import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
+import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.navigation.NavController
 import androidx.navigation.NavDestination
@@ -92,6 +93,8 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.services.SchedulerWorker
 import fit.asta.health.home.remote.model.ToolsHome
+import fit.asta.health.navigation.alarms.AllAlarmViewModel
+import fit.asta.health.navigation.alarms.ui.AlarmEvent
 import fit.asta.health.navigation.today.ui.view.HomeEvent
 import fit.asta.health.navigation.today.ui.view.TodayContent
 import fit.asta.health.navigation.today.ui.vm.TodayPlanViewModel
@@ -467,6 +470,10 @@ private fun HomeNavHost(
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
             val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
             val context = LocalContext.current
+            val vm: AllAlarmViewModel = hiltViewModel()
+            val list by vm.alarmList.collectAsStateWithLifecycle()
+            /*     val checkPermissionAndLaunchScheduler =
+                     checkPermissionAndLaunchScheduler(context, navController)*/
             val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
                 rememberLauncherForActivityResult(
                     contract = ActivityResultContracts.RequestPermission()
@@ -533,11 +540,49 @@ private fun HomeNavHost(
                 state = state,
                 calendarUiModel = calendarUiModel,
                 onDateClickListener = { todayPlanViewModel.setWeekDate(it) },
-                userName = todayPlanViewModel.getUserName(),
+                alarmList = list,
                 defaultScheduleVisibility = defaultScheduleVisibility,
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,
+                onEvent = {
+                    when (it) {
+                        is AlarmEvent.SetAlarmState -> {
+                            vm.changeAlarmState(
+                                state = it.state,
+                                alarm = it.alarm,
+                                context = it.context
+                            )
+                        }
+
+                        is AlarmEvent.SetAlarm -> {
+                            vm.setAlarmPreferences(999)
+                        }
+
+                        is AlarmEvent.EditAlarm -> {
+                            vm.setAlarmPreferences(it.alarmId)
+                            checkPermissionAndLaunchScheduler()
+                        }
+
+                        is AlarmEvent.NavSchedule -> {
+//                            navController.currentBackStackEntry?.savedStateHandle?.set(
+//                                key = Constants.HourMinAmPmKey,
+//                                value = it.hourMinAmPm
+//                            )
+//                            checkPermissionAndLaunchScheduler()
+                            Log.d("schedule", "HomeNavHost: ")
+                            onSchedule(it.hourMinAmPm)
+                        }
+
+                        is AlarmEvent.OnBack -> {
+                           // navController.popBackStack()
+                        }
+
+                        is AlarmEvent.DeleteAlarm -> {
+                            vm.deleteAlarm(it.alarm, it.context)
+                        }
+                    }
+                },
                 onNav = onNav,
                 hSEvent = { uiEvent ->
                     when (uiEvent) {

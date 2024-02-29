@@ -55,6 +55,7 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
+import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
 import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
@@ -78,6 +79,8 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.components.SunSlotsProgressCard
 import fit.asta.health.feature.scheduler.ui.components.WeatherCardHome
 import fit.asta.health.main.Graph
+import fit.asta.health.navigation.alarms.ui.AlarmEvent
+import fit.asta.health.navigation.alarms.ui.AllAlarms
 import fit.asta.health.ui.common.AppDialogPopUp
 import fit.asta.health.ui.common.components.AppExpandableColumnWithTitle
 import kotlinx.coroutines.delay
@@ -89,13 +92,14 @@ import me.saket.swipe.SwipeableActionsBox
 @Composable
 fun TodayContent(
     state: UiState<TodayData>,
-    userName: String,
+    alarmList: SnapshotStateList<AlarmEntity>,
     calendarUiModel: CalendarUiModel,
     defaultScheduleVisibility: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
     onDateClickListener: (CalendarUiModel.Date) -> Unit,
+    onEvent: (AlarmEvent) -> Unit,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit,
 ) {
@@ -146,9 +150,9 @@ fun TodayContent(
         val pagerState = rememberPagerState(
             initialPage = calendarUiModel.visibleDates.indexOfFirst {
                 it.isToday
-            }
+            } + 1
         ) {
-            calendarUiModel.visibleDates.size
+            calendarUiModel.visibleDates.size + 1
         }
 
         WeekTabBar(
@@ -158,6 +162,9 @@ fun TodayContent(
                 coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
                 index.intValue = newIndex
                 onDateClickListener(date)
+            },
+            onclickAll = { newIndex ->
+                coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
             }
         )
         AppHorizontalPager(
@@ -167,24 +174,47 @@ fun TodayContent(
             contentPadding = PaddingValues(AppTheme.spacing.noSpacing),
             userScrollEnabled = true
         ) {
-            if (calendarUiModel.visibleDates[it].isToday) {
-                TodayTabContent(
-                    calendarUiModel = calendarUiModel,
-                    state = state,
-                    defaultScheduleVisibility = defaultScheduleVisibility,
-                    listMorning = listMorning,
-                    listAfternoon = listAfternoon,
-                    listEvening = listEvening,
-                    hSEvent = hSEvent,
-                    onNav = onNav,
-                    onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
-                        eventType = newEventType
-                        deleteDialog = newDeleteDialog
-                        deletedItem = newDeletedItem
-                    }
-                )
-            } else {
-                OtherDaysTabContent()
+            when (it) {
+                0 -> {
+                    AllAlarms(
+                        list = alarmList,
+                        onEvent = { event ->
+                            onEvent(event)
+                            if (event is AlarmEvent.NavSchedule) {
+                                onNav(SCHEDULER_GRAPH_ROUTE)
+                            }
+                            if (event is AlarmEvent.EditAlarm){
+                                onNav(SCHEDULER_GRAPH_ROUTE)
+                            }
+                        },
+                        includeTopBar = false
+                    )
+                }
+
+                calendarUiModel.visibleDates.indexOfFirst { visible ->
+                    visible.isToday
+                } + 1 -> {
+                    TodayTabContent(
+                        calendarUiModel = calendarUiModel,
+                        state = state,
+                        defaultScheduleVisibility = defaultScheduleVisibility,
+                        listMorning = listMorning,
+                        listAfternoon = listAfternoon,
+                        listEvening = listEvening,
+                        hSEvent = hSEvent,
+                        onNav = onNav,
+                        onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
+                            eventType = newEventType
+                            deleteDialog = newDeleteDialog
+                            deletedItem = newDeletedItem
+                        }
+                    )
+                }
+
+                else -> {
+                    OtherDaysTabContent()
+                }
+
             }
         }
 
