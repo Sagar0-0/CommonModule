@@ -63,14 +63,6 @@ fun getNextDate(days: Int, format: String = "yyyy-MM-dd"): String {
         sdf.format(Date(calendar.timeInMillis))
     }
 }
-fun isCurrentTimeLaterThan(inputTime: String?,format: String="yyyy-MM-dd'T'HH:mm"): Boolean {
-    if (inputTime.isNullOrEmpty()) return true
-    Log.d("inputTime", "isCurrentTimeLaterThan:$inputTime ")
-    val inputDateTime = SimpleDateFormat(format, Locale.getDefault()).parse(inputTime)
-    val currentTime = Calendar.getInstance().time
-    Log.d("inputTime", "isCurrentTimeLaterThan:${currentTime.after(inputDateTime)} ")
-    return currentTime.after(inputDateTime)
-}
 
 fun convertToMilliseconds(hour: Int, minute: Int): Long {
     val calendar = Calendar.getInstance()
@@ -80,4 +72,12 @@ fun convertToMilliseconds(hour: Int, minute: Int): Long {
     calendar.set(Calendar.SECOND, 0)
     calendar.set(Calendar.MILLISECOND, 0)
     return calendar.timeInMillis
+}
+fun isCurrentTimeLaterThan(inputTime: String?,format: String="yyyy-MM-dd'T'HH:mm"): Boolean {
+    if (inputTime.isNullOrEmpty()) return true
+    Log.d("inputTime", "isCurrentTimeLaterThan:$inputTime ")
+    val inputDateTime = SimpleDateFormat(format, Locale.getDefault()).parse(inputTime)
+    val currentTime = Calendar.getInstance().time
+    Log.d("inputTime", "isCurrentTimeLaterThan:${currentTime.after(inputDateTime)} ")
+    return currentTime.after(inputDateTime)
 }
