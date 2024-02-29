@@ -11,14 +11,20 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.focus.onFocusChanged
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
+import androidx.compose.ui.text.TextRange
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
+import androidx.compose.ui.text.input.TextFieldValue
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
@@ -48,6 +54,22 @@ fun AuthNumberInputUI(
 
     val focusManager = LocalFocusManager.current
     val context = LocalContext.current
+
+    var countryCodeValue by remember(countryCode) {
+        mutableStateOf(TextFieldValue(countryCode))
+    }
+    var phoneNumberValue by remember(phoneNumber) {
+        mutableStateOf(TextFieldValue(phoneNumber))
+    }
+
+    LaunchedEffect(Unit) {
+        countryCodeValue = countryCodeValue.copy(
+            selection = TextRange(countryCode.length)
+        )
+        phoneNumberValue = phoneNumberValue.copy(
+            selection = TextRange(phoneNumber.length)
+        )
+    }
 
     // This Function gets the Phone Number the user may be using when the user taps the Text Fields
     val getPhoneNumberHint: () -> Unit = {
@@ -86,9 +108,12 @@ fun AuthNumberInputUI(
             // TODO :- Change this field with the country code picker
             AppOutlinedTextField(
                 modifier = Modifier.weight(.27f),
-                value = countryCode,
+                value = countryCodeValue,
                 label = "Code",
-                onValueChange = onCountryCodeChange,
+                onValueChange = {
+                    countryCodeValue = it
+                    onCountryCodeChange(it.text)
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Next
@@ -109,9 +134,12 @@ fun AuthNumberInputUI(
             // Phone Number Input Text Field
             AppOutlinedTextField(
                 modifier = Modifier.weight(.73f),
-                value = phoneNumber,
+                value = phoneNumberValue,
                 label = "Phone Number",
-                onValueChange = onPhoneNumberChange,
+                onValueChange = {
+                    phoneNumberValue = it
+                    onPhoneNumberChange(it.text)
+                },
                 keyboardOptions = KeyboardOptions(
                     keyboardType = KeyboardType.Number,
                     imeAction = ImeAction.Done
