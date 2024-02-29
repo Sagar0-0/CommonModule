@@ -55,6 +55,7 @@ fun WeekTabBar(
     selectedIndex: Int,
     data: CalendarUiModel,
     onDateClickListener: (CalendarUiModel.Date, Int) -> Unit,
+    onclickAll:(Int)->Unit,
     strokeWidth: Float = 10f,
     selectedColor: Color = AppTheme.colors.primary,
 ) {
@@ -73,6 +74,36 @@ fun WeekTabBar(
                 .background(AppTheme.colors.background)
                 .fillMaxWidth()
         ) {
+
+            Box(
+                modifier = Modifier
+                    .weight(1f)
+                    .size(AppTheme.boxSize.level6)
+                    .clickable {
+                        onclickAll(0)
+                    }
+                    .drawBehind {
+                        if (0 == selectedIndex)
+                            drawLine(
+                                color = selectedColor,
+                                start = Offset(0f, size.height),
+                                end = Offset(size.width, size.height),
+                                strokeWidth = strokeWidth
+                            )
+                    },
+                contentAlignment = Alignment.Center
+            ) {
+                Column(
+                    modifier = Modifier
+                ) {
+                    BodyTexts.Level2(
+                        text = "All", // day "Mon", "Tue"
+                        modifier = Modifier.align(Alignment.CenterHorizontally),
+                        color = Color.Blue
+                    )
+
+                }
+            }
 //            data.visibleDates.forEachIndexed { index, date ->
 //                ContentItem(
 //                    date = date,
@@ -88,6 +119,7 @@ fun WeekTabBar(
 //                )
 //            }
 
+
             data.visibleDates.forEachIndexed { index, date ->
 
                 Box(
@@ -95,10 +127,10 @@ fun WeekTabBar(
                         .weight(1f)
                         .size(AppTheme.boxSize.level6)
                         .clickable {
-                            onDateClickListener(date, index)
+                            onDateClickListener(date, index+1)
                         }
                         .drawBehind {
-                            if (index == selectedIndex)
+                            if (index+1 == selectedIndex)
                                 drawLine(
                                     color = selectedColor,
                                     start = Offset(0f, size.height),

@@ -4,6 +4,7 @@ import android.content.res.Configuration
 import androidx.compose.animation.core.animateFloatAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.aspectRatio
@@ -32,7 +33,6 @@ import androidx.compose.ui.draw.rotate
 import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
@@ -52,7 +52,6 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
-import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.ui.common.AppDialogPopUp
 import java.time.LocalTime
@@ -61,7 +60,8 @@ import java.time.LocalTime
 @Composable
 fun AllAlarms(
     list: SnapshotStateList<AlarmEntity>,
-    onEvent: (AlarmEvent) -> Unit,
+    includeTopBar: Boolean = true,
+    onEvent: (AlarmEvent) -> Unit
 ) {
     val context = LocalContext.current
     var deleteDialog by rememberSaveable { mutableStateOf(false) }
@@ -83,10 +83,12 @@ fun AllAlarms(
         modifier = Modifier.fillMaxSize(),
         topBar = {
 //            Column {
+            if (includeTopBar) {
                 AppTopBar(
                     title = stringResource(R.string.all_events),
                     onBack = { onEvent(AlarmEvent.OnBack) }
                 )
+            }
 //                CaptionTexts.Level5(
 //                    text = "Please edit default alarms as per your needs!",
 //                    modifier = Modifier.fillMaxWidth(),
@@ -119,7 +121,7 @@ fun AllAlarms(
         LazyColumn(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(paddingValues),
+                .padding(if (includeTopBar) paddingValues else PaddingValues(0.dp)),
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
         ) {
@@ -160,6 +162,10 @@ fun AllAlarms(
             }
         }
     }
+}
+
+@Composable
+fun AllAlarmScreenContent() {
 }
 
 @Composable
