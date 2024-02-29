@@ -29,7 +29,7 @@ fun AppSearchBar(
     placeholder: @Composable() (() -> Unit)? = null,
     leadingIcon: @Composable() (() -> Unit)? = null,
     trailingIcon: @Composable() (() -> Unit)? = null,
-    shape: Shape = AppTheme.shape.level1,
+    shape: Shape = AppTheme.shape.level2,
     colors: SearchBarColors = SearchBarDefaults.colors(
         containerColor = AppTheme.colors.secondaryContainer,
         dividerColor = AppTheme.colors.tertiary,

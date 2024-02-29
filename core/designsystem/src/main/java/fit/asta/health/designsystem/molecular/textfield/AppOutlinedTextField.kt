@@ -12,12 +12,14 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Error
 import androidx.compose.material3.Icon
 import androidx.compose.material3.OutlinedTextField
+import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.TextFieldColors
 import androidx.compose.material3.TextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.graphics.painter.Painter
 import androidx.compose.ui.graphics.vector.ImageVector
@@ -91,7 +93,26 @@ fun AppOutlinedTextField(
     minLines: Int = 1,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     shape: Shape = AppTheme.shape.level1,
-    colors: TextFieldColors = TextFieldDefaults.colors(),
+    colors: TextFieldColors = OutlinedTextFieldDefaults.colors(
+        focusedTextColor = AppTheme.colors.tertiary,
+        unfocusedTextColor = AppTheme.colors.secondary,
+        disabledTextColor = AppTheme.colors.onSecondary,
+        errorTextColor = AppTheme.colors.error,
+        focusedContainerColor  = AppTheme.colors.onSecondary,
+        unfocusedContainerColor = AppTheme.colors.secondaryContainer,
+        disabledContainerColor = AppTheme.colors.secondary,
+        errorContainerColor = AppTheme.colors.errorContainer,
+        cursorColor = AppTheme.colors.secondary,
+        errorCursorColor = AppTheme.colors.onErrorContainer,
+        focusedBorderColor = AppTheme.colors.secondary,
+        unfocusedBorderColor = AppTheme.colors.onTertiaryContainer,
+        errorBorderColor = AppTheme.colors.errorContainer,
+        errorLabelColor = AppTheme.colors.error,
+        focusedPlaceholderColor = AppTheme.colors.onSecondary,
+        focusedLabelColor = AppTheme.colors.onSecondary,
+        unfocusedLabelColor = AppTheme.colors.onSecondaryContainer,
+        unfocusedPlaceholderColor = AppTheme.colors.onSecondaryContainer
+    ),
     appTextFieldType: AppTextFieldValidator = AppTextFieldValidator(AppTextFieldType.Custom()),
     isValidText: (Boolean) -> Unit = {},
     placeholder: @Composable (() -> Unit)? = null,

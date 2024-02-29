@@ -1,11 +1,15 @@
 package fit.asta.health.designsystem.molecular.cards
 
+import androidx.compose.ui.graphics.Color
+
+
 import android.content.res.Configuration
+import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.material3.Card
 import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CardElevation
-import androidx.compose.material3.ElevatedCard
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
@@ -27,7 +31,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 private fun DefaultPreview1() {
     AppTheme {
         Surface {
-            AppElevatedCard {
+            AppCardWithColor {
                 CaptionTexts.Level1(text = "Card Testing")
             }
         }
@@ -36,52 +40,61 @@ private fun DefaultPreview1() {
 
 
 /**
- * [AppElevatedCard] is default clickable Elevated card for the app.This Card handles click events,
+ * [AppCard] is default filled clickable card for the app.This Card handles click events,
  * calling its [onClick] lambda.
  *
  * @param modifier the [Modifier] to be applied to this card
  * @param enabled This determines if the Card is enabled or not
+ * @param shape This is the shape of the Composable Function
  * @param colors [CardColors] that will be used to resolve the color(s) used for this card.
- * @param shape This function is used to provide a custom shape to the Card
  * @param elevation [CardElevation] used to resolve the elevation for this card.
+ * @param border This is to give the card any custom Border we want
  * @param onClick called when this card is clicked
  * @param content components inside the card
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppElevatedCard(
+fun AppCardWithColor(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
-    shape: Shape = AppTheme.shape.level1,
-    elevation: CardElevation = CardDefaults.elevatedCardElevation(
-        defaultElevation = AppTheme.elevation.level2,
-        pressedElevation = AppTheme.elevation.level1,
-        focusedElevation = AppTheme.elevation.level1,
-        hoveredElevation = AppTheme.elevation.level2,
-        draggedElevation = AppTheme.elevation.level4,
-        disabledElevation = AppTheme.elevation.level1
-    ),
+    shape: Shape = AppTheme.shape.level2,
+    containerColor : Color = AppTheme.colors.primaryContainer,
+    contentColor : Color = AppTheme.colors.onPrimaryContainer,
+    disabledContainerColor : Color = AppTheme.colors.primaryContainer.copy(alpha = 0.8f),
+    disabledContentColor : Color = AppTheme.colors.onPrimaryContainer.copy(alpha = 0.8f),
+    elevation: CardElevation = CardDefaults.cardElevation(),
+    border: BorderStroke? = null,
     onClick: (() -> Unit)? = null,
     content: @Composable ColumnScope.() -> Unit
 ) {
-
     if (onClick != null)
-        ElevatedCard(
+        Card(
             modifier = modifier,
             enabled = enabled,
-            colors = colors,
             shape = shape,
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+                disabledContainerColor = disabledContainerColor,
+                disabledContentColor = disabledContentColor
+            ),
             elevation = elevation,
+            border = border,
             onClick = onClick,
             content = content
         )
     else
-        ElevatedCard(
+        Card(
             modifier = modifier,
             shape = shape,
-            colors = colors,
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+                disabledContainerColor = disabledContainerColor,
+                disabledContentColor = disabledContentColor
+            ),
             elevation = elevation,
+            border = border,
             content = content
         )
 }
