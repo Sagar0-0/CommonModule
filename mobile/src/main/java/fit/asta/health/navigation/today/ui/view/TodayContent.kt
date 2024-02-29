@@ -217,15 +217,17 @@ fun TodayTabContent(
     onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit
 ) {
     val listState = rememberLazyListState()
-    LaunchedEffect(state is UiState.Success) {
-        delay(1000)
-        listState.animateScrollToItem(
-            scrollToIndex(
-                listMorning.size,
-                listAfternoon.size,
-                listEvening.size
+    LaunchedEffect(state) {
+        if (state is UiState.Success) {
+            delay(1000)
+            listState.animateScrollToItem(
+                scrollToIndex(
+                    listMorning.size,
+                    listAfternoon.size,
+                    listEvening.size
+                )
             )
-        )
+        }
     }
     val context = LocalContext.current
     LazyColumn(
