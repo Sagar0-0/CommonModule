@@ -33,6 +33,7 @@ import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -52,7 +53,6 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
-import com.smarttoolfactory.colorpicker.widget.ExpandableColumnWithTitle
 import fit.asta.health.R
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.Constants.getHourMinAmPm
@@ -60,6 +60,7 @@ import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.isCurrentTimeLaterThan
+import fit.asta.health.common.utils.scrollToIndex
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
@@ -79,6 +80,7 @@ import fit.asta.health.feature.scheduler.ui.components.WeatherCardHome
 import fit.asta.health.main.Graph
 import fit.asta.health.ui.common.AppDialogPopUp
 import fit.asta.health.ui.common.components.AppExpandableColumnWithTitle
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 import me.saket.swipe.SwipeAction
 import me.saket.swipe.SwipeableActionsBox
@@ -215,6 +217,16 @@ fun TodayTabContent(
     onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit
 ) {
     val listState = rememberLazyListState()
+    LaunchedEffect(state is UiState.Success) {
+        delay(1000)
+        listState.animateScrollToItem(
+            scrollToIndex(
+                listMorning.size,
+                listAfternoon.size,
+                listEvening.size
+            )
+        )
+    }
     val context = LocalContext.current
     LazyColumn(
         modifier = Modifier
@@ -306,7 +318,7 @@ fun TodayTabContent(
                                 }
                             }
                         }
-                    } else{
+                    } else {
                         item {
                             AppExpandableColumnWithTitle(
                                 title = "SunSlots are unavailable",
