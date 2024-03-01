@@ -468,7 +468,9 @@ private fun HomeNavHost(
             val listAfternoon by todayPlanViewModel.alarmListAfternoon.collectAsStateWithLifecycle()
             val listEvening by todayPlanViewModel.alarmListEvening.collectAsStateWithLifecycle()
             val state by todayPlanViewModel.todayState.collectAsStateWithLifecycle()
+            val userEditMessage by todayPlanViewModel.userEditMessage.collectAsStateWithLifecycle()
             val defaultScheduleVisibility by todayPlanViewModel.defaultScheduleVisibility.collectAsStateWithLifecycle()
+            val alarmState = todayPlanViewModel.alarmState.collectAsStateWithLifecycle()
             val context = LocalContext.current
             val vm: AllAlarmViewModel = hiltViewModel()
             val list by vm.alarmList.collectAsStateWithLifecycle()
@@ -536,12 +538,15 @@ private fun HomeNavHost(
             LaunchedEffect(Unit) {
                 setupWorker(context)
             }
+            Log.d("userEdit", "TodayContent:$userEditMessage ")
             TodayContent(
                 state = state,
                 calendarUiModel = calendarUiModel,
                 onDateClickListener = { todayPlanViewModel.setWeekDate(it) },
                 alarmList = list,
+                alarmState = alarmState,
                 defaultScheduleVisibility = defaultScheduleVisibility,
+                userEditMessage=userEditMessage,
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,
@@ -575,7 +580,7 @@ private fun HomeNavHost(
                         }
 
                         is AlarmEvent.OnBack -> {
-                           // navController.popBackStack()
+                            // navController.popBackStack()
                         }
 
                         is AlarmEvent.DeleteAlarm -> {
@@ -620,6 +625,10 @@ private fun HomeNavHost(
 
                         is HomeEvent.Retry -> {
                             onLocation()
+                        }
+
+                        is HomeEvent.SetUserEdit -> {
+                            todayPlanViewModel.setUserEditMessage()
                         }
                     }
                 },

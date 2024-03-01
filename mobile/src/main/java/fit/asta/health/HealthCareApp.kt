@@ -28,6 +28,7 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
     }
 
     val currentDate = MutableStateFlow<LocalDate>(LocalDate.now())
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
     override fun onCreate() {
         super.onCreate()
         mContext = this
@@ -35,11 +36,24 @@ class HealthCareApp : /*MultiDexApplication*/ Application() {
         registerMidnightTimer()
         createNotificationChannel()
         createNotificationChannelForActivity()
+        registerShutdownBroadcast()
+
 //        WorkManager.initialize(
 //            this, Configuration.Builder().setWorkerFactory(
 //                workerFactory
 //            ).build()
 //        )
+
+    }
+    @RequiresApi(Build.VERSION_CODES.TIRAMISU)
+    private fun registerShutdownBroadcast(){
+        val shutdownReceiver=ShutdownBroadcastReceiver()
+        val intentFilter = IntentFilter().apply {
+            addAction(Intent.ACTION_SHUTDOWN)
+            addAction("android.intent.action.QUICKBOOT_POWEROFF")
+            addAction(Intent.ACTION_BOOT_COMPLETED)
+        }
+        registerReceiver(shutdownReceiver, intentFilter, RECEIVER_NOT_EXPORTED)
     }
 
 

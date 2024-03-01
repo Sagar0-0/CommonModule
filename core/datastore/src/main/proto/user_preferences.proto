@@ -20,4 +20,5 @@ message UserPreferences {
   int32 stepsPermissionRejectedCount = 14;
   bool sessionState = 15;
   string shutdownTime=16;
+  bool userEditMsg=17;
 }

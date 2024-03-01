@@ -71,6 +71,8 @@ data class AlarmEntity(
     var selectedEndDateMillis: Long? = null,
     @SerializedName("missedAlarm")
     var isMissed: Boolean? = null,
+    @SerializedName("currentAlarmDate")
+    var currentAlarmDate: Int? = null,
 ) : Serializable, Parcelable {
 
     override fun hashCode(): Int {

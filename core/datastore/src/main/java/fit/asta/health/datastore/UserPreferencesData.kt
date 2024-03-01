@@ -14,7 +14,8 @@ data class UserPreferencesData(
     val trackLanguage: String = "",
     val stepsPermissionRejectedCount: Int = 0,
     val sessionState: Boolean = false,
-    val shutdownTime: Long = 0L
+    val shutdownTime: Long = 0L,
+    val userEditMessage:Boolean=false
 )
 
 data class UserPreferencesDataAddress(
