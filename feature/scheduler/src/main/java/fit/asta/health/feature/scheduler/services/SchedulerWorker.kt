@@ -23,6 +23,7 @@ import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import java.time.LocalDate
 
 @HiltWorker
 class SchedulerWorker @AssistedInject constructor(
@@ -33,8 +34,7 @@ class SchedulerWorker @AssistedInject constructor(
     private val stateManager: StateManager,
     @UID private val uId: String
 ) : CoroutineWorker(appContext, workerParams) {
-    override suspend fun getForegroundInfo(): ForegroundInfo =
-        appContext.syncForegroundInfo()
+    override suspend fun getForegroundInfo(): ForegroundInfo = appContext.syncForegroundInfo()
 
     override suspend fun doWork(): Result = withContext(Dispatchers.IO) {
 
@@ -67,6 +67,11 @@ class SchedulerWorker @AssistedInject constructor(
             }
         } else {
             list.forEach { entity ->
+                if (entity.currentAlarmDate != LocalDate.now().dayOfMonth) {
+                    val updateData =
+                        entity.copy(isMissed = null, currentAlarmDate = LocalDate.now().dayOfMonth)
+                    alarmLocalRepo.updateAlarm(updateData)
+                }
                 when (entity.meta.sync) {
                     1 -> {//update
                         val alarm = entity.copy(
@@ -124,6 +129,7 @@ class SchedulerWorker @AssistedInject constructor(
                             }
                         }
                     }
+
                     else -> {}
                 }
             }
@@ -136,9 +142,7 @@ class SchedulerWorker @AssistedInject constructor(
 
     companion object {
         private val SyncConstraints
-            get() = Constraints.Builder()
-                .setRequiredNetworkType(NetworkType.CONNECTED)
-                .build()
+            get() = Constraints.Builder().setRequiredNetworkType(NetworkType.CONNECTED).build()
 
         /**
          * Expedited one time work to sync data on app startup
@@ -149,11 +153,10 @@ class SchedulerWorker @AssistedInject constructor(
 //            .setInputData(SchedulerWorker::class.delegatedData())
 //            .build()
 
-        fun startUpSyncWork() = OneTimeWorkRequestBuilder<DelegatingWorker>()
-            .setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
-            .setConstraints(SyncConstraints)
-            .setInputData(SchedulerWorker::class.delegatedData())
-            .build()
+        fun startUpSyncWork() =
+            OneTimeWorkRequestBuilder<DelegatingWorker>().setExpedited(OutOfQuotaPolicy.RUN_AS_NON_EXPEDITED_WORK_REQUEST)
+                .setConstraints(SyncConstraints)
+                .setInputData(SchedulerWorker::class.delegatedData()).build()
     }
 }
 
