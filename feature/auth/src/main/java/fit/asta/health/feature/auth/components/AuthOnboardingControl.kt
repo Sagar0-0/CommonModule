@@ -20,6 +20,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.layout.ContentScale
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.tooling.preview.Preview
 import androidx.core.net.toUri
@@ -34,11 +35,13 @@ import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppGifImage
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.pager.AppExpandingDotIndicator
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.screens.AuthUiEvent
+import fit.asta.health.resources.drawables.R
 
 @Composable
 @Preview
@@ -95,11 +98,13 @@ fun BoxScope.AuthOnboardingControl(
                     .padding(horizontal = AppTheme.spacing.level3)
                     .fillMaxSize()
                     .clip(AppTheme.shape.level1)
-                    .appShimmerAnimation(isVisible = true)
+                    .appShimmerAnimation(isVisible = false)
                     .clickable {
                         onUiEvent(AuthUiEvent.GetOnboardingData)
                     }
-            )
+            ) {
+                AppLocalImage(painter = painterResource(id = R.drawable.error_404))
+            }
         }
     ) {
         OnBoardingSuccess(it)
