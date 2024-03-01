@@ -122,8 +122,8 @@ private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
         pagerState = pagerState,
         contentPadding = PaddingValues(horizontal = AppTheme.spacing.level1),
         pageSpacing = AppTheme.spacing.level2,
-        enableAutoAnimation = false,
-        userScrollEnabled = true
+        userScrollEnabled = true,
+        enableAutoAnimation = true
     ) { page ->
         AppCard(
             modifier = Modifier.fillMaxSize(),
