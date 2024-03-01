@@ -83,8 +83,8 @@ data class LifeStyle(
     @SerializedName(CurrentActivities_Field_Name) val curActivities: List<UserProperties>? = null,
     @SerializedName(PreferredActivities_Field_Name) val prefActivities: List<UserProperties>? = null,
     @SerializedName(LifestyleTargets_Field_Name) val lifeStyleTargets: List<UserProperties>? = null,
-    @SerializedName(WorkTime_Field_Name) var workTime: TimeSchedule = TimeSchedule(),
-    @SerializedName(SleepTime_Field_Name) var sleepTime: TimeSchedule = TimeSchedule(), // missing in UI
+    @SerializedName(WorkTime_Field_Name) var workTime: TimeSchedule? = null,
+    @SerializedName(SleepTime_Field_Name) var sleepTime: TimeSchedule? = null
 ) : Parcelable
 
 @Parcelize
@@ -98,8 +98,8 @@ data class Diet(
 
 @Parcelize
 data class TimeSchedule(
-    @SerializedName(StartTime_Field_Name) val startTime: Time? = null,
-    @SerializedName(EndTime_Field_Name) val endTime: Time? = null,
+    @SerializedName(StartTime_Field_Name) val startTime: Time = Time(),
+    @SerializedName(EndTime_Field_Name) val endTime: Time = Time()
 ) : Parcelable
 
 @Parcelize

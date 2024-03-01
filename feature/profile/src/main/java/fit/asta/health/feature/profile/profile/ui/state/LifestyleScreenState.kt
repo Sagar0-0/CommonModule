@@ -101,15 +101,15 @@ class LifestyleScreenState(
 
 
     //Timer Content Logic
-    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime.startTime?.hour ?: 0)
-    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime.startTime?.minute ?: 0)
-    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime.endTime?.hour ?: 0)
-    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime.endTime?.minute ?: 0)
+    private val sleepStartHour = mutableIntStateOf(lifeStyle.sleepTime?.startTime?.hour ?: 0)
+    private val sleepStartMinute = mutableIntStateOf(lifeStyle.sleepTime?.startTime?.minute ?: 0)
+    private val sleepEndHour = mutableIntStateOf(lifeStyle.sleepTime?.endTime?.hour ?: 0)
+    private val sleepEndMinute = mutableIntStateOf(lifeStyle.sleepTime?.endTime?.minute ?: 0)
 
-    private val workStartHour = mutableIntStateOf(lifeStyle.workTime.startTime?.hour ?: 0)
-    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime.startTime?.minute ?: 0)
-    private val workEndHour = mutableIntStateOf(lifeStyle.workTime.endTime?.hour ?: 0)
-    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime.endTime?.minute ?: 0)
+    private val workStartHour = mutableIntStateOf(lifeStyle.workTime?.startTime?.hour ?: 0)
+    private val workStartMinute = mutableIntStateOf(lifeStyle.workTime?.startTime?.minute ?: 0)
+    private val workEndHour = mutableIntStateOf(lifeStyle.workTime?.endTime?.hour ?: 0)
+    private val workEndMinute = mutableIntStateOf(lifeStyle.workTime?.endTime?.minute ?: 0)
 
     private var currentTimerIndex by mutableIntStateOf(0)
     var timerSheetVisible by mutableStateOf(false)
@@ -170,7 +170,6 @@ class LifestyleScreenState(
             )
         )
     }
-
     private val updateLifestyle = LifeStyle(
         physicalActive = physicallyActive,
         workingEnv = lifeStyle.workingEnv,
