@@ -5,28 +5,27 @@ package fit.asta.health.designsystem.atomic.token
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
-import androidx.compose.runtime.Composable
-import androidx.compose.runtime.Stable
-import androidx.compose.runtime.remember
+
 
 
 /**
  * Possible values of [SheetState] used in [AppBottomSheet].
  */
-enum class AppSheetValue {
+@OptIn(ExperimentalMaterial3Api::class)
+object AppSheetValue {
     /**
      * The sheet is not visible.
      */
-    Hidden,
+    val Hidden = SheetValue.Hidden
 
     /**
      * The sheet is visible at full height.
      */
-    Expanded,
+    val Expanded = SheetValue.Expanded
 
     /**
      * The sheet is partially visible.
      */
-    PartiallyExpanded,
+    val PartiallyExpanded = SheetValue.PartiallyExpanded
 }
 
