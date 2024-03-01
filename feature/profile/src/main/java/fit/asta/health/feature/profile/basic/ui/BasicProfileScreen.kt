@@ -131,10 +131,6 @@ fun BasicProfileScreenUi(
     var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
     var isReferralChanged by rememberSaveable { mutableStateOf(false) }
     var genderCode by rememberSaveable { mutableIntStateOf(-1) }
-    val phone by rememberSaveable(user) { mutableStateOf(user.phoneNumber ?: "") }
-    val email by rememberSaveable(user) {
-        mutableStateOf(user.email ?: "")
-    }
     val screenLoading = rememberSaveable(createBasicProfileState, checkReferralCodeState) {
         checkReferralCodeState is UiState.Loading || createBasicProfileState is UiState.Loading
     }
@@ -195,7 +191,7 @@ fun BasicProfileScreenUi(
                 }
 
                 PhoneUi(
-                    phoneNumber = phone,
+                    phoneNumber = user.phoneNumber,
                     navigateToPhoneAuth = {
                         onEvent(BasicProfileEvent.NavigateToPhoneAuth)
                     }
@@ -253,8 +249,8 @@ fun BasicProfileScreenUi(
                                 imageLocalUri = profileImageUri,
                                 name = name,
                                 gen = genderCode,
-                                mail = email,
-                                ph = phone,
+                                mail = user.email ?: "",
+                                ph = user.phoneNumber ?: "",
                                 refCode = if (checkReferralCodeState is UiState.Success) referralCode else "",
                                 dob = dob,
                                 age = age
@@ -276,8 +272,8 @@ fun BasicProfileScreenUi(
                                     imageLocalUri = profileImageUri,
                                     name = name,
                                     gen = genderCode,
-                                    mail = email,
-                                    ph = phone,
+                                    mail = user.email ?: "",
+                                    ph = user.phoneNumber ?: "",
                                     refCode = referralCode
                                 )
                             )
