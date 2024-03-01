@@ -1,8 +1,4 @@
-@file:OptIn(
-    ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3Api::class,
-    ExperimentalMaterial3Api::class
-)
+@file:OptIn(ExperimentalMaterial3Api::class)
 
 package fit.asta.health.designsystem.molecular.background
 
@@ -19,9 +15,15 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.FloatingActionButton
 import androidx.compose.material3.NavigationBar
 import androidx.compose.material3.Scaffold
+import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SheetValue.Expanded
+import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.SheetValue.PartiallyExpanded
 import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,6 +31,7 @@ import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.AppLoadingScreen
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
 
 /**The [AppScaffold] is a composable function in Jetpack Compose, used to create a scaffold layout
  *  for the app.
@@ -129,4 +132,52 @@ fun AppBottomSheetScaffold(
         sheetContainerColor = sheetContainerColor,
         sheetContentColor = sheetContentColor
     )
+}
+
+
+@Composable
+fun appRememberBottomSheetScaffoldState(bottomSheetState: SheetState): BottomSheetScaffoldState {
+    return rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
+}
+
+
+
+fun AppSheetState(
+    skipPartialExpanded: Boolean = false,
+    initialValue: AppSheetValue = AppSheetValue.Hidden,
+    confirmValueChange: (SheetValue) -> Boolean = {
+        true
+    },
+    skipHiddenState: Boolean = false
+): SheetState {
+    val sheetInitialValue : SheetValue = when(initialValue){
+        AppSheetValue.Hidden -> Hidden
+        AppSheetValue.Expanded -> Expanded
+        AppSheetValue.PartiallyExpanded -> PartiallyExpanded
+    }
+    return SheetState(
+        skipPartiallyExpanded = skipPartialExpanded,
+
+        initialValue = sheetInitialValue,
+
+        confirmValueChange = confirmValueChange,
+
+        skipHiddenState = skipHiddenState
+    )
+}
+
+//use case
+
+@OptIn(
+    ExperimentalMaterial3Api::class
+)
+@Composable
+fun MyUse() {
+//    val sheetState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
+//        initialValue = initialValue,
+//        skipPartialExpanded = true,
+//        skipHiddenState = false,
+//        confirmValueChange = confirmValueChange
+//    ))
+//pass the all param you want here
 }

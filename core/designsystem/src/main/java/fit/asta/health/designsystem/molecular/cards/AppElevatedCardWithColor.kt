@@ -1,5 +1,6 @@
 package fit.asta.health.designsystem.molecular.cards
 
+
 import android.content.res.Configuration
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.material3.CardColors
@@ -10,6 +11,7 @@ import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Surface
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.designsystem.AppTheme
@@ -27,7 +29,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 private fun DefaultPreview1() {
     AppTheme {
         Surface {
-            AppElevatedCard {
+            AppElevatedCardWithColor {
                 CaptionTexts.Level1(text = "Card Testing")
             }
         }
@@ -49,13 +51,16 @@ private fun DefaultPreview1() {
  */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun AppElevatedCard(
+fun AppElevatedCardWithColor(
     modifier: Modifier = Modifier,
     enabled: Boolean = true,
-    colors: CardColors = CardDefaults.elevatedCardColors(),
+    containerColor : Color = AppTheme.colors.primaryContainer,
+    contentColor : Color = AppTheme.colors.onPrimaryContainer,
+    disabledContainerColor : Color = AppTheme.colors.primaryContainer.copy(alpha = 0.8f),
+    disabledContentColor : Color = AppTheme.colors.onPrimaryContainer.copy(alpha = 0.8f),
     shape: Shape = AppTheme.shape.level1,
     elevation: CardElevation = CardDefaults.elevatedCardElevation(
-        defaultElevation = AppTheme.elevation.level2,
+        defaultElevation = AppTheme.elevation.level1,
         pressedElevation = AppTheme.elevation.level1,
         focusedElevation = AppTheme.elevation.level1,
         hoveredElevation = AppTheme.elevation.level2,
@@ -70,7 +75,12 @@ fun AppElevatedCard(
         ElevatedCard(
             modifier = modifier,
             enabled = enabled,
-            colors = colors,
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+                disabledContainerColor = disabledContainerColor,
+                disabledContentColor = disabledContentColor
+            ),
             shape = shape,
             elevation = elevation,
             onClick = onClick,
@@ -80,7 +90,12 @@ fun AppElevatedCard(
         ElevatedCard(
             modifier = modifier,
             shape = shape,
-            colors = colors,
+            colors = CardDefaults.cardColors(
+                containerColor = containerColor,
+                contentColor = contentColor,
+                disabledContainerColor = disabledContainerColor,
+                disabledContentColor = disabledContentColor
+            ),
             elevation = elevation,
             content = content
         )

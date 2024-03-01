@@ -30,10 +30,8 @@ import androidx.compose.material.icons.filled.History
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SearchBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -61,6 +59,7 @@ import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionBu
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCardWithColor
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -106,8 +105,8 @@ fun AppHomeScreen(
 
     Box(
         modifier = Modifier
-            .fillMaxSize()
-            .background(backgroundColor),
+            .fillMaxSize(),
+//            .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -170,9 +169,9 @@ fun HintsOnScreen() {
         modifier = Modifier
             .fillMaxWidth(1f)
             .padding(AppTheme.spacing.level2),
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFE2E9E8),
-        )
+//        elevation = CardDefaults.cardElevation(
+//            defaultElevation = 5.dp
+//        ),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -198,12 +197,6 @@ fun HintsOnScreen() {
                 ) {
                 BodyTexts.Level3(
                     text = "Tie it into a routine. Drink a glass of water every time you brush your teeth, eat a meal or use the bathroom.",
-                    color = Color.Black,
-//                    lineHeight = 1.4.em,
-//                    style = TextStyle(
-//                        fontSize = 14.sp,
-//                        fontWeight = FontWeight.Bold
-//                    )
                 )
 
             }
@@ -244,10 +237,8 @@ fun SetOfDefaultChips(
 
     AppCard(
         modifier = Modifier
-            .fillMaxWidth(),
-        colors = CardDefaults.cardColors(
-            containerColor = Color.Transparent,
-        )
+            .fillMaxWidth()
+            .padding(AppTheme.spacing.level1),
     ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
@@ -302,9 +293,9 @@ fun SetOfDefaultChips(
         AppCard(
             modifier = Modifier
                 .fillMaxWidth(),
-            colors = CardDefaults.cardColors(
-                containerColor = Color.Transparent,
-            )
+//            colors = CardDefaults.cardColors(
+//                containerColor = Color.Transparent,
+//            )
         ) {
             HeadingTexts.Level4(
                 text = "Your Most Frequent Used :",
@@ -453,12 +444,12 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                 .padding(AppTheme.spacing.level1)
                 .fillMaxWidth()
                 .fillMaxHeight(.23f),
-            elevation = CardDefaults.cardElevation(
-                defaultElevation = 5.dp
-            ),
-            colors = CardDefaults.cardColors(
-                containerColor = backgroundColor
-            )
+//            elevation = CardDefaults.cardElevation(
+//                defaultElevation = 5.dp
+//            ),
+//            colors = CardDefaults.cardColors(
+//                containerColor = backgroundColor
+//            )
         ) {
             Row(
                 modifier = Modifier
@@ -487,8 +478,8 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                             HeadingTexts.Level4(text = "Total Consumed ( ml )")
                             AppPlainToolTipBox(
                                 tooltip = { CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
-                                contentColor = Color.Black,
-                                containerColor = Color(0xff6b9bd1),
+                                contentColor = AppTheme.colors.onPrimaryContainer,
+                                containerColor = AppTheme.colors.primaryContainer,
                                 modifier = Modifier.clipToBounds()
                             ) {
 
@@ -536,13 +527,11 @@ fun BevChips(
     onClick: () -> Unit,
     onClickBeverage: () -> Unit
 ) {
-    AppElevatedCard(
+    AppElevatedCardWithColor(
         modifier = Modifier
             .padding(AppTheme.spacing.level1)
             .wrapContentHeight(unbounded = true),
-        colors = CardDefaults.cardColors(
-            containerColor = containerColor,
-        )
+        containerColor = containerColor
     ) {
         Row(
             modifier = Modifier
@@ -566,7 +555,6 @@ fun BevChips(
                 containerColor = containerColor,
                 contentColor = contentColor, resId = resId
             ) {
-
                 onClickBeverage()
             }
         }
@@ -686,10 +674,7 @@ fun BevSearchBar(
         modifier = Modifier
             .fillMaxWidth(1f),
 //            .shadow(AppTheme.spacing.level0),
-        colors = SearchBarDefaults.colors(
-           // containerColor = backgroundColor,
-            dividerColor = AppTheme.colors.onPrimaryContainer
-        )
+
     ) {
 
         val bevListSize = bevItem.size
@@ -781,7 +766,7 @@ fun CustomBevCard(
             modifier = Modifier
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2)
-                .background(color = backgroundColor, AppTheme.shape.level3),
+                .background(color = AppTheme.colors.onSecondary, AppTheme.shape.level3),
             contentAlignment = Alignment.Center
         ) {
             Column(

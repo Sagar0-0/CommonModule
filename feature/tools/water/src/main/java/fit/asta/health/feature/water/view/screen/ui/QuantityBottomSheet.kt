@@ -22,10 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.OutlinedTextFieldDefaults
-import androidx.compose.material3.SheetState
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
@@ -43,11 +39,14 @@ import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.LinearSlider
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppScreen
+import fit.asta.health.designsystem.molecular.background.AppSheetState
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -67,12 +66,16 @@ fun CustomBevBottomSheet(
     onClickSchedule : () -> Unit
 ) {
     Log.d("rishiRecomposed", "CustomBevSheet called")
-    val bottomSheetState = rememberBottomSheetScaffoldState(
-        bottomSheetState = SheetState(
-            initialValue = SheetValue.Hidden,
-            skipPartiallyExpanded = false
-        )
-    )
+    val bottomSheetState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
+        initialValue = AppSheetValue.Hidden,
+        skipPartialExpanded = false,
+    ))
+//    val bottomSheetState = rememberAppBottomSheetScaffoldState(
+//        bottomSheetState = SheetState(
+//            initialValue = SheetValue.Hidden,
+//            skipPartiallyExpanded = false
+//        )
+//    )
 
     val uiState = viewModel.uiState.value
     val scrollState = rememberScrollState()
@@ -105,20 +108,12 @@ fun CustomBevBottomSheet(
         scope.launch { bottomSheetState.bottomSheetState.expand() }
 
     }
-    val darkBackgroundColor = (Color(0xFF092251))
-    val lightBackgroundColor = Color.White
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
 
     AppBottomSheetScaffold(
         scaffoldState = bottomSheetState,
         sheetPeekHeight = 0.dp,
         //sheetSwipeEnabled = true,
-        sheetContainerColor = backgroundColor,
+        //sheetContainerColor = backgroundColor,
         topBar = {
             AppTopBarWithHelp(
                 title = "Water Tool",
@@ -361,14 +356,9 @@ fun Screen3(
                 )
             },
             placeholder = {
-                BodyTexts.Level3(text = "Edit Your Goal in  ml", color = Color.Black)
+                BodyTexts.Level3(text = "Edit Your Goal in  ml")
             },
             shape = AppTheme.shape.level3,
-            colors = OutlinedTextFieldDefaults.colors(
-                focusedBorderColor = Color.Gray,
-                unfocusedBorderColor = Color.Black,
-                cursorColor = Color.DarkGray
-            ),
             singleLine = true,
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
