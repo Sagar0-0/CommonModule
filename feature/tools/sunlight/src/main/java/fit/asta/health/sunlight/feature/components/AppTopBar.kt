@@ -12,7 +12,7 @@ import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.Icon
 import androidx.compose.material3.TopAppBar
-import androidx.compose.material3.TopAppBarDefaults
+//import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -43,7 +43,7 @@ fun AppTopBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(AppTheme.customSize.level7),
-        colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = BlackTransparent),
+//        colors = TopAppBarDefaults.largeTopAppBarColors(containerColor = BlackTransparent),
         navigationIcon = {
             Icon(
                 imageVector = Icons.Default.ArrowBack,

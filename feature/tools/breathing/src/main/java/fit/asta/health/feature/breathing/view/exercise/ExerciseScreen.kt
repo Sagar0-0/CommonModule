@@ -15,7 +15,6 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.LocalTextStyle
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -42,6 +41,7 @@ import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -84,7 +84,7 @@ fun ExerciseScreen(
     }
 
     val skipPartiallyExpanded by remember { mutableStateOf(false) }
-    val bottomSheetState = rememberModalBottomSheetState(
+    val bottomSheetState = appRememberModalBottomSheetState(
         skipPartiallyExpanded = skipPartiallyExpanded
     )
     var bottomSheetVisible by rememberSaveable {

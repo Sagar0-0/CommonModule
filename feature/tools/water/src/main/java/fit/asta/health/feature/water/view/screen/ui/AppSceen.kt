@@ -467,22 +467,22 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
 
                         Row(horizontalArrangement = Arrangement.Center) {
                             HeadingTexts.Level4(text = "Total Consumed ( ml )")
-                            AppRichTooltip(
-                                modifier = Modifier.clipToBounds()
-                            ) {
-                                CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal")
-                                /*AppIcon(
-                                    imageVector = Icons.Filled.Info,
-                                    contentDescription = "Localized Description",
-                                    modifier = Modifier.scale(.8f).tooltipAnchor()
-                                )*/
-                            }
+//                            AppRichTooltip(
+//                                modifier = Modifier.clipToBounds(),
+//                                text = {CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal")},
+//                                action = {AppIcon(
+//                                    imageVector = Icons.Filled.Info,
+//                                    contentDescription = "Localized Description",
+//                                    modifier = Modifier.scale(.8f).tooltipAnchor()
+//                                )}
+//                            )
                         }
 
                         BodyTexts.Level3(
                             text = "$totalConsumed",
                             color = Color.Gray,
                         )
+
                         Spacer(modifier = Modifier.weight(1f))
                         HeadingTexts.Level4(text = "Yet to Consume ( ml )")
                         BodyTexts.Level3(

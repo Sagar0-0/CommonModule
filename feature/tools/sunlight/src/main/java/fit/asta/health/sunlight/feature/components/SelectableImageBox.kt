@@ -27,6 +27,7 @@ import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.resources.drawables.R as DrawR
 
@@ -55,14 +56,14 @@ fun SelectableImageBox(
                 .size(160.dp)
 //            .padding(16.dp)/*medium*/,
         ) {
-            RemoteImage(
+            AppNetworkImage(
                 modifier = Modifier
                     .padding(16.dp)
                     .fillMaxSize()
                     .clip(shape = RoundedCornerShape(4.dp)),
-                imageLink = imageLink ?: "",
+                model = imageLink ?: "",
                 contentScale = ContentScale.Fit,
-                error = onError
+                errorImage = painterResource(id = onError)
             )
             if (isSelected) {
                 Icon(
