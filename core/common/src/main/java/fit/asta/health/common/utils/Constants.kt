@@ -356,16 +356,16 @@ fun AMPMHoursMin.convert12hrTo24hr(): Time24hr {
 
 fun scrollToIndex(size: Int, size1: Int, size2: Int): Int {
     return when (LocalTime.now().hour) {
-        in 6..11 -> {
-            2
+        in 6..10 -> {
+            4
         }
 
-        in 12..16 -> {
-            2 + size
+        in 11..14 -> {
+            4 + size
         }
 
         else -> {
-            2 + size + size1
+            4 + size + size1
         }
     }
 }
