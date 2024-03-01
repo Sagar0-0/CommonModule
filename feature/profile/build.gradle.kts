@@ -7,6 +7,10 @@ plugins {
 
 android {
     namespace = "fit.asta.health.feature.profile"
+    defaultConfig {
+        manifestPlaceholders["redirectSchemeName"] = "spotify-sdk"
+        manifestPlaceholders["redirectHostName"] = "auth"
+    }
 }
 
 dependencies {

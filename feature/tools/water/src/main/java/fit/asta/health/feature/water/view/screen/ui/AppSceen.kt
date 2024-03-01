@@ -27,10 +27,8 @@ import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.History
-import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
-import androidx.compose.material3.CircularProgressIndicator
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.collectAsState
@@ -52,8 +50,9 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppRichTooltipBox
+import fit.asta.health.designsystem.molecular.AppRichTooltip
 import fit.asta.health.designsystem.molecular.AppSearchBar
+import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
@@ -69,7 +68,6 @@ import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import fit.asta.health.resources.drawables.R
-
 
 @Composable
 fun AppHomeScreen(
@@ -94,19 +92,10 @@ fun AppHomeScreen(
     Log.d("rishiRecomposed", "AppScreenCalled")
     val remainingToConsume by viewModel.remainingConsumption.collectAsState()
     val goal by viewModel.goal.collectAsState()
-    val darkBackgroundColor = (Color(0xFF040429))
-    val lightBackgroundColor = (Color(0xFFF2F8FC))
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
 
     Box(
         modifier = Modifier
             .fillMaxSize(),
-//            .background(backgroundColor),
         contentAlignment = Alignment.Center
     ) {
         Column(
@@ -473,22 +462,23 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                             } %",
                             color = Color(0xFF008970),
                         )
+
                         Spacer(modifier = Modifier.weight(1f))
+
                         Row(horizontalArrangement = Arrangement.Center) {
                             HeadingTexts.Level4(text = "Total Consumed ( ml )")
-                            AppRichTooltipBox(
-                                text = { CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
+                            AppRichTooltip(
                                 modifier = Modifier.clipToBounds()
                             ) {
-                                    AppIcon(
-                                        imageVector = Icons.Filled.Info,
-                                        contentDescription = "Localized Description",
-                                        modifier = Modifier.scale(.8f).tooltipAnchor()
-                                    )
-
+                                CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal")
+                                /*AppIcon(
+                                    imageVector = Icons.Filled.Info,
+                                    contentDescription = "Localized Description",
+                                    modifier = Modifier.scale(.8f).tooltipAnchor()
+                                )*/
                             }
-
                         }
+
                         BodyTexts.Level3(
                             text = "$totalConsumed",
                             color = Color.Gray,
@@ -853,8 +843,7 @@ fun ErrorUi(
                     ) {
                         if (isLoading) {
                             Log.d("rishi", "CircularProgressCalled")
-                            CircularProgressIndicator(
-                                color = Color.White,
+                            AppCircularProgressIndicator(
                                 modifier = Modifier
                                     .scale(0.6f)
                                     .clipToBounds()

@@ -41,7 +41,7 @@ enum class AstaFlavor(
 }
 
 fun configureFlavors(
-    commonExtension: CommonExtension<*, *, *, *, *>,
+    commonExtension: CommonExtension<*, *, *, *, *, *>,
     flavorConfigurationBlock: ProductFlavor.(flavor: AstaFlavor) -> Unit = {}
 ) {
     commonExtension.apply {
