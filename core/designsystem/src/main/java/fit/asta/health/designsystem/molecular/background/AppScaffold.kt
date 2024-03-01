@@ -18,10 +18,13 @@ import androidx.compose.material3.Scaffold
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.Snackbar
+import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
@@ -134,12 +137,36 @@ fun AppBottomSheetScaffold(
 
 
 @Composable
-fun appRememberBottomSheetScaffoldState(bottomSheetState: SheetState): BottomSheetScaffoldState {
-    return rememberBottomSheetScaffoldState(bottomSheetState = bottomSheetState)
+fun appRememberBottomSheetScaffoldState(
+    bottomSheetState: SheetState = AppSheetState(),
+    snackbarHostState: SnackbarHostState = appSnackBarHostState()
+): BottomSheetScaffoldState {
+    return rememberBottomSheetScaffoldState(
+        bottomSheetState = bottomSheetState,
+        snackbarHostState
+    )
 }
 
 
+object AppSnackBarDuration {
+    val Short = SnackbarDuration.Short
 
+    /**
+     * Show the Snackbar for a long period of time
+     */
+    val Long = SnackbarDuration.Long
+
+    /**
+     * Show the Snackbar indefinitely until explicitly dismissed or action is clicked
+     */
+    val Indefinite = SnackbarDuration.Indefinite
+}
+
+@Composable
+fun appSnackBarHostState()
+        : SnackbarHostState {
+    return remember { SnackbarHostState() }
+}
 
 fun AppSheetState(
     skipPartialExpanded: Boolean = false,
