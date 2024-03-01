@@ -48,14 +48,12 @@ fun SettingsHomeScreen(
 ) {
     val snackBarHostState = remember { SnackbarHostState() }
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
-    val isScreenLoading = rememberSaveable {
-        deleteAccountState is UiState.Loading || userLogoutState is UiState.Loading
-    }
+    var showSignOutConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
     // Scaffold for the Screen
     AppScaffold(
         snackBarHostState = snackBarHostState,
-        isScreenLoading = isScreenLoading,
+        isScreenLoading = deleteAccountState is UiState.Loading || userLogoutState is UiState.Loading,
         topBar = {
             // Top App Bar
             AppTopBar(
@@ -65,20 +63,9 @@ fun SettingsHomeScreen(
         }
     ) { padding ->
 
-        AnimatedVisibility(showDeleteConfirmationDialog) {
-            AppDialogPopUp(
-                headingText = R.string.confirm_delete.toStringFromResId(),
-                bodyText = "This operation can not be undone.",
-                primaryButtonText = R.string.yes.toStringFromResId(),
-                secondaryButtonText = R.string.cancel.toStringFromResId(),
-                onDismiss = { showDeleteConfirmationDialog = false }
-            ) {
-                showDeleteConfirmationDialog = false
-                onUiEvent(SettingsUiEvent.DELETE)
-            }
-        }
         AppUiStateHandler(
             uiState = deleteAccountState,
+            onLoading = {},
             onErrorRetry = {
                 onUiEvent(SettingsUiEvent.DELETE)
             },
@@ -91,6 +78,7 @@ fun SettingsHomeScreen(
         }
         AppUiStateHandler(
             uiState = userLogoutState,
+            onLoading = {},
             onErrorRetry = {
                 onUiEvent(SettingsUiEvent.Logout)
             },
@@ -202,7 +190,7 @@ fun SettingsHomeScreen(
                     iconTint = Color.Red,
                     textColor = Color.Red,
                     text = R.string.user_pref_sign_out_title.toStringFromResId()
-                ) { onUiEvent(SettingsUiEvent.Logout) }
+                ) { showSignOutConfirmationDialog = true }
 
                 // Delete
                 SettingsCardItem(
@@ -216,5 +204,33 @@ fun SettingsHomeScreen(
             //To add vertical space by targeting vertical spacing from parent
             Spacer(modifier = Modifier)
         }
+
+        AnimatedVisibility(showDeleteConfirmationDialog) {
+            AppDialogPopUp(
+                headingText = R.string.confirm_delete.toStringFromResId(),
+                bodyText = "This operation can not be undone.",
+                primaryButtonText = R.string.yes.toStringFromResId(),
+                secondaryButtonText = R.string.cancel.toStringFromResId(),
+                onDismiss = { showDeleteConfirmationDialog = false }
+            ) {
+                showDeleteConfirmationDialog = false
+                onUiEvent(SettingsUiEvent.DELETE)
+            }
+        }
+
+        AnimatedVisibility(showSignOutConfirmationDialog) {
+            AppDialogPopUp(
+                headingText = R.string.confirm_logout.toStringFromResId(),
+                bodyText = "This operation can not be undone.",
+                primaryButtonText = R.string.yes.toStringFromResId(),
+                secondaryButtonText = R.string.cancel.toStringFromResId(),
+                onDismiss = { showSignOutConfirmationDialog = false }
+            ) {
+                showSignOutConfirmationDialog = false
+                onUiEvent(SettingsUiEvent.Logout)
+            }
+        }
+
+
     }
 }
