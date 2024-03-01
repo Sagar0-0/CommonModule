@@ -120,7 +120,7 @@ fun AuthPhoneSignInScreen(
 
         is UiState.ErrorMessage -> {
             loading = false
-            Toast.makeText(context, loginState.resId.toString(), Toast.LENGTH_SHORT).show()
+            Toast.makeText(context, loginState.resId.toStringFromResId(), Toast.LENGTH_SHORT).show()
         }
 
         UiState.Loading -> {
