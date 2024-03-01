@@ -808,4 +808,5 @@
     <string name="please_select_your_skin_type">Please select your skin type</string>
     <string name="skin_type">Skin Type</string>
     <string name="supplements">Supplements</string>
+    <string name="can_not_link_already_existing_account">Can not link to an already existing account</string>
 </resources>
