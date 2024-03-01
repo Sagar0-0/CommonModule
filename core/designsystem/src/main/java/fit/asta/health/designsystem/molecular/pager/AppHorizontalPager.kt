@@ -1,6 +1,7 @@
 package fit.asta.health.designsystem.molecular.pager
 
 import androidx.compose.foundation.ExperimentalFoundationApi
+import androidx.compose.foundation.interaction.collectIsDraggedAsState
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.BoxScope
 import androidx.compose.foundation.layout.PaddingValues
@@ -8,12 +9,14 @@ import androidx.compose.foundation.pager.HorizontalPager
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.carouselTransition
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.collectLatest
 
 /**
  * The [AppHorizontalPager] composable function is a custom component in Jetpack Compose, a declarative UI
@@ -58,16 +61,25 @@ fun AppHorizontalPager(
 
     // Animating to the next Pages if it is enabled
     if (enableAutoAnimation) {
-
-        LaunchedEffect(key1 = pagerState.currentPage) {
-            delay(animationDelay)
-            with(pagerState) {
-                val nextPage = if (currentPage < pageCount - 1) currentPage + 1 else 0
-
-                scrollToPage(
-                    page = nextPage
-                )
-            }
+        val isDraggedState = pagerState.interactionSource.collectIsDraggedAsState()
+        LaunchedEffect(isDraggedState) {
+            // convert compose state into flow
+            snapshotFlow { isDraggedState.value }
+                .collectLatest { isDragged ->
+                    // if not isDragged start slide animation
+                    if (!isDragged) {
+                        // infinity loop
+                        while (true) {
+                            // duration before each scroll animation
+                            delay(animationDelay)
+                            val nextPage =
+                                if (pagerState.currentPage < pagerState.pageCount - 1) pagerState.currentPage + 1 else 0
+                            runCatching {
+                                pagerState.animateScrollToPage(nextPage)
+                            }
+                        }
+                    }
+                }
         }
     }
 

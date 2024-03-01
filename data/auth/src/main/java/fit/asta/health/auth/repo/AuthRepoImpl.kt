@@ -112,16 +112,72 @@ class AuthRepoImpl @Inject constructor(
 
     override fun linkWithCredential(authCredential: AuthCredential): Flow<ResponseState<User>> =
         callbackFlow {
-            firebaseAuth.currentUser?.let { u ->
-                u.linkWithCredential(authCredential)
+            firebaseAuth.currentUser?.let { currentUser ->
+                currentUser.linkWithCredential(authCredential)
                     .addOnCompleteListener {
                         if (it.isSuccessful) {
                             val user: FirebaseUser? = it.result.user
                             Log.e(TAG, "linkWithCredential: FirebaseUser: $user")
                             trySend(ResponseState.Success(dataMapper.mapToUser(user!!)))
                         } else {
-                            Log.e(TAG, "linkWithCredential: Not success = ${it.exception?.message}")
-                            trySend(ResponseState.ErrorMessage(R.string.linking_the_credentials_failed))
+//                            //Linking failed as account already exists
+//                            if (it.exception is FirebaseAuthUserCollisionException) {
+//                                try {
+//                                    if (currentUser.providerData[1].providerId == "phone") {
+//                                        currentUser.delete()
+//                                            .addOnCompleteListener { deleteTask ->
+//                                                if (deleteTask.isSuccessful) {
+//                                                    firebaseAuth
+//                                                        .signInWithCredential(authCredential)
+//                                                        .addOnCompleteListener { signin->
+//                                                            if (signin.isSuccessful) {
+//                                                                it.result.user?.linkWithCredential()
+//                                                            }
+//                                                        }
+//                                                } else {
+//                                                    trySend(
+//                                                        ResponseState.ErrorMessage(R.string.can_not_link_already_existing_account)
+//                                                    )
+//                                                }
+//                                            }
+//                                    } else {
+//                                        val fireBaseContext =
+//                                            firebaseAuth.app.applicationContext
+//                                        val googleAccount =
+//                                            GoogleSignIn.getLastSignedInAccount(fireBaseContext)
+//                                        val credential: AuthCredential =
+//                                            GoogleAuthProvider.getCredential(
+//                                                googleAccount?.idToken,
+//                                                null
+//                                            )
+//                                        reAuthenticateUser(credential)
+//                                            .addOnCompleteListener { reAuthTask ->
+//                                                if (reAuthTask.isSuccessful) {
+//                                                    currentUser.delete()
+//                                                        .addOnCompleteListener { deleteTask ->
+//                                                            if (deleteTask.isSuccessful) {
+//                                                                //TODO
+//                                                            } else {
+//                                                                trySend(
+//                                                                    ResponseState.ErrorMessage(R.string.can_not_link_already_existing_account)
+//                                                                )
+//                                                            }
+//                                                        }
+//                                                } else {
+//                                                    trySend(
+//                                                        ResponseState.ErrorMessage(R.string.can_not_link_already_existing_account)
+//                                                    )
+//                                                }
+//                                            }
+//                                    }
+//                                } catch (e: Exception) {
+//                                    trySend(
+//                                        ResponseState.ErrorMessage(R.string.can_not_link_already_existing_account)
+//                                    )
+//                                }
+//                            } else {
+                            trySend(ResponseState.ErrorMessage(R.string.can_not_link_already_existing_account))
+//                            }
                         }
                     }
             }
