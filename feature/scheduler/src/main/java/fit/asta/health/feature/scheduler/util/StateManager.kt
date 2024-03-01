@@ -5,6 +5,7 @@ import android.app.NotificationManager
 import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
+import android.util.Log
 import androidx.core.app.NotificationCompat
 import androidx.core.content.ContextCompat
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
@@ -30,6 +31,7 @@ import fit.asta.health.feature.scheduler.util.Utils.createStateChangeIntent
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.SupervisorJob
+import kotlinx.coroutines.async
 import kotlinx.coroutines.launch
 import kotlinx.coroutines.withContext
 import java.time.LocalDate
@@ -59,12 +61,12 @@ class StateManager @Inject constructor(
         }
     }
 
-   /* fun setShutDownTime() {
-        scope.launch {
-            val currentTime: Calendar = Calendar.getInstance()
-            pref.setShutdownTime(currentTime.timeInMillis)
-        }
-    }*/
+    /* fun setShutDownTime() {
+         scope.launch {
+             val currentTime: Calendar = Calendar.getInstance()
+             pref.setShutdownTime(currentTime.timeInMillis)
+         }
+     }*/
 
     @Synchronized
     fun registerAlarm(
@@ -244,6 +246,7 @@ class StateManager @Inject constructor(
                                 )
                             )
                         } else {
+                            Log.d("notificationAlarm", "dismissAlarm: ")
                             registerAlarm(context, alarm)
                         }
                     }
@@ -480,6 +483,26 @@ class StateManager @Inject constructor(
             alarmDao.getAlarm(alarmItem.alarmId)?.let {
                 alarmDao.updateAlarm(it.copy(isMissed = isMissed))
             }
+        }
+    }
+
+    fun updateMissedAndDismissAlarm(
+        alarmItem: AlarmEntity,
+        isMissed: Boolean = false,
+        context: Context
+    ) {
+        scope.launch {
+            val a = async {
+                alarmDao.getAlarm(alarmItem.alarmId)?.let {
+                    alarmDao.updateAlarm(it.copy(isMissed = isMissed))
+                }
+            }
+            a.await()
+            val b = async {
+                dismissAlarm(context, alarmItem.alarmId)
+            }
+            b.await()
+
         }
     }
 
