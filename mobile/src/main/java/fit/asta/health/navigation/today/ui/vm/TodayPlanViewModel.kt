@@ -13,6 +13,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDate
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.scheduler.db.AlarmInstanceDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.db.entity.Weekdays
@@ -26,8 +27,11 @@ import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.navigation.today.ui.view.CalendarDataSource
 import fit.asta.health.navigation.today.ui.view.CalendarUiModel
 import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.map
+import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import java.time.ZoneId
@@ -58,6 +62,9 @@ class TodayPlanViewModel @Inject constructor(
     private val _todayState = MutableStateFlow<UiState<TodayData>>(UiState.Idle)
     val todayState = _todayState.asStateFlow()
 
+    private val _alarmState = MutableStateFlow<UiState<Any>>(UiState.Idle)
+    val alarmState = _alarmState.asStateFlow()
+
 
     private val dataSource = CalendarDataSource()
 
@@ -68,6 +75,20 @@ class TodayPlanViewModel @Inject constructor(
     init {
         getWeatherSunSlots()
         setWeekDate()
+    }
+
+    val userEditMessage = prefManager.userData
+        .map { it.userEditMessage }
+        .stateIn(
+            scope = viewModelScope,
+            started = SharingStarted.Lazily,
+            initialValue = false,
+        )
+
+    fun setUserEditMessage(value: Boolean = true) {
+        viewModelScope.launch {
+            prefManager.setUserEditMessage(value)
+        }
     }
 
 
@@ -96,6 +117,7 @@ class TodayPlanViewModel @Inject constructor(
         viewModelScope.launch {
             when (val result = alarmBackendRepo.getDefaultSchedule(uId)) {
                 is ResponseState.Success -> {
+                    _alarmState.emit(result.toUiState())
                     result.data.forEach { alarmEntity ->
                         val alarm = alarmEntity.copy(
                             meta = Meta(
@@ -118,10 +140,13 @@ class TodayPlanViewModel @Inject constructor(
                 }
 
                 is ResponseState.ErrorMessage -> {
+                    _alarmState.emit(result.toUiState())
                     Log.d("TAG", "getDefaultSchedule: ${result.resId.toStringFromResId(context)}")
                 }
 
-                else -> {}
+                else -> {
+                    _alarmState.emit(result.toUiState())
+                }
             }
         }
     }

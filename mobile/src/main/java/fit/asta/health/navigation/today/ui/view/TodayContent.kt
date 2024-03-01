@@ -9,6 +9,7 @@ import androidx.compose.animation.scaleOut
 import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
 import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
@@ -30,10 +31,12 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
+import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
@@ -65,12 +68,14 @@ import fit.asta.health.common.utils.scrollToIndex
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
@@ -93,15 +98,17 @@ import me.saket.swipe.SwipeableActionsBox
 fun TodayContent(
     state: UiState<TodayData>,
     alarmList: SnapshotStateList<AlarmEntity>,
+    alarmState: State<UiState<Any>>,
     calendarUiModel: CalendarUiModel,
     defaultScheduleVisibility: Boolean,
+    userEditMessage: Boolean,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
     onDateClickListener: (CalendarUiModel.Date) -> Unit,
     onEvent: (AlarmEvent) -> Unit,
     hSEvent: (HomeEvent) -> Unit,
-    onNav: (String) -> Unit,
+    onNav: (String) -> Unit
 ) {
     var deleteDialog by rememberSaveable { mutableStateOf(false) }
     var skipDialog by rememberSaveable { mutableStateOf(false) }
@@ -154,7 +161,7 @@ fun TodayContent(
         ) {
             calendarUiModel.visibleDates.size + 1
         }
-
+//        CaptionTexts.Level2(text = "Please schedule your alarms according to your flexibility!")
         WeekTabBar(
             data = calendarUiModel,
             selectedIndex = pagerState.currentPage,
@@ -167,6 +174,28 @@ fun TodayContent(
                 coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
             }
         )
+        AnimatedVisibility(visible = !userEditMessage) {
+            Row(
+                modifier = Modifier
+                    .padding(horizontal = AppTheme.spacing.level2)
+                    .padding(vertical = AppTheme.spacing.level1)
+                    .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
+                verticalAlignment = Alignment.CenterVertically
+            ) {
+                CaptionTexts.Level3(
+                    modifier = Modifier.weight(1f),
+                    text = "Please schedule your alarms according to your flexibility!"
+                )
+                AppIcon(
+                    imageVector = Icons.Default.Close,
+                    modifier = Modifier
+                        .clickable {
+                            hSEvent(HomeEvent.SetUserEdit)
+                        }
+                )
+            }
+        }
         AppHorizontalPager(
             pagerState = pagerState,
             enableAutoAnimation = false,
@@ -183,7 +212,7 @@ fun TodayContent(
                             if (event is AlarmEvent.NavSchedule) {
                                 onNav(SCHEDULER_GRAPH_ROUTE)
                             }
-                            if (event is AlarmEvent.EditAlarm){
+                            if (event is AlarmEvent.EditAlarm) {
                                 onNav(SCHEDULER_GRAPH_ROUTE)
                             }
                         },
@@ -197,18 +226,18 @@ fun TodayContent(
                     TodayTabContent(
                         calendarUiModel = calendarUiModel,
                         state = state,
+                        alarmState = alarmState,
                         defaultScheduleVisibility = defaultScheduleVisibility,
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,
                         hSEvent = hSEvent,
-                        onNav = onNav,
-                        onDelete = { newEventType, newDeleteDialog, newDeletedItem ->
-                            eventType = newEventType
-                            deleteDialog = newDeleteDialog
-                            deletedItem = newDeletedItem
-                        }
-                    )
+                        onNav = onNav
+                    ) { newEventType, newDeleteDialog, newDeletedItem ->
+                        eventType = newEventType
+                        deleteDialog = newDeleteDialog
+                        deletedItem = newDeletedItem
+                    }
                 }
 
                 else -> {
@@ -239,12 +268,13 @@ fun TodayTabContent(
     calendarUiModel: CalendarUiModel,
     state: UiState<TodayData>,
     defaultScheduleVisibility: Boolean,
+    alarmState: State<UiState<Any>>,
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit,
-    onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit
+    onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit,
 ) {
     val listState = rememberLazyListState()
     LaunchedEffect(state) {
@@ -379,6 +409,11 @@ fun TodayTabContent(
                  ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
              }
          }*/
+        item {
+            AppUiStateHandler(uiState = alarmState.value) {
+
+            }
+        }
         if (listMorning.isNotEmpty()) {
             item {
                 AnimatedVisibility(
