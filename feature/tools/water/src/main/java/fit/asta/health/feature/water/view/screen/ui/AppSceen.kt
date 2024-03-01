@@ -52,7 +52,7 @@ import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppPlainToolTipBox
+import fit.asta.health.designsystem.molecular.AppRichTooltipBox
 import fit.asta.health.designsystem.molecular.AppSearchBar
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionButton
@@ -476,13 +476,10 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                         Spacer(modifier = Modifier.weight(1f))
                         Row(horizontalArrangement = Arrangement.Center) {
                             HeadingTexts.Level4(text = "Total Consumed ( ml )")
-                            AppPlainToolTipBox(
-                                tooltip = { CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
-                                contentColor = AppTheme.colors.onPrimaryContainer,
-                                containerColor = AppTheme.colors.primaryContainer,
+                            AppRichTooltipBox(
+                                text = { CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal") },
                                 modifier = Modifier.clipToBounds()
                             ) {
-
                                     AppIcon(
                                         imageVector = Icons.Filled.Info,
                                         contentDescription = "Localized Description",
