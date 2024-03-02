@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.size
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -52,12 +51,12 @@ fun MusicTopTabBar(
     ) {
 
         AppElevatedCard(
-            elevation = CardDefaults.elevatedCardElevation(
-                defaultElevation = AppTheme.elevation.level4
-            ),
-            colors = CardDefaults.elevatedCardColors(
-                containerColor = Color.Transparent
-            ),
+//            elevation = CardDefaults.elevatedCardElevation(
+//                defaultElevation = AppTheme.elevation.level4
+//            ),
+//            colors = CardDefaults.elevatedCardColors(
+//                containerColor = Color.Transparent
+//            ),
             shape = RectangleShape
         ) {
 

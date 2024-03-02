@@ -19,8 +19,6 @@ import androidx.compose.material.icons.filled.ContentCopy
 import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.VerifiedUser
 import androidx.compose.material.icons.filled.WorkspacePremium
-import androidx.compose.material3.CardColors
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -204,7 +202,7 @@ fun ShareReferralButton(modifier: Modifier = Modifier, shareRefLink: () -> Unit 
 fun CopyReferralCodeCard(
     modifier: Modifier = Modifier,
     refCode: String = "qwertyuiop",
-    colors: CardColors = CardDefaults.cardColors(),
+   // colors: CardColors = CardDefaults.cardColors(),
 ) {
     // Access the current context
     val context = LocalContext.current
@@ -212,7 +210,7 @@ fun CopyReferralCodeCard(
     // Use AppCard to create a card containing the referral code and copy button
     AppCard(
         modifier = modifier,
-        colors = colors,
+        //colors = colors,
         onClick = { context.copyTextToClipboard(refCode) }
     ) {
         // Row layout to organize UI elements horizontally

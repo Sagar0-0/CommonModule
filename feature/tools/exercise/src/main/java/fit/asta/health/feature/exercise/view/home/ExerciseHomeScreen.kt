@@ -175,7 +175,6 @@ fun ExerciseHomeScreen(
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DanceBottomSheet(
     animatedState : Boolean,
