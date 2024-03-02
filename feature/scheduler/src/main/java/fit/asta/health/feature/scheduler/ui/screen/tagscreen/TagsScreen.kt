@@ -13,8 +13,6 @@ import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -32,6 +30,8 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
+import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -49,7 +49,7 @@ fun TagsScreen(
     tagsList: SnapshotStateList<TagEntity>,
     customTagList: SnapshotStateList<TagEntity>
 ) {
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = appRememberModalBottomSheetState()
     val scope = rememberCoroutineScope()
     var bottomSheetVisible by rememberSaveable {
         mutableStateOf(false)
@@ -78,7 +78,7 @@ fun TagsScreen(
                 deleteDialog = false
             })
     }
-    val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = appSnackBarHostState()
     AppScaffold(
         snackBarHostState = snackBarHostState,
         content = {

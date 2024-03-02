@@ -19,7 +19,6 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.rounded.Timelapse
-import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -87,9 +86,9 @@ private fun CardCenterButton(buttonTitle: String, modifier: Modifier = Modifier)
             onClick = { /*TODO*/ },
             modifier = modifier.size(100.dp),
             shape = CircleShape,
-            colors = ButtonDefaults.buttonColors(
-                containerColor = Color.White.copy(alpha = 0.6f)
-            )
+//            colors = ButtonDefaults.buttonColors(
+//                containerColor = Color.White.copy(alpha = 0.6f)
+//            )
         ) {
             CaptionTexts.Level3(
                 text = buttonTitle, textAlign = TextAlign.Center, color = Color.White

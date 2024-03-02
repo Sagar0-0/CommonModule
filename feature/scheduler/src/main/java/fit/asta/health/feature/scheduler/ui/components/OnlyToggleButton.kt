@@ -13,8 +13,6 @@ import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.EditCalendar
-import androidx.compose.material3.ButtonDefaults.buttonColors
-import androidx.compose.material3.SwitchDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,6 +29,8 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.data.scheduler.db.entity.Weekdays
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.DefaultColorTokens
+import fit.asta.health.designsystem.molecular.ButtonWithColor
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -95,14 +95,14 @@ fun OnlyToggleButton(
                 AppSwitch(
                     modifier = Modifier.testTag(testTag),
                     checked = mCheckedState,
-                    colors = SwitchDefaults.colors(
-                        checkedThumbColor = AppTheme.colors.primary,
-                        uncheckedThumbColor = AppTheme.colors.primaryContainer,
-                        checkedTrackColor = AppTheme.colors.primaryContainer,
-                        uncheckedTrackColor = AppTheme.colors.background,
-                        checkedBorderColor = AppTheme.colors.primary,
-                        uncheckedBorderColor = AppTheme.colors.primary,
-                    )
+//                    colors = SwitchDefaults.colors(
+//                        checkedThumbColor = AppTheme.colors.primary,
+//                        uncheckedThumbColor = AppTheme.colors.primaryContainer,
+//                        checkedTrackColor = AppTheme.colors.primaryContainer,
+//                        uncheckedTrackColor = AppTheme.colors.background,
+//                        checkedBorderColor = AppTheme.colors.primary,
+//                        uncheckedBorderColor = AppTheme.colors.primary,
+//                    )
                 ) {
                     onCheckClicked(it)
                 }
@@ -204,14 +204,14 @@ fun DaysCircleButton(
 
     val colorState2: Color = if (isSelected) Color.White else Color.Black
 
-    AppTextButton(
+    AppFilledButton(
         onClick = { onDaySelect() },
         modifier = Modifier.size(40.dp),
         shape = CircleShape,
-        colors = buttonColors(
-            containerColor = colorState,
-            contentColor = colorState2
-        ),
+//        colors = buttonColors(
+//            containerColor = colorState,
+//            contentColor = colorState2
+//        ),
         contentPadding = PaddingValues(0.dp)
     ) {
         BodyTexts.Level1(text = day, color = colorState2, textAlign = TextAlign.Center)

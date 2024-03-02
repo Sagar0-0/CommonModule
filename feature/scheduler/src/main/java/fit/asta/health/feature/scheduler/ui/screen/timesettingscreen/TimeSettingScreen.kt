@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +22,7 @@ import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.feature.scheduler.ui.components.SettingsLayout
 import fit.asta.health.feature.scheduler.ui.components.SnoozeBottomSheet
 import fit.asta.health.feature.scheduler.ui.components.TimePickerBottomSheet
@@ -44,7 +44,7 @@ fun TimeSettingScreen(
     var currentBottomSheet: TimeSettingCreateBottomSheetTypes? by remember {
         mutableStateOf(null)
     }
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = appRememberModalBottomSheetState()
     var bottomSheetVisible by rememberSaveable {
         mutableStateOf(false)
     }

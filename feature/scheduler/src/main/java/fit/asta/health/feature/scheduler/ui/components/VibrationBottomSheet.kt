@@ -11,6 +11,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ButtonDefaults
+//import androidx.compose.material3.ButtonDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,6 +24,7 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -66,13 +68,17 @@ fun VibrationBottomSheetLayout(
             horizontalArrangement = Arrangement.SpaceBetween,
             modifier = Modifier.fillMaxWidth()
         ) {
-            AppOutlinedButton(
-                textToShow = stringResource(id = StringR.string.shortPattern),
-                colors = ButtonDefaults.outlinedButtonColors(
-                    containerColor = if (value == VibrationPattern.Short) AppTheme.colors.primary
-                    else AppTheme.colors.onPrimary
-                )
-            ) { value = VibrationPattern.Short }
+            ButtonWithColor(color = if (value == VibrationPattern.Short) AppTheme.colors.primary
+            else AppTheme.colors.onPrimary, text = stringResource(id = StringR.string.shortPattern)) {
+                value = VibrationPattern.Short
+            }
+//            AppOutlinedButton(
+//                textToShow = stringResource(id = StringR.string.shortPattern),
+//                colors = ButtonDefaults.outlinedButtonColors(
+//                    containerColor = if (value == VibrationPattern.Short) AppTheme.colors.primary
+//                    else AppTheme.colors.onPrimary
+//                )
+//            ) { value = VibrationPattern.Short }
             AppOutlinedButton(
                 textToShow = stringResource(id = StringR.string.longPattern),
                 colors = ButtonDefaults.outlinedButtonColors(

@@ -5,14 +5,12 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.outlined.Clear
 import androidx.compose.material.icons.outlined.Search
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
-import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.resources.strings.R as StringR
 
@@ -56,10 +54,10 @@ fun SearchBarUI(
         label = stringResource(StringR.string.search_from_spotify),
 
         // Setting Custom Colors for the Outlined TextField
-        colors = OutlinedTextFieldDefaults.colors(
-            disabledTextColor = AppTheme.colors.primary,
-            disabledBorderColor = AppTheme.colors.primaryContainer,
-        ),
+//        colors = OutlinedTextFieldDefaults.colors(
+////            disabledTextColor = AppTheme.colors.primary,
+////            disabledBorderColor = AppTheme.colors.primaryContainer,
+//        ),
 
         leadingIcon = Icons.Outlined.Search,
 

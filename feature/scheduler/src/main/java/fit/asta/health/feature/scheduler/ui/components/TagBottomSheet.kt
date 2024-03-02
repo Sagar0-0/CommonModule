@@ -10,7 +10,6 @@ import androidx.compose.foundation.interaction.collectIsPressedAsState
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -26,8 +25,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -55,8 +52,8 @@ import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.scheduler.db.entity.TagEntity
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
+import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.textfield.AppTextField
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
@@ -73,20 +70,36 @@ fun TagCard(text: String, image: String, onClick: () -> Unit = {}) {
 
     val color = if (isPressed) AppTheme.colors.primary else Color.Transparent
 
-    AppFilledButton(
+    AppElevatedCard(
         onClick = { onClick() },
         modifier = Modifier
             .fillMaxWidth()
             .padding(16.dp),
         shape = RoundedCornerShape(8.dp),
-        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
-        elevation = ButtonDefaults.buttonElevation(5.dp),
-        border = BorderStroke(width = 3.dp, color = color),
-        contentPadding = PaddingValues(0.dp),
-        interactionSource = interactionSource
+//        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+//        elevation = ButtonDefaults.buttonElevation(5.dp),
+//        border = BorderStroke(width = 3.dp, color = color),
+//        contentPadding = PaddingValues(0.dp),
+//        interactionSource = interactionSource
     ) {
-        SwipeAbleArea(text, image)
+        Row {
+            SwipeAbleArea(text, image)
+        }
     }
+//    AppElevatedButton(
+//        onClick = { onClick() },
+//        modifier = Modifier
+//            .fillMaxWidth()
+//            .padding(16.dp),
+//        shape = RoundedCornerShape(8.dp),
+////        colors = ButtonDefaults.buttonColors(containerColor = Color.White),
+////        elevation = ButtonDefaults.buttonElevation(5.dp),
+//        border = BorderStroke(width = 3.dp, color = color),
+//        contentPadding = PaddingValues(0.dp),
+//        interactionSource = interactionSource
+//    ) {
+//        SwipeAbleArea(text, image)
+//    }
 }
 
 @Composable
@@ -242,11 +255,11 @@ fun CustomTagTextField(
             onValueChange(it)
         },
         label = label?.toStringFromResId() ?: "",
-        colors = OutlinedTextFieldDefaults.colors(
-            focusedBorderColor = AppTheme.colors.primary,
-            unfocusedBorderColor = Color.LightGray,
-            focusedLabelColor = AppTheme.colors.primary,
-        ),
+//        colors = OutlinedTextFieldDefaults.colors(
+//            focusedBorderColor = AppTheme.colors.primary,
+//            unfocusedBorderColor = Color.LightGray,
+//            focusedLabelColor = AppTheme.colors.primary,
+//        ),
         modifier = Modifier.focusRequester(focusRequester = focusRequester),
         shape = RoundedCornerShape(8.dp),
         keyboardOptions = KeyboardOptions(
