@@ -24,7 +24,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.MoneyOff
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -48,6 +47,7 @@ import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -151,7 +151,7 @@ fun WalletScreenUi(
     }
     val context = LocalContext.current
     val scope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = appRememberModalBottomSheetState()
     val closeSheet = {
         scope.launch { bottomSheetState.hide() }.invokeOnCompletion {
             if (!bottomSheetState.isVisible) {

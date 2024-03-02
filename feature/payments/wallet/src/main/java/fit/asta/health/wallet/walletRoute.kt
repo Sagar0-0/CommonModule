@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -24,6 +23,7 @@ import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.wallet.view.WalletScreenUi
 import fit.asta.health.wallet.vm.WalletViewModel
 
@@ -48,7 +48,7 @@ fun NavGraphBuilder.walletRoute(
 
         val walletDataState = walletViewModel.state.collectAsStateWithLifecycle().value
 
-        val scaffoldState = rememberBottomSheetScaffoldState()
+        val scaffoldState = appRememberBottomSheetScaffoldState()
         AppBottomSheetScaffold(
             scaffoldState = scaffoldState,
             topBar = {
