@@ -58,7 +58,6 @@ dependencies {
     implementation(libs.androidx.navigation.compose)
 
     //Accompanist-BottomSheet Nav
-    implementation(libs.accompanist.navigation.material)
     implementation(libs.accompanist.insets)
     implementation(libs.accompanist.drawablepainter)
     implementation(libs.accompanist.navigation.animation)
