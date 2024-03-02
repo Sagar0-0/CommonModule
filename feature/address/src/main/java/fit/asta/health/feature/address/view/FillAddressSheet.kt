@@ -19,7 +19,6 @@ import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -49,6 +48,7 @@ import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.textfield.AppTextField
@@ -69,7 +69,7 @@ internal fun FillAddressSheet(
 ) {
     val focusManager = LocalFocusManager.current
     val scope = rememberCoroutineScope()
-    val bottomSheetState = rememberModalBottomSheetState(true)
+    val bottomSheetState = appRememberModalBottomSheetState(true)
     val context = LocalContext.current
 
     val closeSheet = {
