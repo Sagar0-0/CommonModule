@@ -10,7 +10,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.SheetValue
-import androidx.compose.material3.SnackbarDuration
+//import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
@@ -24,9 +24,16 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
+import fit.asta.health.designsystem.atomic.token.checkState
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.AppSheetState
+import fit.asta.health.designsystem.molecular.background.AppSnackBarDuration
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
+import fit.asta.health.designsystem.molecular.background.appRememberStandardBottomSheetState
+import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.sunlight.feature.components.SunlightTopBar
 import fit.asta.health.sunlight.feature.components.UvBarChartCard
@@ -51,18 +58,14 @@ fun SunHomeScreen(
     homeState: State<SunlightHomeState>
 ) {
     val scrollState = rememberScrollState()
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded, skipHiddenState = true
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
+    val sheetState = appRememberStandardBottomSheetState()
+    val scaffoldState = appRememberBottomSheetScaffoldState(bottomSheetState = sheetState)
     val scope = rememberCoroutineScope()
-    val snackbarHostState = remember { SnackbarHostState() }
+    val snackbarHostState = appSnackBarHostState()
     var showDialogue by remember {
         mutableStateOf(false)
     }
-    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+    BackHandler(scaffoldState.bottomSheetState.currentValue == AppSheetValue.Expanded) {
         scope.launch {
             scaffoldState.bottomSheetState.partialExpand()
         }
@@ -96,7 +99,7 @@ fun SunHomeScreen(
                     selectedData = homeState.value.skinConditionData,
                     timerState = homeState.value.isTimerRunning,
                     timerPauseState = homeState.value.isTimerPaused,
-                    scaffoldState = scaffoldState,
+                    animatedState = checkState(scaffoldState),
                     supplementData = homeState.value.supplementData,
                     goToList = { _, code ->
                         navigateToSkinCondition.invoke(code)
@@ -120,7 +123,7 @@ fun SunHomeScreen(
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
                                         message = "Timer can be only started during the given time slots.Thank you.",
-                                        duration = SnackbarDuration.Short,
+                                        duration = AppSnackBarDuration.Short,
                                         withDismissAction = true
                                     )
                                 }
