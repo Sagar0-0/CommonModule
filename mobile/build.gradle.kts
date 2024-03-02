@@ -206,12 +206,6 @@ dependencies {
     implementation(libs.androidx.datastore.core)
     implementation(libs.androidx.datastore.preferences)
 
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.compose.material.iconsExtended)
-    implementation(libs.compose.theme.adapter)
-
     //Jetpack Compose - Pager
     implementation(libs.androidx.paging.runtime.ktx)
     implementation(libs.androidx.paging.compose)

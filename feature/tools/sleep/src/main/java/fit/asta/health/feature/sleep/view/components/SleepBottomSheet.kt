@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +32,6 @@ import fit.asta.health.resources.drawables.R
  * @param bottomSheetData This variable contains the bottom sheet Data which needs to be shown in UI
  * @param selectedDisturbances This variable contains the selected Disturbances
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SleepBottomSheet(
     animatedState : Boolean,

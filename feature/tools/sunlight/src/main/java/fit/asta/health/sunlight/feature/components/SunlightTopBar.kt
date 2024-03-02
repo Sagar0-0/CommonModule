@@ -8,7 +8,6 @@ import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.DropdownMenu
 import androidx.compose.material3.DropdownMenuItem
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -23,7 +22,6 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.sunlight.feature.event.OnHomeMenu
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SunlightTopBar(
     title: String,

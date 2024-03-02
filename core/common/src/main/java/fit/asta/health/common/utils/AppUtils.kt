@@ -20,7 +20,6 @@ import android.view.View
 import android.view.inputmethod.InputMethodManager
 import android.widget.ImageView
 import android.widget.Toast
-import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.content.ContextCompat.getSystemService
@@ -29,7 +28,6 @@ import com.bumptech.glide.Glide
 import com.bumptech.glide.load.engine.DiskCacheStrategy
 import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
-import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.review.ReviewManagerFactory
 import fit.asta.health.core.common.BuildConfig
 import java.io.IOException
@@ -51,16 +49,6 @@ fun Context.getUriFromResourceId(resId: Int): Uri {
 fun Context.showToastMessage(msg: String?) {
 
     Toast.makeText(this, msg, Toast.LENGTH_LONG).show()
-}
-
-fun View.showSnackbar(@StringRes messageRes: Int, duration: Int = Snackbar.LENGTH_LONG) {
-
-    Snackbar.make(this, messageRes, duration).show()
-}
-
-fun View.showSnackbar(message: String, duration: Int = Snackbar.LENGTH_LONG) {
-
-    Snackbar.make(this, message, duration).show()
 }
 
 fun Context.showDrawableImage(resourceId: Int, imgView: ImageView) {

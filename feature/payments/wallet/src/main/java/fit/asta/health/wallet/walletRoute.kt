@@ -5,7 +5,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -33,7 +32,6 @@ fun NavController.navigateToWallet(navOptions: NavOptions? = null) {
     this.navigate(WALLET_GRAPH_ROUTE, navOptions)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.walletRoute(
     onProceedToAdd: (context: Context, amount: String, onPaymentSuccess: () -> Unit, onPaymentFailure: () -> Unit) -> Unit,
     onBackPress: () -> Unit

@@ -40,18 +40,11 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.accompanist.systemuicontroller)
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
+
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
-    implementation(libs.coil.kt.compose)
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
     implementation(libs.androidx.media3.ui)
@@ -60,6 +53,7 @@ dependencies {
     // Color picker
     implementation(libs.smarttoolfactory.color.picker.bundle)
 
+    implementation(libs.coil.kt.compose)
 
     // Colorful Customizable Sliders
     implementation("com.github.SmartToolFactory:Compose-Colorful-Sliders:1.2.0")

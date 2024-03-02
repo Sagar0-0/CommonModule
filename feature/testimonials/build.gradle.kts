@@ -25,10 +25,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
-    implementation(libs.coil.kt.compose)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -38,11 +34,12 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.compose.material3)
 
     //Paging
     implementation(libs.androidx.paging.common.ktx)
     implementation(libs.androidx.paging.compose)
+
+    implementation(libs.coil.kt.compose)
 
     //Media 3
     implementation(libs.androidx.media3.exoplayer)

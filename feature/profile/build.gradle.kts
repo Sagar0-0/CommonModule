@@ -34,7 +34,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
 
     implementation(libs.coil.kt.compose)
 
@@ -53,12 +52,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.compose.ui.tooling.preview)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.compose.ui)
-    implementation(libs.material)
-
 
     implementation(libs.calendar)
     implementation(libs.clock)
@@ -67,14 +63,6 @@ dependencies {
     //Scheduler
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-//    testImplementation(libs.junit4)
-//    androidTestImplementation(libs.androidx.junit)
-//    androidTestImplementation(libs.androidx.test.espresso.core)
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
     //Spotify Auth
     implementation(libs.auth)
@@ -89,7 +77,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
 
     implementation(libs.coil.kt.compose)
 

@@ -41,6 +41,12 @@ internal fun Project.configureAndroidCompose(
         dependencies {
             val bom = libs.findLibrary("androidx-compose-bom").get()
             add("implementation", platform(bom))
+
+            //Jetpack Compose - Material theme components
+            "implementation"(libs.findLibrary("androidx-compose-material3").get())
+            "implementation"(libs.findLibrary("androidx-compose-material3-windowSizeClass").get())
+            "implementation"(libs.findLibrary("androidx-compose-material-iconsExtended").get())
+
             add("androidTestImplementation", platform(bom))
             // Add ComponentActivity to debug manifest
             add("debugImplementation", libs.findLibrary("androidx.compose.ui.testManifest").get())
@@ -59,7 +65,9 @@ internal fun Project.configureAndroidCompose(
 
     tasks.withType<KotlinCompile>().configureEach {
         kotlinOptions {
-            freeCompilerArgs = freeCompilerArgs + buildComposeMetricsParameters()
+            freeCompilerArgs += buildComposeMetricsParameters()
+            allWarningsAsErrors = false
+            freeCompilerArgs += listOf("-opt-in=androidx.compose.material3.ExperimentalMaterial3Api")
         }
     }
 }

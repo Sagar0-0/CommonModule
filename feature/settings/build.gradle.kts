@@ -23,8 +23,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -33,11 +31,9 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.compose.material3)
 
     //Firebase for notifications
     implementation(libs.firebase.messaging.ktx)
-
 
     // For instrumented tests.
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

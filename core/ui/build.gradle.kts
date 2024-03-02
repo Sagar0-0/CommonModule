@@ -21,7 +21,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.ui.unit.android)
     implementation(libs.androidx.documentfile)
 
@@ -42,11 +41,6 @@ dependencies {
     implementation(libs.androidx.activity.compose)
     implementation(libs.androidx.constraintlayout.compose)
     implementation(libs.androidx.compose.foundation)
-
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
 
     //Jetpack Compose - Pager

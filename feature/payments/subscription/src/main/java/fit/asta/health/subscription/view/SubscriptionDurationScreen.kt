@@ -14,7 +14,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.ArrowForward
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -152,7 +151,6 @@ fun PlanScreen() {
 /**
  * Main content of the PlanScreen.
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SubscriptionDurationsScreen(
     data: SubscriptionDurationsData,

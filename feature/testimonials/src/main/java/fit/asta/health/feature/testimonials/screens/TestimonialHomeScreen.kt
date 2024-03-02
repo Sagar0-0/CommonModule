@@ -12,7 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Help
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.TopAppBarDefaults
 import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
@@ -50,7 +49,6 @@ import fit.asta.health.feature.testimonials.components.UserTestimonialUI
  * @param navigateToCreate This function navigates the user to the Create Screen of the testimonials
  * @param onBack This function navigates the current Testimonials Home Screen back to the Tools Screen
  */
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestimonialHomeScreenControl(
     testimonials: LazyPagingItems<Testimonial>,

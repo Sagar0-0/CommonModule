@@ -12,7 +12,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.ui.Alignment
@@ -31,7 +30,6 @@ import fit.asta.health.sunlight.feature.screens.session_result_screen.components
 import fit.asta.health.sunlight.feature.utils.toAmPmTime
 import fit.asta.health.sunlight.feature.utils.toMinutes
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SessionResultScreen(
     state: State<SunlightHomeState>,

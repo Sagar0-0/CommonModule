@@ -47,11 +47,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.material.icons.extended.android)
     implementation(libs.compose.theme.adapter)
     //Spotify Auth
     implementation(libs.auth)
@@ -64,10 +59,6 @@ dependencies {
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
-    implementation(libs.coil.kt.compose)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -76,6 +67,8 @@ dependencies {
     implementation(libs.hilt.ext.work)
     //Work Manager
     implementation(libs.androidx.work.ktx)
+
+    implementation(libs.coil.kt.compose)
 
     implementation(libs.gson)
 

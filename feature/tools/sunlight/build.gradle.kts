@@ -22,11 +22,6 @@ android {
             excludes += "META-INF/*.kotlin_module"
         }
     }
-    kotlinOptions {
-        allWarningsAsErrors = false
-        freeCompilerArgs = listOf("-opt-in=androidx.compose.material3.ExperimentalMaterial3Api")
-
-    }
 }
 
 dependencies {
@@ -53,7 +48,6 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.compose.material3)
     implementation(libs.androidx.documentfile)
 
     //Jetpack Compose - Pager

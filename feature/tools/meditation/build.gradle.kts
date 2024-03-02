@@ -13,15 +13,6 @@ android {
 
 dependencies {
 
-    implementation(libs.androidx.core.ktx)
-    implementation(libs.androidx.appcompat)
-    implementation(libs.material)
-    //Jetpack Compose - Material theme components
-    implementation(libs.androidx.compose.material3)
-    implementation(libs.androidx.compose.material3.windowSizeClass)
-    implementation(libs.androidx.material.icons.extended.android)
-    implementation(libs.compose.theme.adapter)
-
     implementation(project(":libs:media"))
     implementation(project(":data:tools:meditation"))
     implementation(project(":data:auth"))
@@ -33,19 +24,20 @@ dependencies {
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
 
+    implementation(libs.androidx.core.ktx)
+    implementation(libs.androidx.appcompat)
+    implementation(libs.compose.theme.adapter)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
-    implementation(libs.coil.kt.compose)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
 
     //Hilt Navigation
     implementation(libs.androidx.hilt.navigation.compose)
+
+    implementation(libs.coil.kt.compose)
 
     implementation(libs.gson)
 

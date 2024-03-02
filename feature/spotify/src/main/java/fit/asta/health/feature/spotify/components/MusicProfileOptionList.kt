@@ -4,7 +4,6 @@ import androidx.compose.foundation.layout.ExperimentalLayoutApi
 import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.AppTheme
@@ -18,7 +17,7 @@ import fit.asta.health.designsystem.molecular.chip.AppFilterChip
  * @param categoryList This contains the list of options from which the user can choose
  * @param onSelectionChange This function is used to send the chosen value to the parent function
  */
-@OptIn(ExperimentalLayoutApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
 fun MusicProfileOptionList(
     selectedItem: Int,

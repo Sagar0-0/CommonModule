@@ -16,15 +16,14 @@ dependencies {
     implementation(project(":core:common"))
     implementation(project(":core:designsystem"))
     implementation(project(":core:test"))
-
-    implementation(project(":data:payments:wallet"))
     implementation(project(":data:auth"))
 
+    implementation(project(":data:payments:wallet"))
+    implementation(project(":data:payments:subscription"))
+    implementation(project(":data:payments:offers"))
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)
-    implementation(libs.androidx.material.icons.extended.android)
-
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.lifecycle.viewModelCompose)
     implementation(libs.androidx.lifecycle.runtimeCompose)
@@ -34,7 +33,4 @@ dependencies {
     implementation(libs.androidx.appcompat)
     implementation(libs.androidx.navigation.runtime.ktx)
     implementation(libs.androidx.foundation.android)
-    implementation(libs.androidx.compose.material3)
-    implementation(project(mapOf("path" to ":data:payments:subscription")))
-    implementation(project(":data:payments:offers"))
 }

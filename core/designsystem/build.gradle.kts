@@ -20,7 +20,6 @@ dependencies {
 
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.appcompat)
-    implementation(libs.material)
     implementation(libs.androidx.ui.unit.android)
     implementation(libs.androidx.documentfile)
     testImplementation(libs.junit.jupiter)

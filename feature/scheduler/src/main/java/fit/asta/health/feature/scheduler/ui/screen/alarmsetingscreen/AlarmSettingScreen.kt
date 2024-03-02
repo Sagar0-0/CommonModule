@@ -33,7 +33,6 @@ import androidx.compose.material.icons.filled.Wysiwyg
 import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -90,7 +89,6 @@ import java.util.Calendar
 import java.util.Locale
 import fit.asta.health.resources.strings.R as StringR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AlarmSettingScreen(
     alarmSettingUiState: ASUiState = ASUiState(),
@@ -339,7 +337,7 @@ enum class AlarmCreateBottomSheetTypes {
     LABEL, DESCRIPTION, REMINDER, VIBRATION, TIME, DATERANGE
 }
 
-@OptIn(ExperimentalComposeUiApi::class, ExperimentalMaterial3Api::class)
+@OptIn(ExperimentalComposeUiApi::class)
 @Composable
 fun AlarmCreateBtmSheetLayout(
     sheetLayout: AlarmCreateBottomSheetTypes,
@@ -552,7 +550,6 @@ fun dateValidator(): (Long) -> Boolean {
     }
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun DateRangePickerSample(state: DateRangePickerState) {
     DateRangePicker(

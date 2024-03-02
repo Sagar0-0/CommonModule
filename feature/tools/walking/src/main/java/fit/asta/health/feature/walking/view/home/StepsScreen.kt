@@ -22,7 +22,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -79,7 +78,6 @@ import fit.asta.health.feature.walking.view.component.StepsProgressCard
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 import fit.asta.health.resources.drawables.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun StepsScreen(
     healthConnectAvailability: Int,
@@ -280,7 +278,6 @@ fun StepsScreen(
 
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun WalkingBottomSheet(
     selectedData: SnapshotStateList<Prc>,

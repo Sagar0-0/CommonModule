@@ -8,7 +8,6 @@ import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.AppTheme
@@ -20,7 +19,6 @@ import fit.asta.health.sunlight.feature.screens.selfcare_suggetion.component.Sel
 import fit.asta.health.sunlight.feature.screens.selfcare_suggetion.component.SelfCareSuggestionCardSupplements
 import fit.asta.health.sunlight.remote.model.HelpAndNutrition
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SelfCareSuggestionScreen(
     data: HelpAndNutrition,

@@ -2,7 +2,6 @@ package fit.asta.health.feature.testimonials.screens
 
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -28,7 +27,6 @@ import fit.asta.health.feature.testimonials.events.TestimonialEvent
 import fit.asta.health.resources.strings.R
 
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun TestimonialCreateScreenControl(
     userTestimonialState: UiState<Testimonial>,

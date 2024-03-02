@@ -13,7 +13,6 @@
 //import androidx.compose.foundation.shape.CircleShape
 //import androidx.compose.material.icons.Icons
 //import androidx.compose.material.icons.filled.Share
-//import androidx.compose.material3.ExperimentalMaterial3Api
 //import androidx.compose.runtime.Composable
 //import androidx.compose.ui.Alignment
 //import androidx.compose.ui.Modifier
@@ -42,7 +41,6 @@
 //import fit.asta.health.resources.drawables.R as DrawR
 //import fit.asta.health.resources.strings.R as StringR
 //
-//@OptIn(ExperimentalMaterial3Api::class)
 //@Composable
 //fun ShareReferralUi(
 //    referralDataState: UiState<ReferralDataResponse>,

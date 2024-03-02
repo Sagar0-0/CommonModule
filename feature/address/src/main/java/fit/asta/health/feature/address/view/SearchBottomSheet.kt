@@ -14,7 +14,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.material.ripple.rememberRipple
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -50,7 +49,6 @@ import fit.asta.health.resources.strings.R
 import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 internal fun SearchBottomSheet(
     modifier: Modifier = Modifier,

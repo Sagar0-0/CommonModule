@@ -15,7 +15,6 @@ import androidx.compose.material.icons.filled.FileCopy
 import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -36,7 +35,6 @@ import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.resources.strings.R
 import fit.asta.health.ui.common.AppDialogPopUp
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun SettingsHomeScreen(
     appVersionNumber: String,

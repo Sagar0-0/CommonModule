@@ -4,7 +4,6 @@ import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -32,7 +31,6 @@ fun NavController.navigateToReferral(navOptions: NavOptions? = null) {
     this.navigate(REFERRAL_GRAPH_ROUTE, navOptions)
 }
 
-@OptIn(ExperimentalMaterial3Api::class)
 fun NavGraphBuilder.referralRoute(onBackPress: () -> Unit, shareReferralCode: (String) -> Unit) {
     navigation(
         route = REFERRAL_GRAPH_ROUTE,
