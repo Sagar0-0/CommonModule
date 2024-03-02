@@ -34,6 +34,7 @@ dependencies {
     implementation(project(":data:tools:walking"))
     implementation(project(":data:auth"))
     implementation(project(":data:spotify"))
+    implementation(project(":data:tools:water"))
     implementation(project(":core:common"))
     implementation(project(":core:test"))
     implementation(project(":core:datastore"))

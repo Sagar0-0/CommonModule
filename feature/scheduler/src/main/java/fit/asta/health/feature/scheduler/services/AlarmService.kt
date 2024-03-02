@@ -21,7 +21,6 @@ import android.os.VibrationEffect
 import android.os.Vibrator
 import android.os.VibratorManager
 import android.util.Log
-import android.widget.RemoteViews
 import androidx.annotation.OptIn
 import androidx.annotation.RequiresApi
 import androidx.core.app.NotificationCompat
@@ -267,13 +266,11 @@ class AlarmService : Service() {
             snoozeIntent,
             PendingIntent.FLAG_UPDATE_CURRENT or PendingIntent.FLAG_IMMUTABLE
         )
-        val remoteViews = RemoteViews(this.packageName, DrawR.layout.notification_alarm_small)
-        remoteViews.setOnClickPendingIntent(DrawR.id.btnStop, pendingIntentStop)
-        remoteViews.setOnClickPendingIntent(DrawR.id.btn_snooze, pendingIntentSnooze)
+
+
         val alarmName: String = alarm.info.name
-        remoteViews.setTextViewText(DrawR.id.tv_title, alarmName)
-        remoteViews.setTextViewText(DrawR.id.tv_content, alarm.info.tag)
         val pendingIntent = getMainActivityPendingIntent(applicationContext, alarm.info.tag)
+
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
             .setSound(null)
@@ -291,8 +288,20 @@ class AlarmService : Service() {
 //            .setAllowSystemGeneratedContextualActions(true)
 //            .setCustomContentView(remoteViews)
             .setContentText(alarm.info.tag)
-            .setCustomHeadsUpContentView(remoteViews)
+        val toolViewHelper =
+            ToolNotificationHelper(
+                this,
+                builder,
+                alarm,
+                pendingIntentSnooze,
+                pendingIntentStop,
+                notificationManager
+            )
+        val remoteViews = toolViewHelper.getToolRemoteView()
+        builder.setCustomHeadsUpContentView(remoteViews)
             .setCustomContentView(remoteViews)
+            .setCustomBigContentView(null)
+//        ToolsStateManager(toolViewHelper as ToolViewListener)
 
         startForGroundService(
             notification = builder.build(),
