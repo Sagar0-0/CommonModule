@@ -8,7 +8,6 @@ import android.util.Log
 import android.widget.RemoteViews
 import androidx.annotation.DrawableRes
 import androidx.annotation.IdRes
-import androidx.annotation.StringRes
 import androidx.core.app.NotificationCompat
 import fit.asta.health.common.utils.Constants
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
@@ -113,16 +112,16 @@ class ToolNotificationHelper @Inject constructor(
     }
 
     override fun updateImageView(id: Int, image: Int) {
-        
+
     }
 }
 
 interface ToolViewListener {
     fun updateWaterTool(text: String)
 
-    fun updateTextView(@IdRes id:Int,text: String)
+    fun updateTextView(@IdRes id: Int, text: String)
 
-    fun updateImageView(@IdRes id: Int,@DrawableRes image:Int)
+    fun updateImageView(@IdRes id: Int, @DrawableRes image: Int)
 
 }
 
