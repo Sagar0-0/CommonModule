@@ -22,13 +22,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AccessTime
 import androidx.compose.material.icons.filled.DirectionsRun
 import androidx.compose.material.icons.filled.LocalFireDepartment
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.ButtonDefaults
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.LaunchedEffect
@@ -60,15 +54,18 @@ import fit.asta.health.common.utils.toDraw
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.walking.domain.model.Day
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
+import fit.asta.health.designsystem.atomic.token.checkState
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CardItem
 import fit.asta.health.designsystem.molecular.CircularSliderFloat
 import fit.asta.health.designsystem.molecular.CircularSliderInt
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppSheetState
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
-import fit.asta.health.designsystem.molecular.button.AppFilledButton
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
@@ -103,12 +100,10 @@ fun StepsScreen(
     onScheduler: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = true
+    val scaffoldState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
+        initialValue = AppSheetValue.PartiallyExpanded,
+        skipHiddenState = true,
     )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
     )
     var showTargetDialogWithResult by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -172,7 +167,7 @@ fun StepsScreen(
                 sheetContent = {
                     WalkingBottomSheet(
                         selectedData = selectedData,
-                        scaffoldState = scaffoldState,
+                        animatedState = checkState(scaffoldState),
                         goToList = goToList,
                         onTarget = { showTargetDialogWithResult = true },
                         onStart = onStart,
@@ -289,7 +284,7 @@ fun StepsScreen(
 @Composable
 fun WalkingBottomSheet(
     selectedData: SnapshotStateList<Prc>,
-    scaffoldState: BottomSheetScaffoldState,
+    animatedState : Boolean,
     goToList: (Int, String) -> Unit,
     onTarget: () -> Unit,
     onStart: () -> Unit,
@@ -329,7 +324,7 @@ fun WalkingBottomSheet(
                 }
             }
 
-            AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+            AnimatedVisibility(visible = animatedState) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
@@ -380,7 +375,7 @@ fun SunlightCard(modifier: Modifier) {
     val checked = remember { mutableStateOf(true) }
     AppCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+        //colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
     ) {
         Column(
             modifier = Modifier
@@ -469,32 +464,24 @@ fun ShowTargetDialog(
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        AppFilledButton(
-                            onClick = onNegativeClick,
+                        ButtonWithColor(color = AppTheme.colors.error, text = "Close",
                             modifier = Modifier
                                 .height(AppTheme.buttonSize.level7)
-                                .fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = AppTheme.colors.error,
-                            )
-                        ) {
-                            CaptionTexts.Level3(text = "Close", color = AppTheme.colors.onError)
+                                .fillMaxWidth()) {
+                            onNegativeClick()
                         }
+//
                     }
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        AppFilledButton(
-                            onClick = { onPositiveClick(distance, duration.toInt()) },
+                        ButtonWithColor(color = AppTheme.colors.error, text = "Save",
                             modifier = Modifier
                                 .height(AppTheme.buttonSize.level7)
-                                .fillMaxWidth(),
-                            colors = ButtonDefaults.buttonColors(
-                                containerColor = AppTheme.colors.error,
-                            )
-                        ) {
-                            CaptionTexts.Level3(text = "Save", color = AppTheme.colors.onError)
+                                .fillMaxWidth()) {
+                            onPositiveClick(distance, duration.toInt())
                         }
+//
                     }
                 }
             }

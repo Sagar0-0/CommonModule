@@ -9,10 +9,7 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.mutableStateOf
@@ -45,7 +42,7 @@ fun SunlightBottomSheet(
     timerState: MutableState<Boolean>,
     timerPauseState: MutableState<Boolean>,
     supplementData: MutableState<Sup?>,
-    scaffoldState: BottomSheetScaffoldState,
+    animatedState : Boolean,
     goToList: (Int, String) -> Unit,
     onTarget: () -> Unit,
     onStart: () -> Unit,
@@ -60,7 +57,7 @@ fun SunlightBottomSheet(
                 .padding(start = 16.dp, end = 16.dp, bottom = 16.dp, top = 0.dp),
             verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+            AnimatedVisibility(visible = animatedState) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
@@ -138,7 +135,7 @@ fun SunlightCard(modifier: Modifier) {
     val checked = remember { mutableStateOf(true) }
     AppCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+//        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
     ) {
         Column(
             modifier = Modifier

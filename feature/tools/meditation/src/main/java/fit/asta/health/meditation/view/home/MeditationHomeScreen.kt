@@ -17,12 +17,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.lazy.grid.GridCells
 import androidx.compose.foundation.lazy.grid.LazyVerticalGrid
-import androidx.compose.material3.BottomSheetScaffoldState
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.mutableStateOf
@@ -39,6 +34,8 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toDraw
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
+import fit.asta.health.designsystem.atomic.token.checkState
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.CardItem
 import fit.asta.health.designsystem.molecular.CircularSliderInt
@@ -46,8 +43,10 @@ import fit.asta.health.designsystem.molecular.DNDCard
 import fit.asta.health.designsystem.molecular.ProgressBarInt
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppSheetState
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.designsystem.molecular.button.AppSwitch
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -76,13 +75,15 @@ fun MeditationHomeScreen(
             event(MEvent.SetDNDMode(true))
         }
     }
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded,
-        skipHiddenState = true
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(
-        bottomSheetState = sheetState
-    )
+
+//    val animatedState = remember {
+//        mutableStateOf(false)
+//    }
+    val scaffoldState = appRememberBottomSheetScaffoldState(
+        bottomSheetState = AppSheetState(
+            initialValue = AppSheetValue.PartiallyExpanded,
+            skipHiddenState = true
+        ))
     val context = LocalContext.current
     when (state) {
         UiState.Loading -> {
@@ -111,7 +112,8 @@ fun MeditationHomeScreen(
                     MeditationBottomSheet(
                         uiState = uiState,
                         selectedData = selectedData,
-                        scaffoldState = scaffoldState,
+//                        scaffoldState = scaffoldState,
+                        animatedState = checkState(scaffoldState),
                         event = event,
                         goToList = goToList,
                         onClickSchedule = onClickSchedule
@@ -218,7 +220,8 @@ fun MeditationHomeScreen(
 fun MeditationBottomSheet(
     uiState: ToolUiState,
     selectedData: SnapshotStateList<Prc>,
-    scaffoldState: BottomSheetScaffoldState,
+//    scaffoldState: BottomSheetScaffoldState,
+    animatedState : Boolean,
     goToList: (Int) -> Unit,
     event: (MEvent) -> Unit,
     onClickSchedule:() -> Unit
@@ -258,7 +261,7 @@ fun MeditationBottomSheet(
                 }
             }
 
-            AnimatedVisibility(visible = scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
+            AnimatedVisibility(visible = animatedState) {
                 Column(
                     modifier = Modifier.fillMaxWidth(),
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
@@ -314,7 +317,7 @@ fun SunlightCard(modifier: Modifier) {
     val checked = remember { mutableStateOf(true) }
     AppCard(
         modifier = modifier,
-        colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
+       // colors = CardDefaults.cardColors(containerColor = AppTheme.colors.background)
     ) {
         Column(
             modifier = Modifier

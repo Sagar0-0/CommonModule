@@ -10,9 +10,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SheetValue
-import androidx.compose.material3.rememberBottomSheetScaffoldState
-import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -31,9 +28,13 @@ import fit.asta.health.data.sleep.model.network.common.Prc
 import fit.asta.health.data.sleep.model.network.get.ProgressData
 import fit.asta.health.data.sleep.utils.SleepNetworkCall
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.AppSheetValue
+import fit.asta.health.designsystem.atomic.token.checkState
 import fit.asta.health.designsystem.molecular.ProgressBarInt
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
+import fit.asta.health.designsystem.molecular.background.AppSheetState
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
+import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.sleep.view.components.SleepBottomSheet
@@ -54,11 +55,9 @@ fun SleepHomeScreen(
     onStartStopClick: () -> Unit,
     onBack: () -> Unit
 ) {
-
-    val sheetState = rememberStandardBottomSheetState(
-        initialValue = SheetValue.PartiallyExpanded
-    )
-    val scaffoldState = rememberBottomSheetScaffoldState(bottomSheetState = sheetState)
+    val scaffoldState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
+        initialValue = AppSheetValue.PartiallyExpanded
+    ))
     val backStackEntry = navController.currentBackStackEntryAsState()
     val currentBackStackEntryRoute = backStackEntry.value?.destination?.route
     val shouldShowSheet = currentBackStackEntryRoute == SleepToolNavRoutes.SleepHomeRoute.routes
@@ -69,7 +68,7 @@ fun SleepHomeScreen(
         sheetContent = {
             if (shouldShowSheet) {
                 SleepBottomSheet(
-                    scaffoldState = sheetState,
+                    animatedState = checkState(scaffoldState),
                     navController = navController,
                     bottomSheetData = bottomSheetData,
                     selectedDisturbances = selectedDisturbances,

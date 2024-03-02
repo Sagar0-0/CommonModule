@@ -1,3 +1,5 @@
+@file:OptIn(ExperimentalMaterialApi::class)
+
 package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.ColumnScope
@@ -13,7 +15,9 @@ import androidx.compose.material3.BottomSheetDefaults
 import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.ModalBottomSheet
 import androidx.compose.material3.SheetState
+import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
@@ -82,3 +86,12 @@ fun AppModalBottomSheetLayout(
         content = content,
     )
 }
+
+@OptIn(ExperimentalMaterial3Api::class)
+@Composable
+fun appRememberModalBottomSheetState(skipPartiallyExpanded: Boolean = false,
+                                     confirmValueChange: (SheetValue) -> Boolean = { true }): SheetState {
+    return rememberModalBottomSheetState(skipPartiallyExpanded,
+    confirmValueChange)
+}
+
