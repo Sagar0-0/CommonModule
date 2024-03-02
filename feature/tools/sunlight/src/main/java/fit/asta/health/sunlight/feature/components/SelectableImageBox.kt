@@ -61,9 +61,9 @@ fun SelectableImageBox(
                     .padding(16.dp)
                     .fillMaxSize()
                     .clip(shape = RoundedCornerShape(4.dp)),
-                model = imageLink ?: "",
+                model  = imageLink ?: "",
                 contentScale = ContentScale.Fit,
-                errorImage = painterResource(id = onError)
+                errorImage = painterResource(onError)
             )
             if (isSelected) {
                 Icon(

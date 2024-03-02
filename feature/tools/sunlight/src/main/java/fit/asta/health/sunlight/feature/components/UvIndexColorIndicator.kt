@@ -8,13 +8,13 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentSize
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.sunlight.feature.utils.toUVIndexColor
 
@@ -44,7 +44,7 @@ fun ColorIndexItem(color: Color, title: String) {
         horizontalArrangement = Arrangement.Center,
         modifier = Modifier.padding(end = AppTheme.spacing.level1)
     ) {
-        Divider(
+        AppDivider(
             color = color,
             thickness = AppTheme.spacing.level1,
             modifier = Modifier.width(20.dp)

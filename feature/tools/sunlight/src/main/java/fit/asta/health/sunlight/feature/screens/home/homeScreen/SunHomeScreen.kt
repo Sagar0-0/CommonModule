@@ -9,7 +9,11 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
+import androidx.compose.material3.SheetValue
+import androidx.compose.material3.SnackbarDuration
+import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.rememberBottomSheetScaffoldState
+import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.State
 import androidx.compose.runtime.getValue
@@ -20,15 +24,9 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.unit.dp
-import fit.asta.health.designsystem.atomic.token.AppSheetValue
-import fit.asta.health.designsystem.atomic.token.checkState
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppScaffold
-import fit.asta.health.designsystem.molecular.background.AppSheetState
-import fit.asta.health.designsystem.molecular.background.AppSnackBarDuration
-import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
-import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.sunlight.feature.components.SunlightTopBar
 import fit.asta.health.sunlight.feature.components.UvBarChartCard
@@ -44,9 +42,6 @@ import fit.asta.health.sunlight.feature.utils.DateUtil
 import kotlinx.coroutines.launch
 
 
-@OptIn(
-    ExperimentalMaterial3Api::class
-)
 @Composable
 fun SunHomeScreen(
     navigateToSkinCondition: (String) -> Unit = {},
@@ -56,17 +51,18 @@ fun SunHomeScreen(
     homeState: State<SunlightHomeState>
 ) {
     val scrollState = rememberScrollState()
-    val scaffoldState = appRememberBottomSheetScaffoldState(
-        bottomSheetState = AppSheetState(
-            initialValue = AppSheetValue.PartiallyExpanded, skipHiddenState = true
-        )
+    val sheetState = rememberStandardBottomSheetState(
+        initialValue = SheetValue.PartiallyExpanded, skipHiddenState = true
+    )
+    val scaffoldState = rememberBottomSheetScaffoldState(
+        bottomSheetState = sheetState
     )
     val scope = rememberCoroutineScope()
-    val snackbarHostState = appSnackBarHostState()
+    val snackbarHostState = remember { SnackbarHostState() }
     var showDialogue by remember {
         mutableStateOf(false)
     }
-    BackHandler(scaffoldState.bottomSheetState.currentValue == AppSheetValue.Expanded) {
+    BackHandler(scaffoldState.bottomSheetState.currentValue == SheetValue.Expanded) {
         scope.launch {
             scaffoldState.bottomSheetState.partialExpand()
         }
@@ -100,7 +96,7 @@ fun SunHomeScreen(
                     selectedData = homeState.value.skinConditionData,
                     timerState = homeState.value.isTimerRunning,
                     timerPauseState = homeState.value.isTimerPaused,
-                    animatedState = checkState(scaffoldState),
+                    scaffoldState = scaffoldState,
                     supplementData = homeState.value.supplementData,
                     goToList = { _, code ->
                         navigateToSkinCondition.invoke(code)
@@ -124,7 +120,7 @@ fun SunHomeScreen(
                                 scope.launch {
                                     snackbarHostState.showSnackbar(
                                         message = "Timer can be only started during the given time slots.Thank you.",
-                                        duration = AppSnackBarDuration.Short,
+                                        duration = SnackbarDuration.Short,
                                         withDismissAction = true
                                     )
                                 }
