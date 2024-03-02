@@ -28,6 +28,8 @@ import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalDensity
+import androidx.compose.ui.unit.Density
 import androidx.compose.ui.unit.Dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.AppLoadingScreen
@@ -168,9 +170,11 @@ fun appSnackBarHostState()
     return remember { SnackbarHostState() }
 }
 
+@Composable
 fun AppSheetState(
     skipPartialExpanded: Boolean = false,
     initialValue: SheetValue = AppSheetValue.Hidden,
+    density: Density = LocalDensity.current,
     confirmValueChange: (SheetValue) -> Boolean = {
         true
     },
@@ -179,13 +183,16 @@ fun AppSheetState(
 
     return SheetState(
         skipPartiallyExpanded = skipPartialExpanded,
-
+        density = density,
         initialValue = initialValue,
-
         confirmValueChange = confirmValueChange,
-
         skipHiddenState = skipHiddenState
     )
+}
+
+@Composable
+fun appRememberStandardBottomSheetState(): SheetState {
+    return rememberStandardBottomSheetState()
 }
 
 //use case
