@@ -8,9 +8,7 @@ import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.remember
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -22,6 +20,7 @@ import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
@@ -30,7 +29,7 @@ import fit.asta.health.resources.strings.R as StringR
 @Composable
 fun AlarmScreen(uiState: AlarmUiState, event: (AlarmEvent) -> Unit) {
 
-    val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = appSnackBarHostState()
     val context: Context = LocalContext.current
     AppScaffold(
         modifier = Modifier.fillMaxSize(),

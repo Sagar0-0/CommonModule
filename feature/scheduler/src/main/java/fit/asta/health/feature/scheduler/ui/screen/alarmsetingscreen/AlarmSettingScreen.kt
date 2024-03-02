@@ -34,9 +34,7 @@ import androidx.compose.material3.DatePickerDefaults
 import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.rememberDateRangePickerState
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -60,6 +58,8 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
+import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTextButton
@@ -100,7 +100,7 @@ fun AlarmSettingScreen(
     navBack: () -> Unit = {}
 ) {
     val context = LocalContext.current
-    val bottomSheetState = rememberModalBottomSheetState()
+    val bottomSheetState = appRememberModalBottomSheetState()
     var bottomSheetVisible by rememberSaveable {
         mutableStateOf(false)
     }
@@ -145,7 +145,7 @@ fun AlarmSettingScreen(
         bottomSheetVisible = true
         scope.launch { bottomSheetState.expand() }
     }
-    val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = appSnackBarHostState()
 
     AppScaffold(
         modifier = Modifier
