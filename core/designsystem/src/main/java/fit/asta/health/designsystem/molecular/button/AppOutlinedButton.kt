@@ -91,7 +91,7 @@ fun AppOutlinedButton(
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
         containerColor = Color.Transparent,
         contentColor = AppTheme.colors.onSurface,
-        disabledContainerColor = Color.Transparent,
+        disabledContainerColor = Color.Blue,
         disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
     ),
     elevation: ButtonElevation? = null,

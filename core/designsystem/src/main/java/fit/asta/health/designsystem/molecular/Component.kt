@@ -86,10 +86,12 @@ fun ButtonWithColor(
     AppFilledButton(
         textToShow = text,
         modifier = modifier,
-        colors = ButtonDefaults.buttonColors(containerColor = color)
+        colors = ButtonDefaults.buttonColors(containerColor = color,
+            contentColor = AppTheme.colors.onBackground)
     ) {
         onClick()
     }
+
 }
 
 

@@ -71,7 +71,7 @@ fun AppSwitch(
         checkedBorderColor = Color.Transparent,
         checkedIconColor = AppTheme.colors.onPrimaryContainer,
         uncheckedThumbColor = AppTheme.colors.outline,
-        uncheckedTrackColor = AppTheme.colors.surfaceVariant,
+        uncheckedTrackColor = AppTheme.colors.onSecondary,
         uncheckedBorderColor = AppTheme.colors.outline,
         uncheckedIconColor = AppTheme.colors.surfaceVariant,
         disabledCheckedThumbColor = AppTheme.colors.surface
