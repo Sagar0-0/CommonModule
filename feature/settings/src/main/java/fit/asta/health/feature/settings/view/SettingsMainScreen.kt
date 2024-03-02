@@ -16,11 +16,9 @@ import androidx.compose.material.icons.filled.Logout
 import androidx.compose.material.icons.filled.NightShelter
 import androidx.compose.material.icons.filled.SettingsPhone
 import androidx.compose.material3.ExperimentalMaterial3Api
-import androidx.compose.material3.SnackbarHostState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
@@ -34,6 +32,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.resources.strings.R
 import fit.asta.health.ui.common.AppDialogPopUp
 
@@ -46,7 +45,7 @@ fun SettingsHomeScreen(
     userLogoutState: UiState<Boolean>,
     onUiEvent: (key: SettingsUiEvent) -> Unit
 ) {
-    val snackBarHostState = remember { SnackbarHostState() }
+    val snackBarHostState = appSnackBarHostState()
     var showDeleteConfirmationDialog by rememberSaveable { mutableStateOf(false) }
     var showSignOutConfirmationDialog by rememberSaveable { mutableStateOf(false) }
 
