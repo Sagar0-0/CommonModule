@@ -1,5 +1,6 @@
 package fit.asta.health.sunlight.feature.components
 
+import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.interaction.MutableInteractionSource
@@ -28,6 +29,7 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
+@SuppressLint("UnrememberedMutableInteractionSource")
 @Composable
 fun AppDropDown(
     modifier: Modifier = Modifier,

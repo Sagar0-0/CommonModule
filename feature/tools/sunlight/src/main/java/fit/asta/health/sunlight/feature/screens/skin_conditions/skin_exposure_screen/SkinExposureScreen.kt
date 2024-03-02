@@ -35,10 +35,10 @@ fun SkinExposureScreen(
     onEvent: (SkinConditionEvents) -> Unit,
     onSelect: (SkinConditionResponseData) -> Unit
 ) {
-    LaunchedEffect(Unit){
+    LaunchedEffect(Unit) {
         onEvent.invoke(SkinConditionEvents.OnSkinExposure)
     }
-    if(state.value.isLoading){
+    if (state.value.isLoading) {
         AppDotTypingAnimation()
     }
     var selected by remember {

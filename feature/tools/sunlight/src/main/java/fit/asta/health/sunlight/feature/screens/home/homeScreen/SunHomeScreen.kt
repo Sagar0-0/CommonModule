@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHostState
@@ -43,9 +42,6 @@ import fit.asta.health.sunlight.feature.utils.DateUtil
 import kotlinx.coroutines.launch
 
 
-@OptIn(
-    ExperimentalMaterial3Api::class
-)
 @Composable
 fun SunHomeScreen(
     navigateToSkinCondition: (String) -> Unit = {},

@@ -191,6 +191,9 @@ fun NavGraphBuilder.sunlightNavigation(
                     skinConditionViewModel.conditionUpdateData.addAll(
                         homeViewModel.skinConditionData
                     )
+                    skinConditionViewModel.conditionUpdateData.forEach{data->
+                        Log.d("condition", "sunlightNavigation: ${data.code}")
+                    }
                     skinConditionViewModel.supplementData.value = homeViewModel.supplementData.value
                     skinConditionViewModel.id.value =
                         if (homeViewModel.sunlightDataState.value.sunlightHomeResponse?.sunLightData?.uid?.equals(

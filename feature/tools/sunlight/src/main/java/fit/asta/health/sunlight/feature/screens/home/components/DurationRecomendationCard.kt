@@ -4,7 +4,6 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
-import androidx.compose.material3.Divider
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
@@ -13,6 +12,7 @@ import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.sunlight.feature.rainbowColors
 
@@ -31,7 +31,7 @@ fun DurationRecommendationCard(
         CaptionTexts.Level4(
             text = time?.value ?: constTime ?: "",
         )
-        Divider(
+        AppDivider(
             modifier = Modifier
                 .width(100.dp),
             thickness = 1.dp,

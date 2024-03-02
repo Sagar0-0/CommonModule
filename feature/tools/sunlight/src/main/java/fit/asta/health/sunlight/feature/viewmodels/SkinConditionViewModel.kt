@@ -1,5 +1,6 @@
 package fit.asta.health.sunlight.feature.viewmodels
 
+import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -42,6 +43,10 @@ class SkinConditionViewModel @Inject constructor(
         when (event) {
             is SkinConditionEvents.OnDataUpdate -> {
                 conditionUpdateData[event.id] = event.data
+                Log.d("suntool", "onEvent: ${event.id}   ,,,    ${event.data}")
+                conditionUpdateData.forEach{data->
+                    Log.d("condition", "sunlightNavigation: ${data.code}")
+                }
             }
 
             is SkinConditionEvents.OnSkinColor -> {

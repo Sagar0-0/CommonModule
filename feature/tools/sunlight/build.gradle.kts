@@ -22,6 +22,11 @@ android {
             excludes += "META-INF/*.kotlin_module"
         }
     }
+    kotlinOptions {
+        allWarningsAsErrors = false
+        freeCompilerArgs = listOf("-opt-in=androidx.compose.material3.ExperimentalMaterial3Api")
+
+    }
 }
 
 dependencies {
