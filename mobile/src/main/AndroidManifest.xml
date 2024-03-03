@@ -17,7 +17,7 @@
         android:name="android.permission.FOREGROUND_SERVICE_LOCATION"
         android:minSdkVersion="34" />
     <uses-permission android:name="com.android.MaliciousApp.RECEIVE_BROADCAST" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE"/>
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />
@@ -79,7 +79,8 @@
             android:name=".navigation.track.TrackStatisticsActivity"
             android:exported="false"
             android:label="@string/title_activity_track_statistics"
-            android:theme="@style/AppTheme" />
+            android:theme="@style/AppTheme"
+            android:windowSoftInputMode="adjustResize" />
 
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_icon"
@@ -110,13 +111,14 @@
             android:showOnLockScreen="true"
             android:showWhenLocked="true"
             android:taskAffinity=""
-            android:windowSoftInputMode="stateAlwaysHidden"
+            android:windowSoftInputMode="adjustResize"
             tools:targetApi="o_mr1" />
 
         <activity
             android:name=".feature.spotify.SpotifyLoginActivity"
             android:exported="true"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -131,7 +133,8 @@
         <activity
             android:name=".feature.scheduler.ui.SpotifyActivity"
             android:exported="true"
-            android:launchMode="singleInstance">
+            android:launchMode="singleInstance"
+            android:windowSoftInputMode="adjustResize">
             <intent-filter>
                 <action android:name="android.intent.action.VIEW" />
 
@@ -177,11 +180,10 @@
 
         <receiver
             android:name=".feature.scheduler.services.AlarmBroadcastReceiver"
+            android:enabled="true"
             android:exported="false"
             android:foregroundServiceType="specialUse"
-            android:enabled="true"
-            android:permission="android.permission.BOOT_COMPLETED"
-            >
+            android:permission="android.permission.BOOT_COMPLETED">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
@@ -191,9 +193,8 @@
         </receiver>
         <receiver
             android:name=".feature.scheduler.services.ToolsBroadcastReceiver"
-            android:exported="false"
             android:enabled="true"
-            >
+            android:exported="false">
             <intent-filter>
                 <action android:name="android.intent.action.BOOT_COMPLETED" />
                 <action android:name="android.intent.action.MY_PACKAGE_REPLACED" />
@@ -203,9 +204,9 @@
 
         <receiver
             android:name=".feature.scheduler.services.ShutdownBroadcastReceiver"
+            android:enabled="true"
             android:exported="false"
-            android:permission="android.permission.READ_PHONE_STATE"
-            android:enabled="true">
+            android:permission="android.permission.READ_PHONE_STATE">
             <intent-filter>
                 <action android:name="android.intent.action.ACTION_SHUTDOWN" />
                 <action android:name="android.intent.action.QUICKBOOT_POWEROFF" />
@@ -224,8 +225,12 @@
             android:name=".feature.scheduler.services.AlarmService"
             android:exported="false"
             android:foregroundServiceType="specialUse" />
-        <service android:name=".data.walking.service.StepCounterService" android:foregroundServiceType="location" />
-        <service android:name=".data.walking.service.StepService" android:foregroundServiceType="specialUse"/>
+        <service
+            android:name=".data.walking.service.StepCounterService"
+            android:foregroundServiceType="location" />
+        <service
+            android:name=".data.walking.service.StepService"
+            android:foregroundServiceType="specialUse" />
     </application>
     <queries>
         <package android:name="com.google.android.apps.healthdata" />

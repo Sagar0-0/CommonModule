@@ -3,7 +3,12 @@
 package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.ColumnScope
+import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -25,6 +30,7 @@ import androidx.compose.ui.Modifier
  * @param sheetState The state of the bottom sheet.
  * @param onDismissRequest Executes when the user clicks outside of the bottom sheet, after sheet
  * animates to [Hidden].
+ * @param windowInsets window insets to be passed to the bottom sheet window via [PaddingValues]
  * params.
  * @param dragHandle Optional visual marker to swipe the bottom sheet.
  * @param content The content to be displayed inside the bottom sheet.
@@ -37,6 +43,7 @@ fun AppModalBottomSheet(
     sheetState: SheetState,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
+    windowInsets: WindowInsets = WindowInsets.navigationBars,
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -46,11 +53,11 @@ fun AppModalBottomSheet(
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
             dragHandle = dragHandle,
+            windowInsets = windowInsets.add(WindowInsets.ime),
             content = content,
         )
     }
 }
-
 
 //TODO Migrate to Material 3
 /** [AppModalBottomSheetLayout] is a  Modal bottom sheets present a set of choices while blocking
@@ -82,9 +89,13 @@ fun AppModalBottomSheetLayout(
 
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun appRememberModalBottomSheetState(skipPartiallyExpanded: Boolean = false,
-                                     confirmValueChange: (SheetValue) -> Boolean = { true }): SheetState {
-    return rememberModalBottomSheetState(skipPartiallyExpanded,
-    confirmValueChange)
+fun appRememberModalBottomSheetState(
+    skipPartiallyExpanded: Boolean = false,
+    confirmValueChange: (SheetValue) -> Boolean = { true }
+): SheetState {
+    return rememberModalBottomSheetState(
+        skipPartiallyExpanded,
+        confirmValueChange
+    )
 }
 
