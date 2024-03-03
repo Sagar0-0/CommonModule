@@ -8,6 +8,7 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -15,7 +16,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.core.content.ContextCompat
 import androidx.core.splashscreen.SplashScreen
 import androidx.core.splashscreen.SplashScreen.Companion.installSplashScreen
-import androidx.core.view.WindowCompat
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import androidx.lifecycle.lifecycleScope
@@ -32,7 +32,6 @@ import com.google.android.play.core.install.model.UpdateAvailability
 import com.google.firebase.auth.FirebaseAuth
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants
-import fit.asta.health.common.utils.Constants.goToTool
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
@@ -48,7 +47,6 @@ import fit.asta.health.player.audio.MusicService
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.launch
 import javax.inject.Inject
-
 
 @ExperimentalCoroutinesApi
 @AndroidEntryPoint
@@ -84,8 +82,8 @@ class MainActivity : ComponentActivity(), FirebaseAuth.IdTokenListener {
         val splashScreen = installSplashScreen()
         super.onCreate(savedInstanceState)
         // This app draws behind the system bars, so we want to handle fitting system windows
-        //https://developer.android.com/develop/ui/views/layout/edge-to-edge
-//        WindowCompat.setDecorFitsSystemWindows(window, false)
+        //WindowCompat.setDecorFitsSystemWindows(window, false)
+        enableEdgeToEdge()
         checkUiStateAndStartApp(splashScreen)/*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
                if (alarmManager?.canScheduleExactAlarms() == false) {

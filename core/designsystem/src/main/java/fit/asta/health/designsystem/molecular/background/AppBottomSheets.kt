@@ -3,10 +3,7 @@
 package fit.asta.health.designsystem.molecular.background
 
 import androidx.compose.foundation.layout.ColumnScope
-import androidx.compose.foundation.layout.PaddingValues
-import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -21,7 +18,6 @@ import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 
-
 /** [AppModalBottomSheet] is a composable function in Jetpack Compose that creates a modal
  * bottom sheet, which is a type of dialog that slides up from the bottom of the screen to
  * display content.
@@ -29,7 +25,6 @@ import androidx.compose.ui.Modifier
  * @param sheetState The state of the bottom sheet.
  * @param onDismissRequest Executes when the user clicks outside of the bottom sheet, after sheet
  * animates to [Hidden].
- * @param windowInsets window insets to be passed to the bottom sheet window via [PaddingValues]
  * params.
  * @param dragHandle Optional visual marker to swipe the bottom sheet.
  * @param content The content to be displayed inside the bottom sheet.
@@ -42,7 +37,6 @@ fun AppModalBottomSheet(
     sheetState: SheetState,
     modifier: Modifier = Modifier,
     onDismissRequest: () -> Unit,
-    windowInsets: WindowInsets = WindowInsets.ime,
     dragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     content: @Composable ColumnScope.() -> Unit,
 ) {
@@ -51,7 +45,6 @@ fun AppModalBottomSheet(
             modifier = modifier,
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
-            windowInsets = windowInsets,
             dragHandle = dragHandle,
             content = content,
         )
