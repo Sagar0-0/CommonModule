@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.profile
+package fit.asta.health.feature.profile.profile.vm
 
 import android.net.Uri
 import androidx.lifecycle.ViewModel

@@ -34,7 +34,7 @@ import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.profile.profile.utils.TwoTogglesGroup
+import fit.asta.health.feature.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalMaterial3Api::class)

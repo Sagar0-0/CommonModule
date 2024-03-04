@@ -15,6 +15,7 @@ import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.feature.profile.profile.ui.screens.UserProfileContent
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
+import fit.asta.health.feature.profile.profile.vm.ProfileViewModel
 
 const val PROFILE_GRAPH_ROUTE = "graph_profile"
 
