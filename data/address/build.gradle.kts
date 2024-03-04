@@ -20,6 +20,6 @@ dependencies {
     implementation(libs.retrofit.core)
     implementation(libs.converter.gson)
 
-    implementation(libs.play.services.maps)
-    implementation(libs.play.services.location)
+    implementation(libs.gms.play.services.maps)
+    implementation(libs.gms.play.services.location)
 }

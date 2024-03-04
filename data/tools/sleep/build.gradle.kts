@@ -18,8 +18,8 @@ dependencies {
     implementation(project(":resources:strings"))
     implementation(project(":resources:drawables"))
 
-    implementation(libs.play.services.fitness)
-    implementation(libs.play.services.auth)
+    implementation(libs.gms.play.services.fitness)
+    implementation(libs.gms.play.services.auth)
     implementation(libs.gson)
     implementation(libs.retrofit.core)
     implementation(libs.converter.gson)

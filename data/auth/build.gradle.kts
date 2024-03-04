@@ -23,8 +23,8 @@ dependencies {
     //Firebase
     implementation(platform(libs.firebase.bom))
     implementation(libs.firebase.auth)
-    implementation(libs.play.services.auth)
-    implementation(libs.play.services.auth.api.phone)
+    implementation(libs.gms.play.services.auth)
+    implementation(libs.gms.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
     implementation(libs.firebase.firestore)
     implementation(libs.firebase.messaging)

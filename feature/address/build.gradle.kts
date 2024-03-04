@@ -23,9 +23,9 @@ dependencies {
     implementation(project(":data:auth"))
 
 
-    implementation(libs.play.services.maps)
+    implementation(libs.gms.play.services.maps)
     implementation(libs.maps.compose)
-    implementation(libs.play.services.location)
+    implementation(libs.gms.play.services.location)
     implementation(libs.places)
 
     implementation(libs.androidx.navigation.compose)
