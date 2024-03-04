@@ -89,10 +89,13 @@ fun AppOutlinedButton(
     enabled: Boolean = true,
     shape: Shape = AppTheme.shape.level1,
     colors: ButtonColors = ButtonDefaults.outlinedButtonColors(
-        containerColor = Color.Transparent,
+        containerColor = if (enabled)
+            AppTheme.colors.primary
+        else
+            AppTheme.colors.onPrimary.copy(AppTheme.alphaValues.level2),
         contentColor = AppTheme.colors.onSurface,
         disabledContainerColor = Color.Blue,
-        disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        disabledContentColor = AppTheme.colors.onPrimary.copy(AppTheme.alphaValues.level2)
     ),
     elevation: ButtonElevation? = null,
     border: BorderStroke? = ButtonDefaults.outlinedButtonBorder,
