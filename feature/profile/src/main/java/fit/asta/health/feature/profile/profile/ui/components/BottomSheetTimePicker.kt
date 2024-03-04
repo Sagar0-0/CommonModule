@@ -3,7 +3,6 @@ package fit.asta.health.feature.profile.profile.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
@@ -15,7 +14,6 @@ import fit.asta.health.designsystem.molecular.TimePickerContent
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import java.time.LocalTime
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetTimePicker(
     isVisible: Boolean,

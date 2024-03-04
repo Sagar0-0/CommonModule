@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.OutlinedTextFieldDefaults
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
@@ -37,7 +36,6 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetGenderSelector(
     isVisible: Boolean,

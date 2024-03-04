@@ -1,11 +1,10 @@
-@file:OptIn(ExperimentalFoundationApi::class, ExperimentalMaterial3Api::class)
+@file:OptIn(ExperimentalFoundationApi::class)
 
 package fit.asta.health.feature.profile.profile.ui.state
 
 import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
@@ -154,7 +153,6 @@ class UserProfileState(
         get() = ProfileNavigationScreen.entries
 
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun openSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
         bottomSheetVisible.value = true
         coroutineScope.launch {
@@ -162,7 +160,6 @@ class UserProfileState(
         }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun closeSheet(bottomSheetState: SheetState, bottomSheetVisible: MutableState<Boolean>) {
         bottomSheetVisible.value = false
         coroutineScope.launch {

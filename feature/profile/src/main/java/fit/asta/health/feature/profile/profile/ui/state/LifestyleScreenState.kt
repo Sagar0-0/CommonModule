@@ -3,7 +3,6 @@ package fit.asta.health.feature.profile.profile.ui.state
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Bedtime
 import androidx.compose.material.icons.filled.Work
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableIntState
 import androidx.compose.runtime.MutableState
@@ -68,7 +67,6 @@ class LifestyleScreenState(
         )
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun openPropertiesBottomSheet(
         sheetState: SheetState,
         index: Int,
@@ -135,14 +133,12 @@ class LifestyleScreenState(
         )
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun openTimerSheet(index: Int, sheetState: SheetState) {
         currentTimerIndex = index
         timerSheetVisible = true
         coroutineScope.launch { sheetState.expand() }
     }
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun closeTimerSheet(sheetState: SheetState) {
         timerSheetVisible = false
         coroutineScope.launch { sheetState.hide() }

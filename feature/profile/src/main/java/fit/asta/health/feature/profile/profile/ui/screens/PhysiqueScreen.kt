@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.MonitorWeight
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -25,7 +24,6 @@ import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun PhysiqueScreen(
     userProfileState: UserProfileState

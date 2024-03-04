@@ -1,6 +1,5 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
@@ -81,7 +80,6 @@ class DietScreenState(
         ),
     )
 
-    @OptIn(ExperimentalMaterial3Api::class)
     fun openPropertiesBottomSheet(
         sheetState: SheetState,
         index: Int,

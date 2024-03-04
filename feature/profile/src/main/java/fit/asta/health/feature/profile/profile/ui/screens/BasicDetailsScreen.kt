@@ -11,8 +11,9 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.LocalContentAlpha
 import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.Icons.AutoMirrored.Filled
+import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountBalanceWallet
-import androidx.compose.material.icons.filled.ArrowForward
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Female
 import androidx.compose.material.icons.filled.Mail
@@ -26,7 +27,6 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.EditCalendar
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -53,7 +53,6 @@ import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
-@ExperimentalMaterial3Api
 @Composable
 fun BasicDetailsScreen(
     userProfileState: UserProfileState,
@@ -143,7 +142,7 @@ fun BasicDetailsScreen(
             label = "Subscription",
             value = "Check your plan",
             leadingIcon = Icons.Default.Subscriptions,
-            trailingIcon = Icons.Default.ArrowForward
+            trailingIcon = Filled.ArrowForward
         ) {
             userProfileState.navigateToSubscriptions()
         }
@@ -152,7 +151,7 @@ fun BasicDetailsScreen(
             label = "Wallet",
             value = "Check your balance",
             leadingIcon = Icons.Default.AccountBalanceWallet,
-            trailingIcon = Icons.Default.ArrowForward
+            trailingIcon = Filled.ArrowForward
         ) {
             userProfileState.navigateToWallet()
         }
@@ -161,7 +160,7 @@ fun BasicDetailsScreen(
             label = "Refer and Earn",
             value = "Refer your Friend",
             leadingIcon = Icons.Default.MonetizationOn,
-            trailingIcon = Icons.Default.ArrowForward
+            trailingIcon = Filled.ArrowForward
         ) {
             userProfileState.navigateToReferral()
         }
@@ -170,7 +169,7 @@ fun BasicDetailsScreen(
             label = "Orders",
             value = "Check order history",
             leadingIcon = Icons.Default.AccountBalanceWallet,
-            trailingIcon = Icons.Default.ArrowForward
+            trailingIcon = Filled.ArrowForward
         ) {
             userProfileState.navigateToOrders()
         }

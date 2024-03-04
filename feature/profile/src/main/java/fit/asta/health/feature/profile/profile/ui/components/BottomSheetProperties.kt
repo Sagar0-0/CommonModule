@@ -6,7 +6,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Save
-import androidx.compose.material3.ExperimentalMaterial3Api
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
@@ -22,7 +21,6 @@ import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 
-@OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun BottomSheetProperties(
     isVisible: Boolean,
