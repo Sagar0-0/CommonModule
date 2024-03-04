@@ -144,7 +144,29 @@
 #Spotify------------------------------------------------------------
 
 # Keep all Google Play Services Auth classes
--dontwarn com.google.android.gms.auth.api.credentials.*
+#-dontwarn com.google.android.gms.auth.api.credentials.*
+-dontwarn com.google.android.gms.auth.api.credentials.Credential$Builder
+-dontwarn com.google.android.gms.auth.api.credentials.Credential
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialRequest$Builder
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialRequest
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialRequestResponse
+-dontwarn com.google.android.gms.auth.api.credentials.Credentials
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialsClient
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialsOptions$Builder
+-dontwarn com.google.android.gms.auth.api.credentials.CredentialsOptions
+-dontwarn com.google.android.gms.auth.api.credentials.HintRequest$Builder
+-dontwarn com.google.android.gms.auth.api.credentials.HintRequest
+-keepattributes Signature
+-keepclassmembers class fit.asta.health.models.** { *; }
+-keep class com.google.android.gms.** { *; }
+-keep class com.firebase.** { *; }
+-keep class org.apache.** { *; }
+-keepnames class com.shaded.fasterxml.** { *; }
+-keepnames class com.fasterxml.jackson.** { *; }
+-keepnames class javax.servlet.** { *; }
+-keepnames class org.ietf.jgss.** { *; }
+-dontwarn org.apache.**
+-dontwarn org.w3c.dom.**
 
 # Unit Testing Rules for missing classes
 -dontwarn edu.umd.cs.findbugs.annotations.*
