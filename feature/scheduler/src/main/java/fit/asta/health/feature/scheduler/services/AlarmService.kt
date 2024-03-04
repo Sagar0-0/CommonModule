@@ -295,12 +295,13 @@ class AlarmService : Service() {
                 alarm,
                 pendingIntentSnooze,
                 pendingIntentStop,
-                notificationManager
+                notificationManager,
+                isConnected
             )
         val remoteViews = toolViewHelper.getToolRemoteView()
         builder.setCustomHeadsUpContentView(remoteViews)
             .setCustomContentView(remoteViews)
-            .setCustomBigContentView(null)
+//            .setCustomBigContentView(null)
 //        ToolsStateManager(toolViewHelper as ToolViewListener)
 
         startForGroundService(
