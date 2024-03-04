@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -26,7 +25,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
-import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
@@ -211,7 +209,7 @@ fun MinutesPicker(
     leadingZero: Boolean = true,
     minutesRange: Iterable<Int> = (5..30),
     dividersColor: Color = Color.Green,
-    textStyle: TextStyle = LocalTextStyle.current,
+//    textStyle: TextStyle = LocalTextStyle.current,
 ) {
     var min by remember { mutableIntStateOf(minutesRange.first()) }
 
@@ -233,7 +231,7 @@ fun MinutesPicker(
                 "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
             }, value = min, onValueChange = {
                 min = it
-            }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
+            }, dividersColor = dividersColor, /*textStyle = textStyle,*/ range = minutesRange
             )
 
             TitleTexts.Level1(

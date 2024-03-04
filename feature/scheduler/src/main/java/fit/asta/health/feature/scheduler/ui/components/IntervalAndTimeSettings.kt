@@ -17,7 +17,6 @@ import androidx.compose.material.icons.filled.Notifications
 import androidx.compose.material.icons.filled.Schedule
 import androidx.compose.material.icons.filled.Snooze
 import androidx.compose.material.icons.rounded.RemoveCircle
-import androidx.compose.material3.LocalTextStyle
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -33,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import com.chargemap.compose.numberpicker.NumberPicker
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.provideLocalTextStyle
 import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
@@ -117,7 +117,7 @@ fun MinutesPicker(
     leadingZero: Boolean = true,
     minutesRange: Iterable<Int> = (5..30),
     dividersColor: Color = Color.Green,
-    textStyle: TextStyle = LocalTextStyle.current,
+    textStyle: TextStyle = provideLocalTextStyle(),
 ) {
     var min by remember { mutableIntStateOf(minutesRange.first()) }
 

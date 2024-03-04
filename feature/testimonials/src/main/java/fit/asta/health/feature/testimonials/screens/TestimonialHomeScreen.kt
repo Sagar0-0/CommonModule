@@ -12,8 +12,6 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Edit
 import androidx.compose.material.icons.filled.Help
-import androidx.compose.material3.TopAppBarDefaults
-import androidx.compose.material3.rememberTopAppBarState
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -25,6 +23,7 @@ import fit.asta.health.common.utils.getVideoUrlTools
 import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.token.ScrollBehaviors
 import fit.asta.health.designsystem.molecular.AppErrorMsgCard
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
@@ -57,7 +56,7 @@ fun TestimonialHomeScreenControl(
 ) {
 
     // Scroll Behaviour variable used to get the scroll height and the top app bar visibility states
-    val scrollBehavior = TopAppBarDefaults.enterAlwaysScrollBehavior(rememberTopAppBarState())
+    val scrollBehavior = ScrollBehaviors.appTopAppBarEnterAlwaysScrollBehavior()
 
     // Scaffold which serves as a Base Parent UI for this Screen
     AppScaffold(

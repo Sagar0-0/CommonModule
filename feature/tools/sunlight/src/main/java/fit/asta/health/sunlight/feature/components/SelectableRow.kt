@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Done
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -89,7 +88,8 @@ fun SelectableRowSkinColor(
         border = BorderStroke(
             2.dp, if (isSelected) selectedColor else unSelectedColor,
         ),
-        colors = CardDefaults.cardColors(containerColor = unSelectedColor)) {
+//        colors = CardDefaults.cardColors(containerColor = unSelectedColor)
+    ) {
         Row(
             modifier = Modifier.fillMaxWidth(),
             verticalAlignment = Alignment.CenterVertically,
