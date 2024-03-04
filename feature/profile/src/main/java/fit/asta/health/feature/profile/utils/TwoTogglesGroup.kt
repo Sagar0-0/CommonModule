@@ -1,4 +1,4 @@
-package fit.asta.health.feature.profile.profile.utils
+package fit.asta.health.feature.profile.utils
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
