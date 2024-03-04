@@ -2,6 +2,7 @@ package fit.asta.health.feature.scheduler.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -29,6 +30,10 @@ class AlarmScreenActivity : AppCompatActivity() {
 //        Constants.changeStatusBarColor(Color.BLACK, window, this)
         Constants.setShowWhenLocked(window, this)
         super.onCreate(savedInstanceState)
+
+        //Enabling edge to edge for fullscreen theme
+        enableEdgeToEdge()
+
         setContent {
             AppTheme {
                 val alarmScreenViewModel = hiltViewModel<AlarmScreenViewModel>()
