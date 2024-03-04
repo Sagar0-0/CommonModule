@@ -33,7 +33,7 @@ dependencies {
     implementation(libs.androidx.foundation.android)
 
     //Firebase for notifications
-    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.messaging)
 
     // For instrumented tests.
     androidTestImplementation(libs.androidx.compose.ui.test.junit4)

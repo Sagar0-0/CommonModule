@@ -236,25 +236,24 @@ dependencies {
 
     //Firebase authentication
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
 
     //Firebase for notifications
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.firebase.firestore.ktx)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.firestore)
 
     //Firebase analytics
     implementation(libs.kotlinx.coroutines.play.services)
-    implementation(libs.firebase.analytics.ktx)
-    implementation(libs.firebase.crashlytics.ktx)
-    implementation(libs.firebase.perf.ktx)
-    implementation(libs.firebase.config.ktx)
+    implementation(libs.firebase.analytics)
+    implementation(libs.firebase.crashlytics)
+    implementation(libs.firebase.perf)
+    implementation(libs.firebase.config)
 
     //Firebase storage for media files
-    implementation(libs.firebase.storage.ktx)
-
+    implementation(libs.firebase.storage)
 
     //for animations
     implementation(libs.androidx.constraintlayout.compose)
@@ -292,14 +291,6 @@ dependencies {
 
     //Json parser
     implementation(libs.gson)
-
-    //Exo player
-//    implementation(libs.exoplayer)
-//    implementation(libs.extension.cast)
-//    implementation(libs.exoplayer.core)
-//    implementation(libs.exoplayer.dash)
-//    implementation(libs.exoplayer.ui)
-//    api(libs.extension.mediasession)
 
     implementation(libs.androidx.media3.exoplayer)
     implementation(libs.androidx.media3.exoplayer.dash)
@@ -392,7 +383,7 @@ dependencies {
     testImplementation(libs.androidx.paging.common.ktx)
     testImplementation(libs.mockk.android)
     testImplementation(libs.turbine)
-    testImplementation(libs.mockwebserver)
+    testImplementation(libs.okhttp.mockwebserver)
 
     androidTestImplementation(libs.androidx.ui.test.junit4.android)
     androidTestImplementation(libs.androidx.room.testing)

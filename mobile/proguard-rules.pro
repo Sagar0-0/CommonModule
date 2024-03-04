@@ -51,12 +51,6 @@
 }
 #Glide--------------------------------------------------------------
 
-#Spotify------------------------------------------------------------
--dontwarn com.fasterxml.jackson.databind.deser.std.*
--dontwarn com.fasterxml.jackson.databind.ser.std.*
--dontwarn com.spotify.base.annotations.*
-#Spotify------------------------------------------------------------
-
 #Razorpay-----------------------------------------------------------
 -keepclassmembers class * {
     @android.webkit.JavascriptInterface <methods>;
@@ -135,13 +129,22 @@
     kotlin.Metadata *;
 }
 
+-keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
+    <fields>;
+}
+
 # Keep classes used by Kotlin reflection
 -dontwarn kotlin.reflect.**
 -dontwarn kotlin.Metadata
 
--keepclassmembers class * extends androidx.datastore.preferences.protobuf.GeneratedMessageLite {
-    <fields>;
-}
+#Spotify------------------------------------------------------------
+-dontwarn com.fasterxml.jackson.databind.deser.std.*
+-dontwarn com.fasterxml.jackson.databind.ser.std.*
+-dontwarn com.spotify.base.annotations.*
+#Spotify------------------------------------------------------------
+
+# Keep all Google Play Services Auth classes
+-dontwarn com.google.android.gms.auth.api.credentials.*
 
 # Unit Testing Rules for missing classes
 -dontwarn edu.umd.cs.findbugs.annotations.*

@@ -22,11 +22,11 @@ dependencies {
 
     //Firebase
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
-    implementation(libs.firebase.firestore.ktx)
-    implementation(libs.firebase.messaging.ktx)
-    implementation(libs.firebase.storage.ktx)
+    implementation(libs.firebase.firestore)
+    implementation(libs.firebase.messaging)
+    implementation(libs.firebase.storage)
 }

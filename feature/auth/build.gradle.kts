@@ -28,13 +28,13 @@ dependencies {
 
     //Firebase authentication
     implementation(platform(libs.firebase.bom))
-    implementation(libs.firebase.auth.ktx)
+    implementation(libs.firebase.auth)
     implementation(libs.play.services.auth)
     implementation(libs.play.services.auth.api.phone)
     implementation(libs.firebase.ui.auth)
 
     //Firebase for notifications
-    implementation(libs.firebase.messaging.ktx)
+    implementation(libs.firebase.messaging)
 
     implementation(libs.androidx.navigation.compose)
     implementation(libs.androidx.hilt.navigation.compose)

@@ -37,6 +37,6 @@ dependencies {
     implementation(libs.gson)
     implementation(libs.moshi.kotlin)
     //chucker
-    debugImplementation(libs.debugchucker)
+    debugImplementation(libs.chucker.debug)
     releaseImplementation(libs.chucker)
 }

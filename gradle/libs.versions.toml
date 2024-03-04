@@ -66,18 +66,18 @@ core = "1.2.0"
 coreTesting = "2.2.0"
 datastorePreferences = "1.0.0"
 exo = "2.19.1"
-firebaseAnalyticsKtx = "21.5.1"
-firebaseAuthKtx = "22.3.1"
+firebaseAnalytics = "21.5.1"
+firebaseAuth = "22.3.1"
 firebaseBom = "32.7.3"
 firebaseCloudMsg = "23.4.1"
-firebaseConfigKtx = "21.6.2"
-firebaseCrashlyticsKtx = "18.6.2"
+firebaseConfig = "21.6.2"
+firebaseCrashlytics = "18.6.2"
 firebaseCrashlyticsPlugin = "2.9.9"
-firebaseFirestoreKtx = "24.10.3"
-firebaseMessagingKtx = "23.4.1"
+firebaseFirestore = "24.10.3"
+firebaseMessaging = "23.4.1"
 firebasePerf = "20.5.2"
 firebasePerfPlugin = "1.4.2"
-firebaseStorageKtx = "20.3.0"
+firebaseStorage = "20.3.0"
 firebaseUiAuth = "8.0.2"
 flexbox = "3.0.0"
 fluidSlider = "0.3.1"
@@ -125,15 +125,14 @@ material3WindowSizeClass = "1.2.0"
 materialIconsExtendedAndroid = "1.6.2"
 media3 = "1.2.1"
 mockkAndroid = "1.13.5"
-mockwebserver = "4.11.0"
 modernstoragePhotopicker = "1.0.0-alpha06"
 moshiKotlin = "1.15.0"
 navigationFragmentKtx = "2.7.7"
 navigationUiKtx = "2.7.7"
 numberpicker = "1.0.3"
 numberPickerVersion = "2.4.13"
-okhttp = "4.12.0"
-okhttpVersion = "4.12.0"
+okHttpVersion = "4.12.0"
+okHttpMockwebserver = "4.11.0"
 org-jetbrains-kotlin-android = "1.9.10"
 pagingCommonKtx = "3.2.1"
 pagingCompose = "3.2.1"
@@ -256,6 +255,8 @@ billing = { group = "com.android.billingclient", name = "billing", version.ref =
 billing-ktx = { group = "com.android.billingclient", name = "billing-ktx", version.ref = "billingKtx" }
 calendar = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "calendar", version.ref = "calendar" }
 checkout = { group = "com.razorpay", name = "checkout", version.ref = "checkout" }
+chucker-debug = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
+chucker = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 circularimageview = { group = "com.mikhaellopez", name = "circularimageview", version.ref = "circularimageview" }
 clock = { group = "com.maxkeppeler.sheets-compose-dialogs", name = "clock", version.ref = "clock" }
 coil-gif = { group = "io.coil-kt", name = "coil-gif", version.ref = "coilGif" }
@@ -275,19 +276,18 @@ exoplayer-dash = { group = "com.google.android.exoplayer", name = "exoplayer-das
 exoplayer-ui = { group = "com.google.android.exoplayer", name = "exoplayer-ui", version.ref = "exo" }
 extension-cast = { group = "com.google.android.exoplayer", name = "extension-cast", version.ref = "exo" }
 extension-mediasession = { group = "com.google.android.exoplayer", name = "extension-mediasession", version.ref = "exo" }
-firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebaseAnalyticsKtx" }
-firebase-analytics-ktx = { group = "com.google.firebase", name = "firebase-analytics-ktx", version.ref = "firebaseAnalyticsKtx" }
-firebase-auth-ktx = { group = "com.google.firebase", name = "firebase-auth-ktx", version.ref = "firebaseAuthKtx" }
+firebase-analytics = { group = "com.google.firebase", name = "firebase-analytics", version.ref = "firebaseAnalytics" }
+firebase-auth = { group = "com.google.firebase", name = "firebase-auth", version.ref = "firebaseAuth" }
 firebase-bom = { group = "com.google.firebase", name = "firebase-bom", version.ref = "firebaseBom" }
-firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseCloudMsg" }
-firebase-config-ktx = { group = "com.google.firebase", name = "firebase-config-ktx", version.ref = "firebaseConfigKtx" }
-firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
-firebase-crashlytics-ktx = { group = "com.google.firebase", name = "firebase-crashlytics-ktx", version.ref = "firebaseCrashlyticsKtx" }
-firebase-firestore-ktx = { group = "com.google.firebase", name = "firebase-firestore-ktx", version.ref = "firebaseFirestoreKtx" }
-firebase-messaging-ktx = { group = "com.google.firebase", name = "firebase-messaging-ktx", version.ref = "firebaseMessagingKtx" }
-firebase-performance = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebasePerf" }
-firebase-performance-gradle = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
-firebase-storage-ktx = { group = "com.google.firebase", name = "firebase-storage-ktx", version.ref = "firebaseStorageKtx" }
+firebase-cloud-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseCloudMsg" }
+firebase-config = { group = "com.google.firebase", name = "firebase-config", version.ref = "firebaseConfig" }
+firebase-crashlytics = { group = "com.google.firebase", name = "firebase-crashlytics", version.ref = "firebaseCrashlytics" }
+firebase-firestore = { group = "com.google.firebase", name = "firebase-firestore", version.ref = "firebaseFirestore" }
+firebase-messaging = { group = "com.google.firebase", name = "firebase-messaging", version.ref = "firebaseMessaging" }
+firebase-crashlytics-gradle-plugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
+firebase-perf = { group = "com.google.firebase", name = "firebase-perf", version.ref = "firebasePerf" }
+firebase-performance-gradle-plugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
+firebase-storage = { group = "com.google.firebase", name = "firebase-storage", version.ref = "firebaseStorage" }
 firebase-ui-auth = { group = "com.firebaseui", name = "firebase-ui-auth", version.ref = "firebaseUiAuth" }
 flexbox = { group = "com.google.android.flexbox", name = "flexbox", version.ref = "flexbox" }
 fluid-slider = { group = "com.ramotion.fluidslider", name = "fluid-slider", version.ref = "fluidSlider" }
@@ -326,8 +326,9 @@ modernstorage-photopicker = { group = "com.google.modernstorage", name = "modern
 moshi-kotlin = { group = "com.squareup.moshi", name = "moshi-kotlin", version.ref = "moshiKotlin" }
 number-picker = { group = "io.github.ShawnLin013", name = "number-picker", version.ref = "numberPickerVersion" }
 numberpicker = { group = "com.chargemap.compose", name = "numberpicker", version.ref = "numberpicker" }
-okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okhttpVersion" }
-okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okhttp" }
+okhttp = { group = "com.squareup.okhttp3", name = "okhttp", version.ref = "okHttpVersion" }
+okhttp-logging = { group = "com.squareup.okhttp3", name = "logging-interceptor", version.ref = "okHttpVersion" }
+okhttp-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "okHttpMockwebserver" }
 places = { group = "com.google.android.libraries.places", name = "places", version.ref = "places" }
 play-services-auth = { group = "com.google.android.gms", name = "play-services-auth", version.ref = "playServicesAuth" }
 play-services-auth-api-phone = { group = "com.google.android.gms", name = "play-services-auth-api-phone", version.ref = "playServicesAuthApiPhone" }
@@ -348,18 +349,12 @@ swipe = { group = "me.saket.swipe", name = "swipe", version.ref = "swipe" }
 transformationlayout = { group = "com.github.skydoves", name = "transformationlayout", version.ref = "transformationlayout" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
-mockwebserver = { group = "com.squareup.okhttp3", name = "mockwebserver", version.ref = "mockwebserver" }
-debugchucker = { group = "com.github.chuckerteam.chucker", name = "library", version.ref = "chucker" }
-chucker = { group = "com.github.chuckerteam.chucker", name = "library-no-op", version.ref = "chucker" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }
 android-tools-common = { group = "com.android.tools", name = "common", version.ref = "androidTools" }
-firebase-crashlytics-gradlePlugin = { group = "com.google.firebase", name = "firebase-crashlytics-gradle", version.ref = "firebaseCrashlyticsPlugin" }
-firebase-performance-gradlePlugin = { group = "com.google.firebase", name = "perf-plugin", version.ref = "firebasePerfPlugin" }
 kotlin-gradlePlugin = { group = "org.jetbrains.kotlin", name = "kotlin-gradle-plugin", version.ref = "kotlin" }
 ksp-gradlePlugin = { group = "com.google.devtools.ksp", name = "com.google.devtools.ksp.gradle.plugin", version.ref = "ksp" }
-firebase-perf-ktx = { group = "com.google.firebase", name = "firebase-perf-ktx", version.ref = "firebasePerf" }
 material = { group = "com.google.android.material", name = "material", version.ref = "material" }
 androidx-navigation-runtime-ktx = { group = "androidx.navigation", name = "navigation-runtime-ktx", version.ref = "androidxNavigation" }
 androidx-foundation-android = { group = "androidx.compose.foundation", name = "foundation-android", version.ref = "ui" }

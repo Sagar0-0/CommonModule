@@ -29,7 +29,7 @@ class AndroidTestDataPlugin : Plugin<Project> {
                 "implementation"(libs.findLibrary("turbine").get())
                 "implementation"(libs.findLibrary("kotlinx.coroutines.test").get())
                 "implementation"(libs.findLibrary("junit.jupiter").get())
-                "implementation"(libs.findLibrary("mockwebserver").get())
+                "implementation"(libs.findLibrary("okhttp.mockwebserver").get())
             }
         }
     }
