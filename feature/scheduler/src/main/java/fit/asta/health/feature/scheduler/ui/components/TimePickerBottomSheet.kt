@@ -25,6 +25,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
+import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.util.Constants.Companion.getTimeDifference
 import kotlin.math.abs
@@ -59,7 +60,7 @@ fun TimePickerClock(
     hoursDivider: (@Composable () -> Unit)? = null,
     minutesDivider: (@Composable () -> Unit)? = null,
     dividersColor: Color = Color.Green,
-    textStyle: TextStyle = AppTheme.customTypography.title.level3,
+    textStyle: TextStyle = AppTheme.customTypography.title.level3.copy(color = AppTheme.colors.onPrimaryContainer),
 ) {
     val selectionTimePassed = stringResource(StringR.string.selected_time_is_passed)
     var ampmHoursMin by remember(value) {
@@ -86,90 +87,92 @@ fun TimePickerClock(
             "Ring In $formattedDifference"
         }
     }
-    Column(
-        modifier = modifier
-            .fillMaxWidth()
-            .padding(16.dp),
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
-        horizontalAlignment = Alignment.CenterHorizontally
-    ) {
-        TitleTexts.Level1(text = title)
-        AnimatedVisibility(visible = visibility) {
-            TitleTexts.Level1(text = time)
-        }
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
+    AppCard {
+        Column(
+            modifier = modifier
+                .fillMaxWidth()
+                .padding(16.dp),
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1),
+            horizontalAlignment = Alignment.CenterHorizontally
         ) {
-            TitleTexts.Level3(
-                modifier = Modifier.weight(.4f),
-                textAlign = TextAlign.Center,
-                text = "Hours",
-            )
-            TitleTexts.Level3(
-                modifier = Modifier.weight(.4f),
-                textAlign = TextAlign.Center,
-                text = "Minutes",
-            )
-            Spacer(modifier = Modifier.weight(.2f))
-        }
-
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            verticalAlignment = Alignment.CenterVertically,
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-            NumberPicker(modifier = Modifier.weight(1f), value = ampmHoursMin.hours, label = {
-                "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
-            }, onValueChange = {
-                visibility = true
-                ampmHoursMin = ampmHoursMin.copy(hours = it)
-            }, dividersColor = dividersColor, textStyle = textStyle, range = hoursRange
-            )
-
-            hoursDivider?.invoke()
-
-            NumberPicker(modifier = Modifier.weight(1f), label = {
-                "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
-            }, value = ampmHoursMin.minutes, onValueChange = {
-                visibility = true
-                ampmHoursMin = ampmHoursMin.copy(minutes = it)
-            }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
-            )
-
-            minutesDivider?.invoke()
-
-            NumberPicker(modifier = Modifier, value = when (ampmHoursMin.dayTime) {
-                AMPMHoursMin.DayTime.AM -> 0
-                else -> 1
-            }, label = {
-                when (it) {
-                    0 -> "AM"
-                    else -> "PM"
-                }
-            }, onValueChange = {
-                visibility = true
-                ampmHoursMin = ampmHoursMin.copy(
-                    dayTime = when (it) {
-                        0 -> AMPMHoursMin.DayTime.AM
-                        else -> AMPMHoursMin.DayTime.PM
-                    }
+            TitleTexts.Level1(text = title)
+            AnimatedVisibility(visible = visibility) {
+                TitleTexts.Level1(text = time)
+            }
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                TitleTexts.Level3(
+                    modifier = Modifier.weight(.4f),
+                    textAlign = TextAlign.Center,
+                    text = "Hours",
                 )
-            }, dividersColor = dividersColor, textStyle = textStyle, range = (0..1)
-            )
-        }
-        Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
-            ButtonWithColor(
-                modifier = Modifier.weight(0.5f),
-                color = Color.Red,
-                text = stringResource(id = StringR.string.cancel)
-            ) { onCancel() }
-            ButtonWithColor(
-                modifier = Modifier.weight(0.5f),
-                color = Color.Blue,
-                text = stringResource(StringR.string.save)
-            ) { onSave(ampmHoursMin) }
+                TitleTexts.Level3(
+                    modifier = Modifier.weight(.4f),
+                    textAlign = TextAlign.Center,
+                    text = "Minutes",
+                )
+                Spacer(modifier = Modifier.weight(.2f))
+            }
+
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                verticalAlignment = Alignment.CenterVertically,
+                horizontalArrangement = Arrangement.SpaceEvenly
+            ) {
+                NumberPicker(modifier = Modifier.weight(1f), value = ampmHoursMin.hours, label = {
+                    "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
+                }, onValueChange = {
+                    visibility = true
+                    ampmHoursMin = ampmHoursMin.copy(hours = it)
+                }, dividersColor = dividersColor, textStyle = textStyle, range = hoursRange
+                )
+
+                hoursDivider?.invoke()
+
+                NumberPicker(modifier = Modifier.weight(1f), label = {
+                    "${if (leadingZero && (abs(it) < 10)) "0" else ""}$it"
+                }, value = ampmHoursMin.minutes, onValueChange = {
+                    visibility = true
+                    ampmHoursMin = ampmHoursMin.copy(minutes = it)
+                }, dividersColor = dividersColor, textStyle = textStyle, range = minutesRange
+                )
+
+                minutesDivider?.invoke()
+
+                NumberPicker(modifier = Modifier, value = when (ampmHoursMin.dayTime) {
+                    AMPMHoursMin.DayTime.AM -> 0
+                    else -> 1
+                }, label = {
+                    when (it) {
+                        0 -> "AM"
+                        else -> "PM"
+                    }
+                }, onValueChange = {
+                    visibility = true
+                    ampmHoursMin = ampmHoursMin.copy(
+                        dayTime = when (it) {
+                            0 -> AMPMHoursMin.DayTime.AM
+                            else -> AMPMHoursMin.DayTime.PM
+                        }
+                    )
+                }, dividersColor = dividersColor, textStyle = textStyle, range = (0..1)
+                )
+            }
+            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)) {
+                ButtonWithColor(
+                    modifier = Modifier.weight(0.5f),
+                    color = Color.Red,
+                    text = stringResource(id = StringR.string.cancel)
+                ) { onCancel() }
+                ButtonWithColor(
+                    modifier = Modifier.weight(0.5f),
+                    color = Color.Blue,
+                    text = stringResource(StringR.string.save)
+                ) { onSave(ampmHoursMin) }
+            }
         }
     }
 }
