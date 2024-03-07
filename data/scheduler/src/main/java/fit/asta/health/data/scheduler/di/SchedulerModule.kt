@@ -61,7 +61,7 @@ object SchedulerModule {
     @Singleton
     @Provides
     fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
-        return ContextCompat.getSystemService(
+     return ContextCompat.getSystemService(
             context, NotificationManager::class.java
         ) as NotificationManager
 //        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager

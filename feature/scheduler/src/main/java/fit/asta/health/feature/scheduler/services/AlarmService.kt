@@ -7,7 +7,7 @@ import android.app.PendingIntent
 import android.app.Service
 import android.content.Context
 import android.content.Intent
-import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.RingtoneManager
@@ -273,7 +273,6 @@ class AlarmService : Service() {
 
         val builder = NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(DrawR.drawable.ic_round_access_alarm_24)
-            .setSound(null)
             .setAutoCancel(false)
             .setForegroundServiceBehavior(NotificationCompat.FOREGROUND_SERVICE_IMMEDIATE)
             .setCategory(NotificationCompat.CATEGORY_ALARM)
@@ -288,6 +287,7 @@ class AlarmService : Service() {
 //            .setAllowSystemGeneratedContextualActions(true)
 //            .setCustomContentView(remoteViews)
             .setContentText(alarm.info.tag)
+            .setDeleteIntent(if (alarm.important) pendingIntentSnooze else pendingIntentStop)
         val toolViewHelper =
             ToolNotificationHelper(
                 this,
@@ -303,9 +303,11 @@ class AlarmService : Service() {
             .setCustomContentView(remoteViews)
 //            .setCustomBigContentView(null)
 //        ToolsStateManager(toolViewHelper as ToolViewListener)
-
+//        notificationManager.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_ONGOING_EVENT
+        val notification = builder.build()
+        notification.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_ONGOING_EVENT
         startForGroundService(
-            notification = builder.build(),
+            notification = notification,
             id = alarm.hashCode(),
             vibrationPattern = Constants.getVibrationPattern(alarm.vibration.pattern)
         )
@@ -321,7 +323,7 @@ class AlarmService : Service() {
                     val bitmap1: Bitmap? = null
                     picStyleBig.bigPicture(bitmap).bigLargeIcon(bitmap1)
                     builder.setStyle(picStyleBig).setLargeIcon(bitmap)
-                    notificationManager.notify(alarm.hashCode(), builder.build())
+                    notificationManager.notify(alarm.hashCode(), notification)
                 }
                 .build()
             loader.enqueue(req)
@@ -334,7 +336,7 @@ class AlarmService : Service() {
                     val bitmap1: Bitmap? = null
                     picStyleBig.bigPicture(bitmap).bigLargeIcon(bitmap1)
                     builder.setStyle(picStyleBig).setLargeIcon(bitmap)
-                    notificationManager.notify(alarm.hashCode(), builder.build())
+                    notificationManager.notify(alarm.hashCode(), notification)
                 }
                 .build()
             loader.enqueue(req)
@@ -374,15 +376,12 @@ class AlarmService : Service() {
     private fun startForGroundService(
         notification: Notification?, id: Int, vibrationPattern: LongArray
     ) {
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            vibrator.vibrate(
-                VibrationEffect.createWaveform(
-                    vibrationPattern, 0
-                )
+        notification?.flags = Notification.FLAG_AUTO_CANCEL or Notification.FLAG_ONGOING_EVENT
+        vibrator.vibrate(
+            VibrationEffect.createWaveform(
+                vibrationPattern, 0
             )
-        } else {
-            vibrator.vibrate(vibrationPattern, 0)
-        }
+        )
         Log.d("alarmtest", "startForGroundService")
 
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
@@ -391,7 +390,7 @@ class AlarmService : Service() {
             if (notification != null) {
                 startForeground(
                     id, notification,
-                    FOREGROUND_SERVICE_TYPE_SPECIAL_USE
+                    FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
                 )
             }
         }
