@@ -32,7 +32,6 @@ import androidx.compose.material.icons.filled.WorkspacePremium
 import androidx.compose.material.icons.rounded.Email
 import androidx.compose.material.icons.rounded.Phone
 import androidx.compose.material.icons.rounded.PhotoCamera
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
@@ -471,7 +470,7 @@ fun PhoneUi(
                 navigateToPhoneAuth()
             }
         ) {
-            Icon(
+            AppIcon(
                 imageVector = Icons.Default.Phone,
                 contentDescription = null,
                 modifier = Modifier.padding(end = AppTheme.spacing.level1),

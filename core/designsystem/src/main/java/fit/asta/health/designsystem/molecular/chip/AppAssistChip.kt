@@ -149,3 +149,14 @@ fun AppAssistChip(
         interactionSource = interactionSource
     )
 }
+
+@Composable
+fun appRememberAssistChipColors(
+    containerColor: Color? = null,
+    disabledContainerColor: Color? = null,
+): ChipColors {
+    return AssistChipDefaults.assistChipColors(
+        containerColor = containerColor ?: AppTheme.colors.primaryContainer,
+        disabledContainerColor = disabledContainerColor ?: AppTheme.colors.primaryContainer
+    )
+}

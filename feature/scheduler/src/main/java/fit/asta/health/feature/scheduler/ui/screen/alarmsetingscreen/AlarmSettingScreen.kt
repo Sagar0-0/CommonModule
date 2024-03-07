@@ -31,9 +31,7 @@ import androidx.compose.material.icons.filled.Tag
 import androidx.compose.material.icons.filled.Vibration
 import androidx.compose.material.icons.filled.Wysiwyg
 import androidx.compose.material3.DatePickerDefaults
-import androidx.compose.material3.DateRangePicker
 import androidx.compose.material3.DateRangePickerState
-import androidx.compose.material3.rememberDateRangePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -54,6 +52,8 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.convert12hrTo24hr
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.atomic.AppDateRangePicker
+import fit.asta.health.designsystem.atomic.appRememberDateRangePickerState
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
@@ -102,7 +102,7 @@ fun AlarmSettingScreen(
     var bottomSheetVisible by rememberSaveable {
         mutableStateOf(false)
     }
-    val state = rememberDateRangePickerState(
+    val state = appRememberDateRangePickerState(
         initialSelectedStartDateMillis = alarmSettingUiState.selectedStartDateMillis,
         initialSelectedEndDateMillis = alarmSettingUiState.selectedEndDateMillis,
         yearRange = DatePickerDefaults.YearRange,
@@ -552,7 +552,7 @@ fun dateValidator(): (Long) -> Boolean {
 
 @Composable
 fun DateRangePickerSample(state: DateRangePickerState) {
-    DateRangePicker(
+    AppDateRangePicker(
         state = state,
         modifier = Modifier,
         title = {

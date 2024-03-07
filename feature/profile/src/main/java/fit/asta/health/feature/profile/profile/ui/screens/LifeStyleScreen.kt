@@ -7,7 +7,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -16,6 +15,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetProperties
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTimePicker
@@ -28,8 +28,8 @@ fun LifestyleScreen(
     userProfileState: UserProfileState,
     userPropertiesState: UiState<List<UserProperties>>
 ) {
-    val propertiesSheetState = rememberModalBottomSheetState()
-    val timerSheetState = rememberModalBottomSheetState()
+    val propertiesSheetState = appRememberModalBottomSheetState()
+    val timerSheetState = appRememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
     Column(

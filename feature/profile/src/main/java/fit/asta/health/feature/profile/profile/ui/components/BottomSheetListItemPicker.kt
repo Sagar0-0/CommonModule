@@ -8,7 +8,6 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
-import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -53,9 +52,9 @@ fun BottomSheetListItemPicker(
                     list.forEach {
                         AppCard(
                             modifier = Modifier.padding(AppTheme.spacing.level1),
-                            colors = CardDefaults.cardColors(
-                                contentColor = AppTheme.colors.surfaceVariant
-                            )
+//                            colors = CardDefaults.cardColors(
+//                                contentColor = AppTheme.colors.surfaceVariant
+//                            )
                         ) {
                             BodyTexts.Level3(
                                 text = it.name,

@@ -9,7 +9,6 @@ import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Phone
-import androidx.compose.material3.Icon
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -19,6 +18,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthOnboardingControl
@@ -87,7 +87,7 @@ fun AuthScreenControl(
                         onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
                     }
                 ) {
-                    Icon(
+                    AppIcon(
                         imageVector = Icons.Default.Phone,
                         contentDescription = null,
                         modifier = Modifier.padding(end = AppTheme.spacing.level1),

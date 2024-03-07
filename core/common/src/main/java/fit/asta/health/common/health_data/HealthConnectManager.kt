@@ -4,7 +4,10 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.res.Resources.NotFoundException
+import android.net.Uri
 import android.os.Build
+import android.util.Log
+import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContract
 import androidx.annotation.RequiresApi
 import androidx.compose.runtime.mutableIntStateOf
@@ -48,7 +51,6 @@ const val MIN_SUPPORTED_SDK = Build.VERSION_CODES.O_MR1
  */
 class HealthConnectManager(private val context: Context) {
     private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
-
     val healthConnectCompatibleApps by lazy {
         val intent = Intent("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE")
 
@@ -86,10 +88,33 @@ class HealthConnectManager(private val context: Context) {
 
     fun checkAvailability() {
         availability.intValue = HealthConnectClient.getSdkStatus(context)
+        Log.d("rishi","Health : ${availability.intValue}")
     }
 
+    fun downloadIntent(){
+        val packageName = "com.google.android.apps.healthdata" // Package name for the HealthConnect app
+        try {
+            // Open the app page in the Play Store
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=$packageName"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        } catch (e: android.content.ActivityNotFoundException) {
+            // If Play Store is not available, open the app page in the browser
+            val intent = Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=$packageName"))
+            intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            context.startActivity(intent)
+        }
+    }
+    private fun handleSDKstatusAvailability(){
+        when(availability.intValue){
+            1 -> Toast.makeText(context,"Your app doesn't support this sdk",Toast.LENGTH_SHORT).show()
+            2 -> downloadIntent()
+            else -> {}
+        }
+    }
     init {
         checkAvailability()
+        handleSDKstatusAvailability()
     }
 
     /**
