@@ -315,9 +315,9 @@ private fun RowScope.NewMainTopBarActions(
             AppIconButton(
                 imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
             ) { onClick(MainTopBarActions.Notification) }
-            AppIconButton(
+           /* AppIconButton(
                 imageVector = Icons.Default.Alarm
-            ) { onClick(MainTopBarActions.Schedule) }
+            ) { onClick(MainTopBarActions.Schedule) }*/
             if (profileImageUri != null) {
                 AppIconButton(
                     onClick = {
