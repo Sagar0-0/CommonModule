@@ -4,7 +4,6 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
-import androidx.compose.material3.NavigationBarItemDefaults
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.res.stringResource
@@ -58,12 +57,12 @@ fun UserProfileContent(
                         },
                         icon = item.icon,
                         label = item.labelId.toStringFromResId(),
-                        colors = NavigationBarItemDefaults.colors(
-                            selectedIconColor = if (userProfileState.currentPageIndex == index)
-                                AppTheme.colors.primary
-                            else
-                                AppTheme.colors.onSecondaryContainer
-                        )
+//                        colors = NavigationBarItemDefaults.colors(
+//                            selectedIconColor = if (userProfileState.currentPageIndex == index)
+//                                AppTheme.colors.primary
+//                            else
+//                                AppTheme.colors.onSecondaryContainer
+//                        )
                     )
                 }
             }

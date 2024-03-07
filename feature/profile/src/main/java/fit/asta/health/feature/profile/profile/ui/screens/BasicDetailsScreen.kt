@@ -27,7 +27,6 @@ import androidx.compose.material.icons.filled.WaterDrop
 import androidx.compose.material.icons.rounded.AddAPhoto
 import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.EditCalendar
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -41,6 +40,7 @@ import fit.asta.health.data.profile.remote.model.isFemale
 import fit.asta.health.data.profile.remote.model.isMale
 import fit.asta.health.data.profile.remote.model.isTrue
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetGenderSelector
@@ -57,10 +57,10 @@ import java.util.Calendar
 fun BasicDetailsScreen(
     userProfileState: UserProfileState,
 ) {
-    val nameBottomSheetState = rememberModalBottomSheetState()
+    val nameBottomSheetState = appRememberModalBottomSheetState()
     val nameBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
-    val genderBottomSheetState = rememberModalBottomSheetState()
+    val genderBottomSheetState = appRememberModalBottomSheetState()
     val genderBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
     val calendarUseCaseState = rememberUseCaseState()
