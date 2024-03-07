@@ -10,7 +10,6 @@ import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
 import androidx.compose.material.icons.filled.MonitorWeight
-import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -19,6 +18,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.data.profile.remote.model.HeightUnit
 import fit.asta.health.data.profile.remote.model.WeightUnit
 import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPhysique
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
@@ -28,11 +28,10 @@ import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 fun PhysiqueScreen(
     userProfileState: UserProfileState
 ) {
-
-    val heightBottomSheetState = rememberModalBottomSheetState()
+    val heightBottomSheetState = appRememberModalBottomSheetState()
     val heightBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
-    val weightBottomSheetState = rememberModalBottomSheetState()
+    val weightBottomSheetState = appRememberModalBottomSheetState()
     val weightBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
     Column(

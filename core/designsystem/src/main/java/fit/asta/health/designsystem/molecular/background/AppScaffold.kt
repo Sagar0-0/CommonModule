@@ -21,6 +21,7 @@ import androidx.compose.material3.Snackbar
 import androidx.compose.material3.SnackbarDuration
 import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
+import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberBottomSheetScaffoldState
 import androidx.compose.material3.rememberStandardBottomSheetState
 import androidx.compose.runtime.Composable
@@ -106,18 +107,35 @@ fun AppScaffold(
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppBottomSheetScaffold(
-    sheetContent: @Composable ColumnScope.() -> Unit,
+//    sheetContent: @Composable ColumnScope.() -> Unit,
+//    modifier: Modifier = Modifier,
+//    scaffoldState: BottomSheetScaffoldState,
+//    sheetPeekHeight: Dp = AppTheme.customSize.level7,
+//    sheetShape: Shape = AppTheme.shape.level2,
+//    sheetShadowElevation: Dp = AppTheme.elevation.level1,
+//    sheetContainerColor: Color = AppTheme.colors.surface,
+//    sheetContentColor: Color = AppTheme.colors.onSurface,
+//    sheetSwipeEnabled: Boolean = true,
+//    sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
+//    topBar: @Composable (() -> Unit)? = null,
+//    content: @Composable (PaddingValues) -> Unit,
+    sheetContent: @Composable() (ColumnScope.() -> Unit),
     modifier: Modifier = Modifier,
-    scaffoldState: BottomSheetScaffoldState,
-    sheetPeekHeight: Dp = AppTheme.customSize.level7,
-    sheetShape: Shape = AppTheme.shape.level2,
-    sheetShadowElevation: Dp = AppTheme.elevation.level1,
-    sheetContainerColor: Color = AppTheme.colors.surface,
-    sheetContentColor: Color = AppTheme.colors.onSurface,
+    scaffoldState: BottomSheetScaffoldState = rememberBottomSheetScaffoldState(),
+    sheetPeekHeight: Dp = BottomSheetDefaults.SheetPeekHeight,
+    sheetMaxWidth: Dp = BottomSheetDefaults.SheetMaxWidth,
+    sheetShape: Shape = BottomSheetDefaults.ExpandedShape,
+    sheetContainerColor: Color = BottomSheetDefaults.ContainerColor,
+    sheetContentColor: Color = contentColorFor(sheetContainerColor),
+    sheetTonalElevation: Dp = BottomSheetDefaults.Elevation,
+    sheetShadowElevation: Dp = BottomSheetDefaults.Elevation,
+    sheetDragHandle: @Composable() (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     sheetSwipeEnabled: Boolean = true,
-    sheetDragHandle: @Composable (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
-    topBar: @Composable (() -> Unit)? = null,
-    content: @Composable (PaddingValues) -> Unit,
+    topBar: @Composable() (() -> Unit)? = null,
+    snackbarHost: @Composable (SnackbarHostState) -> Unit = { SnackbarHost(it) },
+    containerColor: Color = AppTheme.colors.surface,
+    contentColor: Color = contentColorFor(containerColor),
+    content: @Composable (PaddingValues) -> Unit
 ) {
     BottomSheetScaffold(
         sheetContent = sheetContent,
@@ -130,6 +148,10 @@ fun AppBottomSheetScaffold(
         sheetShadowElevation = sheetShadowElevation,
         sheetDragHandle = sheetDragHandle,
         sheetSwipeEnabled = sheetSwipeEnabled,
+        sheetMaxWidth = sheetMaxWidth,
+        sheetTonalElevation = sheetTonalElevation,
+        snackbarHost = snackbarHost,
+        contentColor = contentColor,
         topBar = topBar,
         content = content,
         sheetContainerColor = sheetContainerColor,

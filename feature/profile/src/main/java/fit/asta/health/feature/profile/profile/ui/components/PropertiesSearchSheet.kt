@@ -11,17 +11,15 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.AddCircle
 import androidx.compose.material.icons.rounded.RemoveCircle
 import androidx.compose.material.icons.rounded.Search
-import androidx.compose.material3.AssistChipDefaults
-import androidx.compose.material3.ChipColors
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.chip.AppAssistChip
+import fit.asta.health.designsystem.molecular.chip.appRememberAssistChipColors
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 
 @Composable
@@ -110,7 +108,7 @@ fun AddChipOnCard(
     onClick: () -> Unit,
 ) {
 
-    val colors = rememberAssistChipColors(containerColor = AppTheme.colors.primaryContainer)
+    val colors = appRememberAssistChipColors(containerColor = AppTheme.colors.primaryContainer)
 
     AppAssistChip(
         textToShow = textOnChip,
@@ -122,13 +120,13 @@ fun AddChipOnCard(
 }
 
 
-@Composable
-fun rememberAssistChipColors(
-    containerColor: Color? = null,
-    disabledContainerColor: Color? = null,
-): ChipColors {
-    return AssistChipDefaults.assistChipColors(
-        containerColor = containerColor ?: AppTheme.colors.primaryContainer,
-        disabledContainerColor = disabledContainerColor ?: AppTheme.colors.primaryContainer
-    )
-}
+//@Composable
+//fun rememberAssistChipColors(
+//    containerColor: Color? = null,
+//    disabledContainerColor: Color? = null,
+//): ChipColors {
+//    return AssistChipDefaults.assistChipColors(
+//        containerColor = containerColor ?: AppTheme.colors.primaryContainer,
+//        disabledContainerColor = disabledContainerColor ?: AppTheme.colors.primaryContainer
+//    )
+//}
