@@ -4,8 +4,6 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.itemsIndexed
-import androidx.compose.material3.MaterialTheme
-import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableIntStateOf
@@ -15,6 +13,8 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
+import fit.asta.health.designsystem.AppTheme
+import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.sunlight.feature.components.SelectableRow
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.AgeUtil
 import fit.asta.health.resources.strings.R as StrR
@@ -31,9 +31,9 @@ fun AgeRangeScreen() {
             .padding(bottom = 60.dp)
     ) {
         item {
-            Text(
+            TitleTexts.Level2(
                 text = stringResource(id = StrR.string.please_select_your_age_range),
-                style = MaterialTheme.typography.bodyMedium
+                style = AppTheme.customTypography.body.level2
                     .copy(Color.White),
                 modifier = Modifier.padding(8.dp)
             )
