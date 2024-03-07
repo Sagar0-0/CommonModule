@@ -9,7 +9,8 @@
         <!-- Customize your theme here. -->
         <item name="android:windowLightStatusBar">true</item>
         <item name="android:windowLightNavigationBar" tools:targetApi="27">true</item>
-        <item name="android:navigationBarColor">@color/colorSurfaceVariant</item>
+        <item name="android:navigationBarColor" tools:targetApi="27">@color/colorSurfaceVariant
+        </item>
         <!--
         <item name="android:windowBackground">@color/colorWindowBackground</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
