@@ -83,8 +83,9 @@ class MainActivity : ComponentActivity(), FirebaseAuth.IdTokenListener {
         super.onCreate(savedInstanceState)
         // This app draws behind the system bars, so we want to handle fitting system windows
         //WindowCompat.setDecorFitsSystemWindows(window, false)
-        enableEdgeToEdge()
-        checkUiStateAndStartApp(splashScreen)/*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+       // enableEdgeToEdge()
+        checkUiStateAndStartApp(splashScreen)
+        /*   if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
                val alarmManager = ContextCompat.getSystemService(this, AlarmManager::class.java)
                if (alarmManager?.canScheduleExactAlarms() == false) {
                    Intent().also { intent ->

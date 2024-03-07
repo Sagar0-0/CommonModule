@@ -68,6 +68,9 @@ dependencies {
     implementation(libs.coil.kt.compose)
     implementation(libs.coil.gif)
 
+    implementation(libs.balloon)
+
+
     //TODO-------------------Low standard libraries - consider removing later---------------------//
     //Rating-Bar
     implementation("com.github.a914-gowtham:compose-ratingbar:1.2.4")

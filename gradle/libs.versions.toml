@@ -48,6 +48,7 @@ appUpdateKtx = "2.1.0"
 auth = "2.1.0"
 billing = "6.1.0"
 billingKtx = "6.1.0"
+balloon="1.6.4"
 calendar = "1.2.0"
 checkout = "1.6.33"
 chucker = "3.5.2"
@@ -349,6 +350,7 @@ swipe = { group = "me.saket.swipe", name = "swipe", version.ref = "swipe" }
 transformationlayout = { group = "com.github.skydoves", name = "transformationlayout", version.ref = "transformationlayout" }
 truth = { group = "com.google.truth", name = "truth", version.ref = "truth" }
 turbine = { group = "app.cash.turbine", name = "turbine", version.ref = "turbine" }
+balloon = { group = "com.github.skydoves", name = "balloon-compose", version.ref = "balloon" }
 
 # Dependencies of the included build-logic
 android-gradlePlugin = { group = "com.android.tools.build", name = "gradle", version.ref = "androidGradlePlugin" }

@@ -25,7 +25,6 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Alarm
 import androidx.compose.material.icons.filled.BarChart
 import androidx.compose.material.icons.filled.Celebration
 import androidx.compose.material.icons.filled.DirectionsWalk
@@ -104,6 +103,7 @@ import fit.asta.health.navigation.track.TrackMenuScreenControl
 import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
+import fit.asta.health.ui.common.components.AppBalloon
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fit.asta.health.resources.drawables.R as DrawR
 
@@ -133,58 +133,50 @@ fun HomeScreensLayout(
 
     val currentDestination = navBackStackEntry?.destination
 
-    AppScaffold(
-        bottomBar = {
-            MainBottomAppBar(
-                navController = navController, currentDestination = currentDestination
-            )
-        },
-        topBar = {
-            Column(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .background(
-                        color = AppTheme.colors.onBackground.copy(
-                            AppTheme.alphaValues.level1
-                        )
+    AppScaffold(bottomBar = {
+        MainBottomAppBar(
+            navController = navController, currentDestination = currentDestination
+        )
+    }, topBar = {
+        Column(
+            modifier = Modifier
+                .fillMaxWidth()
+                .background(
+                    color = AppTheme.colors.onBackground.copy(
+                        AppTheme.alphaValues.level1
                     )
-            ) {
-                AppTopBar(
-                    backIcon = null,
-                    actions = {
-                        NewMainTopBarActions(
-                            onClick = onTopBarItemClick,
-                            notificationState = notificationState,
-                            profileImageUri = profileImageUri,
-                            currentAddressState = currentAddressState,
-                            sessionState = sessionState,
-                            onSession = onWalkingTool
-                        )
-                    }
                 )
-                Row(
-                    modifier = Modifier
-                        .clickable {
-                            context.sendBugReportMessage()
-                        }
-                        .padding(horizontal = AppTheme.spacing.level2)
-                        .padding(vertical = AppTheme.spacing.level1)
-                        .fillMaxWidth(),
-                    horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
-                    verticalAlignment = Alignment.CenterVertically
-                ) {
-                    CaptionTexts.Level3(
-                        modifier = Modifier.weight(1f),
-                        text = "This is a beta release. Help us improve this app by reporting the bugs you find."
-                    )
-                    AppIcon(
-                        imageVector = Icons.Default.KeyboardArrowRight
-                    )
+        ) {
+            AppTopBar(backIcon = null, actions = {
+                NewMainTopBarActions(
+                    onClick = onTopBarItemClick,
+                    notificationState = notificationState,
+                    profileImageUri = profileImageUri,
+                    currentAddressState = currentAddressState,
+                    sessionState = sessionState,
+                    onSession = onWalkingTool
+                )
+            })
+            Row(modifier = Modifier
+                .clickable {
+                    context.sendBugReportMessage()
                 }
+                .padding(horizontal = AppTheme.spacing.level2)
+                .padding(vertical = AppTheme.spacing.level1)
+                .fillMaxWidth(),
+                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
+                verticalAlignment = Alignment.CenterVertically) {
+                CaptionTexts.Level3(
+                    modifier = Modifier.weight(1f),
+                    text = "This is a beta release. Help us improve this app by reporting the bugs you find."
+                )
+                AppIcon(
+                    imageVector = Icons.Default.KeyboardArrowRight
+                )
             }
-
         }
-    ) {
+
+    }) {
         HomeNavHost(
             modifier = Modifier.padding(it),
             navController = navController,
@@ -208,19 +200,16 @@ private fun BottomAppBarLayout(
 ) {
 
     AppNavigationBar(
-        modifier = Modifier.fillMaxWidth(),
-        tonalElevation = AppTheme.elevation.level4
+        modifier = Modifier.fillMaxWidth(), tonalElevation = AppTheme.elevation.level4
     ) {
         items.forEach { item ->
             AppNavigationBarItem(
-                selected = currentRoute == item.route,
-                icon = {
+                selected = currentRoute == item.route, icon = {
                     AppIcon(
                         imageVector = if (currentRoute == item.route) item.selectedIcon else item.unselectedIcon,
                         contentDescription = item.title
                     )
-                },
-                label = item.title
+                }, label = item.title
             ) { onNavigate(item.route) }
         }
     }
@@ -280,8 +269,7 @@ private fun RowScope.NewMainTopBarActions(
             )
 
             TitleTexts.Level2(
-                text =
-                when (currentAddressState) {
+                text = when (currentAddressState) {
                     UiState.Idle -> {
                         R.string.select_location.toStringFromResId()
                     }
@@ -312,18 +300,27 @@ private fun RowScope.NewMainTopBarActions(
         }
 
         Row(horizontalArrangement = Arrangement.End) {
-            AppIconButton(
-                imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
-            ) { onClick(MainTopBarActions.Notification) }
-           /* AppIconButton(
-                imageVector = Icons.Default.Alarm
-            ) { onClick(MainTopBarActions.Schedule) }*/
-            if (profileImageUri != null) {
-                AppIconButton(
-                    onClick = {
-                        onClick(MainTopBarActions.Profile)
+            AppBalloon(
+                content = { clickBalloon ->
+                    AppIconButton(
+                        imageVector = if (notificationState) Icons.Default.NotificationsActive else Icons.Default.NotificationsOff
+                    ) {
+                        clickBalloon.invoke()
+                        onClick(MainTopBarActions.Notification)
                     }
-                ) {
+                },
+                balloonContent = {
+                    CaptionTexts.Level5(text = if (notificationState) "All active alarms are set for ringing" else "Only important alarms are set for ringing")
+                },
+                time = 3000L
+            )
+            /* AppIconButton(
+                  imageVector = Icons.Default.Alarm
+              ) { onClick(MainTopBarActions.Schedule) }*/
+            if (profileImageUri != null) {
+                AppIconButton(onClick = {
+                    onClick(MainTopBarActions.Profile)
+                }) {
                     AppNetworkImage(
                         modifier = Modifier.clip(CircleShape),
                         model = profileImageUri,
@@ -335,49 +332,35 @@ private fun RowScope.NewMainTopBarActions(
 
             // 3 vertical dots icon
             AppIconButton(
-                onClick = { expanded = true },
-                imageVector = Icons.Default.MoreVert
+                onClick = { expanded = true }, imageVector = Icons.Default.MoreVert
             )
 
             // drop down menu
             DropdownMenu(
-                modifier = Modifier.width(width = 150.dp),
-                expanded = expanded,
-                onDismissRequest = {
+                modifier = Modifier.width(width = 150.dp), expanded = expanded, onDismissRequest = {
                     expanded = false
                 },
                 // adjust the position
-                offset = DpOffset(x = (-202).dp, y = 0.dp),
-                properties = PopupProperties()
+                offset = DpOffset(x = (-202).dp, y = 0.dp), properties = PopupProperties()
             ) {
 
                 // adding each menu item
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
-                        onClick(MainTopBarActions.Settings)
-                    },
-                    enabled = true,
-                    text = {
-                        BodyTexts.Level2(text = "Setting")
-                    },
-                    leadingIcon = {
-                        AppIcon(imageVector = Icons.Default.Settings)
-                    }
-                )
-                DropdownMenuItem(
-                    onClick = {
-                        expanded = false
-                        onClick(MainTopBarActions.Share)
-                    },
-                    enabled = true,
-                    text = {
-                        BodyTexts.Level2(text = "Share")
-                    },
-                    leadingIcon = {
-                        AppIcon(imageVector = Icons.Default.Share)
-                    }
-                )
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    onClick(MainTopBarActions.Settings)
+                }, enabled = true, text = {
+                    BodyTexts.Level2(text = "Setting")
+                }, leadingIcon = {
+                    AppIcon(imageVector = Icons.Default.Settings)
+                })
+                DropdownMenuItem(onClick = {
+                    expanded = false
+                    onClick(MainTopBarActions.Share)
+                }, enabled = true, text = {
+                    BodyTexts.Level2(text = "Share")
+                }, leadingIcon = {
+                    AppIcon(imageVector = Icons.Default.Share)
+                })
             }
         }
     }
@@ -397,13 +380,12 @@ private fun MainBottomAppBar(
             Icons.Filled.Celebration,
             Icons.Outlined.Celebration,
             "Today"
-        ),
-        BottomNavItem(
+        ), BottomNavItem(
             BottomBarDestination.Tools.route,
-            Icons.Filled.Handyman, Icons.Outlined.Handyman,
+            Icons.Filled.Handyman,
+            Icons.Outlined.Handyman,
             "Tools"
-        ),
-        BottomNavItem(
+        ), BottomNavItem(
             BottomBarDestination.Track.route,
             Icons.Filled.BarChart,
             Icons.Outlined.BarChart,
@@ -473,8 +455,7 @@ private fun HomeNavHost(
             val alarmState = todayPlanViewModel.alarmState.collectAsStateWithLifecycle()
             val context = LocalContext.current
             val vm: AllAlarmViewModel = hiltViewModel()
-            val list by vm.alarmList.collectAsStateWithLifecycle()
-            /*     val checkPermissionAndLaunchScheduler =
+            val list by vm.alarmList.collectAsStateWithLifecycle()/*     val checkPermissionAndLaunchScheduler =
                      checkPermissionAndLaunchScheduler(context, navController)*/
             val notificationPermissionResultLauncher: ActivityResultLauncher<String> =
                 rememberLauncherForActivityResult(
@@ -489,18 +470,15 @@ private fun HomeNavHost(
                             Toast.LENGTH_SHORT
                         ).show()
                         PrefManager.setNotificationPermissionRejectedCount(
-                            context,
-                            PrefManager.getNotificationPermissionRejectedCount(context) + 1
+                            context, PrefManager.getNotificationPermissionRejectedCount(context) + 1
                         )
                     }
                 }
 
             val checkPermissionAndLaunchScheduler = {
                 if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
-                    )
-                    == PackageManager.PERMISSION_GRANTED
+                        context, Manifest.permission.POST_NOTIFICATIONS
+                    ) == PackageManager.PERMISSION_GRANTED
                 ) {
                     PrefManager.setNotificationPermissionRejectedCount(context, 0)
                 } else {
@@ -509,8 +487,7 @@ private fun HomeNavHost(
                             context,
                             "Please allow Notification permission access.",
                             Toast.LENGTH_SHORT
-                        )
-                            .show()
+                        ).show()
                         with(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS)) {
                             data = Uri.fromParts("package", context.packageName, null)
                             addCategory(Intent.CATEGORY_DEFAULT)
@@ -528,8 +505,7 @@ private fun HomeNavHost(
             }
             LaunchedEffect(Unit) {
                 if (ContextCompat.checkSelfPermission(
-                        context,
-                        Manifest.permission.POST_NOTIFICATIONS
+                        context, Manifest.permission.POST_NOTIFICATIONS
                     ) != PackageManager.PERMISSION_GRANTED
                 ) {
                     checkPermissionAndLaunchScheduler()
@@ -546,7 +522,7 @@ private fun HomeNavHost(
                 alarmList = list,
                 alarmState = alarmState,
                 defaultScheduleVisibility = defaultScheduleVisibility,
-                userEditMessage=userEditMessage,
+                userEditMessage = userEditMessage,
                 listMorning = listMorning,
                 listAfternoon = listAfternoon,
                 listEvening = listEvening,
@@ -554,9 +530,7 @@ private fun HomeNavHost(
                     when (it) {
                         is AlarmEvent.SetAlarmState -> {
                             vm.changeAlarmState(
-                                state = it.state,
-                                alarm = it.alarm,
-                                context = it.context
+                                state = it.state, alarm = it.alarm, context = it.context
                             )
                         }
 
@@ -609,8 +583,7 @@ private fun HomeNavHost(
 
                         is HomeEvent.SetDefaultSchedule -> {
                             if (ContextCompat.checkSelfPermission(
-                                    context,
-                                    Manifest.permission.POST_NOTIFICATIONS
+                                    context, Manifest.permission.POST_NOTIFICATIONS
                                 ) != PackageManager.PERMISSION_GRANTED
                             ) {
                                 checkPermissionAndLaunchScheduler()
@@ -636,20 +609,17 @@ private fun HomeNavHost(
         }
 
         composable(BottomBarDestination.Tools.route) {
-            LaunchedEffect(
-                key1 = Unit,
-                block = {
-                    if (offersDataState !is UiState.Success) {
-                        onEvent(ToolsHomeUiEvent.LoadOffersData)
-                    }
-                    if (subscriptionCategoryState !is UiState.Success) {
-                        onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
-                    }
-                    if (toolsHomeData !is UiState.Success) {
-                        onEvent(ToolsHomeUiEvent.LoadToolsData)
-                    }
+            LaunchedEffect(key1 = Unit, block = {
+                if (offersDataState !is UiState.Success) {
+                    onEvent(ToolsHomeUiEvent.LoadOffersData)
                 }
-            )
+                if (subscriptionCategoryState !is UiState.Success) {
+                    onEvent(ToolsHomeUiEvent.LoadSubscriptionCategoryData)
+                }
+                if (toolsHomeData !is UiState.Success) {
+                    onEvent(ToolsHomeUiEvent.LoadToolsData)
+                }
+            })
 
             AppUiStateHandler(
                 uiState = toolsHomeData
