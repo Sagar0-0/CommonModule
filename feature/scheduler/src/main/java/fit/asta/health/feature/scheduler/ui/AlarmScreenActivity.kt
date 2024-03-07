@@ -2,7 +2,6 @@ package fit.asta.health.feature.scheduler.ui
 
 import android.os.Bundle
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -14,7 +13,6 @@ import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmEvent
 import fit.asta.health.feature.scheduler.ui.screen.alarmscreen.AlarmScreen
 import fit.asta.health.feature.scheduler.ui.viewmodel.AlarmScreenViewModel
 import fit.asta.health.feature.scheduler.util.Constants
-
 
 @AndroidEntryPoint
 class AlarmScreenActivity : AppCompatActivity() {
@@ -32,7 +30,7 @@ class AlarmScreenActivity : AppCompatActivity() {
         super.onCreate(savedInstanceState)
 
         //Enabling edge to edge for fullscreen theme
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
 
         setContent {
             AppTheme {

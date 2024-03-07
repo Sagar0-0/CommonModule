@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
@@ -58,7 +57,7 @@ class SpotifyLoginActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //Enabling edge to edge for fullscreen theme
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
 
         setContent {
             AppScreen {
