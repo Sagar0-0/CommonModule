@@ -6,6 +6,7 @@ import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.material3.BottomSheetDefaults
@@ -140,8 +141,9 @@ fun AppBottomSheetScaffold(
     BottomSheetScaffold(
         sheetContent = sheetContent,
         modifier = modifier
-            .imePadding()
-            .navigationBarsPadding(),
+            .fillMaxWidth() //Adjust if needed (e.g., .fillMaxHeight(0.8f))
+            .navigationBarsPadding()
+            .imePadding(),
         scaffoldState = scaffoldState,
         sheetPeekHeight = sheetPeekHeight,
         sheetShape = sheetShape,

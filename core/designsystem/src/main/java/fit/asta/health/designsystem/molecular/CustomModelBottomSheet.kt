@@ -3,6 +3,7 @@ package fit.asta.health.designsystem.molecular
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.foundation.layout.ColumnScope
 import androidx.compose.foundation.layout.WindowInsets
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBarsPadding
@@ -28,8 +29,9 @@ fun CustomModelBottomSheet(
         if (isVisible) {
             ModalBottomSheet(
                 modifier = Modifier
-                    .imePadding()
-                    .navigationBarsPadding(),
+                    .fillMaxWidth() //Adjust if needed (e.g., .fillMaxHeight(0.8f))
+                    .navigationBarsPadding()
+                    .imePadding(),
                 onDismissRequest = onClose,
                 sheetState = sheetState,
                 windowInsets = WindowInsets.ime,
