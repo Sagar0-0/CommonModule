@@ -82,7 +82,7 @@ class TodayPlanViewModel @Inject constructor(
         .stateIn(
             scope = viewModelScope,
             started = SharingStarted.Lazily,
-            initialValue = false,
+            initialValue = true,
         )
 
     fun setUserEditMessage(value: Boolean = true) {
