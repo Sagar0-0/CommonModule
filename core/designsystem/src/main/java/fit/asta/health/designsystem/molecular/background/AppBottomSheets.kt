@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.WindowInsets
 import androidx.compose.foundation.layout.add
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.ime
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -21,6 +25,7 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SheetValue.Hidden
+import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
@@ -28,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.unit.Dp
+import androidx.compose.ui.unit.dp
 
 /** [AppModalBottomSheet] is a composable function in Jetpack Compose that creates a modal
  * bottom sheet, which is a type of dialog that slides up from the bottom of the screen to
@@ -45,9 +51,10 @@ import androidx.compose.ui.unit.Dp
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
 fun AppModalBottomSheet(
-    sheetVisible : Boolean,
+    sheetVisible: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
+    bottomPadding: Dp = 48.dp,
     sheetState: SheetState = appRememberModalBottomSheetState(),
     sheetMaxWidth: Dp = BottomSheetDefaults.SheetMaxWidth,
     shape: Shape = BottomSheetDefaults.ExpandedShape,
@@ -58,11 +65,14 @@ fun AppModalBottomSheet(
     dragHandle: @Composable() (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     windowInsets: WindowInsets = WindowInsets.navigationBars,
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
-    content: @Composable() (ColumnScope.() -> Unit)
+    content: @Composable() (() -> Unit)
 ) {
     if (sheetVisible) {
         ModalBottomSheet(
-            modifier = modifier,
+            modifier = modifier
+                .fillMaxWidth() //Adjust if needed (e.g., .fillMaxHeight(0.8f))
+                .navigationBarsPadding()
+                .imePadding(),
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
             dragHandle = dragHandle,
@@ -73,7 +83,14 @@ fun AppModalBottomSheet(
             scrimColor = scrimColor,
             properties = properties,
             windowInsets = windowInsets.add(WindowInsets.ime),
-            content = content,
+            content = {
+                Surface(
+                    modifier = Modifier
+                        .fillMaxWidth() // Avoid fillMaxHeight here
+                        .padding(bottom = bottomPadding),
+                    content = content
+                ) //To handle the system navigation bar padding
+            },
         )
     }
 }

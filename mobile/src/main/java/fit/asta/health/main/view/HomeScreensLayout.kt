@@ -47,6 +47,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -56,7 +58,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
@@ -75,6 +76,8 @@ import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.getProfileImageUrl
+import fit.asta.health.common.utils.isImagePresent
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
@@ -104,7 +107,9 @@ import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.ui.common.components.AppBalloon
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -112,7 +117,8 @@ import fit.asta.health.resources.drawables.R as DrawR
 fun HomeScreensLayout(
     currentAddressState: UiState<String>,
     refCode: String,
-    profileImageUri: String?,
+    uid: String,
+    googleProfileImage: String?,
     subscriptionCategoryState: UiState<SubscriptionPlansResponse>,
     offersDataState: UiState<List<OffersData>>,
     toolsHomeDataState: UiState<ToolsHome>,
@@ -147,16 +153,19 @@ fun HomeScreensLayout(
                     )
                 )
         ) {
-            AppTopBar(backIcon = null, actions = {
-                NewMainTopBarActions(
-                    onClick = onTopBarItemClick,
-                    notificationState = notificationState,
-                    profileImageUri = profileImageUri,
-                    currentAddressState = currentAddressState,
-                    sessionState = sessionState,
-                    onSession = onWalkingTool
-                )
-            })
+            AppTopBar(
+                backIcon = null,
+                actions = {
+                    NewMainTopBarActions(
+                        onClick = onTopBarItemClick,
+                        notificationState = notificationState,
+                        uid = uid,
+                        googleProfileImage = googleProfileImage,
+                        currentAddressState = currentAddressState,
+                        sessionState = sessionState,
+                        onSession = onWalkingTool
+                    )
+                })
             Row(modifier = Modifier
                 .clickable {
                     context.sendBugReportMessage()
@@ -220,7 +229,8 @@ private fun BottomAppBarLayout(
 private fun RowScope.NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     notificationState: Boolean,
-    profileImageUri: String?,
+    uid: String,
+    googleProfileImage: String?,
     currentAddressState: UiState<String>,
     sessionState: Boolean,
     onSession: () -> Unit
@@ -317,17 +327,32 @@ private fun RowScope.NewMainTopBarActions(
             /* AppIconButton(
                   imageVector = Icons.Default.Alarm
               ) { onClick(MainTopBarActions.Schedule) }*/
-            if (profileImageUri != null) {
-                AppIconButton(onClick = {
+            AppIconButton(
+                onClick = {
                     onClick(MainTopBarActions.Profile)
-                }) {
-                    AppNetworkImage(
-                        modifier = Modifier.clip(CircleShape),
-                        model = profileImageUri,
-                        contentDescription = "Profile",
-                        errorImage = painterResource(id = DrawR.drawable.ic_person)
-                    )
                 }
+            ) {
+                var profileImageModel by rememberSaveable {
+                    mutableStateOf("")
+                }
+                val scope = rememberCoroutineScope()
+                LaunchedEffect(Unit) {
+                    scope.launch(Dispatchers.IO) {
+                        getProfileImageUrl(uid).let {
+                            profileImageModel = if (isImagePresent(it)) {
+                                it
+                            } else {
+                                googleProfileImage ?: ""
+                            }
+                        }
+                    }
+                }
+                AppNetworkImage(
+                    modifier = Modifier.clip(CircleShape),
+                    model = profileImageModel,
+                    contentDescription = "Profile",
+                    errorImage = painterResource(id = DrawR.drawable.ic_person)
+                )
             }
 
             // 3 vertical dots icon
@@ -341,7 +366,7 @@ private fun RowScope.NewMainTopBarActions(
                     expanded = false
                 },
                 // adjust the position
-               // offset = DpOffset(x = (-202).dp, y = 0.dp),
+                // offset = DpOffset(x = (-202).dp, y = 0.dp),
                 properties = PopupProperties()
             ) {
                 // adding each menu item

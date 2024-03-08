@@ -2,12 +2,11 @@ package fit.asta.health.designsystem.molecular
 
 import android.net.Uri
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
-import androidx.compose.material.icons.filled.Save
+import androidx.compose.material.icons.filled.Done
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -61,8 +60,7 @@ fun ImageCropperScreen(
         var crop by remember { mutableStateOf(false) }
 
         Box(
-            modifier = modifier
-                .background(AppTheme.colors.background),
+            modifier = modifier,
             contentAlignment = Alignment.Center
         ) {
             if (imageBitmap == null) {
@@ -93,7 +91,10 @@ fun ImageCropperScreen(
                     crop = true
                 }
             ) {
-                AppIcon(imageVector = Icons.Filled.Save, contentDescription = "Crop Image")
+                AppIcon(
+                    imageVector = Icons.Filled.Done,
+                    contentDescription = "Crop Image"
+                )
             }
         }
     }

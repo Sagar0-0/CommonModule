@@ -7,14 +7,19 @@ import androidx.compose.foundation.pager.PagerState
 import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.saveable.rememberSaveable
+import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
@@ -25,6 +30,7 @@ import kotlinx.coroutines.launch
 @Composable
 fun rememberUserProfileState(
     userProfileResponse: UserProfileResponse,
+    submitProfileResponse: SubmitProfileResponse,
     pagerState: PagerState = rememberPagerState {
         ProfileNavigationScreen.entries.size
     },
@@ -32,6 +38,13 @@ fun rememberUserProfileState(
     navController: NavController = rememberNavController(),
     onEvent: (UserProfileEvent) -> Unit
 ): UserProfileState {
+
+    var profileCompletePercentage by rememberSaveable(userProfileResponse) {
+        mutableIntStateOf(userProfileResponse.percentage)
+    }
+    LaunchedEffect(submitProfileResponse) {
+        profileCompletePercentage = submitProfileResponse.percentage
+    }
 
     val healthScreenState = rememberSaveable(
         userProfileResponse,
@@ -104,19 +117,10 @@ fun rememberUserProfileState(
         coroutineScope,
         navController,
         onEvent,
-//        saver = UserProfileState.Saver(
-//            basicDetailScreenState,
-//            healthScreenState,
-//            lifestyleScreenState,
-//            physiqueScreenState,
-//            dietScreenState,
-//            pagerState,
-//            coroutineScope,
-//            navController,
-//            onEvent
-//        )
+        profileCompletePercentage
     ) {
         UserProfileState(
+            profileCompletePercentage = profileCompletePercentage,
             basicDetailScreenState = basicDetailScreenState,
             healthScreenState = healthScreenState,
             lifestyleScreenState = lifestyleScreenState,
@@ -132,6 +136,7 @@ fun rememberUserProfileState(
 
 @Stable
 class UserProfileState(
+    val profileCompletePercentage: Int,
     val basicDetailScreenState: BasicDetailScreenState,
     val healthScreenState: HealthScreenState,
     val lifestyleScreenState: LifestyleScreenState,
