@@ -32,6 +32,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
 import androidx.compose.material.icons.filled.Close
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
 import androidx.compose.runtime.Composable
@@ -87,6 +88,7 @@ import fit.asta.health.main.Graph
 import fit.asta.health.navigation.alarms.ui.AlarmEvent
 import fit.asta.health.navigation.alarms.ui.AllAlarms
 import fit.asta.health.ui.common.AppDialogPopUp
+import fit.asta.health.ui.common.components.AppBalloon
 import fit.asta.health.ui.common.components.AppExpandableColumnWithTitle
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -349,7 +351,28 @@ fun TodayTabContent(
                     }
                     if (state.data.slots.isNotEmpty()) {
                         if (!isCurrentTimeLaterThan(state.data.slots.lastOrNull()?.dateTime)) {
-                            item { TitleTexts.Level2(text = "SunSlots") }
+                            item {
+                                Row(verticalAlignment = Alignment.CenterVertically) {
+                                    TitleTexts.Level2(text = "SunSlots")
+                                    AppBalloon(content = { click ->
+                                        AppIcon(
+                                            imageVector = Icons.Default.Info,
+                                            modifier = Modifier
+                                                .padding(horizontal = AppTheme.spacing.level1)
+                                                .clickable { click.invoke() }
+                                        )
+                                    }, balloonContent = {
+                                        CaptionTexts.Level2(
+                                            text = "Sun slots are given for getting the best of bright sunlight hours for vitamin D synthesis.",
+                                            maxLines = 3
+                                        )
+                                    },
+                                        time = 3000L
+                                    )
+
+                                }
+
+                            }
                             item {
                                 LazyRow(
                                     modifier = Modifier.fillMaxWidth(),
