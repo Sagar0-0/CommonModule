@@ -5,7 +5,6 @@ import android.content.Intent
 import android.os.Bundle
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -64,7 +63,7 @@ class TrackStatisticsActivity : ComponentActivity() {
         super.onCreate(savedInstanceState)
 
         //Enabling edge to edge for fullscreen theme
-        enableEdgeToEdge()
+        //enableEdgeToEdge()
 
         setContent {
             AppScreen {
