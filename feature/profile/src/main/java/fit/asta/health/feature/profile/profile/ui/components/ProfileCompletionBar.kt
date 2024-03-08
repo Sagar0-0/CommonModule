@@ -7,7 +7,6 @@ import androidx.compose.animation.core.tween
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxHeight
-import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.runtime.Composable
@@ -49,14 +48,14 @@ fun ProfileCompletionBar(
         modifier = Modifier
             .fillMaxWidth()
             .height(AppTheme.boxSize.level3),
-        contentAlignment = Alignment.Center
     ) {
         //Progressbar background
         Box(
             modifier = Modifier
-                .fillMaxSize()
+                .fillMaxWidth()
+                .fillMaxHeight()
                 .clip(AppTheme.shape.level1)
-                .background(AppTheme.colors.background)
+                .background(AppTheme.colors.surface)
         )
         //Progress
         Box(
@@ -68,6 +67,9 @@ fun ProfileCompletionBar(
                 .animateContentSize()
         )
 
-        CaptionTexts.Level3(text = "${progress}% Completed")
+        CaptionTexts.Level3(
+            modifier = Modifier.align(Alignment.Center),
+            text = "${progress}% Completed"
+        )
     }
 }
