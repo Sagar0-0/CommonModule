@@ -9,6 +9,7 @@ import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
 import androidx.navigation.NavOptions
 import androidx.navigation.compose.composable
+import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
@@ -46,6 +47,8 @@ fun NavGraphBuilder.profileRoute(
         val userProfileState = rememberUserProfileState(
             userProfileResponse =
             (userProfileResponseState as? UiState.Success)?.data ?: UserProfileResponse(),
+            submitProfileResponse = (submitProfileState as? UiState.Success)?.data
+                ?: SubmitProfileResponse(),
             navController = navController,
             onEvent = { event ->
                 when (event) {

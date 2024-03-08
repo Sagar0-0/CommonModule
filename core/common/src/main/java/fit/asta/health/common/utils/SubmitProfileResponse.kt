@@ -8,4 +8,6 @@ import kotlinx.parcelize.Parcelize
 data class SubmitProfileResponse(
     @SerializedName("id")
     val id: String = "",
+    @SerializedName("pct")
+    val percentage: Int = 0,
 ) : Parcelable

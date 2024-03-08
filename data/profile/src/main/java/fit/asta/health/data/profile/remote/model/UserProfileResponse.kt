@@ -9,6 +9,7 @@ import kotlinx.parcelize.Parcelize
 data class UserProfileResponse(
     @SerializedName("uid") val uid: String = "",
     @SerializedName("id") val id: String = "",
+    @SerializedName("pct") val percentage: Int = 0,
     @SerializedName(BasicDetail_Screen_Name) val basicDetail: BasicDetail = BasicDetail(),
     @SerializedName(Physique_Screen_Name) val physique: Physique = Physique(),
     @SerializedName(Health_Screen_Name) val health: Health = Health(),

@@ -30,6 +30,8 @@ import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
 import com.google.android.play.core.review.ReviewManagerFactory
 import fit.asta.health.core.common.BuildConfig
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.withContext
 import java.io.IOException
 import java.io.InputStream
 import java.net.HttpURLConnection
@@ -299,10 +301,12 @@ fun getBaseUrl(url: String) = BuildConfig.BASE_URL + url
 fun getImageUrl(url: String) = if (url.startsWith("http")) url else BuildConfig.BASE_IMAGE_URL + url
 
 fun getProfileImageUrl(uid: String) = BuildConfig.BASE_IMAGE_URL + "/images/$uid/userProfile/$uid"
-fun isImagePresent(url: String): Boolean {
-    val connection = URL(url).openConnection()
+suspend fun isImagePresent(url: String): Boolean {
+    val connection = withContext(Dispatchers.IO) {
+        URL(url).openConnection()
+    }
     val contentType = connection.getHeaderField("Content-Type")
-    return contentType.startsWith("image/") //true if image
+    return contentType.startsWith("image/")
 }
 
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url

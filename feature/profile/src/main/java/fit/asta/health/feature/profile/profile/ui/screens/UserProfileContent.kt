@@ -4,6 +4,7 @@ import androidx.compose.foundation.ExperimentalFoundationApi
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
+import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
@@ -19,6 +20,7 @@ import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
+import fit.asta.health.feature.profile.profile.ui.components.ProfileCompletionBar
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import fit.asta.health.resources.strings.R
@@ -33,12 +35,15 @@ fun UserProfileContent(
     AppScaffold(
         isScreenLoading = submitProfileState is UiState.Loading,
         topBar = {
-            AppTopBar(
-                title = stringResource(R.string.profile),
-                onBack = {
-                    userProfileState.onBackPressed()
-                }
-            )
+            Column(modifier = Modifier.fillMaxWidth()) {
+                AppTopBar(
+                    title = stringResource(R.string.profile),
+                    onBack = {
+                        userProfileState.onBackPressed()
+                    }
+                )
+                ProfileCompletionBar(progress = userProfileState.profileCompletePercentage)
+            }
         }
     ) { padding ->
         Column(

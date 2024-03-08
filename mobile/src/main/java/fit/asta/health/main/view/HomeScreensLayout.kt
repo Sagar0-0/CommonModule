@@ -47,6 +47,8 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -105,7 +107,9 @@ import fit.asta.health.offers.remote.model.OffersData
 import fit.asta.health.resources.strings.R
 import fit.asta.health.subscription.remote.model.SubscriptionPlansResponse
 import fit.asta.health.ui.common.components.AppBalloon
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.ExperimentalCoroutinesApi
+import kotlinx.coroutines.launch
 import fit.asta.health.resources.drawables.R as DrawR
 
 @OptIn(ExperimentalMaterial3Api::class)
@@ -152,16 +156,16 @@ fun HomeScreensLayout(
             AppTopBar(
                 backIcon = null,
                 actions = {
-                NewMainTopBarActions(
-                    onClick = onTopBarItemClick,
-                    notificationState = notificationState,
-                    uid = uid,
-                    googleProfileImage = googleProfileImage,
-                    currentAddressState = currentAddressState,
-                    sessionState = sessionState,
-                    onSession = onWalkingTool
-                )
-            })
+                    NewMainTopBarActions(
+                        onClick = onTopBarItemClick,
+                        notificationState = notificationState,
+                        uid = uid,
+                        googleProfileImage = googleProfileImage,
+                        currentAddressState = currentAddressState,
+                        sessionState = sessionState,
+                        onSession = onWalkingTool
+                    )
+                })
             Row(modifier = Modifier
                 .clickable {
                     context.sendBugReportMessage()
@@ -328,13 +332,24 @@ private fun RowScope.NewMainTopBarActions(
                     onClick(MainTopBarActions.Profile)
                 }
             ) {
+                var profileImageModel by rememberSaveable {
+                    mutableStateOf("")
+                }
+                val scope = rememberCoroutineScope()
+                LaunchedEffect(Unit) {
+                    scope.launch(Dispatchers.IO) {
+                        getProfileImageUrl(uid).let {
+                            profileImageModel = if (isImagePresent(it)) {
+                                it
+                            } else {
+                                googleProfileImage ?: ""
+                            }
+                        }
+                    }
+                }
                 AppNetworkImage(
                     modifier = Modifier.clip(CircleShape),
-                    model = if (isImagePresent(getProfileImageUrl(uid))) {
-                        getProfileImageUrl(uid)
-                    } else {
-                        googleProfileImage
-                    },
+                    model = profileImageModel,
                     contentDescription = "Profile",
                     errorImage = painterResource(id = DrawR.drawable.ic_person)
                 )
