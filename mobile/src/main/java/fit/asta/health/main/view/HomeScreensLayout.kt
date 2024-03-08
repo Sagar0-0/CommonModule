@@ -341,9 +341,9 @@ private fun RowScope.NewMainTopBarActions(
                     expanded = false
                 },
                 // adjust the position
-                offset = DpOffset(x = (-202).dp, y = 0.dp), properties = PopupProperties()
+               // offset = DpOffset(x = (-202).dp, y = 0.dp),
+                properties = PopupProperties()
             ) {
-
                 // adding each menu item
                 DropdownMenuItem(onClick = {
                     expanded = false
