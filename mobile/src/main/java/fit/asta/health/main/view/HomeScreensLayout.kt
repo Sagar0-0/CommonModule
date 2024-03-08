@@ -56,7 +56,6 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.text.style.TextOverflow
-import androidx.compose.ui.unit.DpOffset
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.PopupProperties
 import androidx.core.content.ContextCompat
@@ -75,6 +74,8 @@ import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.MainTopBarActions
 import fit.asta.health.common.utils.PrefManager
 import fit.asta.health.common.utils.UiState
+import fit.asta.health.common.utils.getProfileImageUrl
+import fit.asta.health.common.utils.isImagePresent
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.common.utils.toStringFromResId
@@ -112,7 +113,8 @@ import fit.asta.health.resources.drawables.R as DrawR
 fun HomeScreensLayout(
     currentAddressState: UiState<String>,
     refCode: String,
-    profileImageUri: String?,
+    uid: String,
+    googleProfileImage: String?,
     subscriptionCategoryState: UiState<SubscriptionPlansResponse>,
     offersDataState: UiState<List<OffersData>>,
     toolsHomeDataState: UiState<ToolsHome>,
@@ -147,11 +149,14 @@ fun HomeScreensLayout(
                     )
                 )
         ) {
-            AppTopBar(backIcon = null, actions = {
+            AppTopBar(
+                backIcon = null,
+                actions = {
                 NewMainTopBarActions(
                     onClick = onTopBarItemClick,
                     notificationState = notificationState,
-                    profileImageUri = profileImageUri,
+                    uid = uid,
+                    googleProfileImage = googleProfileImage,
                     currentAddressState = currentAddressState,
                     sessionState = sessionState,
                     onSession = onWalkingTool
@@ -220,7 +225,8 @@ private fun BottomAppBarLayout(
 private fun RowScope.NewMainTopBarActions(
     onClick: (key: MainTopBarActions) -> Unit,
     notificationState: Boolean,
-    profileImageUri: String?,
+    uid: String,
+    googleProfileImage: String?,
     currentAddressState: UiState<String>,
     sessionState: Boolean,
     onSession: () -> Unit
@@ -317,17 +323,21 @@ private fun RowScope.NewMainTopBarActions(
             /* AppIconButton(
                   imageVector = Icons.Default.Alarm
               ) { onClick(MainTopBarActions.Schedule) }*/
-            if (profileImageUri != null) {
-                AppIconButton(onClick = {
+            AppIconButton(
+                onClick = {
                     onClick(MainTopBarActions.Profile)
-                }) {
-                    AppNetworkImage(
-                        modifier = Modifier.clip(CircleShape),
-                        model = profileImageUri,
-                        contentDescription = "Profile",
-                        errorImage = painterResource(id = DrawR.drawable.ic_person)
-                    )
                 }
+            ) {
+                AppNetworkImage(
+                    modifier = Modifier.clip(CircleShape),
+                    model = if (isImagePresent(getProfileImageUrl(uid))) {
+                        getProfileImageUrl(uid)
+                    } else {
+                        googleProfileImage
+                    },
+                    contentDescription = "Profile",
+                    errorImage = painterResource(id = DrawR.drawable.ic_person)
+                )
             }
 
             // 3 vertical dots icon
@@ -341,7 +351,7 @@ private fun RowScope.NewMainTopBarActions(
                     expanded = false
                 },
                 // adjust the position
-               // offset = DpOffset(x = (-202).dp, y = 0.dp),
+                // offset = DpOffset(x = (-202).dp, y = 0.dp),
                 properties = PopupProperties()
             ) {
                 // adding each menu item

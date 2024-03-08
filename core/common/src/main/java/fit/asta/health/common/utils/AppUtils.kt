@@ -298,6 +298,13 @@ fun getBaseUrl(url: String) = BuildConfig.BASE_URL + url
 
 fun getImageUrl(url: String) = if (url.startsWith("http")) url else BuildConfig.BASE_IMAGE_URL + url
 
+fun getProfileImageUrl(uid: String) = BuildConfig.BASE_IMAGE_URL + "/images/$uid/userProfile/$uid"
+fun isImagePresent(url: String): Boolean {
+    val connection = URL(url).openConnection()
+    val contentType = connection.getHeaderField("Content-Type")
+    return contentType.startsWith("image/") //true if image
+}
+
 fun getVideoUrl(url: String) = BuildConfig.BASE_VIDEO_URL + url
 
 fun getVideoUrlTools(url: String) = BuildConfig.BASE_IMAGE_URL + url
