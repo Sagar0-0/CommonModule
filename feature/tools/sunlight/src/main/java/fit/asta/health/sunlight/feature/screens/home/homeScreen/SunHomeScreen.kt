@@ -59,6 +59,9 @@ fun SunHomeScreen(
     var showDialogue by remember {
         mutableStateOf(false)
     }
+    showDialogue = ((homeState.value.skinConditionData.firstOrNull {
+        it.code == SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN
+    }?.values?.firstOrNull()?.code) ?: 0).toString().toInt() < 40 && showDialogue
     BackHandler(scaffoldState.bottomSheetState.currentValue == AppSheetValue.Expanded) {
         scope.launch {
             scaffoldState.bottomSheetState.partialExpand()
@@ -165,7 +168,11 @@ fun SunHomeScreen(
                     }
 
                     UvIndexLocationCard(homeState.value.sunlightHomeResponse?.sunSlotData) {
-                        showDialogue = true
+                       if (((homeState.value.skinConditionData.firstOrNull {
+                            it.code == SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN
+                        }?.values?.firstOrNull()?.code) ?: 0).toString().toInt() < 40){
+                           showDialogue = true
+                       }
                     }
 //                GaugeChart()
                     //  WeatherContent(homeState.value.sunlightHomeResponse?.sunSlotData)
