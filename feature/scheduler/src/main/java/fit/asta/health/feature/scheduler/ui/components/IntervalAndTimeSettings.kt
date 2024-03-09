@@ -37,6 +37,7 @@ import fit.asta.health.designsystem.molecular.button.AppFloatingActionButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.button.AppTonalButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.TimeUi
@@ -80,6 +81,9 @@ fun SettingsLayout(
             onCheckClicked = { onAdvancedStatus(it) },
             onNavigateToClickText = onNavigateAdvanced
         )
+        AnimatedVisibility(visible = timeSettingUiState.advancedReminder.status) {
+            CaptionTexts.Level3(text = "We will remind you for the schedule in advance with a notification.")
+        }
         OnlyToggleButton(
             imageIcon = Icons.Default.Schedule,
             title = stringResource(id = StringR.string.end_alarm),
