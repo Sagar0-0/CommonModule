@@ -1,11 +1,15 @@
 package fit.asta.health.feature.walking.vm
 
+import android.content.Intent
+import android.net.Uri
 import android.os.RemoteException
+import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.platform.LocalContext
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.StepsRecord
@@ -146,7 +150,8 @@ class WalkingViewModel @Inject constructor(
         } catch (ioException: IOException) {
             HealthUiState.Error(ioException)
         } catch (illegalStateException: IllegalStateException) {
-            HealthUiState.Error(illegalStateException)
+            HealthUiState.Done
+          //  HealthUiState.Error(illegalStateException)
         }
     }
 

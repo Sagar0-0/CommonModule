@@ -697,7 +697,7 @@
         Health Connect is supported on this device, but is either not installed, or requires an update.
     </string>
     <string name="not_installed_link_text">
-        please install Health Connect
+        Please install Health Connect
     </string>
 
     <!-- Not supported on device -->
