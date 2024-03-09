@@ -87,6 +87,7 @@ import fit.asta.health.feature.scheduler.ui.components.WeatherCardHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.alarms.ui.AlarmEvent
 import fit.asta.health.navigation.alarms.ui.AllAlarms
+import fit.asta.health.navigation.today.components.RescheduleReminderCard
 import fit.asta.health.ui.common.AppDialogPopUp
 import fit.asta.health.ui.common.components.AppBalloon
 import fit.asta.health.ui.common.components.AppExpandableColumnWithTitle
@@ -176,28 +177,6 @@ fun TodayContent(
                 coroutineScope.launch { pagerState.animateScrollToPage(newIndex) }
             }
         )
-        AnimatedVisibility(visible = !userEditMessage) {
-            Row(
-                modifier = Modifier
-                    .padding(horizontal = AppTheme.spacing.level2)
-                    .padding(vertical = AppTheme.spacing.level1)
-                    .fillMaxWidth(),
-                horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level0),
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                CaptionTexts.Level3(
-                    modifier = Modifier.weight(1f),
-                    text = "Please schedule your alarms according to your flexibility!"
-                )
-                AppIcon(
-                    imageVector = Icons.Default.Close,
-                    modifier = Modifier
-                        .clickable {
-                            hSEvent(HomeEvent.SetUserEdit)
-                        }
-                )
-            }
-        }
         AppHorizontalPager(
             pagerState = pagerState,
             enableAutoAnimation = false,
@@ -233,6 +212,7 @@ fun TodayContent(
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,
+                        userEditMessage=userEditMessage,
                         hSEvent = hSEvent,
                         onNav = onNav
                     ) { newEventType, newDeleteDialog, newDeletedItem ->
@@ -274,6 +254,7 @@ fun TodayTabContent(
     listMorning: SnapshotStateList<AlarmEntity>,
     listAfternoon: SnapshotStateList<AlarmEntity>,
     listEvening: SnapshotStateList<AlarmEntity>,
+    userEditMessage: Boolean,
     hSEvent: (HomeEvent) -> Unit,
     onNav: (String) -> Unit,
     onDelete: (eventType: Event, deleteDialog: Boolean, deletedItem: AlarmEntity?) -> Unit,
@@ -432,6 +413,9 @@ fun TodayTabContent(
                  ) { hSEvent(HomeEvent.SetDefaultSchedule(context)) }
              }
          }*/
+        stickyHeader {
+            RescheduleReminderCard(userEditMessage,hSEvent)
+        }
         item {
             AppUiStateHandler(uiState = alarmState.value) {
 
