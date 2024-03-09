@@ -23,7 +23,7 @@ class WaterRestApi(client: OkHttpClient) :
         latitude: String,
         longitude: String,
         location: String,
-        date: String
+        date: Long
     ): WaterToolResult {
         return apiService.getWaterTool(userId, latitude, longitude, date, location)
     }

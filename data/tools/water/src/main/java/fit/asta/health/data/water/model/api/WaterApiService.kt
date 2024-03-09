@@ -6,7 +6,11 @@ import fit.asta.health.data.water.model.network.WaterToolDetailsData
 import fit.asta.health.data.water.model.network.WaterToolResult
 import fit.asta.health.network.data.Status
 import retrofit2.Response
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
 //Health Tool - Water Endpoints
 interface WaterApiService {
@@ -16,7 +20,7 @@ interface WaterApiService {
         @Query("uid") userId: String,
         @Query("lat") latitude: String,
         @Query("lon") longitude: String,
-        @Query("date") date: String,
+        @Query("date") date: Long,
         @Query("loc") location: String
     ): WaterToolResult
 

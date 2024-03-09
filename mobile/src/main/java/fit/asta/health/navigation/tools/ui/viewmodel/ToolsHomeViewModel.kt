@@ -5,9 +5,9 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getCurrentTime
-import fit.asta.health.common.utils.getNextDate
+import fit.asta.health.common.utils.getNextNthDayMillis
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.home.remote.model.ToolsHome
@@ -43,8 +43,8 @@ class ToolsHomeViewModel @Inject constructor(
                         latitude = address.lat.toString(),
                         longitude = address.long.toString(),
                         location = address.currentAddress,
-                        startDate = getCurrentDate(),
-                        endDate = getNextDate(2),
+                        startDate = getCurrentDateTime(),
+                        endDate = getNextNthDayMillis(2),
                         time = getCurrentTime()
                     ).toUiState()
                 }

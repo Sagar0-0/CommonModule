@@ -14,7 +14,7 @@ import javax.inject.Inject
 class PaymentsRepoImpl
 @Inject constructor(
     private val remoteApi: PaymentsApi,
-    private val apiErrorHandler: PaymentsApiErrorHandler,
+    private val apiErrorHandler: PaymentsApiErrorHandler = PaymentsApiErrorHandler(),
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : PaymentsRepo {
 

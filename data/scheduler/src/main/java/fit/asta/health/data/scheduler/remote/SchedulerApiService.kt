@@ -7,7 +7,13 @@ import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
 import fit.asta.health.network.data.ServerRes
 import okhttp3.MultipartBody
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.Query
 
 
 //Scheduler Endpoints
@@ -16,7 +22,7 @@ interface SchedulerApiService {
     @GET("schedule/home/get/?")// http://asta.fit/schedule/home/get/?uid=6309a9379af54f142c65fbfe&lat=28.6353&lon=77.2250&date=2023-07-03&loc=bangalore
     suspend fun getTodayDataFromBackend(
         @Query("uid") userID: String,
-        @Query("date") date: String,
+        @Query("date") date: Long,
         @Query("loc") location: String,
         @Query("lat") latitude: Float,
         @Query("lon") longitude: Float

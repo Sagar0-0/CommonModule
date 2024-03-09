@@ -25,7 +25,7 @@ class SunlightHomeRepoImpl
         uid: String,
         lat: String,
         lon: String,
-        date: String,
+        date: Long,
         loc: String
     ): Flow<ResponseState<SunlightHomeData>> = flow {
         emitResponse {

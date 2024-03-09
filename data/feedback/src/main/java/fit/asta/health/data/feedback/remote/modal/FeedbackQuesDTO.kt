@@ -7,7 +7,7 @@ import kotlinx.parcelize.Parcelize
 @Parcelize
 data class FeedbackQuesDTO(
     @SerializedName("date")
-    val date: String = "",
+    val date: Long = 0L,
     @SerializedName("fid")
     val fid: String = "",
     @SerializedName("id")

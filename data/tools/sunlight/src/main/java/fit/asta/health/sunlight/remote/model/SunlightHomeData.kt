@@ -25,7 +25,7 @@ data class SunLightProgressData(
 
     @SerializedName("id") var id: String? = null,
     @SerializedName("uid") var uid: String? = null,
-    @SerializedName("date") var date: String? = null,
+    @SerializedName("date") var date: Long? = null,
     @SerializedName("tgt") var tgt: Int? = null,
     @SerializedName("ach") var ach: Int? = null,
     @SerializedName("rem") var rem: Long? = null,
@@ -51,7 +51,7 @@ data class Meta(
 data class SunSlotData(
 
     @SerializedName("id") var id: String? = null,
-    @SerializedName("date") var date: String? = null,
+    @SerializedName("date") var date: Long? = null,
     @SerializedName("lat") var lat: Float? = null,
     @SerializedName("lon") var lon: Float? = null,
     @SerializedName("loc") var loc: String? = null,

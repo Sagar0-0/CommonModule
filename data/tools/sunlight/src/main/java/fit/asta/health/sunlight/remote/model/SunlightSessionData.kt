@@ -17,7 +17,7 @@ data class SunlightSessionData (
     @SerializedName("exp"   ) var exp   : Int?    = null,
     @SerializedName("start" ) var start : String? = null,
     @SerializedName("end"   ) var end   : String? = null,
-    @SerializedName("date"  ) var date  : String? = null
+    @SerializedName("date") var date: Long? = null
 ){
     fun getDuration():Long{
         return (endTime?:0)-(startTime?:0)

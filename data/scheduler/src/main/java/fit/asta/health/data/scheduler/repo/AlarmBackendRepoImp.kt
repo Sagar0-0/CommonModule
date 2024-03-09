@@ -18,7 +18,7 @@ class AlarmBackendRepoImp(
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(
         userID: String,
-        date: String,
+        date: Long,
         location: String,
         latitude: Float,
         longitude: Float

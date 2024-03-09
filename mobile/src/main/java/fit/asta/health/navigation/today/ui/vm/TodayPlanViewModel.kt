@@ -10,7 +10,7 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.common.utils.toUiState
@@ -326,7 +326,7 @@ class TodayPlanViewModel @Inject constructor(
                 viewModelScope.launch {
                     _todayState.value = when (val result = alarmBackendRepo.getTodayDataFromBackend(
                         userID = uId,
-                        date = getCurrentDate(),
+                        date = getCurrentDateTime(),
                         location = it.currentAddress,
                         latitude = it.lat.toFloat(),
                         longitude = it.long.toFloat()

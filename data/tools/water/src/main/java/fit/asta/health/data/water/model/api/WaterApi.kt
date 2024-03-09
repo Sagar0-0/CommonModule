@@ -15,7 +15,7 @@ interface WaterApi {
         latitude: String,
         longitude: String,
         location: String,
-        date: String
+        date: Long
     ): WaterToolResult
 
     suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status

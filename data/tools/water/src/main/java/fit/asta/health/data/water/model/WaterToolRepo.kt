@@ -14,7 +14,7 @@ interface WaterToolRepo {
         latitude: String,
         longitude: String,
         location: String,
-        date: String
+        date: Long
     ): Flow<WaterTool>
 
 

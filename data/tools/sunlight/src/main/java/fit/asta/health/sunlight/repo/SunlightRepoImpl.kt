@@ -22,7 +22,7 @@ class SunlightRepoImpl
     @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SunlightRepo {
     override  fun getSunData(
-        date: String,
+        date: Long,
         lat: Double,
         lang: Double
     ): Flow<ResponseState<SunDetailsResponseDTO>> = flow {

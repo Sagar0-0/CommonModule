@@ -27,9 +27,9 @@ data class OffersData(
     @SerializedName("code")
     val offerCode: String = "",
     @SerializedName("start")
-    val startDate: String = "",
+    val startDate: Long = 0L,
     @SerializedName("end")
-    val endDate: String = "",
+    val endDate: Long = 0L,
     @SerializedName("areas")
     val areas: List<OfferArea> = listOf(),
 ) {

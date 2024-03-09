@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 
 interface SunlightRepo {
      fun getSunData(
-        date: String,
+         date: Long,
         lat: Double,
         lang: Double
     ): Flow<ResponseState<SunDetailsResponseDTO>>

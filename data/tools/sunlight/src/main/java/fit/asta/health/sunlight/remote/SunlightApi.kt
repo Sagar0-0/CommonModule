@@ -27,7 +27,7 @@ interface SunlightApi {
         @Query("uid") uid: String,
         @Query("lat") lat: String,
         @Query("lon") lon: String,
-        @Query("date") date: String,
+        @Query("date") date: Long,
         @Query("loc") loc: String,
     ): Response<SunlightHomeData>
 

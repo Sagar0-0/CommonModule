@@ -21,8 +21,8 @@ class ToolsHomeRepoImpl
         latitude: String,
         longitude: String,
         location: String,
-        startDate: String,
-        endDate: String,
+        startDate: Long,
+        endDate: Long,
         time: String
     ): ResponseState<ToolsHome> {
         return withContext(coroutineDispatcher) {

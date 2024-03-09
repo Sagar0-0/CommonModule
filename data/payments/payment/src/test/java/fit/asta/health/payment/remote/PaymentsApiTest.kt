@@ -8,7 +8,6 @@ import fit.asta.health.payment.remote.model.OrderRequest
 import fit.asta.health.payment.remote.model.OrderResponse
 import fit.asta.health.payment.remote.model.PaymentResponse
 import fit.asta.health.payment.repo.PaymentsRepoImpl
-import kotlinx.coroutines.test.UnconfinedTestDispatcher
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse
 import okhttp3.mockwebserver.MockWebServer
@@ -59,7 +58,7 @@ class PaymentsApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val onboardingRepoImpl = PaymentsRepoImpl(api, UnconfinedTestDispatcher())
+        val onboardingRepoImpl = PaymentsRepoImpl(api)
         val data = onboardingRepoImpl.createOrder(OrderRequest())
         server.takeRequest()
 
@@ -86,7 +85,7 @@ class PaymentsApiTest {
         res.setResponseCode(404)
         server.enqueue(res)
 
-        val onboardingRepoImpl = PaymentsRepoImpl(api, UnconfinedTestDispatcher())
+        val onboardingRepoImpl = PaymentsRepoImpl(api)
         val data = onboardingRepoImpl.verifyAndUpdateProfile("", "")
         server.takeRequest()
 

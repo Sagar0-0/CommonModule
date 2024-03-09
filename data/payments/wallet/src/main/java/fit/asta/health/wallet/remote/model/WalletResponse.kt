@@ -23,7 +23,7 @@ data class WalletResponse(
         @SerializedName("pid")
         val paymentId: String = "",
         @SerializedName("cDate")
-        val cDate: String = "",
+        val cDate: Long = 0L,
         @SerializedName("ttl")
         val ttl: String = "",
         @SerializedName("url")

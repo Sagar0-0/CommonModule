@@ -12,7 +12,7 @@ interface SunlightHomeRepo {
         uid: String,
         lat: String,
         lon: String,
-        date: String,
+        date: Long,
         loc: String,
     ): Flow<ResponseState<SunlightHomeData>>
 

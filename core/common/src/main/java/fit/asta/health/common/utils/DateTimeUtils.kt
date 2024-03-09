@@ -5,8 +5,6 @@ import android.util.Log
 import java.text.SimpleDateFormat
 import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.LocalTime
-import java.time.ZoneId
 import java.time.format.DateTimeFormatter
 import java.util.Calendar
 import java.util.Date
@@ -33,6 +31,26 @@ fun formatTime(timeMillis: Long, format: String = "hh:mm a"): String {
     calendar.timeInMillis = timeMillis
     return sdf.format(calendar.time)
 }
+
+fun convertMillisToDate(milliseconds: Long, format: String = "yyyy-MM-dd HH:mm:ss"): String {
+    val sdf =
+        SimpleDateFormat(format, Locale.getDefault())
+    val resultDate = Date(milliseconds)
+    return sdf.format(resultDate)
+}
+
+fun getNextNthDayMillis(n: Int): Long {
+    val calendar = Calendar.getInstance()
+    calendar.set(Calendar.HOUR_OF_DAY, 0) // Set to midnight
+    calendar.set(Calendar.MINUTE, 0)
+    calendar.set(Calendar.SECOND, 0)
+    calendar.set(Calendar.MILLISECOND, 0)
+
+    calendar.add(Calendar.DATE, n)
+    return calendar.timeInMillis
+}
+
+fun getCurrentDateTime(): Long = System.currentTimeMillis()
 
 fun getCurrentDate(format: String = "yyyy-MM-dd"): String {
 
@@ -73,7 +91,8 @@ fun convertToMilliseconds(hour: Int, minute: Int): Long {
     calendar.set(Calendar.MILLISECOND, 0)
     return calendar.timeInMillis
 }
-fun isCurrentTimeLaterThan(inputTime: String?,format: String="yyyy-MM-dd'T'HH:mm"): Boolean {
+
+fun isCurrentTimeLaterThan(inputTime: String?, format: String = "yyyy-MM-dd'T'HH:mm"): Boolean {
     if (inputTime.isNullOrEmpty()) return true
     Log.d("inputTime", "isCurrentTimeLaterThan:$inputTime ")
     val inputDateTime = SimpleDateFormat(format, Locale.getDefault()).parse(inputTime)

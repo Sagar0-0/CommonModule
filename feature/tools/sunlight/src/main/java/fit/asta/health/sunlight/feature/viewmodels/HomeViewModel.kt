@@ -14,12 +14,12 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.sunlight.feature.event.SunlightHomeEvent
 import fit.asta.health.sunlight.feature.screens.home.homeScreen.SunlightHomeState
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinConditionScreenCode
-import fit.asta.health.sunlight.feature.utils.DateUtil
 import fit.asta.health.sunlight.remote.model.HelpAndNutrition
 import fit.asta.health.sunlight.remote.model.SessionDetailBody
 import fit.asta.health.sunlight.remote.model.SunlightHomeData
@@ -36,7 +36,6 @@ import kotlinx.coroutines.launch
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.ceil
-import kotlin.math.floor
 
 @HiltViewModel
 class HomeViewModel @Inject constructor(
@@ -202,8 +201,9 @@ class HomeViewModel @Inject constructor(
             prefManager.address.collectLatest { pref ->
                 repository.getSunlightHomeData(
                     uid,
-                    pref.lat.toString(), pref.long.toString(),
-                    DateUtil.getCurrentDateFormatted(),
+                    pref.lat.toString(),
+                    pref.long.toString(),
+                    getCurrentDateTime(),
                     pref.currentAddress
                 ).onEach { dataState ->
                     _homeState.emit(dataState.toUiState())
@@ -318,8 +318,10 @@ class HomeViewModel @Inject constructor(
                 dur = sessionState.value.getDuration(),
                 temp = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currTemp
                     ?: 0.0),
-                uv = ceil(sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
-                    ?: 0.0).toInt(),
+                uv = ceil(
+                    sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
+                        ?: 0.0
+                ).toInt(),
                 spf = skinConditionDataMapper[SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN]?.code
                     ?: "",
                 start = sessionState.value.startTime.toString(),

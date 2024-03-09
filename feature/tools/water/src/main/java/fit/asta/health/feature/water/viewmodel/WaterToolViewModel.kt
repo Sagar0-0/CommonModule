@@ -10,20 +10,10 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.delay
-import kotlinx.coroutines.flow.MutableStateFlow
-import kotlinx.coroutines.flow.SharingStarted
-import kotlinx.coroutines.flow.StateFlow
-import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.catch
-import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.stateIn
-import kotlinx.coroutines.launch
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.repo.AuthRepo
-import fit.asta.health.common.utils.getCurrentDate
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.water.check.model.BevDataDetails
 import fit.asta.health.data.water.check.model.ConsumptionHistory
 import fit.asta.health.data.water.check.model.Goal
@@ -38,6 +28,16 @@ import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.water.WaterState
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
+import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.MutableStateFlow
+import kotlinx.coroutines.flow.SharingStarted
+import kotlinx.coroutines.flow.StateFlow
+import kotlinx.coroutines.flow.asStateFlow
+import kotlinx.coroutines.flow.catch
+import kotlinx.coroutines.flow.collectLatest
+import kotlinx.coroutines.flow.stateIn
+import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject
 
@@ -276,7 +276,7 @@ class WaterToolViewModel @Inject constructor(
                         latitude = pref.lat.toString(),
                         longitude = pref.long.toString(),
                         location = pref.currentAddress,
-                        date = getCurrentDate()
+                        date = getCurrentDateTime()
                     ).catch { exception ->
                         Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
                         mutableState.value = WaterState.Error("$exception + loadWaterTool")

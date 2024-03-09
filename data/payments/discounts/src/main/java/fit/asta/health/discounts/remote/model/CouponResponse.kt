@@ -25,11 +25,11 @@ data class CouponResponse(
         @SerializedName("dsc")
         val description: String = "",
         @SerializedName("end")
-        val endDate: String = "",
+        val endDate: Long = 0L,
         @SerializedName("id")
         val id: String = "",
         @SerializedName("start")
-        val startDate: String = "",
+        val startDate: Long = 0L,
         @SerializedName("sts")
         val status: Int = 0,
         @SerializedName("ttl")

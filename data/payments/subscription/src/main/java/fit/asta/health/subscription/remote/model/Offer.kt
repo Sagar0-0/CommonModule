@@ -11,13 +11,13 @@ data class Offer(
     @SerializedName("dsc")
     val desc: String = "",
     @SerializedName("end")
-    val endDate: String = "",
+    val endDate: Long = 0L,
     @SerializedName("id")
     val id: String = "",
     @SerializedName("offer")
     val discount: Int = 0,
     @SerializedName("start")
-    val startDate: String = "",
+    val startDate: Long = 0L,
     @SerializedName("sts")
     val status: Int = 0,
     @SerializedName("ttl")
