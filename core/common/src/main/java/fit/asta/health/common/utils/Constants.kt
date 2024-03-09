@@ -1,7 +1,15 @@
 package fit.asta.health.common.utils
 
+import android.content.Context
+import android.content.res.Configuration
+import android.content.res.Resources
+import android.graphics.Point
+import android.os.Build
 import android.os.Parcelable
 import android.util.Log
+import android.view.WindowInsets
+import android.view.WindowManager
+import androidx.annotation.RequiresApi
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.remember
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -368,4 +376,80 @@ fun scrollToIndex(size: Int, size1: Int, size2: Int): Int {
             4 + size + size1
         }
     }
+}
+
+/*val Context.navigationBarHeight: Int
+    get() {
+*//*        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        return if (Build.VERSION.SDK_INT >= 30) {
+            windowManager
+                .currentWindowMetrics
+                .windowInsets
+                .getInsets(WindowInsets.Type.navigationBars())
+                .bottom
+
+        } else {
+            val currentDisplay = try {
+                windowManager.defaultDisplay
+            } catch (e: NoSuchMethodError) {
+                windowManager.defaultDisplay
+            }
+
+            val appUsableSize = Point()
+            val realScreenSize = Point()
+            currentDisplay?.apply {
+                getSize(appUsableSize)
+                getRealSize(realScreenSize)
+            }
+
+            // navigation bar on the side
+            if (appUsableSize.x < realScreenSize.x) {
+                return realScreenSize.x - appUsableSize.x
+            }
+
+            // navigation bar at the bottom
+            return if (appUsableSize.y < realScreenSize.y) {
+                realScreenSize.y - appUsableSize.y
+            } else 0
+        }*//*
+        return this.getNavigationBarHeight()
+    }*/
+
+fun Context.navigationBarHeight(): Int {
+    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
+        val windowManager = getSystemService(Context.WINDOW_SERVICE) as WindowManager
+
+        if (Build.VERSION.SDK_INT >= 30) {
+            windowManager
+                .currentWindowMetrics
+                .windowInsets
+                .getInsets(WindowInsets.Type.navigationBars())
+                .bottom
+            val hasGesture: Boolean
+            val margin =
+                windowManager.currentWindowMetrics.windowInsets.getInsets(WindowInsets.Type.systemGestures())?.left ?: 0
+            hasGesture = margin > 0
+
+            if (hasGesture) return 12
+        }
+
+    }
+
+    val resources: Resources = this.resources
+    val resName = if (resources.configuration.orientation == Configuration.ORIENTATION_PORTRAIT) {
+        "navigation_bar_height"
+    } else {
+        "navigation_bar_height_landscape"
+    }
+    val id: Int = resources.getIdentifier(resName, "dimen", "android")
+    return if (id > 0) {
+        resources.getDimensionPixelSize(id).pxToDp(this).toInt()
+    } else {
+        0
+    }
+}
+
+fun Int.pxToDp(context: Context): Float {
+    return   this / context.resources.displayMetrics.density;
 }

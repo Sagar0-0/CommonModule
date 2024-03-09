@@ -12,6 +12,7 @@ import androidx.compose.foundation.layout.ime
 import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.offset
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
@@ -32,8 +33,10 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
+import fit.asta.health.common.utils.navigationBarHeight
 
 /** [AppModalBottomSheet] is a composable function in Jetpack Compose that creates a modal
  * bottom sheet, which is a type of dialog that slides up from the bottom of the screen to
@@ -67,10 +70,12 @@ fun AppModalBottomSheet(
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
     content: @Composable() (() -> Unit)
 ) {
+    val context = LocalContext.current
     if (sheetVisible) {
         ModalBottomSheet(
             modifier = modifier
                 .fillMaxWidth() //Adjust if needed (e.g., .fillMaxHeight(0.8f))
+                .offset(0.dp,(-context.navigationBarHeight().dp))
                 .navigationBarsPadding()
                 .imePadding(),
             sheetState = sheetState,
@@ -86,8 +91,8 @@ fun AppModalBottomSheet(
             content = {
                 Surface(
                     modifier = Modifier
-                        .fillMaxWidth() // Avoid fillMaxHeight here
-                        .padding(bottom = bottomPadding),
+                        .fillMaxWidth() // Avoid fillMaxHeight here,
+                            ,
                     content = content
                 ) //To handle the system navigation bar padding
             },
