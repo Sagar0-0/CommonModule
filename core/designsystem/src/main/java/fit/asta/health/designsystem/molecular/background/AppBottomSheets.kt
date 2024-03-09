@@ -13,7 +13,6 @@ import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.navigationBars
 import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.offset
-import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.material.ExperimentalMaterialApi
 import androidx.compose.material.ModalBottomSheetLayout
@@ -26,14 +25,20 @@ import androidx.compose.material3.ModalBottomSheetProperties
 import androidx.compose.material3.SheetState
 import androidx.compose.material3.SheetValue
 import androidx.compose.material3.SheetValue.Hidden
-import androidx.compose.material3.Surface
 import androidx.compose.material3.contentColorFor
 import androidx.compose.material3.rememberModalBottomSheetState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
+import androidx.compose.runtime.getValue
+import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshotFlow
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalDensity
 import androidx.compose.ui.unit.Dp
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.navigationBarHeight
@@ -57,7 +62,6 @@ fun AppModalBottomSheet(
     sheetVisible: Boolean,
     onDismissRequest: () -> Unit,
     modifier: Modifier = Modifier,
-    bottomPadding: Dp = 48.dp,
     sheetState: SheetState = appRememberModalBottomSheetState(),
     sheetMaxWidth: Dp = BottomSheetDefaults.SheetMaxWidth,
     shape: Shape = BottomSheetDefaults.ExpandedShape,
@@ -68,15 +72,29 @@ fun AppModalBottomSheet(
     dragHandle: @Composable() (() -> Unit)? = { BottomSheetDefaults.DragHandle() },
     windowInsets: WindowInsets = WindowInsets.navigationBars,
     properties: ModalBottomSheetProperties = ModalBottomSheetDefaults.properties(),
-    content: @Composable() (() -> Unit)
+    content: @Composable() (ColumnScope.() -> Unit)
 ) {
-    val context = LocalContext.current
     if (sheetVisible) {
+
+        val context = LocalContext.current
+        var isKeyboardOpen by remember { mutableStateOf(false) }
+        val ime = WindowInsets.ime
+        val navbar = WindowInsets.navigationBars
+        val localDensity = LocalDensity.current
+
+        LaunchedEffect(localDensity.density) {
+            snapshotFlow { ime.getBottom(localDensity) - navbar.getBottom(localDensity) }
+                .collect {
+                    val currentKeyboardHeightDp = (it / localDensity.density).dp
+                    isKeyboardOpen = currentKeyboardHeightDp > 0.dp
+                }
+        }
+
         ModalBottomSheet(
             modifier = modifier
                 .fillMaxWidth() //Adjust if needed (e.g., .fillMaxHeight(0.8f))
-                .offset(0.dp,(-context.navigationBarHeight().dp))
                 .navigationBarsPadding()
+                .offset(0.dp, if (isKeyboardOpen) 0.dp else (-context.navigationBarHeight().dp))
                 .imePadding(),
             sheetState = sheetState,
             onDismissRequest = onDismissRequest,
@@ -88,14 +106,7 @@ fun AppModalBottomSheet(
             scrimColor = scrimColor,
             properties = properties,
             windowInsets = windowInsets.add(WindowInsets.ime),
-            content = {
-                Surface(
-                    modifier = Modifier
-                        .fillMaxWidth() // Avoid fillMaxHeight here,
-                            ,
-                    content = content
-                ) //To handle the system navigation bar padding
-            },
+            content = content
         )
     }
 }
