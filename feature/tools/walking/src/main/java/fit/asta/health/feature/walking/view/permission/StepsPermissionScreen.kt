@@ -7,6 +7,7 @@ import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
 import android.provider.Settings
+import android.util.Log
 import android.widget.Toast
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.ActivityResultLauncher
@@ -78,6 +79,7 @@ fun StepsPermissionScreen(
             )
             == PackageManager.PERMISSION_GRANTED
         ) {
+            Log.d("rishi","Activity Recognition perms granted")
             val launchIntent = Intent(context, StepService::class.java)
             ContextCompat.startForegroundService(context, launchIntent)
             setPermissionCount(0)
@@ -99,9 +101,11 @@ fun StepsPermissionScreen(
                     context.startActivity(this)
                 }
             } else {
-                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.TIRAMISU) {
+                Log.d("rishi","Activity Recognition perms not granted so here")
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
                     stepsPermissionResultLauncher.launch(Manifest.permission.ACTIVITY_RECOGNITION)
                 } else {
+                    Log.d("rishi","permission Count : $stepsPermissionCount")
                     val launchIntent = Intent(context, StepService::class.java)
                     ContextCompat.startForegroundService(context, launchIntent)
                     goToSteps()

@@ -50,7 +50,21 @@ const val MIN_SUPPORTED_SDK = Build.VERSION_CODES.O_MR1
  * Demonstrates reading and writing from Health Connect.
  */
 class HealthConnectManager(private val context: Context) {
-    private val healthConnectClient by lazy { HealthConnectClient.getOrCreate(context) }
+
+    private val healthConnectClient by lazy {
+        try {
+            Log.d("rishi","Before healthConnectClient Started")
+            HealthConnectClient.getOrCreate(context)
+        } catch (e: Exception) {
+            // Handle the exception here, you can log it or perform any necessary action.
+            Log.e("rishi", "Error initializing HealthConnectClient: ${e.message}")
+            // Return a default or null value, or throw a new exception if appropriate.
+            null // Or throw a different exception: throw RuntimeException("Failed to initialize HealthConnectClient", e)
+        } finally {
+            Log.d("rishi","After healthConnectClient Started")
+        }
+    }
+
     val healthConnectCompatibleApps by lazy {
         val intent = Intent("androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE")
 
@@ -88,10 +102,12 @@ class HealthConnectManager(private val context: Context) {
 
     fun checkAvailability() {
         availability.intValue = HealthConnectClient.getSdkStatus(context)
-        Log.d("rishi","Health : ${availability.intValue}")
+//        Log.d("rishi","Health : ${availability.intValue} \n " +
+//                " ${healthConnectCompatibleApps.values}")
     }
 
-    fun downloadIntent(){
+    private fun downloadIntent(){
+
         val packageName = "com.google.android.apps.healthdata" // Package name for the HealthConnect app
         try {
             // Open the app page in the Play Store
@@ -109,12 +125,14 @@ class HealthConnectManager(private val context: Context) {
         when(availability.intValue){
             1 -> Toast.makeText(context,"Your app doesn't support this sdk",Toast.LENGTH_SHORT).show()
             2 -> downloadIntent()
-            else -> {}
+            else -> {
+                Log.d("rishi","Health Status  : ${availability.intValue}")
+            }
         }
     }
     init {
+        Log.d("rishi","Client started , Health Status  : ${availability.intValue}")
         checkAvailability()
-        handleSDKstatusAvailability()
     }
 
     /**
@@ -124,8 +142,9 @@ class HealthConnectManager(private val context: Context) {
      * [PermissionController.createRequestPermissionResultContract].
      */
     suspend fun hasAllPermissions(permissions: Set<String>): Boolean {
-        return healthConnectClient.permissionController.getGrantedPermissions()
-            .containsAll(permissions)
+        // Use safe call operator ?. to avoid NullPointerException
+        return healthConnectClient?.permissionController?.getGrantedPermissions()
+            ?.containsAll(permissions) ?: false // Return false if healthConnectClient or permissionController is null
     }
 
     fun requestPermissionsActivityContract(): ActivityResultContract<Set<String>, Set<String>> {
@@ -133,7 +152,7 @@ class HealthConnectManager(private val context: Context) {
     }
 
     suspend fun revokeAllPermissions() {
-        healthConnectClient.permissionController.revokeAllPermissions()
+        healthConnectClient!!.permissionController.revokeAllPermissions()
     }
 
 
@@ -154,7 +173,7 @@ class HealthConnectManager(private val context: Context) {
             recordType = ExerciseSessionRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
-        val response = healthConnectClient.readRecords(request)
+        val response = healthConnectClient!!.readRecords(request)
         return response.records
     }
 
@@ -179,7 +198,7 @@ class HealthConnectManager(private val context: Context) {
             dataOriginFilter = emptySet()
         )
         while (true) {
-            val aggregateData = healthConnectClient.aggregate(aggregateRequest)
+            val aggregateData = healthConnectClient!!.aggregate(aggregateRequest)
             emit(
                 ExerciseSessionData(
                     totalSteps = aggregateData[StepsRecord.COUNT_TOTAL],
@@ -197,7 +216,7 @@ class HealthConnectManager(private val context: Context) {
      */
     suspend fun writeWeightInput(weight: WeightRecord) {
         val records = listOf(weight)
-        healthConnectClient.insertRecords(records)
+        healthConnectClient!!.insertRecords(records)
     }
 
     /**
@@ -208,7 +227,7 @@ class HealthConnectManager(private val context: Context) {
             recordType = WeightRecord::class,
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
-        val response = healthConnectClient.readRecords(request)
+        val response = healthConnectClient!!.readRecords(request)
         return response.records
     }
 
@@ -220,7 +239,7 @@ class HealthConnectManager(private val context: Context) {
             metrics = setOf(WeightRecord.WEIGHT_AVG),
             timeRangeFilter = TimeRangeFilter.between(start, end)
         )
-        val response = healthConnectClient.aggregate(request)
+        val response = healthConnectClient!!.aggregate(request)
         return response[WeightRecord.WEIGHT_AVG]
     }
 
@@ -228,7 +247,7 @@ class HealthConnectManager(private val context: Context) {
      * Deletes a [WeightRecord]s.
      */
     suspend fun deleteWeightInput(uid: String) {
-        healthConnectClient.deleteRecords(
+        healthConnectClient!!.deleteRecords(
             WeightRecord::class,
             recordIdsList = listOf(uid),
             clientRecordIdsList = emptyList()
@@ -240,7 +259,7 @@ class HealthConnectManager(private val context: Context) {
      */
     suspend fun getChangesToken(dataTypes: Set<KClass<out Record>>): String {
         val request = ChangesTokenRequest(dataTypes)
-        return healthConnectClient.getChangesToken(request)
+        return healthConnectClient!!.getChangesToken(request)
     }
 
     /**
@@ -251,7 +270,7 @@ class HealthConnectManager(private val context: Context) {
     suspend fun getChanges(token: String): Flow<ChangesMessage> = flow {
         var nextChangesToken = token
         do {
-            val response = healthConnectClient.getChanges(nextChangesToken)
+            val response = healthConnectClient!!.getChanges(nextChangesToken)
             if (response.changesTokenExpired) {
                 // As described here: https://developer.android.com/guide/health-and-fitness/health-connect/data-and-data-types/differential-changes-api
                 // tokens are only valid for 30 days. It is important to check whether the token has
@@ -279,7 +298,7 @@ class HealthConnectManager(private val context: Context) {
             dataOriginFilter = dataOriginFilter,
             timeRangeFilter = timeRangeFilter,
         )
-        return healthConnectClient.readRecords(request).records
+        return healthConnectClient!!.readRecords(request).records
     }
 
     private fun buildHeartRateSeries(

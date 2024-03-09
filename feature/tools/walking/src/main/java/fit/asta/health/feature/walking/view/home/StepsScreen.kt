@@ -1,5 +1,6 @@
 package fit.asta.health.feature.walking.view.home
 
+import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedContent
 import androidx.compose.animation.AnimatedVisibility
@@ -74,6 +75,7 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.walking.component.InstalledMessage
 import fit.asta.health.feature.walking.component.NotInstalledMessage
+import fit.asta.health.feature.walking.component.NotSupportedMessage
 import fit.asta.health.feature.walking.view.component.StepsProgressCard
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 import fit.asta.health.resources.drawables.R
@@ -85,6 +87,7 @@ fun StepsScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     permissions: Set<String>,
     permissionsGranted: Boolean,
+    firstTime : Boolean,
     sessionMetrics: ExerciseSessionData,
     uiState: WalkingViewModel.HealthUiState,
     onPermissionsResult: () -> Unit = {},
@@ -125,6 +128,7 @@ fun StepsScreen(
     LaunchedEffect(uiState) {
         // If the initial data load has not taken place, attempt to load the data.
         if (uiState is WalkingViewModel.HealthUiState.Uninitialized) {
+            Log.d("rishi","HealthConnect will Not allow: $healthConnectAvailability")
             onPermissionsResult()
         }
     }
@@ -180,20 +184,39 @@ fun StepsScreen(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    Log.d("rishi","HealthConnect : $healthConnectAvailability")
                     when (healthConnectAvailability) {
-                        HealthConnectClient.SDK_AVAILABLE -> if (!permissionsGranted) {
+                        3 -> if (!permissionsGranted) {
                             item {
                                 InstalledMessage(onPermissionsLaunch = {
                                     onPermissionsLaunch(permissions)
                                 })
                             }
                         }
-
-                        HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> item {
+                        2 -> item {
+                            if(firstTime) PlayStorePermsUI()
                             NotInstalledMessage()
                         }
-
-                        HealthConnectClient.SDK_UNAVAILABLE -> {}
+                        1 -> item{
+//                            BodyTexts.Level2(text = "Not Supported ")
+                            NotSupportedMessage()
+                        }
+//                        HealthConnectClient.SDK_AVAILABLE -> if (!permissionsGranted) {
+//                            item {
+//                                InstalledMessage(onPermissionsLaunch = {
+//                                    onPermissionsLaunch(permissions)
+//                                })
+//                            }
+//                        }
+//                        HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> item {
+//                            Log.d("rishi","HealthConnect : $healthConnectAvailability")
+//                            //PlayStorePermsUI()
+//                            NotInstalledMessage()
+//                        }
+//
+//                        HealthConnectClient.SDK_UNAVAILABLE -> item{
+//                            //PlayStorePermsUI()
+//                        }
                     }
                     item {
                         AppSurface(
