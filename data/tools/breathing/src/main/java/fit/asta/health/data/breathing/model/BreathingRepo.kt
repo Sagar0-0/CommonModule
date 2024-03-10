@@ -11,7 +11,7 @@ import fit.asta.health.data.breathing.model.network.request.NetPut
 import fit.asta.health.network.data.ServerRes
 
 interface BreathingRepo {
-    suspend fun getBreathingTool(userId: String, date: String): ResponseState<NetGetRes>
+    suspend fun getBreathingTool(userId: String, date: Long): ResponseState<NetGetRes>
     suspend fun getAllBreathingData(userId: String): ResponseState<AllExerciseData>
     suspend fun getStart(userId: String): ResponseState<NetGetStart>
     suspend fun putBreathingData(netPut: NetPut): ResponseState<ServerRes>

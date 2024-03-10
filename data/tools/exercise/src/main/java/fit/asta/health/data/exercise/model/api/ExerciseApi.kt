@@ -18,7 +18,7 @@ interface ExerciseApi {
     @GET("tools/exercise/get/?")
     suspend fun getExerciseTool(
         @Query("uid") userId: String,
-        @Query("date") date: String,
+        @Query("date") date: Long,
         @Query("exName") name: String
     ): Response<ExerciseData>
 

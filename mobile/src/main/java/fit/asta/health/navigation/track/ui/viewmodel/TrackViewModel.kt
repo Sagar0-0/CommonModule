@@ -7,7 +7,6 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.data.remote.model.breathing.BreathingResponse
 import fit.asta.health.navigation.track.data.remote.model.exercise.ExerciseResponse
 import fit.asta.health.navigation.track.data.remote.model.meditation.MeditationResponse
@@ -16,6 +15,7 @@ import fit.asta.health.navigation.track.data.remote.model.sleep.SleepResponse
 import fit.asta.health.navigation.track.data.remote.model.step.StepsResponse
 import fit.asta.health.navigation.track.data.remote.model.sunlight.SunlightResponse
 import fit.asta.health.navigation.track.data.remote.model.water.WaterResponse
+import fit.asta.health.navigation.track.data.repo.TrackingRepo
 import fit.asta.health.navigation.track.ui.util.TrackOption
 import fit.asta.health.navigation.track.ui.util.TrackUiEvent
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -74,9 +74,6 @@ class TrackViewModel @Inject constructor(
         }
     }
 
-    // User Id For testing
-    // TODO : To be changed according to the user
-//    private val uid = "6309a9379af54f142c65fbfe"
 
     // This variable contains the Home Screen Menu Details
     private val _homeScreenDetails = MutableStateFlow<UiState<HomeMenuResponse>>(UiState.Idle)

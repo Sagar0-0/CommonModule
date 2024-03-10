@@ -5,6 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.sleep.model.SleepLocalRepo
 import fit.asta.health.data.sleep.model.SleepRepository
 import fit.asta.health.data.sleep.model.db.SleepData
@@ -20,9 +21,7 @@ import fit.asta.health.data.sleep.utils.SleepNetworkCall
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.launch
-import java.time.LocalDate
 import java.time.LocalDateTime
-import java.time.format.DateTimeFormatter
 import java.time.temporal.ChronoUnit
 import javax.inject.Inject
 
@@ -68,14 +67,10 @@ class SleepToolViewModel @Inject constructor(
         _userUIDefaults.value = SleepNetworkCall.Loading()
 
         viewModelScope.launch {
-
-            // Local Date time
-            val currentDate = LocalDate.now().format(DateTimeFormatter.ofPattern("yyyy-MM-dd"))
-
             // Fetching the data from the server
             val response = remoteRepository.getUserDefaultSettings(
                 userId = uid,
-                date = currentDate
+                date = getCurrentDateTime()
             )
 
             // Fetching the Local Data of whether the Timer is already started or not

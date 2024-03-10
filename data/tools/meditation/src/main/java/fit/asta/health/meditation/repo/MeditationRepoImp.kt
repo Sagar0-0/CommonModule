@@ -16,7 +16,7 @@ class MeditationRepoImp(
 ) : MeditationRepo {
     override suspend fun getMeditationTool(
         uid: String,
-        date: String
+        date: Long
     ) = withContext(coroutineDispatcher) {
         getApiResponseState { api.getMeditationTool(uid, date) }
     }

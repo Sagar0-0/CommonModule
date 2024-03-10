@@ -25,6 +25,7 @@ import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.datastore.PrefManager
@@ -52,8 +53,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -215,9 +214,8 @@ class MeditationViewModel @Inject constructor(
         viewModelScope.launch {
             _mutableState.value = UiState.Loading
             val result = meditationRepo.getMeditationTool(
-                uid = "6309a9379af54f142c65fbfe",
-                date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
-                    .toString()//"2023-03-27"
+                uid = uId,
+                date = getCurrentDateTime()
             )
             _mutableState.value = when (result) {
                 is ResponseState.Success -> {
@@ -300,7 +298,7 @@ class MeditationViewModel @Inject constructor(
                     id = "",
                     prc = _selectedData.toList(),
                     type = 3,
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uId,
                     wea = true
                 )
             )
@@ -338,7 +336,7 @@ class MeditationViewModel @Inject constructor(
             val result = meditationRepo.postMeditationData(
                 PostRes(
                     id = "",
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uId,
                     duration = _uiState.value.consume.toInt(),
                     mode = "indoor",
                     exp = 40
@@ -369,7 +367,7 @@ class MeditationViewModel @Inject constructor(
 
     private fun loadMusicData() {
         viewModelScope.launch {
-            when (val result = meditationRepo.getMusicTool(uid = "6309a9379af54f142c65fbfe")) {
+            when (val result = meditationRepo.getMusicTool(uid = uId)) {
                 is ResponseState.Success -> {
                     val data = result.data.getMusicTool()
                     music.value = Song(

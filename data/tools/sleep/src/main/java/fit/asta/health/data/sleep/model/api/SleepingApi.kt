@@ -24,7 +24,7 @@ interface SleepingApi {
     @GET("tools/sleep/get/")
     suspend fun getUserDefaultSettings(
         @Query("uid") userId: String,
-        @Query("date") date: String
+        @Query("date") date: Long
     ): Response<SleepToolGetResponse>
 
     @POST("tools/sleep/activity/post/")

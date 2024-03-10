@@ -30,7 +30,7 @@ data class Data(
     @SerializedName("tone")
     val tone: Tone,
     @SerializedName("uid")
-    val userId: String, // 6309a9379af54f142c65fbfe
+    val userId: String,
     @SerializedName("vib")
     val vibration: Vib,
     @SerializedName("wk")

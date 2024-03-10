@@ -31,7 +31,6 @@ object ProfileConstants {
 
     const val USER_SELECTION = "userSelection"
     const val PROFILE_DATA = "profileData"
-    const val UID = "6309a9379af54f142c65fbfe"
 
     const val USER_FOOD_PREFERENCE = "userFoodPrep"
 

@@ -18,7 +18,7 @@ class SleepRepositoryImpl(
 
     override suspend fun getUserDefaultSettings(
         userId: String,
-        date: String
+        date: Long
     ) = withContext(coroutineDispatcher) {
         getApiResponseState { api.getUserDefaultSettings(userId, date) }
     }

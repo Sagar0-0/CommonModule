@@ -20,7 +20,7 @@ class ExerciseRepoImp @Inject constructor(
 
     override suspend fun getExerciseTool(
         uid: String,
-        date: String,
+        date: Long,
         name: String
     ): ResponseState<ExerciseData> {
         return getApiResponseState {

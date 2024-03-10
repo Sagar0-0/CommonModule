@@ -74,7 +74,6 @@ class SchedulerViewModel
     private val _toolTag = MutableStateFlow<String?>(null)
     val toolTag = _toolTag.asStateFlow()
 
-//    private val userId = "6309a9379af54f142c65fbfe"
 
     init {
 //        resetUi()

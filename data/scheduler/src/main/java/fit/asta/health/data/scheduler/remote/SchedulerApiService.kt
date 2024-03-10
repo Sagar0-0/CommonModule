@@ -19,7 +19,7 @@ import retrofit2.http.Query
 //Scheduler Endpoints
 interface SchedulerApiService {
 
-    @GET("schedule/home/get/?")// http://asta.fit/schedule/home/get/?uid=6309a9379af54f142c65fbfe&lat=28.6353&lon=77.2250&date=2023-07-03&loc=bangalore
+    @GET("schedule/home/get/?")// http://asta.fit/schedule/home/get/?uid=uId&lat=28.6353&lon=77.2250&date=2023-07-03&loc=bangalore
     suspend fun getTodayDataFromBackend(
         @Query("uid") userID: String,
         @Query("date") date: Long,
@@ -54,7 +54,7 @@ interface SchedulerApiService {
     ): Response<ServerRes>
 
     // Tags Endpoints
-    @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=6309a9379af54f142c65fbfe
+    @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=uId
     suspend fun getTagListFromBackend(
         @Query("uid") userID: String
     ): Response<TagsListResponse>

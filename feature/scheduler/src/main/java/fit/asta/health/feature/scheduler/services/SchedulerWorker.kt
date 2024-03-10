@@ -114,7 +114,7 @@ class SchedulerWorker @AssistedInject constructor(
     }
 
 
-    private suspend fun syncTagsData(userId: String) {//"6309a9379af54f142c65fbfe"
+    private suspend fun syncTagsData(userId: String) {
         Log.v("TAGTAG", "doWork: syncTagsData")
         alarmLocalRepo.getAllTags().collect {
             if (it.isEmpty()) {

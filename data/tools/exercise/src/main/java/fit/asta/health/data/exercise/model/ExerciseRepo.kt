@@ -12,7 +12,7 @@ import kotlinx.coroutines.flow.Flow
 interface ExerciseRepo {
     suspend fun getExerciseTool(
         uid: String,
-        date: String,
+        date: Long,
         name: String
     ): ResponseState<ExerciseData>
 

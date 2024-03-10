@@ -15,7 +15,7 @@ class BreathingRepoImp(
     val api: BreathingApi,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : BreathingRepo {
-    override suspend fun getBreathingTool(userId: String, date: String) =
+    override suspend fun getBreathingTool(userId: String, date: Long) =
         withContext(coroutineDispatcher) {
             getApiResponseState { api.getBreathingTool(userId, date) }
         }

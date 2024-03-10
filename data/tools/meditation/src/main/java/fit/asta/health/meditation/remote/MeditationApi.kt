@@ -7,19 +7,23 @@ import fit.asta.health.meditation.remote.network.NetMusicRes
 import fit.asta.health.meditation.remote.network.PostRes
 import fit.asta.health.meditation.remote.network.PutData
 import fit.asta.health.network.data.ServerRes
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.GET
+import retrofit2.http.POST
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
 
 interface MeditationApi {
     @GET("tools/meditation/get/?")
     suspend fun getMeditationTool(
         @Query("uid") userId: String,
-        @Query("date") date: String
+        @Query("date") date: Long
     ): Response<NetMeditationToolResponse>
 
     @GET("tools/meditation/start/session/get/?")
     suspend fun getMusicTool(
-        @Query("uid") userId: String = "6309a9379af54f142c65fbfe"
+        @Query("uid") userId: String
     ): Response<NetMusicRes>
 
     @PUT("tools/meditation/put/")

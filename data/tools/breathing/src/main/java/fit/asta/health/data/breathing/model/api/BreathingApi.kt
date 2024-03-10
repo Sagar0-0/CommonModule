@@ -20,7 +20,7 @@ import retrofit2.http.Query
 interface BreathingApi {
 
     //https://asta.fit/tools/breathing/put/
-    //https://asta.fit/tools/breathing/get/?uid=6309a9379af54f142c65fbfe&date=2023-03-09
+    //https://asta.fit/tools/breathing/get/?uid=uId&date=2023-03-09
     //https://asta.fit/tools/breathing/activity/post/
     //https://asta.fit/tools/breathing/start/session/get/?uid=
     //
@@ -36,7 +36,7 @@ interface BreathingApi {
     @GET("tools/breathing/get/?")
     suspend fun getBreathingTool(
         @Query("uid") userId: String,
-        @Query("date") date: String
+        @Query("date") date: Long
     ): Response<NetGetRes>
 
     @GET("tools/breathing/exercise/get/all/?")
@@ -46,7 +46,7 @@ interface BreathingApi {
 
     @GET("tools/breathing/start/session/get/?")
     suspend fun getStart(
-        @Query("uid") userId: String = "6309a9379af54f142c65fbfe"
+        @Query("uid") userId: String
     ): Response<NetGetStart>
 
     @PUT("tools/breathing/put/")

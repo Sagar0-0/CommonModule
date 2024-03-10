@@ -11,7 +11,7 @@ import fit.asta.health.network.data.ServerRes
 interface MeditationRepo {
     suspend fun getMeditationTool(
         uid: String,
-        date: String
+        date: Long
     ): ResponseState<NetMeditationToolResponse>
 
     suspend fun getMusicTool(uid: String): ResponseState<NetMusicRes>

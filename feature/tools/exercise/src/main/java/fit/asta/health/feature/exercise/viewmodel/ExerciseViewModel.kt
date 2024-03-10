@@ -15,6 +15,7 @@ import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.exercise.db.ExerciseData
 import fit.asta.health.data.exercise.model.ExerciseLocalRepo
 import fit.asta.health.data.exercise.model.ExerciseRepo
@@ -40,8 +41,6 @@ import kotlinx.coroutines.flow.collectLatest
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -167,10 +166,10 @@ class ExerciseViewModel @Inject constructor(
         viewModelScope.launch {
             val response = exerciseRepo.getExerciseTool(
                 uid = uid,
-                date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault()).toString(),
+                date = getCurrentDateTime(),
                 name = screen
             )
-            Log.d("rishi","Data :  ${response}")
+            Log.d("rishi", "Data :  $response")
             val data = (response as? ResponseState.Success)?.data?.getExerciseTool()
 
             data?.let {

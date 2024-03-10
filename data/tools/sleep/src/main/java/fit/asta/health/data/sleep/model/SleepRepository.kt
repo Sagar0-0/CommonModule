@@ -17,7 +17,7 @@ interface SleepRepository {
 
     suspend fun getUserDefaultSettings(
         userId: String,
-        date: String
+        date: Long
     ): ResponseState<SleepToolGetResponse>
 
     suspend fun postUserReading(

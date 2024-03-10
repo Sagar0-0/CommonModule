@@ -24,6 +24,7 @@ import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
+import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
 import fit.asta.health.data.breathing.db.BreathingData
@@ -51,8 +52,6 @@ import kotlinx.coroutines.flow.map
 import kotlinx.coroutines.flow.stateIn
 import kotlinx.coroutines.launch
 import java.time.LocalDate
-import java.time.format.DateTimeFormatter
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -166,9 +165,8 @@ class BreathingViewModel @Inject constructor(
         viewModelScope.launch {
             _mutableState.value = UiState.Loading
             val result = breathingRepo.getBreathingTool(
-                userId = "6309a9379af54f142c65fbfe",
-                date = DateTimeFormatter.ofPattern("yyyy-MM-dd", Locale.getDefault())
-                    .toString()//"2023-03-27"
+                userId = uId,
+                date = getCurrentDateTime()
             )
             _mutableState.value = when (result) {
                 is ResponseState.Success -> {
@@ -234,13 +232,13 @@ class BreathingViewModel @Inject constructor(
 
     fun loadMusicAllData() {
         viewModelScope.launch {
-            breathingRepo.getAllBreathingData(userId = "6309a9379af54f142c65fbfe")
+            breathingRepo.getAllBreathingData(userId = uId)
         }
     }
 
     private fun loadMusicData() {
         viewModelScope.launch {
-            when (val result = breathingRepo.getStart(userId = "6309a9379af54f142c65fbfe")) {
+            when (val result = breathingRepo.getStart(userId = uId)) {
                 is ResponseState.Success -> {
                     val data = result.data.getMusicTool()
                     music.value = Song(
@@ -310,7 +308,7 @@ class BreathingViewModel @Inject constructor(
                     id = "",
                     prc = _selectedData.toList(),
                     type = 3,
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uId,
                     wea = true
                 )
             )
@@ -352,7 +350,7 @@ class BreathingViewModel @Inject constructor(
                     calories = 100,
                     exp = 20,
                     ex = emptyList(),// _selectedExercise.value,
-                    uid = "6309a9379af54f142c65fbfe",
+                    uid = uId,
                     duration = _uiState.value.consume.toInt(),
                     level = "_selectedLevel.value",
                     breath = 200,
