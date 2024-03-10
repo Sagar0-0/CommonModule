@@ -21,12 +21,13 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.core.network.BuildConfig
+import fit.asta.health.data.spotify.SpotifyConstants
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.feature.scheduler.ui.viewmodel.SpotifyViewModel
-import fit.asta.health.feature.scheduler.util.Constants
 
 @AndroidEntryPoint
 class SpotifyActivity : ComponentActivity() {
@@ -132,8 +133,8 @@ class SpotifyActivity : ComponentActivity() {
     private fun getSpotifyRemote() {
 
         // Setting a Connection Params which can be used to connect to the spotify and get the Remote
-        val connectionParams = ConnectionParams.Builder(Constants.SPOTIFY_CLIENT_ID)
-            .setRedirectUri(Constants.SPOTIFY_REDIRECT_URI)
+        val connectionParams = ConnectionParams.Builder(BuildConfig.SPOTIFY_CLIENT_ID)
+            .setRedirectUri(BuildConfig.SPOTIFY_REDIRECT_URI)
             .showAuthView(true)
             .build()
 
@@ -160,18 +161,18 @@ class SpotifyActivity : ComponentActivity() {
     private fun sendAuthRequest() {
 
         val request = AuthorizationRequest.Builder(
-            Constants.SPOTIFY_CLIENT_ID,
+            BuildConfig.SPOTIFY_CLIENT_ID,
             AuthorizationResponse.Type.TOKEN,
-            Constants.SPOTIFY_REDIRECT_URI
+            BuildConfig.SPOTIFY_REDIRECT_URI
         )
             .setShowDialog(true)
-            .setScopes(arrayOf(Constants.SPOTIFY_SCOPES))
+            .setScopes(arrayOf(SpotifyConstants.SPOTIFY_SCOPES))
             .build()
 
         // Starting the authorization window or intent
         AuthorizationClient.openLoginActivity(
             this,
-            Constants.SPOTIFY_AUTH_REQUEST_CODE,
+            SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE,
             request
         )
     }
@@ -223,7 +224,7 @@ class SpotifyActivity : ComponentActivity() {
         super.onActivityResult(requestCode, resultCode, intent)
 
         // Check if result comes from the correct activity
-        if (requestCode == Constants.SPOTIFY_AUTH_REQUEST_CODE) {
+        if (requestCode == SpotifyConstants.SPOTIFY_AUTH_REQUEST_CODE) {
             val response = AuthorizationClient.getResponse(resultCode, intent)
             spotifyViewModel.handleSpotifyAuthResponse(response)
         }

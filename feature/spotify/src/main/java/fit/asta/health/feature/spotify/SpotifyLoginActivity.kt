@@ -23,11 +23,12 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.core.network.BuildConfig
+import fit.asta.health.data.spotify.SpotifyConstants
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.spotify.navigation.TopTabNavigation
-import fit.asta.health.feature.spotify.utils.SpotifyConstants
 import fit.asta.health.feature.spotify.viewmodel.SpotifyViewModelX
 import fit.asta.health.resources.strings.R
 
@@ -134,8 +135,8 @@ class SpotifyLoginActivity : ComponentActivity() {
     private fun getSpotifyRemote() {
 
         // Setting a Connection Params which can be used to connect to the spotify and get the Remote
-        val connectionParams = ConnectionParams.Builder(SpotifyConstants.SPOTIFY_CLIENT_ID)
-            .setRedirectUri(SpotifyConstants.SPOTIFY_REDIRECT_URI)
+        val connectionParams = ConnectionParams.Builder(BuildConfig.SPOTIFY_CLIENT_ID)
+            .setRedirectUri(BuildConfig.SPOTIFY_REDIRECT_URI)
             .showAuthView(true)
             .build()
 
@@ -162,9 +163,9 @@ class SpotifyLoginActivity : ComponentActivity() {
     private fun sendAuthRequest() {
 
         val request = AuthorizationRequest.Builder(
-            SpotifyConstants.SPOTIFY_CLIENT_ID,
+            BuildConfig.SPOTIFY_CLIENT_ID,
             AuthorizationResponse.Type.TOKEN,
-            SpotifyConstants.SPOTIFY_REDIRECT_URI
+            BuildConfig.SPOTIFY_REDIRECT_URI
         )
             .setShowDialog(true)
             .setScopes(arrayOf(SpotifyConstants.SPOTIFY_SCOPES))

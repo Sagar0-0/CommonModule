@@ -22,36 +22,18 @@ class Constants {
         const val fri = 666
         const val sat = 777
 
+        const val ARG_ALARM_OBJET = "arg_alarm_object"
+        const val ARG_PRE_NOTIFICATION_OBJET = "arg_post_notification_object"
+        const val ARG_POST_NOTIFICATION_OBJET = "arg_post_notification_object"
+        const val ARG_VARIANT_INTERVAL_ALARM_OBJECT = "arg_variant_interval_alarm_object"
+        const val ARG_VARIANT_INTERVAL_OBJECT = "arg_variant_interval_object"
         const val BUNDLE_ALARM_OBJECT = "bundle_alarm_object"
         const val BUNDLE_ALARM_OBJECT_NOTIFICATION = "bundle_alarm_object_notification"
-        const val ARG_ALARM_OBJET = "arg_alarm_object"
-
         const val BUNDLE_VARIANT_INTERVAL_OBJECT = "bundle_variant_interval_object"
         const val BUNDLE_VARIANT_INTERVAL_OBJECT_NOTIFICATION =
             "bundle_variant_interval_object_notification"
-        const val ARG_VARIANT_INTERVAL_ALARM_OBJECT = "arg_variant_interval_alarm_object"
-        const val ARG_VARIANT_INTERVAL_OBJECT = "arg_variant_interval_object"
-
-
         const val BUNDLE_PRE_NOTIFICATION_OBJECT = "bundle_pre_notification_object"
-        const val ARG_PRE_NOTIFICATION_OBJET = "arg_post_notification_object"
-
         const val BUNDLE_POST_NOTIFICATION_OBJECT = "bundle_post_notification_object"
-        const val ARG_POST_NOTIFICATION_OBJET = "arg_post_notification_object"
-
-        const val SPOTIFY_SONG_KEY_URI = "bundle_spotify_song"
-        const val SPOTIFY_SONG_KEY_TYPE = "bundle_spotify_song_type"
-
-        const val SPOTIFY_AUTH_REQUEST_CODE = 1337
-        const val SPOTIFY_REDIRECT_URI = "fit.asta.health://callback"
-        const val SPOTIFY_CLIENT_ID = "8f5ba8ca7b2a479aa6f766c931a6e8c4"
-        const val SPOTIFY_SCOPES =
-            "user-follow-read,user-read-recently-played,user-read-playback-position,user-top-read,playlist-read-private,app-remote-control,streaming,user-read-email,user-read-private,user-library-read"
-
-        // Spotify Web API
-        const val SPOTIFY_BASE_URL = "https://api.spotify.com/v1/"
-
-        const val USER_ID = "6309a9379af54f142c65fbfe"
 
 //        fun changeStatusBarColor(color: Int, window: Window, context: Context) {
 //            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS)
@@ -73,7 +55,6 @@ class Constants {
                 )
             }
         }
-
 
         fun getTimeDifference(targetTime24hr: Time24hr): Long {
             val currentTime = LocalTime.now()
@@ -104,7 +85,6 @@ class Constants {
                 else -> longArrayOf(0, 500, 250, 500, 250, 500, 2500)
             }
         }
-
     }
 }
 
