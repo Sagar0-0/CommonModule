@@ -1,12 +1,8 @@
 package fit.asta.health.feature.profile.profile.ui.components
 
 import androidx.compose.animation.AnimatedVisibility
-import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
-import androidx.compose.foundation.layout.Row
-import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
@@ -31,7 +27,6 @@ import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldType
 import fit.asta.health.designsystem.molecular.textfield.AppTextFieldValidator
-import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.profile.utils.TwoTogglesGroup
 import fit.asta.health.resources.strings.R
 
@@ -88,14 +83,27 @@ fun BottomSheetGenderSelector(
         ) {
             GenderSelector(
                 selectedOption = updatedGender ?: -1,
-                onStateChange = onGenderChange
+                onStateChange = {
+                    if (it != GenderTypes.FEMALE.gender) {
+                        onPregnantChange(null)
+                        onPeriodChange(null)
+                        pregWeekTextFieldValue = TextFieldValue("")
+                    }
+                    onGenderChange(it)
+                }
             )
 
             AnimatedVisibility(visible = isPeriodVisible) {
                 TwoTogglesGroup(
                     selectionTypeText = stringResource(R.string.periodTitle_profile_creation),
                     selectedOption = periodStatus ?: -1,
-                    onStateChange = onPeriodChange
+                    onStateChange = {
+                        if (it != BooleanIntTypes.YES.value) {
+                            onPregnantChange(null)
+                            pregWeekTextFieldValue = TextFieldValue("")
+                        }
+                        onPeriodChange(it)
+                    }
                 )
             }
 
@@ -103,7 +111,12 @@ fun BottomSheetGenderSelector(
                 TwoTogglesGroup(
                     selectionTypeText = stringResource(R.string.pregnantTitle_profile_creation),
                     selectedOption = pregnantStatus ?: -1,
-                    onStateChange = onPregnantChange
+                    onStateChange = {
+                        if (it != BooleanIntTypes.NO.value) {
+                            pregWeekTextFieldValue = TextFieldValue("")
+                        }
+                        onPregnantChange(it)
+                    }
                 )
             }
 
@@ -120,46 +133,28 @@ fun BottomSheetGenderSelector(
                         )
                     }
                 }
-                Row(
+                AppOutlinedTextField(
                     modifier = Modifier
                         .fillMaxWidth()
-                        .padding(start = AppTheme.spacing.level2),
-                    horizontalArrangement = Arrangement.Start
-                ) {
-                    TitleTexts.Level4(
-                        text = stringResource(id = R.string.pregnancyWeekInput_profile_creation),
-                        color = AppTheme.colors.onTertiaryContainer,
-                        maxLines = 1
-                    )
-                }
-                Spacer(modifier = Modifier.height(AppTheme.spacing.level2))
-                Row(
-                    Modifier
-                        .fillMaxWidth()
-                        .padding(horizontal = AppTheme.spacing.level2)
-                ) {
-                    AppOutlinedTextField(
-                        modifier = Modifier
-                            .fillMaxWidth()
-                            .focusRequester(focusRequester),
-                        value = pregWeekTextFieldValue,
-                        onValueChange = {
-                            pregWeekTextFieldValue = it
-                        },
-                        appTextFieldType = AppTextFieldValidator(
-                            AppTextFieldType.Custom(
-                                isInvalidLogic = { _, _ ->
-                                    pregWeekErrorMessage != null
-                                },
-                                getErrorMessageLogic = { _, _ ->
-                                    pregWeekErrorMessage
-                                        ?: ""
-                                }
-                            )
-                        ),
-                      //  colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
-                    )
-                }
+                        .focusRequester(focusRequester),
+                    value = pregWeekTextFieldValue,
+                    label = stringResource(id = R.string.pregnancyWeekInput_profile_creation),
+                    onValueChange = {
+                        pregWeekTextFieldValue = it
+                    },
+                    appTextFieldType = AppTextFieldValidator(
+                        AppTextFieldType.Custom(
+                            isInvalidLogic = { _, _ ->
+                                pregWeekErrorMessage != null
+                            },
+                            getErrorMessageLogic = { _, _ ->
+                                pregWeekErrorMessage
+                                    ?: ""
+                            }
+                        )
+                    ),
+                    //  colors = OutlinedTextFieldDefaults.colors(unfocusedBorderColor = AppTheme.colors.onSurface)
+                )
             }
             BottomSheetSaveButtons(
                 onSave = {
