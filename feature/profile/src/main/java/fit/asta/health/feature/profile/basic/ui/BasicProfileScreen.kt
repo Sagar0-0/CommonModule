@@ -45,7 +45,6 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.ImageBitmap
-import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.input.ImeAction
@@ -86,8 +85,8 @@ import fit.asta.health.feature.profile.profile.ui.components.DatePicker
 import fit.asta.health.feature.profile.profile.ui.components.GenderSelector
 import fit.asta.health.feature.profile.utils.REFERRAL_LENGTH
 import fit.asta.health.resources.drawables.R
+import java.time.Year
 import java.time.format.DateTimeFormatter
-import java.util.Calendar
 
 @Preview("Light Button")
 @Preview(
@@ -124,21 +123,40 @@ fun BasicProfileScreenUi(
     val calendarUseCaseState = rememberUseCaseState()
 
     var name by rememberSaveable(user) { mutableStateOf(user.name ?: "") }
-    var dob by rememberSaveable(user) { mutableStateOf("Select DOB") }
-    var age by rememberSaveable(user) { mutableStateOf(0) }
+    val isNameValid = rememberSaveable(name) {
+        name.length in 3..29
+    }
+    var dob by rememberSaveable(user) { mutableStateOf<String?>(null) }
+    var age by rememberSaveable(user) { mutableIntStateOf(0) }
+    val isDobValid = rememberSaveable(age) {
+        dob != null && age > 10
+    }
     var referralCode by rememberSaveable { mutableStateOf(autoFetchedReferralCode) }
+
     var isReferralChanged by rememberSaveable { mutableStateOf(false) }
+    LaunchedEffect(Unit) {
+        if (autoFetchedReferralCode.length == REFERRAL_LENGTH) {
+            onEvent(BasicProfileEvent.CheckReferralCode(autoFetchedReferralCode))
+        }
+    }
+    val isReferralValid = rememberSaveable(referralCode, checkReferralCodeState) {
+        referralCode.isEmpty() || (checkReferralCodeState is UiState.Success)
+    }
+
     var genderCode by rememberSaveable { mutableIntStateOf(-1) }
+    val isGenderValid = rememberSaveable(genderCode) {
+        genderCode != -1
+    }
+
+    val isSubmitButtonEnabled =
+        rememberSaveable(isNameValid, isDobValid, isGenderValid, isReferralValid) {
+            isNameValid && isDobValid && isGenderValid && isReferralValid
+        }
+
     val screenLoading = rememberSaveable(createBasicProfileState, checkReferralCodeState) {
         checkReferralCodeState is UiState.Loading || createBasicProfileState is UiState.Loading
     }
 
-    LaunchedEffect(referralCode) {
-        if (referralCode.length == REFERRAL_LENGTH && isReferralChanged) {
-            isReferralChanged = false
-            onEvent(BasicProfileEvent.CheckReferralCode(referralCode))
-        }
-    }
 
     var profileImageUri by remember {
         mutableStateOf<Uri?>(null)
@@ -184,21 +202,10 @@ fun BasicProfileScreenUi(
                     genderCode = newGender
                 }
 
-                EmailUi(user.email) { cred ->
-                    onEvent(BasicProfileEvent.Link(cred))
-                }
-
-                PhoneUi(
-                    phoneNumber = user.phoneNumber,
-                    navigateToPhoneAuth = {
-                        onEvent(BasicProfileEvent.NavigateToPhoneAuth)
-                    }
-                )
-
                 ClickableTextBox(
                     modifier = Modifier.fillMaxWidth(),
                     label = "DOB",
-                    value = dob,
+                    value = dob ?: "Select DOB",
                     leadingIcon = Icons.Default.EditCalendar
                 ) {
                     calendarUseCaseState.show()
@@ -209,7 +216,18 @@ fun BasicProfileScreenUi(
                     onSelection = {
                         dob =
                             it.format(DateTimeFormatter.ofPattern("dd/MM/yyyy")).toString()
-                        age = Calendar.getInstance().get(Calendar.YEAR) - it.year
+                        age = Year.now().value - it.year
+                    }
+                )
+
+                EmailUi(user.email) { cred ->
+                    onEvent(BasicProfileEvent.Link(cred))
+                }
+
+                PhoneUi(
+                    phoneNumber = user.phoneNumber,
+                    navigateToPhoneAuth = {
+                        onEvent(BasicProfileEvent.NavigateToPhoneAuth)
                     }
                 )
 
@@ -236,7 +254,7 @@ fun BasicProfileScreenUi(
                         .padding(
                             bottom = AppTheme.spacing.level2
                         ),
-                    enabled = (checkReferralCodeState is UiState.Success || checkReferralCodeState is UiState.Idle) && name.isNotEmpty(),
+                    enabled = isSubmitButtonEnabled,
                     text = "Create your Profile",
                 ) {
                     onEvent(
@@ -250,7 +268,7 @@ fun BasicProfileScreenUi(
                                 mail = user.email ?: "",
                                 ph = user.phoneNumber ?: "",
                                 refCode = if (checkReferralCodeState is UiState.Success) referralCode else "",
-                                dob = dob,
+                                dob = dob ?: "",
                                 age = age
                             )
                         )
@@ -301,12 +319,6 @@ fun BasicProfileScreenUi(
     }
 
 }
-
-data class GenderData(
-    val name: String,
-    val code: Int,
-    val icon: ImageVector
-)
 
 @Composable
 fun GenderUi(gender: Int, onValueChange: (Int) -> Unit) {
