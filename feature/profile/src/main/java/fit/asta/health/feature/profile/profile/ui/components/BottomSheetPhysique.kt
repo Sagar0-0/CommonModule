@@ -31,12 +31,13 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 fun BottomSheetPhysique(
     isVisible: Boolean,
     sheetState: SheetState,
+    isValid: (value: Float?, unit: Int) -> Boolean,
     label: String,
     text: String,
     units: List<PhysiqueUnit>,
     selectedUnitIndex: Int,
     onDismissRequest: () -> Unit,
-    onSaveClick: (value: Float, unit: Int) -> Unit
+    onSaveClick: (value: Float?, unit: Int) -> Unit
 ) {
     var textFieldValue by remember(isVisible, text) {
         mutableStateOf(TextFieldValue(text = text))
@@ -86,12 +87,18 @@ fun BottomSheetPhysique(
                     textFieldValue = it
                 },
             )
-            BottomSheetSaveButtons(onSave = {
-                onSaveClick(
-                    textFieldValue.text.toFloat(),
+            BottomSheetSaveButtons(
+                onSave = {
+                    onSaveClick(
+                        textFieldValue.text.toFloatOrNull(),
+                        units[updatedUnitIndex].value
+                    )
+                },
+                saveButtonEnabled = isValid(
+                    textFieldValue.text.toFloatOrNull(),
                     units[updatedUnitIndex].value
                 )
-            }) {
+            ) {
                 onDismissRequest()
             }
         }
