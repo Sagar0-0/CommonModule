@@ -510,38 +510,47 @@ fun BevChips(
     onClick: () -> Unit,
     onClickBeverage: () -> Unit
 ) {
-    AppElevatedCardWithColor(
-        modifier = Modifier
-            .padding(AppTheme.spacing.level1)
-            .wrapContentHeight(unbounded = true),
-        containerColor = containerColor
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(AppTheme.spacing.level1)
-        ) {
-            Box(modifier = Modifier
-                .clickable {
-                    onClick()
-                }
-                .width(90.dp)) {
-                Column {
-                    HeadingTexts.Level4(text = name)
-                    Spacer(modifier = Modifier.weight(1f))
-                    BodyTexts.Level2(
-                        text = " $quantity  ml",
-                        color = contentColor
-                    )
-                }
-            }
-            ClickableBeverage(
-                containerColor = containerColor,
-                contentColor = contentColor, resId = resId
-            ) {
-                onClickBeverage()
-            }
-        }
+    BeverageInfoCard(
+        name = name,
+        containerColor = containerColor,
+        contentColor = contentColor,
+        resId = resId,
+        quantity = quantity,
+        onClick = { onClick() }) {
+        onClickBeverage()
     }
+//    AppElevatedCardWithColor(
+//        modifier = Modifier
+//            .padding(AppTheme.spacing.level1)
+//            .wrapContentHeight(unbounded = true),
+//        containerColor = containerColor
+//    ) {
+//        Row(
+//            modifier = Modifier
+//                .padding(AppTheme.spacing.level1)
+//        ) {
+//            Box(modifier = Modifier
+//                .clickable {
+//                    onClick()
+//                }
+//                .width(90.dp)) {
+//                Column {
+//                    HeadingTexts.Level4(text = name)
+//                    Spacer(modifier = Modifier.weight(1f))
+//                    BodyTexts.Level2(
+//                        text = " $quantity  ml",
+//                        color = contentColor
+//                    )
+//                }
+//            }
+//            ClickableBeverage(
+//                containerColor = containerColor,
+//                contentColor = contentColor, resId = resId
+//            ) {
+//                onClickBeverage()
+//            }
+//        }
+//    }
 }
 
 @Composable
@@ -682,7 +691,7 @@ fun BevSearchBar(
 
         } else {
             if (bevListSize == 0 && filteredListSize == 0) {
-                BodyTexts.Level3(text = "Not Found, What looking For, Click here to Add this beverage. $bevListSize",
+                BodyTexts.Level3(text = "Not Found, What looking For, Click here to Add this beverage.",
                     color = Color(0xFF00458B),
                     modifier = Modifier
                         .padding(AppTheme.spacing.level1)

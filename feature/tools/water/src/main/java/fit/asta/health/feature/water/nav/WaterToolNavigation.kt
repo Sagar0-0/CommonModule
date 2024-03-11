@@ -22,6 +22,7 @@ import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.water.WaterState
+//import fit.asta.health.feature.water.view.screen.ui.BeverageCard
 import fit.asta.health.feature.water.view.screen.ui.CustomBevBottomSheet
 import fit.asta.health.feature.water.view.screen.ui.ErrorUi
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
@@ -71,6 +72,10 @@ fun NavGraphBuilder.waterToolNavigation(
                         event = viewModel::event,
                         onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
                     )
+//                    Box(modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center){
+//                        BeverageCard()
+//                    }
 
                 }
 
