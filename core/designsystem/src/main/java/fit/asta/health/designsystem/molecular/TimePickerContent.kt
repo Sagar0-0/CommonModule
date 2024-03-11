@@ -30,6 +30,7 @@ fun TimePickerContent(
     leftButtonTitle: String = "Cancel",
     onLeftButtonClick: () -> Unit,
     rightButtonTitle: String = "Save",
+    rightButtonEnabled: Boolean = true,
     onRightButtonClick: (hours: Int, mins: Int) -> Unit
 ) {
     var currentHours by rememberSaveable(hours) {
@@ -93,6 +94,7 @@ fun TimePickerContent(
                 textToShow = leftButtonTitle
             )
             AppOutlinedButton(
+                enabled = rightButtonEnabled,
                 onClick = { onRightButtonClick(currentHours, currentMinutes) },
                 modifier = Modifier.weight(1f),
                 textToShow = rightButtonTitle

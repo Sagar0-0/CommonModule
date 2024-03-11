@@ -17,6 +17,7 @@ import java.time.LocalTime
 @Composable
 fun BottomSheetTimePicker(
     isVisible: Boolean,
+    isValid: (startHour: Int, startMinute: Int, endHour: Int, endMinute: Int) -> Boolean,
     sheetState: SheetState,
     onDismissRequest: () -> Unit,
     onSaveClick: (startHour: Int, startMinute: Int, endHour: Int, endMinute: Int) -> Unit
@@ -67,6 +68,7 @@ fun BottomSheetTimePicker(
                     title = "Select end time",
                     leftButtonTitle = "Back",
                     rightButtonTitle = "Save",
+                    rightButtonEnabled = isValid(startHour, startMinutes, endHour, endMinutes),
                     onLeftButtonClick = { pickerNumber-- },
                     onRightButtonClick = { hours, minutes ->
                         pickerNumber += 1
