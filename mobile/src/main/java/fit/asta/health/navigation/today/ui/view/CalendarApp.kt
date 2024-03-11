@@ -119,46 +119,59 @@ fun WeekTabBar(
 //                )
 //            }
 
-
-            data.visibleDates.forEachIndexed { index, date ->
-
-                Box(
-                    modifier = Modifier
-                        .weight(1f)
-                        .size(AppTheme.boxSize.level6)
-                        .clickable {
-                            onDateClickListener(date, index+1)
-                        }
-                        .drawBehind {
-                            if (index+1 == selectedIndex)
-                                drawLine(
-                                    color = selectedColor,
-                                    start = Offset(0f, size.height),
-                                    end = Offset(size.width, size.height),
-                                    strokeWidth = strokeWidth
-                                )
-                        },
-                    contentAlignment = Alignment.Center
-                ) {
-                    Column(
+//TODO():- remove the bottom 1 index and remove today validation later
+            data.visibleDates.filter { it.isToday }.forEachIndexed { index, date ->
+                if (date.isToday) {
+                    Box(
                         modifier = Modifier
-                    ) {
-                        BodyTexts.Level2(
-                            text = date.day, // day "Mon", "Tue"
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                            color = if (date.isSelected) {
-                                if (date.isToday) Color.Green
-                                else AppTheme.colors.primary
-                            } else {
-                                if (date.isToday) Color.Green
-                                else if (index == 0) Color.LightGray
-                                else Color.Blue
+                            .weight(1f)
+                            .size(AppTheme.boxSize.level6)
+                            .clickable {
+                                onDateClickListener(date, 1)
                             }
-                        )
-                        BodyTexts.Level2(
-                            text = date.date.dayOfMonth.toString(), // date "15", "16"
-                            modifier = Modifier.align(Alignment.CenterHorizontally),
-                        )
+                            .drawBehind {
+                                if (index + 1 == selectedIndex)
+                                    drawLine(
+                                        color = selectedColor,
+                                        start = Offset(0f, size.height),
+                                        end = Offset(size.width, size.height),
+                                        strokeWidth = strokeWidth
+                                    )
+                            },
+                        contentAlignment = Alignment.Center
+                    ) {
+                        Column(
+                            modifier = Modifier
+                        ) {
+                           /* BodyTexts.Level2(
+                                text = date.day, // day "Mon", "Tue"
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                color = if (date.isSelected) {
+                                    if (date.isToday) Color.Green
+                                    else AppTheme.colors.primary
+                                } else {
+                                    if (date.isToday) Color.Green
+                                    else if (index == 0) Color.LightGray
+                                    else Color.Blue
+                                }
+                            )*/
+                            BodyTexts.Level2(
+                                text = "Today", // day "Mon", "Tue"
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                                color = if (date.isSelected) {
+                                    if (date.isToday) Color.Green
+                                    else AppTheme.colors.primary
+                                } else {
+                                    if (date.isToday) Color.Green
+                                    else if (index == 0) Color.LightGray
+                                    else Color.Blue
+                                }
+                            )
+                           /* BodyTexts.Level2(
+                                text = date.date.dayOfMonth.toString(), // date "15", "16"
+                                modifier = Modifier.align(Alignment.CenterHorizontally),
+                            )*/
+                        }
                     }
                 }
             }
