@@ -21,7 +21,7 @@ interface WaterApi {
     suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status
     suspend fun updateWaterTool(waterToolData: WaterToolData): Status
 
-    suspend fun getWaterData(): Response<WaterToolDetailsData>
+    suspend fun getWaterData(): WaterToolDetailsData
     /*
     suspend fun updateBeverage(beverage: NetBeverage): Status
     suspend fun getBeverageList(userId: String): NetBeverageRes*/

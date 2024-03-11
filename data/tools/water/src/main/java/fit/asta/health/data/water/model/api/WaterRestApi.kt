@@ -36,7 +36,7 @@ class WaterRestApi(client: OkHttpClient) :
         return apiService.updateWaterTool(waterToolData)
     }
 
-    override suspend fun getWaterData(): Response<WaterToolDetailsData> {
+    override suspend fun getWaterData(): WaterToolDetailsData {
         return apiService.getWaterData()
     }
 

@@ -25,7 +25,7 @@ interface WaterApiService {
     ): WaterToolResult
 
     @GET("tools/water/beverages/get/all")
-    suspend fun getWaterData(): Response<WaterToolDetailsData>
+    suspend fun getWaterData(): WaterToolDetailsData
 
     @POST("tools/water/beverage/quantity/post")
     suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): Status

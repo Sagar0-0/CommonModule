@@ -3,7 +3,11 @@ package fit.asta.health.feature.water.nav
 
 import android.util.Log
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
+import androidx.compose.ui.Alignment
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.navigation.NavController
 import androidx.navigation.NavGraphBuilder
@@ -55,19 +59,27 @@ fun NavGraphBuilder.waterToolNavigation(
             val viewModel: WaterToolViewModel = it.sharedViewModel(navController)
             val state = viewModel.state.collectAsState()
             when (state.value) {
-                is WaterState.Loading -> AppDotTypingAnimation()
-                is WaterState.Error -> {
+                is WaterState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center){
+                        AppDotTypingAnimation()
+                    }
+                }
+                is WaterState.Success -> {
+                    CustomBevBottomSheet(
+                        onBack = onBack,
+                        event = viewModel::event,
+                        onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
+                    )
+
+                }
+
+                else -> {
                     ErrorUi(viewModel = viewModel, event = viewModel::event)
                     Toast.makeText(context,"Unknown Error, Try After SomeTime",Toast.LENGTH_SHORT).show()
                     Log.e("rishi", "Got Error + ${(state.value as WaterState.Error).error}")
                 }
 
-                else ->
-                    CustomBevBottomSheet(
-                            onBack = onBack,
-                            event = viewModel::event,
-                            onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
-                        )
 
             }
 

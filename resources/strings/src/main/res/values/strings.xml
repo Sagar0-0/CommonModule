@@ -688,6 +688,8 @@
         data outside of Health Connect.
     </string>
 
+    <!-- Installed or default supported on device -->
+    <string name="installed_in_device"> You device has health connect, please allow permission to track your status</string>
     <!-- Not installed on device -->
     <string name="not_installed_tag">not_installed_tag</string>
     <string name="market_url">market://details</string>

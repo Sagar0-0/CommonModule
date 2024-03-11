@@ -46,19 +46,24 @@ class WaterToolRepoImpl(
     }
 
     override suspend fun getWaterData(): Flow<List<WaterDetailsData>> {
-        val result = remoteApi.getWaterData()
-        return if (result.isSuccessful) {
-            val response = result.body()
-            flow {
-                if (response != null) {
-                    emit(response.data)
-                }
-            }
-        } else {
-            flow {
-                emit(listOf())
-            }
+        return flow {
+            emit(
+                remoteApi.getWaterData().data
+            )
         }
+//        val result = remoteApi.getWaterData()
+//        return if (result.isSuccessful) {
+//            val response = result.body()
+//            flow {
+//                if (response != null) {
+//                    emit(response.data)
+//                }
+//            }
+//        } else {
+//            flow {
+//                emit(listOf())
+//            }
+//        }
     }
 
     /*override suspend fun updateWaterTool(modifiedWaterTool: ModifiedWaterTool):Flow<Status>{
