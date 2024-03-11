@@ -1,6 +1,8 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
 import android.net.Uri
+import androidx.compose.material3.SheetState
+import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.Stable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -11,13 +13,32 @@ import fit.asta.health.data.profile.remote.model.BasicDetail
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.ProfileMedia
+import kotlinx.coroutines.CoroutineScope
+import kotlinx.coroutines.launch
 import java.util.Calendar
 
 @Stable
 class BasicDetailScreenState(
     val basicDetail: BasicDetail,
+    val coroutineScope: CoroutineScope,
     val onEvent: (UserProfileEvent) -> Unit
 ) {
+
+    var bottomSheetValidation: (String) -> Boolean = {
+        true
+    }
+
+    fun openSheet(
+        bottomSheetState: SheetState,
+        bottomSheetVisible: MutableState<Boolean>,
+        isValid: (String) -> Boolean
+    ) {
+        bottomSheetValidation = isValid
+        bottomSheetVisible.value = true
+        coroutineScope.launch {
+            bottomSheetState.expand()
+        }
+    }
 
     var isImageCropperVisible by mutableStateOf(false)
 
@@ -120,20 +141,24 @@ class BasicDetailScreenState(
 
     companion object {
         fun Saver(
+            coroutineScope: CoroutineScope,
             onEvent: (UserProfileEvent) -> Unit
         ): Saver<BasicDetailScreenState, *> = listSaver(
             save = {
                 listOf(
                     it.updatedData,
-                    it.isImageCropperVisible
+                    it.isImageCropperVisible,
+                    it.bottomSheetValidation
                 )
             },
             restore = {
                 BasicDetailScreenState(
                     basicDetail = it[0] as BasicDetail,
+                    coroutineScope,
                     onEvent
                 ).apply {
                     this.isImageCropperVisible = it[1] as Boolean
+                    this.bottomSheetValidation = it[2] as ((String) -> Boolean)
                 }
             }
         )

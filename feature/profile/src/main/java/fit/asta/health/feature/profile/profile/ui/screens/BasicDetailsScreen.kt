@@ -35,6 +35,8 @@ import androidx.compose.ui.Modifier
 import com.maxkeppeker.sheets.core.models.base.UseCaseState
 import com.maxkeppeker.sheets.core.models.base.rememberUseCaseState
 import fit.asta.health.common.utils.getImageModel
+import fit.asta.health.data.profile.remote.model.BooleanIntTypes
+import fit.asta.health.data.profile.remote.model.GenderTypes
 import fit.asta.health.data.profile.remote.model.getGenderName
 import fit.asta.health.data.profile.remote.model.isFemale
 import fit.asta.health.data.profile.remote.model.isMale
@@ -97,7 +99,7 @@ fun BasicDetailsScreen(
         ) {
             userProfileState.openSheet(
                 nameBottomSheetState,
-                nameBottomSheetVisible,
+                nameBottomSheetVisible
             )
         }
 
@@ -188,6 +190,9 @@ fun BasicDetailsScreen(
             isVisible = nameBottomSheetVisible.value,
             sheetState = nameBottomSheetState,
             label = "Enter your Name",
+            isValid = { name ->
+                name.length in 1..29
+            },
             text = userProfileState.basicDetailScreenState.userName,
             onDismissRequest = {
                 userProfileState.closeSheet(
@@ -207,6 +212,33 @@ fun BasicDetailsScreen(
         BottomSheetGenderSelector(
             isVisible = genderBottomSheetVisible.value,
             sheetState = genderBottomSheetState,
+            isValid = { gender, isPregnant, onPeriod, pregnancyWeek ->
+                if (gender == null) {
+                    false
+                } else {
+                    if (gender == GenderTypes.FEMALE.gender) {
+                        if (onPeriod == null) {
+                            false
+                        } else {
+                            if (onPeriod == BooleanIntTypes.NO.value) {
+                                if (isPregnant == null) {
+                                    false
+                                } else {
+                                    if (isPregnant == BooleanIntTypes.YES.value) {
+                                        pregnancyWeek != null
+                                    } else {
+                                        true
+                                    }
+                                }
+                            } else {
+                                true
+                            }
+                        }
+                    } else {
+                        true
+                    }
+                }
+            },
             gender = userProfileState.basicDetailScreenState.userGender,
             isPregnant = userProfileState.basicDetailScreenState.isPregnant,
             onPeriod = userProfileState.basicDetailScreenState.onPeriod,
