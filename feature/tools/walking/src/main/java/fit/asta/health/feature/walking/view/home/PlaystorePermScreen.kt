@@ -34,7 +34,8 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 
 @Composable
-fun PlayStorePermsUI() {
+fun PlayStorePermsUI(walkingViewModel: WalkingViewModel = hiltViewModel()) {
+    walkingViewModel.firstTimeOpen.value = false
    // val count by walkingViewModel.stepsPermissionRejectedCount.collectAsStateWithLifecycle()
     var isDialogVisible by rememberSaveable { mutableStateOf(true) }
     var showDetails by rememberSaveable {

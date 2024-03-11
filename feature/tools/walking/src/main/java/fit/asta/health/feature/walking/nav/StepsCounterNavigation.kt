@@ -94,7 +94,7 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 rememberLauncherForActivityResult(walkingViewModel.permissionsLauncher) {
                     onPermissionsResult()
                 }
-            val firstTime = true
+            val firstTime = false
             StepsScreen(
                 state = state, list = list,
                 onStart = {

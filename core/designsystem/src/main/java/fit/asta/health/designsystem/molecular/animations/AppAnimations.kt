@@ -40,6 +40,6 @@ fun AppCircularProgressIndicator(
     strokeWidth: Dp = ProgressIndicatorDefaults.CircularStrokeWidth,
 ) {
     CircularProgressIndicator(
-        modifier = modifier, color = AppTheme.colors.primary, strokeWidth = strokeWidth
+        modifier = modifier, color = AppTheme.colors.secondary, strokeWidth = strokeWidth
     )
 }

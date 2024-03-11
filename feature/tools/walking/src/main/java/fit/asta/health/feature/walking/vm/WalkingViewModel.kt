@@ -77,6 +77,7 @@ class WalkingViewModel @Inject constructor(
     private val _sheetDataList = mutableStateListOf<NetSheetData>()
     val sheetDataList = MutableStateFlow(_sheetDataList)
 
+    val firstTimeOpen = mutableStateOf(true)
     val stepsPermissionRejectedCount = repo.userPreferences
         .map {
             it.stepsPermissionRejectedCount
@@ -140,7 +141,11 @@ class WalkingViewModel @Inject constructor(
         permissionsGranted.value = healthConnectManager.hasAllPermissions(permissions)
         healthUiState = try {
             if (permissionsGranted.value) {
+                Log.d("rishi","permission granted for health connect")
                 block()
+            }
+            else{
+                Log.d("rishi","permission not granted for health connect")
             }
             HealthUiState.Done
         } catch (remoteException: RemoteException) {
@@ -150,8 +155,8 @@ class WalkingViewModel @Inject constructor(
         } catch (ioException: IOException) {
             HealthUiState.Error(ioException)
         } catch (illegalStateException: IllegalStateException) {
-            HealthUiState.Done
-          //  HealthUiState.Error(illegalStateException)
+           // HealthUiState.Done
+            HealthUiState.Error(illegalStateException)
         }
     }
 
