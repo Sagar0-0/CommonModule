@@ -4,6 +4,7 @@ import androidx.annotation.DrawableRes
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.PaddingValues
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -23,6 +24,7 @@ import androidx.compose.ui.geometry.CornerRadius
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.geometry.Size
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.graphics.Shape
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.style.TextOverflow
@@ -80,12 +82,22 @@ fun CardItem(
 
 @Composable
 fun ButtonWithColor(
-    modifier: Modifier = Modifier, color: Color, text: String, onClick: () -> Unit
-) {
+    modifier: Modifier = Modifier, color: Color, text: String,
+    shape: Shape = AppTheme.shape.level1,
+    contentPadding: PaddingValues = PaddingValues(
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
+    ),
+    onClick: () -> Unit,
 
+    ) {
     AppFilledButton(
         textToShow = text,
         modifier = modifier,
+        shape = shape,
+        contentPadding = contentPadding,
         colors = ButtonDefaults.buttonColors(containerColor = color)
     ) {
         onClick()

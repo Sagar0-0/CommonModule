@@ -1033,3 +1033,78 @@ fun AppFilledButton(
         }
     }
 }
+
+/**
+ * ![Filled button image](https://developer.android.com/images/reference/androidx/compose/material3/filled-button.png)
+ *
+ * Filled buttons are high-emphasis buttons. Filled buttons have the most visual impact after the
+ * [FloatingActionButton], and should be used for important, final actions that complete a flow,
+ * like "Save", "Join now", or "Confirm".
+ *
+ * @param modifier the [Modifier] to be applied to this button
+ * @param enabled controls the enabled state of this button. When `false`, this component will not
+ * respond to user input, and it will appear visually disabled and disabled to accessibility
+ * services.
+ * @param shape defines the shape of this button's container, border (when [border] is not null),
+ * and shadow (when using [elevation])
+ * @param containerColor [ButtonColors] that will be used to resolve the container color for this button in different
+ * states. See [ButtonDefaults.buttonColors].
+ * @param contentColor [ButtonColors] that will be used to resolve the container color for this button in different
+ * states. See [ButtonDefaults.buttonColors].
+ * @param elevation [ButtonElevation] used to resolve the elevation for this button in different
+ * states. This controls the size of the shadow below the button. Additionally, when the container
+ * color is [ColorScheme.surface], this controls the amount of primary color applied as an overlay.
+ * See [ButtonElevation.shadowElevation] and [ButtonElevation.tonalElevation].
+ * @param border the border to draw around the container of this button
+ * @param contentPadding the spacing values to apply internally between the container and the
+ * content
+ * @param interactionSource the [MutableInteractionSource] representing the stream of [Interaction]s
+ * for this button. You can create and pass in your own `remember`ed instance to observe
+ * [Interaction]s and customize the appearance / behavior of this button in different states.
+ * @param onClick called when this button is clicked
+ * @param content This is the content to be drawn inside the Button
+ */
+
+@Composable
+fun AppFilledButton(
+    onClick: () -> Unit,
+    modifier: Modifier = Modifier,
+    enabled: Boolean = true,
+    shape: Shape = AppTheme.shape.circle,
+    containerColor: Color = AppTheme.colors.primary,
+    contentColor : Color = AppTheme.colors.onPrimary,
+    elevation: ButtonElevation? = ButtonDefaults.buttonElevation(
+        defaultElevation = AppTheme.elevation.level1,
+        pressedElevation = AppTheme.elevation.level1,
+        focusedElevation = AppTheme.elevation.level1,
+        hoveredElevation = AppTheme.elevation.level2,
+        disabledElevation = AppTheme.elevation.level0
+    ),
+    border: BorderStroke? = null,
+    contentPadding: PaddingValues = PaddingValues(
+        start = AppTheme.spacing.level3,
+        top = AppTheme.spacing.level1,
+        end = AppTheme.spacing.level3,
+        bottom = AppTheme.spacing.level1
+    ),
+    interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
+    content: @Composable (RowScope.() -> Unit)
+) {
+    Button(
+        onClick = onClick,
+        modifier = modifier,
+        enabled = enabled,
+        shape = shape,
+        colors = ButtonDefaults.buttonColors(
+            containerColor = containerColor,
+            contentColor = contentColor,
+            disabledContainerColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level1),
+            disabledContentColor = AppTheme.colors.onSurface.copy(AppTheme.alphaValues.level2)
+        ),
+        border = border,
+        elevation = elevation,
+        interactionSource = interactionSource,
+        contentPadding = contentPadding,
+        content = content
+    )
+}

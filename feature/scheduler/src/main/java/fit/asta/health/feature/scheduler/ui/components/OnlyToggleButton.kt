@@ -208,6 +208,8 @@ fun DaysCircleButton(
         onClick = { onDaySelect() },
         modifier = Modifier.size(40.dp),
         shape = CircleShape,
+        containerColor = colorState,
+        contentColor = colorState2,
 //        colors = buttonColors(
 //            containerColor = colorState,
 //            contentColor = colorState2
