@@ -31,7 +31,6 @@ import androidx.compose.foundation.pager.rememberPagerState
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Check
-import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.twotone.Delete
 import androidx.compose.material.icons.twotone.SkipNext
@@ -158,11 +157,11 @@ fun TodayContent(
     ) {
         val coroutineScope = rememberCoroutineScope()
         val pagerState = rememberPagerState(
-            initialPage = calendarUiModel.visibleDates.indexOfFirst {
+            initialPage = calendarUiModel.visibleDates.filter { it.isToday }.indexOfFirst {
                 it.isToday
             } + 1
         ) {
-            calendarUiModel.visibleDates.size + 1
+            calendarUiModel.visibleDates.filter { it.isToday }.size + 1
         }
 //        CaptionTexts.Level2(text = "Please schedule your alarms according to your flexibility!")
         WeekTabBar(
@@ -201,9 +200,10 @@ fun TodayContent(
                     )
                 }
 
-                calendarUiModel.visibleDates.indexOfFirst { visible ->
-                    visible.isToday
-                } + 1 -> {
+                calendarUiModel.visibleDates.filter { date -> date.isToday }
+                    .indexOfFirst { visible ->
+                        visible.isToday
+                    } + 1 -> {
                     TodayTabContent(
                         calendarUiModel = calendarUiModel,
                         state = state,
@@ -212,7 +212,7 @@ fun TodayContent(
                         listMorning = listMorning,
                         listAfternoon = listAfternoon,
                         listEvening = listEvening,
-                        userEditMessage=userEditMessage,
+                        userEditMessage = userEditMessage,
                         hSEvent = hSEvent,
                         onNav = onNav
                     ) { newEventType, newDeleteDialog, newDeletedItem ->
@@ -414,7 +414,7 @@ fun TodayTabContent(
              }
          }*/
         stickyHeader {
-            RescheduleReminderCard(userEditMessage,hSEvent)
+            RescheduleReminderCard(userEditMessage, hSEvent)
         }
         item {
             AppUiStateHandler(uiState = alarmState.value) {

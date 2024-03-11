@@ -539,7 +539,6 @@ private fun HomeNavHost(
             LaunchedEffect(Unit) {
                 setupWorker(context)
             }
-            Log.d("userEdit", "TodayContent:$userEditMessage ")
             TodayContent(
                 state = state,
                 calendarUiModel = calendarUiModel,
