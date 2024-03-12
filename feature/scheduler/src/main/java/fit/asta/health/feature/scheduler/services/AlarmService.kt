@@ -35,11 +35,16 @@ import androidx.media3.exoplayer.ExoPlayer
 import androidx.media3.exoplayer.source.ProgressiveMediaSource
 import coil.ImageLoader
 import coil.request.ImageRequest
+import com.spotify.android.appremote.api.ConnectionParams
+import com.spotify.android.appremote.api.Connector
+import com.spotify.android.appremote.api.SpotifyAppRemote
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.utils.Constants.ALARM_NOTIFICATION_TAG
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
 import fit.asta.health.common.utils.getImageUrl
+import fit.asta.health.common.utils.isSpotifyInstalled
+import fit.asta.health.core.network.BuildConfig
 import fit.asta.health.data.scheduler.db.AlarmDao
 import fit.asta.health.data.scheduler.db.entity.AlarmEntity
 import fit.asta.health.datastore.PrefManager
@@ -87,10 +92,25 @@ class AlarmService : Service() {
     private lateinit var player: Player
     private lateinit var listener: Player.Listener
 
-    @androidx.annotation.OptIn(UnstableApi::class)
+    @OptIn(UnstableApi::class)
     override fun onCreate() {
         super.onCreate()
-        // Get an instance of the ConnectivityManager class
+        /*  val connectionParams = ConnectionParams.Builder("")
+              .setRedirectUri(resources.getString(""))
+              .showAuthView(true)
+              .build()
+
+          SpotifyAppRemote.connect(this, connectionParams,
+              object : Connector.ConnectionListener {
+                  override fun onConnected(appRemote: SpotifyAppRemote) {
+                      spotifyAppRemote = appRemote
+                      Log.d("Spotify", "Connected! Yay!")
+                  }
+
+                  override fun onFailure(throwable: Throwable) {
+                      Log.e("Spotify", "Failed to connect to Spotify: $throwable")
+                  }
+              })*/   // Get an instance of the ConnectivityManager class
         scope.launch {
             prefManager.userData
                 .map {
@@ -111,6 +131,7 @@ class AlarmService : Service() {
             } else networkCapabilities != null && networkCapabilities.hasTransport(
                 NetworkCapabilities.TRANSPORT_CELLULAR
             )
+
         mTimer = Timer()
         mTimer?.schedule(object : TimerTask() {
             override fun run() {
@@ -237,9 +258,48 @@ class AlarmService : Service() {
     }
 
     private fun startAlarmWithMode(alarm: AlarmEntity) {
-        player.play()
+        if (isConnected && isSpotifyInstalled() && alarm.tone.uri.contains(
+                "spotify",
+                ignoreCase = true
+            )
+        ) {
+            playSpotify(alarm)
+        } else {
+            player.play()
+        }
         if (alarm.mode == "Notification") notificationAlarm(alarm)
         else splashAlarm(alarm)
+    }
+
+    private var spotifyAppRemote: SpotifyAppRemote? = null
+    private fun playSpotify(alarm: AlarmEntity) {
+        val connectionParams = ConnectionParams.Builder(BuildConfig.SPOTIFY_CLIENT_ID)
+            .setRedirectUri(BuildConfig.SPOTIFY_REDIRECT_URI)
+            .showAuthView(false)
+            .build()
+        SpotifyAppRemote.connect(this, connectionParams,
+            object : Connector.ConnectionListener {
+                override fun onConnected(appRemote: SpotifyAppRemote) {
+                    spotifyAppRemote = appRemote
+                    Log.d("Spotify", "tone: ${alarm.tone.uri} ")
+                    spotifyAppRemote?.playerApi?.play(alarm.tone.uri)
+                    spotifyAppRemote?.playerApi?.resume()
+//                    spotifyAppRemote.playerApi.to
+                    Log.d("Spotify", "Connected! Yay! $spotifyAppRemote")
+                }
+
+                override fun onFailure(throwable: Throwable) {
+                    player.play()
+                    Log.e("Spotify", "Failed to connect to Spotify: ${throwable.message}")
+                }
+            })
+    }
+
+    private fun stopSpotify() {
+        spotifyAppRemote?.let {
+            it.playerApi.pause()
+            SpotifyAppRemote.disconnect(it)
+        }
     }
 
     @OptIn(UnstableApi::class)
@@ -382,8 +442,6 @@ class AlarmService : Service() {
                 vibrationPattern, 0
             )
         )
-        Log.d("alarmtest", "startForGroundService")
-
         if (Build.VERSION.SDK_INT < Build.VERSION_CODES.TIRAMISU) {
             startForeground(id, notification)
         } else {
@@ -406,6 +464,7 @@ class AlarmService : Service() {
         partialWakeLock.release()
         player.removeListener(listener)
         player.release()
+        stopSpotify()
     }
 
     override fun onBind(intent: Intent?): IBinder? {

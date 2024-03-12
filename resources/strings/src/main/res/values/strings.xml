@@ -401,6 +401,7 @@
     <string name="sound">Sound</string>
     <string name="spotify">Spotify</string>
     <string name="local_music">Local Music</string>
+    <string name="set_default">Set Default</string>
     <string name="stop">stop</string>
     <string name="recently_played">Recently Played</string>
     <string name="top_mixes">Top Mixes</string>
