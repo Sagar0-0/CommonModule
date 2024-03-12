@@ -1,6 +1,7 @@
 package fit.asta.health.feature.water.view.screen.ui
 
 import android.util.Log
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -19,6 +20,7 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.layout.wrapContentHeight
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Add
 import androidx.compose.material.icons.filled.Clear
@@ -48,6 +50,7 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.check.model.History
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppSearchBar
+import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionButton
@@ -192,214 +195,6 @@ fun HintsOnScreen() {
     }
 }
 
-@Composable
-fun SetOfDefaultChips(
-    event: (WTEvent) -> Unit,
-    viewModel: WaterToolViewModel = hiltViewModel(),
-    waterQuantity: Int,
-    coconutQuantity: Int,
-    firstPrefQuantity: Int,
-    secondPrefQuantity: Int,
-    recentAddedQuantity: Int,
-    onClickWater: () -> Unit,
-    onClickCoconut: () -> Unit,
-    onClickFirstPref: () -> Unit,
-    onClickSecondPref: () -> Unit,
-    onClickCustomize: () -> Unit,
-    onClickRecentAdded: () -> Unit,
-    addedName: String,
-) {
-    var title by remember {
-        viewModel.bevTitle.value
-    }
-    var quantity by remember {
-        viewModel.bevQuantity.value
-    }
-
-    val list by viewModel.beverageList.collectAsStateWithLifecycle()
-    val listSize = list.size
-    Log.d("rishi", "List size : $listSize \n ${list.toList()}")
-
-    AppCard(
-        modifier = Modifier
-            .fillMaxWidth()
-            .padding(AppTheme.spacing.level1),
-    ) {
-        Row(
-            modifier = Modifier.fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-//
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                BevChips(
-                    if (listSize == 0) "Water" else list[0].name,
-                    containerColor = backGroundContainerColor(Color(0xFF092251), Color(0xFF99DDFF)),
-                    contentColor = backGroundContentColor(Color(0xFF092251), Color(0xFF99DDFF)),
-                    R.drawable.water,
-                    waterQuantity,
-                    onClick = {
-                        title = "Water"
-                        quantity = waterQuantity
-                        event(WTEvent.UpdateBevDetails(title, quantity))
-                        event(WTEvent.UpdateBevQuantity)
-                        event(WTEvent.colorChange(Color(0xFF00458B)))
-                    },
-                    onClickBeverage = {
-                        onClickWater()
-                    })
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                BevChips(
-                    if (listSize == 0) "Water" else list[1].name,
-                    containerColor = backGroundContainerColor(Color(0xFF398300), Color(0xFFB6D83D)),
-                    contentColor = backGroundContentColor(Color(0xFF398300), Color(0xFFB6D83D)),
-                    R.drawable.coconut,
-                    coconutQuantity,
-                    onClick = {
-                        title = "Coconut"
-                        quantity = coconutQuantity
-                        event(WTEvent.UpdateBevDetails(title, quantity))
-                        event(WTEvent.UpdateBevQuantity)
-                        event(WTEvent.colorChange(Color(0xFF398300)))
-                    },
-                    onClickBeverage = {
-                        onClickCoconut()
-                    })
-            }
-
-        }
-        AppCard(
-            modifier = Modifier
-                .fillMaxWidth(),
-//            colors = CardDefaults.cardColors(
-//                containerColor = Color.Transparent,
-//            )
-        ) {
-            HeadingTexts.Level4(
-                text = "Your Most Frequent Used :",
-                modifier = Modifier.padding(AppTheme.spacing.level1)
-            )
-            Row(
-                modifier = Modifier.fillMaxWidth(),
-                horizontalArrangement = Arrangement.SpaceEvenly
-            ) {
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    BevChips(
-                        if (listSize == 0) "Water" else list[2].name,
-                        containerColor = backGroundContainerColor(
-                            Color(0xFFE85714),
-                            Color(0xFFE9B077)
-                        ),
-                        contentColor = backGroundContentColor(Color(0xFFE85714), Color(0xFFE9B077)),
-                        R.drawable.tea,
-                        firstPrefQuantity,
-                        onClick = {
-                            title = "Tea"
-                            quantity = firstPrefQuantity
-                            event(WTEvent.UpdateBevDetails(title, quantity))
-                            event(WTEvent.UpdateBevQuantity)
-                            event(WTEvent.colorChange(Color(0xFFE85714)))
-                        },
-                        onClickBeverage = {
-                            onClickFirstPref()
-                        })
-                }
-                Column(
-                    modifier = Modifier.weight(1f),
-                    horizontalAlignment = Alignment.CenterHorizontally
-                ) {
-                    BevChips(
-                        if (listSize == 0) "Water" else list[3].name,
-                        containerColor = backGroundContainerColor(
-                            Color(0xFFE9980B),
-                            Color(0xFFEACE7F)
-                        ),
-                        contentColor = backGroundContentColor(Color(0xFFE9980B), Color(0xFFEACE7F)),
-                        R.drawable.coffee,
-                        secondPrefQuantity,
-                        onClick = {
-                            title = "Coffee"
-                            quantity = secondPrefQuantity
-                            event(WTEvent.UpdateBevDetails(title, quantity))
-                            event(WTEvent.UpdateBevQuantity)
-                            event(WTEvent.colorChange(Color(0xFFE9980B)))
-                        },
-                        onClickBeverage = {
-                            onClickSecondPref()
-                        })
-                }
-            }
-        }
-
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = AppTheme.spacing.level1, start = AppTheme.spacing.level2),
-            horizontalArrangement = Arrangement.Start
-        ) {
-            HeadingTexts.Level4(text = "Add Yours :")
-        }
-        Row(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(top = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceEvenly
-        ) {
-
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                if (addedName.isNotEmpty()) {
-                    BevChips(
-                        addedName,
-                        containerColor = backGroundContainerColor(
-                            Color(0xFF9d9ad9),
-                            Color(0xFFcedef0)
-                        ),
-                        contentColor = backGroundContentColor(Color(0xFF9d9ad9), Color(0xFFcedef0)),
-                        R.drawable.unfocusedcontainer,
-                        recentAddedQuantity,
-                        onClick = {
-                            title = addedName
-                            quantity = recentAddedQuantity
-                            event(WTEvent.UpdateBevDetails(title, quantity))
-                            event(WTEvent.UpdateBevQuantity)
-                            event(WTEvent.colorChange(Color(0xFF9d9ad9)))
-                        },
-                        onClickBeverage = {
-                            onClickRecentAdded()
-                        })
-                }
-            }
-            Column(
-                modifier = Modifier.weight(1f),
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-
-                AppExtendedFloatingActionButton(
-                    text = { BodyTexts.Level3(text = "Customize") },
-                    icon = { AppIcon(imageVector = Icons.Default.Add, contentDescription = null) },
-                    onClick = { onClickCustomize() },
-                    modifier = Modifier
-                        .fillMaxWidth()
-                        .padding(AppTheme.spacing.level1)
-                )
-            }
-        }
-
-    }
-}
 
 @Composable
 fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
@@ -499,110 +294,6 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
     }
 
 }
-
-@Composable
-fun BevChips(
-    name: String,
-    containerColor: Color,
-    contentColor: Color,
-    resId: Int,
-    quantity: Int,
-    onClick: () -> Unit,
-    onClickBeverage: () -> Unit
-) {
-    BeverageInfoCard(
-        name = name,
-        containerColor = containerColor,
-        contentColor = contentColor,
-        resId = resId,
-        quantity = quantity,
-        onClick = { onClick() }) {
-        onClickBeverage()
-    }
-//    AppElevatedCardWithColor(
-//        modifier = Modifier
-//            .padding(AppTheme.spacing.level1)
-//            .wrapContentHeight(unbounded = true),
-//        containerColor = containerColor
-//    ) {
-//        Row(
-//            modifier = Modifier
-//                .padding(AppTheme.spacing.level1)
-//        ) {
-//            Box(modifier = Modifier
-//                .clickable {
-//                    onClick()
-//                }
-//                .width(90.dp)) {
-//                Column {
-//                    HeadingTexts.Level4(text = name)
-//                    Spacer(modifier = Modifier.weight(1f))
-//                    BodyTexts.Level2(
-//                        text = " $quantity  ml",
-//                        color = contentColor
-//                    )
-//                }
-//            }
-//            ClickableBeverage(
-//                containerColor = containerColor,
-//                contentColor = contentColor, resId = resId
-//            ) {
-//                onClickBeverage()
-//            }
-//        }
-//    }
-}
-
-@Composable
-fun ClickableBeverage(
-    containerColor: Color,
-    contentColor: Color,
-    resId: Int,
-    onClick: () -> Unit
-) {
-    Column(
-        modifier = Modifier
-            .clickable {
-
-                onClick()
-            }
-            .width(AppTheme.spacing.level6),
-        horizontalAlignment = Alignment.End,
-    ) {
-        Box(
-            modifier = Modifier
-                .padding(top = 3.dp)
-                .clip(CircleShape)
-        ) {
-            AppIcon(
-                painter = painterResource(id = resId), contentDescription = "Tea",
-                tint = contentColor,
-                modifier = Modifier
-                    .scale(1f)
-                    .align(Alignment.Center)
-                    .height(AppTheme.spacing.level2)
-            )
-        }
-        // Spacer(modifier = Modifier.weight(1f))
-        Box(
-            modifier = Modifier
-                .padding(top = 3.dp)
-                .clip(CircleShape)
-                .border(1.dp, Color.White, CircleShape)
-                .background(Color.White)
-        ) {
-            AppIcon(
-                imageVector = Icons.Default.Edit, contentDescription = "Quantity",
-                tint = contentColor,
-                modifier = Modifier
-                    .scale(0.6f)
-                    .align(Alignment.BottomEnd)
-
-            )
-        }
-    }
-}
-
 
 @Composable
 fun BevSearchBar(
@@ -811,59 +502,3 @@ fun backGroundContainerColor(darkColor: Color, lightColor: Color): Color {
     return backgroundContainerColor
 }
 
-@Composable
-fun ErrorUi(
-    viewModel: WaterToolViewModel = hiltViewModel(),
-    event: (WTEvent) -> Unit
-) {
-    val isLoading by remember {
-        viewModel._isLoading
-    }
-    AppSurface {
-        Box(
-            contentAlignment = Alignment.Center,
-            modifier = Modifier.fillMaxSize(1f)
-        ) {
-            Column(
-                verticalArrangement = Arrangement.Center,
-                horizontalAlignment = Alignment.CenterHorizontally
-            ) {
-                Image(
-                    painter = painterResource(id = R.drawable.ic_error_not_found),
-                    contentDescription = null,
-                    alignment = Alignment.Center,
-                    contentScale = ContentScale.Fit,
-                    modifier = Modifier.scale(.8f)
-                )
-                BodyTexts.Level2(text = "An Unknown Error Occurred", textAlign = TextAlign.Center)
-                AppFilledButton(
-                    modifier = Modifier
-                        .fillMaxWidth(1f)
-                        .padding(AppTheme.spacing.level2),
-                    onClick = { event(WTEvent.RetrySection) }
-                ) {
-                    Row(
-                        verticalAlignment = Alignment.CenterVertically,
-                        horizontalArrangement = Arrangement.SpaceBetween
-                    ) {
-                        if (isLoading) {
-                            Log.d("rishi", "CircularProgressCalled")
-                            AppCircularProgressIndicator(
-                                modifier = Modifier
-                                    .scale(0.6f)
-                                    .clipToBounds()
-                            )
-                        }
-                        CaptionTexts.Level2(
-                            text = "Tap to Retry",
-                            textAlign = TextAlign.Center
-                        )
-                    }
-
-                }
-
-            }
-        }
-    }
-
-}

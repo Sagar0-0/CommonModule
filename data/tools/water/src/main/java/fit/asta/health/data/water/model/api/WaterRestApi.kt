@@ -1,5 +1,6 @@
 package fit.asta.health.data.water.model.api
 
+import fit.asta.health.data.water.model.network.BeverageRecentActivity
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.data.water.model.network.WaterToolDetailsData
@@ -28,7 +29,7 @@ class WaterRestApi(client: OkHttpClient) :
         return apiService.getWaterTool(userId, latitude, longitude, date, location)
     }
 
-    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status {
+    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): BeverageRecentActivity {
         return apiService.updateBeverageQty(beverage)
     }
 
