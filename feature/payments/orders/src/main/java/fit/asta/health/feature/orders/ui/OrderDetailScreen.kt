@@ -16,8 +16,8 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
+import fit.asta.health.common.utils.getDateFormat
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.common.utils.toDateFormat
 import fit.asta.health.data.orders.remote.model.OrderDetailData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
@@ -114,7 +114,7 @@ fun OrderDetailScreen(
                 ) {
                     TitleTexts.Level2(text = "Date:")
                     Spacer(modifier = Modifier.width(AppTheme.spacing.level2))
-                    TitleTexts.Level2(text = orderData.cDate.toDateFormat())
+                    TitleTexts.Level2(text = orderData.cDate.getDateFormat())
                 }
 
                 Row(
