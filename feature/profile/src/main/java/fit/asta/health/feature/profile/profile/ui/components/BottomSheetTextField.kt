@@ -27,18 +27,10 @@ fun BottomSheetTextField(
     sheetState: SheetState,
     label: String,
     text: String,
-    validator: (String) -> Boolean = { _ -> true },
-    errorFor: (String) -> String = { _ -> "" },
+    isValid: (String) -> Boolean = { _ -> true },
     onDismissRequest: () -> Unit,
     onSaveClick: (String) -> Unit
 ) {
-//    val textFieldState = rememberSaveable(stateSaver = TextFieldState.Saver(validator, errorFor)) {
-//        mutableStateOf(
-//            TextFieldState(validator, errorFor).apply {
-//                this.text = text
-//            }
-//        )
-//    }
 
     var textFieldValue by remember(isVisible) {
         mutableStateOf(TextFieldValue(text = text))
@@ -76,7 +68,10 @@ fun BottomSheetTextField(
                     textFieldValue = it
                 },
             )
-            BottomSheetSaveButtons(onSave = { onSaveClick(textFieldValue.text) }) {
+            BottomSheetSaveButtons(
+                onSave = { onSaveClick(textFieldValue.text) },
+                saveButtonEnabled = isValid(textFieldValue.text)
+            ) {
                 onDismissRequest()
             }
         }

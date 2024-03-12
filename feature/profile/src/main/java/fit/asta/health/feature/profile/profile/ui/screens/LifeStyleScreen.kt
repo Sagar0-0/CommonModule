@@ -96,6 +96,9 @@ fun LifestyleScreen(
 
         BottomSheetTimePicker(
             isVisible = userProfileState.lifestyleScreenState.timerSheetVisible,
+            isValid = { startHour, startMinute, endHour, endMinute ->
+                endHour - startHour > 0 || endMinute - startMinute > 0
+            },
             sheetState = timerSheetState,
             onDismissRequest = {
                 userProfileState.lifestyleScreenState.closeTimerSheet(timerSheetState)

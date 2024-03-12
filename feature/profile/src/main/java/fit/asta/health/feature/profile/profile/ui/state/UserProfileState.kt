@@ -104,10 +104,11 @@ fun rememberUserProfileState(
 
     val basicDetailScreenState = rememberSaveable(
         userProfileResponse,
-        saver = BasicDetailScreenState.Saver(onEvent)
+        saver = BasicDetailScreenState.Saver(coroutineScope, onEvent)
     ) {
         BasicDetailScreenState(
             basicDetail = userProfileResponse.basicDetail,
+            coroutineScope = coroutineScope,
             onEvent = onEvent
         )
     }

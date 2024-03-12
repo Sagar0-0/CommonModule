@@ -12,6 +12,7 @@ import fit.asta.health.designsystem.molecular.button.AppTextButton
 @Composable
 fun ColumnScope.BottomSheetSaveButtons(
     onSave: () -> Unit,
+    saveButtonEnabled: Boolean = false,
     onCancel: () -> Unit,
 ) {
     Row(
@@ -21,7 +22,10 @@ fun ColumnScope.BottomSheetSaveButtons(
         AppTextButton(textToShow = "Cancel") {
             onCancel()
         }
-        AppTextButton(textToShow = "Save") {
+        AppTextButton(
+            enabled = saveButtonEnabled,
+            textToShow = "Save"
+        ) {
             onSave()
         }
     }

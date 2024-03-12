@@ -98,6 +98,9 @@ fun PhysiqueScreen(
         BottomSheetPhysique(
             isVisible = heightBottomSheetVisible.value,
             sheetState = heightBottomSheetState,
+            isValid = { height: Float?, unit: Int ->
+                height != null && if (unit == HeightUnit.Inch.value) height > 3.5 else height > 8.8
+            },
             label = "Height",
             text = userProfileState.physiqueScreenState.userHeight ?: "",
             units = HeightUnit.entries,
@@ -109,8 +112,8 @@ fun PhysiqueScreen(
                     heightBottomSheetVisible
                 )
             },
-            onSaveClick = { height: Float, unit: Int ->
-                userProfileState.physiqueScreenState.saveHeight(height, unit)
+            onSaveClick = { height: Float?, unit: Int ->
+                userProfileState.physiqueScreenState.saveHeight(height ?: 0.0f, unit)
                 userProfileState.closeSheet(
                     heightBottomSheetState,
                     heightBottomSheetVisible
@@ -121,6 +124,9 @@ fun PhysiqueScreen(
         BottomSheetPhysique(
             isVisible = weightBottomSheetVisible.value,
             sheetState = weightBottomSheetState,
+            isValid = { weight: Float?, unit: Int ->
+                weight != null && if (unit == WeightUnit.KG.value) weight > 30 else weight > 66
+            },
             label = "Weight",
             text = userProfileState.physiqueScreenState.userWeight ?: "",
             units = WeightUnit.entries,
@@ -132,8 +138,8 @@ fun PhysiqueScreen(
                     weightBottomSheetVisible
                 )
             },
-            onSaveClick = { weight: Float, unit: Int ->
-                userProfileState.physiqueScreenState.saveWeight(weight, unit)
+            onSaveClick = { weight: Float?, unit: Int ->
+                userProfileState.physiqueScreenState.saveWeight(weight ?: 0.0f, unit)
                 userProfileState.closeSheet(
                     weightBottomSheetState,
                     weightBottomSheetVisible

@@ -34,6 +34,7 @@ import fit.asta.health.resources.strings.R
 fun BottomSheetGenderSelector(
     isVisible: Boolean,
     sheetState: SheetState,
+    isValid: (gender: Gender?, isPregnant: BooleanInt?, onPeriod: BooleanInt?, pregnancyWeek: Int?) -> Boolean,
     gender: Gender?,
     isPregnant: BooleanInt?,
     onPeriod: BooleanInt?,
@@ -164,7 +165,13 @@ fun BottomSheetGenderSelector(
                         periodStatus,
                         pregWeekTextFieldValue.text.toIntOrNull()
                     )
-                }
+                },
+                saveButtonEnabled = isValid(
+                    updatedGender,
+                    pregnantStatus,
+                    periodStatus,
+                    pregWeekTextFieldValue.text.toIntOrNull()
+                )
             ) {
                 onDismissRequest()
             }
