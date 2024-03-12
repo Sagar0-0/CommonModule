@@ -1,6 +1,7 @@
 package fit.asta.health.common.utils
 
 import android.content.Context
+import android.content.pm.PackageManager
 import android.content.res.Configuration
 import android.content.res.Resources
 import android.graphics.Point
@@ -452,4 +453,14 @@ fun Context.navigationBarHeight(): Int {
 
 fun Int.pxToDp(context: Context): Float {
     return   this / context.resources.displayMetrics.density;
+}
+
+fun Context.isSpotifyInstalled(): Boolean {
+    val packageName = "com.spotify.music"
+    return try {
+        packageManager.getPackageInfo(packageName, 0)
+        true
+    } catch (e: PackageManager.NameNotFoundException) {
+        false
+    }
 }

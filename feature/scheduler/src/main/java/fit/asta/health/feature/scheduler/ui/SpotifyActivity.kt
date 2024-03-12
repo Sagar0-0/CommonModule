@@ -1,5 +1,6 @@
 package fit.asta.health.feature.scheduler.ui
 
+import android.R.attr.data
 import android.content.Intent
 import android.content.pm.PackageManager
 import android.net.Uri
@@ -7,6 +8,7 @@ import android.os.Bundle
 import android.widget.Toast
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
+import androidx.activity.viewModels
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
@@ -29,6 +31,7 @@ import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.feature.scheduler.ui.navigation.SpotifyNavGraph
 import fit.asta.health.feature.scheduler.ui.viewmodel.SpotifyViewModel
 
+
 @AndroidEntryPoint
 class SpotifyActivity : ComponentActivity() {
 
@@ -42,10 +45,18 @@ class SpotifyActivity : ComponentActivity() {
      * This is the [SpotifyViewModel] viewModel which contains all the business logic of this
      * activity
      */
-    private lateinit var spotifyViewModel: SpotifyViewModel
+    private val spotifyViewModel: SpotifyViewModel by viewModels()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        spotifyViewModel.navigateBack={tone->
+            val intent = Intent()
+            intent.putExtra("uri", tone.uri)
+            intent.putExtra("name", tone.name)
+            intent.putExtra("type", tone.type)
+            setResult(RESULT_OK, intent)
+            finish()
+        }
 
         //Enabling edge to edge for fullscreen theme
         //enableEdgeToEdge()
@@ -53,7 +64,7 @@ class SpotifyActivity : ComponentActivity() {
         setContent {
             AppScreen {
 
-                spotifyViewModel = hiltViewModel()
+                //spotifyViewModel = hiltViewModel()
 
                 // Checking which state is there
                 when (val loginState =
@@ -228,6 +239,7 @@ class SpotifyActivity : ComponentActivity() {
             val response = AuthorizationClient.getResponse(resultCode, intent)
             spotifyViewModel.handleSpotifyAuthResponse(response)
         }
+
     }
 
     override fun onNewIntent(intent: Intent) {

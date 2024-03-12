@@ -1,7 +1,11 @@
 package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 
 import android.app.Activity
+import android.app.Activity.RESULT_OK
 import android.content.Intent
+import android.util.Log
+import androidx.activity.compose.rememberLauncherForActivityResult
+import androidx.activity.result.contract.ActivityResultContracts
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -294,7 +298,7 @@ fun AlarmSettingScreen(
                 }
             )
 
-            SoundOptionsUI()
+            SoundOptionsUI(aSEvent)
 
             OnlyToggleButton(
                 imageIcon = Icons.Default.NotificationImportant,
@@ -484,8 +488,18 @@ fun AlarmCreateBtmSheetLayout(
 
 
 @Composable
-private fun SoundOptionsUI() {
+private fun SoundOptionsUI(aSEvent: (AlarmSettingEvent) -> Unit) {
     val activity = LocalContext.current as Activity
+    val intentLauncher =
+        rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
+            if (result.resultCode == RESULT_OK) {
+                val uri=result.data?.getStringExtra("uri")
+                val name=result.data?.getStringExtra("name")
+                val type=result.data?.getIntExtra("type",1)
+                Log.d("result", "SoundOptionsUI: $name")
+                aSEvent.invoke(AlarmSettingEvent.SetSound(ToneUiState(name?:"",type?:1,uri?:"hi")))
+            }
+        }
 
     AppCard(
         modifier = Modifier
@@ -519,12 +533,15 @@ private fun SoundOptionsUI() {
                 ) {
                     // Opening the Spotify Activity
                     val intent = Intent(activity, SpotifyActivity::class.java)
-                    activity.startActivity(intent)
+                    intentLauncher.launch(intent)
+                    //activity.startActivity(intent)
                 }
 
                 AppTextButton(
-                    textToShow = stringResource(StringR.string.local_music)
-                ) { /*TODO: Fetch Local Music*/ }
+                    textToShow = stringResource(StringR.string.set_default)
+                ) {
+
+                }
             }
         }
     }
