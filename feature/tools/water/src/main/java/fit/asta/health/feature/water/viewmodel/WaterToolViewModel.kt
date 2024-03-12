@@ -7,7 +7,9 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
+import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -96,6 +98,8 @@ class WaterToolViewModel @Inject constructor(
 
     private var _sliderColor = MutableStateFlow(Color.Blue)
     val sliderColor = _sliderColor.asStateFlow()
+
+    var showUndoDialog = mutableStateOf(false)
 
     private var isSearching = mutableStateOf(false)
     var _isLoading = mutableStateOf(false)
@@ -326,19 +330,23 @@ class WaterToolViewModel @Inject constructor(
         viewModelScope.launch {
             authRepo.getUserId()?.let {
                 Log.d("rishi", "BevTitle : $title BevQuantity : $quantity")
-                repo.updateBeverageQty(
-                    NetBevQtyPut(
-                        bev = title,
-                        id = "",
-                        uid = uid,
-                        qty = quantity.toDouble() / 1000
-                    )
-                ).catch { exception ->
-                    Log.d("rishi", "updateBeverageDataException: ${exception.message}")
-                }.collect {
-//
-                    Log.d("rishi", "updateBeverageData: ${it.msg}")
-                }
+                if (quantity != 0){
+                    repo.updateBeverageQty(
+                        NetBevQtyPut(
+                            bev = title,
+                            id = "",
+                            uid = uid,
+                            qty = quantity.toDouble() / 1000
+                        )
+                    ).catch { exception ->
+                        Log.d("rishi", "updateBeverageDataException: ${exception.message}")
+                    }.collect {
+                        Log.d("rishi", "updateBeverageData: ${it.id}")
+                    }
+            }
+//                else{
+//                mToast(,"Set Quantity First")
+//                }
             }
         }
     }
