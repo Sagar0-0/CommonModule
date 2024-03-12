@@ -2,6 +2,7 @@ package fit.asta.health.data.water.model
 
 import fit.asta.health.data.water.model.api.WaterApi
 import fit.asta.health.data.water.model.domain.WaterTool
+import fit.asta.health.data.water.model.network.BeverageActivity
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterDetailsData
 import fit.asta.health.data.water.model.network.WaterToolData
@@ -37,8 +38,8 @@ class WaterToolRepoImpl(
         }
     }
 
-    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Flow<Status> {
-        return flow { emit(remoteApi.updateBeverageQty(beverage)) }
+    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Flow<BeverageActivity> {
+        return flow { emit(remoteApi.updateBeverageQty(beverage).data) }
     }
 
     override suspend fun updateWaterTool(waterToolData: WaterToolData): Flow<Status> {

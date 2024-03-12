@@ -50,7 +50,6 @@ class SpotifyViewModel @Inject constructor(
      */
     fun handleSpotifyAuthResponse(response: AuthorizationResponse) {
         when (response.type) {
-
             // If the Response is a token that means its a successful response
             AuthorizationResponse.Type.TOKEN -> {
                 accessToken = response.accessToken
@@ -61,6 +60,7 @@ class SpotifyViewModel @Inject constructor(
 
             // If the Response is an ErrorMessage or anything else
             else -> {
+                Log.d("spotify", "handleSpotifyAuthResponse: ${response.error}")
                 _currentUserData.value = UiState.ErrorMessage(resId = StringR.string.no_internet)
             }
         }
@@ -158,6 +158,10 @@ class SpotifyViewModel @Inject constructor(
         }
     }
 
+    var navigateBack:((ToneUiState)->Unit)={
+
+    }
+
     /**
      * This function sets the [ToneUiState] data for the alarm which would be stored in the
      * Database later
@@ -167,7 +171,9 @@ class SpotifyViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.setSoundTone(toneUiState.uri)
             Log.d("tone", toneUiState.uri)
-//            prefManager.setPreferences(Constants.SPOTIFY_SONG_KEY_TYPE, toneUiState.type)
+        //            prefManager.setPreferences(Constants.SPOTIFY_SONG_KEY_TYPE, toneUiState.type)
+        }.invokeOnCompletion {
+            navigateBack.invoke(toneUiState)
         }
     }
 

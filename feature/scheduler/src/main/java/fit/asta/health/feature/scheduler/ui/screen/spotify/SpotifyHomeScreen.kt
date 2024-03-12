@@ -107,13 +107,12 @@ fun SpotifyHomeScreen(
                                 )
                             }
                         ) {
-
                             setEvent(
                                 SpotifyUiEvent.HelperEvent.OnApplyClick(
                                     ToneUiState(
                                         name = currentItem.track.name,
                                         type = 1,
-                                        uri = currentItem.track.previewUrl ?: "hi"
+                                        uri = currentItem.track.uri ?: "hi"
                                     )
                                 )
                             )
@@ -187,7 +186,7 @@ fun SpotifyHomeScreen(
                                     ToneUiState(
                                         name = currentItem.name,
                                         type = 1,
-                                        uri = currentItem.previewUrl ?: "hi"
+                                        uri = currentItem.uri ?: "hi"
                                     )
                                 )
                             )
@@ -259,7 +258,7 @@ fun SpotifyHomeScreen(
                                 ToneUiState(
                                     name = currentItem.track.name,
                                     type = 1,
-                                    uri = currentItem.track.previewUrl ?: ""
+                                    uri = currentItem.track.uri ?: ""
                                 )
                             )
                         )

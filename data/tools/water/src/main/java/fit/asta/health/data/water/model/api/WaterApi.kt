@@ -1,5 +1,6 @@
 package fit.asta.health.data.water.model.api
 
+import fit.asta.health.data.water.model.network.BeverageRecentActivity
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.data.water.model.network.WaterToolDetailsData
@@ -18,7 +19,7 @@ interface WaterApi {
         date: Long
     ): WaterToolResult
 
-    suspend fun updateBeverageQty(beverage: NetBevQtyPut): Status
+    suspend fun updateBeverageQty(beverage: NetBevQtyPut): BeverageRecentActivity
     suspend fun updateWaterTool(waterToolData: WaterToolData): Status
 
     suspend fun getWaterData(): WaterToolDetailsData
