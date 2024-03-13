@@ -1,6 +1,7 @@
 package fit.asta.health.feature.auth.components
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.runtime.Composable
@@ -10,6 +11,7 @@ import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalFocusManager
 import fit.asta.health.designsystem.AppTheme
@@ -68,47 +70,52 @@ fun AuthOtpVerificationUI(
         }
     )
 
-
-    // This draws the Custom Text Field for the OTP inputs
-    AuthOtpTextField(
-        otp = otp,
-        onOtpTextChange = onOtpTextChange,
-        onDoneClick = onVerifyOtpClick
-    )
-
-    // Contains the Verify and the Resend Button
-    Row(
-        modifier = modifier
-            .fillMaxWidth(),
-        horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+    Column(
+        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
+        horizontalAlignment = Alignment.CenterHorizontally
     ) {
 
-        // Verify Button
-        AppFilledButton(
-            modifier = Modifier.weight(1f),
-            textToShow = "Verify"
+        // This draws the Custom Text Field for the OTP inputs
+        AuthOtpTextField(
+            otp = otp,
+            onOtpTextChange = onOtpTextChange,
+            onDoneClick = onVerifyOtpClick
+        )
+
+        // Contains the Verify and the Resend Button
+        Row(
+            modifier = modifier
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
         ) {
-            focusManager.clearFocus()
-            onVerifyOtpClick()
+
+            // Verify Button
+            AppFilledButton(
+                modifier = Modifier.weight(1f),
+                textToShow = "Verify"
+            ) {
+                focusManager.clearFocus()
+                onVerifyOtpClick()
+            }
+
+            // Resend OTP Button
+            AppOutlinedButton(
+                modifier = Modifier.weight(1f),
+                textToShow = if (ticks != 0)
+                    "Resend in ${ticks}s"
+                else
+                    "Resend OTP",
+                enabled = (ticks == 0)
+            ) {
+                restartTick = true
+                onResendOtpClick()
+            }
         }
 
-        // Resend OTP Button
-        AppOutlinedButton(
-            modifier = Modifier.weight(1f),
-            textToShow = if (ticks != 0)
-                "Resend in ${ticks}s"
-            else
-                "Resend OTP",
-            enabled = (ticks == 0)
-        ) {
-            restartTick = true
-            onResendOtpClick()
-        }
+        // Wrong Phone Number entered Button
+        AppTextButton(
+            textToShow = "Wrong Phone Number?",
+            onClick = onWrongNumberButtonClick
+        )
     }
-
-    // Wrong Phone Number entered Button
-    AppTextButton(
-        textToShow = "Wrong Phone Number?",
-        onClick = onWrongNumberButtonClick
-    )
 }

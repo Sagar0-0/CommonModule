@@ -158,11 +158,12 @@ fun AuthPhoneSignInScreen(
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
+                //App logo
+                AppLocalImage(painter = painterResource(id = R.drawable.splash_logo))
+
                 // heading Text asking user to give his inputs
                 TitleTexts.Level2(text = textToShow)
 
-                //App logo
-                AppLocalImage(painter = painterResource(id = R.drawable.splash_logo))
 
                 //Phone UI
                 AuthNumberInputUI(
