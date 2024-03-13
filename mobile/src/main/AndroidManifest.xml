@@ -20,7 +20,8 @@
         android:name="android.permission.FOREGROUND_SERVICE_LOCATION"
         android:minSdkVersion="34" />
     <uses-permission android:name="com.android.MaliciousApp.RECEIVE_BROADCAST" />
-    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+\    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
     <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
     <uses-permission android:name="android.permission.SCHEDULE_EXACT_ALARM" />

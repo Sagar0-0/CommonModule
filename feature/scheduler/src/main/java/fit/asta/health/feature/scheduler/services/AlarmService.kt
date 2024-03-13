@@ -10,7 +10,9 @@ import android.content.Intent
 import android.content.pm.ServiceInfo.FOREGROUND_SERVICE_TYPE_MEDIA_PLAYBACK
 import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
+import android.media.AudioManager
 import android.media.RingtoneManager
+import android.media.session.MediaSessionManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -263,6 +265,12 @@ class AlarmService : Service() {
                 ignoreCase = true
             )
         ) {
+            val am = getSystemService(AUDIO_SERVICE) as AudioManager
+            am.setStreamVolume(
+                AudioManager.STREAM_MUSIC,
+                am.getStreamMaxVolume(AudioManager.STREAM_MUSIC),
+                0
+            )
             playSpotify(alarm)
         } else {
             player.play()

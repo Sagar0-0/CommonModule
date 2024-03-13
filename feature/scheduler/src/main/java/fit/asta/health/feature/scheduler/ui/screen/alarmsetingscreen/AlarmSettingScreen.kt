@@ -20,8 +20,6 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddAlarm
-import androidx.compose.material.icons.filled.AlarmOff
-import androidx.compose.material.icons.filled.AlarmOn
 import androidx.compose.material.icons.filled.Audiotrack
 import androidx.compose.material.icons.filled.CalendarMonth
 import androidx.compose.material.icons.filled.Check
@@ -65,8 +63,6 @@ import fit.asta.health.designsystem.molecular.background.appRememberModalBottomS
 import fit.asta.health.designsystem.molecular.background.appSnackBarHostState
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.button.AppIconButton
-import fit.asta.health.designsystem.molecular.button.AppTextButton
-import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
@@ -207,14 +203,27 @@ fun AlarmSettingScreen(
                 weekdays = alarmSettingUiState.week,
                 onDaySelect = { aSEvent(AlarmSettingEvent.SetWeek(it)) }
             )
-
             OnlyToggleButton(
-                imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
-                title = stringResource(id = StringR.string.status),
-                testTag = stringResource(id = StringR.string.status),
-                mCheckedState = alarmSettingUiState.status,
-                onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) }
+                imageIcon = Icons.Default.NotificationImportant,
+                title = stringResource(StringR.string.important),
+                testTag = stringResource(StringR.string.important),
+                mCheckedState = alarmSettingUiState.important,
+                onCheckClicked = {
+                    aSEvent(AlarmSettingEvent.SetImportant(it))
+                }
             )
+            CaptionTexts.Level5(
+                text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
+                color = AppTheme.colors.onSurfaceVariant,
+                maxLines = 2
+            )
+            /*    OnlyToggleButton(
+                    imageIcon = if (alarmSettingUiState.status) Icons.Default.AlarmOn else Icons.Default.AlarmOff,
+                    title = stringResource(id = StringR.string.status),
+                    testTag = stringResource(id = StringR.string.status),
+                    mCheckedState = alarmSettingUiState.status,
+                    onCheckClicked = { aSEvent(AlarmSettingEvent.SetStatus(it)) }
+                )*/
 
             DateSelection(
                 imageIcon = Icons.Default.CalendarMonth,
@@ -283,6 +292,7 @@ fun AlarmSettingScreen(
                     openSheet()
                 }
             )
+            SoundOptionsUI(aSEvent, alarmSettingUiState)
             OnlyToggleButton(
                 imageIcon = Icons.Default.Vibration,
                 title = stringResource(StringR.string.vibration),
@@ -298,22 +308,6 @@ fun AlarmSettingScreen(
                 }
             )
 
-            SoundOptionsUI(aSEvent)
-
-            OnlyToggleButton(
-                imageIcon = Icons.Default.NotificationImportant,
-                title = stringResource(StringR.string.important),
-                testTag = stringResource(StringR.string.important),
-                mCheckedState = alarmSettingUiState.important,
-                onCheckClicked = {
-                    aSEvent(AlarmSettingEvent.SetImportant(it))
-                }
-            )
-            CaptionTexts.Level2(
-                text = stringResource(id = StringR.string.this_will_make_sure_you_attempt_with_the_help_of_flashlight_sound_changes_vibration_etc),
-                color = AppTheme.colors.onSurfaceVariant,
-                maxLines = 2
-            )
 
             Spacer(modifier = Modifier)
         }
@@ -488,63 +482,84 @@ fun AlarmCreateBtmSheetLayout(
 
 
 @Composable
-private fun SoundOptionsUI(aSEvent: (AlarmSettingEvent) -> Unit) {
+private fun SoundOptionsUI(aSEvent: (AlarmSettingEvent) -> Unit, alarmSettingUiState: ASUiState) {
     val activity = LocalContext.current as Activity
     val intentLauncher =
         rememberLauncherForActivityResult(contract = ActivityResultContracts.StartActivityForResult()) { result ->
             if (result.resultCode == RESULT_OK) {
-                val uri=result.data?.getStringExtra("uri")
-                val name=result.data?.getStringExtra("name")
-                val type=result.data?.getIntExtra("type",1)
+                val uri = result.data?.getStringExtra("uri")
+                val name = result.data?.getStringExtra("name")
+                val type = result.data?.getIntExtra("type", 1)
                 Log.d("result", "SoundOptionsUI: $name")
-                aSEvent.invoke(AlarmSettingEvent.SetSound(ToneUiState(name?:"",type?:1,uri?:"hi")))
+                aSEvent.invoke(
+                    AlarmSettingEvent.SetSound(
+                        ToneUiState(
+                            name ?: "",
+                            type ?: 1,
+                            uri ?: "hi"
+                        )
+                    )
+                )
             }
         }
 
-    AppCard(
-        modifier = Modifier
-            .fillMaxWidth()
-    ) {
-        Row(
+
+    TextSelection(
+        imageIcon = Icons.Default.Audiotrack,
+        title = stringResource(StringR.string.sound),
+        arrowTitle = if (alarmSettingUiState.toneUri.isEmpty() || !alarmSettingUiState.toneUri.contains(
+                "spotify"
+            )
+        ) "Default" else alarmSettingUiState.toneName,
+        onNavigateAction = {
+            val intent = Intent(activity, SpotifyActivity::class.java)
+            intentLauncher.launch(intent)
+        }
+    )
+
+    /*    AppCard(
             modifier = Modifier
                 .fillMaxWidth()
-                .padding(horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level1),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically
         ) {
-            Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
-                AppIcon(
-                    imageVector = Icons.Default.Audiotrack,
-                    contentDescription = null,
-                    tint = AppTheme.colors.primary
-                )
-                TitleTexts.Level2(
-                    text = stringResource(StringR.string.sound),
-                    color = AppTheme.colors.onSecondaryContainer
-                )
-            }
-
             Row(
-                horizontalArrangement = Arrangement.SpaceEvenly,
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(horizontal = AppTheme.spacing.level2, vertical = AppTheme.spacing.level1),
+                horizontalArrangement = Arrangement.SpaceBetween,
                 verticalAlignment = Alignment.CenterVertically
             ) {
-                AppTextButton(
-                    textToShow = stringResource(StringR.string.spotify)
-                ) {
-                    // Opening the Spotify Activity
-                    val intent = Intent(activity, SpotifyActivity::class.java)
-                    intentLauncher.launch(intent)
-                    //activity.startActivity(intent)
+                Row(horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level1)) {
+                    AppIcon(
+                        imageVector = Icons.Default.Audiotrack,
+                        contentDescription = null,
+                        tint = AppTheme.colors.primary
+                    )
+                    TitleTexts.Level2(
+                        text = stringResource(StringR.string.sound),
+                        color = AppTheme.colors.onSecondaryContainer
+                    )
                 }
 
-                AppTextButton(
-                    textToShow = stringResource(StringR.string.set_default)
+                Row(
+                    horizontalArrangement = Arrangement.SpaceEvenly,
+                    verticalAlignment = Alignment.CenterVertically
                 ) {
+                    AppTextButton(
+                        textToShow = stringResource(StringR.string.spotify)
+                    ) {
+                        // Opening the Spotify Activity
 
+                        //activity.startActivity(intent)
+                    }
+
+                    AppTextButton(
+                        textToShow = stringResource(StringR.string.set_default)
+                    ) {
+
+                    }
                 }
             }
-        }
-    }
+        }*/
 
 }
 
