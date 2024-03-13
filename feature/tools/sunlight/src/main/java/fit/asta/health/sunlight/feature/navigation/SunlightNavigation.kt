@@ -36,16 +36,6 @@ import fit.asta.health.resources.drawables.R as DrawR
 import fit.asta.health.resources.strings.R as StringR
 
 
-@Composable
-fun RootNavGraph(navController: NavHostController = rememberNavController()) {
-    NavHost(
-        navController = navController,
-        route = "root_graph",
-        startDestination = Constants.SUNLIGHT_GRAPH_ROUTE
-    ) {
-        sunlightNavigation(navController = navController)
-    }
-}
 
 fun NavController.navigateToSunlight(navOptions: (NavOptionsBuilder) -> Unit = { }) {
     this.navigate(
@@ -128,12 +118,17 @@ fun NavGraphBuilder.sunlightNavigation(
                             navController.navigateToHelpAndSuggestionScreen()
                         },
                         onEvent = homeViewModel::onEvent,
-                        onBack = onBack
+                        onBack = onBack,
+                        onSchedule = {
+                            navController.navigateToScheduleFromSunlight()
+                        }
                     )
                 }
 
                 else -> {
-                    Box(modifier = Modifier.fillMaxSize())
+                    Box(modifier = Modifier.fillMaxSize()){
+                        AppLoadingScreen()
+                    }
                 }
             }
 
@@ -191,7 +186,7 @@ fun NavGraphBuilder.sunlightNavigation(
                     skinConditionViewModel.conditionUpdateData.addAll(
                         homeViewModel.skinConditionData
                     )
-                    skinConditionViewModel.conditionUpdateData.forEach{data->
+                    skinConditionViewModel.conditionUpdateData.forEach { data ->
                         Log.d("condition", "sunlightNavigation: ${data.code}")
                     }
                     skinConditionViewModel.supplementData.value = homeViewModel.supplementData.value
@@ -290,6 +285,17 @@ fun NavController.navigateToHelpAndSuggestionScreen(navOptions: (NavOptionsBuild
     ) {
         navOptions(this)
     }
+}
+
+fun NavController.navigateToScheduleFromSunlight() {
+
+    this.currentBackStackEntry?.savedStateHandle?.set(
+        key = Constants.TAG_NAME,
+        value = Constants.ToolTag.SUNLIGHT
+    )
+    this.navigate(
+        Constants.SCHEDULER_GRAPH_ROUTE
+    )
 }
 
 

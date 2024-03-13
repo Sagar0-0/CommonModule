@@ -76,9 +76,6 @@ class SkinConditionViewModel @Inject constructor(
         MutableStateFlow(SkinConditionState())
     val skinExposureState: StateFlow<SkinConditionState> = _skinExposureState.asStateFlow()
 
-    //skin exposure screen
-    val skinExposure = SkinExposureUtil.getExposureDataList()
-
     private fun getSkinExposureData() {
         if (skinExposureState.value.skinConditionResponse.isNullOrEmpty()) {
             repo.getScreenContentList(SkinConditionScreenCode.EXPOSURE_SCREEN).onEach { dataState ->

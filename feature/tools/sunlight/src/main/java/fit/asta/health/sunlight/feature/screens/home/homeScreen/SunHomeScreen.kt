@@ -49,6 +49,7 @@ fun SunHomeScreen(
     navigateToHelpAndSuggestion: () -> Unit = {},
     onEvent: (SunlightHomeEvent) -> Unit = {},
     onBack: () -> Unit = {},
+    onSchedule: () -> Unit = {},
     homeState: State<SunlightHomeState>
 ) {
     val scrollState = rememberScrollState()
@@ -137,6 +138,7 @@ fun SunHomeScreen(
                 ) {
                     //schedule
                     //showDialogue = true
+                    onSchedule()
                 }
             }
         ) { padding ->

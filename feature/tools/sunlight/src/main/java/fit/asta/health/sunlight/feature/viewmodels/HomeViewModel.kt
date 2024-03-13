@@ -47,11 +47,11 @@ class HomeViewModel @Inject constructor(
     val isStarted = mutableStateOf(false)
     private val totalTime = mutableLongStateOf(0L)
     private val _timerText = mutableStateOf("00:00")
-    val timerText: MutableState<String> = _timerText
+    private val timerText: MutableState<String> = _timerText
     private val _remainingTime = mutableFloatStateOf(0f)
-    val remainingTime: MutableState<Float> = _remainingTime
+    private val remainingTime: MutableState<Float> = _remainingTime
     private var _countDownTimer: CountDownTimer? = null
-    val totalDConsumed = mutableStateOf("")
+    private val totalDConsumed = mutableStateOf("")
     private var achievedIU = 0L
     private var dPerMin = 0L
     var millisOver = 0L
