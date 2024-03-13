@@ -15,6 +15,8 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.di.UID
 import fit.asta.health.auth.repo.AuthRepo
+import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.water.check.model.BevDataDetails
 import fit.asta.health.data.water.check.model.ConsumptionHistory
@@ -26,6 +28,7 @@ import fit.asta.health.data.water.model.domain.BeverageDetailsData
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.TodayActivityData
 import fit.asta.health.data.water.model.network.WaterDetailsData
+import fit.asta.health.data.water.model.network.mapToWaterTool
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.water.WaterState
 import fit.asta.health.feature.water.view.screen.WTEvent
@@ -51,7 +54,7 @@ class WaterToolViewModel @Inject constructor(
     private val prefManager: PrefManager,
     @UID private val uid: String
 ) : ViewModel() {
-    private val mutableState = MutableStateFlow<WaterState>(WaterState.Loading)
+    private val mutableState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val state = mutableState.asStateFlow()
 
     private val _uiState = mutableStateOf(WaterToolUiState())
@@ -249,56 +252,119 @@ class WaterToolViewModel @Inject constructor(
 
     }
 
-    private fun loadWaterDetail() {
-        Log.d("rishi", "loadWaterDetailCalled")
+    private fun loadWaterDetail(){
         viewModelScope.launch {
-            authRepo.getUserId()?.let {
-                val result = repo.getWaterData()
-                    .catch { exception ->
-                        Log.e("rishi", "Error in loadWaterDetail() ${exception.message.toString()}")
-                        mutableState.value = WaterState.Error("$exception + loadWater")
+            authRepo.getUserId()?.let{
+                when(val result = repo.getWaterData()){
+                    is ResponseState.Success -> {
+                        bevList.value = result.data
                     }
-                    .collect {
-                        bevList.value = it
-                        Log.d("rishi", "bevList : $it")
-                        //mutableState.value = WaterState.Success
+                    is ResponseState.ErrorMessage -> {
+                        mutableState.value = UiState.ErrorMessage(result.resId)
                     }
-                Log.d("rishi", result.toString())
+                    is ResponseState.ErrorRetry -> {
+                        mutableState.value = UiState.ErrorRetry(result.resId)
+                    }
+                    else -> {
+                        UiState.NoInternet
+                    }
+                }
             }
         }
     }
 
-    private fun loadWaterToolData() {
+//    private fun loadWaterDetail() {
+//        Log.d("rishi", "loadWaterDetailCalled")
+//        viewModelScope.launch {
+//            authRepo.getUserId()?.let {
+//                val result = repo.getWaterData()
+//                    .catch { exception ->
+//                        Log.e("rishi", "Error in loadWaterDetail() ${exception.message.toString()}")
+//                        mutableState.value = WaterState.Error("$exception + loadWater")
+//                    }
+//                    .collect {
+//                        bevList.value = it
+//                        Log.d("rishi", "bevList : $it")
+//                        //mutableState.value = WaterState.Success
+//                    }
+//                Log.d("rishi", result.toString())
+//            }
+//        }
+//    }
+
+    private fun loadWaterToolData(){
+        mutableState.value = UiState.Loading
         _isLoading.value = true
         viewModelScope.launch {
-            authRepo.getUser()?.let { user ->
+            authRepo.getUser()?.let {
                 prefManager.address.collectLatest { pref ->
-//                Log.i("User Id", "------------------>${user.uid}")
-                    Log.d("rishi", "user: $uid loc : ${pref.currentAddress}")
-                    val result = repo.getWaterTool(
+                    when(val result = repo.getWaterTool(
                         userId = uid,
                         latitude = pref.lat.toString(),
                         longitude = pref.long.toString(),
                         location = pref.currentAddress,
                         date = getCurrentDateTime()
-                    ).catch { exception ->
-                        Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
-                        mutableState.value = WaterState.Error("$exception + loadWaterTool")
-                        delay(1000)
-                        _isLoading.value = false
-                    }.collect {
-                        _beverageList.addAll(it.beveragesDetails)
-                        _todayActivity.addAll(it.todayActivityData)
-                        mutableState.value = WaterState.Success
-                        _isLoading.value = false
-                        Log.i("Water Tool", it.toString())
-                        Log.d("rishi", "loadWaterToolData: ${it.beveragesDetails}")
+                    )){
+                        is ResponseState.Success -> {
+                            val data = mapToWaterTool(result.data)
+                            _beverageList.addAll(data.beveragesDetails)
+                            _todayActivity.addAll(data.todayActivityData)
+                            _isLoading.value = false
+                            mutableState.value = UiState.Success(Unit)
+                            Log.i("Water Tool", it.toString())
+                            Log.d("rishi", "loadWaterToolData: ${data.beveragesDetails}")
+                        }
+                        is ResponseState.ErrorMessage -> {
+                            mutableState.value = UiState.ErrorMessage(result.resId)
+                            delay(1000)
+                            _isLoading.value = false
+                        }
+                        is ResponseState.ErrorRetry -> {
+                            mutableState.value = UiState.ErrorRetry(result.resId)
+                            delay(1000)
+                            _isLoading.value = false
+                        }
+                        else -> {
+                            mutableState.value = UiState.NoInternet
+                            delay(1000)
+                            _isLoading.value = false
+                        }
                     }
-                    Log.d("rishi", "result: $result")
                 }
             }
         }
     }
+//    private fun loadWaterToolData() {
+//        _isLoading.value = true
+//        viewModelScope.launch {
+//            authRepo.getUser()?.let { user ->
+//                prefManager.address.collectLatest { pref ->
+////                Log.i("User Id", "------------------>${user.uid}")
+//                    Log.d("rishi", "user: $uid loc : ${pref.currentAddress}")
+//                    val result = repo.getWaterTool(
+//                        userId = uid,
+//                        latitude = pref.lat.toString(),
+//                        longitude = pref.long.toString(),
+//                        location = pref.currentAddress,
+//                        date = getCurrentDateTime()
+//                    ).catch { exception ->
+//                        Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
+//                        mutableState.value = WaterState.Error("$exception + loadWaterTool")
+//                        delay(1000)
+//                        _isLoading.value = false
+//                    }.collect {
+//                        _beverageList.addAll(it.beveragesDetails)
+//                        _todayActivity.addAll(it.todayActivityData)
+//                        mutableState.value = WaterState.Success
+//                        _isLoading.value = false
+//                        Log.i("Water Tool", it.toString())
+//                        Log.d("rishi", "loadWaterToolData: ${it.beveragesDetails}")
+//                    }
+//                    Log.d("rishi", "result: $result")
+//                }
+//            }
+//        }
+//    }
 
 
     // Room DB Insert,Update,GET methods
@@ -324,32 +390,63 @@ class WaterToolViewModel @Inject constructor(
     }
 
     // Data Updation
-    private fun updateBeverageData() {
+    private fun updateBeverageData(){
         val title = _bevTitle.value
         val quantity = _bevQuantity.intValue
         viewModelScope.launch {
             authRepo.getUserId()?.let {
-                Log.d("rishi", "BevTitle : $title BevQuantity : $quantity")
-                if (quantity != 0){
-                    repo.updateBeverageQty(
-                        NetBevQtyPut(
+                when(val result = repo.updateBeverageQty(
+                    NetBevQtyPut(
                             bev = title,
                             id = "",
                             uid = uid,
                             qty = quantity.toDouble() / 1000
                         )
-                    ).catch { exception ->
-                        Log.d("rishi", "updateBeverageDataException: ${exception.message}")
-                    }.collect {
-                        Log.d("rishi", "updateBeverageData: ${it.id}")
+                )){
+                    is ResponseState.Success -> {
+                        if(quantity!=0){
+                            Log.d("rishi", "updateBeverageData: ${result.data.id}")
+                        }
                     }
-            }
-//                else{
-//                mToast(,"Set Quantity First")
-//                }
+                    is ResponseState.ErrorMessage -> {
+                        Log.d("rishi", "updateBeverageDataException: ${result.resId}")
+                    }
+                    is ResponseState.ErrorRetry -> {
+                        Log.d("rishi", "updateBeverageDataException: ${result.resId}")
+                    }
+                    else -> {
+                        mutableState.value = UiState.NoInternet
+                    }
+                }
             }
         }
     }
+//    private fun updateBeverageData() {
+//        val title = _bevTitle.value
+//        val quantity = _bevQuantity.intValue
+//        viewModelScope.launch {
+//            authRepo.getUserId()?.let {
+//                Log.d("rishi", "BevTitle : $title BevQuantity : $quantity")
+//                if (quantity != 0){
+//                    repo.updateBeverageQty(
+//                        NetBevQtyPut(
+//                            bev = title,
+//                            id = "",
+//                            uid = uid,
+//                            qty = quantity.toDouble() / 1000
+//                        )
+//                    ).catch { exception ->
+//                        Log.d("rishi", "updateBeverageDataException: ${exception.message}")
+//                    }.collect {
+//                        Log.d("rishi", "updateBeverageData: ${it.id}")
+//                    }
+//            }
+////                else{
+////                mToast(,"Set Quantity First")
+////                }
+//            }
+//        }
+//    }
 
     // Event Handler
     fun event(event: WTEvent) {

@@ -19,6 +19,7 @@ import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.Constants.SCHEDULER_GRAPH_ROUTE
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
+import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
 import fit.asta.health.feature.water.WaterState
@@ -60,29 +61,51 @@ fun NavGraphBuilder.waterToolNavigation(
             val viewModel: WaterToolViewModel = it.sharedViewModel(navController)
             val state = viewModel.state.collectAsState()
             when (state.value) {
-                is WaterState.Loading -> {
+                is UiState.Idle -> {
                     Box(modifier = Modifier.fillMaxSize(),
                         contentAlignment = Alignment.Center){
                         AppDotTypingAnimation()
                     }
                 }
-                is WaterState.Success -> {
+                is UiState.Loading -> {
+                    Box(modifier = Modifier.fillMaxSize(),
+                        contentAlignment = Alignment.Center){
+                        AppDotTypingAnimation()
+                    }
+                }
+//                is UiState.ErrorMessage -> {
+//                    Box(modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center){
+//                        AppDotTypingAnimation()
+//                    }
+//                }
+//                is UiState.ErrorRetry -> {
+//                    Box(modifier = Modifier.fillMaxSize(),
+//                        contentAlignment = Alignment.Center){
+//                        AppDotTypingAnimation()
+//                    }
+//                }
+                is UiState.Success -> {
                     CustomBevBottomSheet(
                         onBack = onBack,
                         event = viewModel::event,
                         onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
                     )
+                }
+
 //                    Box(modifier = Modifier.fillMaxSize(),
 //                        contentAlignment = Alignment.Center){
 //                        BeverageCard()
 //                    }
 
+                is UiState.NoInternet -> {
+                    ErrorUi(viewModel = viewModel, event = viewModel::event)
+                    Toast.makeText(context,"No Internet, Check Your Internet Connection",Toast.LENGTH_SHORT).show()
                 }
-
                 else -> {
                     ErrorUi(viewModel = viewModel, event = viewModel::event)
                     Toast.makeText(context,"Unknown Error, Try After SomeTime",Toast.LENGTH_SHORT).show()
-                    Log.e("rishi", "Got Error + ${(state.value as WaterState.Error).error}")
+                    //Log.e("rishi", "Got Error + ${(state.value as WaterState.Error).error}")
                 }
 
 
