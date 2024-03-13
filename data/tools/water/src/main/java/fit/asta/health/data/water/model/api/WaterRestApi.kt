@@ -1,6 +1,7 @@
 package fit.asta.health.data.water.model.api
 
 import fit.asta.health.data.water.model.network.BeverageRecentActivity
+import fit.asta.health.data.water.model.network.Data
 import fit.asta.health.data.water.model.network.NetBevQtyPut
 import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.data.water.model.network.WaterToolDetailsData
@@ -8,7 +9,10 @@ import fit.asta.health.data.water.model.network.WaterToolResult
 import fit.asta.health.network.data.Status
 import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
-import retrofit2.Response
+//import retrofit2.Response
+import fit.asta.health.common.utils.Response
+import fit.asta.health.data.water.model.network.BeverageActivity
+import fit.asta.health.data.water.model.network.WaterDetailsData
 
 
 //Health Tool - Water Endpoints
@@ -25,19 +29,19 @@ class WaterRestApi(client: OkHttpClient) :
         longitude: String,
         location: String,
         date: Long
-    ): WaterToolResult {
+    ): Response<Data> {
         return apiService.getWaterTool(userId, latitude, longitude, date, location)
     }
 
-    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): BeverageRecentActivity {
+    override suspend fun updateBeverageQty(beverage: NetBevQtyPut): Response<BeverageActivity> {
         return apiService.updateBeverageQty(beverage)
     }
 
-    override suspend fun updateWaterTool(waterToolData: WaterToolData): Status {
+    override suspend fun updateWaterTool(waterToolData: WaterToolData): Response<Response.Status> {
         return apiService.updateWaterTool(waterToolData)
     }
 
-    override suspend fun getWaterData(): WaterToolDetailsData {
+    override suspend fun getWaterData(): Response<List<WaterDetailsData>>{
         return apiService.getWaterData()
     }
 

@@ -6,7 +6,10 @@ import fit.asta.health.data.water.model.network.WaterToolData
 import fit.asta.health.data.water.model.network.WaterToolDetailsData
 import fit.asta.health.data.water.model.network.WaterToolResult
 import fit.asta.health.network.data.Status
-import retrofit2.Response
+import fit.asta.health.common.utils.Response
+import fit.asta.health.data.water.model.network.BeverageActivity
+import fit.asta.health.data.water.model.network.Data
+import fit.asta.health.data.water.model.network.WaterDetailsData
 import retrofit2.http.Body
 import retrofit2.http.GET
 import retrofit2.http.POST
@@ -23,16 +26,16 @@ interface WaterApiService {
         @Query("lon") longitude: String,
         @Query("date") date: Long,
         @Query("loc") location: String
-    ): WaterToolResult
+    ): Response<Data>
 
     @GET("tools/water/beverages/get/all")
-    suspend fun getWaterData(): WaterToolDetailsData
+    suspend fun getWaterData(): Response<List<WaterDetailsData>>
 
     @POST("tools/water/beverage/quantity/post")
-    suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): BeverageRecentActivity
+    suspend fun updateBeverageQty(@Body beverage: NetBevQtyPut): Response<BeverageActivity>
 
     @PUT("tools/water/put")
-    suspend fun updateWaterTool(@Body waterToolData: WaterToolData): Status
+    suspend fun updateWaterTool(@Body waterToolData: WaterToolData): Response<Response.Status>
     /*
         @PUT("tools/water/beverage/add/put")
         suspend fun updateBeverage(@Body beverage: NetBeverage): Status
