@@ -9,16 +9,20 @@ import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Height
+import androidx.compose.material.icons.filled.Hub
 import androidx.compose.material.icons.filled.MonitorWeight
+import androidx.compose.material.icons.filled.Person
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import fit.asta.health.data.profile.remote.model.BodyTypes
 import fit.asta.health.data.profile.remote.model.HeightUnit
 import fit.asta.health.data.profile.remote.model.WeightUnit
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetBodyType
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPhysique
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
@@ -32,6 +36,7 @@ fun PhysiqueScreen(
     val heightBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
     val weightBottomSheetState = appRememberModalBottomSheetState()
+    val bodyTypeBottomSheetState = appRememberModalBottomSheetState()
     val weightBottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
     Column(
@@ -50,7 +55,7 @@ fun PhysiqueScreen(
                 userProfileState.physiqueScreenState.userHeight != null
                 && userProfileState.physiqueScreenState.heightUnit != null
             ) {
-                userProfileState.physiqueScreenState.userHeight + HeightUnit.getName(
+                userProfileState.physiqueScreenState.userHeight!!.toString() + HeightUnit.getName(
                     userProfileState.physiqueScreenState.heightUnit!!
                 )
             } else {
@@ -70,7 +75,7 @@ fun PhysiqueScreen(
                 userProfileState.physiqueScreenState.userWeight != null
                 && userProfileState.physiqueScreenState.weightUnit != null
             ) {
-                userProfileState.physiqueScreenState.userWeight + WeightUnit.getName(
+                userProfileState.physiqueScreenState.userWeight!!.toString() + WeightUnit.getName(
                     userProfileState.physiqueScreenState.weightUnit!!
                 )
             } else {
@@ -81,6 +86,26 @@ fun PhysiqueScreen(
             userProfileState.openSheet(
                 weightBottomSheetState,
                 weightBottomSheetVisible
+            )
+        }
+
+        ClickableTextBox(
+            label = "BMI",
+            value = userProfileState.physiqueScreenState.bmi?.toString() ?: "Not Available",
+            leadingIcon = Icons.Default.Hub,
+            trailingIcon = null
+        )
+
+        ClickableTextBox(
+            label = "Body Type",
+            value = if (userProfileState.physiqueScreenState.bodyType != null) {
+                BodyTypes.getBodyType(userProfileState.physiqueScreenState.bodyType!!).name
+            } else "Select Body Type",
+            leadingIcon = Icons.Default.Person
+        ) {
+            userProfileState.openSheet(
+                bodyTypeBottomSheetState,
+                userProfileState.physiqueScreenState.bodyTypeBottomSheetVisible
             )
         }
 
@@ -98,54 +123,75 @@ fun PhysiqueScreen(
         BottomSheetPhysique(
             isVisible = heightBottomSheetVisible.value,
             sheetState = heightBottomSheetState,
-            isValid = { height: Float?, unit: Int ->
-                height != null && if (unit == HeightUnit.Inch.value) height > 3.5 else height > 8.8
+            isValid = { height: Double?, unit: Int? ->
+                height != null && unit != null && if (unit == HeightUnit.INCH.value) height > 3.5 else height > 8.8
             },
             label = "Height",
-            text = userProfileState.physiqueScreenState.userHeight ?: "",
+            text = userProfileState.physiqueScreenState.userHeight?.toString() ?: "",
             units = HeightUnit.entries,
-            selectedUnitIndex = HeightUnit.indexOf(userProfileState.physiqueScreenState.heightUnit)
-                ?: -1,
+            selectedUnitIndex = HeightUnit.indexOf(userProfileState.physiqueScreenState.heightUnit),
             onDismissRequest = {
                 userProfileState.closeSheet(
                     heightBottomSheetState,
                     heightBottomSheetVisible
                 )
             },
-            onSaveClick = { height: Float?, unit: Int ->
-                userProfileState.physiqueScreenState.saveHeight(height ?: 0.0f, unit)
-                userProfileState.closeSheet(
-                    heightBottomSheetState,
-                    heightBottomSheetVisible
-                )
+            onSaveClick = { height: Double?, unit: Int? ->
+                if (height != null && unit != null) {
+                    userProfileState.physiqueScreenState.saveHeight(height, unit)
+                    userProfileState.closeSheet(
+                        heightBottomSheetState,
+                        heightBottomSheetVisible
+                    )
+                }
             }
         )
 
         BottomSheetPhysique(
             isVisible = weightBottomSheetVisible.value,
             sheetState = weightBottomSheetState,
-            isValid = { weight: Float?, unit: Int ->
-                weight != null && if (unit == WeightUnit.KG.value) weight > 30 else weight > 66
+            isValid = { weight: Double?, unit: Int? ->
+                weight != null && unit != null && if (unit == WeightUnit.KG.value) weight > 30 else weight > 66
             },
             label = "Weight",
-            text = userProfileState.physiqueScreenState.userWeight ?: "",
+            text = userProfileState.physiqueScreenState.userWeight?.toString() ?: "",
             units = WeightUnit.entries,
-            selectedUnitIndex = WeightUnit.indexOf(userProfileState.physiqueScreenState.weightUnit)
-                ?: -1,
+            selectedUnitIndex = WeightUnit.indexOf(userProfileState.physiqueScreenState.weightUnit),
             onDismissRequest = {
                 userProfileState.closeSheet(
                     weightBottomSheetState,
                     weightBottomSheetVisible
                 )
             },
-            onSaveClick = { weight: Float?, unit: Int ->
-                userProfileState.physiqueScreenState.saveWeight(weight ?: 0.0f, unit)
-                userProfileState.closeSheet(
-                    weightBottomSheetState,
-                    weightBottomSheetVisible
-                )
+            onSaveClick = { weight: Double?, unit: Int? ->
+                if (weight != null && unit != null) {
+                    userProfileState.physiqueScreenState.saveWeight(weight ?: 0.0, unit)
+                    userProfileState.closeSheet(
+                        weightBottomSheetState,
+                        weightBottomSheetVisible
+                    )
+                }
             }
         )
+
+        BottomSheetBodyType(
+            isVisible = userProfileState.physiqueScreenState.bodyTypeBottomSheetVisible.value,
+            sheetState = bodyTypeBottomSheetState,
+            isValid = {
+                it != null
+            },
+            selectedValue = userProfileState.physiqueScreenState.bodyType,
+            onDismissRequest = {
+                userProfileState.closeSheet(
+                    bodyTypeBottomSheetState,
+                    userProfileState.physiqueScreenState.bodyTypeBottomSheetVisible
+                )
+            }
+        ) {
+            if (it != null) {
+                userProfileState.physiqueScreenState.saveBodyType(it)
+            }
+        }
 
     }
 }

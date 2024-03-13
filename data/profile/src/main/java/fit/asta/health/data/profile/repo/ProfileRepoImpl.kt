@@ -3,6 +3,7 @@ package fit.asta.health.data.profile.repo
 import android.content.ContentResolver
 import android.net.Uri
 import fit.asta.health.common.utils.IODispatcher
+import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.getApiResponseState
@@ -17,12 +18,13 @@ import fit.asta.health.data.profile.remote.model.Gender_Field_Name
 import fit.asta.health.data.profile.remote.model.HeightUnit_Field_Name
 import fit.asta.health.data.profile.remote.model.Height_Field_Name
 import fit.asta.health.data.profile.remote.model.IsPregnant_Field_Name
+import fit.asta.health.data.profile.remote.model.NON_VEG_QUERY_PARAM
 import fit.asta.health.data.profile.remote.model.Name_Field_Name
 import fit.asta.health.data.profile.remote.model.OnPeriod_Field_Name
 import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.PregWeek_Field_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
-import fit.asta.health.data.profile.remote.model.UpdateObjectFloat
+import fit.asta.health.data.profile.remote.model.UpdateObjectDouble
 import fit.asta.health.data.profile.remote.model.UpdateObjectInt
 import fit.asta.health.data.profile.remote.model.UpdateObjectPropertiesList
 import fit.asta.health.data.profile.remote.model.UpdateObjectString
@@ -116,10 +118,38 @@ class ProfileRepoImpl
 //        }
 //    }
 
-    override suspend fun getHealthProperties(propertyType: String): ResponseState<List<UserProperties>> {
+    override suspend fun getUserProperties(queryParam: String): ResponseState<List<UserProperties>> {
         return withContext(coroutineDispatcher) {
             getApiResponseState {
-                profileApi.getHealthProperties(propertyType)
+                if (queryParam == NON_VEG_QUERY_PARAM) {
+                    Response(
+                        data = listOf(
+                            UserProperties(
+                                name = "Sunday"
+                            ),
+                            UserProperties(
+                                name = "Monday"
+                            ),
+                            UserProperties(
+                                name = "Tuesday"
+                            ),
+                            UserProperties(
+                                name = "Wednesday"
+                            ),
+                            UserProperties(
+                                name = "Thursday"
+                            ),
+                            UserProperties(
+                                name = "Friday"
+                            ),
+                            UserProperties(
+                                name = "Saturday"
+                            )
+                        )
+                    )
+                } else {
+                    profileApi.getUserProperties(queryParam)
+                }
             }
         }
     }
@@ -146,7 +176,7 @@ class ProfileRepoImpl
 
     override suspend fun saveHeight(
         uid: String,
-        height: Float,
+        height: Double,
         unit: Int
     ): ResponseState<SubmitProfileResponse> {
         return getApiResponseState {
@@ -154,7 +184,7 @@ class ProfileRepoImpl
                 updateProfileRequest = UpdateProfileRequest(
                     uid = uid,
                     list = listOf(
-                        UpdateObjectFloat(
+                        UpdateObjectDouble(
                             screenName = Physique_Screen_Name,
                             fieldName = Height_Field_Name,
                             value = height
@@ -164,6 +194,28 @@ class ProfileRepoImpl
                             fieldName = HeightUnit_Field_Name,
                             value = unit
                         ),
+                    )
+                )
+            )
+        }
+    }
+
+    override suspend fun saveInt(
+        uid: String,
+        screenName: String,
+        fieldName: String,
+        value: Int
+    ): ResponseState<SubmitProfileResponse> {
+        return getApiResponseState {
+            profileApi.updateUserProfile(
+                updateProfileRequest = UpdateProfileRequest(
+                    uid = uid,
+                    list = listOf(
+                        UpdateObjectInt(
+                            screenName = screenName,
+                            fieldName = fieldName,
+                            value = value
+                        )
                     )
                 )
             )
@@ -241,7 +293,7 @@ class ProfileRepoImpl
 
     override suspend fun saveWeight(
         uid: String,
-        weight: Float,
+        weight: Double,
         unit: Int
     ): ResponseState<SubmitProfileResponse> {
         return getApiResponseState {
@@ -249,7 +301,7 @@ class ProfileRepoImpl
                 updateProfileRequest = UpdateProfileRequest(
                     uid = uid,
                     list = listOf(
-                        UpdateObjectFloat(
+                        UpdateObjectDouble(
                             screenName = Physique_Screen_Name,
                             fieldName = Weight_Field_Name,
                             value = weight

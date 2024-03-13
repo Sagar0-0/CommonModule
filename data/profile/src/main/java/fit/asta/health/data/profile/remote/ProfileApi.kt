@@ -42,5 +42,5 @@ interface ProfileApi {
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
     @GET("health/property/get/all/")
-    suspend fun getHealthProperties(@Query("property") propertyType: String): Response<List<UserProperties>>
+    suspend fun getUserProperties(@Query("property") propertyType: String): Response<List<UserProperties>>
 }

@@ -8,9 +8,12 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.toMutableStateList
 import fit.asta.health.data.profile.remote.model.Allergies_Field_Name
+import fit.asta.health.data.profile.remote.model.CUISINES_QUERY_PARAM
 import fit.asta.health.data.profile.remote.model.Cuisines_Field_Name
 import fit.asta.health.data.profile.remote.model.Diet
 import fit.asta.health.data.profile.remote.model.Diet_Screen_name
+import fit.asta.health.data.profile.remote.model.FOOD_QUERY_PARAM
+import fit.asta.health.data.profile.remote.model.NON_VEG_QUERY_PARAM
 import fit.asta.health.data.profile.remote.model.NonVeg_Field_Name
 import fit.asta.health.data.profile.remote.model.Preference_Field_Name
 import fit.asta.health.data.profile.remote.model.Restrictions_Field_Name
@@ -49,32 +52,31 @@ class DietScreenState(
     val bottomSheets: List<ProfileBottomSheetPicker> = listOf(
         ProfileBottomSheetPicker(
             Preference_Field_Name,
-            "food",
+            FOOD_QUERY_PARAM,
             "Dietary Preferences",
             dietPreference,
         ),
         ProfileBottomSheetPicker(
-            //TODO: HANDLE DAYS
             NonVeg_Field_Name,
-            "dp",
+            NON_VEG_QUERY_PARAM,
             "Non Veg Days",
             nonVegDays,
         ),
         ProfileBottomSheetPicker(
             Allergies_Field_Name,
-            "food",
+            FOOD_QUERY_PARAM,
             "Food Allergies",
             dietAllergies,
         ),
         ProfileBottomSheetPicker(
             Cuisines_Field_Name,
-            "cu",
+            CUISINES_QUERY_PARAM,
             "Cuisines",
             dietCuisines,
         ),
         ProfileBottomSheetPicker(
             Restrictions_Field_Name,
-            "food",
+            FOOD_QUERY_PARAM,
             "Food Restrictions",
             dietRestrictions,
         ),

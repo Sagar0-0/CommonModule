@@ -8,8 +8,10 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.profile.remote.model.BodyType_Field_Name
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
+import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -79,10 +81,10 @@ class ProfileViewModel
         }
     }
 
-    fun getHealthProperties(propertyType: String) {
+    fun getHealthProperties(queryParam: String) {
         _userPropertiesState.value = UiState.Loading
         viewModelScope.launch {
-            _userPropertiesState.value = profileRepo.getHealthProperties(propertyType).toUiState()
+            _userPropertiesState.value = profileRepo.getUserProperties(queryParam).toUiState()
         }
     }
 
@@ -90,13 +92,13 @@ class ProfileViewModel
         _userPropertiesState.value = UiState.Idle
     }
 
-    fun saveHeight(height: Float, unit: Int) {
+    fun saveHeight(height: Double, unit: Int) {
         viewModelScope.launch {
             profileRepo.saveHeight(uid, height, unit)
         }
     }
 
-    fun saveWeight(weight: Float, unit: Int) {
+    fun saveWeight(weight: Double, unit: Int) {
         viewModelScope.launch {
             profileRepo.saveWeight(uid, weight, unit)
         }
@@ -122,6 +124,17 @@ class ProfileViewModel
     fun saveTimeSchedule(screenName: String, fieldName: String, timeSchedule: TimeSchedule) {
         viewModelScope.launch {
             profileRepo.saveTimeSchedule(uid, screenName, fieldName, timeSchedule)
+        }
+    }
+
+    fun saveBodyType(value: Int) {
+        viewModelScope.launch {
+            profileRepo.saveInt(
+                uid = uid,
+                screenName = Physique_Screen_Name,
+                fieldName = BodyType_Field_Name,
+                value = value
+            )
         }
     }
 }

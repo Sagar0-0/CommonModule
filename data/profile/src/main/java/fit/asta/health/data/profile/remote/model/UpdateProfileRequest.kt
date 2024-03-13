@@ -30,13 +30,13 @@ data class UpdateObjectInt(
     val value: Int? = 0,
 ) : UpdateObject
 
-data class UpdateObjectFloat(
+data class UpdateObjectDouble(
     @SerializedName("obj")
     val screenName: String = "",
     @SerializedName("field")
     val fieldName: String = "",
     @SerializedName("val")
-    val value: Float = 0.0f,
+    val value: Double = 0.0,
 ) : UpdateObject
 
 data class UpdateObjectTimeSchedule(
