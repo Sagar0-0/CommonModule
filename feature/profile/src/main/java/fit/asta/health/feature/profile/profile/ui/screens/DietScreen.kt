@@ -41,7 +41,7 @@ fun DietScreen(
         userProfileState.dietScreenState.bottomSheets.forEachIndexed { index, type ->
             BottomSheetListItemPicker(
                 name = type.name,
-                list = type.list,
+                list = type.list.toList(),
             ) {
                 userProfileState.dietScreenState.openPropertiesBottomSheet(
                     bottomSheetState,
