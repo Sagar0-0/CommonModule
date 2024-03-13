@@ -1,11 +1,11 @@
 package fit.asta.health.feature.water.view.screen
 
-import fit.asta.health.data.water.model.network.ButterMilk
-import fit.asta.health.data.water.model.network.Coconut
-import fit.asta.health.data.water.model.network.FruitJuice
-import fit.asta.health.data.water.model.network.Meta
-import fit.asta.health.data.water.model.network.Milk
-import fit.asta.health.data.water.model.network.Water
+import fit.asta.health.data.water.remote.model.ButterMilk
+import fit.asta.health.data.water.remote.model.Coconut
+import fit.asta.health.data.water.remote.model.FruitJuice
+import fit.asta.health.data.water.remote.model.Meta
+import fit.asta.health.data.water.remote.model.Milk
+import fit.asta.health.data.water.remote.model.Water
 
 data class WaterUiState(
     val target: Float = 0f,

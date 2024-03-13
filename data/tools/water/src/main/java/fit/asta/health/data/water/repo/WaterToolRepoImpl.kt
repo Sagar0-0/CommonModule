@@ -1,24 +1,15 @@
-package fit.asta.health.data.water.model
+package fit.asta.health.data.water.repo
 
-import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
-import fit.asta.health.data.water.model.api.WaterApi
-import fit.asta.health.data.water.model.domain.WaterTool
-import fit.asta.health.data.water.model.network.BeverageActivity
-import fit.asta.health.data.water.model.network.NetBevQtyPut
-import fit.asta.health.data.water.model.network.WaterDetailsData
-import fit.asta.health.data.water.model.network.WaterToolData
-import fit.asta.health.network.data.Status
+import fit.asta.health.data.water.remote.WaterApi
+import fit.asta.health.data.water.remote.model.BevQty
+import fit.asta.health.data.water.remote.model.WaterToolData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.flow.Flow
-import kotlinx.coroutines.flow.flow
 import kotlinx.coroutines.withContext
-
 
 class WaterToolRepoImpl(
     private val remoteApi: WaterApi,
-    private val mapper: WaterToolDataMapper,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
 ) : WaterToolRepo {
 
@@ -56,7 +47,7 @@ class WaterToolRepoImpl(
 //            }
 //        }
 
-    override suspend fun updateBeverageQty(beverage: NetBevQtyPut)= withContext(coroutineDispatcher) {
+    override suspend fun updateBeverageQty(beverage: BevQty) = withContext(coroutineDispatcher) {
         getApiResponseState { remoteApi.updateBeverageQty(beverage) }
     }
 

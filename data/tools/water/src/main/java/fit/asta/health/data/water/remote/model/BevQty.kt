@@ -1,6 +1,6 @@
-package fit.asta.health.data.water.model.network
+package fit.asta.health.data.water.remote.model
 
-data class NetBevQtyPut(
+data class BevQty(
     val bev: String,
     val id: String,
     val qty: Double,

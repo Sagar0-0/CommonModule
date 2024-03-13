@@ -1,8 +1,10 @@
-package fit.asta.health.data.water.model.network
+package fit.asta.health.data.water.repo
 
 import android.util.Log
-import fit.asta.health.data.water.model.domain.BeverageDetailsData
-import fit.asta.health.data.water.model.domain.WaterTool
+import fit.asta.health.data.water.remote.model.BeverageDetailsData
+import fit.asta.health.data.water.remote.model.Data
+import fit.asta.health.data.water.remote.model.TodayActivityData
+import fit.asta.health.data.water.remote.model.WaterTool
 
 //fun Data.getWaterTool() : WaterTool{
 //    return WaterTool(

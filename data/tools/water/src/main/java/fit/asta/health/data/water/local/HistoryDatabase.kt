@@ -1,11 +1,11 @@
-package fit.asta.health.data.water.db
+package fit.asta.health.data.water.local
 
 import androidx.room.Database
 import androidx.room.RoomDatabase
-import fit.asta.health.data.water.check.model.BevDataDetails
-import fit.asta.health.data.water.check.model.ConsumptionHistory
-import fit.asta.health.data.water.check.model.Goal
-import fit.asta.health.data.water.check.model.History
+import fit.asta.health.data.water.local.entity.BevDataDetails
+import fit.asta.health.data.water.local.entity.ConsumptionHistory
+import fit.asta.health.data.water.local.entity.Goal
+import fit.asta.health.data.water.local.entity.History
 
 
 @Database(

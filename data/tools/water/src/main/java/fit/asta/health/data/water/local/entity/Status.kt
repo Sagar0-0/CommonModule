@@ -1,4 +1,4 @@
-package fit.asta.health.data.water.db.dbmodel
+package fit.asta.health.data.water.local.entity
 
 data class Status(
     val code: Int,

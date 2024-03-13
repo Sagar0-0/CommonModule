@@ -7,9 +7,7 @@ import androidx.compose.runtime.State
 import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.rememberCompositionContext
 import androidx.compose.ui.graphics.Color
-import androidx.compose.ui.platform.LocalContext
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
@@ -18,19 +16,18 @@ import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDateTime
-import fit.asta.health.data.water.check.model.BevDataDetails
-import fit.asta.health.data.water.check.model.ConsumptionHistory
-import fit.asta.health.data.water.check.model.Goal
-import fit.asta.health.data.water.check.model.History
-import fit.asta.health.data.water.model.HistoryRepo
-import fit.asta.health.data.water.model.WaterToolRepo
-import fit.asta.health.data.water.model.domain.BeverageDetailsData
-import fit.asta.health.data.water.model.network.NetBevQtyPut
-import fit.asta.health.data.water.model.network.TodayActivityData
-import fit.asta.health.data.water.model.network.WaterDetailsData
-import fit.asta.health.data.water.model.network.mapToWaterTool
+import fit.asta.health.data.water.local.entity.BevDataDetails
+import fit.asta.health.data.water.local.entity.ConsumptionHistory
+import fit.asta.health.data.water.local.entity.Goal
+import fit.asta.health.data.water.local.entity.History
+import fit.asta.health.data.water.remote.model.BevQty
+import fit.asta.health.data.water.remote.model.BeverageDetailsData
+import fit.asta.health.data.water.remote.model.TodayActivityData
+import fit.asta.health.data.water.remote.model.WaterDetailsData
+import fit.asta.health.data.water.repo.HistoryRepo
+import fit.asta.health.data.water.repo.WaterToolRepo
+import fit.asta.health.data.water.repo.mapToWaterTool
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.feature.water.WaterState
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import kotlinx.coroutines.Dispatchers
@@ -396,7 +393,7 @@ class WaterToolViewModel @Inject constructor(
         viewModelScope.launch {
             authRepo.getUserId()?.let {
                 when(val result = repo.updateBeverageQty(
-                    NetBevQtyPut(
+                    BevQty(
                             bev = title,
                             id = "",
                             uid = uid,

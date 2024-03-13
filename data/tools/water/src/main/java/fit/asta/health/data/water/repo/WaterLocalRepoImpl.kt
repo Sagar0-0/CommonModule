@@ -1,7 +1,7 @@
-package fit.asta.health.data.water.model
+package fit.asta.health.data.water.repo
 
-import fit.asta.health.data.water.db.WaterDao
-import fit.asta.health.data.water.db.WaterData
+import fit.asta.health.data.water.local.WaterDao
+import fit.asta.health.data.water.local.WaterData
 
 class WaterLocalRepoImpl(private val waterDao: WaterDao) : WaterLocalRepo {
     override suspend fun getWaterData(date: Int): WaterData? {
