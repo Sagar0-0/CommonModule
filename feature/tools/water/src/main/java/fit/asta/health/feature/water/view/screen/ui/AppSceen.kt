@@ -66,6 +66,7 @@ fun AppHomeScreen(
     onClickGoal: () -> Unit
 ) {
     Log.d("rishiRecomposed", "AppScreenCalled")
+    Log.d("rishi","With UI state ,TotalConsumed : ${uiState.totalConsumed}, Remainig : ${uiState.remainingToConsume}")
     val remainingToConsume by viewModel.remainingConsumption.collectAsState()
     val goal by viewModel.goal.collectAsState()
 
@@ -78,7 +79,7 @@ fun AppHomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            WaterDataCard(totalConsumed, remainingToConsume, goal)
+            WaterDataCard(uiState,totalConsumed, remainingToConsume, goal)
             GoalCard {
                 onClickGoal()
             }
@@ -174,7 +175,7 @@ fun HintsOnScreen() {
 
 
 @Composable
-fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
+fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsume: Int, goal: Int) {
 
     val darkBackgroundColor = (Color(0xFF092251))
     val lightBackgroundColor = (Color(0xFFF2F8FC))
@@ -224,7 +225,8 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                                     "%.1f",
                                     minOf(
                                         100f,
-                                        (totalConsumed.toFloat() / if (goal != 0) goal else 1) * 100
+                                        (uiState.totalConsumed
+                                            .toFloat() / if (goal != 0) goal else 1) * 100
                                     )
                                 )
                             } %",
@@ -247,14 +249,14 @@ fun WaterDataCard(totalConsumed: Int, remainingToConsume: Int, goal: Int) {
                         }
 
                         BodyTexts.Level3(
-                            text = "$totalConsumed",
+                            text = "${uiState.totalConsumed}",
                             color = Color.Gray,
                         )
 
                         Spacer(modifier = Modifier.weight(1f))
                         HeadingTexts.Level4(text = "Yet to Consume ( ml )")
                         BodyTexts.Level3(
-                            text = "~${maxOf(0, remainingToConsume)} ",
+                            text = "~${maxOf(0, uiState.remainingToConsume)} ",
                             color = Color.Gray,
                         )
                     }

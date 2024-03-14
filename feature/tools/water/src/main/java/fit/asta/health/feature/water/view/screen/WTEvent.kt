@@ -22,6 +22,10 @@ sealed class WTEvent {
     data object Schedule : WTEvent()
     data object UpdateBevQuantity : WTEvent()
 
+    data object ConsumptionDetails : WTEvent()
+
+    data object OnDisposeAddData : WTEvent()
+    data class DeleteRecentConsumption(val bevName : String) : WTEvent()
     data object RetrySection : WTEvent()
 
 }

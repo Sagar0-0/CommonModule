@@ -33,7 +33,9 @@ import fit.asta.health.data.water.repo.mapToWaterTool
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
+import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
+import kotlinx.coroutines.async
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -109,7 +111,7 @@ class WaterToolViewModel @Inject constructor(
     var _isLoading = mutableStateOf(false)
         private set
 
-    var undoConsumedQty = mutableStateOf(0.0)
+    private var undoConsumedQty = MutableStateFlow(0.0)
 
     val filteredHistory: MutableStateFlow<List<History>> = MutableStateFlow(emptyList())
 
@@ -243,6 +245,10 @@ class WaterToolViewModel @Inject constructor(
                         _goal.value = bevData.goal
                         _totalConsumed.value = bevData.totalConsumed.toFloat()
                         _remainingConsumption.value = bevData.remainingToConsume
+                        _uiState.value = _uiState.value.copy(
+                            totalConsumed = _totalConsumed.value.toInt(),
+                            remainingToConsume = _remainingConsumption.value
+                        )
                     }
 //                    else{
 //                        insertConsumptionHistory(
@@ -275,25 +281,6 @@ class WaterToolViewModel @Inject constructor(
             }
         }
     }
-
-//    private fun loadWaterDetail() {
-//        Log.d("rishi", "loadWaterDetailCalled")
-//        viewModelScope.launch {
-//            authRepo.getUserId()?.let {
-//                val result = repo.getWaterData()
-//                    .catch { exception ->
-//                        Log.e("rishi", "Error in loadWaterDetail() ${exception.message.toString()}")
-//                        mutableState.value = WaterState.Error("$exception + loadWater")
-//                    }
-//                    .collect {
-//                        bevList.value = it
-//                        Log.d("rishi", "bevList : $it")
-//                        //mutableState.value = WaterState.Success
-//                    }
-//                Log.d("rishi", result.toString())
-//            }
-//        }
-//    }
 
     private fun loadWaterToolData(){
         mutableState.value = UiState.Loading
@@ -337,38 +324,6 @@ class WaterToolViewModel @Inject constructor(
             }
         }
     }
-//    private fun loadWaterToolData() {
-//        _isLoading.value = true
-//        viewModelScope.launch {
-//            authRepo.getUser()?.let { user ->
-//                prefManager.address.collectLatest { pref ->
-////                Log.i("User Id", "------------------>${user.uid}")
-//                    Log.d("rishi", "user: $uid loc : ${pref.currentAddress}")
-//                    val result = repo.getWaterTool(
-//                        userId = uid,
-//                        latitude = pref.lat.toString(),
-//                        longitude = pref.long.toString(),
-//                        location = pref.currentAddress,
-//                        date = getCurrentDateTime()
-//                    ).catch { exception ->
-//                        Log.d("rishi", "Error in loadWaterToolData: ${exception.message}")
-//                        mutableState.value = WaterState.Error("$exception + loadWaterTool")
-//                        delay(1000)
-//                        _isLoading.value = false
-//                    }.collect {
-//                        _beverageList.addAll(it.beveragesDetails)
-//                        _todayActivity.addAll(it.todayActivityData)
-//                        mutableState.value = WaterState.Success
-//                        _isLoading.value = false
-//                        Log.i("Water Tool", it.toString())
-//                        Log.d("rishi", "loadWaterToolData: ${it.beveragesDetails}")
-//                    }
-//                    Log.d("rishi", "result: $result")
-//                }
-//            }
-//        }
-//    }
-
 
     // Room DB Insert,Update,GET methods
 
@@ -387,24 +342,30 @@ class WaterToolViewModel @Inject constructor(
     private fun insertConsumptionHistory(bevData: ConsumptionHistory) = viewModelScope.launch {
         historyRepo.insertConsumptionData(bevData)
     }
-
     private fun insertGoal(goal: Goal) = viewModelScope.launch {
         historyRepo.insertGoal(goal)
     }
 
-    private fun getUndoConsumedQty(bevName : String)  : StateFlow<Double> =
-            historyRepo.getUndoConsumedQty(bevName).stateIn(
-                viewModelScope,SharingStarted.Lazily, 0.0
-            )
-
-//        historyRepo.getUndoConsumedQty(bevName).stateIn(
-//            viewModelScope, SharingStarted.Lazily, 0.0
-//        )
-
-
-    private fun undoConsumption(name : String) = viewModelScope.launch {
-        historyRepo.undoConsumption(name)
+    private fun getUndoConsumedQty(bevName: String) {
+        viewModelScope.launch(Dispatchers.Default) {
+                val num: Double = historyRepo.getUndoConsumedQty(bevName)
+                _totalConsumed.value -= (num * 1000.0).toFloat()
+                _totalConsumed.value = maxOf((0.0).toFloat(), _totalConsumed.value)
+                _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
+                _uiState.value = _uiState.value.copy(
+                    totalConsumed = _totalConsumed.value.toInt(),
+                    remainingToConsume = _remainingConsumption.value
+                )
+                Log.d("rishi", "Here Undo Value : ${num} , TotalConsumed : ${_totalConsumed.value}")
+        }
     }
+
+    private fun undoConsumption(name: String) =
+        viewModelScope.launch {
+            historyRepo.undoConsumption(name)
+            Log.d("rishi","Deleted Undo Row")
+        }
+
 
     // Data Updation
     private fun updateBeverageData(){
@@ -446,32 +407,6 @@ class WaterToolViewModel @Inject constructor(
             }
         }
     }
-//    private fun updateBeverageData() {
-//        val title = _bevTitle.value
-//        val quantity = _bevQuantity.intValue
-//        viewModelScope.launch {
-//            authRepo.getUserId()?.let {
-//                Log.d("rishi", "BevTitle : $title BevQuantity : $quantity")
-//                if (quantity != 0){
-//                    repo.updateBeverageQty(
-//                        NetBevQtyPut(
-//                            bev = title,
-//                            id = "",
-//                            uid = uid,
-//                            qty = quantity.toDouble() / 1000
-//                        )
-//                    ).catch { exception ->
-//                        Log.d("rishi", "updateBeverageDataException: ${exception.message}")
-//                    }.collect {
-//                        Log.d("rishi", "updateBeverageData: ${it.id}")
-//                    }
-//            }
-////                else{
-////                mToast(,"Set Quantity First")
-////                }
-//            }
-//        }
-//    }
 
     // Event Handler
     fun event(event: WTEvent) {
@@ -487,6 +422,22 @@ class WaterToolViewModel @Inject constructor(
                     totalConsumed = _totalConsumed.value.toInt(),
                     remainingToConsume = _remainingConsumption.value
                 )
+//                insertConsumptionHistory(
+//                    ConsumptionHistory(
+//                        todayDate.toString(),
+//                        _goal.value,
+//                        _totalConsumed.value.toInt(),
+//                        _remainingConsumption.value
+//                    )
+//                )
+                Log.d(
+                    "rishi",
+                    "Addition: ${_totalConsumed.value} ${_remainingConsumption.value}"
+                )
+            }
+
+            is WTEvent.ConsumptionDetails -> {
+                Log.d("rishi","Change in Consumption : ${_totalConsumed.value}")
                 insertConsumptionHistory(
                     ConsumptionHistory(
                         todayDate.toString(),
@@ -494,10 +445,6 @@ class WaterToolViewModel @Inject constructor(
                         _totalConsumed.value.toInt(),
                         _remainingConsumption.value
                     )
-                )
-                Log.d(
-                    "rishi",
-                    "Addition: ${_totalConsumed.value} ${_remainingConsumption.value}"
                 )
             }
 
@@ -556,11 +503,15 @@ class WaterToolViewModel @Inject constructor(
             }
 
             is WTEvent.UndoConsumption -> {
-                var qty = getUndoConsumedQty(event.bevName).value
-                qty *= 1000.0
-                _totalConsumed.value -= qty.toFloat()
-                _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
-                Log.d("rishi","Total Consumed : ${_totalConsumed.value}, Qty : ${qty.toFloat()}")
+                getUndoConsumedQty(event.bevName)
+                //undoConsumption(event.bevName)
+            }
+
+            is WTEvent.DeleteRecentConsumption -> {
+                undoConsumption(event.bevName)
+            }
+
+            is WTEvent.OnDisposeAddData -> {
                 insertConsumptionHistory(
                     ConsumptionHistory(
                         todayDate.toString(),
@@ -569,10 +520,8 @@ class WaterToolViewModel @Inject constructor(
                         _remainingConsumption.value
                     )
                 )
-                undoConsumption(event.bevName)
-
-
             }
+
             else -> {}
         }
     }
