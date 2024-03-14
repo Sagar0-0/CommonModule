@@ -99,6 +99,7 @@ fun SetOfDefaultChips(
                     contentColor = backGroundContentColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     R.drawable.water,
                     waterQuantity,
+                    event = event,
                     onClick = {
                         title = "Water"
                         quantity = waterQuantity
@@ -121,6 +122,7 @@ fun SetOfDefaultChips(
                     contentColor = backGroundContentColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     R.drawable.coconut,
                     coconutQuantity,
+                    event = event,
                     onClick = {
                         title = "Coconut"
                         quantity = coconutQuantity
@@ -162,6 +164,7 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFFE85714), Color(0xFFE9B077)),
                         R.drawable.tea,
                         firstPrefQuantity,
+                        event = event,
                         onClick = {
                             title = "Tea"
                             quantity = firstPrefQuantity
@@ -186,6 +189,7 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFFE9980B), Color(0xFFEACE7F)),
                         R.drawable.coffee,
                         secondPrefQuantity,
+                        event = event,
                         onClick = {
                             title = "Coffee"
                             quantity = secondPrefQuantity
@@ -229,6 +233,7 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFF9d9ad9), Color(0xFFcedef0)),
                         R.drawable.unfocusedcontainer,
                         recentAddedQuantity,
+                        event = event,
                         onClick = {
                             title = addedName
                             quantity = recentAddedQuantity
@@ -267,6 +272,7 @@ fun BevChips(
     resId: Int,
     quantity: Int,
     viewModel: WaterToolViewModel = hiltViewModel(),
+    event: (WTEvent) -> Unit,
     onClick: () -> Unit,
     onClickBeverage: () -> Unit
 ) {
@@ -312,6 +318,7 @@ fun BevChips(
             ButtonWithColor(color = contentColor, text = "Undo",
                 modifier = Modifier.fillMaxWidth()) {
                 viewModel.showUndoDialog.value = true
+                event(WTEvent.UndoConsumption(name))
             }
         }
     }

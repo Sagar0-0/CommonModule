@@ -16,6 +16,8 @@ import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDateTime
+
+import fit.asta.health.data.water.db.dbmodel.BevQuantityConsumed
 import fit.asta.health.data.water.local.entity.BevDataDetails
 import fit.asta.health.data.water.local.entity.ConsumptionHistory
 import fit.asta.health.data.water.local.entity.Goal
@@ -27,11 +29,13 @@ import fit.asta.health.data.water.remote.model.WaterDetailsData
 import fit.asta.health.data.water.repo.HistoryRepo
 import fit.asta.health.data.water.repo.WaterToolRepo
 import fit.asta.health.data.water.repo.mapToWaterTool
+
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.delay
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.SharingStarted
 import kotlinx.coroutines.flow.StateFlow
@@ -104,6 +108,8 @@ class WaterToolViewModel @Inject constructor(
     private var isSearching = mutableStateOf(false)
     var _isLoading = mutableStateOf(false)
         private set
+
+    var undoConsumedQty = mutableStateOf(0.0)
 
     val filteredHistory: MutableStateFlow<List<History>> = MutableStateFlow(emptyList())
 
@@ -386,12 +392,34 @@ class WaterToolViewModel @Inject constructor(
         historyRepo.insertGoal(goal)
     }
 
+    private fun getUndoConsumedQty(bevName : String)  : StateFlow<Double> =
+            historyRepo.getUndoConsumedQty(bevName).stateIn(
+                viewModelScope,SharingStarted.Lazily, 0.0
+            )
+
+//        historyRepo.getUndoConsumedQty(bevName).stateIn(
+//            viewModelScope, SharingStarted.Lazily, 0.0
+//        )
+
+
+    private fun undoConsumption(name : String) = viewModelScope.launch {
+        historyRepo.undoConsumption(name)
+    }
+
     // Data Updation
     private fun updateBeverageData(){
         val title = _bevTitle.value
         val quantity = _bevQuantity.intValue
         viewModelScope.launch {
             authRepo.getUserId()?.let {
+                historyRepo.insertBevQtyConsumed(
+                    BevQuantityConsumed(
+                        id = 0,
+                        bev = title,
+                        uid = uid,
+                        qty = quantity.toDouble() / 1000
+                    )
+                )
                 when(val result = repo.updateBeverageQty(
                     BevQty(
                             bev = title,
@@ -527,6 +555,24 @@ class WaterToolViewModel @Inject constructor(
                 loadWaterToolData()
             }
 
+            is WTEvent.UndoConsumption -> {
+                var qty = getUndoConsumedQty(event.bevName).value
+                qty *= 1000.0
+                _totalConsumed.value -= qty.toFloat()
+                _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
+                Log.d("rishi","Total Consumed : ${_totalConsumed.value}, Qty : ${qty.toFloat()}")
+                insertConsumptionHistory(
+                    ConsumptionHistory(
+                        todayDate.toString(),
+                        _goal.value,
+                        _totalConsumed.value.toInt(),
+                        _remainingConsumption.value
+                    )
+                )
+                undoConsumption(event.bevName)
+
+
+            }
             else -> {}
         }
     }
