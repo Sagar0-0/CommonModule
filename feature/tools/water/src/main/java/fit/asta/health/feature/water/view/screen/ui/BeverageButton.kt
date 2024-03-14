@@ -50,6 +50,7 @@ import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import fit.asta.health.resources.drawables.R
+import kotlinx.coroutines.delay
 
 @Composable
 fun SetOfDefaultChips(
@@ -93,17 +94,20 @@ fun SetOfDefaultChips(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
+                val name = if (listSize == 0) "Water" else list[0].name
                 BevChips(
-                    if (listSize == 0) "Water" else list[0].name,
+                    name = name,
                     containerColor = backGroundContainerColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     contentColor = backGroundContentColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     R.drawable.water,
                     waterQuantity,
+                    event = event,
                     onClick = {
                         title = "Water"
                         quantity = waterQuantity
                         event(WTEvent.UpdateBevDetails(title, quantity))
                         event(WTEvent.UpdateBevQuantity)
+                       // event(WTEvent.ConsumptionDetails)
                         event(WTEvent.colorChange(Color(0xFF00458B)))
                     },
                     onClickBeverage = {
@@ -114,18 +118,20 @@ fun SetOfDefaultChips(
                 modifier = Modifier.weight(1f),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
-
+                val name = if (listSize == 0) "Coconut" else list[1].name
                 BevChips(
-                    if (listSize == 0) "Water" else list[1].name,
+                    name = name,
                     containerColor = backGroundContainerColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     contentColor = backGroundContentColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     R.drawable.coconut,
                     coconutQuantity,
+                    event = event,
                     onClick = {
                         title = "Coconut"
                         quantity = coconutQuantity
                         event(WTEvent.UpdateBevDetails(title, quantity))
                         event(WTEvent.UpdateBevQuantity)
+//                        event(WTEvent.ConsumptionDetails)
                         event(WTEvent.colorChange(Color(0xFF398300)))
                     },
                     onClickBeverage = {
@@ -153,8 +159,9 @@ fun SetOfDefaultChips(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val name = if (listSize == 0) "Not Defined" else list[2].name
                     BevChips(
-                        if (listSize == 0) "Water" else list[2].name,
+                        name = name,
                         containerColor = backGroundContainerColor(
                             Color(0xFFE85714),
                             Color(0xFFE9B077)
@@ -162,11 +169,13 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFFE85714), Color(0xFFE9B077)),
                         R.drawable.tea,
                         firstPrefQuantity,
+                        event = event,
                         onClick = {
-                            title = "Tea"
+                            title = name
                             quantity = firstPrefQuantity
                             event(WTEvent.UpdateBevDetails(title, quantity))
                             event(WTEvent.UpdateBevQuantity)
+//                            event(WTEvent.ConsumptionDetails)
                             event(WTEvent.colorChange(Color(0xFFE85714)))
                         },
                         onClickBeverage = {
@@ -177,8 +186,9 @@ fun SetOfDefaultChips(
                     modifier = Modifier.weight(1f),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
+                    val name = if (listSize == 0) "Water" else list[3].name
                     BevChips(
-                        if (listSize == 0) "Water" else list[3].name,
+                        name = name,
                         containerColor = backGroundContainerColor(
                             Color(0xFFE9980B),
                             Color(0xFFEACE7F)
@@ -186,11 +196,13 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFFE9980B), Color(0xFFEACE7F)),
                         R.drawable.coffee,
                         secondPrefQuantity,
+                        event = event,
                         onClick = {
-                            title = "Coffee"
+                            title = name
                             quantity = secondPrefQuantity
                             event(WTEvent.UpdateBevDetails(title, quantity))
                             event(WTEvent.UpdateBevQuantity)
+//                            event(WTEvent.ConsumptionDetails)
                             event(WTEvent.colorChange(Color(0xFFE9980B)))
                         },
                         onClickBeverage = {
@@ -229,11 +241,13 @@ fun SetOfDefaultChips(
                         contentColor = backGroundContentColor(Color(0xFF9d9ad9), Color(0xFFcedef0)),
                         R.drawable.unfocusedcontainer,
                         recentAddedQuantity,
+                        event = event,
                         onClick = {
                             title = addedName
                             quantity = recentAddedQuantity
                             event(WTEvent.UpdateBevDetails(title, quantity))
                             event(WTEvent.UpdateBevQuantity)
+//                            event(WTEvent.ConsumptionDetails)
                             event(WTEvent.colorChange(Color(0xFF9d9ad9)))
                         },
                         onClickBeverage = {
@@ -267,6 +281,7 @@ fun BevChips(
     resId: Int,
     quantity: Int,
     viewModel: WaterToolViewModel = hiltViewModel(),
+    event: (WTEvent) -> Unit,
     onClick: () -> Unit,
     onClickBeverage: () -> Unit
 ) {
@@ -308,12 +323,15 @@ fun BevChips(
                 onClickBeverage()
             }
         }
-        AnimatedVisibility(visible = showUndoButton) {
+       // AnimatedVisibility(visible = showUndoButton) {
             ButtonWithColor(color = contentColor, text = "Undo",
                 modifier = Modifier.fillMaxWidth()) {
                 viewModel.showUndoDialog.value = true
+                event(WTEvent.UndoConsumption(name))
+               // event(WTEvent.ConsumptionDetails)
+                event(WTEvent.DeleteRecentConsumption(name))
             }
-        }
+       // }
     }
 }
 

@@ -20,6 +20,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -31,10 +32,14 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.AppSheetValue
 import fit.asta.health.designsystem.molecular.ButtonWithColor
@@ -50,6 +55,7 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
+import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import kotlinx.coroutines.launch
 
@@ -58,8 +64,10 @@ import kotlinx.coroutines.launch
 fun CustomBevBottomSheet(
     viewModel: WaterToolViewModel = hiltViewModel(),
     onBack: () -> Unit,
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     event: (WTEvent) -> Unit,
-    onClickSchedule : () -> Unit
+    onClickSchedule : () -> Unit,
+    uiState : WaterToolUiState
 ) {
     Log.d("rishiRecomposed", "CustomBevSheet called")
     val bottomSheetState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
@@ -72,8 +80,6 @@ fun CustomBevBottomSheet(
 //            skipPartiallyExpanded = false
 //        )
 //    )
-
-    val uiState = viewModel.uiState.value
     val scrollState = rememberScrollState()
     val sliderValueWater by viewModel.waterQuantity.collectAsState()
     val sliderValueCoconut by viewModel.coconutQuantity.collectAsState()
@@ -90,6 +96,21 @@ fun CustomBevBottomSheet(
     }
     var currentBottomSheet: BottomSheetScreen? by remember {
         mutableStateOf(null)
+    }
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                event(WTEvent.OnDisposeAddData)
+            }
+        }
+        // Add the observer to the lifecycle
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // When the effect leaves the Composition, remove the observer
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
     }
     val closeSheet: () -> Unit = {
         scope.launch {

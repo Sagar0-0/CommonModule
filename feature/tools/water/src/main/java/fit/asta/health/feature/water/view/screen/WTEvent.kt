@@ -16,9 +16,16 @@ sealed class WTEvent {
     data class GoalChange(val goal: Int) : WTEvent()
     data class colorChange(val color : Color) : WTEvent()
     data class UpdateOnSliderChangeQuantity(val bevTitle : String,val sliderValue : Float) : WTEvent()
+
+    data class UndoConsumption(val bevName : String) : WTEvent()
     data object UpdateQuantity : WTEvent()
     data object Schedule : WTEvent()
     data object UpdateBevQuantity : WTEvent()
 
+    data object ConsumptionDetails : WTEvent()
+
+    data object OnDisposeAddData : WTEvent()
+    data class DeleteRecentConsumption(val bevName : String) : WTEvent()
     data object RetrySection : WTEvent()
+
 }

@@ -60,6 +60,7 @@ fun NavGraphBuilder.waterToolNavigation(
             val context = LocalContext.current
             val viewModel: WaterToolViewModel = it.sharedViewModel(navController)
             val state = viewModel.state.collectAsState()
+            val uiState = viewModel.uiState.value
             when (state.value) {
                 is UiState.Idle -> {
                     Box(modifier = Modifier.fillMaxSize(),
@@ -89,6 +90,7 @@ fun NavGraphBuilder.waterToolNavigation(
                     CustomBevBottomSheet(
                         onBack = onBack,
                         event = viewModel::event,
+                        uiState = uiState,
                         onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
                     )
                 }
