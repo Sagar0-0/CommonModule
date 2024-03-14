@@ -31,8 +31,8 @@ import fit.asta.health.data.walking.remote.model.Target
 import fit.asta.health.data.walking.repo.WalkingToolRepo
 import fit.asta.health.data.walking.usecase.DayUseCases
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.feature.walking.view.home.StepsUiState
-import fit.asta.health.feature.walking.view.home.TargetData
+import fit.asta.health.feature.walking.ui.home.StepsUiState
+import fit.asta.health.feature.walking.ui.home.TargetData
 import fit.asta.health.network.utils.toValue
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow

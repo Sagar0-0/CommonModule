@@ -5,7 +5,7 @@ import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.data.walking.usecase.DayUseCases
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.feature.walking.view.session.ProgressState
+import fit.asta.health.feature.walking.ui.session.ProgressState
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow

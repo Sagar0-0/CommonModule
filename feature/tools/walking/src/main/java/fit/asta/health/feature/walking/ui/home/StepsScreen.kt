@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.view.home
+package fit.asta.health.feature.walking.ui.home
 
 import android.util.Log
 import android.widget.Toast
@@ -71,10 +71,10 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.walking.component.InstalledMessage
-import fit.asta.health.feature.walking.component.NotInstalledMessage
-import fit.asta.health.feature.walking.component.NotSupportedMessage
-import fit.asta.health.feature.walking.view.component.StepsProgressCard
+import fit.asta.health.feature.walking.ui.component.InstalledMessage
+import fit.asta.health.feature.walking.ui.component.NotInstalledMessage
+import fit.asta.health.feature.walking.ui.component.NotSupportedMessage
+import fit.asta.health.feature.walking.ui.component.StepsProgressCard
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 import fit.asta.health.resources.drawables.R
 

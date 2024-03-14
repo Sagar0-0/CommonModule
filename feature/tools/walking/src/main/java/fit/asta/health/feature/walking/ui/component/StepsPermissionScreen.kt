@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.view.permission
+package fit.asta.health.feature.walking.ui.component
 
 import android.Manifest
 import android.app.Activity

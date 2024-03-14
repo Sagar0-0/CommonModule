@@ -1,9 +1,8 @@
-package fit.asta.health.feature.walking.view.home
+package fit.asta.health.feature.walking.ui.home
 
 import android.content.Context
 import android.content.Intent
 import android.net.Uri
-import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Column
@@ -15,20 +14,12 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
-import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
-import fit.asta.health.designsystem.molecular.DialogContent
-import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
-import fit.asta.health.designsystem.molecular.button.AppElevatedButton
-import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
-import fit.asta.health.designsystem.molecular.dialog.AppDialog
-import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.walking.vm.WalkingViewModel

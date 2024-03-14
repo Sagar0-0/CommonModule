@@ -17,9 +17,9 @@ import fit.asta.health.common.utils.Constants.getDataForSchedule
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.data.walking.service.StepCounterService
 import fit.asta.health.designsystem.molecular.other.SheetDataSelectionScreen
-import fit.asta.health.feature.walking.view.home.StepsScreen
-import fit.asta.health.feature.walking.view.permission.StepsPermissionScreen
-import fit.asta.health.feature.walking.view.session.StepsActivityScreen
+import fit.asta.health.feature.walking.ui.component.StepsPermissionScreen
+import fit.asta.health.feature.walking.ui.home.StepsScreen
+import fit.asta.health.feature.walking.ui.session.StepsActivityScreen
 import fit.asta.health.feature.walking.vm.StepsSessionViewModel
 import fit.asta.health.feature.walking.vm.WalkingViewModel
 

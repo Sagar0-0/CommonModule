@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.component
+package fit.asta.health.feature.walking.ui.component
 
 import androidx.compose.foundation.text.ClickableText
 import androidx.compose.runtime.Composable

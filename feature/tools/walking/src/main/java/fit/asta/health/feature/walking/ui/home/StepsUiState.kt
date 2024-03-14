@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.view.home
+package fit.asta.health.feature.walking.ui.home
 
 data class StepsUiState(
     var stepCount: Int = 0,
