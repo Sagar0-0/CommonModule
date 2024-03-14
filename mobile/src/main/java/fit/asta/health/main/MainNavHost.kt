@@ -5,11 +5,14 @@ import android.content.Intent
 import android.os.Build
 import android.provider.Settings
 import android.widget.Toast
+import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.window.DialogProperties
 import androidx.compose.ui.window.SecureFlagPolicy
@@ -26,6 +29,7 @@ import fit.asta.health.common.utils.getCurrentBuildVersion
 import fit.asta.health.common.utils.sendBugReportMessage
 import fit.asta.health.common.utils.shareApp
 import fit.asta.health.common.utils.shareReferralCode
+import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.dialog.AppDialog
 import fit.asta.health.feature.address.addressRoute
 import fit.asta.health.feature.address.navigateToAddress
@@ -38,14 +42,13 @@ import fit.asta.health.feature.orders.navigateToOrders
 import fit.asta.health.feature.orders.ordersRoute
 import fit.asta.health.feature.profile.basic.basicProfileRoute
 import fit.asta.health.feature.profile.profile.profileRoute
-import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.scheduler.ui.navigation.schedulerNavigation
 import fit.asta.health.feature.settings.settingScreens
 import fit.asta.health.feature.settings.view.SettingsUiEvent
 import fit.asta.health.feature.sleep.view.navigation.sleepNavGraph
 import fit.asta.health.feature.testimonials.navigation.testimonialNavGraph
-import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
-import fit.asta.health.feature.walking.nav.stepsCounterNavigation
+import fit.asta.health.feature.walking.navigation.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.navigation.stepsCounterNavigation
 import fit.asta.health.feature.water.nav.waterToolNavigation
 import fit.asta.health.main.view.AlarmPermDialogue
 import fit.asta.health.main.view.homeScreen
@@ -69,11 +72,11 @@ fun MainNavHost(
     isConnected: Boolean,
     startDestination: String
 ) {
-//    if (!isConnected) {
-//        Box(modifier = Modifier.fillMaxSize()) {
-//            AppInternetErrorDialog {}
-//        }
-//    }
+    if (!isConnected) {
+        Box(modifier = Modifier.fillMaxSize()) {
+            AppInternetErrorDialog {}
+        }
+    }
     var showDialogue by remember {
         mutableStateOf(false)
     }
@@ -84,7 +87,7 @@ fun MainNavHost(
             showDialogue = alarmManager?.canScheduleExactAlarms() == false
         }
     }
-    if (showDialogue)
+    if (showDialogue) {
         AppDialog(
             onDismissRequest = { },
             properties = DialogProperties(
@@ -102,6 +105,7 @@ fun MainNavHost(
                 }
             }
         }
+    }
     MainNavHost(startDestination)
 }
 
@@ -137,7 +141,6 @@ private fun MainNavHost(startDestination: String) {
             },
             navigateToSubscription = {
                 Toast.makeText(context, "Feature not implemented yet!", Toast.LENGTH_SHORT).show()
-//                navController.navigateToSubscription()
             }
         )
 
@@ -150,9 +153,10 @@ private fun MainNavHost(startDestination: String) {
         testimonialNavGraph(navController, onBack = { navController.navigateUp() })
         schedulerNavigation(navController, onBack = { navController.navigateUp() })
         stepsCounterNavigation(
-            navController = navController, sessionState = startDestination == STEPS_GRAPH_ROUTE,
-            onScheduler = { navController.navigateToScheduler() },
-            onBack = { navController.navigateUp() })
+            navController = navController,
+            sessionState = startDestination == STEPS_GRAPH_ROUTE,
+            onBack = { navController.navigateUp() }
+        )
 
         settingScreens { key ->
             when (key) {

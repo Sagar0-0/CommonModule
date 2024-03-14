@@ -1,4 +1,4 @@
-package fit.asta.health.feature.walking.nav
+package fit.asta.health.feature.walking.navigation
 
 sealed class StepsCounterScreen(val route: String) {
     data object StepsCounterHomeScreen : StepsCounterScreen(route = "steps_counter_home_screen")

@@ -4,7 +4,6 @@ import android.os.RemoteException
 import android.util.Log
 import androidx.compose.runtime.MutableState
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
 import androidx.health.connect.client.permission.HealthPermission
@@ -50,29 +49,30 @@ import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
-class WalkingViewModel @Inject constructor(
+class WalkingViewModel
+@Inject constructor(
     private val dayUseCases: DayUseCases,
     private val repo: WalkingToolRepo,
     private val prefManager: PrefManager,
-    @UID private val uid : String,
+    @UID private val uid: String,
     private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
 
-
-    private val _sessionList = mutableStateListOf<Day>()
-    val sessionList = MutableStateFlow(_sessionList)
+    private val _sessionList = MutableStateFlow<List<Day>>(listOf())
+    val sessionList = _sessionList.asStateFlow()
 
     val availability = healthConnectManager.availability
     private var getTodayProgressJob: Job? = null
 
-    private val _mutableState = MutableStateFlow<UiState<StepsUiState>>(UiState.Idle)
-    val state = _mutableState.asStateFlow()
+    private val _stepsHomeDataState = MutableStateFlow<UiState<StepsUiState>>(UiState.Idle)
+    val stepsHomeDataState = _stepsHomeDataState.asStateFlow()
     private var target = mutableStateOf(TargetData())
 
-    private val _selectedData = mutableStateListOf<Prc>()
-    val selectedData = MutableStateFlow(_selectedData)
-    private val _sheetDataList = mutableStateListOf<NetSheetData>()
-    val sheetDataList = MutableStateFlow(_sheetDataList)
+    private val _selectedData = MutableStateFlow<List<Prc>>(listOf())
+    val selectedData = _selectedData.asStateFlow()
+
+    private val _sheetDataList = MutableStateFlow<List<NetSheetData>>(listOf())
+    val sheetDataList = _sheetDataList.asStateFlow()
 
     val firstTimeOpen = mutableStateOf(true)
     val stepsPermissionRejectedCount = repo.userPreferences
@@ -138,11 +138,10 @@ class WalkingViewModel @Inject constructor(
         permissionsGranted.value = healthConnectManager.hasAllPermissions(permissions)
         healthUiState = try {
             if (permissionsGranted.value) {
-                Log.d("rishi","permission granted for health connect")
+                Log.d("rishi", "permission granted for health connect")
                 block()
-            }
-            else{
-                Log.d("rishi","permission not granted for health connect")
+            } else {
+                Log.d("rishi", "permission not granted for health connect")
             }
             HealthUiState.Done
         } catch (remoteException: RemoteException) {
@@ -152,7 +151,7 @@ class WalkingViewModel @Inject constructor(
         } catch (ioException: IOException) {
             HealthUiState.Error(ioException)
         } catch (illegalStateException: IllegalStateException) {
-           // HealthUiState.Done
+            // HealthUiState.Done
             HealthUiState.Error(illegalStateException)
         }
     }
@@ -172,13 +171,12 @@ class WalkingViewModel @Inject constructor(
     }
 
     private fun startProgressHome() {
-        _mutableState.value = UiState.Loading
+        _stepsHomeDataState.value = UiState.Loading
         viewModelScope.launch {
             val result = repo.getHomeData(uid)
-            _mutableState.value = when (result) {
+            _stepsHomeDataState.value = when (result) {
                 is ResponseState.Success -> {
-                    _selectedData.clear()
-                    _selectedData.addAll(result.data.walkingTool.prc)
+                    _selectedData.value = result.data.walkingTool.prc
                     target.value = TargetData(
                         targetDistance = result.data.walkingRecommendation.recommend.distance.distance,
                         targetDuration = result.data.walkingRecommendation.recommend.duration.duration
@@ -190,13 +188,6 @@ class WalkingViewModel @Inject constructor(
                         recommendDistance = result.data.walkingRecommendation.recommend.distance.distance,
                         recommendDuration = result.data.walkingRecommendation.recommend.duration.duration
                     )
-//                    dayUseCases.getDailyData(LocalDate.now()).collectLatest {daily->
-//                       daily?.let {
-//                           stepsUiState.stepCount=it.steps
-//                           stepsUiState.caloriesBurned=it.calorieBurned.toInt()
-//                           stepsUiState.distance=it.distanceTravelled.toFloat()
-//                       }
-//                    }
                     UiState.Success(stepsUiState)
                 }
 
@@ -242,21 +233,19 @@ class WalkingViewModel @Inject constructor(
         getTodayProgressJob?.cancel()
         getTodayProgressJob = dayUseCases.getAllDayData(date).onEach { dayList ->
             if (dayList.isNotEmpty()) {
-                _sessionList.clear()
-                _sessionList.addAll(dayList)
+                _sessionList.value = dayList
             }
         }.launchIn(viewModelScope)
     }
 
 
     fun getSheetItemValue(code: String) {
-        _sheetDataList.clear()
         viewModelScope.launch {
             when (code) {
                 "goal" -> {
                     when (val result = repo.getSheetGoalsData("walk")) {
                         is ResponseState.Success -> {
-                            _sheetDataList.addAll(result.data)
+                            _sheetDataList.value = (result.data)
                         }
 
                         else -> {}
@@ -264,7 +253,7 @@ class WalkingViewModel @Inject constructor(
                 }
 
                 "mode" -> {
-                    _sheetDataList.addAll(
+                    _sheetDataList.value = (
                         listOf(
                             NetSheetData(
                                 id = "",
@@ -293,7 +282,7 @@ class WalkingViewModel @Inject constructor(
                 else -> {
                     when (val result = repo.getSheetData(code)) {
                         is ResponseState.Success -> {
-                            _sheetDataList.addAll(result.data)
+                            _sheetDataList.value = (result.data)
                         }
 
                         else -> {}
@@ -304,20 +293,28 @@ class WalkingViewModel @Inject constructor(
     }
 
     fun setMultiple(index: Int, itemIndex: Int) {
-        val data = _selectedData[index]
-        val item = _sheetDataList[itemIndex]
-        _sheetDataList[itemIndex] = item.copy(isSelected = !item.isSelected)
-        data.values = _sheetDataList.filter { it.isSelected }.map { it.toValue() }.toList()
-        _selectedData[index] = data
+        val data = _selectedData.value[index]
+        val item = _sheetDataList.value[itemIndex]
+        _sheetDataList.value = _sheetDataList.value.toMutableList().apply {
+            this[itemIndex] = this[itemIndex].copy(isSelected = !item.isSelected)
+        }
+        data.values = _sheetDataList.value.filter { it.isSelected }.map { it.toValue() }.toList()
+        _selectedData.value = _selectedData.value.toMutableList().apply {
+            this[index] = data
+        }
     }
 
     fun setSingle(index: Int, itemIndex: Int) {
-        val data = _selectedData[index]
-        _sheetDataList.map { it.isSelected = false }
-        val item = _sheetDataList[itemIndex].copy(isSelected = true)
-        _sheetDataList[itemIndex] = item
+        val data = _selectedData.value[index]
+        _sheetDataList.value.map { it.isSelected = false }
+        val item = _sheetDataList.value[itemIndex].copy(isSelected = true)
+        _sheetDataList.value = _sheetDataList.value.toMutableList().apply {
+            this[itemIndex] = item
+        }
         data.values = listOf(item.toValue())
-        _selectedData[index] = data
+        _selectedData.value = _selectedData.value.toMutableList().apply {
+            this[index] = data
+        }
     }
 
     private fun putData() {
@@ -345,7 +342,7 @@ class WalkingViewModel @Inject constructor(
                             unit = "steps"
                         )
                     ),
-                    prc = _selectedData.toList()
+                    prc = _selectedData.value
                 )
             )
         }

@@ -32,7 +32,6 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberUpdatedState
 import androidx.compose.runtime.setValue
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -91,9 +90,9 @@ fun StepsScreen(
     uiState: WalkingViewModel.HealthUiState,
     onPermissionsResult: () -> Unit = {},
     onPermissionsLaunch: (Set<String>) -> Unit = {},
-    list: SnapshotStateList<Day>,
+    list: List<Day>,
     state: UiState<StepsUiState>,
-    selectedData: SnapshotStateList<Prc>,
+    selectedData: List<Prc>,
     onStart: () -> Unit,
     setTarget: (Float, Float) -> Unit,
     goToList: (Int, String) -> Unit,
@@ -305,7 +304,7 @@ fun StepsScreen(
 
 @Composable
 fun WalkingBottomSheet(
-    selectedData: SnapshotStateList<Prc>,
+    selectedData: List<Prc>,
     animatedState: Boolean,
     goToList: (Int, String) -> Unit,
     onTarget: () -> Unit,

@@ -46,7 +46,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.feedback.FEEDBACK_GRAPH_ROUTE
 import fit.asta.health.feature.testimonials.components.TestimonialArtistCard
 import fit.asta.health.feature.testimonials.components.UserTestimonialUI
-import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.navigation.STEPS_GRAPH_ROUTE
 import fit.asta.health.home.remote.model.ToolsHome
 import fit.asta.health.main.Graph
 import fit.asta.health.navigation.tools.ui.view.component.FeedbackCard

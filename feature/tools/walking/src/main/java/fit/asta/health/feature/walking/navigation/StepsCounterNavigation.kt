@@ -1,7 +1,6 @@
-package fit.asta.health.feature.walking.nav
+package fit.asta.health.feature.walking.navigation
 
 import android.content.Intent
-import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.compose.runtime.getValue
 import androidx.compose.ui.platform.LocalContext
@@ -47,14 +46,12 @@ fun NavController.navigateToStepsCounterProgress(navOptions: NavOptions? = null)
 fun NavGraphBuilder.stepsCounterNavigation(
     navController: NavHostController,
     sessionState: Boolean,
-    onScheduler: () -> Unit,
     onBack: () -> Unit
 ) {
 
     navigation(
         route = STEPS_GRAPH_ROUTE,
         startDestination = if (sessionState) {
-            Log.d("rishi","sessionState : $sessionState")
             StepsCounterScreen.StepsProgressScreen.route
         } else {
             StepsCounterScreen.StepsPermissionScreen.route
@@ -77,14 +74,13 @@ fun NavGraphBuilder.stepsCounterNavigation(
 
             val walkingViewModel: WalkingViewModel =
                 navBackStackEntry.sharedViewModel(navController)
-            val state by walkingViewModel.state.collectAsStateWithLifecycle()
+            val state by walkingViewModel.stepsHomeDataState.collectAsStateWithLifecycle()
             val list by walkingViewModel.sessionList.collectAsStateWithLifecycle()
             val selectedData by walkingViewModel.selectedData.collectAsStateWithLifecycle()
             val availability by walkingViewModel.availability
             val permissionsGranted by walkingViewModel.permissionsGranted
             val sessionMetrics by walkingViewModel.sessionMetrics
             val permissions = walkingViewModel.permissions
-            val permissionCount by walkingViewModel.stepsPermissionRejectedCount.collectAsStateWithLifecycle()
             val onPermissionsResult = { walkingViewModel.initialLoad() }
             val permissionsLauncher =
                 rememberLauncherForActivityResult(walkingViewModel.permissionsLauncher) {
@@ -92,7 +88,8 @@ fun NavGraphBuilder.stepsCounterNavigation(
                 }
             val firstTime = false
             StepsScreen(
-                state = state, list = list,
+                state = state,
+                list = list,
                 onStart = {
                     walkingViewModel.startSession()
                     context.startService(Intent(context, StepCounterService::class.java))

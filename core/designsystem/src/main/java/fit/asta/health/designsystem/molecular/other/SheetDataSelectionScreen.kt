@@ -12,7 +12,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AdsClick
 import androidx.compose.material3.CardDefaults
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
@@ -29,7 +28,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 @Composable
 fun SheetDataSelectionScreen(
     prc: Prc,
-    list: SnapshotStateList<NetSheetData>,
+    list: List<NetSheetData>,
     onSClick: (Int) -> Unit,
     onMClick: (Int) -> Unit,
     onBack: () -> Unit,
@@ -67,7 +66,7 @@ fun SheetDataSelectionScreen(
 @Composable
 fun SingleTypeScreen(
     modifier: Modifier,
-    list: SnapshotStateList<NetSheetData>,
+    list: List<NetSheetData>,
     title: String,
     onClick: (Int) -> Unit
 ) {
@@ -122,7 +121,7 @@ fun SingleTypeScreen(
 @Composable
 fun MultipleTypeScreen(
     modifier: Modifier,
-    list: SnapshotStateList<NetSheetData>,
+    list: List<NetSheetData>,
     title: String,
     onClick: (Int) -> Unit
 ) {

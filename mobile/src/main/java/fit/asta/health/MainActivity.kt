@@ -8,7 +8,6 @@ import android.os.Bundle
 import android.util.Log
 import androidx.activity.ComponentActivity
 import androidx.activity.compose.setContent
-import androidx.activity.enableEdgeToEdge
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.activity.viewModels
 import androidx.compose.foundation.isSystemInDarkTheme
@@ -37,7 +36,7 @@ import fit.asta.health.datastore.ScreenCode
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.auth.AUTH_GRAPH_ROUTE
 import fit.asta.health.feature.profile.basic.BASIC_PROFILE_GRAPH_ROUTE
-import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.navigation.STEPS_GRAPH_ROUTE
 import fit.asta.health.main.MainNavHost
 import fit.asta.health.main.MainViewModel
 import fit.asta.health.main.view.HOME_ROUTE

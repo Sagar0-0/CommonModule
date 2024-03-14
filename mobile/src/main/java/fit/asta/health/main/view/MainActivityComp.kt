@@ -47,9 +47,9 @@ import fit.asta.health.feature.profile.profile.navigateToProfile
 import fit.asta.health.feature.scheduler.ui.navigation.navigateToScheduler
 import fit.asta.health.feature.settings.navigateToSettings
 import fit.asta.health.feature.sleep.view.navigation.navigateToSleep
-import fit.asta.health.feature.walking.nav.STEPS_GRAPH_ROUTE
-import fit.asta.health.feature.walking.nav.navigateToStepsCounter
-import fit.asta.health.feature.walking.nav.navigateToStepsCounterProgress
+import fit.asta.health.feature.walking.navigation.STEPS_GRAPH_ROUTE
+import fit.asta.health.feature.walking.navigation.navigateToStepsCounter
+import fit.asta.health.feature.walking.navigation.navigateToStepsCounterProgress
 import fit.asta.health.feature.water.nav.navigateToWater
 import fit.asta.health.main.Graph
 import fit.asta.health.main.MainViewModel
