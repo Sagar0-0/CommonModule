@@ -16,7 +16,7 @@ import androidx.lifecycle.repeatOnLifecycle
 import dagger.hilt.android.AndroidEntryPoint
 import fit.asta.health.common.sensor.MeasurableSensor
 import fit.asta.health.common.utils.Constants.NOTIFICATION_TAG
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.usecase.DayUseCases
 import kotlinx.coroutines.launch
 import java.time.LocalDate
 import javax.inject.Inject

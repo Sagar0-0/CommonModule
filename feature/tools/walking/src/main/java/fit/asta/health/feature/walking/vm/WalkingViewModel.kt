@@ -1,7 +1,5 @@
 package fit.asta.health.feature.walking.vm
 
-import android.content.Intent
-import android.net.Uri
 import android.os.RemoteException
 import android.util.Log
 import androidx.compose.runtime.MutableState
@@ -9,7 +7,6 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.setValue
-import androidx.compose.ui.platform.LocalContext
 import androidx.health.connect.client.permission.HealthPermission
 import androidx.health.connect.client.records.DistanceRecord
 import androidx.health.connect.client.records.StepsRecord
@@ -25,15 +22,15 @@ import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.walking.data.Settings
-import fit.asta.health.data.walking.data.source.network.request.Distance
-import fit.asta.health.data.walking.data.source.network.request.Duration
-import fit.asta.health.data.walking.data.source.network.request.PutData
-import fit.asta.health.data.walking.data.source.network.request.Steps
-import fit.asta.health.data.walking.data.source.network.request.Target
-import fit.asta.health.data.walking.domain.model.Day
-import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.local.model.Day
+import fit.asta.health.data.walking.local.model.Settings
+import fit.asta.health.data.walking.remote.model.Distance
+import fit.asta.health.data.walking.remote.model.Duration
+import fit.asta.health.data.walking.remote.model.PutData
+import fit.asta.health.data.walking.remote.model.Steps
+import fit.asta.health.data.walking.remote.model.Target
+import fit.asta.health.data.walking.repo.WalkingToolRepo
+import fit.asta.health.data.walking.usecase.DayUseCases
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.walking.view.home.StepsUiState
 import fit.asta.health.feature.walking.view.home.TargetData
@@ -231,7 +228,7 @@ class WalkingViewModel @Inject constructor(
         }
     }
 
-    fun setTarget(distance: Float, duration: Int) {
+    fun setTarget(distance: Float, duration: Float) {
         if (distance > 0) {
             target.value = target.value.copy(targetDistance = distance)
         }
@@ -335,12 +332,12 @@ class WalkingViewModel @Inject constructor(
                     uid = uid,
                     wea = true,
                     tgt = Target(
-                        dis = Distance(
-                            dis = target.value.targetDistance.roundToTwoDigits(),
+                        distance = Distance(
+                            distance = target.value.targetDistance.roundToTwoDigits(),
                             unit = "km"
                         ),
-                        dur = Duration(
-                            dur = target.value.targetDuration.toFloat().roundToTwoDigits(),
+                        duration = Duration(
+                            duration = target.value.targetDuration.toFloat().roundToTwoDigits(),
                             unit = "mins"
                         ),
                         steps = Steps(

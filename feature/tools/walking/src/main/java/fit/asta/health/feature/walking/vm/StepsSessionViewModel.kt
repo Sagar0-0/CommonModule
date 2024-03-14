@@ -3,7 +3,7 @@ package fit.asta.health.feature.walking.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.usecase.DayUseCases
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.walking.view.session.ProgressState
 import kotlinx.coroutines.Job
@@ -27,7 +27,7 @@ class StepsSessionViewModel @Inject constructor(
             date = LocalDate.MIN,
             stepsTaken = 0,
             targetDistance = 0f,
-            targetDuration = 0,
+            targetDuration = 0f,
             calorieBurned = 0,
             duration = 0,
             distanceTravelled = 0.0,

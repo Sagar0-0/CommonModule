@@ -20,7 +20,6 @@ import androidx.compose.ui.layout.ContentScale
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.walking.domain.formatDuration
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.DialogData
 import fit.asta.health.designsystem.molecular.ProgressBarInt

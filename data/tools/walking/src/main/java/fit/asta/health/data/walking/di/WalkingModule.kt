@@ -3,6 +3,7 @@ package fit.asta.health.data.walking.di
 import android.app.Application
 import android.content.Context
 import androidx.room.Room
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -11,25 +12,22 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.common.health_data.HealthConnectManager
 import fit.asta.health.common.sensor.MeasurableSensor
 import fit.asta.health.common.sensor.StepsSensor
-import fit.asta.health.common.utils.IODispatcher
-import fit.asta.health.data.walking.data.repository.DayRepositoryImpl
-import fit.asta.health.data.walking.data.repository.WalkingToolRepoImpl
-import fit.asta.health.data.walking.data.source.StepsDatabase
-import fit.asta.health.data.walking.data.source.api.WalkingApi
-import fit.asta.health.data.walking.domain.repository.DayRepository
-import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
-import fit.asta.health.data.walking.domain.usecase.ActiveStateOfSteps
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
-import fit.asta.health.data.walking.domain.usecase.GetDailyData
-import fit.asta.health.data.walking.domain.usecase.GetDay
-import fit.asta.health.data.walking.domain.usecase.GetTodayData
-import fit.asta.health.data.walking.domain.usecase.IncrementStepCount
-import fit.asta.health.data.walking.domain.usecase.IncrementStepDuration
-import fit.asta.health.data.walking.domain.usecase.IncrementStepsInDaily
-import fit.asta.health.data.walking.domain.usecase.SetDay
-import fit.asta.health.datastore.PrefManager
+import fit.asta.health.data.walking.local.StepsDatabase
+import fit.asta.health.data.walking.remote.WalkingApi
+import fit.asta.health.data.walking.repo.DayRepository
+import fit.asta.health.data.walking.repo.DayRepositoryImpl
+import fit.asta.health.data.walking.repo.WalkingToolRepo
+import fit.asta.health.data.walking.repo.WalkingToolRepoImpl
+import fit.asta.health.data.walking.usecase.ActiveStateOfSteps
+import fit.asta.health.data.walking.usecase.DayUseCases
+import fit.asta.health.data.walking.usecase.GetDailyData
+import fit.asta.health.data.walking.usecase.GetDay
+import fit.asta.health.data.walking.usecase.GetTodayData
+import fit.asta.health.data.walking.usecase.IncrementStepCount
+import fit.asta.health.data.walking.usecase.IncrementStepDuration
+import fit.asta.health.data.walking.usecase.IncrementStepsInDaily
+import fit.asta.health.data.walking.usecase.SetDay
 import fit.asta.health.network.utils.NetworkUtil
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -50,18 +48,6 @@ object WalkingModule {
 
     @Singleton
     @Provides
-    fun provideWalkingToolRepo(
-        remoteApi: WalkingApi,
-        prefManager: PrefManager,
-        @IODispatcher coroutineDispatcher: CoroutineDispatcher
-    ): WalkingToolRepo {
-        return WalkingToolRepoImpl(
-            api = remoteApi, coroutineDispatcher = coroutineDispatcher, prefManager = prefManager
-        )
-    }
-
-    @Singleton
-    @Provides
     fun provideStepsDatabase(
         @ApplicationContext context: Context,
     ) = Room.databaseBuilder(
@@ -78,9 +64,7 @@ object WalkingModule {
 
     @Singleton
     @Provides
-    fun provideRepoDay(db: StepsDatabase): DayRepository {
-        return DayRepositoryImpl(db.dayDao())
-    }
+    fun provideDayDao(db: StepsDatabase) = db.dayDao()
 
     @Singleton
     @Provides
@@ -96,4 +80,17 @@ object WalkingModule {
             incrementStepsInDaily = IncrementStepsInDaily(dayRepository)
         )
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class WalkingModuleBinds {
+
+    @Binds
+    abstract fun bindDayRepo(dayRepositoryImpl: DayRepositoryImpl): DayRepository
+
+
+    @Binds
+    abstract fun bindWalkingToolRepo(walkingToolRepoImpl: WalkingToolRepoImpl): WalkingToolRepo
+
 }

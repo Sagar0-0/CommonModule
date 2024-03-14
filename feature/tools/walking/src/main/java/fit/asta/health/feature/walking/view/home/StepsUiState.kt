@@ -5,11 +5,10 @@ data class StepsUiState(
     var caloriesBurned: Int = 0,
     var distance: Float = 0f,
     val recommendDistance: Float = 0f,
-    val recommendDuration: Int = 0,
-
-    )
+    val recommendDuration: Float = 0f
+)
 
 data class TargetData(
     val targetDistance: Float = 0f,
-    val targetDuration: Int = 0
+    val targetDuration: Float = 0f
 )

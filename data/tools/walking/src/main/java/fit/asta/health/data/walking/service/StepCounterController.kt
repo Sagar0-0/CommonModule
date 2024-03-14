@@ -1,6 +1,6 @@
 package fit.asta.health.data.walking.service
 
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.usecase.DayUseCases
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.currentCoroutineContext
@@ -21,7 +21,7 @@ class StepCounterController(
     private val coroutineScope: CoroutineScope,
 ) {
 
-    private val _stats = MutableStateFlow(StepCounterState(LocalDate.now(), 0, 0f, 0, 0.0, 0, 0))
+    private val _stats = MutableStateFlow(StepCounterState(LocalDate.now(), 0, 0f, 0f, 0.0, 0, 0))
     val stats: StateFlow<StepCounterState> = _stats.asStateFlow()
 
     private var getStatsJob: Job? = null

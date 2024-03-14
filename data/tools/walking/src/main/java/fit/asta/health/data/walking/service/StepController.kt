@@ -1,6 +1,6 @@
 package fit.asta.health.data.walking.service
 
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
+import fit.asta.health.data.walking.usecase.DayUseCases
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.Job

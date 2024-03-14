@@ -3,11 +3,12 @@ package fit.asta.health.data.walking.data.repository
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SubmitProfileResponse
-import fit.asta.health.data.walking.data.source.api.WalkingApi
-import fit.asta.health.data.walking.data.source.network.request.PutData
-import fit.asta.health.data.walking.data.source.network.request.PutDayData
-import fit.asta.health.data.walking.data.source.network.response.HomeData
-import fit.asta.health.data.walking.domain.repository.WalkingToolRepo
+import fit.asta.health.data.walking.remote.WalkingApi
+import fit.asta.health.data.walking.remote.model.HomeData
+import fit.asta.health.data.walking.remote.model.PutData
+import fit.asta.health.data.walking.remote.model.PutDayData
+import fit.asta.health.data.walking.repo.WalkingToolRepo
+import fit.asta.health.data.walking.repo.WalkingToolRepoImpl
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
 import io.mockk.Runs

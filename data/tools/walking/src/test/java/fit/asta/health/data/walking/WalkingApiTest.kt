@@ -5,8 +5,8 @@ import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.SubmitProfileResponse
-import fit.asta.health.data.walking.data.source.api.WalkingApi
-import fit.asta.health.data.walking.data.source.network.response.HomeData
+import fit.asta.health.data.walking.remote.WalkingApi
+import fit.asta.health.data.walking.remote.model.HomeData
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import okhttp3.mockwebserver.MockResponse

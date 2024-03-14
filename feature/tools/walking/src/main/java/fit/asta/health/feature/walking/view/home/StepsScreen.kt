@@ -41,7 +41,6 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
-import androidx.health.connect.client.HealthConnectClient
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -52,7 +51,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.formatTime
 import fit.asta.health.common.utils.toDraw
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.walking.domain.model.Day
+import fit.asta.health.data.walking.local.model.Day
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.AppSheetValue
 import fit.asta.health.designsystem.atomic.token.checkState
@@ -87,7 +86,7 @@ fun StepsScreen(
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     permissions: Set<String>,
     permissionsGranted: Boolean,
-    firstTime : Boolean,
+    firstTime: Boolean,
     sessionMetrics: ExerciseSessionData,
     uiState: WalkingViewModel.HealthUiState,
     onPermissionsResult: () -> Unit = {},
@@ -96,15 +95,16 @@ fun StepsScreen(
     state: UiState<StepsUiState>,
     selectedData: SnapshotStateList<Prc>,
     onStart: () -> Unit,
-    setTarget: (Float, Int) -> Unit,
+    setTarget: (Float, Float) -> Unit,
     goToList: (Int, String) -> Unit,
     onScheduler: () -> Unit,
     onBack: () -> Unit,
 ) {
-    val scaffoldState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
-        initialValue = AppSheetValue.PartiallyExpanded,
-        skipHiddenState = true,
-    )
+    val scaffoldState = appRememberBottomSheetScaffoldState(
+        bottomSheetState = AppSheetState(
+            initialValue = AppSheetValue.PartiallyExpanded,
+            skipHiddenState = true,
+        )
     )
     var showTargetDialogWithResult by remember { mutableStateOf(false) }
     val context = LocalContext.current
@@ -128,7 +128,7 @@ fun StepsScreen(
     LaunchedEffect(uiState) {
         // If the initial data load has not taken place, attempt to load the data.
         if (uiState is WalkingViewModel.HealthUiState.Uninitialized) {
-            Log.d("rishi","HealthConnect will Not allow: $healthConnectAvailability")
+            Log.d("rishi", "HealthConnect will Not allow: $healthConnectAvailability")
             onPermissionsResult()
         }
     }
@@ -184,7 +184,7 @@ fun StepsScreen(
                     verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                     horizontalAlignment = Alignment.CenterHorizontally
                 ) {
-                    Log.d("rishi","HealthConnect : $healthConnectAvailability")
+                    Log.d("rishi", "HealthConnect : $healthConnectAvailability")
                     when (healthConnectAvailability) {
                         3 -> if (!permissionsGranted) {
                             item {
@@ -193,11 +193,13 @@ fun StepsScreen(
                                 })
                             }
                         }
+
                         2 -> item {
-                            if(firstTime) PlayStorePermsUI()
+                            if (firstTime) PlayStorePermsUI()
                             NotInstalledMessage()
                         }
-                        1 -> item{
+
+                        1 -> item {
 //                            BodyTexts.Level2(text = "Not Supported ")
                             NotSupportedMessage()
                         }
@@ -304,7 +306,7 @@ fun StepsScreen(
 @Composable
 fun WalkingBottomSheet(
     selectedData: SnapshotStateList<Prc>,
-    animatedState : Boolean,
+    animatedState: Boolean,
     goToList: (Int, String) -> Unit,
     onTarget: () -> Unit,
     onStart: () -> Unit,
@@ -431,7 +433,7 @@ fun SunlightCard(modifier: Modifier) {
 fun ShowTargetDialog(
     onDismiss: () -> Unit,
     onNegativeClick: () -> Unit,
-    onPositiveClick: (Float, Int) -> Unit,
+    onPositiveClick: (Float, Float) -> Unit,
     dialogData: StepsUiState,
 ) {
     var distance by remember {
@@ -484,10 +486,12 @@ fun ShowTargetDialog(
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        ButtonWithColor(color = AppTheme.colors.error, text = "Close",
+                        ButtonWithColor(
+                            color = AppTheme.colors.error, text = "Close",
                             modifier = Modifier
                                 .height(AppTheme.buttonSize.level7)
-                                .fillMaxWidth()) {
+                                .fillMaxWidth()
+                        ) {
                             onNegativeClick()
                         }
 //
@@ -495,11 +499,13 @@ fun ShowTargetDialog(
                     Box(
                         modifier = Modifier.weight(1f)
                     ) {
-                        ButtonWithColor(color = AppTheme.colors.error, text = "Save",
+                        ButtonWithColor(
+                            color = AppTheme.colors.error, text = "Save",
                             modifier = Modifier
                                 .height(AppTheme.buttonSize.level7)
-                                .fillMaxWidth()) {
-                            onPositiveClick(distance, duration.toInt())
+                                .fillMaxWidth()
+                        ) {
+                            onPositiveClick(distance, duration)
                         }
 //
                     }

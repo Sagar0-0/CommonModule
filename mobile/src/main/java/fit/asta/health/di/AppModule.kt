@@ -20,8 +20,8 @@ import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
 import fit.asta.health.HealthCareApp
-import fit.asta.health.data.walking.domain.usecase.DayUseCases
 import fit.asta.health.data.walking.service.StepController
+import fit.asta.health.data.walking.usecase.DayUseCases
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.Dispatchers
