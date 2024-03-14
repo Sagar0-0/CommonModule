@@ -42,11 +42,11 @@ class WalkingToolRepoImpl
 
     override suspend fun getSheetData(code: String): ResponseState<List<NetSheetData>> =
         withContext(coroutineDispatcher) {
-            getApiResponseState { api.getSheetData(code) }
+            getApiResponseState { api.getSheetListData(code) }
         }
 
     override suspend fun getSheetGoalsData(tool: String): ResponseState<List<NetSheetData>> =
         withContext(coroutineDispatcher) {
-            getApiResponseState { api.getSheetGoalsData(tool) }
+            getApiResponseState { api.getSheetGoalsListData(tool) }
         }
 }

@@ -11,7 +11,6 @@ import java.time.LocalDate
 @Dao
 interface DayDao {
 
-
     @Query("SELECT * FROM day ORDER BY date ASC LIMIT 1")
     fun getFirstDay(): Flow<Day?>
 

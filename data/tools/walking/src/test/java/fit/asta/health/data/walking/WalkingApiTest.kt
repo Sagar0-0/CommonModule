@@ -75,7 +75,7 @@ class WalkingApiTest {
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.getSheetData("")
+        val data = api.getSheetListData("")
         server.takeRequest()
 
         assertEquals(data, dto)
@@ -88,7 +88,7 @@ class WalkingApiTest {
         server.enqueue(res)
 
         try {
-            api.getSheetData("")
+            api.getSheetListData("")
             server.takeRequest()
         } catch (e: HttpException) {
             assert(e.code() == 404)
@@ -103,7 +103,7 @@ class WalkingApiTest {
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.getSheetGoalsData("")
+        val data = api.getSheetGoalsListData("")
         server.takeRequest()
 
         assertEquals(data, dto)
@@ -116,7 +116,7 @@ class WalkingApiTest {
         server.enqueue(res)
 
         try {
-            api.getSheetGoalsData("")
+            api.getSheetGoalsListData("")
             server.takeRequest()
         } catch (e: HttpException) {
             assert(e.code() == 404)

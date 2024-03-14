@@ -4,14 +4,15 @@ import androidx.room.TypeConverter
 import java.time.LocalDate
 
 @Suppress("unused")
-class Converters {
+class DateTimeConverter {
+
     @TypeConverter
-    fun localDateToTimestamp(date: LocalDate): Long {
+    fun toTimestamp(date: LocalDate): Long {
         return date.toEpochDay()
     }
 
     @TypeConverter
-    fun timestampToLocalDate(timestamp: Long): LocalDate {
+    fun toLocalDate(timestamp: Long): LocalDate {
         return LocalDate.ofEpochDay(timestamp)
     }
 }

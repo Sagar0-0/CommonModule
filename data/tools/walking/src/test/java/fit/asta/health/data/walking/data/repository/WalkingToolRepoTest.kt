@@ -1,8 +1,8 @@
 package fit.asta.health.data.walking.data.repository
 
+import fit.asta.health.common.utils.EmptyResponse
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.walking.remote.WalkingApi
 import fit.asta.health.data.walking.remote.model.HomeData
 import fit.asta.health.data.walking.remote.model.PutData
@@ -70,37 +70,37 @@ class WalkingToolRepoTest {
 
     @Test
     fun `getSheetData, returns Success`() = runTest {
-        coEvery { api.getSheetData(any()) } returns Response(data = emptyList())
+        coEvery { api.getSheetListData(any()) } returns Response(data = emptyList())
         repo.getSheetData("")
-        coVerify { api.getSheetData("") }
+        coVerify { api.getSheetListData("") }
     }
 
     @Test
     fun `getSheetData, returns Error`() = runTest {
-        coEvery { api.getSheetData(any()) } throws Exception()
+        coEvery { api.getSheetListData(any()) } throws Exception()
         val data = repo.getSheetData("")
-        coVerify { api.getSheetData("") }
+        coVerify { api.getSheetListData("") }
         assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `getSheetGoalsData, returns Success`() = runTest {
-        coEvery { api.getSheetGoalsData(any()) } returns Response(data = emptyList())
+        coEvery { api.getSheetGoalsListData(any()) } returns Response(data = emptyList())
         repo.getSheetGoalsData("")
-        coVerify { api.getSheetGoalsData("") }
+        coVerify { api.getSheetGoalsListData("") }
     }
 
     @Test
     fun `getSheetGoalsData, returns Error`() = runTest {
-        coEvery { api.getSheetGoalsData(any()) } throws Exception()
+        coEvery { api.getSheetGoalsListData(any()) } throws Exception()
         val data = repo.getSheetGoalsData("")
-        coVerify { api.getSheetGoalsData("") }
+        coVerify { api.getSheetGoalsListData("") }
         assert(data is ResponseState.ErrorMessage)
     }
 
     @Test
     fun `putData, returns Success`() = runTest {
-        coEvery { api.putData(any()) } returns Response(data = SubmitProfileResponse())
+        coEvery { api.putData(any()) } returns Response(data = EmptyResponse())
         val putData: PutData = mockk()
         repo.putData(putData)
         coVerify { api.putData(putData) }
@@ -117,7 +117,7 @@ class WalkingToolRepoTest {
 
     @Test
     fun `putDayData, returns Success`() = runTest {
-        coEvery { api.putDayData(any()) } returns Response(data = SubmitProfileResponse())
+        coEvery { api.putDayData(any()) } returns Response(data = EmptyResponse())
         val putData: PutDayData = mockk()
         repo.putDayData(putData)
         coVerify { api.putDayData(putData) }
