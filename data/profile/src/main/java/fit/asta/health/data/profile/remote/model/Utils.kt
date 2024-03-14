@@ -62,6 +62,10 @@ const val Allergies_Field_Name = "alg"
 const val Cuisines_Field_Name = "cns"
 const val Restrictions_Field_Name = "frs"
 
+const val NON_VEG_QUERY_PARAM = "nv"
+const val FOOD_QUERY_PARAM = "food"
+const val CUISINES_QUERY_PARAM = "cu"
+
 const val StartTime_Field_Name = "str"
 const val EndTime_Field_Name = "end"
 const val Hour_Field_Name = "hr"
@@ -125,7 +129,7 @@ interface PhysiqueUnit {
 
 enum class HeightUnit(override val title: String, override val value: Int) : PhysiqueUnit {
     CM("cm", 1),
-    Inch("in", 6);
+    INCH("in", 6);
 
     companion object {
 
@@ -142,8 +146,31 @@ enum class HeightUnit(override val title: String, override val value: Int) : Phy
             }
             return null
         }
+
+        fun getType(value: Int): HeightUnit {
+            HeightUnit.entries.forEach {
+                if (it.value == value) return it
+            }
+            return HeightUnit.CM
+        }
     }
 
+}
+
+enum class BodyTypes(val value: Int) {
+
+    Weak(1),
+    Normal(2),
+    Fat(3);
+
+    companion object {
+        fun getBodyType(value: Int): BodyTypes {
+            BodyTypes.entries.forEach {
+                if (it.value == value) return it
+            }
+            return Weak
+        }
+    }
 }
 
 enum class WeightUnit(override val title: String, override val value: Int) : PhysiqueUnit {
@@ -163,6 +190,13 @@ enum class WeightUnit(override val title: String, override val value: Int) : Phy
                 if (unit.value == newValue) return index
             }
             return null
+        }
+
+        fun getType(value: Int): WeightUnit {
+            WeightUnit.entries.forEach {
+                if (it.value == value) return it
+            }
+            return KG
         }
     }
 }

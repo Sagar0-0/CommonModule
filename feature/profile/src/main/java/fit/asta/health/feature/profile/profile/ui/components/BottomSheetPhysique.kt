@@ -9,7 +9,6 @@ import androidx.compose.material3.SheetState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableIntStateOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -31,19 +30,19 @@ import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 fun BottomSheetPhysique(
     isVisible: Boolean,
     sheetState: SheetState,
-    isValid: (value: Float?, unit: Int) -> Boolean,
+    isValid: (value: Double?, unit: Int?) -> Boolean,
     label: String,
     text: String,
     units: List<PhysiqueUnit>,
-    selectedUnitIndex: Int,
+    selectedUnitIndex: Int?,
     onDismissRequest: () -> Unit,
-    onSaveClick: (value: Float?, unit: Int) -> Unit
+    onSaveClick: (value: Double?, unit: Int?) -> Unit
 ) {
     var textFieldValue by remember(isVisible, text) {
         mutableStateOf(TextFieldValue(text = text))
     }
     var updatedUnitIndex by rememberSaveable(isVisible, selectedUnitIndex) {
-        mutableIntStateOf(selectedUnitIndex)
+        mutableStateOf(selectedUnitIndex)
     }
 
     val focusRequester = remember { FocusRequester() }
@@ -72,7 +71,7 @@ fun BottomSheetPhysique(
         ) {
             CaptionTexts.Level2(text = label)
             RowToggleButtonGroup(
-                selectedIndex = updatedUnitIndex,
+                selectedIndex = updatedUnitIndex ?: -1,
                 buttonTexts = units.map { it.title },
                 onButtonClick = { index ->
                     updatedUnitIndex = index
@@ -90,13 +89,13 @@ fun BottomSheetPhysique(
             BottomSheetSaveButtons(
                 onSave = {
                     onSaveClick(
-                        textFieldValue.text.toFloatOrNull(),
-                        units[updatedUnitIndex].value
+                        textFieldValue.text.toDoubleOrNull(),
+                        updatedUnitIndex?.let { units[it].value }
                     )
                 },
                 saveButtonEnabled = isValid(
-                    textFieldValue.text.toFloatOrNull(),
-                    units[updatedUnitIndex].value
+                    textFieldValue.text.toDoubleOrNull(),
+                    updatedUnitIndex?.let { units[it].value }
                 )
             ) {
                 onDismissRequest()

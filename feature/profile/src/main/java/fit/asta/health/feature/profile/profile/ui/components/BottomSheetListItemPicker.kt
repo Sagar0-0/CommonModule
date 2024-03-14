@@ -3,15 +3,17 @@ package fit.asta.health.feature.profile.profile.ui.components
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
+import androidx.compose.foundation.layout.ExperimentalLayoutApi
+import androidx.compose.foundation.layout.FlowRow
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.AddCircle
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.Stable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import com.google.accompanist.flowlayout.FlowRow
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -19,7 +21,9 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
+@OptIn(ExperimentalLayoutApi::class)
 @Composable
+@Stable
 fun BottomSheetListItemPicker(
     name: String,
     list: List<UserProperties>,
@@ -46,15 +50,11 @@ fun BottomSheetListItemPicker(
             }
             AnimatedVisibility(list.isNotEmpty()) {
                 FlowRow(
-                    mainAxisSpacing = AppTheme.spacing.level0,
                     modifier = Modifier.padding(top = AppTheme.spacing.level2),
                 ) {
                     list.forEach {
                         AppCard(
                             modifier = Modifier.padding(AppTheme.spacing.level1),
-//                            colors = CardDefaults.cardColors(
-//                                contentColor = AppTheme.colors.surfaceVariant
-//                            )
                         ) {
                             BodyTexts.Level3(
                                 text = it.name,

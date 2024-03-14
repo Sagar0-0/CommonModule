@@ -1,9 +1,8 @@
-package fit.asta.health.data.water.check.model
+package fit.asta.health.data.water.local.entity
 
 import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
-import javax.annotation.processing.Generated
 
 @Entity(tableName = "history")
 data class History(

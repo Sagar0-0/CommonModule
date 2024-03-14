@@ -113,22 +113,25 @@ class HealthScreenState(
         onEvent(UserProfileEvent.GetHealthProperties(bottomSheets[sheetIndex].getQueryParam))
     }
 
-    fun getUpdatedData(): Health {
-        return updatedHealth
-    }
-
     fun saveProperties(list: List<UserProperties>) {
         bottomSheets[currentListIndex.intValue].list.apply {
-            clear()
-            addAll(list)
+            putIfAbsent(list)
         }
         onEvent(
             UserProfileEvent.SavePropertiesList(
                 Health_Screen_Name,
                 bottomSheets[currentListIndex.intValue].fieldName,
-                list
+                bottomSheets[currentListIndex.intValue].list.toList()
             )
         )
+    }
+
+    private fun SnapshotStateList<UserProperties>.putIfAbsent(list: List<UserProperties>) {
+        list.forEach {
+            if (!this.contains(it)) {
+                this.add(it)
+            }
+        }
     }
 
     fun getCurrentList() = bottomSheets[currentListIndex.intValue].list.toList()

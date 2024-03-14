@@ -18,7 +18,7 @@ interface ProfileRepo {
     suspend fun createBasicProfile(basicProfileDTO: BasicProfileDTO): ResponseState<SubmitProfileResponse>
     suspend fun checkReferralCode(code: String): ResponseState<CheckReferralDTO>
     suspend fun getUserProfile(uid: String): ResponseState<UserProfileResponse>
-    suspend fun getHealthProperties(propertyType: String): ResponseState<List<UserProperties>>
+    suspend fun getUserProperties(queryParam: String): ResponseState<List<UserProperties>>
 
     suspend fun setName(uid: String, name: String): ResponseState<SubmitProfileResponse>
     suspend fun setGenderDetails(
@@ -37,13 +37,13 @@ interface ProfileRepo {
 
     suspend fun saveHeight(
         uid: String,
-        height: Float,
+        height: Double,
         unit: Int
     ): ResponseState<SubmitProfileResponse>
 
     suspend fun saveWeight(
         uid: String,
-        weight: Float,
+        weight: Double,
         unit: Int
     ): ResponseState<SubmitProfileResponse>
 
@@ -61,5 +61,12 @@ interface ProfileRepo {
         screenName: String,
         fieldName: String,
         timeSchedule: TimeSchedule
+    ): ResponseState<SubmitProfileResponse>
+
+    suspend fun saveInt(
+        uid: String,
+        screenName: String,
+        fieldName: String,
+        value: Int
     ): ResponseState<SubmitProfileResponse>
 }

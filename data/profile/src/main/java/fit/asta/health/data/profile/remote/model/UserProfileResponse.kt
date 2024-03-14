@@ -55,11 +55,11 @@ data class UserProfileAddress(
 @Parcelize
 data class Physique(
     @SerializedName(BodyType_Field_Name) val bodyType: Int? = 0,
-    @SerializedName(Bmi_Field_Name) val bmi: Float? = 0f,
+    @SerializedName(Bmi_Field_Name) val bmi: Double? = 0.0,
     @SerializedName(BmiUnit_Field_Name) val bmiUnit: Int? = 0,
-    @SerializedName(Height_Field_Name) val height: Float? = 0f,
+    @SerializedName(Height_Field_Name) val height: Double? = 0.0,
     @SerializedName(HeightUnit_Field_Name) val heightUnit: Int? = 0,
-    @SerializedName(Weight_Field_Name) val weight: Float? = 0f,
+    @SerializedName(Weight_Field_Name) val weight: Double? = 0.0,
     @SerializedName(WeightUnit_Field_Name) val weightUnit: Int? = 0,
 ) : Parcelable
 

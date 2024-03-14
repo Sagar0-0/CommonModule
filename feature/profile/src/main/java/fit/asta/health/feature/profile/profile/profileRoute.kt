@@ -131,6 +131,10 @@ fun NavGraphBuilder.profileRoute(
                             event.timeSchedule
                         )
                     }
+
+                    is UserProfileEvent.SaveBodyType -> {
+                        profileViewModel.saveBodyType(event.value)
+                    }
                 }
             }
         )

@@ -1,16 +1,16 @@
-package fit.asta.health.data.water.model
+package fit.asta.health.data.water.repo
 
 import dagger.hilt.android.scopes.ActivityScoped
-import fit.asta.health.data.water.check.model.BevDataDetails
-import fit.asta.health.data.water.check.model.ConsumptionHistory
-import fit.asta.health.data.water.check.model.Goal
-import fit.asta.health.data.water.check.model.History
-import fit.asta.health.data.water.db.HistoryDao
+import fit.asta.health.data.water.local.HistoryDao
+import fit.asta.health.data.water.local.entity.BevDataDetails
+import fit.asta.health.data.water.local.entity.ConsumptionHistory
+import fit.asta.health.data.water.local.entity.Goal
+import fit.asta.health.data.water.local.entity.History
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
 @ActivityScoped
-class HistoryRepo @Inject constructor(val historyDao: HistoryDao) {
+class HistoryRepo @Inject constructor(private val historyDao: HistoryDao) {
     fun getAllHistory(): Flow<List<History>> = historyDao.getAllHistory()
     fun getAllLocalBevHistory(): Flow<List<BevDataDetails>> = historyDao.getAllLocalBevHistory()
     fun getGoal(): Flow<List<Goal>> = historyDao.getGoal()

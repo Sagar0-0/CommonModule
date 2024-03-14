@@ -21,8 +21,8 @@ sealed interface UserProfileEvent {
         val pregnancyWeek: Int?
     ) : UserProfileEvent
 
-    data class SaveHeight(val height: Float, val unit: Int) : UserProfileEvent
-    data class SaveWeight(val weight: Float, val unit: Int) : UserProfileEvent
+    data class SaveHeight(val height: Double, val unit: Int) : UserProfileEvent
+    data class SaveWeight(val weight: Double, val unit: Int) : UserProfileEvent
     data class SavePropertiesList(
         val screenName: String,
         val fieldName: String,
@@ -35,6 +35,8 @@ sealed interface UserProfileEvent {
         val fieldName: String,
         val timeSchedule: TimeSchedule
     ) : UserProfileEvent
+
+    data class SaveBodyType(val value: Int) : UserProfileEvent
 
     data object NavigateToReferral : UserProfileEvent
 }

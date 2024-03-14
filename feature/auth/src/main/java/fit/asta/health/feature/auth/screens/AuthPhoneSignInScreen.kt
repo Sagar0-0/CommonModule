@@ -2,12 +2,14 @@ package fit.asta.health.feature.auth.screens
 
 import android.app.Activity
 import android.widget.Toast
-import androidx.compose.animation.Crossfade
+import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
+import androidx.compose.foundation.rememberScrollState
+import androidx.compose.foundation.verticalScroll
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
@@ -16,6 +18,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.PhoneAuthProvider
 import fit.asta.health.common.utils.UiState
@@ -23,10 +26,12 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.background.AppScaffold
+import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.auth.components.AuthNumberInputUI
 import fit.asta.health.feature.auth.components.AuthOtpVerificationUI
 import fit.asta.health.feature.auth.util.OtpVerifier
+import fit.asta.health.resources.drawables.R
 
 sealed interface PhoneAuthUiEvent {
     data class SignInWithCredentials(val authCredential: AuthCredential) : PhoneAuthUiEvent
@@ -142,49 +147,52 @@ fun AuthPhoneSignInScreen(
         Box(
             modifier = Modifier
                 .padding(padding)
-                .fillMaxSize()
-                .padding(horizontal = AppTheme.spacing.level2),
+                .fillMaxSize(),
             contentAlignment = Alignment.Center
         ) {
             Column(
+                modifier = Modifier
+                    .verticalScroll(rememberScrollState())
+                    .padding(horizontal = AppTheme.spacing.level2),
                 verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2),
                 horizontalAlignment = Alignment.CenterHorizontally
             ) {
 
+                //App logo
+                AppLocalImage(painter = painterResource(id = R.drawable.splash_logo))
+
                 // heading Text asking user to give his inputs
                 TitleTexts.Level2(text = textToShow)
 
-                // This Contains the Phone Number Input UI
-                Crossfade(
-                    targetState = otpVisible,
-                    label = ""
-                ) { otpScreen ->
-                    if (!otpScreen) {
-                        AuthNumberInputUI(
-                            phoneNumber = phoneNumber,
-                            countryCode = countryCode,
-                            onPhoneNumberChange = {
-                                phoneNumber = it
-                            },
-                            onCountryCodeChange = {
-                                countryCode = it
-                            },
-                            onGenerateOtpClick = onSendOtp
-                        )
-                    } else {
-                        AuthOtpVerificationUI(
-                            otp = otp,
-                            onOtpTextChange = {
-                                otp = it
-                            },
-                            onWrongNumberButtonClick = {
-                                otp = ""
-                                otpVisible = false
-                            },
-                            onVerifyOtpClick = onOtpSubmit,
-                            onResendOtpClick = onSendOtp
-                        )
-                    }
+
+                //Phone UI
+                AuthNumberInputUI(
+                    phoneNumber = phoneNumber,
+                    countryCode = countryCode,
+                    onPhoneNumberChange = {
+                        phoneNumber = it
+                    },
+                    onCountryCodeChange = {
+                        countryCode = it
+                    },
+                    otpVisible = otpVisible,
+                    onGenerateOtpClick = onSendOtp
+                )
+
+                //OTP UI
+                AnimatedVisibility(otpVisible) {
+                    AuthOtpVerificationUI(
+                        otp = otp,
+                        onOtpTextChange = {
+                            otp = it
+                        },
+                        onWrongNumberButtonClick = {
+                            otp = ""
+                            otpVisible = false
+                        },
+                        onVerifyOtpClick = onOtpSubmit,
+                        onResendOtpClick = onSendOtp
+                    )
                 }
             }
         }

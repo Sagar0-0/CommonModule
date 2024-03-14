@@ -41,7 +41,7 @@ fun HealthScreen(
         userProfileState.healthScreenState.bottomSheets.forEachIndexed { index, type ->
             BottomSheetListItemPicker(
                 name = type.title,
-                list = type.list,
+                list = type.list.toList(),
             ) {
                 userProfileState.healthScreenState.openHealthBottomSheet(
                     bottomSheetState,

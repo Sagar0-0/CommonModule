@@ -55,7 +55,7 @@ fun LifestyleScreen(
         userProfileState.lifestyleScreenState.propertiesList.forEachIndexed { index, type ->
             BottomSheetListItemPicker(
                 name = type.name,
-                list = type.list
+                list = type.list.toList()
             ) {
                 userProfileState.lifestyleScreenState.openPropertiesBottomSheet(
                     propertiesSheetState,

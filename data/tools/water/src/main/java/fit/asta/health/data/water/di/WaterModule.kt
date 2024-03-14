@@ -7,16 +7,15 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.data.water.db.HistoryDatabase
-import fit.asta.health.data.water.db.WaterToolDatabase
-import fit.asta.health.data.water.model.HistoryRepo
-import fit.asta.health.data.water.model.WaterLocalRepo
-import fit.asta.health.data.water.model.WaterLocalRepoImpl
-import fit.asta.health.data.water.model.WaterToolDataMapper
-import fit.asta.health.data.water.model.WaterToolRepo
-import fit.asta.health.data.water.model.WaterToolRepoImpl
-import fit.asta.health.data.water.model.api.WaterApi
-import fit.asta.health.data.water.model.api.WaterRestApi
+import fit.asta.health.data.water.local.HistoryDatabase
+import fit.asta.health.data.water.local.WaterToolDatabase
+import fit.asta.health.data.water.remote.WaterApi
+import fit.asta.health.data.water.repo.HistoryRepo
+import fit.asta.health.data.water.repo.WaterLocalRepo
+import fit.asta.health.data.water.repo.WaterLocalRepoImpl
+import fit.asta.health.data.water.repo.WaterToolRepo
+import fit.asta.health.data.water.repo.WaterToolRepoImpl
+import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -26,27 +25,13 @@ object WaterModule {
 
     @Singleton
     @Provides
-    fun provideWaterApi(client: OkHttpClient): WaterApi {
-        return WaterRestApi(client)
-    }
+    fun provideWaterApi(client: OkHttpClient): WaterApi =
+        NetworkUtil.getRetrofit(client).create(WaterApi::class.java)
 
     @Singleton
     @Provides
-    fun provideWaterToolDataMapper(): WaterToolDataMapper {
-        return WaterToolDataMapper()
-    }
-
-    @Singleton
-    @Provides
-    fun provideWaterToolRepo(
-        remoteApi: WaterApi,
-        waterToolMapper: WaterToolDataMapper,
-    ): WaterToolRepo {
-        return WaterToolRepoImpl(
-            remoteApi = remoteApi,
-            mapper = waterToolMapper
-        )
-    }
+    fun provideWaterToolRepo(remoteApi: WaterApi): WaterToolRepo =
+        WaterToolRepoImpl(remoteApi = remoteApi)
 
     @Singleton
     @Provides
@@ -58,7 +43,6 @@ object WaterModule {
         "water-database"
     ).build()
 
-
     @Singleton
     @Provides
     fun provideHistoryDatabase(
@@ -68,7 +52,6 @@ object WaterModule {
         HistoryDatabase::class.java,
         "HistoryDatabase"
     ).build()
-
 
     @Singleton
     @Provides
