@@ -9,8 +9,6 @@ import fit.asta.health.network.utils.NetworkUtil
 import fit.asta.health.sunlight.remote.SunlightApi
 import fit.asta.health.sunlight.repo.SunlightRepo
 import fit.asta.health.sunlight.repo.SunlightRepoImpl
-import fit.asta.health.sunlight.service.SunDurationController
-import fit.asta.health.sunlight.service.SunDurationControllerImpl
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -30,8 +28,5 @@ object SunlightModule {
 abstract class SunlightBindsModule{
     @Binds
     abstract fun provideSunlightRepo(sunlightRepo: SunlightRepoImpl): SunlightRepo
-    @Binds
-    abstract fun provideDurationController(durationControllerImpl: SunDurationControllerImpl): SunDurationController
-
 }
 

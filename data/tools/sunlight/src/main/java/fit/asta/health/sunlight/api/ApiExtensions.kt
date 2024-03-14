@@ -7,8 +7,6 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.SUCCESS_STATUS_CODE
 import kotlinx.coroutines.flow.FlowCollector
-//import fit.asta.health.resources.strings.R as StrR
-
 
 internal suspend fun <T> FlowCollector<ResponseState<T>>.emitResponse(
     onSuccess: suspend () -> Unit = {},

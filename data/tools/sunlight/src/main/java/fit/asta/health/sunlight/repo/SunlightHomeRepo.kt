@@ -5,21 +5,20 @@ import fit.asta.health.sunlight.remote.model.HelpAndNutrition
 import fit.asta.health.sunlight.remote.model.SessionDetailBody
 import fit.asta.health.sunlight.remote.model.SunlightHomeData
 import fit.asta.health.sunlight.remote.model.SunlightSessionData
-import kotlinx.coroutines.flow.Flow
 
 interface SunlightHomeRepo {
-    fun getSunlightHomeData(
+   suspend fun getSunlightHomeData(
         uid: String,
         lat: String,
         lon: String,
         date: Long,
         loc: String,
-    ): Flow<ResponseState<SunlightHomeData>>
+    ):ResponseState<SunlightHomeData>
 
-    fun getSupplementAndFoodInfo(
-    ): Flow<ResponseState<HelpAndNutrition>>
+    suspend fun getSupplementAndFoodInfo(
+    ): ResponseState<HelpAndNutrition>
 
-    fun getSunlightSessionData(
+    suspend fun getSunlightSessionData(
         data: SessionDetailBody
-    ): Flow<ResponseState<SunlightSessionData>>
+    ): ResponseState<SunlightSessionData>
 }

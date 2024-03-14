@@ -1,4 +1,4 @@
-package fit.asta.health.sunlight.feature
+package fit.asta.health.sunlight.feature.utils
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -14,7 +14,7 @@ val WhiteTransparent = Color.White.copy(alpha = 0.5f)
 val BlackTransparent = Color.Black.copy(alpha = 0.5f)
 
 
-fun LazyListScope.gridItems(
+/*fun LazyListScope.gridItems(
     count: Int,
     nColumns: Int,
     horizontalArrangement: Arrangement.Horizontal = Arrangement.Start,
@@ -56,7 +56,7 @@ fun <T> LazyListScope.gridItems(
             }
         }
     }
-}
+}*/
 
 val rainbowColors = listOf(
     Color(0xFFe74c3c),

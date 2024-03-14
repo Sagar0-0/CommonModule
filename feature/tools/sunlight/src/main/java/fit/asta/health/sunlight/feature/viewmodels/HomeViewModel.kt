@@ -26,13 +26,13 @@ import fit.asta.health.sunlight.remote.model.SunlightHomeData
 import fit.asta.health.sunlight.remote.model.SunlightSessionData
 import fit.asta.health.sunlight.remote.model.Sup
 import fit.asta.health.sunlight.repo.SunlightHomeRepoImpl
+import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.collectLatest
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
 import kotlinx.coroutines.launch
+import kotlinx.coroutines.withContext
 import java.util.Calendar
 import javax.inject.Inject
 import kotlin.math.ceil
@@ -54,9 +54,9 @@ class HomeViewModel @Inject constructor(
     private val totalDConsumed = mutableStateOf("")
     private var achievedIU = 0L
     private var dPerMin = 0L
-    var millisOver = 0L
-    var totalTimeMillis = 0L
-    var millisRemaining = 0L
+    private var millisOver = 0L
+    private var totalTimeMillis = 0L
+    private var millisRemaining = 0L
     val sessionState = mutableStateOf(SunlightSessionData())
     var navigateToCondition: (() -> Unit) = {}
     var navigateToResultScreen: (() -> Unit) = {}
@@ -196,25 +196,25 @@ class HomeViewModel @Inject constructor(
     val sunlightDataState: StateFlow<SunlightHomeState> = _sunlightDataState.asStateFlow()
 
     fun getHomeScreenData() {
-        _sunlightDataState.value = _sunlightDataState.value.copy(isLoading = true)
+        _sunlightDataState.value = _sunlightDataState.value.copy(isLoading = false)
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
-                repository.getSunlightHomeData(
-                    uid,
-                    pref.lat.toString(),
-                    pref.long.toString(),
-                    getCurrentDateTime(),
-                    pref.currentAddress
-                ).onEach { dataState ->
-                    _homeState.emit(dataState.toUiState())
-                    when (val data = dataState.toUiState()) {
+                withContext(Dispatchers.IO) {
+                    val data = repository.getSunlightHomeData(
+                        uid,
+                        pref.lat.toString(),
+                        pref.long.toString(),
+                        getCurrentDateTime(),
+                        pref.currentAddress
+                    ).toUiState()
+                    _homeState.emit(data)
+                    when (data) {
                         UiState.Loading -> {
-                            _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = true))
+                            _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
                         }
 
                         is UiState.Success -> {
                             skinConditionData.clear()
-
                             updateDataMapper(data)
                             data.data.let {
                                 it.sunLightProgressData?.achIu.let { ach ->
@@ -290,7 +290,7 @@ class HomeViewModel @Inject constructor(
                             _sunlightDataState.emit(_sunlightDataState.value.copy(isLoading = false))
                         }
                     }
-                }.launchIn(viewModelScope)
+                }
             }
         }
     }
@@ -312,25 +312,25 @@ class HomeViewModel @Inject constructor(
 
     fun getSessionResult() {
         _sessionResultDataState.value = _sessionResultDataState.value.copy(isLoading = true)
-        repository.getSunlightSessionData(
-            SessionDetailBody(
-                uid = uid,
-                dur = sessionState.value.getDuration(),
-                temp = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currTemp
-                    ?: 0.0),
-                uv = ceil(
-                    sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
-                        ?: 0.0
-                ).toInt(),
-                spf = skinConditionDataMapper[SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN]?.code
-                    ?: "",
-                start = sessionState.value.startTime.toString(),
-                end = sessionState.value.endTime.toString(),
-                exp = skinConditionDataMapper[SkinConditionScreenCode.EXPOSURE_SCREEN]?.code?.toIntOrNull()
-                    ?: 0
-            )
-        ).onEach { dataState ->
-            when (val data = dataState.toUiState()) {
+        viewModelScope.launch {
+            when (val data = repository.getSunlightSessionData(
+                SessionDetailBody(
+                    uid = uid,
+                    dur = sessionState.value.getDuration(),
+                    temp = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currTemp
+                        ?: 0.0),
+                    uv = ceil(
+                        sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currUv
+                            ?: 0.0
+                    ).toInt(),
+                    spf = skinConditionDataMapper[SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN]?.code
+                        ?: "",
+                    start = sessionState.value.startTime.toString(),
+                    end = sessionState.value.endTime.toString(),
+                    exp = skinConditionDataMapper[SkinConditionScreenCode.EXPOSURE_SCREEN]?.code?.toIntOrNull()
+                        ?: 0
+                )
+            ).toUiState()) {
                 UiState.Loading -> {
                     _sessionResultDataState.emit(_sessionResultDataState.value.copy(isLoading = true))
                 }
@@ -355,7 +355,7 @@ class HomeViewModel @Inject constructor(
                     _sessionResultDataState.emit(_sessionResultDataState.value.copy(isLoading = false))
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
 
@@ -366,9 +366,9 @@ class HomeViewModel @Inject constructor(
 
     fun getSupplementAndFoodInfo() {
         _helpAndSuggestionState.value = UiState.Loading
-        repository.getSupplementAndFoodInfo().onEach { dataState ->
-            _helpAndSuggestionState.emit(dataState.toUiState())
-        }.launchIn(viewModelScope)
+        viewModelScope.launch {
+            _helpAndSuggestionState.emit(repository.getSupplementAndFoodInfo().toUiState())
+        }
     }
 
 

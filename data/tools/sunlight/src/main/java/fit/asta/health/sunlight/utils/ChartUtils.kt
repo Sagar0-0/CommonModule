@@ -14,11 +14,11 @@ object ChartUtils {
     fun calculateAngle(start: String, end: String): Double {
         val startDate = start.toDate()?.time?.toDouble() ?: 0.0
         val endDate = end.toDate()?.time?.toDouble() ?: 0.0
-        val currentDate = Date().time.toDouble() ?: 0.0
+        val currentDate = Date().time.toDouble()
 
         return when {
-            currentDate < (startDate ?: 0.0) -> 0.0
-            currentDate > (endDate ?: 0.0) -> 180.0
+            currentDate < startDate -> 0.0
+            currentDate > endDate -> 180.0
             else -> {
                 val totalDuration = endDate - startDate
                 val elapsedDuration = currentDate - startDate
