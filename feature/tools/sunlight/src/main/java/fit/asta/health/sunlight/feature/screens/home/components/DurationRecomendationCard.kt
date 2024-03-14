@@ -1,6 +1,5 @@
 package fit.asta.health.sunlight.feature.screens.home.components
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.width
@@ -8,13 +7,11 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.MutableState
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Brush
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.animations.AppDivider
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.sunlight.feature.rainbowColors
 
 @Composable
 fun DurationRecommendationCard(

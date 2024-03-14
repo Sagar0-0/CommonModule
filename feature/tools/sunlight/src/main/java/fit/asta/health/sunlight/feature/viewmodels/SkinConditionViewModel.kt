@@ -1,6 +1,5 @@
 package fit.asta.health.sunlight.feature.viewmodels
 
-import android.util.Log
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
@@ -16,15 +15,13 @@ import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinColorUt
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinConditionScreenCode
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinConditionScreens
 import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinConditionState
-import fit.asta.health.sunlight.feature.screens.skin_conditions.util.SkinExposureUtil
 import fit.asta.health.sunlight.remote.model.SkinConditionBody
 import fit.asta.health.sunlight.remote.model.Sup
 import fit.asta.health.sunlight.repo.SunlightRepo
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.StateFlow
 import kotlinx.coroutines.flow.asStateFlow
-import kotlinx.coroutines.flow.launchIn
-import kotlinx.coroutines.flow.onEach
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
@@ -43,10 +40,6 @@ class SkinConditionViewModel @Inject constructor(
         when (event) {
             is SkinConditionEvents.OnDataUpdate -> {
                 conditionUpdateData[event.id] = event.data
-                Log.d("suntool", "onEvent: ${event.id}   ,,,    ${event.data}")
-                conditionUpdateData.forEach{data->
-                    Log.d("condition", "sunlightNavigation: ${data.code}")
-                }
             }
 
             is SkinConditionEvents.OnSkinColor -> {
@@ -78,8 +71,9 @@ class SkinConditionViewModel @Inject constructor(
 
     private fun getSkinExposureData() {
         if (skinExposureState.value.skinConditionResponse.isNullOrEmpty()) {
-            repo.getScreenContentList(SkinConditionScreenCode.EXPOSURE_SCREEN).onEach { dataState ->
-                when (val data = dataState.toUiState()) {
+            viewModelScope.launch {
+                when (val data = repo.getScreenContentList(SkinConditionScreenCode.EXPOSURE_SCREEN)
+                    .toUiState()) {
                     UiState.Loading -> {
                         _skinExposureState.emit(_skinExposureState.value.copy(isLoading = true))
                     }
@@ -99,7 +93,7 @@ class SkinConditionViewModel @Inject constructor(
 
                     }
                 }
-            }.launchIn(viewModelScope)
+            }
         }
     }
 
@@ -108,9 +102,9 @@ class SkinConditionViewModel @Inject constructor(
     val skinColorState: StateFlow<SkinConditionState> = _skinColorState.asStateFlow()
 
     private fun getSkinColor() {
-        repo.getScreenContentList(SkinConditionScreenCode.SKIN_COLOR_SCREEN).onEach { dataState ->
-
-            when (val data = dataState.toUiState()) {
+        viewModelScope.launch {
+            when (val data =
+                repo.getScreenContentList(SkinConditionScreenCode.SKIN_COLOR_SCREEN).toUiState()) {
                 UiState.Loading -> {
                     _skinColorState.emit(_skinColorState.value.copy(isLoading = true))
                 }
@@ -130,7 +124,7 @@ class SkinConditionViewModel @Inject constructor(
 
                 }
             }
-        }.launchIn(viewModelScope)
+        }
     }
 
     //skin color screen
@@ -141,29 +135,29 @@ class SkinConditionViewModel @Inject constructor(
     val spfScreenState: StateFlow<SkinConditionState> = _spfState.asStateFlow()
 
     fun getSpfScreen() {
-        repo.getScreenContentList(SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN)
-            .onEach { dataState ->
-                when (val data = dataState.toUiState()) {
-                    UiState.Loading -> {
-                        _spfState.emit(_spfState.value.copy(isLoading = true))
-                    }
+        viewModelScope.launch {
+            when (val data = repo.getScreenContentList(SkinConditionScreenCode.SUNSCREEN_SPF_SCREEN)
+                .toUiState()) {
+                UiState.Loading -> {
+                    _spfState.emit(_spfState.value.copy(isLoading = true))
+                }
 
-                    is UiState.Success -> {
-                        data.data.let {
-                            _spfState.emit(
-                                _spfState.value.copy(
-                                    skinConditionResponse = it,
-                                    isLoading = false
-                                )
+                is UiState.Success -> {
+                    data.data.let {
+                        _spfState.emit(
+                            _spfState.value.copy(
+                                skinConditionResponse = it,
+                                isLoading = false
                             )
-                        }
-                    }
-
-                    else -> {
-
+                        )
                     }
                 }
-            }.launchIn(viewModelScope)
+
+                else -> {
+
+                }
+            }
+        }
     }
 
 
@@ -176,37 +170,39 @@ class SkinConditionViewModel @Inject constructor(
 
     private val _supplementPeriodState: MutableStateFlow<SkinConditionState> =
         MutableStateFlow(SkinConditionState())
-    val supplementPeriodState: StateFlow<SkinConditionState> = _supplementPeriodState.asStateFlow()
+    val supplementPeriodState: StateFlow<SkinConditionState> =
+        _supplementPeriodState.asStateFlow()
 
     fun getSupplementPeriod() {
-        repo.getScreenContentList(SkinConditionScreenCode.SUPPLEMENT_PERIOD_LIST)
-            .onEach { dataState ->
-                when (val data = dataState.toUiState()) {
-                    UiState.Loading -> {
-                        _supplementPeriodState.emit(_supplementPeriodState.value.copy(isLoading = true))
-                    }
-
-                    is UiState.Success -> {
-                        intervalOptions.clear()
-                        data.data.let {
-                            _supplementPeriodState.emit(
-                                _supplementPeriodState.value.copy(
-                                    skinConditionResponse = it,
-                                    isLoading = false
-                                )
-                            )
-                            it.forEach { options ->
-                                intervalOptions.add(options.name ?: "-")
-                            }
-                        }
-                        getUomData()
-                    }
-
-                    else -> {
-                        getUomData()
-                    }
+        viewModelScope.launch {
+            when (val data =
+                repo.getScreenContentList(SkinConditionScreenCode.SUPPLEMENT_PERIOD_LIST)
+                    .toUiState()) {
+                UiState.Loading -> {
+                    _supplementPeriodState.emit(_supplementPeriodState.value.copy(isLoading = true))
                 }
-            }.launchIn(viewModelScope)
+
+                is UiState.Success -> {
+                    intervalOptions.clear()
+                    data.data.let {
+                        _supplementPeriodState.emit(
+                            _supplementPeriodState.value.copy(
+                                skinConditionResponse = it,
+                                isLoading = false
+                            )
+                        )
+                        it.forEach { options ->
+                            intervalOptions.add(options.name ?: "-")
+                        }
+                    }
+                    getUomData()
+                }
+
+                else -> {
+                    getUomData()
+                }
+            }
+        }
     }
 
     private val _uomState: MutableStateFlow<SkinConditionState> =
@@ -214,29 +210,29 @@ class SkinConditionViewModel @Inject constructor(
     val uomState: StateFlow<SkinConditionState> = _uomState.asStateFlow()
 
     fun getUomData() {
-        repo.getScreenContentList(SkinConditionScreenCode.SUPPLEMENT_UNITS)
-            .onEach { dataState ->
-                when (val data = dataState.toUiState()) {
-                    UiState.Loading -> {
-                        _uomState.emit(_uomState.value.copy(isLoading = true))
-                    }
+        viewModelScope.launch {
+            when (val data =
+                repo.getScreenContentList(SkinConditionScreenCode.SUPPLEMENT_UNITS).toUiState()) {
+                UiState.Loading -> {
+                    _uomState.emit(_uomState.value.copy(isLoading = true))
+                }
 
-                    is UiState.Success -> {
-                        data.data.let {
-                            _uomState.emit(
-                                _uomState.value.copy(
-                                    skinConditionResponse = it,
-                                    isLoading = false
-                                )
+                is UiState.Success -> {
+                    data.data.let {
+                        _uomState.emit(
+                            _uomState.value.copy(
+                                skinConditionResponse = it,
+                                isLoading = false
                             )
-                        }
-                    }
-
-                    else -> {
-
+                        )
                     }
                 }
-            }.launchIn(viewModelScope)
+
+                else -> {
+
+                }
+            }
+        }
     }
 
 
@@ -245,29 +241,29 @@ class SkinConditionViewModel @Inject constructor(
     val skinTypeState: StateFlow<SkinConditionState> = _skinTypeState.asStateFlow()
 
     fun getSkinType() {
-        repo.getScreenContentList(SkinConditionScreenCode.SKIN_TYPE_SCREEN)
-            .onEach { dataState ->
-                when (val data = dataState.toUiState()) {
-                    UiState.Loading -> {
-                        _skinTypeState.emit(_skinTypeState.value.copy(isLoading = true))
-                    }
+        viewModelScope.launch {
+            when (val data =
+                repo.getScreenContentList(SkinConditionScreenCode.SKIN_TYPE_SCREEN).toUiState()) {
+                UiState.Loading -> {
+                    _skinTypeState.emit(_skinTypeState.value.copy(isLoading = true))
+                }
 
-                    is UiState.Success -> {
-                        data.data.let {
-                            _skinTypeState.emit(
-                                _skinTypeState.value.copy(
-                                    skinConditionResponse = it,
-                                    isLoading = false
-                                )
+                is UiState.Success -> {
+                    data.data.let {
+                        _skinTypeState.emit(
+                            _skinTypeState.value.copy(
+                                skinConditionResponse = it,
+                                isLoading = false
                             )
-                        }
-                    }
-
-                    else -> {
-
+                        )
                     }
                 }
-            }.launchIn(viewModelScope)
+
+                else -> {
+
+                }
+            }
+        }
     }
 
     val conditionUpdateData = mutableStateListOf<Prc>()
@@ -280,29 +276,35 @@ class SkinConditionViewModel @Inject constructor(
 
     fun updateSunlightData() {
         _updateDataState.value = UiState.Loading
-        repo.putSkinConditionData(
-            SkinConditionBody(
-                id = id.value,
-                uid = uid,
-                type = 4,
-                prc = conditionUpdateData.filter { it.code.isNotEmpty() }.distinctBy { it.code },
-                code = "sunlight",
-                sup = supplementData.value?.copy(
-                    unit = selectedUOM.value,
-                    intake = selectedDosage.value.isNotEmpty(),
-                    iu = if (selectedDosage.value.isEmpty()) {
-                        null
-                    } else selectedDosage.value.toInt(),
-                    prd = selectedIntervalOption.value
+        viewModelScope.launch {
+            when (val data = repo.putSkinConditionData(
+                SkinConditionBody(
+                    id = id.value,
+                    uid = uid,
+                    type = 4,
+                    prc = conditionUpdateData.filter { it.code.isNotEmpty() }
+                        .distinctBy { it.code },
+                    code = "sunlight",
+                    sup = supplementData.value?.copy(
+                        unit = selectedUOM.value,
+                        intake = selectedDosage.value.isNotEmpty(),
+                        iu = if (selectedDosage.value.isEmpty()) {
+                            null
+                        } else selectedDosage.value.toInt(),
+                        prd = selectedIntervalOption.value
+                    )
                 )
-            )
-        )
-            .onEach { dataState ->
-                _updateDataState.emit(dataState.toUiState())
-                if (dataState.toUiState() is UiState.Success) {
+            ).toUiState()) {
+                is UiState.Success -> {
+                    _updateDataState.emit(data)
                     popBackStack.invoke()
                 }
-            }.launchIn(viewModelScope)
+
+                else -> {
+                    _updateDataState.emit(data)
+                }
+            }
+        }
     }
 
 

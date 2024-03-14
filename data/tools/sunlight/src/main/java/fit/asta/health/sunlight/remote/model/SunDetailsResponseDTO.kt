@@ -1,4 +1,4 @@
-package com.hoho.assignmentsun.model
+package fit.asta.health.sunlight.remote.model
 
 import com.google.gson.annotations.SerializedName
 

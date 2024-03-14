@@ -33,7 +33,7 @@ import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.image.AppLocalImage
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.sunlight.feature.rainbowColors
+import fit.asta.health.sunlight.feature.utils.rainbowColors
 import fit.asta.health.sunlight.feature.screens.home.components.DurationRecommendationCard
 import fit.asta.health.sunlight.feature.screens.home.homeScreen.SunlightHomeState
 import fit.asta.health.resources.drawables.R as DrawR

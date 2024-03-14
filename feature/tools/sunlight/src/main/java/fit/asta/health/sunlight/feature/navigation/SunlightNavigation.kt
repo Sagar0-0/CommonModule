@@ -78,15 +78,6 @@ fun NavGraphBuilder.sunlightNavigation(
                         errorTitle = (homeState.value as UiState.ErrorMessage).resId,
                         errorMessage = "Please try again later"
                     )
-                    /* LaunchedEffect(Unit) {
-                         navController.navigateToSkinConditionScreen(
-                             "-",
-                             navOptions = { navOptionsBuilder ->
-                                 navOptionsBuilder.popUpTo(SunlightScreens.SunlightHomeScreen.route) {
-                                     inclusive = true
-                                 }
-                             })
-                     }*/
                 }
 
                 is UiState.NoInternet -> {

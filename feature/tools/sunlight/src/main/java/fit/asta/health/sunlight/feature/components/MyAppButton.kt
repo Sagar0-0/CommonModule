@@ -12,7 +12,7 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.TextStyle
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
-import fit.asta.health.sunlight.feature.WhiteTransparent
+import fit.asta.health.sunlight.feature.utils.WhiteTransparent
 
 
 @Composable

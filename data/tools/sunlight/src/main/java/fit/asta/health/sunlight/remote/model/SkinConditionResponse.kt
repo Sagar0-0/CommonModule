@@ -5,21 +5,7 @@ import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.Value
 
 
-//data class SkinConditionResponse (
-//
-//    @SerializedName("status" ) var status : Status?         = Status(),
-//    @SerializedName("data"   ) var data   : ArrayList<SkinConditionData> = arrayListOf()
-//
-//)
 
-//data class Status (
-//
-//    @SerializedName("code"  ) var code  : Int?     = null,
-//    @SerializedName("msg"   ) var msg   : String?  = null,
-//    @SerializedName("retry" ) var retry : Boolean? = null,
-//    @SerializedName("err"   ) var err   : String?  = null
-//
-//)
 data class SkinConditionResponseData (
     @SerializedName("id"    ) var id    : String? = null,
     @SerializedName("code"  ) var code  : String? = null,
