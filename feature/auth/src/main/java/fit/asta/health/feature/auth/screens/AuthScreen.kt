@@ -13,7 +13,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.data.onboarding.remote.model.Onboarding
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -37,7 +37,7 @@ import fit.asta.health.resources.strings.R
 @Composable
 fun AuthScreenControl(
     loginState: UiState<Unit>,
-    onboardingState: UiState<List<OnboardingData>>,
+    onboardingState: UiState<List<Onboarding>>,
     navigateToPhoneAuth: () -> Unit,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
