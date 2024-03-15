@@ -375,7 +375,7 @@ fun BevSearchBar(
                             // where we can get sliderValue also
                             viewModel.insertRecentAdded(History(0, text, 0))
                         }
-                        .background(Color.White, AppTheme.shape.level3))
+                        .background(Color.White, AppTheme.shape.level1))
             }
             bevItem.forEach {
                 Row(modifier = Modifier
