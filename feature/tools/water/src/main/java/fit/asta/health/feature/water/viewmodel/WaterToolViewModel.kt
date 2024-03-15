@@ -400,6 +400,10 @@ class WaterToolViewModel @Inject constructor(
                         qty = quantity.toDouble() / 1000
                     )
                 )
+                _uiState.value = _uiState.value.copy(
+                    recentConsumedBevName = title,
+                    recentConsumedBevQty = quantity
+                )
                 when (val result = repo.updateBeverageQty(
                     BevQty(
                         bev = title,
