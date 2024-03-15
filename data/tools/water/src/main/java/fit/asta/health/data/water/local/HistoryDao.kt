@@ -46,5 +46,8 @@ interface HistoryDao {
     @Query("Delete from bevQuantity where name = :name AND " +
             "id = (Select MAX(id) from bevQuantity where name = :name)")
     suspend fun undoConsumption(name : String) : Int
+
+    @Query("Select * from bevQuantity")
+    fun getBevConsumptionList() : Flow<List<BevQuantityConsumed>>
 //    @Query(SELECT goal FROM ConsumptionHistory )
 }

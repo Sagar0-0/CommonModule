@@ -19,6 +19,8 @@ class HistoryRepo @Inject constructor(private val historyDao: HistoryDao) {
         historyDao.getAllConsumptionHistory(date)
 
     fun getUndoConsumedQty(bevName : String) : Double = historyDao.getUndoQuantity(bevName)
+
+    fun getConsumedBevList() = historyDao.getBevConsumptionList()
     suspend fun undoConsumption(bevName : String) = historyDao.undoConsumption(bevName)
 
     suspend fun insertRecentAdded(history: History) = historyDao.insertRecentAdded(history)

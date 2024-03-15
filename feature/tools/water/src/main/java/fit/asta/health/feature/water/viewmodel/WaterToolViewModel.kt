@@ -226,9 +226,6 @@ class WaterToolViewModel @Inject constructor(
                         val goalData = list[0]
                         _goal.value = goalData.goal
                     }
-//                    else{
-//                        insertGoal(Goal(0,_goal.value.toString()))
-//                    }
                 }
         }
     }
@@ -255,12 +252,6 @@ class WaterToolViewModel @Inject constructor(
                             remainingToConsume = _remainingConsumption.value
                         )
                     }
-//                    else{
-//                        insertConsumptionHistory(
-//                            ConsumptionHistory(date = todayDate.toString(),
-//                            goal = _goal.value, totalConsumed = 0, remainingToConsume = 0)
-//                        )
-//                    }
                 }
         }
 
@@ -386,8 +377,8 @@ class WaterToolViewModel @Inject constructor(
         }
 
 
-    // Remote Data Update method
-    private fun updateBeverageData() {
+    // Local Data Update method
+    private fun updateBeverageDataLocal() {
         val title = _bevTitle.value
         val quantity = _bevQuantity.intValue
         viewModelScope.launch {
@@ -434,10 +425,17 @@ class WaterToolViewModel @Inject constructor(
         }
     }
 
+    // Remote Data Update method
+    private fun updateBeverageDataRemote(){
+        val consumedBevList = historyRepo.getConsumedBevList().stateIn(
+            viewModelScope, SharingStarted.Lazily, listOf()
+        )
+        // update to server when api created
+    }
     // Event Handler
     fun event(event: WTEvent) {
         when (event) {
-            WTEvent.UpdateBevQuantity -> updateBeverageData()
+            WTEvent.UpdateBevQuantity -> updateBeverageDataLocal()
             is WTEvent.UpdateBevDetails -> {
                 Log.d("rishi", "Event UpdateBev called")
                 _bevTitle.value = event.title
@@ -538,6 +536,8 @@ class WaterToolViewModel @Inject constructor(
                         _remainingConsumption.value
                     )
                 )
+                // update when api becomes avaliable
+            // updateBeverageDataRemote()
             }
 
             else -> {}
