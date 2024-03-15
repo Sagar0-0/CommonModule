@@ -1,6 +1,7 @@
 package fit.asta.health.feature.water.view.screen.ui
 
 import android.util.Log
+import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -33,6 +34,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
@@ -41,13 +43,16 @@ import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ButtonWithColor
 import fit.asta.health.designsystem.molecular.button.AppExtendedFloatingActionButton
+import fit.asta.health.designsystem.molecular.button.AppFilledButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCardWithColor
+import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
+import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import fit.asta.health.resources.drawables.R
 import kotlinx.coroutines.delay
@@ -55,6 +60,7 @@ import kotlinx.coroutines.delay
 @Composable
 fun SetOfDefaultChips(
     event: (WTEvent) -> Unit,
+    uiState: WaterToolUiState,
     viewModel: WaterToolViewModel = hiltViewModel(),
     waterQuantity: Int,
     coconutQuantity: Int,
@@ -97,6 +103,7 @@ fun SetOfDefaultChips(
                 val name = if (listSize == 0) "Water" else list[0].name
                 BevChips(
                     name = name,
+                    uiState = uiState,
                     containerColor = backGroundContainerColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     contentColor = backGroundContentColor(Color(0xFF092251), Color(0xFF99DDFF)),
                     R.drawable.water,
@@ -121,6 +128,7 @@ fun SetOfDefaultChips(
                 val name = if (listSize == 0) "Coconut" else list[1].name
                 BevChips(
                     name = name,
+                    uiState = uiState,
                     containerColor = backGroundContainerColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     contentColor = backGroundContentColor(Color(0xFF398300), Color(0xFFB6D83D)),
                     R.drawable.coconut,
@@ -162,6 +170,7 @@ fun SetOfDefaultChips(
                     val name = if (listSize == 0) "Not Defined" else list[2].name
                     BevChips(
                         name = name,
+                        uiState = uiState,
                         containerColor = backGroundContainerColor(
                             Color(0xFFE85714),
                             Color(0xFFE9B077)
@@ -189,6 +198,7 @@ fun SetOfDefaultChips(
                     val name = if (listSize == 0) "Water" else list[3].name
                     BevChips(
                         name = name,
+                        uiState = uiState,
                         containerColor = backGroundContainerColor(
                             Color(0xFFE9980B),
                             Color(0xFFEACE7F)
@@ -234,6 +244,7 @@ fun SetOfDefaultChips(
                 if (addedName.isNotEmpty()) {
                     BevChips(
                         addedName,
+                        uiState = uiState,
                         containerColor = backGroundContainerColor(
                             Color(0xFF9d9ad9),
                             Color(0xFFcedef0)
@@ -276,6 +287,7 @@ fun SetOfDefaultChips(
 @Composable
 fun BevChips(
     name: String,
+    uiState: WaterToolUiState,
     containerColor: Color,
     contentColor: Color,
     resId: Int,
@@ -323,15 +335,9 @@ fun BevChips(
                 onClickBeverage()
             }
         }
-       // AnimatedVisibility(visible = showUndoButton) {
-            ButtonWithColor(color = contentColor, text = "Undo",
-                modifier = Modifier.fillMaxWidth()) {
-                viewModel.showUndoDialog.value = true
-                event(WTEvent.UndoConsumption(name))
-               // event(WTEvent.ConsumptionDetails)
-                event(WTEvent.DeleteRecentConsumption(name))
-            }
-       // }
+        UndoCard(contentColor = contentColor, event = event,
+            name = name, consumptionExist = uiState.consumedBevExist,
+            undoQuantity = uiState.undoBevQty)
     }
 }
 
@@ -376,118 +382,58 @@ fun ClickableBeverage(
         }
     }
 }
-//@Composable
-//fun BeverageInfoCard(
-//    name: String,
-//    containerColor: Color,
-//    contentColor: Color,
-//    resId: Int,
-//    quantity: Int,
-//    onClick: () -> Unit,
-//    onClickBeverage: () -> Unit
-//) {
-//    var showUndoButton by remember {
-//        mutableStateOf(false)
-//    }
-//    AppElevatedCardWithColor(
-//        contentColor = contentColor,
-//        containerColor = containerColor,
-//        modifier = Modifier
-//            .scale(1.1f)
-//            .padding(8.dp)
-//    ) {
-//        Column(
-//            modifier = Modifier.clickable {
-//                onClick()
-//            },
-//            horizontalAlignment = Alignment.CenterHorizontally,
-//            verticalArrangement = Arrangement.Center
-//        ) {
-//            Row(
-//                horizontalArrangement = Arrangement.Center,
-//                verticalAlignment = Alignment.CenterVertically
-//            ) {
-//                AppIcon(
-//                    painter = painterResource(id = resId),
-//                    tint = contentColor,
-//                    modifier = Modifier
-//                        .padding(16.dp)
-//                        .clip(CircleShape)
-//                )
-//                BodyTexts.Level2(
-//                    text = " $quantity  ml",
-//                    color = contentColor,
-//                    modifier = Modifier.padding(
-//                        8.dp,end = 16.dp
-//                    )
-//                )
-//            }
-//            HeadingTexts.Level4(
-//                text = name,
-//                modifier = Modifier.padding()
-//            )
-//        }
-//        AppIcon(
-//            imageVector = Icons.Default.Edit, contentDescription = "Quantity",
-//            tint = containerColor,
-//            modifier = Modifier
-//                .scale(0.8f)
-//                .background(color = Color.White,shape = RoundedCornerShape(topEnd = 8.dp))
-//                .clickable {
-//                    showUndoButton = !showUndoButton
-//                }
-//        )
-//        AnimatedVisibility(visible = showUndoButton) {
-//            Row(
-//                verticalAlignment = Alignment.CenterVertically,
-//                horizontalArrangement = Arrangement.Center
-//            ) {
-//                Box(
-//                    contentAlignment = Alignment.Center,
-//                    modifier = Modifier.clickable {
-//
-//                    }
-//                ) {
-//                    Row(
-//                        horizontalArrangement = Arrangement.Center,
-//                        verticalAlignment = Alignment.CenterVertically,
-//                    ) {
-//                        AppIcon(
-//                            imageVector = Icons.AutoMirrored.Filled.Undo,
-//                            modifier = Modifier
-//                                .padding()
-//                                .scale(0.5f),
-//                        )
-//                        CaptionTexts.Level4(
-//                            text = "Undo", textAlign = TextAlign.Center,
-//                            modifier = Modifier.padding(start = 6.dp,end = 6.dp)
-//                        )
-//                    }
-//                }
-//                Box(
-//                    contentAlignment = Alignment.Center,
-//                    modifier = Modifier.clickable {
-//                        onClickBeverage()
-//                    }
-//                ) {
-//                    Row(
-//                        horizontalArrangement = Arrangement.Center,
-//                        verticalAlignment = Alignment.CenterVertically,
-//                    ) {
-//                        AppIcon(
-//                            imageVector = Icons.Default.Add,
-//                            modifier = Modifier
-//                                .padding()
-//                                .scale(0.5f)
-//                        )
-//                        CaptionTexts.Level4(
-//                            text = "Add", textAlign = TextAlign.Center,
-//                            modifier = Modifier.padding(start = 4.dp,end = 4.dp)
-//                        )
-//                    }
-//                }
-//            }
-//
-//        }
-//}
-//    }
+
+@Composable
+fun UndoCard(
+    contentColor: Color,
+    viewModel: WaterToolViewModel = hiltViewModel(),
+    event: (WTEvent) -> Unit,
+    name: String,
+    consumptionExist: Boolean,
+    undoQuantity : Int,
+) {
+    var showDialog by remember {
+        mutableStateOf(false)
+    }
+    ButtonWithColor(color = contentColor, text = "Undo",
+        modifier = Modifier.fillMaxWidth()) {
+        event(WTEvent.UndoConsumption(name))
+        showDialog = !showDialog
+    }
+   // }
+    AnimatedVisibility(visible = showDialog) {
+        AppAlertDialog(onDismissRequest = { /*TODO*/ },
+            text = {
+                BodyTexts.Level2(text = "Are You Sure, You want to undo this consumption,\n" +
+                        "${name} : ${undoQuantity} ml")
+            },
+            title = {
+                HeadingTexts.Level2(text = "Undo Consumption")
+            },
+            confirmButton = {
+                if(undoQuantity==0){
+                    MToast(message = "You have not consumed ${name}")
+                }
+                ButtonWithColor(
+                    color = contentColor, text = if(undoQuantity==0) "No Consumption" else "Undo",
+                    modifier = Modifier.fillMaxWidth()
+                ) {
+                    viewModel.showUndoDialog.value = true
+                    event(WTEvent.DeleteRecentConsumption(name))
+                    showDialog = !showDialog
+                }
+            },
+            dismissButton = {
+                AppFilledButton(textToShow = "Dismiss",
+                    modifier = Modifier.fillMaxWidth()) {
+                    showDialog = !showDialog
+                }
+            })
+    }
+
+}
+@Composable
+fun MToast(message : String) {
+    Toast.makeText(LocalContext.current,message,Toast.LENGTH_SHORT).show()
+}
+

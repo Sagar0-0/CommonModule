@@ -99,6 +99,7 @@ fun AppHomeScreen(
                 onClickSecondPref = onClickSecondPref,
                 onClickCustomize = onClickCustomize,
                 onClickRecentAdded = onClickRecentAdded,
+                uiState = uiState,
                 viewModel = viewModel
             )
 //            Spacer(modifier = Modifier.weight(1f))

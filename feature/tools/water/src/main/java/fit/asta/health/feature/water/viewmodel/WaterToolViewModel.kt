@@ -106,7 +106,7 @@ class WaterToolViewModel @Inject constructor(
     var _isLoading = mutableStateOf(false)
         private set
 
-    private var undoConsumedQty = MutableStateFlow(0.0)
+    private var undoConsumedQty = 0.0
 
     val filteredHistory: MutableStateFlow<List<History>> = MutableStateFlow(emptyList())
 
@@ -362,21 +362,27 @@ class WaterToolViewModel @Inject constructor(
     private fun getUndoConsumedQty(bevName: String) {
         viewModelScope.launch(Dispatchers.Default) {
             val num: Double = historyRepo.getUndoConsumedQty(bevName)
-            _totalConsumed.value -= (num * 1000.0).toFloat()
-            _totalConsumed.value = maxOf((0.0).toFloat(), _totalConsumed.value)
-            _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
+            undoConsumedQty = num
             _uiState.value = _uiState.value.copy(
-                totalConsumed = _totalConsumed.value.toInt(),
-                remainingToConsume = _remainingConsumption.value
+                undoBevQty = (undoConsumedQty*1000.0).toInt(),
             )
-            Log.d("rishi", "Here Undo Value : ${num} , TotalConsumed : ${_totalConsumed.value}")
         }
     }
 
     private fun undoConsumption(name: String) =
-        viewModelScope.launch {
-            historyRepo.undoConsumption(name)
-            Log.d("rishi", "Deleted Undo Row")
+        viewModelScope.launch(Dispatchers.Default) {
+            val res : Int = historyRepo.undoConsumption(name)
+            _totalConsumed.value -= (undoConsumedQty * 1000.0).toFloat()
+            _totalConsumed.value = maxOf((0.0).toFloat(), _totalConsumed.value)
+            _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
+            _uiState.value = _uiState.value.copy(
+                totalConsumed = _totalConsumed.value.toInt(),
+                remainingToConsume = _remainingConsumption.value,
+                undoBevQty = (undoConsumedQty*1000.0).toInt(),
+                consumedBevExist = res==1
+            )
+            Log.d("rishi", "Here Undo Value : ${undoConsumedQty} , TotalConsumed : ${_totalConsumed.value}")
+            Log.d("rishi", "Deleted Undo Row : $res")
         }
 
 
