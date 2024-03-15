@@ -3,7 +3,7 @@ package fit.asta.health.feature.scheduler.util
 import android.content.Context
 import android.text.format.DateFormat
 import android.text.format.DateUtils
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
 import java.util.Calendar
 import java.util.Locale
 

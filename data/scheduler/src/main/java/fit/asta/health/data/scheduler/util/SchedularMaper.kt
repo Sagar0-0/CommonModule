@@ -1,7 +1,7 @@
-package fit.asta.health.data.scheduler.remote
+package fit.asta.health.data.scheduler.util
 
 import fit.asta.health.common.utils.Constants
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.data.scheduler.local.model.TagEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.model.WeatherData

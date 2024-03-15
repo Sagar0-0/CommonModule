@@ -2,7 +2,7 @@ package fit.asta.health.navigation.today.ui.view
 
 import android.content.Context
 import fit.asta.health.common.utils.HourMinAmPm
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 
 sealed class HomeEvent {
     data class DeleteAlarm(val alarm: AlarmEntity, val context: Context) : HomeEvent()

@@ -1,8 +1,8 @@
-package fit.asta.health.data.scheduler.db
+package fit.asta.health.data.scheduler.local
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import fit.asta.health.data.scheduler.db.entity.Weekdays
+import fit.asta.health.data.scheduler.util.Weekdays
 import fit.asta.health.data.scheduler.remote.net.scheduler.Info
 import fit.asta.health.data.scheduler.remote.net.scheduler.Ivl
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta

@@ -2,18 +2,20 @@ package fit.asta.health.data.scheduler.repo
 
 import android.content.Context
 import fit.asta.health.common.utils.getApiResponseState
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.remote.SchedulerApiService
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.remote.SchedulerApi
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.network.utils.InputStreamRequestBody
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
+import javax.inject.Inject
 
-class AlarmBackendRepoImp(
+class AlarmBackendRepoImp
+@Inject constructor(
     private val context: Context,
-    private val remoteApi: SchedulerApiService,
+    private val remoteApi: SchedulerApi,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(

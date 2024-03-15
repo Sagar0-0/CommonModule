@@ -7,8 +7,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.getCurrentTime
-import fit.asta.health.data.scheduler.db.AlarmInstanceDao
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.AlarmInstanceDao
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.datastore.PrefManager

@@ -1,6 +1,5 @@
 package fit.asta.health.navigation.today.ui.view
 
-import android.util.Log
 import androidx.compose.animation.animateContentSize
 import androidx.compose.animation.core.CubicBezierEasing
 import androidx.compose.animation.core.LinearOutSlowInEasing
@@ -38,7 +37,7 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppCard
@@ -47,7 +46,6 @@ import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.resources.drawables.R
-import java.time.LocalDate
 
 @Composable
 fun TodayItem(

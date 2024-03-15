@@ -11,10 +11,10 @@ import androidx.core.content.ContextCompat
 import fit.asta.health.common.utils.Constants.CHANNEL_ID
 import fit.asta.health.common.utils.convertToMilliseconds
 import fit.asta.health.common.utils.getCurrentTime
-import fit.asta.health.data.scheduler.db.AlarmDao
-import fit.asta.health.data.scheduler.db.AlarmInstanceDao
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
+import fit.asta.health.data.scheduler.local.AlarmDao
+import fit.asta.health.data.scheduler.local.AlarmInstanceDao
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.services.AlarmBroadcastReceiver

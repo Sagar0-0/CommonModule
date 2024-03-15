@@ -1,8 +1,8 @@
 package fit.asta.health.data.scheduler.repo
 
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
+import fit.asta.health.data.scheduler.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 interface AlarmLocalRepo {

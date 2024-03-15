@@ -12,7 +12,6 @@ import android.graphics.Bitmap
 import android.graphics.drawable.BitmapDrawable
 import android.media.AudioManager
 import android.media.RingtoneManager
-import android.media.session.MediaSessionManager
 import android.net.ConnectivityManager
 import android.net.NetworkCapabilities
 import android.net.Uri
@@ -47,8 +46,8 @@ import fit.asta.health.common.utils.Constants.CHANNEL_ID_OTHER
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.isSpotifyInstalled
 import fit.asta.health.core.network.BuildConfig
-import fit.asta.health.data.scheduler.db.AlarmDao
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.AlarmDao
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.ui.AlarmScreenActivity
 import fit.asta.health.feature.scheduler.util.Constants

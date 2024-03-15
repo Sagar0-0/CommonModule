@@ -2,7 +2,7 @@ package fit.asta.health.feature.scheduler.doman.usecase
 
 import android.util.Log
 import com.google.gson.Gson
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Adv
 import fit.asta.health.data.scheduler.remote.net.scheduler.Info
 import fit.asta.health.data.scheduler.remote.net.scheduler.Ivl

@@ -65,7 +65,7 @@ import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.isCurrentTimeLaterThan
 import fit.asta.health.common.utils.scrollToIndex
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppUiStateHandler

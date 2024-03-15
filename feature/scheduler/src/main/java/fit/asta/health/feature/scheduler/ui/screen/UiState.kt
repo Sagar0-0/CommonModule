@@ -1,6 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.screen
 
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 
 
 data class UiState(

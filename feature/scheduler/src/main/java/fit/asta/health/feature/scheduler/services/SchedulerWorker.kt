@@ -17,7 +17,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
-import fit.asta.health.data.scheduler.remote.toTagEntity
+import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.feature.scheduler.util.StateManager

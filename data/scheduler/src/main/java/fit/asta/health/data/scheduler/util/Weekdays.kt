@@ -14,7 +14,7 @@
  * limitations under the License.
  */
 
-package fit.asta.health.data.scheduler.db.entity
+package fit.asta.health.data.scheduler.util
 
 import android.content.Context
 import android.os.Parcelable

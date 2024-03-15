@@ -1,6 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.screen.tagscreen
 
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.data.scheduler.local.model.TagEntity
 
 
 sealed class TagsEvent {

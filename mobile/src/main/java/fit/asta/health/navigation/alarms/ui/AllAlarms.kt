@@ -41,7 +41,7 @@ import fit.asta.health.common.utils.AMPMHoursMin
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar

@@ -1,14 +1,16 @@
 package fit.asta.health.data.scheduler.repo
 
-import fit.asta.health.data.scheduler.db.AlarmDao
-import fit.asta.health.data.scheduler.db.AlarmInstanceDao
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.data.scheduler.local.AlarmDao
+import fit.asta.health.data.scheduler.local.AlarmInstanceDao
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
+import fit.asta.health.data.scheduler.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
+import javax.inject.Inject
 
-class AlarmLocalRepoImp(
+class AlarmLocalRepoImp
+@Inject constructor(
     private val alarmDao: AlarmDao,
     private val alarmInstanceDao: AlarmInstanceDao
 ) : AlarmLocalRepo {
