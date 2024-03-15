@@ -29,6 +29,10 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
     }
 }
 
+fun NavController.navigateToPhoneAuth() {
+    this.navigate(AUTH_OTP_VERIFICATION_ROUTE)
+}
+
 @OptIn(ExperimentalCoroutinesApi::class)
 fun NavGraphBuilder.authRoute(
     navController: NavController,
@@ -49,7 +53,7 @@ fun NavGraphBuilder.authRoute(
         AuthScreenControl(
             loginState = loginState,
             onboardingState = onboardingState,
-            onNavigate = { destination -> navController.navigate(destination) }
+            navigateToPhoneAuth = { navController.navigateToPhoneAuth() }
         ) { event ->
             when (event) {
                 AuthUiEvent.OnLoginFailed -> {
@@ -70,7 +74,6 @@ fun NavGraphBuilder.authRoute(
             }
         }
     }
-
 
     composable(AUTH_OTP_VERIFICATION_ROUTE) {
         val authViewModel: AuthViewModel = it.sharedViewModel(navController = navController)
