@@ -19,8 +19,8 @@ import javax.inject.Inject
 class WalkingToolRepoImpl
 @Inject constructor(
     private val api: WalkingApi,
-    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO,
-    private val prefManager: PrefManager
+    private val prefManager: PrefManager,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : WalkingToolRepo {
     override val userPreferences: Flow<UserPreferencesData> = prefManager.userData
 

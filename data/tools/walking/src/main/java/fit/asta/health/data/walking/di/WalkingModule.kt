@@ -35,12 +35,6 @@ import javax.inject.Singleton
 @InstallIn(SingletonComponent::class)
 object WalkingModule {
 
-    @Provides
-    @Singleton
-    fun provideStepsSensor(app: Application): MeasurableSensor {
-        return StepsSensor(app)
-    }
-
     @Singleton
     @Provides
     fun provideWalkingApi(client: OkHttpClient): WalkingApi =
@@ -58,13 +52,19 @@ object WalkingModule {
 
     @Singleton
     @Provides
-    fun provideHealth(@ApplicationContext context: Context): HealthConnectManager {
-        return HealthConnectManager(context)
+    fun provideDayDao(db: StepsDatabase) = db.dayDao()
+
+    @Provides
+    @Singleton
+    fun provideStepsSensor(app: Application): MeasurableSensor {
+        return StepsSensor(app)
     }
 
     @Singleton
     @Provides
-    fun provideDayDao(db: StepsDatabase) = db.dayDao()
+    fun provideHealth(@ApplicationContext context: Context): HealthConnectManager {
+        return HealthConnectManager(context)
+    }
 
     @Singleton
     @Provides
@@ -89,8 +89,6 @@ abstract class WalkingModuleBinds {
     @Binds
     abstract fun bindDayRepo(dayRepositoryImpl: DayRepositoryImpl): DayRepository
 
-
     @Binds
     abstract fun bindWalkingToolRepo(walkingToolRepoImpl: WalkingToolRepoImpl): WalkingToolRepo
-
 }
