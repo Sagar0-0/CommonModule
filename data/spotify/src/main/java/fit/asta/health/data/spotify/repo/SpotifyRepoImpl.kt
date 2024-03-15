@@ -19,11 +19,14 @@ import fit.asta.health.data.spotify.remote.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.remote.model.search.ArtistList
 import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
 import fit.asta.health.data.spotify.remote.model.search.TrackList
+import fit.asta.health.data.spotify.utils.getBearerToken
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class SpotifyRepoImpl(
+class SpotifyRepoImpl
+    @Inject constructor(
     private val spotifyApi: SpotifyApi,
     @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SpotifyRepo {
@@ -33,12 +36,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserDetails(headerMap)
+                spotifyApi.getCurrentUserDetails(getBearerToken(accessToken))
             }
         }
     }
@@ -48,27 +46,16 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserFollowedArtists(headerMap)
+                spotifyApi.getCurrentUserFollowedArtists(getBearerToken(accessToken))
             }
         }
     }
 
     override suspend fun getCurrentUserTopTracks(accessToken: String):
             ResponseState<TrackList> {
-
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserTopTracks(headerMap)
+                spotifyApi.getCurrentUserTopTracks(getBearerToken(accessToken))
             }
         }
     }
@@ -78,12 +65,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserTopArtists(headerMap)
+                spotifyApi.getCurrentUserTopArtists(getBearerToken(accessToken))
             }
         }
     }
@@ -93,12 +75,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserAlbums(headerMap)
+                spotifyApi.getCurrentUserAlbums(getBearerToken(accessToken))
             }
         }
     }
@@ -108,12 +85,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserShows(headerMap)
+                spotifyApi.getCurrentUserShows(getBearerToken(accessToken))
             }
         }
     }
@@ -123,12 +95,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserEpisodes(headerMap)
+                spotifyApi.getCurrentUserEpisodes(getBearerToken(accessToken))
             }
         }
     }
@@ -138,12 +105,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserTracks(headerMap)
+                spotifyApi.getCurrentUserTracks(getBearerToken(accessToken))
             }
         }
     }
@@ -153,12 +115,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getCurrentUserPlaylists(headerMap)
+                spotifyApi.getCurrentUserPlaylists(getBearerToken(accessToken))
             }
         }
     }
@@ -169,12 +126,9 @@ class SpotifyRepoImpl(
         return withContext(dispatcher) {
             getResponseState {
 
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
                 val queryMap: HashMap<String, String> = HashMap()
 
-                spotifyApi.getCurrentUserRecentlyPlayedTracks(headerMap, queryMap)
+                spotifyApi.getCurrentUserRecentlyPlayedTracks(getBearerToken(accessToken), queryMap)
             }
         }
     }
@@ -185,11 +139,7 @@ class SpotifyRepoImpl(
         return withContext(dispatcher) {
             getResponseState {
 
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getUserPlaylists(headerMap, userID)
+                spotifyApi.getUserPlaylists(getBearerToken(accessToken), userID)
             }
         }
     }
@@ -199,12 +149,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getTrackDetails(headerMap, trackID)
+                spotifyApi.getTrackDetails(getBearerToken(accessToken), trackID)
             }
         }
     }
@@ -214,12 +159,7 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
-
-                spotifyApi.getAlbumDetails(headerMap, albumID)
+                spotifyApi.getAlbumDetails(getBearerToken(accessToken), albumID)
             }
         }
     }
@@ -235,16 +175,13 @@ class SpotifyRepoImpl(
         return withContext(dispatcher) {
             getResponseState {
 
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
                 val queryMap: HashMap<String, String> = HashMap()
                 queryMap["q"] = query
                 queryMap["type"] = type
                 queryMap["include_external"] = includeExternal
                 queryMap["market"] = market
 
-                spotifyApi.searchQuery(headerMap, queryMap)
+                spotifyApi.searchQuery(getBearerToken(accessToken), queryMap)
             }
         }
     }
@@ -259,17 +196,13 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
                 val queryMap: HashMap<String, String> = HashMap()
                 queryMap["seed_artists"] = seedArtists
                 queryMap["seed_genres"] = seedGenres
                 queryMap["seed_tracks"] = seedTracks
                 queryMap["limit"] = limit
 
-                spotifyApi.getRecommendations(headerMap, queryMap)
+                spotifyApi.getRecommendations(getBearerToken(accessToken), queryMap)
             }
         }
     }
@@ -283,16 +216,11 @@ class SpotifyRepoImpl(
 
         return withContext(dispatcher) {
             getResponseState {
-
-                val headerMap: HashMap<String, String> = HashMap()
-                headerMap["Authorization"] = "Bearer $accessToken"
-                headerMap["Content-Type"] = "application/json"
                 val queryMap: HashMap<String, String> = HashMap()
                 queryMap["market"] = market
                 queryMap["limit"] = limit
                 queryMap["offset"] = offset
-
-                spotifyApi.getCurrentUserSavedSongs(headerMap , queryMap)
+                spotifyApi.getCurrentUserSavedSongs(getBearerToken(accessToken), queryMap)
             }
         }
     }

@@ -1,8 +1,14 @@
-package fit.asta.health.data.scheduler.db
+package fit.asta.health.data.scheduler.local
 
-import androidx.room.*
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import androidx.room.Dao
+import androidx.room.Delete
+import androidx.room.Insert
+import androidx.room.OnConflictStrategy
+import androidx.room.Query
+import androidx.room.Update
+import androidx.room.Upsert
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao

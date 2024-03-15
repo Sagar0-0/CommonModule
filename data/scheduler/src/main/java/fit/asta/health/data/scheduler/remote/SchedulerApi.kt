@@ -1,7 +1,7 @@
 package fit.asta.health.data.scheduler.remote
 
 import fit.asta.health.common.utils.Response
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
@@ -17,9 +17,9 @@ import retrofit2.http.Query
 
 
 //Scheduler Endpoints
-interface SchedulerApiService {
+interface SchedulerApi {
 
-    @GET("schedule/home/get/?")// http://asta.fit/schedule/home/get/?uid=uId&lat=28.6353&lon=77.2250&date=2023-07-03&loc=bangalore
+    @GET("schedule/home/get/?")
     suspend fun getTodayDataFromBackend(
         @Query("uid") userID: String,
         @Query("date") date: Long,
@@ -54,7 +54,7 @@ interface SchedulerApiService {
     ): Response<ServerRes>
 
     // Tags Endpoints
-    @GET("tag/list/get/?")//https://asta.fit/tag/list/get/?uid=uId
+    @GET("tag/list/get/?")
     suspend fun getTagListFromBackend(
         @Query("uid") userID: String
     ): Response<TagsListResponse>

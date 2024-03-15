@@ -9,11 +9,8 @@ import android.text.format.DateFormat
 import android.text.style.RelativeSizeSpan
 import android.text.style.StyleSpan
 import android.text.style.TypefaceSpan
-import android.util.Log
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
 import fit.asta.health.feature.scheduler.services.AlarmBroadcastReceiver
-import java.text.SimpleDateFormat
-import java.util.Calendar
 import java.util.Locale
 
 object Utils {

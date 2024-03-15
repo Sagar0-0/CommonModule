@@ -14,10 +14,10 @@ import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.scheduler.db.AlarmInstanceDao
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.db.entity.Weekdays
-import fit.asta.health.data.scheduler.remote.getTodayData
+import fit.asta.health.data.scheduler.local.AlarmInstanceDao
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.util.Weekdays
+import fit.asta.health.data.scheduler.util.getTodayData
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo

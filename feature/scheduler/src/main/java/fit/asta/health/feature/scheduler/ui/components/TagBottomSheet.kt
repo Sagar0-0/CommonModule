@@ -1,7 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.components
 
 import androidx.annotation.StringRes
-import androidx.compose.foundation.BorderStroke
 import androidx.compose.foundation.Image
 import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
@@ -50,7 +49,7 @@ import androidx.compose.ui.unit.dp
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.scheduler.db.entity.TagEntity
+import fit.asta.health.data.scheduler.local.model.TagEntity
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard

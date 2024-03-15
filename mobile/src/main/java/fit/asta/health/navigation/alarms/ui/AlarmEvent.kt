@@ -2,8 +2,7 @@ package fit.asta.health.navigation.alarms.ui
 
 import android.content.Context
 import fit.asta.health.common.utils.HourMinAmPm
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.navigation.today.ui.view.HomeEvent
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 
 sealed class AlarmEvent {
     data class SetAlarmState(

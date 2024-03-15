@@ -9,3 +9,10 @@ class SpotifyConstants {
             "user-follow-read,user-read-recently-played,user-read-playback-position,user-top-read,playlist-read-private,app-remote-control,streaming,user-read-email,user-read-private,user-library-read"
     }
 }
+
+fun getBearerToken(token:String): HashMap<String, String> {
+    val headerMap: HashMap<String, String> = HashMap()
+    headerMap["Authorization"] = "Bearer $token"
+    headerMap["Content-Type"] = "application/json"
+    return headerMap
+}

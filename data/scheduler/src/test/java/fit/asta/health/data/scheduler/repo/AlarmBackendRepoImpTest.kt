@@ -3,8 +3,8 @@ package fit.asta.health.data.scheduler.repo
 import android.content.Context
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
-import fit.asta.health.data.scheduler.remote.SchedulerApiService
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
+import fit.asta.health.data.scheduler.remote.SchedulerApi
 import fit.asta.health.data.scheduler.remote.model.TodaySchedules
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import io.mockk.MockKAnnotations
@@ -23,7 +23,7 @@ class AlarmBackendRepoImpTest {
     private lateinit var repo: AlarmBackendRepoImp
 
     @MockK(relaxed = true)
-    lateinit var remoteApi: SchedulerApiService
+    lateinit var remoteApi: SchedulerApi
 
     @MockK
     lateinit var context: Context
@@ -54,8 +54,8 @@ class AlarmBackendRepoImpTest {
                 any()
             )
         } returns Response(data = TodaySchedules())
-        val res = repo.getTodayDataFromBackend("", "", "", 0f, 0f)
-        coVerify { remoteApi.getTodayDataFromBackend("", "", "", 0f, 0f) }
+        val res = repo.getTodayDataFromBackend("", 0, "", 0f, 0f)
+        coVerify { remoteApi.getTodayDataFromBackend("", 0, "", 0f, 0f) }
         assert(res is ResponseState.Success)
     }
 
@@ -70,8 +70,8 @@ class AlarmBackendRepoImpTest {
                 any()
             )
         } throws Exception()
-        val res = repo.getTodayDataFromBackend("", "", "", 0f, 0f)
-        coVerify { remoteApi.getTodayDataFromBackend("", "", "", 0f, 0f) }
+        val res = repo.getTodayDataFromBackend("", 0, "", 0f, 0f)
+        coVerify { remoteApi.getTodayDataFromBackend("", 0, "", 0f, 0f) }
         assert(res is ResponseState.ErrorMessage)
     }
 

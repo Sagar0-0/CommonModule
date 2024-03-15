@@ -1,4 +1,4 @@
-package fit.asta.health.data.scheduler.db.entity
+package fit.asta.health.data.scheduler.local.model
 
 import android.content.Context
 import android.content.Intent

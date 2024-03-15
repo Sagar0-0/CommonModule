@@ -15,7 +15,7 @@ import coil.ImageLoader
 import coil.request.ImageRequest
 import fit.asta.health.common.utils.Constants
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.data.scheduler.db.entity.AlarmEntity
+import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.resources.drawables.R
 import javax.inject.Inject
 

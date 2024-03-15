@@ -1,4 +1,4 @@
-package fit.asta.health.data.scheduler.db.entity
+package fit.asta.health.data.scheduler.local.model
 
 
 import android.content.Context
@@ -15,6 +15,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.data.scheduler.remote.net.scheduler.Tone
 import fit.asta.health.data.scheduler.remote.net.scheduler.Vib
+import fit.asta.health.data.scheduler.util.Weekdays
 import kotlinx.parcelize.Parcelize
 import java.io.Serializable
 import java.util.*

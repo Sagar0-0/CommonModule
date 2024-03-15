@@ -11,6 +11,7 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.AstaSchedulerPutRespo
 import fit.asta.health.data.scheduler.remote.net.scheduler.Status
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagsListResponse
+import fit.asta.health.data.scheduler.util.getTodayData
 import fit.asta.health.network.data.ServerRes
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -27,7 +28,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SchedulerApiServiceTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: SchedulerApiService
+    private lateinit var api: SchedulerApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -37,7 +38,7 @@ class SchedulerApiServiceTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(SchedulerApiService::class.java)
+            .build().create(SchedulerApi::class.java)
     }
 
     @AfterEach
@@ -53,7 +54,7 @@ class SchedulerApiServiceTest {
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.getTodayDataFromBackend("", "", "", 0f, 0f)
+        val data = api.getTodayDataFromBackend("", 0, "", 0f, 0f)
         server.takeRequest()
 
         assertEquals(data.data, dto)
@@ -65,7 +66,7 @@ class SchedulerApiServiceTest {
         res.setResponseCode(404)
         server.enqueue(res)
         try {
-            api.getTodayDataFromBackend("", "", "", 0f, 0f)
+            api.getTodayDataFromBackend("", 0, "", 0f, 0f)
             server.takeRequest()
         } catch (e: HttpException) {
             assert(e.code() == 404)

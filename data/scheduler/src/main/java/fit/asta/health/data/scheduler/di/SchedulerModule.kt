@@ -4,14 +4,13 @@ import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.content.ContextCompat
-import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.data.scheduler.db.AlarmDatabase
-import fit.asta.health.data.scheduler.remote.SchedulerApiService
+import fit.asta.health.data.scheduler.local.AlarmDatabase
+import fit.asta.health.data.scheduler.remote.SchedulerApi
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepoImp
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
@@ -24,17 +23,15 @@ import javax.inject.Singleton
 @Module
 @InstallIn(SingletonComponent::class)
 object SchedulerModule {
-
-
     @Singleton
     @Provides
-    fun provideSchedulerApiService(client: OkHttpClient): SchedulerApiService =
-        NetworkUtil.getRetrofit(client).create(SchedulerApiService::class.java)
+    fun provideSchedulerApiService(client: OkHttpClient): SchedulerApi =
+        NetworkUtil.getRetrofit(client).create(SchedulerApi::class.java)
 
     @Singleton
     @Provides
     fun provideBackendRepo(
-        remoteApi: SchedulerApiService,
+        remoteApi: SchedulerApi,
         @ApplicationContext context: Context
     ): AlarmBackendRepo {
         return AlarmBackendRepoImp(
@@ -42,7 +39,6 @@ object SchedulerModule {
             remoteApi = remoteApi
         )
     }
-
 
     @Singleton
     @Provides
@@ -55,15 +51,13 @@ object SchedulerModule {
     @Provides
     fun provideAlarmManager(@ApplicationContext context: Context): AlarmManager {
         return ContextCompat.getSystemService(context, AlarmManager::class.java) as AlarmManager
-//        return context.getSystemService(Context.ALARM_SERVICE) as AlarmManager
     }
 
     @Singleton
     @Provides
     fun provideNotificationManager(@ApplicationContext context: Context): NotificationManager {
-     return ContextCompat.getSystemService(
+        return ContextCompat.getSystemService(
             context, NotificationManager::class.java
         ) as NotificationManager
-//        return context.getSystemService(Context.NOTIFICATION_SERVICE) as NotificationManager
     }
 }

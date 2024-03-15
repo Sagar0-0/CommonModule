@@ -1,7 +1,7 @@
 package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 
-import fit.asta.health.data.scheduler.db.entity.AlarmInstance
-import fit.asta.health.data.scheduler.db.entity.Weekdays
+import fit.asta.health.data.scheduler.local.model.AlarmInstance
+import fit.asta.health.data.scheduler.util.Weekdays
 import fit.asta.health.feature.scheduler.util.VibrationPattern
 import java.util.Calendar
 

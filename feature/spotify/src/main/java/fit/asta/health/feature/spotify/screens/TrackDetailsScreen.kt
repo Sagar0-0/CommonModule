@@ -67,7 +67,6 @@ fun TrackDetailsScreen(
             }
 
             is UiState.Success -> {
-
                 // This function checks for the Local Response from Local Database
                 LocalTrackHandler(
                     trackNetworkState = trackNetworkState,
