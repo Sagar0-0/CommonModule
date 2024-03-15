@@ -4,7 +4,7 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.data.onboarding.remote.model.Onboarding
 import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.UserPreferencesData
@@ -43,7 +43,7 @@ class OnboardingApiTest {
 
     @Test
     fun `getData, returns Success`() = runTest {
-        val dto: Response<List<OnboardingData>> = mockk()
+        val dto: Response<List<Onboarding>> = mockk()
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)

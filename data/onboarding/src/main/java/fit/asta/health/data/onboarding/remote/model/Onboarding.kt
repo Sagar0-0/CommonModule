@@ -1,8 +1,8 @@
-package fit.asta.health.data.onboarding.model
+package fit.asta.health.data.onboarding.remote.model
 
 import com.google.gson.annotations.SerializedName
 
-data class OnboardingData(
+data class Onboarding(
     @SerializedName("dsc")
     val desc: String = "",
     @SerializedName("id")

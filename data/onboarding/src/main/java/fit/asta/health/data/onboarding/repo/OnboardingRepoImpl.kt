@@ -11,7 +11,7 @@ import kotlinx.coroutines.withContext
 
 class OnboardingRepoImpl(
     private val remoteApi: OnboardingApi,
-    private val prefManager: PrefManager,
+    prefManager: PrefManager,
     private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
 ) : OnboardingRepo {
 

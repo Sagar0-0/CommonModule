@@ -28,8 +28,8 @@ import androidx.media3.common.MediaItem
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getImageUrl
 import fit.asta.health.common.utils.getVideoUrl
-import fit.asta.health.data.onboarding.model.OnBoardingDataType
-import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.data.onboarding.remote.model.OnBoardingDataType
+import fit.asta.health.data.onboarding.remote.model.Onboarding
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.appShimmerAnimation
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
@@ -50,7 +50,7 @@ private fun AuthOnboardingSuccessPreview() {
         Box(Modifier.fillMaxSize()) {
             OnBoardingSuccess(
                 items = listOf(
-                    OnboardingData(
+                    Onboarding(
                         desc = "errem",
                         id = "litora",
                         title = "TITLE HERE",
@@ -74,7 +74,7 @@ private fun AuthOnboardingSuccessPreview() {
  */
 @Composable
 fun BoxScope.AuthOnboardingControl(
-    onboardingState: UiState<List<OnboardingData>>,
+    onboardingState: UiState<List<Onboarding>>,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
     // on Boarding API call State
@@ -115,12 +115,12 @@ fun BoxScope.AuthOnboardingControl(
  * This function shows the onboarding Data Pager UI which is a sliding window which shows the
  * on boarding data.
  *
- * @param items This is the [OnboardingData] list which contains all the data items to be shown in the
+ * @param items This is the [Onboarding] list which contains all the data items to be shown in the
  * Data Pager
  */
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-private fun BoxScope.OnBoardingSuccess(items: List<OnboardingData>) {
+private fun BoxScope.OnBoardingSuccess(items: List<Onboarding>) {
 
     val pagerState = rememberPagerState { items.size }
     AppHorizontalPager(

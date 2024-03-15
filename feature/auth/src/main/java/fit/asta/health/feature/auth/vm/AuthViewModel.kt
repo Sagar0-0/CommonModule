@@ -15,7 +15,7 @@ import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.map
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.onboarding.model.OnboardingData
+import fit.asta.health.data.onboarding.remote.model.Onboarding
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.profile.remote.model.UserProfileAvailableResponse
 import fit.asta.health.data.profile.repo.ProfileRepo
@@ -43,8 +43,8 @@ internal class AuthViewModel
     private val _loginState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val loginState = _loginState.asStateFlow()
 
-    private val _onboardingDataState = MutableStateFlow<UiState<List<OnboardingData>>>(UiState.Idle)
-    val onboardingDatState = _onboardingDataState.asStateFlow()
+    private val _onboardingState = MutableStateFlow<UiState<List<Onboarding>>>(UiState.Idle)
+    val onboardingDatState = _onboardingState.asStateFlow()
 
     private val _logoutState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
     val logoutState = _logoutState.asStateFlow()
@@ -70,9 +70,9 @@ internal class AuthViewModel
 
 
     fun getOnboardingData() {
-        _onboardingDataState.value = UiState.Loading
+        _onboardingState.value = UiState.Loading
         viewModelScope.launch {
-            _onboardingDataState.update { onboardingRepo.getData().toUiState() }
+            _onboardingState.update { onboardingRepo.getData().toUiState() }
         }
     }
 
