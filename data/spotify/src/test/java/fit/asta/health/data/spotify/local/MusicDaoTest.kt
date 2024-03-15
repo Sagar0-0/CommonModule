@@ -3,14 +3,13 @@ package fit.asta.health.data.spotify.local
 import android.content.Context
 import androidx.room.Room
 import androidx.test.core.app.ApplicationProvider
-import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.remote.model.common.Track
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
 import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 import java.io.IOException
-import kotlin.jvm.Throws
 import kotlin.test.assertEquals
 
 class MusicDaoTest {

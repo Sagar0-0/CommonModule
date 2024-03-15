@@ -4,21 +4,21 @@ import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
-import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
-import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.model.me.SpotifyMeModel
-import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.remote.SpotifyApiService
+import fit.asta.health.data.spotify.remote.SpotifyApi
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.data.spotify.remote.model.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.data.spotify.remote.model.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.data.spotify.remote.model.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.data.spotify.remote.model.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.data.spotify.remote.model.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.data.spotify.remote.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.remote.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.remote.model.search.ArtistList
+import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.remote.model.search.TrackList
 import fit.asta.health.data.spotify.util.JsonReader
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
@@ -39,13 +39,13 @@ class SpotifyRepoImplTest {
     private lateinit var spotifyRepoImpl: SpotifyRepoImpl
 
     @RelaxedMockK
-    lateinit var spotifyApiService: SpotifyApiService
+    lateinit var spotifyApi: SpotifyApi
     private val gson: Gson = GsonBuilder().create()
 
     @BeforeEach
     fun beforeEach() {
         MockKAnnotations.init(this, relaxed = true)
-        spotifyRepoImpl = spyk(SpotifyRepoImpl(spotifyApiService))
+        spotifyRepoImpl = spyk(SpotifyRepoImpl(spotifyApi))
     }
 
     @Nested
@@ -64,11 +64,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/currentUserDetails.json")
             val expectedResponse = gson.fromJson(json, SpotifyMeModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserDetails(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserDetails(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserDetails("")
 
-            coVerify { spotifyApiService.getCurrentUserDetails(any()) }
+            coVerify { spotifyApi.getCurrentUserDetails(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -79,11 +79,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserDetails(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserDetails(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserDetails("")
 
-            coVerify { spotifyApiService.getCurrentUserDetails(any()) }
+            coVerify { spotifyApi.getCurrentUserDetails(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -105,11 +105,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserFollowedArtists.json")
             val expectedResponse = gson.fromJson(json, SpotifyUserFollowingArtist::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserFollowedArtists(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserFollowedArtists(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserFollowedArtists("")
 
-            coVerify { spotifyApiService.getCurrentUserFollowedArtists(any()) }
+            coVerify { spotifyApi.getCurrentUserFollowedArtists(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -120,11 +120,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserFollowedArtists(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserFollowedArtists(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserFollowedArtists("")
 
-            coVerify { spotifyApiService.getCurrentUserFollowedArtists(any()) }
+            coVerify { spotifyApi.getCurrentUserFollowedArtists(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -146,11 +146,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserTopTracks.json")
             val expectedResponse = gson.fromJson(json, TrackList::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserTopTracks(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserTopTracks(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserTopTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserTopTracks(any()) }
+            coVerify { spotifyApi.getCurrentUserTopTracks(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -161,11 +161,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserTopTracks(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserTopTracks(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserTopTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserTopTracks(any()) }
+            coVerify { spotifyApi.getCurrentUserTopTracks(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -187,11 +187,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserTopArtists.json")
             val expectedResponse = gson.fromJson(json, ArtistList::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserTopArtists(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserTopArtists(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserTopArtists("")
 
-            coVerify { spotifyApiService.getCurrentUserTopArtists(any()) }
+            coVerify { spotifyApi.getCurrentUserTopArtists(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -202,11 +202,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserTopArtists(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserTopArtists(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserTopArtists("")
 
-            coVerify { spotifyApiService.getCurrentUserTopArtists(any()) }
+            coVerify { spotifyApi.getCurrentUserTopArtists(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -228,11 +228,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserAlbums.json")
             val expectedResponse = gson.fromJson(json, SpotifyLibraryAlbumModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserAlbums(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserAlbums(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserAlbums("")
 
-            coVerify { spotifyApiService.getCurrentUserAlbums(any()) }
+            coVerify { spotifyApi.getCurrentUserAlbums(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -243,11 +243,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserAlbums(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserAlbums(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserAlbums("")
 
-            coVerify { spotifyApiService.getCurrentUserAlbums(any()) }
+            coVerify { spotifyApi.getCurrentUserAlbums(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -269,11 +269,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserShows.json")
             val expectedResponse = gson.fromJson(json, SpotifyLibraryShowsModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserShows(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserShows(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserShows("")
 
-            coVerify { spotifyApiService.getCurrentUserShows(any()) }
+            coVerify { spotifyApi.getCurrentUserShows(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -284,11 +284,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserShows(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserShows(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserShows("")
 
-            coVerify { spotifyApiService.getCurrentUserShows(any()) }
+            coVerify { spotifyApi.getCurrentUserShows(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -310,11 +310,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserEpisodes.json")
             val expectedResponse = gson.fromJson(json, SpotifyLibraryEpisodesModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserEpisodes(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserEpisodes(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserEpisodes("")
 
-            coVerify { spotifyApiService.getCurrentUserEpisodes(any()) }
+            coVerify { spotifyApi.getCurrentUserEpisodes(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -325,11 +325,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserEpisodes(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserEpisodes(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserEpisodes("")
 
-            coVerify { spotifyApiService.getCurrentUserEpisodes(any()) }
+            coVerify { spotifyApi.getCurrentUserEpisodes(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -351,11 +351,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserTracks.json")
             val expectedResponse = gson.fromJson(json, SpotifyLibraryTracksModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserTracks(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserTracks(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserTracks(any()) }
+            coVerify { spotifyApi.getCurrentUserTracks(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -366,11 +366,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserTracks(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserTracks(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserTracks(any()) }
+            coVerify { spotifyApi.getCurrentUserTracks(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -392,11 +392,11 @@ class SpotifyRepoImplTest {
             val json = JsonReader.readJsonFile("/json/getCurrentUserPlaylists.json")
             val expectedResponse = gson.fromJson(json, SpotifyUserPlaylistsModel::class.java)
 
-            coEvery { spotifyApiService.getCurrentUserPlaylists(any()) } returns expectedResponse
+            coEvery { spotifyApi.getCurrentUserPlaylists(any()) } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserPlaylists("")
 
-            coVerify { spotifyApiService.getCurrentUserPlaylists(any()) }
+            coVerify { spotifyApi.getCurrentUserPlaylists(any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -407,11 +407,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getCurrentUserPlaylists(any()) } throws Exception()
+            coEvery { spotifyApi.getCurrentUserPlaylists(any()) } throws Exception()
 
             val response = spotifyRepoImpl.getCurrentUserPlaylists("")
 
-            coVerify { spotifyApiService.getCurrentUserPlaylists(any()) }
+            coVerify { spotifyApi.getCurrentUserPlaylists(any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -434,12 +434,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, SpotifyUserRecentlyPlayedModel::class.java)
 
             coEvery {
-                spotifyApiService.getCurrentUserRecentlyPlayedTracks(any(), any())
+                spotifyApi.getCurrentUserRecentlyPlayedTracks(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.getCurrentUserRecentlyPlayedTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserRecentlyPlayedTracks(any(), any()) }
+            coVerify { spotifyApi.getCurrentUserRecentlyPlayedTracks(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -451,7 +451,7 @@ class SpotifyRepoImplTest {
             every { Log.e(any(), any()) } returns 0
 
             coEvery {
-                spotifyApiService.getCurrentUserRecentlyPlayedTracks(
+                spotifyApi.getCurrentUserRecentlyPlayedTracks(
                     any(),
                     any()
                 )
@@ -459,7 +459,7 @@ class SpotifyRepoImplTest {
 
             val response = spotifyRepoImpl.getCurrentUserRecentlyPlayedTracks("")
 
-            coVerify { spotifyApiService.getCurrentUserRecentlyPlayedTracks(any(), any()) }
+            coVerify { spotifyApi.getCurrentUserRecentlyPlayedTracks(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -482,12 +482,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, SpotifyUserPlaylistsModel::class.java)
 
             coEvery {
-                spotifyApiService.getUserPlaylists(any(), any())
+                spotifyApi.getUserPlaylists(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.getUserPlaylists("", "")
 
-            coVerify { spotifyApiService.getUserPlaylists(any(), any()) }
+            coVerify { spotifyApi.getUserPlaylists(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -498,11 +498,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getUserPlaylists(any(), any()) } throws Exception()
+            coEvery { spotifyApi.getUserPlaylists(any(), any()) } throws Exception()
 
             val response = spotifyRepoImpl.getUserPlaylists("", "")
 
-            coVerify { spotifyApiService.getUserPlaylists(any(), any()) }
+            coVerify { spotifyApi.getUserPlaylists(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -525,12 +525,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, Track::class.java)
 
             coEvery {
-                spotifyApiService.getTrackDetails(any(), any())
+                spotifyApi.getTrackDetails(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.getTrackDetails("", "")
 
-            coVerify { spotifyApiService.getTrackDetails(any(), any()) }
+            coVerify { spotifyApi.getTrackDetails(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -541,11 +541,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getTrackDetails(any(), any()) } throws Exception()
+            coEvery { spotifyApi.getTrackDetails(any(), any()) } throws Exception()
 
             val response = spotifyRepoImpl.getTrackDetails("", "")
 
-            coVerify { spotifyApiService.getTrackDetails(any(), any()) }
+            coVerify { spotifyApi.getTrackDetails(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -568,12 +568,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, Album::class.java)
 
             coEvery {
-                spotifyApiService.getAlbumDetails(any(), any())
+                spotifyApi.getAlbumDetails(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.getAlbumDetails("", "")
 
-            coVerify { spotifyApiService.getAlbumDetails(any(), any()) }
+            coVerify { spotifyApi.getAlbumDetails(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -584,11 +584,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getAlbumDetails(any(), any()) } throws Exception()
+            coEvery { spotifyApi.getAlbumDetails(any(), any()) } throws Exception()
 
             val response = spotifyRepoImpl.getAlbumDetails("", "")
 
-            coVerify { spotifyApiService.getAlbumDetails(any(), any()) }
+            coVerify { spotifyApi.getAlbumDetails(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -611,12 +611,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, SpotifySearchModel::class.java)
 
             coEvery {
-                spotifyApiService.searchQuery(any(), any())
+                spotifyApi.searchQuery(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.searchQuery("", "", "", "", "")
 
-            coVerify { spotifyApiService.searchQuery(any(), any()) }
+            coVerify { spotifyApi.searchQuery(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -627,11 +627,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.searchQuery(any(), any()) } throws Exception()
+            coEvery { spotifyApi.searchQuery(any(), any()) } throws Exception()
 
             val response = spotifyRepoImpl.searchQuery("", "", "", "", "")
 
-            coVerify { spotifyApiService.searchQuery(any(), any()) }
+            coVerify { spotifyApi.searchQuery(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }
@@ -654,12 +654,12 @@ class SpotifyRepoImplTest {
             val expectedResponse = gson.fromJson(json, SpotifyRecommendationModel::class.java)
 
             coEvery {
-                spotifyApiService.getRecommendations(any(), any())
+                spotifyApi.getRecommendations(any(), any())
             } returns expectedResponse
 
             val response = spotifyRepoImpl.getRecommendations("", "", "", "", "")
 
-            coVerify { spotifyApiService.getRecommendations(any(), any()) }
+            coVerify { spotifyApi.getRecommendations(any(), any()) }
             assert(response is ResponseState.Success)
         }
 
@@ -670,11 +670,11 @@ class SpotifyRepoImplTest {
             mockkStatic(Log::class)
             every { Log.e(any(), any()) } returns 0
 
-            coEvery { spotifyApiService.getRecommendations(any(), any()) } throws Exception()
+            coEvery { spotifyApi.getRecommendations(any(), any()) } throws Exception()
 
             val response = spotifyRepoImpl.getRecommendations("", "", "", "", "")
 
-            coVerify { spotifyApiService.getRecommendations(any(), any()) }
+            coVerify { spotifyApi.getRecommendations(any(), any()) }
             assert(response is ResponseState.ErrorMessage)
         }
     }

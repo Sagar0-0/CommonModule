@@ -3,28 +3,28 @@ package fit.asta.health.data.spotify.repo
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getResponseState
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
-import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
-import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.model.me.SpotifyMeModel
-import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.data.spotify.model.recommendations.SpotifyRecommendationModel
-import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.remote.SpotifyApiService
+import fit.asta.health.data.spotify.remote.SpotifyApi
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.data.spotify.remote.model.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.data.spotify.remote.model.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.data.spotify.remote.model.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.data.spotify.remote.model.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.data.spotify.remote.model.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.data.spotify.remote.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.remote.model.recommendations.SpotifyRecommendationModel
+import fit.asta.health.data.spotify.remote.model.saved.SpotifyLikedSongsResponse
+import fit.asta.health.data.spotify.remote.model.search.ArtistList
+import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.remote.model.search.TrackList
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
 class SpotifyRepoImpl(
-    private val spotifyApi: SpotifyApiService,
+    private val spotifyApi: SpotifyApi,
     @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SpotifyRepo {
 

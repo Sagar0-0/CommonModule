@@ -4,19 +4,19 @@ import app.cash.turbine.test
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.library.albums.SpotifyLibraryAlbumModel
-import fit.asta.health.data.spotify.model.library.episodes.SpotifyLibraryEpisodesModel
-import fit.asta.health.data.spotify.model.library.following.SpotifyUserFollowingArtist
-import fit.asta.health.data.spotify.model.library.playlist.SpotifyUserPlaylistsModel
-import fit.asta.health.data.spotify.model.library.shows.SpotifyLibraryShowsModel
-import fit.asta.health.data.spotify.model.library.tracks.SpotifyLibraryTracksModel
-import fit.asta.health.data.spotify.model.me.SpotifyMeModel
-import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.repo.MusicRepositoryImpl
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.library.albums.SpotifyLibraryAlbumModel
+import fit.asta.health.data.spotify.remote.model.library.episodes.SpotifyLibraryEpisodesModel
+import fit.asta.health.data.spotify.remote.model.library.following.SpotifyUserFollowingArtist
+import fit.asta.health.data.spotify.remote.model.library.playlist.SpotifyUserPlaylistsModel
+import fit.asta.health.data.spotify.remote.model.library.shows.SpotifyLibraryShowsModel
+import fit.asta.health.data.spotify.remote.model.library.tracks.SpotifyLibraryTracksModel
+import fit.asta.health.data.spotify.remote.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.remote.model.search.ArtistList
+import fit.asta.health.data.spotify.remote.model.search.TrackList
+import fit.asta.health.data.spotify.repo.MusicRepoImpl
 import fit.asta.health.data.spotify.repo.SpotifyRepoImpl
 import fit.asta.health.feature.spotify.events.SpotifyUiEvent
 import fit.asta.health.feature.spotify.viewmodel.SpotifyViewModelX
@@ -37,7 +37,7 @@ class SpotifyViewModelTest : BaseTest() {
 
     private lateinit var viewModel: SpotifyViewModelX
     private val remoteRepo: SpotifyRepoImpl = mockk(relaxed = true)
-    private val localRepo: MusicRepositoryImpl = mockk(relaxed = true)
+    private val localRepo: MusicRepoImpl = mockk(relaxed = true)
 
 
     @BeforeEach

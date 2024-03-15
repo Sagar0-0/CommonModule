@@ -1,7 +1,7 @@
 package fit.asta.health.feature.spotify.events
 
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
 
 sealed class SpotifyUiEvent {
 

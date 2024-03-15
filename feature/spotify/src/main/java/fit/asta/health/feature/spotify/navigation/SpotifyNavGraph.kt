@@ -6,7 +6,7 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.spotify.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.remote.model.me.SpotifyMeModel
 import fit.asta.health.feature.spotify.screens.AlbumDetailScreen
 import fit.asta.health.feature.spotify.screens.AstaMusicScreen
 import fit.asta.health.feature.spotify.screens.FavouriteScreen

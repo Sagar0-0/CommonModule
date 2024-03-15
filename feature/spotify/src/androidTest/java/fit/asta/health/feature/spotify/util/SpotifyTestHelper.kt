@@ -1,19 +1,19 @@
 package fit.asta.health.feature.spotify.util
 
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Artist
-import fit.asta.health.data.spotify.model.common.ExternalIds
-import fit.asta.health.data.spotify.model.common.ExternalUrls
-import fit.asta.health.data.spotify.model.common.Followers
-import fit.asta.health.data.spotify.model.common.Image
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.search.AlbumList
-import fit.asta.health.data.spotify.model.search.ArtistList
-import fit.asta.health.data.spotify.model.search.EpisodeList
-import fit.asta.health.data.spotify.model.search.PlaylistList
-import fit.asta.health.data.spotify.model.search.ShowList
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.TrackList
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Artist
+import fit.asta.health.data.spotify.remote.model.common.ExternalIds
+import fit.asta.health.data.spotify.remote.model.common.ExternalUrls
+import fit.asta.health.data.spotify.remote.model.common.Followers
+import fit.asta.health.data.spotify.remote.model.common.Image
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.search.AlbumList
+import fit.asta.health.data.spotify.remote.model.search.ArtistList
+import fit.asta.health.data.spotify.remote.model.search.EpisodeList
+import fit.asta.health.data.spotify.remote.model.search.PlaylistList
+import fit.asta.health.data.spotify.remote.model.search.ShowList
+import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.remote.model.search.TrackList
 
 object SpotifyTestHelper {
     fun albumGenerator(): Album {

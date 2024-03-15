@@ -23,12 +23,12 @@ class MusicRepositoryImplTest {
     @RelaxedMockK
     lateinit var musicDao: MusicDao
 
-    private lateinit var musicRepositoryImpl: MusicRepositoryImpl
+    private lateinit var musicRepositoryImpl: MusicRepoImpl
 
     @BeforeEach
     fun beforeEach() {
         MockKAnnotations.init(this, relaxed = true)
-        musicRepositoryImpl = spyk(MusicRepositoryImpl(musicDao))
+        musicRepositoryImpl = spyk(MusicRepoImpl(musicDao))
     }
 
 

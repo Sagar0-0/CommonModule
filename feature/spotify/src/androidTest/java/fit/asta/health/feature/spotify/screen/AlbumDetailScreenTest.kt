@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithTag
 import androidx.compose.ui.test.onNodeWithText
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.spotify.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Album
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.feature.spotify.screens.AlbumDetailScreen
 import fit.asta.health.feature.spotify.util.SpotifyTestHelper.albumGenerator
