@@ -22,7 +22,9 @@ interface ProfileApi {
     suspend fun checkReferralCode(@Query("code") refCode: String): Response<CheckReferralDTO>
 
     @GET("userProfile/get/isUserProfileAvailable/?")
-    suspend fun isUserProfileAvailable(@Query("uid") userId: String): Response<UserProfileAvailableResponse>
+    suspend fun isUserProfileAvailable(
+        @Query("uid") userId: String
+    ): Response<UserProfileAvailableResponse>
 
     @Multipart
     @POST("userProfile/basic/post")
@@ -42,5 +44,7 @@ interface ProfileApi {
     suspend fun getUserProfile(@Query("uid") userId: String): Response<UserProfileResponse>
 
     @GET("health/property/get/all/")
-    suspend fun getUserProperties(@Query("property") propertyType: String): Response<List<UserProperties>>
+    suspend fun getUserProperties(
+        @Query("property") propertyType: String
+    ): Response<List<UserProperties>>
 }
