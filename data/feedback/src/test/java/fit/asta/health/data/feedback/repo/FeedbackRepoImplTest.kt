@@ -3,8 +3,8 @@ package fit.asta.health.data.feedback.repo
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.feedback.remote.FeedbackApi
-import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
-import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
+import fit.asta.health.data.feedback.remote.modal.PostFeedback
+import fit.asta.health.data.feedback.remote.modal.UserFeedback
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify
@@ -52,13 +52,13 @@ class FeedbackRepoImplTest {
 
     @Test
     fun `postUserFeedback, return Success Response`() = runTest {
-        val feedback = UserFeedbackDTO()
+        val feedback = UserFeedback()
         coEvery {
             feedbackApi.postUserFeedback(
                 any(),
                 any()
             )
-        } returns Response(data = PostFeedbackDTO())
+        } returns Response(data = PostFeedback())
         val res = feedbackRepoImpl.postUserFeedback(feedback)
 //        coVerify { feedbackApi.postUserFeedback(any(),any()) }
         assert(res is ResponseState.Success)

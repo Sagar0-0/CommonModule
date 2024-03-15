@@ -10,9 +10,9 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.feedback.remote.modal.Answer
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
-import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
-import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestions
+import fit.asta.health.data.feedback.remote.modal.PostFeedback
+import fit.asta.health.data.feedback.remote.modal.UserFeedback
 import fit.asta.health.data.feedback.repo.FeedbackRepo
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -33,11 +33,11 @@ class FeedbackViewModel
     private var _qnrId by mutableStateOf("")
 
     private val _feedbackQuestions =
-        MutableStateFlow<UiState<FeedbackQuesDTO>>(UiState.Idle)
+        MutableStateFlow<UiState<FeedbackQuestions>>(UiState.Idle)
     val feedbackQuestions = _feedbackQuestions.asStateFlow()
 
     private val _feedbackPostState =
-        MutableStateFlow<UiState<PostFeedbackDTO>>(UiState.Idle)
+        MutableStateFlow<UiState<PostFeedback>>(UiState.Idle)
     val feedbackPostState = _feedbackPostState.asStateFlow()
 
     //call this before starting feedback form
@@ -46,15 +46,15 @@ class FeedbackViewModel
         viewModelScope.launch {
             _feedbackQuestions.value = feedbackRepo.getFeedbackQuestions(uId, feature).toUiState()
             if (_feedbackQuestions.value is UiState.Success) {
-                _qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.id
-                _fid = (_feedbackQuestions.value as UiState.Success<FeedbackQuesDTO>).data.fid
+                _qnrId = (_feedbackQuestions.value as UiState.Success<FeedbackQuestions>).data.id
+                _fid = (_feedbackQuestions.value as UiState.Success<FeedbackQuestions>).data.fid
             }
         }
     }
 
     fun postUserFeedback(data: List<Answer>) {
         _feedbackPostState.value = UiState.Loading
-        val feedback = UserFeedbackDTO(
+        val feedback = UserFeedback(
             answers = data,
             fid = _fid,
             qnrId = _qnrId,

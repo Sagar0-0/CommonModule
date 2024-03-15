@@ -4,9 +4,9 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
-import fit.asta.health.data.feedback.remote.modal.PostFeedbackDTO
-import fit.asta.health.data.feedback.remote.modal.UserFeedbackDTO
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestions
+import fit.asta.health.data.feedback.remote.modal.PostFeedback
+import fit.asta.health.data.feedback.remote.modal.UserFeedback
 import fit.asta.health.data.feedback.repo.FeedbackRepoImpl
 import io.mockk.mockk
 import kotlinx.coroutines.test.runTest
@@ -41,7 +41,7 @@ class FeedbackApiTest {
 
     @Test
     fun `getFeedbackQuestions, returns Success`() = runTest {
-        val dto = Response(data = FeedbackQuesDTO())
+        val dto = Response(data = FeedbackQuestions())
         val json = gson.toJson(dto)!!
         val res = MockResponse()
         res.setBody(json)
@@ -68,14 +68,13 @@ class FeedbackApiTest {
 
     @Test
     fun `postUserFeedback, returns Success`() = runTest {
-        val resDto = Response(data = PostFeedbackDTO())
+        val resDto = Response(data = PostFeedback())
         val json = gson.toJson(resDto)!!
         val res = MockResponse()
         res.setBody(json)
         server.enqueue(res)
 
-
-        val dto = UserFeedbackDTO()
+        val dto = UserFeedback()
         val data = api.postUserFeedback(dto, emptyList())
         server.takeRequest()
 
@@ -84,7 +83,7 @@ class FeedbackApiTest {
 
     @Test
     fun `postUserFeedback, returns Error`() = runTest {
-        val dto = UserFeedbackDTO()
+        val dto = UserFeedback()
         val res = MockResponse()
         res.setResponseCode(404)
         server.enqueue(res)

@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class UserFeedbackDTO(
+data class UserFeedback(
     @SerializedName("ans")
     val answers: List<Answer> = listOf(),
     @SerializedName("fid")

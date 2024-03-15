@@ -5,7 +5,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class FeedbackQuesDTO(
+data class FeedbackQuestions(
     @SerializedName("date")
     val date: Long = 0L,
     @SerializedName("fid")

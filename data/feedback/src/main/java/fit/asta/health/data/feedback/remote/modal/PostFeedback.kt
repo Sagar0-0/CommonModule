@@ -6,7 +6,7 @@ import com.google.gson.annotations.SerializedName
 import kotlinx.parcelize.Parcelize
 
 @Parcelize
-data class PostFeedbackDTO(
+data class PostFeedback(
     @SerializedName("flag")
     val flag: Boolean = false,
     @SerializedName("id")

@@ -17,14 +17,14 @@ import androidx.compose.ui.semantics.contentDescription
 import androidx.compose.ui.semantics.semantics
 import androidx.documentfile.provider.DocumentFile
 import fit.asta.health.data.feedback.remote.modal.Answer
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestions
 import fit.asta.health.data.feedback.remote.modal.Media
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppFilledButton
 
 @Composable
 fun FeedbackQuesScreen(
-    feedbackQues: FeedbackQuesDTO,
+    feedbackQues: FeedbackQuestions,
     onSubmit: (answers: List<Answer>) -> Unit
 ) {
     val questions = remember {

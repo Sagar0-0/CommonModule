@@ -12,7 +12,7 @@ import androidx.compose.ui.platform.LocalContext
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.feedback.remote.modal.Answer
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestions
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
 import fit.asta.health.designsystem.molecular.background.AppScaffold
@@ -21,7 +21,7 @@ import fit.asta.health.designsystem.molecular.texts.TitleTexts
 
 @Composable
 fun SessionFeedback(
-    feedbackQuesState: UiState<FeedbackQuesDTO>,
+    feedbackQuesState: UiState<FeedbackQuestions>,
     onBack: () -> Unit,
     onSubmit: (answers: List<Answer>) -> Unit
 ) {

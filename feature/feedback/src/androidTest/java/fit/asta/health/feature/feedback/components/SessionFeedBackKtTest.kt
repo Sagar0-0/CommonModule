@@ -6,7 +6,7 @@ import androidx.compose.ui.test.onNodeWithContentDescription
 import androidx.compose.ui.test.performScrollToIndex
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.feedback.remote.modal.FeedbackQuesDTO
+import fit.asta.health.data.feedback.remote.modal.FeedbackQuestions
 import fit.asta.health.data.feedback.remote.modal.Question
 import fit.asta.health.designsystem.AppTheme
 import org.junit.Rule
@@ -21,14 +21,14 @@ class SessionFeedBackTest {
 
     @Test
     fun feedbackImagePresent() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf()
         )
         // Start the app
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -40,7 +40,7 @@ class SessionFeedBackTest {
 
     @Test
     fun uploadFilesIconExists() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 1)
             )
@@ -49,7 +49,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -61,7 +61,7 @@ class SessionFeedBackTest {
 
     @Test
     fun ratingCardExists() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 2)
             )
@@ -70,7 +70,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -82,7 +82,7 @@ class SessionFeedBackTest {
 
     @Test
     fun mcqCardExists() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 3)
             )
@@ -91,7 +91,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -103,7 +103,7 @@ class SessionFeedBackTest {
 
     @Test
     fun mcqCard2Exists() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 5)
             )
@@ -112,7 +112,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -124,7 +124,7 @@ class SessionFeedBackTest {
 
     @Test
     fun appTextFieldExists() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 4)
             )
@@ -133,7 +133,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
@@ -145,7 +145,7 @@ class SessionFeedBackTest {
 
     @Test
     fun submitButtonEnabled() {
-        val feedbackQuesDTO = FeedbackQuesDTO(
+        val feedbackQuestions = FeedbackQuestions(
             questions = listOf(
                 Question(type = 1),
                 Question(type = 2),
@@ -156,7 +156,7 @@ class SessionFeedBackTest {
         composeTestRule.setContent {
             AppTheme {
                 SessionFeedback(
-                    feedbackQuesState = UiState.Success(feedbackQuesDTO),
+                    feedbackQuesState = UiState.Success(feedbackQuestions),
                     onBack = {},
                     onSubmit = {}
                 )
