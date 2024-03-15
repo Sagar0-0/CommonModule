@@ -33,6 +33,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -249,7 +250,11 @@ fun SheetLayout(
     onNameChange: (String) -> Unit,
     onGoalChange: (Int) -> Unit
 ) {
-    AppBottomSheetWithCloseDialog(closeSheet) {
+    val controller = LocalSoftwareKeyboardController.current
+    AppBottomSheetWithCloseDialog(onClosePressed = {
+        closeSheet()
+        controller?.hide()
+    }) {
         when (currentScreen) {
             is BottomSheetScreen.Screen1 -> Screen1(
                 sliderValue = currentScreen.sliderValue,

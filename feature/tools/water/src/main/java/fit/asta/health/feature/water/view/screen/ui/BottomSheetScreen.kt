@@ -45,7 +45,6 @@ fun AppBottomSheetWithCloseDialog(
 ) {
     Box(modifier.fillMaxWidth()) {
         content()
-
         AppIconButton(
             onClick = onClosePressed,
             modifier = Modifier
@@ -79,13 +78,11 @@ fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit, color: Co
         ) {
         }
     }
-
 }
 
 // Searching BottomSheet
 @Composable
 fun Screen2(
-    viewModel: WaterToolViewModel = hiltViewModel(),
     sliderValue: Float,
     color: Color,
     onSliderValueChanged: (Float) -> Unit,
@@ -93,7 +90,7 @@ fun Screen2(
 ) {
     var sliderPosition by remember { mutableStateOf(sliderValue) }
     Column {
-        val title = "Search and Set Beverage Quantity"
+        val title = "Search and Set Beverage\n Quantity"
         val description =
             "Find your favorite beverages quickly by searching. Once found, set the quantity to monitor your intake. Use the search bar to explore."
         AnimatedContentField(title = title, description = description)
