@@ -9,14 +9,14 @@ import com.spotify.sdk.android.auth.AuthorizationResponse
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.me.SpotifyMeModel
-import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
-import fit.asta.health.data.spotify.model.search.SpotifySearchModel
-import fit.asta.health.data.spotify.model.search.TrackList
-import fit.asta.health.data.spotify.repo.MusicRepository
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.me.SpotifyMeModel
+import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.remote.model.saved.SpotifyLikedSongsResponse
+import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
+import fit.asta.health.data.spotify.remote.model.search.TrackList
+import fit.asta.health.data.spotify.repo.MusicRepo
 import fit.asta.health.data.spotify.repo.SpotifyRepo
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
@@ -30,7 +30,7 @@ import fit.asta.health.resources.strings.R as StringR
 @HiltViewModel
 class SpotifyViewModel @Inject constructor(
     private val remoteRepository: SpotifyRepo,
-    private val localRepository: MusicRepository,
+    private val localRepository: MusicRepo,
     private val prefManager: PrefManager,
     application: Application,
 ) : AndroidViewModel(application) {

@@ -14,11 +14,11 @@ import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
-import fit.asta.health.data.spotify.model.common.Album
-import fit.asta.health.data.spotify.model.common.Track
-import fit.asta.health.data.spotify.model.recently.SpotifyUserRecentlyPlayedModel
-import fit.asta.health.data.spotify.model.saved.SpotifyLikedSongsResponse
-import fit.asta.health.data.spotify.model.search.TrackList
+import fit.asta.health.data.spotify.remote.model.common.Album
+import fit.asta.health.data.spotify.remote.model.common.Track
+import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
+import fit.asta.health.data.spotify.remote.model.saved.SpotifyLikedSongsResponse
+import fit.asta.health.data.spotify.remote.model.search.TrackList
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
