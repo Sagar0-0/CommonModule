@@ -75,12 +75,7 @@ fun CustomBevBottomSheet(
         initialValue = AppSheetValue.Hidden,
         skipPartialExpanded = false,
     ))
-//    val bottomSheetState = rememberAppBottomSheetScaffoldState(
-//        bottomSheetState = SheetState(
-//            initialValue = SheetValue.Hidden,
-//            skipPartiallyExpanded = false
-//        )
-//    )
+
     val scrollState = rememberScrollState()
     val sliderValueWater by viewModel.waterQuantity.collectAsState()
     val sliderValueCoconut by viewModel.coconutQuantity.collectAsState()
@@ -267,7 +262,6 @@ fun SheetLayout(
             )
 
             is BottomSheetScreen.Screen2 -> Screen2(
-                viewModel,
                 sliderValue = currentScreen.sliderValue,
                 onSliderValueChanged = {
                     Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue.toString()}")
@@ -299,18 +293,10 @@ fun DaysSlider(
     color: Color,
     OnClick: () -> Unit,
 ) {
-    val darkBackgroundColor = (Color(0xFF092251))
-    val lightBackgroundColor = Color.White
 
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
-//            .background(color = backgroundColor, AppTheme.shape.level2)
             .padding(AppTheme.spacing.level1)
             .fillMaxWidth(),
     ) {

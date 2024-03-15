@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
@@ -48,6 +49,7 @@ import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import fit.asta.health.resources.drawables.R
+import fit.asta.health.ui.common.components.AppBalloon
 
 @Composable
 fun AppHomeScreen(
@@ -106,7 +108,6 @@ fun AppHomeScreen(
                 uiState = uiState,
                 viewModel = viewModel
             )
-//            Spacer(modifier = Modifier.weight(1f))
         }
 
 
@@ -140,9 +141,6 @@ fun HintsOnScreen() {
         modifier = Modifier
             .fillMaxWidth(1f)
             .padding(AppTheme.spacing.level2),
-//        elevation = CardDefaults.cardElevation(
-//            defaultElevation = 5.dp
-//        ),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -197,13 +195,6 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
             modifier = Modifier
                 .padding(AppTheme.spacing.level1)
                 .fillMaxWidth()
-//                .fillMaxHeight(.23f),
-//            elevation = CardDefaults.cardElevation(
-//                defaultElevation = 5.dp
-//            ),
-//            colors = CardDefaults.cardColors(
-//                containerColor = backgroundColor
-//            )
         ) {
             Column(
                 horizontalAlignment = Alignment.CenterHorizontally
@@ -236,16 +227,23 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
 
                             Row(horizontalArrangement = Arrangement.Center) {
                                 HeadingTexts.Level4(text = "Total Consumed ( ml )",
-                                    modifier = Modifier.padding(top = 4.dp))
-//                            AppRichTooltip(
-//                                modifier = Modifier.clipToBounds(),
-//                                text = {CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal")},
-//                                action = {AppIcon(
-//                                    imageVector = Icons.Filled.Info,
-//                                    contentDescription = "Localized Description",
-//                                    modifier = Modifier.scale(.8f).tooltipAnchor()
-//                                )}
-//                            )
+                                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
+                                AppBalloon(content = { click ->
+                                    AppIcon(
+                                        imageVector = Icons.Default.Info,
+                                        modifier = Modifier
+                                            .padding(horizontal = AppTheme.spacing.level1)
+                                            .clickable { click.invoke() }
+                                    )
+                                }, balloonContent = {
+                                    CaptionTexts.Level2(
+                                        text = if (uiState.totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal",
+                                        maxLines = 3
+                                    )
+                                },
+                                    time = 3000L,
+                                    modifier = Modifier.padding(top = 8.dp)
+                                )
                             }
 
                             BodyTexts.Level3(
@@ -256,7 +254,7 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
 
                             Spacer(modifier = Modifier.weight(1f))
                             HeadingTexts.Level4(text = "Yet to Consume ( ml )",
-                                modifier = Modifier.padding(top  = 4.dp))
+                                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
                             BodyTexts.Level3(
                                 text = "~${maxOf(0, uiState.remainingToConsume)} ",
                                 color = Color.Gray,
@@ -267,7 +265,7 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
                     Box(contentAlignment = Alignment.Center,
                         modifier = Modifier.padding(end = 4.dp)) {
                         CircularProgressBar(
-                            percentage = (totalConsumed.toFloat() / if (goal != 0) goal else 1),
+                            percentage = (uiState.totalConsumed.toFloat() / if (goal != 0) goal else 1),
                             number = if (goal != 0) goal else 1
                         )
                     }
@@ -285,14 +283,6 @@ fun BevSearchBar(
     viewModel: WaterToolViewModel = hiltViewModel(),
     onNameChange: (String) -> Unit,
 ) {
-    val darkBackgroundColor = (Color(0xFF040429))
-    val lightBackgroundColor = Color.White
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
     var text by remember {
         mutableStateOf("")
     }
@@ -423,14 +413,6 @@ fun CustomBevCard(
     onNameChange: (String) -> Unit,
     onClick: () -> Unit
 ) {
-    val darkBackgroundColor = (Color(0xFF092251))
-    val lightBackgroundColor = Color.White
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
     Column {
         Box(
             modifier = Modifier

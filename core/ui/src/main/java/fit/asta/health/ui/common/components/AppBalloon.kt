@@ -17,6 +17,7 @@ import fit.asta.health.designsystem.AppTheme
 fun AppBalloon(
     content: @Composable (click: () -> Unit) -> Unit,
     balloonContent: @Composable () -> Unit,
+    modifier : Modifier = Modifier,
     time:Long=1000L
 ) {
     val onClick: (BalloonWindow) -> Unit = {
@@ -38,7 +39,7 @@ fun AppBalloon(
         setAutoDismissDuration(time)
     }
     Balloon(
-        modifier = Modifier,
+        modifier = modifier,
         builder = builder,
         balloonContent = balloonContent,
         content = {
