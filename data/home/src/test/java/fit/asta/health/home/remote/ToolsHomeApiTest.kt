@@ -17,9 +17,9 @@ import org.junit.jupiter.api.Test
 import retrofit2.Retrofit
 import retrofit2.converter.gson.GsonConverterFactory
 
-class ToolsApiTest {
+class ToolsHomeApiTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: ToolsApi
+    private lateinit var api: ToolsHomeApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -29,7 +29,7 @@ class ToolsApiTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(ToolsApi::class.java)
+            .build().create(ToolsHomeApi::class.java)
     }
 
     @AfterEach
@@ -45,7 +45,7 @@ class ToolsApiTest {
         res.setBody(json)
         server.enqueue(res)
 
-        val data = api.getHomeData("", "", "", "", "")
+        val data = api.getHomeData("", "", "", "", 0)
         server.takeRequest()
 
         assertEquals(data, dto)
@@ -58,7 +58,7 @@ class ToolsApiTest {
         server.enqueue(res)
 
         val repo = ToolsHomeRepoImpl(api, UnconfinedTestDispatcher())
-        val data = repo.getHomeData("", "", "", "", "", "", "")
+        val data = repo.getHomeData("", "", "", "", 0, 0, "")
         server.takeRequest()
 
         assert(data is ResponseState.ErrorMessage)

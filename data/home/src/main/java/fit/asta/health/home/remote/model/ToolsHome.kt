@@ -1,7 +1,7 @@
 package fit.asta.health.home.remote.model
 
 import com.google.gson.annotations.SerializedName
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 
 data class ToolsHome(
     @SerializedName("bnr") val banners: List<Banner>? = null,

@@ -6,7 +6,7 @@ import retrofit2.http.GET
 import retrofit2.http.Query
 
 //Tools Endpoints
-interface ToolsApi {
+interface ToolsHomeApi {
 
     @GET("tool/home/get/?")
     suspend fun getHomeData(

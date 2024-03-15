@@ -8,9 +8,7 @@ import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.android.qualifiers.ApplicationContext
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.home.remote.ToolsApi
-import fit.asta.health.home.repo.ToolsHomeRepo
-import fit.asta.health.home.repo.ToolsHomeRepoImpl
+import fit.asta.health.home.remote.ToolsHomeApi
 import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
@@ -21,14 +19,8 @@ object HomeModule {
 
     @Singleton
     @Provides
-    fun provideToolsApi(client: OkHttpClient): ToolsApi =
-        NetworkUtil.getRetrofit(client).create(ToolsApi::class.java)
-
-    @Singleton
-    @Provides
-    fun provideHomeToolsRep(toolsApi: ToolsApi): ToolsHomeRepo {
-        return ToolsHomeRepoImpl(toolsApi = toolsApi)
-    }
+    fun provideToolsApi(client: OkHttpClient): ToolsHomeApi =
+        NetworkUtil.getRetrofit(client).create(ToolsHomeApi::class.java)
 
     @Provides
     @Singleton
@@ -36,5 +28,3 @@ object HomeModule {
         return ReviewManagerFactory.create(context)
     }
 }
-
-
