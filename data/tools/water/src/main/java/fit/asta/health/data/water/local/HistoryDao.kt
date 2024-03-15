@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import fit.asta.health.data.water.db.dbmodel.BevQuantityConsumed
+import fit.asta.health.data.water.local.entity.BevQuantityConsumed
 import fit.asta.health.data.water.local.entity.BevDataDetails
 import fit.asta.health.data.water.local.entity.ConsumptionHistory
 import fit.asta.health.data.water.local.entity.Goal

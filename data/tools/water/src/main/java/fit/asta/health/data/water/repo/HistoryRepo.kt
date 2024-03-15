@@ -1,7 +1,7 @@
 package fit.asta.health.data.water.repo
 
 import dagger.hilt.android.scopes.ActivityScoped
-import fit.asta.health.data.water.db.dbmodel.BevQuantityConsumed
+import fit.asta.health.data.water.local.entity.BevQuantityConsumed
 import fit.asta.health.data.water.local.HistoryDao
 import fit.asta.health.data.water.local.entity.BevDataDetails
 import fit.asta.health.data.water.local.entity.ConsumptionHistory

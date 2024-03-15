@@ -1,4 +1,4 @@
-package fit.asta.health.data.water.repo
+package fit.asta.health.data.water.usecase
 
 import android.util.Log
 import fit.asta.health.data.water.remote.model.BeverageDetailsData
@@ -6,11 +6,7 @@ import fit.asta.health.data.water.remote.model.Data
 import fit.asta.health.data.water.remote.model.TodayActivityData
 import fit.asta.health.data.water.remote.model.WaterTool
 
-//fun Data.getWaterTool() : WaterTool{
-//    return WaterTool(
-//        waterToolData =
-//    )
-//}
+
 fun mapToWaterTool(networkModel: Data): WaterTool {
     Log.i("WaterToolDataMapper 14", networkModel.toString())
     val beverageDetailsList = mutableListOf<BeverageDetailsData>()
