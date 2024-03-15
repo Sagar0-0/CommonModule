@@ -3,7 +3,7 @@ package fit.asta.health.data.testimonials.repo
 import androidx.paging.PagingSource
 import androidx.paging.PagingState
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 
 class TestimonialDataSource(
     private val repo: TestimonialRepo

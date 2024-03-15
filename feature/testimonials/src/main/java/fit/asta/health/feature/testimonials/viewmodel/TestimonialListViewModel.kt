@@ -8,7 +8,7 @@ import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.filter
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialDataSource
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.feature.testimonials.events.TestimonialListEvent

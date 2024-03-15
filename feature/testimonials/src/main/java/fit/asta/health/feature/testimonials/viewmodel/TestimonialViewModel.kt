@@ -6,10 +6,10 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.testimonials.model.Media
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.Media
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 import fit.asta.health.data.testimonials.repo.TestimonialRepo
 import fit.asta.health.feature.testimonials.events.MediaType
 import fit.asta.health.feature.testimonials.events.TestimonialEvent

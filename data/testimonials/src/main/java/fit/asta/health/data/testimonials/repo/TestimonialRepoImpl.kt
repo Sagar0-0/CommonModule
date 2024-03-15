@@ -4,9 +4,9 @@ import android.content.ContentResolver
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.remote.TestimonialApi
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import fit.asta.health.data.testimonials.util.TestimonialApiHandler
 import fit.asta.health.network.utils.InputStreamRequestBody
 import kotlinx.coroutines.CoroutineDispatcher

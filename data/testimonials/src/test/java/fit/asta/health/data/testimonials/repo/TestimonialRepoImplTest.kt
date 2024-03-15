@@ -2,9 +2,9 @@ package fit.asta.health.data.testimonials.repo
 
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
 import fit.asta.health.data.testimonials.remote.TestimonialApi
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import io.mockk.MockKAnnotations
 import io.mockk.coEvery
 import io.mockk.coVerify

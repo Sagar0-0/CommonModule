@@ -1,10 +1,14 @@
 package fit.asta.health.data.testimonials.remote
 
 import fit.asta.health.common.utils.Response
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import okhttp3.MultipartBody
-import retrofit2.http.*
+import retrofit2.http.GET
+import retrofit2.http.Multipart
+import retrofit2.http.PUT
+import retrofit2.http.Part
+import retrofit2.http.Query
 
 //Testimonial Endpoints
 interface TestimonialApi {

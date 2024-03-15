@@ -1,7 +1,7 @@
 package fit.asta.health.feature.testimonials.events
 
 import android.net.Uri
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 
 sealed class MediaType {
     data object BeforeImage : MediaType()

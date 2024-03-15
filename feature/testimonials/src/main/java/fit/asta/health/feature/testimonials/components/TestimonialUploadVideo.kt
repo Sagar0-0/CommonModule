@@ -24,7 +24,7 @@ import androidx.compose.ui.tooling.preview.Preview
 import androidx.compose.ui.unit.dp
 import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
-import fit.asta.health.data.testimonials.model.Media
+import fit.asta.health.data.testimonials.remote.model.Media
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.modifier.dashedBorder
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator

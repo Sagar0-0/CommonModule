@@ -1,7 +1,7 @@
 package fit.asta.health.feature.testimonials.utils
 
-import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 
 
 /**

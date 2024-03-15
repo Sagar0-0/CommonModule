@@ -1,4 +1,4 @@
-package fit.asta.health.data.testimonials.model
+package fit.asta.health.data.testimonials.remote.model
 
 import com.google.gson.annotations.SerializedName
 

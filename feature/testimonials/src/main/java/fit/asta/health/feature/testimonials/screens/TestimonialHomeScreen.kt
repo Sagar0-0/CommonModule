@@ -20,8 +20,8 @@ import androidx.compose.ui.unit.dp
 import androidx.paging.LoadState
 import androidx.paging.compose.LazyPagingItems
 import fit.asta.health.common.utils.getVideoUrlTools
-import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.ScrollBehaviors
 import fit.asta.health.designsystem.molecular.AppErrorMsgCard

@@ -3,7 +3,7 @@ package fit.asta.health.data.testimonials.util
 import fit.asta.health.common.utils.ApiErrorHandler
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 
 class TestimonialApiHandler : ApiErrorHandler() {
 

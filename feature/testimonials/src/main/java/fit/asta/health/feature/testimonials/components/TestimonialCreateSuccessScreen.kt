@@ -19,9 +19,9 @@ import androidx.compose.ui.focus.FocusDirection
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.text.input.ImeAction
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.OnSuccessfulSubmit

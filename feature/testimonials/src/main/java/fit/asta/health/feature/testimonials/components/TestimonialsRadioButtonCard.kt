@@ -12,7 +12,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.tooling.preview.Preview
-import fit.asta.health.data.testimonials.model.TestimonialType
+import fit.asta.health.data.testimonials.remote.model.TestimonialType
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.button.AppRadioButton

@@ -6,8 +6,8 @@ import fit.asta.health.auth.repo.AuthRepoImpl
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.core.test.BaseTest
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialRepoImpl
 import fit.asta.health.feature.testimonials.events.TestimonialEvent
 import io.mockk.clearAllMocks

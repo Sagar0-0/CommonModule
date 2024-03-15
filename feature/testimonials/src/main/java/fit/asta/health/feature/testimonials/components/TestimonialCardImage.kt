@@ -13,7 +13,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.tooling.preview.Preview
 import fit.asta.health.common.utils.getImageUrl
-import fit.asta.health.data.testimonials.model.Media
+import fit.asta.health.data.testimonials.remote.model.Media
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppSurface
 import fit.asta.health.designsystem.molecular.image.AppNetworkImage

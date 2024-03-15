@@ -4,8 +4,8 @@ import com.google.gson.Gson
 import com.google.gson.GsonBuilder
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
-import fit.asta.health.data.testimonials.model.SaveTestimonialResponse
-import fit.asta.health.data.testimonials.model.Testimonial
+import fit.asta.health.data.testimonials.remote.model.SaveTestimonialResponse
+import fit.asta.health.data.testimonials.remote.model.Testimonial
 import fit.asta.health.data.testimonials.repo.TestimonialRepoImpl
 import io.mockk.mockk
 import kotlinx.coroutines.test.UnconfinedTestDispatcher
