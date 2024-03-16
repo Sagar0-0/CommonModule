@@ -11,23 +11,23 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import fit.asta.health.data.profile.remote.model.BodyTypes
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.AppModalBottomSheet
 import fit.asta.health.designsystem.molecular.button.AppRadioButton
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 
 @Composable
-fun BottomSheetBodyType(
+fun BottomSheetRadioList(
     isVisible: Boolean,
     sheetState: SheetState,
     isValid: (value: Int?) -> Boolean,
-    selectedValue: Int?,
+    selectedIndex: Int?,
+    list: List<String>,
     onDismissRequest: () -> Unit,
     onSaveClick: (value: Int?) -> Unit
 ) {
-    val (updatedBodyTypeValue, onValueChange) = rememberSaveable(isVisible) {
-        mutableStateOf(selectedValue)
+    val (index, onIndexChange) = rememberSaveable(isVisible) {
+        mutableStateOf(selectedIndex)
     }
 
     AppModalBottomSheet(
@@ -42,18 +42,18 @@ fun BottomSheetBodyType(
                 .padding(AppTheme.spacing.level2)
         ) {
             Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
-                BodyTypes.entries.forEach { option ->
+                list.forEachIndexed { i, name ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,
                         modifier = Modifier.weight(1f)
                     ) {
                         AppRadioButton(
-                            selected = updatedBodyTypeValue == option.value
+                            selected = index == i
                         ) {
-                            onValueChange(option.value)
+                            onIndexChange(i)
                         }
                         CaptionTexts.Level3(
-                            text = option.name,
+                            text = name,
                             color = AppTheme.colors.onPrimaryContainer
                         )
                     }
@@ -63,11 +63,11 @@ fun BottomSheetBodyType(
             BottomSheetSaveButtons(
                 onSave = {
                     onSaveClick(
-                        updatedBodyTypeValue
+                        index
                     )
                 },
                 saveButtonEnabled = isValid(
-                    updatedBodyTypeValue
+                    index
                 )
             ) {
                 onDismissRequest()

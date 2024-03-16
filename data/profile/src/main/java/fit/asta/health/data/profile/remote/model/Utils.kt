@@ -170,6 +170,13 @@ enum class BodyTypes(val value: Int) {
             }
             return Weak
         }
+
+        fun indexOf(newValue: Int?): Int? {
+            BodyTypes.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
+        }
     }
 }
 
