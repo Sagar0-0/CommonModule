@@ -4,7 +4,7 @@ import androidx.room.Dao
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
-import fit.asta.health.data.water.db.dbmodel.BevQuantityConsumed
+import fit.asta.health.data.water.local.entity.BevQuantityConsumed
 import fit.asta.health.data.water.local.entity.BevDataDetails
 import fit.asta.health.data.water.local.entity.ConsumptionHistory
 import fit.asta.health.data.water.local.entity.Goal
@@ -46,5 +46,8 @@ interface HistoryDao {
     @Query("Delete from bevQuantity where name = :name AND " +
             "id = (Select MAX(id) from bevQuantity where name = :name)")
     suspend fun undoConsumption(name : String) : Int
+
+    @Query("Select * from bevQuantity")
+    fun getBevConsumptionList() : Flow<List<BevQuantityConsumed>>
 //    @Query(SELECT goal FROM ConsumptionHistory )
 }

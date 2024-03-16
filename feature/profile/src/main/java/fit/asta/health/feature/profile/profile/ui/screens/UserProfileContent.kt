@@ -16,10 +16,13 @@ import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
 import fit.asta.health.designsystem.molecular.background.AppNavigationBar
-import fit.asta.health.designsystem.molecular.background.AppNavigationBarItem
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
+import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.pager.AppHorizontalPager
+import fit.asta.health.designsystem.molecular.tab.AppTab
+import fit.asta.health.designsystem.molecular.tab.AppTabRow
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.feature.profile.profile.ui.components.ProfileCompletionBar
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
@@ -56,26 +59,25 @@ fun UserProfileContent(
                 tonalElevation = AppTheme.elevation.level0,
             ) {
                 userProfileState.profileDataPages.forEachIndexed { index, item ->
-                    AppNavigationBarItem(
-                        selected = userProfileState.currentPageIndex == index,
-                        onClick = {
-                            userProfileState.currentPageIndex = index
-                        },
-                        icon = item.icon,
-                        label = item.labelId.toStringFromResId(),
-//                        colors = NavigationBarItemDefaults.colors(
-//                            selectedIconColor = if (userProfileState.currentPageIndex == index)
-//                                AppTheme.colors.primary
-//                            else
-//                                AppTheme.colors.onSecondaryContainer
-//                        )
-                    )
+                    AppTabRow(
+                        selectedTabIndex = userProfileState.currentPageIndex,
+                    ) {
+                        AppTab(
+                            selected = userProfileState.currentPageIndex == index,
+                            onClick = {
+                                userProfileState.currentPageIndex = index
+                            },
+                            selectedContentColor = AppTheme.colors.primary
+                        ) {
+                            AppIcon(imageVector = item.icon)
+                            CaptionTexts.Level2(text = item.labelId.toStringFromResId())
+                        }
+                    }
                 }
             }
 
             AppHorizontalPager(
                 pagerState = userProfileState.pagerState,
-                userScrollEnabled = false,
                 enableCarouselSizeTransition = false
             ) {
                 when (userProfileState.profileDataPages[it]) {

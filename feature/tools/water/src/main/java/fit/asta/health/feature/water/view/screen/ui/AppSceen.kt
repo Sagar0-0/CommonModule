@@ -17,6 +17,7 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Clear
 import androidx.compose.material.icons.filled.EditNote
 import androidx.compose.material.icons.filled.History
+import androidx.compose.material.icons.filled.Info
 import androidx.compose.material.icons.filled.Interests
 import androidx.compose.material.icons.filled.Search
 import androidx.compose.runtime.Composable
@@ -29,7 +30,10 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.scale
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.res.painterResource
+import androidx.compose.ui.text.style.TextAlign
+import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.compose.collectAsStateWithLifecycle
 import fit.asta.health.data.water.local.entity.History
@@ -38,12 +42,14 @@ import fit.asta.health.designsystem.molecular.AppSearchBar
 import fit.asta.health.designsystem.molecular.cards.AppElevatedCard
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import fit.asta.health.resources.drawables.R
+import fit.asta.health.ui.common.components.AppBalloon
 
 @Composable
 fun AppHomeScreen(
@@ -99,9 +105,9 @@ fun AppHomeScreen(
                 onClickSecondPref = onClickSecondPref,
                 onClickCustomize = onClickCustomize,
                 onClickRecentAdded = onClickRecentAdded,
+                uiState = uiState,
                 viewModel = viewModel
             )
-//            Spacer(modifier = Modifier.weight(1f))
         }
 
 
@@ -135,9 +141,6 @@ fun HintsOnScreen() {
         modifier = Modifier
             .fillMaxWidth(1f)
             .padding(AppTheme.spacing.level2),
-//        elevation = CardDefaults.cardElevation(
-//            defaultElevation = 5.dp
-//        ),
     ) {
         Row(
             horizontalArrangement = Arrangement.spacedBy(AppTheme.spacing.level3),
@@ -177,15 +180,6 @@ fun HintsOnScreen() {
 @Composable
 fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsume: Int, goal: Int) {
 
-    val darkBackgroundColor = (Color(0xFF092251))
-    val lightBackgroundColor = (Color(0xFFF2F8FC))
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
-
     Column {
         Box(
             modifier = Modifier.padding(
@@ -201,73 +195,83 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
             modifier = Modifier
                 .padding(AppTheme.spacing.level1)
                 .fillMaxWidth()
-                .fillMaxHeight(.23f),
-//            elevation = CardDefaults.cardElevation(
-//                defaultElevation = 5.dp
-//            ),
-//            colors = CardDefaults.cardColors(
-//                containerColor = backgroundColor
-//            )
         ) {
-            Row(
-                modifier = Modifier
-                    .padding(AppTheme.spacing.level1),
-                verticalAlignment = Alignment.CenterVertically
+            Column(
+                horizontalAlignment = Alignment.CenterHorizontally
             ) {
-                Box {
-                    Column {
-                        HeadingTexts.Level4(
-                            text = "Drinking in %",
-                        )
-                        BodyTexts.Level3(
-                            text = "${
-                                String.format(
-                                    "%.1f",
-                                    minOf(
-                                        100f,
-                                        (uiState.totalConsumed
-                                            .toFloat() / if (goal != 0) goal else 1) * 100
+                Row(
+                    modifier = Modifier
+                        .padding(AppTheme.spacing.level1),
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Box {
+                        Column {
+                            HeadingTexts.Level4(
+                                text = "Drinking in %", modifier = Modifier.padding(top = 8.dp, bottom = 4.dp)
+                            )
+                            BodyTexts.Level3(
+                                text = "${
+                                    String.format(
+                                        "%.1f",
+                                        minOf(
+                                            100f,
+                                            (uiState.totalConsumed
+                                                .toFloat() / if (goal != 0) goal else 1) * 100
+                                        )
                                     )
+                                } %",
+                                color = Color(0xFF008970), modifier = Modifier.padding(bottom = 4.dp)
+                            )
+
+                           // Spacer(modifier = Modifier.weight(1f))
+
+                            Row(horizontalArrangement = Arrangement.Center) {
+                                HeadingTexts.Level4(text = "Total Consumed ( ml )",
+                                    modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
+                                AppBalloon(content = { click ->
+                                    AppIcon(
+                                        imageVector = Icons.Default.Info,
+                                        modifier = Modifier
+                                            .padding(horizontal = AppTheme.spacing.level1)
+                                            .clickable { click.invoke() }
+                                    )
+                                }, balloonContent = {
+                                    CaptionTexts.Level2(
+                                        text = if (uiState.totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal",
+                                        maxLines = 3
+                                    )
+                                },
+                                    time = 3000L,
+                                    modifier = Modifier.padding(top = 8.dp)
                                 )
-                            } %",
-                            color = Color(0xFF008970),
-                        )
+                            }
 
-                        Spacer(modifier = Modifier.weight(1f))
+                            BodyTexts.Level3(
+                                text = "${uiState.totalConsumed}",
+                                color = Color.Gray,
+                                modifier = Modifier.padding(bottom = 4.dp)
+                            )
 
-                        Row(horizontalArrangement = Arrangement.Center) {
-                            HeadingTexts.Level4(text = "Total Consumed ( ml )")
-//                            AppRichTooltip(
-//                                modifier = Modifier.clipToBounds(),
-//                                text = {CaptionTexts.Level2(if (totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal")},
-//                                action = {AppIcon(
-//                                    imageVector = Icons.Filled.Info,
-//                                    contentDescription = "Localized Description",
-//                                    modifier = Modifier.scale(.8f).tooltipAnchor()
-//                                )}
-//                            )
+                            Spacer(modifier = Modifier.weight(1f))
+                            HeadingTexts.Level4(text = "Yet to Consume ( ml )",
+                                modifier = Modifier.padding(top = 8.dp, bottom = 4.dp))
+                            BodyTexts.Level3(
+                                text = "~${maxOf(0, uiState.remainingToConsume)} ",
+                                color = Color.Gray,
+                            )
                         }
-
-                        BodyTexts.Level3(
-                            text = "${uiState.totalConsumed}",
-                            color = Color.Gray,
-                        )
-
-                        Spacer(modifier = Modifier.weight(1f))
-                        HeadingTexts.Level4(text = "Yet to Consume ( ml )")
-                        BodyTexts.Level3(
-                            text = "~${maxOf(0, uiState.remainingToConsume)} ",
-                            color = Color.Gray,
+                    }
+                    Spacer(modifier = Modifier.weight(1f))
+                    Box(contentAlignment = Alignment.Center,
+                        modifier = Modifier.padding(end = 4.dp)) {
+                        CircularProgressBar(
+                            percentage = (uiState.totalConsumed.toFloat() / if (goal != 0) goal else 1),
+                            number = if (goal != 0) goal else 1
                         )
                     }
                 }
-                Spacer(modifier = Modifier.weight(1f))
-                Box {
-                    CircularProgressBar(
-                        percentage = (totalConsumed.toFloat() / if (goal != 0) goal else 1),
-                        number = if (goal != 0) goal else 1
-                    )
-                }
+                CaptionTexts.Level3(text = "Recent Consumption : ${uiState.recentConsumedBevName} ${uiState.recentConsumedBevQty} ml", textAlign = TextAlign.Center,
+                    modifier = Modifier.padding(bottom = 8.dp,top = 8.dp))
             }
         }
     }
@@ -279,14 +283,6 @@ fun BevSearchBar(
     viewModel: WaterToolViewModel = hiltViewModel(),
     onNameChange: (String) -> Unit,
 ) {
-    val darkBackgroundColor = (Color(0xFF040429))
-    val lightBackgroundColor = Color.White
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
     var text by remember {
         mutableStateOf("")
     }
@@ -299,6 +295,7 @@ fun BevSearchBar(
     }
     val filteredHistory by viewModel.filteredHistory.collectAsState()
 
+    val controller  = LocalSoftwareKeyboardController.current
     AppSearchBar(
         query = text,
         onQueryChange = {
@@ -328,6 +325,7 @@ fun BevSearchBar(
                             text = ""
                         } else {
                             active = false
+                            controller?.hide()
                         }
                     })
             }
@@ -370,7 +368,7 @@ fun BevSearchBar(
                             // where we can get sliderValue also
                             viewModel.insertRecentAdded(History(0, text, 0))
                         }
-                        .background(Color.White, AppTheme.shape.level3))
+                        .background(Color.White, AppTheme.shape.level1))
             }
             bevItem.forEach {
                 Row(modifier = Modifier
@@ -415,14 +413,6 @@ fun CustomBevCard(
     onNameChange: (String) -> Unit,
     onClick: () -> Unit
 ) {
-    val darkBackgroundColor = (Color(0xFF092251))
-    val lightBackgroundColor = Color.White
-
-    val backgroundColor = if (isSystemInDarkTheme()) {
-        darkBackgroundColor
-    } else {
-        lightBackgroundColor
-    }
     Column {
         Box(
             modifier = Modifier

@@ -22,6 +22,7 @@ import androidx.navigation.compose.rememberNavController
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.feature.auth.navigateToPhoneAuth
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -191,6 +192,10 @@ class UserProfileState(
 
     fun navigateToSubscriptions() {
         onEvent(UserProfileEvent.NavigateToSubscription)
+    }
+
+    fun navigateToPhoneLinking() {
+        navController.navigateToPhoneAuth()
     }
 
     companion object {

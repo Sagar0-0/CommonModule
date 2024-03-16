@@ -32,7 +32,7 @@ import javax.inject.Inject
 
 @ExperimentalCoroutinesApi
 @HiltViewModel
-internal class AuthViewModel
+class AuthViewModel
 @Inject constructor(
     private val authRepo: AuthRepo,
     private val profileRepo: ProfileRepo,

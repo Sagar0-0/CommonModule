@@ -8,18 +8,18 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
-import androidx.compose.material.LocalContentAlpha
-import androidx.compose.material.LocalContentColor
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.Icons.AutoMirrored.Filled
 import androidx.compose.material.icons.automirrored.filled.ArrowForward
 import androidx.compose.material.icons.filled.AccountBalanceWallet
 import androidx.compose.material.icons.filled.Delete
 import androidx.compose.material.icons.filled.Female
+import androidx.compose.material.icons.filled.Link
 import androidx.compose.material.icons.filled.Mail
 import androidx.compose.material.icons.filled.Male
 import androidx.compose.material.icons.filled.MonetizationOn
 import androidx.compose.material.icons.filled.Person
+import androidx.compose.material.icons.filled.Phone
 import androidx.compose.material.icons.filled.PregnantWoman
 import androidx.compose.material.icons.filled.Subscriptions
 import androidx.compose.material.icons.filled.Transgender
@@ -109,6 +109,15 @@ fun BasicDetailsScreen(
             leadingIcon = Icons.Default.Mail,
             trailingIcon = null
         )
+
+        ClickableTextBox(
+            label = "Phone",
+            value = userProfileState.basicDetailScreenState.phoneNumber.ifEmpty { "Click to link" },
+            leadingIcon = Icons.Default.Phone,
+            trailingIcon = Icons.Default.Link
+        ) {
+            userProfileState.navigateToPhoneLinking()
+        }
 
         ClickableTextBox(
             label = "Gender",
@@ -277,13 +286,6 @@ private fun AgeSection(
     userProfileState: UserProfileState,
     calendarUseCaseState: UseCaseState
 ) {
-    val ageColorSelection =
-        if (userProfileState.basicDetailScreenState.userAgeErrorMessage == null) {
-            AppTheme.colors.onSurface
-        } else {
-            AppTheme.colors.error
-        }
-
     ClickableTextBox(
         label = "DOB",
         value = userProfileState.basicDetailScreenState.userDob ?: "Select DOB",
@@ -329,7 +331,6 @@ fun EditProfileImageButton(
     ) {
         AppIconButton(
             imageVector = editIcon,
-            iconTint = LocalContentColor.current.copy(alpha = LocalContentAlpha.current),
             onClick = onClick
         )
     }

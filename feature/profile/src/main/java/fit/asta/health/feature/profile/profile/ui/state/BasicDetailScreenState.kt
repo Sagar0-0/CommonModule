@@ -74,12 +74,11 @@ class BasicDetailScreenState(
         )
     }
 
-    var userPregnancyWeekErrorMessage by mutableStateOf<String?>(null)
-
     val email: String
         get() = basicDetail.email
-    private val phoneNumber: String
+    val phoneNumber: String
         get() = basicDetail.phoneNumber
+
     var profileImageUrl by mutableStateOf(
         if (basicDetail.media.mailUrl.isNullOrEmpty()) {
             basicDetail.media.url

@@ -20,7 +20,6 @@ import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.button.AppOutlinedButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
-import fit.asta.health.feature.auth.AUTH_OTP_VERIFICATION_ROUTE
 import fit.asta.health.feature.auth.components.AuthOnboardingControl
 import fit.asta.health.feature.auth.components.AuthStringDivider
 import fit.asta.health.feature.auth.components.AuthTermAndPrivacyUI
@@ -32,14 +31,14 @@ import fit.asta.health.resources.strings.R
  * of Login for the App.
  *
  * @param onboardingState This is the on Boarding API call state
- * @param onNavigate This is the function which helps to Navigate between different screens
+ * @param navigateToPhoneAuth This is the function which helps to Navigate between different screens
  * @param onUiEvent This function is used to send UI Events to the ViewModel
  */
 @Composable
 fun AuthScreenControl(
     loginState: UiState<Unit>,
     onboardingState: UiState<List<Onboarding>>,
-    onNavigate: (String) -> Unit,
+    navigateToPhoneAuth: () -> Unit,
     onUiEvent: (AuthUiEvent) -> Unit
 ) {
 
@@ -84,7 +83,7 @@ fun AuthScreenControl(
                         .fillMaxWidth()
                         .height(AppTheme.buttonSize.level6),
                     onClick = {
-                        onNavigate(AUTH_OTP_VERIFICATION_ROUTE)
+                        navigateToPhoneAuth()
                     }
                 ) {
                     AppIcon(

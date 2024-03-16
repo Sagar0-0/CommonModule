@@ -24,5 +24,9 @@ data class WaterUiState(
 
 data class WaterToolUiState(
     val totalConsumed : Int = 0,
-    val remainingToConsume : Int = 0
+    val remainingToConsume : Int = 0,
+    val consumedBevExist : Boolean = true,
+    val undoBevQty : Int = 0,
+    val recentConsumedBevName : String = "",
+    val recentConsumedBevQty : Int = 0,
 )
