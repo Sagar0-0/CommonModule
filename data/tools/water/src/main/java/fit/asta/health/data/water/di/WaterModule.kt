@@ -12,6 +12,7 @@ import fit.asta.health.data.water.local.HistoryDatabase
 import fit.asta.health.data.water.local.WaterToolDatabase
 import fit.asta.health.data.water.remote.WaterApi
 import fit.asta.health.data.water.repo.HistoryRepo
+import fit.asta.health.data.water.repo.HistoryRepoImpl
 import fit.asta.health.data.water.repo.WaterLocalRepo
 import fit.asta.health.data.water.repo.WaterLocalRepoImpl
 import fit.asta.health.data.water.repo.WaterToolRepo
@@ -53,12 +54,15 @@ object WaterModule {
         "HistoryDatabase"
     ).build()
 
-
     @Singleton
     @Provides
-    fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
-        return HistoryRepo(db.historyDao())
-    }
+    fun provideHistoryDao(db:HistoryDatabase) = db.historyDao()
+
+//    @Singleton
+//    @Provides
+//    fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
+//        return HistoryRepo(db.historyDao())
+//    }
 }
 
 @Module
@@ -72,8 +76,6 @@ abstract class WaterBindsModule {
     abstract fun provideWaterLocalRepo(waterLocalRepoImpl: WaterLocalRepoImpl): WaterLocalRepo
 
     @Binds
-    fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
-        return HistoryRepo(db.historyDao())
-    }
+    abstract fun provideHistoryRepo(historyRepoImpl : HistoryRepoImpl): HistoryRepo
 
 }

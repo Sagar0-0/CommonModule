@@ -100,6 +100,9 @@ class WaterToolViewModel @Inject constructor(
     private var _sliderColor = MutableStateFlow(Color.Blue)
     val sliderColor = _sliderColor.asStateFlow()
 
+    var _recentHistory = MutableStateFlow<List<History>>(listOf())
+    val recentHistory = _recentHistory.asStateFlow()
+
     var showUndoDialog = mutableStateOf(false)
 
     private var isSearching = mutableStateOf(false)
@@ -167,21 +170,35 @@ class WaterToolViewModel @Inject constructor(
 
     fun searchHistory(query: String) {
         viewModelScope.launch {
-            // Collect the recent history list
-            recentHistory.collect { historyList ->
-                // Filter the list based on the query
-                val results = if (query.isEmpty()) {
-                    // If the query is empty, show the entire list
-                    historyList
-                } else {
-                    // Otherwise, filter the list based on the query
-                    historyList.filter {
-                        it.bevName.contains(query.trim(), ignoreCase = true)
+                historyRepo.getAllHistory().collectLatest {
+                    _recentHistory.value = it
+                    val results = if (query.isEmpty()) {
+                        // If the query is empty, show the entire list
+                        it
+                    } else {
+                        // Otherwise, filter the list based on the query
+                        it.filter {
+                            it.bevName.contains(query.trim(), ignoreCase = true)
+                        }
                     }
+                    // Update the filtered list
+                    filteredHistory.value = results
                 }
-                // Update the filtered list
-                filteredHistory.value = results
-            }
+            // Collect the recent history list
+//            recentHistory.collect { historyList ->
+//                // Filter the list based on the query
+//                val results = if (query.isEmpty()) {
+//                    // If the query is empty, show the entire list
+//                    historyList
+//                } else {
+//                    // Otherwise, filter the list based on the query
+//                    historyList.filter {
+//                        it.bevName.contains(query.trim(), ignoreCase = true)
+//                    }
+//                }
+//                // Update the filtered list
+//                filteredHistory.value = results
+//            }
         }
     }
 
@@ -189,10 +206,11 @@ class WaterToolViewModel @Inject constructor(
     // Local Data Loading and Fetching
     private fun loadLocalBevDetail() {
         Log.d("rishi", "loadLocalDetailCalled")
-        val list: StateFlow<List<BevDataDetails>> = historyRepo.getAllLocalBevHistory().stateIn(
-            viewModelScope, SharingStarted.Lazily, emptyList()
-        )
+
         viewModelScope.launch {
+            val list: StateFlow<List<BevDataDetails>> = historyRepo.getAllLocalBevHistory().stateIn(
+                viewModelScope, SharingStarted.Lazily, emptyList()
+            )
             list.catch {
                 Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
@@ -213,10 +231,11 @@ class WaterToolViewModel @Inject constructor(
 
     private fun loadGoal() {
         Log.d("rishi", "loadGoalCalled")
-        val list: StateFlow<List<Goal>> = historyRepo.getGoal().stateIn(
-            viewModelScope, SharingStarted.Lazily, emptyList()
-        )
+
         viewModelScope.launch {
+            val list: StateFlow<List<Goal>> = historyRepo.getGoal().stateIn(
+                viewModelScope, SharingStarted.Lazily, emptyList()
+            )
             list.catch {
                 Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
@@ -235,11 +254,12 @@ class WaterToolViewModel @Inject constructor(
 
     private fun loadConsumptionHistoryDetail() {
         Log.d("rishi", "loadLocalDetailCalled")
-        val list: StateFlow<List<ConsumptionHistory>> =
-            historyRepo.getAllConsumptionHistory(todayDate.toString()).stateIn(
-                viewModelScope, SharingStarted.Lazily, emptyList()
-            )
+
         viewModelScope.launch {
+            val list: StateFlow<List<ConsumptionHistory>> =
+                historyRepo.getAllConsumptionHistory(todayDate.toString()).stateIn(
+                    viewModelScope, SharingStarted.Lazily, emptyList()
+                )
             list.catch {
                 Log.d("rishi", "Error while fetching local Bev detials ${it.message}")
             }
@@ -334,9 +354,8 @@ class WaterToolViewModel @Inject constructor(
 
     // Local Insert,Update,GET methods
 
-    var recentHistory: StateFlow<List<History>> = historyRepo.getAllHistory().stateIn(
-        viewModelScope, SharingStarted.Lazily, emptyList()
-    )
+
+
 
     fun insertRecentAdded(history: History) = viewModelScope.launch {
         historyRepo.insertRecentAdded(history)
@@ -431,9 +450,11 @@ class WaterToolViewModel @Inject constructor(
 
     // Remote Data Update method
     private fun updateBeverageDataRemote(){
-        val consumedBevList = historyRepo.getConsumedBevList().stateIn(
-            viewModelScope, SharingStarted.Lazily, listOf()
-        )
+        viewModelScope.launch {
+            val consumedBevList = historyRepo.getConsumedBevList().stateIn(
+                viewModelScope, SharingStarted.Lazily, listOf()
+            )
+        }
         // update to server when api created
     }
     // Event Handler
@@ -475,11 +496,36 @@ class WaterToolViewModel @Inject constructor(
                             " ${_recentAddedQuantity.value}"
                 )
                 when (event.bevTitle) {
-                    "Water" -> _waterQuantity.value = event.sliderValue
-                    "Coconut" -> _coconutQuantity.value = event.sliderValue
-                    "FirstPref" -> _firstPrefQuantity.value = event.sliderValue
-                    "SecondPref" -> _secondPrefQuantity.value = event.sliderValue
-                    "RecentAdd" -> _recentAddedQuantity.value = event.sliderValue
+                    "Water" -> {
+                        _waterQuantity.value = event.sliderValue
+                        _uiState.value = _uiState.value.copy(
+                            sliderValueWater = event.sliderValue
+                        )
+                    }
+                    "Coconut" -> {
+                        _coconutQuantity.value = event.sliderValue
+                        _uiState.value = _uiState.value.copy(
+                            sliderValueCoconut = event.sliderValue
+                        )
+                    }
+                    "FirstPref" -> {
+                        _firstPrefQuantity.value = event.sliderValue
+                        _uiState.value = _uiState.value.copy(
+                            sliderValueFirstPreference = event.sliderValue
+                        )
+                    }
+                    "SecondPref" -> {
+                        _secondPrefQuantity.value = event.sliderValue
+                        _uiState.value = _uiState.value.copy(
+                            sliderValueSecondPreference = event.sliderValue
+                        )
+                    }
+                    "RecentAdd" -> {
+                        _recentAddedQuantity.value = event.sliderValue
+                        _uiState.value = _uiState.value.copy(
+                            sliderValueRecentAdded = event.sliderValue
+                        )
+                    }
                 }
                 insertBevData(
                     BevDataDetails(

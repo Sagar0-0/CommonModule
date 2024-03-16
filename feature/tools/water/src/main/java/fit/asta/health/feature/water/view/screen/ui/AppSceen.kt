@@ -54,7 +54,6 @@ import fit.asta.health.ui.common.components.AppBalloon
 @Composable
 fun AppHomeScreen(
     viewModel: WaterToolViewModel = hiltViewModel(),
-    totalConsumed: Int,
     waterQuantity: Int,
     coconutQuantity: Int,
     firstPrefQuantity: Int,
@@ -73,9 +72,11 @@ fun AppHomeScreen(
 ) {
     Log.d("rishiRecomposed", "AppScreenCalled")
     Log.d("rishi","With UI state ,TotalConsumed : ${uiState.totalConsumed}, Remainig : ${uiState.remainingToConsume}")
-    val remainingToConsume by viewModel.remainingConsumption.collectAsState()
-    val goal by viewModel.goal.collectAsState()
-
+//    val remainingToConsume by viewModel.remainingConsumption.collectAsState()
+//    val goal by viewModel.goal.collectAsState()
+    val remainingToConsume = uiState.remainingToConsume
+    val goal = uiState.goal
+    val totalConsumed = uiState.totalConsumed
     Box(
         modifier = Modifier
             .fillMaxSize(),
@@ -85,7 +86,7 @@ fun AppHomeScreen(
             horizontalAlignment = Alignment.CenterHorizontally,
             verticalArrangement = Arrangement.Center
         ) {
-            WaterDataCard(uiState,totalConsumed, remainingToConsume, goal)
+            WaterDataCard(uiState)
             GoalCard {
                 onClickGoal()
             }
@@ -178,7 +179,7 @@ fun HintsOnScreen() {
 
 
 @Composable
-fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsume: Int, goal: Int) {
+fun WaterDataCard(uiState: WaterToolUiState) {
 
     Column {
         Box(
@@ -216,7 +217,7 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
                                         minOf(
                                             100f,
                                             (uiState.totalConsumed
-                                                .toFloat() / if (goal != 0) goal else 1) * 100
+                                                .toFloat() / if (uiState.goal != 0) uiState.goal else 1) * 100
                                         )
                                     )
                                 } %",
@@ -237,7 +238,7 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
                                     )
                                 }, balloonContent = {
                                     CaptionTexts.Level2(
-                                        text = if (uiState.totalConsumed < goal) "Total Quantity Consumed till now" else "You have completed your today's goal",
+                                        text = if (uiState.totalConsumed < uiState.goal) "Total Quantity Consumed till now" else "You have completed your today's goal",
                                         maxLines = 3
                                     )
                                 },
@@ -265,8 +266,8 @@ fun WaterDataCard(uiState: WaterToolUiState,totalConsumed: Int, remainingToConsu
                     Box(contentAlignment = Alignment.Center,
                         modifier = Modifier.padding(end = 4.dp)) {
                         CircularProgressBar(
-                            percentage = (uiState.totalConsumed.toFloat() / if (goal != 0) goal else 1),
-                            number = if (goal != 0) goal else 1
+                            percentage = (uiState.totalConsumed.toFloat() / if (uiState.goal != 0) uiState.goal else 1),
+                            number = if (uiState.goal != 0) uiState.goal else 1
                         )
                     }
                 }

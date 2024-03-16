@@ -1,5 +1,7 @@
 package fit.asta.health.feature.water.view.screen
 
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.getValue
 import fit.asta.health.data.water.remote.model.ButterMilk
 import fit.asta.health.data.water.remote.model.Coconut
 import fit.asta.health.data.water.remote.model.FruitJuice
@@ -30,4 +32,9 @@ data class WaterToolUiState(
     val recentConsumedBevName : String = "",
     val recentConsumedBevQty : Int = 0,
     val goal : Int = 10000,
+    val sliderValueWater : Float = 0f,
+    val sliderValueCoconut: Float = 0f,
+    val sliderValueFirstPreference: Float = 0f,
+    val sliderValueSecondPreference: Float = 0f,
+    val sliderValueRecentAdded: Float = 0f
 )

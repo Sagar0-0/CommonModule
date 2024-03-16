@@ -5,6 +5,7 @@ import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.text.KeyboardActions
 import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
@@ -18,6 +19,7 @@ import androidx.compose.runtime.setValue
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
@@ -115,13 +117,14 @@ fun Screen2(
 // Daily Goal BottomSheet Screen
 @Composable
 fun Screen3(
-    viewModel: WaterToolViewModel = hiltViewModel(),
-    onGoalChange: (Int) -> Unit
+    onGoalChange: (Int) -> Unit,
+    goal : Int
 ) {
+    val controller = LocalSoftwareKeyboardController.current
     var text by remember {
         mutableStateOf("")
     }
-    val goal by viewModel.goal.collectAsState()
+    //val goal by viewModel.goal.collectAsState()
     Column {
         val title = "Set Daily Goal"
         val description =
@@ -133,12 +136,10 @@ fun Screen3(
             modifier = Modifier.padding(AppTheme.spacing.level1)
         )
 
-
         AppOutlinedTextField(
             value = text,
             onValueChange = {
                 text = it
-                onGoalChange(if (it.isEmpty()) 0 else it.toInt())
             },
             leadingIcon = {
                 AppIcon(
@@ -154,6 +155,12 @@ fun Screen3(
             keyboardOptions = KeyboardOptions.Default.copy(
                 keyboardType = KeyboardType.Number,
                 imeAction = ImeAction.Done
+            ),
+            keyboardActions = KeyboardActions(
+                onDone = {
+                    onGoalChange(if (text.isEmpty()) 0 else text.toInt())
+                    controller?.hide()
+                } // Call the provided lambda when "Done" is pressed
             ),
             modifier = Modifier
                 .fillMaxWidth()

@@ -70,7 +70,8 @@ fun CustomBevBottomSheet(
     onClickSchedule : () -> Unit,
     uiState : WaterToolUiState
 ) {
-    Log.d("rishiRecomposed", "CustomBevSheet called")
+    Log.d("rishiRecomposed", "CustomBevSheet called" +
+            "UiState : ${uiState}")
     val bottomSheetState = appRememberBottomSheetScaffoldState(bottomSheetState = AppSheetState(
         initialValue = AppSheetValue.Hidden,
         skipPartialExpanded = false,

@@ -10,31 +10,25 @@ import fit.asta.health.data.water.local.entity.History
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Inject
 
-@ActivityScoped
-class HistoryRepo //TODO: Use the HistoryRepoImpl and implement the interface pattern here
-@Inject constructor(
-    private val historyDao: HistoryDao
-) {
+
+interface HistoryRepo //TODO: Use the HistoryRepoImpl and implement the interface pattern here
+{
     //TODO: Use SUSPEND FUNCTIONS
-    fun getAllHistory(): Flow<List<History>> = historyDao.getAllHistory()
-    fun getAllLocalBevHistory(): Flow<List<BevDataDetails>> = historyDao.getAllLocalBevHistory()
-    fun getGoal(): Flow<List<Goal>> = historyDao.getGoal()
-    fun getAllConsumptionHistory(date: String): Flow<List<ConsumptionHistory>> =
-        historyDao.getAllConsumptionHistory(date)
+    suspend fun getAllHistory(): Flow<List<History>>
+    suspend fun getAllLocalBevHistory(): Flow<List<BevDataDetails>>
+    suspend fun getGoal(): Flow<List<Goal>>
+    suspend fun getAllConsumptionHistory(date: String): Flow<List<ConsumptionHistory>>
 
-    fun getUndoConsumedQty(bevName: String): Double = historyDao.getUndoQuantity(bevName)
+    suspend fun getUndoConsumedQty(bevName: String): Double
 
-    fun getConsumedBevList() = historyDao.getBevConsumptionList()
-    suspend fun undoConsumption(bevName: String) = historyDao.undoConsumption(bevName)
+    suspend fun getConsumedBevList() : Flow<List<BevQuantityConsumed>>
+    suspend fun undoConsumption(bevName: String) : Int
 
-    suspend fun insertRecentAdded(history: History) = historyDao.insertRecentAdded(history)
-    suspend fun insertBevData(bevDetails: BevDataDetails) = historyDao.insertBevData(bevDetails)
+    suspend fun insertRecentAdded(history: History)
+    suspend fun insertBevData(bevDetails: BevDataDetails)
 
-    suspend fun insertGoal(goal: Goal) = historyDao.insertGoal(goal)
+    suspend fun insertGoal(goal: Goal)
 
-    suspend fun insertBevQtyConsumed(bevQtyPut: BevQuantityConsumed) =
-        historyDao.insertBevQtyConsumed(bevQtyPut)
-
-    suspend fun insertConsumptionData(bevData: ConsumptionHistory) =
-        historyDao.insertConsumedData(bevData)
+    suspend fun insertBevQtyConsumed(bevQtyPut: BevQuantityConsumed)
+    suspend fun insertConsumptionData(bevData: ConsumptionHistory)
 }
