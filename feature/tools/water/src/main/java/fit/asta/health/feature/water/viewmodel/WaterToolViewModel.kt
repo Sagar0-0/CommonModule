@@ -225,6 +225,9 @@ class WaterToolViewModel @Inject constructor(
                     if (list.isNotEmpty()) {
                         val goalData = list[0]
                         _goal.value = goalData.goal
+                        _uiState.value = _uiState.value.copy(
+                            goal = goalData.goal
+                        )
                     }
                 }
         }
@@ -249,7 +252,8 @@ class WaterToolViewModel @Inject constructor(
                         _remainingConsumption.value = bevData.remainingToConsume
                         _uiState.value = _uiState.value.copy(
                             totalConsumed = _totalConsumed.value.toInt(),
-                            remainingToConsume = _remainingConsumption.value
+                            remainingToConsume = _remainingConsumption.value,
+                            goal = bevData.goal
                         )
                     }
                 }
@@ -497,8 +501,12 @@ class WaterToolViewModel @Inject constructor(
 
             is WTEvent.GoalChange -> {
                 _goal.value = event.goal
-                insertGoal(Goal(0, _goal.value))
+//                insertGoal(Goal(0, _goal.value))
                 _remainingConsumption.value = _goal.value - _totalConsumed.value.toInt()
+                _uiState.value = _uiState.value.copy(
+                    remainingToConsume = _remainingConsumption.value,
+                    goal = event.goal
+                )
                 insertConsumptionHistory(
                     ConsumptionHistory(
                         todayDate.toString(),
@@ -528,6 +536,7 @@ class WaterToolViewModel @Inject constructor(
             }
 
             is WTEvent.OnDisposeAddData -> {
+                insertGoal(Goal(0, _goal.value))
                 insertConsumptionHistory(
                     ConsumptionHistory(
                         todayDate.toString(),

@@ -29,4 +29,5 @@ data class WaterToolUiState(
     val undoBevQty : Int = 0,
     val recentConsumedBevName : String = "",
     val recentConsumedBevQty : Int = 0,
+    val goal : Int = 10000,
 )

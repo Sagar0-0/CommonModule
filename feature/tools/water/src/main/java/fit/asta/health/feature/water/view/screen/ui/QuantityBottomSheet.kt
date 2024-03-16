@@ -84,7 +84,8 @@ fun CustomBevBottomSheet(
     val sliderValueRecentAdded by viewModel.recentAddedQuantity.collectAsState()
 
     val color by viewModel.sliderColor.collectAsState()
-    val totalConsumed by viewModel.totalConsumed.collectAsState()
+    val goal = uiState.goal
+    //val totalConsumed by viewModel.totalConsumed.collectAsState()
     val context: Context = LocalContext.current
     val scope = rememberCoroutineScope()
     var addedName by rememberSaveable {
@@ -141,6 +142,7 @@ fun CustomBevBottomSheet(
                 SheetLayout(
                     viewModel,
                     color,
+                    goal,
                     currentSheet,
                     closeSheet,
                     onSliderValueChanged = {
@@ -165,7 +167,6 @@ fun CustomBevBottomSheet(
                     .fillMaxSize()
             ) {
                 AppHomeScreen(
-                    totalConsumed = totalConsumed.toInt(),
                     waterQuantity = sliderValueWater.toInt(),
                     coconutQuantity = sliderValueCoconut.toInt(),
                     firstPrefQuantity = sliderValueFirstPreference.toInt(),
@@ -239,6 +240,7 @@ fun CustomBevBottomSheet(
 fun SheetLayout(
     viewModel: WaterToolViewModel = hiltViewModel(),
     color: Color,
+    goal : Int,
     currentScreen: BottomSheetScreen,
     closeSheet: () -> Unit,
     onSliderValueChanged: (Pair<Float, String>) -> Unit,
@@ -274,7 +276,8 @@ fun SheetLayout(
                 color = color
             )
 
-            is BottomSheetScreen.Screen3 -> Screen3(viewModel,
+            is BottomSheetScreen.Screen3 -> Screen3(
+                goal = goal,
                 onGoalChange = {
                     onGoalChange(it)
                 })
