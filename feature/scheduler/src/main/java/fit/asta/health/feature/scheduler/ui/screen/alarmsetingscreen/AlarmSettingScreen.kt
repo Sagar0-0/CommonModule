@@ -2,7 +2,6 @@ package fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen
 
 import android.app.Activity
 import android.app.Activity.RESULT_OK
-import android.content.Intent
 import android.util.Log
 import androidx.activity.compose.rememberLauncherForActivityResult
 import androidx.activity.result.contract.ActivityResultContracts
@@ -67,7 +66,6 @@ import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
-import fit.asta.health.feature.scheduler.ui.SpotifyActivity
 import fit.asta.health.feature.scheduler.ui.components.CustomLabelBottomSheetLayout
 import fit.asta.health.feature.scheduler.ui.components.DateSelection
 import fit.asta.health.feature.scheduler.ui.components.DigitalDemo
@@ -512,8 +510,9 @@ private fun SoundOptionsUI(aSEvent: (AlarmSettingEvent) -> Unit, alarmSettingUiS
             )
         ) "Default" else alarmSettingUiState.toneName,
         onNavigateAction = {
-            val intent = Intent(activity, SpotifyActivity::class.java)
-            intentLauncher.launch(intent)
+            /* val intent = Intent(activity, SpotifyActivity::class.java)
+             intentLauncher.launch(intent)*/
+            aSEvent.invoke(AlarmSettingEvent.OnSound)
         }
     )
 

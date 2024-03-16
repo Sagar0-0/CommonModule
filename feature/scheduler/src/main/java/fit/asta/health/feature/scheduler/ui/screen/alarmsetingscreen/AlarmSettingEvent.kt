@@ -20,6 +20,7 @@ sealed class AlarmSettingEvent {
     data class SetImportant(val important: Boolean) : AlarmSettingEvent()
     data class Save(val context: Context) : AlarmSettingEvent()
     data object ResetUi : AlarmSettingEvent()
+    data object OnSound : AlarmSettingEvent()
 
 
 }

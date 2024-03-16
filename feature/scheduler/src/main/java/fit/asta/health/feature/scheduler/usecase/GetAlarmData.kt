@@ -1,4 +1,4 @@
-package fit.asta.health.feature.scheduler.doman.usecase
+package fit.asta.health.feature.scheduler.usecase
 
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import javax.inject.Inject

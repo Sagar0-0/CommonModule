@@ -23,9 +23,9 @@ import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.feature.scheduler.doman.usecase.getAlarm
-import fit.asta.health.feature.scheduler.doman.usecase.getAlarmScreenUi
-import fit.asta.health.feature.scheduler.doman.usecase.getIntervalUi
+import fit.asta.health.feature.scheduler.usecase.getAlarm
+import fit.asta.health.feature.scheduler.usecase.getAlarmScreenUi
+import fit.asta.health.feature.scheduler.usecase.getIntervalUi
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ASUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.AdvUiState
 import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.IvlUiState
@@ -76,6 +76,7 @@ class SchedulerViewModel
 
 
     init {
+        Log.d("viewmodel", ": init" )
 //        resetUi()
         getEditUiData()
         getTagData()
@@ -130,6 +131,7 @@ class SchedulerViewModel
     }
 
     fun setSound(tone: ToneUiState) {
+        Log.e("sound", "setSound: ${tone.name}", )
         _alarmSettingUiState.value = _alarmSettingUiState.value.copy(
             toneName = tone.name,
             toneType = tone.type,
@@ -355,6 +357,7 @@ class SchedulerViewModel
     }
 
     fun resetUi() {
+        Log.d("viewmodel", "resetUi: ")
         _alarmSettingUiState.value = ASUiState()
         interval.value = IvlUiState()
         setAlarmPreferences(999L)

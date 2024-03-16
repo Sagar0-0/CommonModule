@@ -1,6 +1,7 @@
 package fit.asta.health.feature.scheduler.ui.screen.spotify
 
 import androidx.compose.foundation.layout.Arrangement
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
@@ -10,23 +11,21 @@ import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalConfiguration
-import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import fit.asta.health.common.utils.UiState
-import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.spotify.remote.model.common.Album
 import fit.asta.health.data.spotify.remote.model.common.Track
 import fit.asta.health.data.spotify.remote.model.recently.SpotifyUserRecentlyPlayedModel
 import fit.asta.health.data.spotify.remote.model.saved.SpotifyLikedSongsResponse
 import fit.asta.health.data.spotify.remote.model.search.TrackList
 import fit.asta.health.designsystem.AppTheme
-import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
-import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.designsystem.molecular.texts.HeadingTexts
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.feature.scheduler.ui.components.SpotifyHomeHeader
-import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
-import fit.asta.health.feature.scheduler.ui.screen.alarmsetingscreen.ToneUiState
-import fit.asta.health.resources.strings.R as StringR
+import fit.asta.health.feature.scheduler.ui.screen.spotify.components.favouriteAlbums
+import fit.asta.health.feature.scheduler.ui.screen.spotify.components.favouriteTracks
+import fit.asta.health.feature.scheduler.ui.screen.spotify.components.likedSongs
+import fit.asta.health.feature.scheduler.ui.screen.spotify.components.recentlyPlayed
+import fit.asta.health.feature.scheduler.ui.screen.spotify.components.topMixes
 
 @Composable
 fun SpotifyHomeScreen(
@@ -47,380 +46,36 @@ fun SpotifyHomeScreen(
         setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
         setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
     }
-
-    LazyColumn(
-        modifier = Modifier
-            .height(LocalConfiguration.current.screenHeightDp.dp)
-            .padding(AppTheme.spacing.level2)
-            .width(LocalConfiguration.current.screenWidthDp.dp),
-        horizontalAlignment = Alignment.Start,
-        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-    ) {
-
-        // Search Option And Spotify Title
-        item {
+    AppScaffold(modifier = Modifier.fillMaxSize(),
+        topBar = {
             SpotifyHomeHeader(onSearchIconClicked = navSearch)
-        }
-
-        // Recently Played Text
-        item {
-            HeadingTexts.Level3(text = stringResource(StringR.string.recently_played))
-        }
-
-        // Showing the user's recently played Data
-        when (recentlyData) {
-
-            // Idle State
-            is UiState.Idle -> {
-//                setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                item {
-                    AppDotTypingAnimation()
-                }
-            }
-
-            // Success State
-            is UiState.Success -> {
-                recentlyData.data.trackList.let { trackList ->
-                    items(trackList.size) {
-                        val currentItem = trackList[it]
-
-                        val textToShow = currentItem.track.artists
-                            .map { artist -> artist.name }
-                            .toString()
-                            .filterNot { char ->
-                                char == '[' || char == ']'
-                            }.trim()
-
-                        SpotifyMusicItem(
-                            imageUri = currentItem.track.album.images.firstOrNull()?.url,
-                            name = currentItem.track.name,
-                            secondaryText = textToShow,
-                            onCardClick = {
-                                setEvent(
-                                    SpotifyUiEvent.HelperEvent.PlaySpotifySong(
-                                        currentItem.track.uri
-                                    )
-                                )
-                            }
-                        ) {
-                            setEvent(
-                                SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                    ToneUiState(
-                                        name = currentItem.track.name,
-                                        type = 1,
-                                        uri = currentItem.track.uri ?: "hi"
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                item {
-                    AppInternetErrorDialog(
-                        text = recentlyData.resId.toStringFromResId()
-                    ) {
-                        setEvent(SpotifyUiEvent.NetworkIO.LoadCurrentUserRecentlyPlayedTracks)
-                    }
-                }
-            }
-
-            else -> {}
-        }
-
-        // Top Mixes Text
-        item {
-            HeadingTexts.Level3(text = stringResource(StringR.string.top_mixes))
-        }
-
-        // Showing the user's top mix Data
-        when (topMixData) {
-
-            // Idle State
-            is UiState.Idle -> {
-//                setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                item {
-                    AppDotTypingAnimation()
-                }
-            }
-
-            // Success State
-            is UiState.Success -> {
-                topMixData.data.trackList.let { trackList ->
-                    items(trackList.size) {
-
-                        val currentItem = trackList[it]
-
-                        val textToShow = currentItem.artists
-                            .map { artist -> artist.name }
-                            .toString()
-                            .filterNot { char ->
-                                char == '[' || char == ']'
-                            }.trim()
-
-                        SpotifyMusicItem(
-                            imageUri = currentItem.album.images.firstOrNull()?.url,
-                            name = currentItem.name,
-                            secondaryText = textToShow,
-                            onCardClick = {
-                                setEvent(
-                                    SpotifyUiEvent.HelperEvent.PlaySpotifySong(
-                                        currentItem.uri
-                                    )
-                                )
-                            }
-                        ) {
-                            setEvent(
-                                SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                    ToneUiState(
-                                        name = currentItem.name,
-                                        type = 1,
-                                        uri = currentItem.uri ?: "hi"
-                                    )
-                                )
-                            )
-                        }
-                    }
-                }
-            }
-
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                item {
-                    AppInternetErrorDialog(text = topMixData.resId.toStringFromResId()) {
-                        setEvent(SpotifyUiEvent.NetworkIO.LoadUserTopTracks)
-                    }
-                }
-            }
-
-            else -> {}
-        }
-
-
-        // Liked Songs Text
-        item {
-            HeadingTexts.Level3(text = stringResource(StringR.string.liked_songs))
-        }
-
-        // Showing the user's Spotify Liked Songs
-        when (likedSongs) {
-
-            // Idle state
-            is UiState.Idle -> {
-//                setEvent(SpotifyUiEvent.NetworkIO.LoadLikedSongs)
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                item {
-                    AppDotTypingAnimation()
-                }
-            }
-
-            is UiState.Success -> {
-                items(likedSongs.data.trackList.size) {
-
-                    // Current Item
-                    val currentItem = likedSongs.data.trackList[it]
-
-                    val textToShow = currentItem.track.artists
-                        .map { artist -> artist.name }
-                        .toString()
-                        .filterNot { char ->
-                            char == '[' || char == ']'
-                        }.trim()
-
-                    SpotifyMusicItem(
-                        imageUri = currentItem.track.album.images.firstOrNull()?.url,
-                        name = currentItem.track.name,
-                        secondaryText = textToShow,
-                        onCardClick = {
-                            setEvent(
-                                SpotifyUiEvent.HelperEvent.PlaySpotifySong(
-                                    currentItem.track.uri
-                                )
-                            )
-                        }
-                    ) {
-                        setEvent(
-                            SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                ToneUiState(
-                                    name = currentItem.track.name,
-                                    type = 1,
-                                    uri = currentItem.track.uri ?: ""
-                                )
-                            )
-                        )
-                    }
-                }
-            }
-
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                item {
-                    AppInternetErrorDialog(text = likedSongs.resId.toStringFromResId()) {
-                        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
-                    }
-                }
-            }
-
-            else -> {}
-        }
-
-        // Favourite Tracks Text
-        item {
-            HeadingTexts.Level3(text = stringResource(StringR.string.favourite_tracks))
-        }
-
-        // Showing the users favourite tracks
-        when (favouriteTracks) {
-
-            // Idle state
-            is UiState.Idle -> {
-//                setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                item {
-                    AppDotTypingAnimation()
-                }
-            }
-
-            // Success State
-            is UiState.Success -> {
-
-                items(favouriteTracks.data.size) {
-                    // Current Item
-                    val currentItem = favouriteTracks.data[it]
-
-                    val textToShow = currentItem.artists
-                        .map { artist -> artist.name }
-                        .toString()
-                        .filterNot { char ->
-                            char == '[' || char == ']'
-                        }.trim()
-
-                    SpotifyMusicItem(
-                        imageUri = currentItem.album.images.firstOrNull()?.url,
-                        name = currentItem.name,
-                        secondaryText = textToShow,
-                        onCardClick = {
-                            setEvent(
-                                SpotifyUiEvent.HelperEvent.PlaySpotifySong(
-                                    currentItem.uri
-                                )
-                            )
-                        }
-                    ) {
-                        setEvent(
-                            SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                ToneUiState(
-                                    name = currentItem.name,
-                                    type = 1,
-                                    uri = currentItem.uri
-                                )
-                            )
-                        )
-                    }
-                }
-            }
-
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                item {
-                    AppInternetErrorDialog(
-                        text = favouriteTracks.resId.toStringFromResId()
-                    ) {
-                        setEvent(SpotifyUiEvent.LocalIO.LoadAllTracks)
-                    }
-                }
-            }
-
-            else -> {}
-        }
-
-        // Favourite Albums Text
-        item {
-            HeadingTexts.Level3(text = stringResource(StringR.string.favourite_albums))
-        }
-
-        // Showing the Favourite Album List of the user
-        when (favouriteAlbums) {
-
-            // Idle State
-            is UiState.Idle -> {
-//                setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
-            }
-
-            // Loading State
-            is UiState.Loading -> {
-                item {
-                    AppDotTypingAnimation()
-                }
-            }
-
-            // Success State
-            is UiState.Success -> {
-                items(favouriteAlbums.data.size) {
-
-                    // Current Item
-                    val currentItem = favouriteAlbums.data[it]
-
-                    val textToShow = currentItem.artists
-                        .map { artist -> artist.name }
-                        .toString()
-                        .filterNot { char ->
-                            char == '[' || char == ']'
-                        }.trim()
-
-                    SpotifyMusicItem(
-                        imageUri = currentItem.images.firstOrNull()?.url,
-                        name = currentItem.name,
-                        secondaryText = textToShow,
-                        onCardClick = {
-                            setEvent(
-                                SpotifyUiEvent.HelperEvent.PlaySpotifySong(currentItem.uri)
-                            )
-                        }
-                    ) {
-
-                        setEvent(
-                            SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                ToneUiState(
-                                    name = currentItem.name,
-                                    type = 1,
-                                    uri = currentItem.uri
-                                )
-                            )
-                        )
-                    }
-                }
-            }
-
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                item {
-                    AppInternetErrorDialog(
-                        text = favouriteAlbums.resId.toStringFromResId()
-                    ) {
-                        setEvent(SpotifyUiEvent.LocalIO.LoadAllAlbums)
-                    }
-                }
-            }
-
-            else -> {}
+        }) { padding ->
+        LazyColumn(
+            modifier = Modifier
+                .height(LocalConfiguration.current.screenHeightDp.dp)
+                .padding(
+                    start = AppTheme.spacing.level2,
+                    end = AppTheme.spacing.level2,
+                    bottom = AppTheme.spacing.level2,
+                    top = padding.calculateTopPadding()
+                )
+                .width(LocalConfiguration.current.screenWidthDp.dp),
+            horizontalAlignment = Alignment.Start,
+            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+        ) {
+            recentlyPlayed(recentlyData, setEvent)
+            topMixes(topMixData, setEvent)
+            likedSongs(likedSongs, setEvent)
+            favouriteTracks(favouriteTracks, setEvent)
+            favouriteAlbums(favouriteAlbums, setEvent)
         }
     }
 }
+
+
+
+
+
+
+
+

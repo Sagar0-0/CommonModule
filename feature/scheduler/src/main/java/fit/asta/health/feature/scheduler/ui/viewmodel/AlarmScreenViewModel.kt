@@ -2,6 +2,8 @@ package fit.asta.health.feature.scheduler.ui.viewmodel
 
 import android.content.Context
 import android.content.Intent
+import android.os.Build
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -31,6 +33,7 @@ class AlarmScreenViewModel
     val alarmUiState = _alarmUiState.asStateFlow()
 
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     fun stop(context: Context) {
         stateManager.dismissAlarm(context, alarmEntity!!.alarmId)
         val intentService =

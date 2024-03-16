@@ -1,7 +1,6 @@
 package fit.asta.health.feature.scheduler.ui.screen.spotify
 
 import android.widget.Toast
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
@@ -25,6 +24,7 @@ import fit.asta.health.data.spotify.remote.model.search.SpotifySearchModel
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppInternetErrorDialog
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
+import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.scheduler.ui.components.SearchBarUI
 import fit.asta.health.feature.scheduler.ui.components.SpotifyMusicItem
@@ -44,117 +44,122 @@ fun SpotifySearchScreen(
     val userSearchInput = remember { mutableStateOf("") }
 
     // Root Composable function
-    Column(
-        modifier = Modifier
-            .fillMaxSize()
-            .background(AppTheme.colors.surface)
-    ) {
-        val toast = stringResource(StringR.string.search_bar_empty)
-        // This function Draws the Search Bar to the Screen
-        SearchBarUI(
+    AppScaffold {
+        Column(
             modifier = Modifier
-                .fillMaxWidth()
-                .padding(AppTheme.spacing.level2),
-            userInput = userSearchInput.value,
-            onUserInputChange = {
-                userSearchInput.value = it
-            }
+                .fillMaxSize()
         ) {
+            val toast = stringResource(StringR.string.search_bar_empty)
+            // This function Draws the Search Bar to the Screen
+            SearchBarUI(
+                modifier = Modifier
+                    .fillMaxWidth()
+                    .padding(AppTheme.spacing.level2),
+                userInput = userSearchInput.value,
+                onUserInputChange = {
+                    userSearchInput.value = it
+                }
+            ) {
 
-            // Checking if both the user Input and the filtered type is not empty
-            if (userSearchInput.value.isNotEmpty()) {
+                // Checking if both the user Input and the filtered type is not empty
+                if (userSearchInput.value.isNotEmpty()) {
 
-                // Setting the Query parameters in the ViewModel
-                setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
-            } else {
+                    // Setting the Query parameters in the ViewModel
+                    setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
+                } else {
 
-                // No Search Query
-                Toast.makeText(
-                    context,
-                    toast,
-                    Toast.LENGTH_SHORT
-                ).show()
+                    // No Search Query
+                    Toast.makeText(
+                        context,
+                        toast,
+                        Toast.LENGTH_SHORT
+                    ).show()
+                }
             }
-        }
 
-        // Handling the States of the Search Result
-        when (searchResult) {
+            // Handling the States of the Search Result
+            when (searchResult) {
 
-            // Idle State
-            is UiState.Idle -> {}
+                // Idle State
+                is UiState.Idle -> {}
 
-            // Loading State
-            is UiState.Loading -> {
-                AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
-            }
+                // Loading State
+                is UiState.Loading -> {
+                    AppDotTypingAnimation(modifier = Modifier.fillMaxSize())
+                }
 
-            // Success State
-            is UiState.Success -> {
+                // Success State
+                is UiState.Success -> {
 
-                // Handling the Tracks UI here
-                searchResult.data.tracks.trackList.let { trackList ->
+                    // Handling the Tracks UI here
+                    searchResult.data.tracks.trackList.let { trackList ->
 
-                    // Tracks
-                    HeadingTexts.Level1(
-                        text = stringResource(StringR.string.tracks),
-                        modifier = Modifier.padding(AppTheme.spacing.level2)
-                    )
+                        // Tracks
+                        HeadingTexts.Level1(
+                            text = stringResource(StringR.string.tracks),
+                            modifier = Modifier.padding(AppTheme.spacing.level2)
+                        )
 
-                    // Showing the Tracks List UI inside a Lazy Row
-                    LazyColumn(
-                        modifier = Modifier
-                            .height(LocalConfiguration.current.screenHeightDp.dp)
-                            .padding(AppTheme.spacing.level2)
-                            .width(LocalConfiguration.current.screenWidthDp.dp),
-                        horizontalAlignment = Alignment.Start,
-                        verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
-                    ) {
-                        items(trackList.size) {
-                            val currentItem = trackList[it]
+                        // Showing the Tracks List UI inside a Lazy Row
+                        LazyColumn(
+                            modifier = Modifier
+                                .height(LocalConfiguration.current.screenHeightDp.dp)
+                                .padding(AppTheme.spacing.level2)
+                                .width(LocalConfiguration.current.screenWidthDp.dp),
+                            horizontalAlignment = Alignment.Start,
+                            verticalArrangement = Arrangement.spacedBy(AppTheme.spacing.level2)
+                        ) {
+                            items(trackList.size) {
+                                val currentItem = trackList[it]
 
-                            val textToShow = currentItem.artists
-                                .map { artist -> artist.name }
-                                .toString()
-                                .filterNot { char ->
-                                    char == '[' || char == ']'
-                                }.trim()
+                                val textToShow = currentItem.artists
+                                    .map { artist -> artist.name }
+                                    .toString()
+                                    .filterNot { char ->
+                                        char == '[' || char == ']'
+                                    }.trim()
 
-                            // This function draws the Track UI
-                            SpotifyMusicItem(
-                                imageUri = currentItem.album.images.firstOrNull()?.url,
-                                name = currentItem.name,
-                                secondaryText = textToShow,
-                                onCardClick = {
+                                // This function draws the Track UI
+                                SpotifyMusicItem(
+                                    imageUri = currentItem.album.images.firstOrNull()?.url,
+                                    name = currentItem.name,
+                                    secondaryText = textToShow,
+                                    onCardClick = {
+                                        setEvent(
+                                            SpotifyUiEvent.HelperEvent.PlaySpotifySong(
+                                                currentItem.uri
+                                            )
+                                        )
+                                    }
+                                ) {
                                     setEvent(
-                                        SpotifyUiEvent.HelperEvent.PlaySpotifySong(
-                                            currentItem.uri
+                                        SpotifyUiEvent.HelperEvent.OnApplyClick(
+                                            ToneUiState(
+                                                name = currentItem.name,
+                                                type = 1,
+                                                uri = currentItem.uri
+                                            )
                                         )
                                     )
                                 }
-                            ) {
-                                setEvent(
-                                    SpotifyUiEvent.HelperEvent.OnApplyClick(
-                                        ToneUiState(
-                                            name = currentItem.name,
-                                            type = 1,
-                                            uri = currentItem.uri
-                                        )
-                                    )
-                                )
                             }
                         }
                     }
                 }
-            }
 
-            // ErrorMessage State
-            is UiState.ErrorMessage -> {
-                AppInternetErrorDialog(text = searchResult.resId.toStringFromResId()) {
-                    setEvent(SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(userSearchInput.value))
+                // ErrorMessage State
+                is UiState.ErrorMessage -> {
+                    AppInternetErrorDialog(text = searchResult.resId.toStringFromResId()) {
+                        setEvent(
+                            SpotifyUiEvent.NetworkIO.SetSearchQueriesAndVariables(
+                                userSearchInput.value
+                            )
+                        )
+                    }
                 }
-            }
 
-            else -> {}
+                else -> {}
+            }
         }
     }
 }
