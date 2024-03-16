@@ -25,6 +25,7 @@ import fit.asta.health.data.profile.remote.model.SleepTime_Field_Name
 import fit.asta.health.data.profile.remote.model.Time
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.data.profile.remote.model.WorkStyle_Field_Name
 import fit.asta.health.data.profile.remote.model.WorkTime_Field_Name
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -66,6 +67,12 @@ class LifestyleScreenState(
             lifestyleTargets
         )
     )
+
+    var workStyle by mutableStateOf(lifeStyle.workStyle)
+    var workStyleBottomSheetVisible = mutableStateOf(false)
+
+    var workingEnv by mutableStateOf(lifeStyle.workStyle)
+    var workingEnvBottomSheetVisible = mutableStateOf(false)
 
     fun openPropertiesBottomSheet(
         sheetState: SheetState,
@@ -166,10 +173,29 @@ class LifestyleScreenState(
             )
         )
     }
+
+    fun saveWorkStyle(it: Int) {
+        onEvent(
+            UserProfileEvent.SaveInt(
+                Lifestyle_Screen_Name,
+                WorkStyle_Field_Name,
+                it
+            )
+        )
+    }
+
+    fun saveWorkingEnv(it: Int) {
+        UserProfileEvent.SaveInt(
+            Lifestyle_Screen_Name,
+            WorkStyle_Field_Name,
+            it
+        )
+    }
+
     private val updateLifestyle = LifeStyle(
         physicalActive = physicallyActive,
-        workingEnv = lifeStyle.workingEnv,
-        workStyle = lifeStyle.workStyle,
+        workingEnv = workingEnv,
+        workStyle = workStyle,
         workingHours = lifeStyle.workingHours,
         curActivities = currentActivities,
         prefActivities = preferredActivities,

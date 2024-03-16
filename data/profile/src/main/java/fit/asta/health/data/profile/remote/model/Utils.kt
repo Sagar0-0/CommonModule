@@ -180,6 +180,53 @@ enum class BodyTypes(val value: Int) {
     }
 }
 
+enum class WorkStyles(val value: Int) {
+
+    Sitting(1),
+    Standing(2),
+    Running(3);
+
+    companion object {
+        fun getType(value: Int?): WorkStyles? {
+            if (value == null) return null
+            WorkStyles.entries.forEach {
+                if (it.value == value) return it
+            }
+            return Sitting
+        }
+
+        fun indexOf(newValue: Int?): Int? {
+            WorkStyles.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
+        }
+    }
+}
+
+enum class WorkEnvironments(val value: Int) {
+
+    First(1),
+    Second(2);
+
+    companion object {
+        fun getType(value: Int?): WorkEnvironments? {
+            if (value == null) return null
+            WorkEnvironments.entries.forEach {
+                if (it.value == value) return it
+            }
+            return First
+        }
+
+        fun indexOf(newValue: Int?): Int? {
+            WorkEnvironments.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
+        }
+    }
+}
+
 enum class WeightUnit(override val title: String, override val value: Int) : PhysiqueUnit {
     KG("kg", 7),
     LB("lb", 8);

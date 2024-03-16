@@ -41,7 +41,10 @@ fun BottomSheetRadioList(
                 .fillMaxWidth()
                 .padding(AppTheme.spacing.level2)
         ) {
-            Row(Modifier.fillMaxWidth(), horizontalArrangement = Arrangement.SpaceBetween) {
+            Row(
+                modifier = Modifier.fillMaxWidth(),
+                horizontalArrangement = Arrangement.SpaceBetween
+            ) {
                 list.forEachIndexed { i, name ->
                     Row(
                         verticalAlignment = Alignment.CenterVertically,

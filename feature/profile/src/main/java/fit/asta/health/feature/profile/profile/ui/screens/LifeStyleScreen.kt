@@ -7,6 +7,8 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.filled.Work
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.saveable.rememberSaveable
@@ -14,10 +16,13 @@ import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProperties
+import fit.asta.health.data.profile.remote.model.WorkEnvironments
+import fit.asta.health.data.profile.remote.model.WorkStyles
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetListItemPicker
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetProperties
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetRadioList
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTimePicker
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
@@ -32,6 +37,9 @@ fun LifestyleScreen(
     val timerSheetState = appRememberModalBottomSheetState()
     val bottomSheetVisible = rememberSaveable { mutableStateOf(false) }
 
+    val workStyleBottomSheetState = appRememberModalBottomSheetState()
+    val workingEnvBottomSheetState = appRememberModalBottomSheetState()
+
     Column(
         modifier = Modifier
             .fillMaxSize()
@@ -41,6 +49,30 @@ fun LifestyleScreen(
         horizontalAlignment = Alignment.CenterHorizontally
     ) {
         Spacer(modifier = Modifier)
+
+        ClickableTextBox(
+            label = "Work Style",
+            value = WorkStyles.getType(userProfileState.lifestyleScreenState.workStyle)?.name
+                ?: "Select Type",
+            leadingIcon = Icons.Default.Work
+        ) {
+            userProfileState.openSheet(
+                workStyleBottomSheetState,
+                userProfileState.lifestyleScreenState.workStyleBottomSheetVisible
+            )
+        }
+
+        ClickableTextBox(
+            label = "Work Environment",
+            value = WorkEnvironments.getType(userProfileState.lifestyleScreenState.workingEnv)?.name
+                ?: "Select Type",
+            leadingIcon = Icons.Default.Work
+        ) {
+            userProfileState.openSheet(
+                workingEnvBottomSheetState,
+                userProfileState.lifestyleScreenState.workingEnvBottomSheetVisible
+            )
+        }
 
         userProfileState.lifestyleScreenState.timersList.forEachIndexed { index, it ->
             ClickableTextBox(
@@ -78,6 +110,46 @@ fun LifestyleScreen(
 
 
         //Dialogs
+        BottomSheetRadioList(
+            isVisible = userProfileState.lifestyleScreenState.workStyleBottomSheetVisible.value,
+            sheetState = workStyleBottomSheetState,
+            isValid = {
+                it != null
+            },
+            selectedIndex = WorkStyles.indexOf(userProfileState.lifestyleScreenState.workStyle),
+            list = WorkStyles.entries.map { it.name },
+            onDismissRequest = {
+                userProfileState.closeSheet(
+                    workStyleBottomSheetState,
+                    userProfileState.lifestyleScreenState.workStyleBottomSheetVisible
+                )
+            }
+        ) {
+            if (it != null) {
+                userProfileState.lifestyleScreenState.saveWorkStyle(it)
+            }
+        }
+
+        BottomSheetRadioList(
+            isVisible = userProfileState.lifestyleScreenState.workingEnvBottomSheetVisible.value,
+            sheetState = workingEnvBottomSheetState,
+            isValid = {
+                it != null
+            },
+            selectedIndex = WorkEnvironments.indexOf(userProfileState.lifestyleScreenState.workingEnv),
+            list = WorkEnvironments.entries.map { it.name },
+            onDismissRequest = {
+                userProfileState.closeSheet(
+                    workingEnvBottomSheetState,
+                    userProfileState.lifestyleScreenState.workingEnvBottomSheetVisible
+                )
+            }
+        ) {
+            if (it != null) {
+                userProfileState.lifestyleScreenState.saveWorkingEnv(it)
+            }
+        }
+
         BottomSheetProperties(
             isVisible = bottomSheetVisible.value,
             sheetState = propertiesSheetState,

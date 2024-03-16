@@ -7,8 +7,10 @@ import androidx.compose.runtime.saveable.Saver
 import androidx.compose.runtime.saveable.listSaver
 import androidx.compose.runtime.setValue
 import fit.asta.health.data.profile.remote.model.BMIUnit
+import fit.asta.health.data.profile.remote.model.BodyType_Field_Name
 import fit.asta.health.data.profile.remote.model.HeightUnit
 import fit.asta.health.data.profile.remote.model.Physique
+import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.WeightUnit
 import kotlinx.coroutines.CoroutineScope
 import kotlin.math.pow
@@ -110,7 +112,13 @@ class PhysiqueScreenState(
 
     fun saveBodyType(it: Int) {
         bodyType = it
-        onEvent(UserProfileEvent.SaveBodyType(it))
+        onEvent(
+            UserProfileEvent.SaveInt(
+                Physique_Screen_Name,
+                BodyType_Field_Name,
+                it
+            )
+        )
     }
 
     companion object {

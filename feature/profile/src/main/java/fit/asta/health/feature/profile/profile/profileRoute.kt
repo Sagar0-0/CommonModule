@@ -138,8 +138,12 @@ fun NavGraphBuilder.profileRoute(
                             )
                         }
 
-                        is UserProfileEvent.SaveBodyType -> {
-                            profileViewModel.saveBodyType(event.value)
+                        is UserProfileEvent.SaveInt -> {
+                            profileViewModel.saveInt(
+                                event.screenName,
+                                event.fieldName,
+                                event.value
+                            )
                         }
                     }
                 }

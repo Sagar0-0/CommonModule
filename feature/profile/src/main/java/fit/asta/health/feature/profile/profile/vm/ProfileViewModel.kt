@@ -8,10 +8,8 @@ import fit.asta.health.auth.di.UID
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
-import fit.asta.health.data.profile.remote.model.BodyType_Field_Name
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
-import fit.asta.health.data.profile.remote.model.Physique_Screen_Name
 import fit.asta.health.data.profile.remote.model.TimeSchedule
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
@@ -127,12 +125,12 @@ class ProfileViewModel
         }
     }
 
-    fun saveBodyType(value: Int) {
+    fun saveInt(screenName: String, fieldName: String, value: Int) {
         viewModelScope.launch {
             profileRepo.saveInt(
                 uid = uid,
-                screenName = Physique_Screen_Name,
-                fieldName = BodyType_Field_Name,
+                screenName = screenName,
+                fieldName = fieldName,
                 value = value
             )
         }
