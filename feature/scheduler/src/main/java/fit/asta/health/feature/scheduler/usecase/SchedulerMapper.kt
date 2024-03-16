@@ -1,4 +1,4 @@
-package fit.asta.health.feature.scheduler.doman.usecase
+package fit.asta.health.feature.scheduler.usecase
 
 import android.util.Log
 import com.google.gson.Gson

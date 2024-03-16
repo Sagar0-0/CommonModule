@@ -72,7 +72,7 @@ class SpotifyViewModel @Inject constructor(
      */
     private fun getCurrentUserDetails(accessToken: String) {
 
-        if (_currentUserData.value is UiState.Loading)
+        if (_currentUserData.value is UiState.Loading || _currentUserData.value is UiState.Success)
             return
 
         _currentUserData.value = UiState.Loading

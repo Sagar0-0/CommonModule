@@ -1,7 +1,9 @@
 package fit.asta.health.feature.scheduler.ui
 
+import android.os.Build
 import android.os.Bundle
 import androidx.activity.compose.setContent
+import androidx.annotation.RequiresApi
 import androidx.appcompat.app.AppCompatActivity
 import androidx.compose.runtime.getValue
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -24,6 +26,7 @@ class AlarmScreenActivity : AppCompatActivity() {
     }
 
 
+    @RequiresApi(Build.VERSION_CODES.UPSIDE_DOWN_CAKE)
     override fun onCreate(savedInstanceState: Bundle?) {
 //        Constants.changeStatusBarColor(Color.BLACK, window, this)
         Constants.setShowWhenLocked(window, this)
