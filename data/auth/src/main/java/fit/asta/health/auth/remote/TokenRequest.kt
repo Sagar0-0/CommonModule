@@ -1,9 +1,9 @@
-package fit.asta.health.auth.fcm.remote
+package fit.asta.health.auth.remote
 
 
 import com.google.gson.annotations.SerializedName
 
-data class TokenDTO(
+data class TokenRequest(
     @SerializedName("deviceId")
     val deviceId: String = "",
     @SerializedName("id")

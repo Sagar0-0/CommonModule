@@ -1,4 +1,4 @@
-package fit.asta.health.auth.fcm.repo
+package fit.asta.health.auth.repo
 
 import fit.asta.health.datastore.PrefManager
 import kotlinx.coroutines.CoroutineDispatcher

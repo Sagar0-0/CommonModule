@@ -3,7 +3,7 @@ package fit.asta.health.payment.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
@@ -20,7 +20,7 @@ class PaymentsViewModel
 @Inject constructor(
     private val paymentRepo: PaymentsRepo,
     private val authRepo: AuthRepo,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     val currentUser = authRepo.getUser()
@@ -38,7 +38,7 @@ class PaymentsViewModel
     fun createOrder(data: OrderRequest) = viewModelScope.launch {
         _orderResponseState.value = paymentRepo.createOrder(
             data.copy(
-                uId = uid,
+                uId = userID,
                 country = "IND"
             )
         ).toUiState()
@@ -58,7 +58,7 @@ class PaymentsViewModel
         paymentRepo
             .informCancelledPayment(
                 (orderResponseState.value as? UiState.Success)?.data?.orderId ?: "",
-                uid
+                userID
             )
     }
 

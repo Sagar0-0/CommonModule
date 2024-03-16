@@ -13,7 +13,7 @@ import androidx.media3.common.MediaItem
 import androidx.media3.common.Player
 import androidx.media3.common.Timeline
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.exercise.db.ExerciseData
@@ -48,7 +48,7 @@ class ExerciseViewModel @Inject constructor(
     private val exerciseRepo: ExerciseRepo,
     private val exerciseLocalRepo: ExerciseLocalRepo,
     private val player: Player,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
     private var screen = "dance"
     private val date = LocalDate.now().dayOfMonth
@@ -165,7 +165,7 @@ class ExerciseViewModel @Inject constructor(
     private fun loadData() {
         viewModelScope.launch {
             val response = exerciseRepo.getExerciseTool(
-                uid = uid,
+                uid = userID,
                 date = getCurrentDateTime(),
                 name = screen
             )
@@ -267,7 +267,7 @@ class ExerciseViewModel @Inject constructor(
 
     private fun loadMusicData(code: String) {
         viewModelScope.launch {
-            exerciseRepo.getStart(uid = uid, name = code)
+            exerciseRepo.getStart(uid = userID, name = code)
                 .collectLatest { networkResult ->
                     when (networkResult) {
                         is NetworkResult.Loading -> {}
@@ -476,7 +476,7 @@ class ExerciseViewModel @Inject constructor(
                     code = code,
                     prc = prcList,
                     type = 6,
-                    uid = uid,
+                    uid = userID,
                     weather = true
                 ), name = code
             )
@@ -592,7 +592,7 @@ class ExerciseViewModel @Inject constructor(
                     id = "",
                     part = emptyList(),
                     style = emptyList(),
-                    uid = uid,
+                    uid = userID,
                     vit = 10
                 ), name = code
             )

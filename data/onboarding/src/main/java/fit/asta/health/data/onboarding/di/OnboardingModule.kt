@@ -1,16 +1,14 @@
 package fit.asta.health.data.onboarding.di
 
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.data.onboarding.remote.OnboardingApi
 import fit.asta.health.data.onboarding.repo.OnboardingRepo
 import fit.asta.health.data.onboarding.repo.OnboardingRepoImpl
-import fit.asta.health.datastore.PrefManager
 import fit.asta.health.network.utils.NetworkUtil
-import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
 
@@ -23,17 +21,12 @@ object OnboardingModule {
     fun provideOnboardingApi(client: OkHttpClient): OnboardingApi =
         NetworkUtil.getRetrofit(client).create(OnboardingApi::class.java)
 
-    @Singleton
-    @Provides
-    fun provideOnboardingRepo(
-        remoteApi: OnboardingApi,
-        prefManager: PrefManager,
-        @IODispatcher coroutineDispatcher: CoroutineDispatcher
-    ): OnboardingRepo {
-        return OnboardingRepoImpl(
-            remoteApi = remoteApi,
-            prefManager = prefManager,
-            coroutineDispatcher = coroutineDispatcher
-        )
-    }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class OnboardingBindsModule {
+
+    @Binds
+    abstract fun provideOnboardingRepo(onboardingRepoImpl: OnboardingRepoImpl): OnboardingRepo
 }

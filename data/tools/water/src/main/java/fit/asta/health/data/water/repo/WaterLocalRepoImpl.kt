@@ -2,8 +2,12 @@ package fit.asta.health.data.water.repo
 
 import fit.asta.health.data.water.local.WaterDao
 import fit.asta.health.data.water.local.WaterData
+import javax.inject.Inject
 
-class WaterLocalRepoImpl(private val waterDao: WaterDao) : WaterLocalRepo {
+class WaterLocalRepoImpl
+@Inject constructor(
+    private val waterDao: WaterDao
+) : WaterLocalRepo {
     override suspend fun getWaterData(date: Int): WaterData? {
         return waterDao.getData(date)
     }

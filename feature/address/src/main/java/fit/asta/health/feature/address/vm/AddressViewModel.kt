@@ -10,9 +10,10 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.google.android.gms.maps.model.LatLng
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
@@ -35,7 +36,7 @@ private const val TAG = "MAP"
 class AddressViewModel
 @Inject constructor(
     private val addressRepo: AddressRepo,
-    @UID private val uId: String
+    @UserID private val uId: String
 ) : ViewModel() {
 
     private val _isLocationEnabled = MutableStateFlow(false)
@@ -50,7 +51,7 @@ class AddressViewModel
     private val _putAddressState = MutableStateFlow<UiState<PutAddressResponse>>(UiState.Idle)
     val putAddressState = _putAddressState.asStateFlow()
 
-    private val _deleteAddressState = MutableStateFlow<UiState<Boolean>>(UiState.Idle)
+    private val _deleteAddressState = MutableStateFlow<UiState<DeleteAddressResponse>>(UiState.Idle)
     val deleteAddressState = _deleteAddressState.asStateFlow()
 
     private val _selectAddressState = MutableStateFlow<UiState<Unit>>(UiState.Idle)

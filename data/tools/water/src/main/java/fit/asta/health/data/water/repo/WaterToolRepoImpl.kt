@@ -1,5 +1,6 @@
 package fit.asta.health.data.water.repo
 
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.water.remote.WaterApi
 import fit.asta.health.data.water.remote.model.BevQty
@@ -7,10 +8,12 @@ import fit.asta.health.data.water.remote.model.WaterToolData
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class WaterToolRepoImpl(
+class WaterToolRepoImpl
+@Inject constructor(
     private val remoteApi: WaterApi,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : WaterToolRepo {
 
     override suspend fun getWaterTool(
@@ -21,13 +24,13 @@ class WaterToolRepoImpl(
         date: Long
     ) = withContext(coroutineDispatcher) {
         getApiResponseState {
-                        remoteApi.getWaterTool(
-                            userId = userId,
-                            latitude = latitude,
-                            longitude = longitude,
-                            location = location,
-                            date = date
-                        )
+            remoteApi.getWaterTool(
+                userId = userId,
+                latitude = latitude,
+                longitude = longitude,
+                location = location,
+                date = date
+            )
         }
     }
 
@@ -52,12 +55,13 @@ class WaterToolRepoImpl(
     }
 
 
-    override suspend fun updateWaterTool(waterToolData: WaterToolData) = withContext(coroutineDispatcher) {
-        getApiResponseState { remoteApi.updateWaterTool(waterToolData) }
-    }
+    override suspend fun updateWaterTool(waterToolData: WaterToolData) =
+        withContext(coroutineDispatcher) {
+            getApiResponseState { remoteApi.updateWaterTool(waterToolData) }
+        }
 
-    override suspend fun getWaterData()= withContext(coroutineDispatcher) {
-        getApiResponseState {  remoteApi.getWaterData() }
+    override suspend fun getWaterData() = withContext(coroutineDispatcher) {
+        getApiResponseState { remoteApi.getWaterData() }
 //        return flow {
 //            emit(
 //                remoteApi.getWaterData().data

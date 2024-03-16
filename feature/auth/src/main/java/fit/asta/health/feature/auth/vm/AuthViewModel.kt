@@ -7,9 +7,9 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.ktx.Firebase
 import com.google.firebase.messaging.ktx.messaging
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
-import fit.asta.health.auth.fcm.remote.TokenDTO
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.auth.model.domain.User
+import fit.asta.health.auth.remote.TokenRequest
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
@@ -37,7 +37,7 @@ class AuthViewModel
     private val authRepo: AuthRepo,
     private val profileRepo: ProfileRepo,
     private val onboardingRepo: OnboardingRepo,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     private val _loginState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
@@ -76,13 +76,13 @@ class AuthViewModel
         }
     }
 
-    private suspend fun uploadFcmToken(tokenDTO: TokenDTO) {
+    private suspend fun uploadFcmToken(tokenRequest: TokenRequest) {
         viewModelScope.launch {
-            authRepo.uploadFcmToken(tokenDTO)
+            authRepo.uploadFcmToken(tokenRequest)
         }.join()
     }
 
-    private fun isProfileAvailable(userId: String = uid) {
+    private fun isProfileAvailable(userId: String = userID) {
         _isProfileAvailable.value = UiState.Loading
         viewModelScope.launch {
             _isProfileAvailable.update {
@@ -99,7 +99,7 @@ class AuthViewModel
                     if (!isFcmTokenUploaded.value) {//Uploading token to our server for notification
                         val token = Firebase.messaging.token.await()
                         uploadFcmToken(
-                            TokenDTO(
+                            TokenRequest(
                                 deviceId = Build.MANUFACTURER + Build.DEVICE,
                                 timeStamp = System.currentTimeMillis().toString(),
                                 token = token,

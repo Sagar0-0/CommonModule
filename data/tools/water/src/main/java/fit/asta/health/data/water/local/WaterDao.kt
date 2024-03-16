@@ -8,6 +8,7 @@ import androidx.room.Query
 
 @Dao
 interface WaterDao {
+    //TODO: Use flows for all Query requests
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(waterData: WaterData)
 

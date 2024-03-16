@@ -14,7 +14,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.smarttoolfactory.colorpicker.util.roundToTwoDigits
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.health_data.ExerciseSessionData
 import fit.asta.health.common.health_data.HealthConnectManager
 import fit.asta.health.common.utils.NetSheetData
@@ -54,7 +54,7 @@ class WalkingViewModel
     private val dayUseCases: DayUseCases,
     private val repo: WalkingToolRepo,
     private val prefManager: PrefManager,
-    @UID private val uid: String,
+    @UserID private val userID: String,
     private val healthConnectManager: HealthConnectManager
 ) : ViewModel() {
 
@@ -173,7 +173,7 @@ class WalkingViewModel
     private fun startProgressHome() {
         _stepsHomeDataState.value = UiState.Loading
         viewModelScope.launch {
-            val result = repo.getHomeData(uid)
+            val result = repo.getHomeData(userID)
             _stepsHomeDataState.value = when (result) {
                 is ResponseState.Success -> {
                     _selectedData.value = result.data.walkingTool.prc
@@ -326,7 +326,7 @@ class WalkingViewModel
                     name = "walking",
                     sType = 1,
                     type = 6,
-                    uid = uid,
+                    uid = userID,
                     wea = true,
                     tgt = Target(
                         distance = Distance(

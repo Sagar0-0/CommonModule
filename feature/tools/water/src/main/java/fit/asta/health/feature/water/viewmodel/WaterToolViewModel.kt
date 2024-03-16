@@ -11,13 +11,13 @@ import androidx.compose.ui.graphics.Color
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDateTime
-import fit.asta.health.data.water.local.entity.BevQuantityConsumed
 import fit.asta.health.data.water.local.entity.BevDataDetails
+import fit.asta.health.data.water.local.entity.BevQuantityConsumed
 import fit.asta.health.data.water.local.entity.ConsumptionHistory
 import fit.asta.health.data.water.local.entity.Goal
 import fit.asta.health.data.water.local.entity.History
@@ -50,7 +50,7 @@ class WaterToolViewModel @Inject constructor(
     private val authRepo: AuthRepo,
     private val historyRepo: HistoryRepo,
     private val prefManager: PrefManager,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
     private val mutableState = MutableStateFlow<UiState<Unit>>(UiState.Idle)
     val state = mutableState.asStateFlow()
@@ -289,7 +289,7 @@ class WaterToolViewModel @Inject constructor(
             authRepo.getUser()?.let {
                 prefManager.address.collectLatest { pref ->
                     when (val result = repo.getWaterTool(
-                        userId = uid,
+                        userId = userID,
                         latitude = pref.lat.toString(),
                         longitude = pref.long.toString(),
                         location = pref.currentAddress,
@@ -387,7 +387,7 @@ class WaterToolViewModel @Inject constructor(
                     BevQuantityConsumed(
                         id = 0,
                         bev = title,
-                        uid = uid,
+                        uid = userID,
                         qty = quantity.toDouble() / 1000
                     )
                 )
@@ -399,7 +399,7 @@ class WaterToolViewModel @Inject constructor(
                     BevQty(
                         bev = title,
                         id = "",
-                        uid = uid,
+                        uid = userID,
                         qty = quantity.toDouble() / 1000
                     )
                 )) {

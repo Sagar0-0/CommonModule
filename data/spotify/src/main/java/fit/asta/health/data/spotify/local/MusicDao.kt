@@ -10,7 +10,7 @@ import fit.asta.health.data.spotify.remote.model.common.Album
 import fit.asta.health.data.spotify.remote.model.common.Track
 
 @Dao
-interface MusicDao {
+interface MusicDao {//TODO: Use flows for all Query requests
 
     @Query("SELECT * FROM fav_tracks_table")
     fun getAllTracks(): List<Track>

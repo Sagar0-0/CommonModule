@@ -1,4 +1,4 @@
-package fit.asta.health.auth.fcm.remote
+package fit.asta.health.auth.remote
 
 
 import com.google.gson.annotations.SerializedName

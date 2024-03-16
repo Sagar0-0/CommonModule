@@ -1,7 +1,5 @@
 package fit.asta.health.data.profile.remote.model
 
-import fit.asta.health.data.profile.local.entity.ProfileEntity
-
 const val BasicDetail_Screen_Name = "bscDtl"
 const val Physique_Screen_Name = "phq"
 const val Health_Screen_Name = "hlt"
@@ -70,14 +68,6 @@ const val StartTime_Field_Name = "str"
 const val EndTime_Field_Name = "end"
 const val Hour_Field_Name = "hr"
 const val Minute_Field_Name = "min"
-
-fun UserProfileResponse.mergeWithLocalData(
-    profileEntity: ProfileEntity?
-): UserProfileResponse {
-    if (profileEntity == null) return this
-    this.basicDetail.name = profileEntity.name
-    return this
-}
 
 
 typealias Gender = Int

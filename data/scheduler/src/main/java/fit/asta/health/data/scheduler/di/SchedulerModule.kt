@@ -4,6 +4,7 @@ import android.app.AlarmManager
 import android.app.NotificationManager
 import android.content.Context
 import androidx.core.content.ContextCompat
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -12,9 +13,9 @@ import dagger.hilt.components.SingletonComponent
 import fit.asta.health.data.scheduler.local.AlarmDatabase
 import fit.asta.health.data.scheduler.remote.SchedulerApi
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
-import fit.asta.health.data.scheduler.repo.AlarmBackendRepoImp
+import fit.asta.health.data.scheduler.repo.AlarmBackendRepoImpl
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
-import fit.asta.health.data.scheduler.repo.AlarmLocalRepoImp
+import fit.asta.health.data.scheduler.repo.AlarmLocalRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
 import okhttp3.OkHttpClient
 import javax.inject.Singleton
@@ -30,20 +31,8 @@ object SchedulerModule {
 
     @Singleton
     @Provides
-    fun provideBackendRepo(
-        remoteApi: SchedulerApi,
-        @ApplicationContext context: Context
-    ): AlarmBackendRepo {
-        return AlarmBackendRepoImp(
-            context = context,
-            remoteApi = remoteApi
-        )
-    }
-
-    @Singleton
-    @Provides
     fun provideRepo(db: AlarmDatabase): AlarmLocalRepo {
-        return AlarmLocalRepoImp(db.alarmDao(), db.alarmInstanceDao())
+        return AlarmLocalRepoImpl(db.alarmDao(), db.alarmInstanceDao())
     }
 
 
@@ -60,4 +49,13 @@ object SchedulerModule {
             context, NotificationManager::class.java
         ) as NotificationManager
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class SchedulerBindsModule {
+
+    @Binds
+    abstract fun provideAlarmBackendRepo(alarmBackendRepoImpl: AlarmBackendRepoImpl): AlarmBackendRepo
+
 }

@@ -8,7 +8,13 @@ import android.os.Looper
 import android.util.Log
 import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.common.api.ResolvableApiException
-import com.google.android.gms.location.*
+import com.google.android.gms.location.LocationCallback
+import com.google.android.gms.location.LocationRequest
+import com.google.android.gms.location.LocationResult
+import com.google.android.gms.location.LocationSettingsRequest
+import com.google.android.gms.location.LocationSettingsResponse
+import com.google.android.gms.location.Priority
+import com.google.android.gms.location.SettingsClient
 import com.google.android.gms.maps.model.LatLng
 import com.google.android.gms.tasks.Task
 import fit.asta.health.common.utils.IODispatcher
@@ -18,6 +24,7 @@ import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.common.utils.getResponseState
 import fit.asta.health.data.address.remote.AddressApi
 import fit.asta.health.data.address.remote.SearchLocationApi
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
@@ -183,9 +190,9 @@ class AddressRepoImpl @Inject constructor(
     override suspend fun deleteAddress(
         uid: String,
         id: String
-    ): ResponseState<Boolean> {
-        return getResponseState {
-            addressApi.deleteAddress(uid, id).flag
+    ): ResponseState<DeleteAddressResponse> {
+        return getApiResponseState {
+            addressApi.deleteAddress(uid, id)
         }
     }
 

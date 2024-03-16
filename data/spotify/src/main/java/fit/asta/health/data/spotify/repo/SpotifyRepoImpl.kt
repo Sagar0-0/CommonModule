@@ -26,14 +26,12 @@ import kotlinx.coroutines.withContext
 import javax.inject.Inject
 
 class SpotifyRepoImpl
-    @Inject constructor(
+@Inject constructor(
     private val spotifyApi: SpotifyApi,
     @IODispatcher private val dispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : SpotifyRepo {
 
-    override suspend fun getCurrentUserDetails(accessToken: String):
-            ResponseState<SpotifyMeModel> {
-
+    override suspend fun getCurrentUserDetails(accessToken: String): ResponseState<SpotifyMeModel> {
         return withContext(dispatcher) {
             getResponseState {
                 spotifyApi.getCurrentUserDetails(getBearerToken(accessToken))

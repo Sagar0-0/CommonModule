@@ -6,6 +6,7 @@ import java.util.Date
 import java.util.Locale
 
 object ChartUtils {
+    //TODO: Move to common module
     private fun String.toDate(pattern: String = "yyyy-MM-dd'T'HH:mm"): Date? {
         val format = SimpleDateFormat(pattern, Locale.getDefault())
         return format.parse(this)

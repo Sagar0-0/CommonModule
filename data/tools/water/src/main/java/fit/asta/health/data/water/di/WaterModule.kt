@@ -2,6 +2,7 @@ package fit.asta.health.data.water.di
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -30,11 +31,6 @@ object WaterModule {
 
     @Singleton
     @Provides
-    fun provideWaterToolRepo(remoteApi: WaterApi): WaterToolRepo =
-        WaterToolRepoImpl(remoteApi = remoteApi)
-
-    @Singleton
-    @Provides
     fun provideWaterDatabase(
         @ApplicationContext context: Context,
     ) = Room.databaseBuilder(
@@ -42,6 +38,10 @@ object WaterModule {
         WaterToolDatabase::class.java,
         "water-database"
     ).build()
+
+    @Singleton
+    @Provides
+    fun provideWaterDao(waterToolDatabase: WaterToolDatabase) = waterToolDatabase.waterDao()
 
     @Singleton
     @Provides
@@ -53,15 +53,27 @@ object WaterModule {
         "HistoryDatabase"
     ).build()
 
-    @Singleton
-    @Provides
-    fun provideRepo(db: WaterToolDatabase): WaterLocalRepo {
-        return WaterLocalRepoImpl(db.waterDao())
-    }
 
     @Singleton
     @Provides
     fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
         return HistoryRepo(db.historyDao())
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class WaterBindsModule {
+
+    @Binds
+    abstract fun provideWaterToolRepo(waterToolRepoImpl: WaterToolRepoImpl): WaterToolRepo
+
+    @Binds
+    abstract fun provideWaterLocalRepo(waterLocalRepoImpl: WaterLocalRepoImpl): WaterLocalRepo
+
+    @Binds
+    fun provideHistoryRepo(db: HistoryDatabase): HistoryRepo {
+        return HistoryRepo(db.historyDao())
+    }
+
 }

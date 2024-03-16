@@ -3,7 +3,7 @@ package fit.asta.health.navigation.track.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.datastore.PrefManager
@@ -32,7 +32,7 @@ import javax.inject.Inject
 class TrackViewModel @Inject constructor(
     private val trackingRepo: TrackingRepo,
     private val prefManager : PrefManager,
-    @UID private val uid : String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     /**
@@ -92,7 +92,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _homeScreenDetails.value = trackingRepo.getHomeDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -118,7 +118,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _waterDetails.value = trackingRepo.getWaterDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -144,7 +144,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _stepsDetails.value = trackingRepo.getStepsDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -168,7 +168,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _meditationDetails.value = trackingRepo.getMeditationDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -195,7 +195,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _breathingDetails.value = trackingRepo.getBreathingDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -221,7 +221,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _sleepDetails.value = trackingRepo.getSleepDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -247,7 +247,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _sunlightDetails.value = trackingRepo.getSunlightDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     status = status
@@ -274,7 +274,7 @@ class TrackViewModel @Inject constructor(
         viewModelScope.launch {
             prefManager.address.collectLatest { pref ->
                 _exerciseDetails.value = trackingRepo.getExerciseDetails(
-                    uid = uid,
+                    uid = userID,
                     date = date,
                     location = pref.currentAddress,
                     exercise = exercise,

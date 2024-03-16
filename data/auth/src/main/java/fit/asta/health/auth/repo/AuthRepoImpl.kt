@@ -7,13 +7,13 @@ import com.google.firebase.auth.AuthCredential
 import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.auth.FirebaseUser
 import com.google.firebase.auth.GoogleAuthProvider
-import fit.asta.health.auth.fcm.remote.TokenApi
-import fit.asta.health.auth.fcm.remote.TokenDTO
-import fit.asta.health.auth.fcm.remote.TokenResponse
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.remote.AuthApi
 import fit.asta.health.auth.remote.DeleteAccountResponse
+import fit.asta.health.auth.remote.TokenApi
+import fit.asta.health.auth.remote.TokenRequest
+import fit.asta.health.auth.remote.TokenResponse
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
@@ -54,7 +54,7 @@ class AuthRepoImpl @Inject constructor(
         prefManager.setScreenCode(ScreenCode.Auth.code)
     }
 
-    override suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse> {
+    override suspend fun uploadFcmToken(tokenRequest: TokenRequest): ResponseState<TokenResponse> {
         return getApiResponseState(
             onSuccess = {
                 setIsFcmTokenUploaded(true)
@@ -63,7 +63,7 @@ class AuthRepoImpl @Inject constructor(
                 setIsFcmTokenUploaded(false)
             }
         ) {
-            tokenApi.sendToken(tokenDTO)
+            tokenApi.sendToken(tokenRequest)
         }
     }
 

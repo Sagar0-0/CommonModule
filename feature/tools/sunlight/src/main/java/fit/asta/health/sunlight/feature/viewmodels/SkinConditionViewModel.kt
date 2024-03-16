@@ -5,7 +5,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.PutResponse
 import fit.asta.health.common.utils.UiState
@@ -27,7 +27,7 @@ import javax.inject.Inject
 @HiltViewModel
 class SkinConditionViewModel @Inject constructor(
     private val repo: SunlightRepo,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) :
     ViewModel() {
     val title = mutableStateOf("")
@@ -280,7 +280,7 @@ class SkinConditionViewModel @Inject constructor(
             when (val data = repo.putSkinConditionData(
                 SkinConditionBody(
                     id = id.value,
-                    uid = uid,
+                    uid = userID,
                     type = 4,
                     prc = conditionUpdateData.filter { it.code.isNotEmpty() }
                         .distinctBy { it.code },

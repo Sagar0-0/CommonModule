@@ -8,6 +8,7 @@ import fit.asta.health.data.scheduler.local.model.AlarmInstance
 
 @Dao
 interface AlarmInstanceDao {
+    //TODO: Use flows to observe Queries
     @Upsert
     suspend fun insertAndUpdate(alarmInstance: AlarmInstance)
 

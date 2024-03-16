@@ -9,7 +9,7 @@ import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.map
 import javax.inject.Inject
 
-class AlarmLocalRepoImp
+class AlarmLocalRepoImpl
 @Inject constructor(
     private val alarmDao: AlarmDao,
     private val alarmInstanceDao: AlarmInstanceDao

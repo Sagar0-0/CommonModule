@@ -7,7 +7,7 @@ import fit.asta.health.data.water.remote.model.TodayActivityData
 import fit.asta.health.data.water.remote.model.WaterTool
 
 
-fun mapToWaterTool(networkModel: Data): WaterTool {
+fun mapToWaterTool(networkModel: Data): WaterTool {//TODO: Check and remove the mapper
     Log.i("WaterToolDataMapper 14", networkModel.toString())
     val beverageDetailsList = mutableListOf<BeverageDetailsData>()
     val todayActivityList = mutableListOf<TodayActivityData>()

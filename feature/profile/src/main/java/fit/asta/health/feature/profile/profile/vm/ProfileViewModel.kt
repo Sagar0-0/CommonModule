@@ -4,7 +4,7 @@ import android.net.Uri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
@@ -26,7 +26,7 @@ import javax.inject.Inject
 class ProfileViewModel
 @Inject constructor(
     private val profileRepo: ProfileRepo,
-    @UID private val uid: String,
+    @UserID private val userID: String,
 ) : ViewModel() {
 
     private val _submitProfileState = MutableStateFlow<UiState<SubmitProfileResponse>>(UiState.Idle)
@@ -43,7 +43,7 @@ class ProfileViewModel
     fun getProfileData() {
         _userProfileState.value = UiState.Loading
         viewModelScope.launch {
-            val result = profileRepo.getUserProfile(uid)
+            val result = profileRepo.getUserProfile(userID)
             _userProfileState.update {
                 result.toUiState()
             }
@@ -52,7 +52,7 @@ class ProfileViewModel
 
     fun setName(name: String) {
         viewModelScope.launch {
-            profileRepo.setName(uid, name)
+            profileRepo.setName(userID, name)
         }
     }
 
@@ -64,7 +64,7 @@ class ProfileViewModel
     ) {
         viewModelScope.launch {
             profileRepo.setGenderDetails(
-                uid = uid,
+                uid = userID,
                 gender = gender,
                 isPregnant = isPregnant,
                 onPeriod = onPeriod,
@@ -75,7 +75,7 @@ class ProfileViewModel
 
     fun setDob(dob: String, age: Int) {
         viewModelScope.launch {
-            profileRepo.setDob(uid = uid, dob = dob, age = age)
+            profileRepo.setDob(uid = userID, dob = dob, age = age)
         }
     }
 
@@ -92,20 +92,20 @@ class ProfileViewModel
 
     fun saveHeight(height: Double, unit: Int) {
         viewModelScope.launch {
-            profileRepo.saveHeight(uid, height, unit)
+            profileRepo.saveHeight(userID, height, unit)
         }
     }
 
     fun saveWeight(weight: Double, unit: Int) {
         viewModelScope.launch {
-            profileRepo.saveWeight(uid, weight, unit)
+            profileRepo.saveWeight(userID, weight, unit)
         }
     }
 
     fun savePropertiesList(screenName: String, fieldName: String, list: List<UserProperties>) {
         viewModelScope.launch {
             profileRepo.savePropertiesList(
-                uid,
+                userID,
                 screenName,
                 fieldName,
                 list
@@ -115,20 +115,20 @@ class ProfileViewModel
 
     fun saveProfileImage(profileImageLocalUri: Uri?) {
         viewModelScope.launch {
-            profileRepo.saveProfileImage(uid, profileImageLocalUri)
+            profileRepo.saveProfileImage(userID, profileImageLocalUri)
         }
     }
 
     fun saveTimeSchedule(screenName: String, fieldName: String, timeSchedule: TimeSchedule) {
         viewModelScope.launch {
-            profileRepo.saveTimeSchedule(uid, screenName, fieldName, timeSchedule)
+            profileRepo.saveTimeSchedule(userID, screenName, fieldName, timeSchedule)
         }
     }
 
     fun saveInt(screenName: String, fieldName: String, value: Int) {
         viewModelScope.launch {
             profileRepo.saveInt(
-                uid = uid,
+                uid = userID,
                 screenName = screenName,
                 fieldName = fieldName,
                 value = value

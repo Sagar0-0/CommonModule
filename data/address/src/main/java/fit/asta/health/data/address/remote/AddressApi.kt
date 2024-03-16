@@ -4,7 +4,11 @@ import fit.asta.health.common.utils.Response
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
-import retrofit2.http.*
+import retrofit2.http.Body
+import retrofit2.http.DELETE
+import retrofit2.http.GET
+import retrofit2.http.PUT
+import retrofit2.http.Query
 
 interface AddressApi {
 
@@ -20,7 +24,7 @@ interface AddressApi {
     suspend fun deleteAddress(
         @Query("uid") uid: String,
         @Query("lid") id: String
-    ): DeleteAddressResponse
+    ): Response<DeleteAddressResponse>
 
     @PUT("location/current/put/")
     suspend fun selectCurrent(

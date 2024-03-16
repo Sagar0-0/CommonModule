@@ -12,14 +12,14 @@ import androidx.work.OutOfQuotaPolicy
 import androidx.work.WorkerParameters
 import dagger.assisted.Assisted
 import dagger.assisted.AssistedInject
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
-import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.feature.scheduler.util.StateManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -32,7 +32,7 @@ class SchedulerWorker @AssistedInject constructor(
     private val alarmLocalRepo: AlarmLocalRepo,
     private val backendRepo: AlarmBackendRepo,
     private val stateManager: StateManager,
-    @UID private val uId: String
+    @UserID private val uId: String
 ) : CoroutineWorker(appContext, workerParams) {
     override suspend fun getForegroundInfo(): ForegroundInfo = appContext.syncForegroundInfo()
 

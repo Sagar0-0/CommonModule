@@ -45,6 +45,7 @@ import androidx.compose.ui.unit.dp
 import androidx.core.content.ContextCompat.startActivity
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
@@ -67,7 +68,7 @@ internal fun SavedAddressesScreen(
     savedAddressListState: UiState<List<MyAddress>>,
     putAddressState: UiState<PutAddressResponse>,
     searchResultState: UiState<SearchResponse>,
-    deleteAddressState: UiState<Boolean>,
+    deleteAddressState: UiState<DeleteAddressResponse>,
     selectAddressState: UiState<Unit>,
     currentAddressState: UiState<Address>,
     onUiEvent: (SavedAddressUiEvent) -> Unit
@@ -417,7 +418,7 @@ internal fun SavedAddressesScreen(
 @Composable
 private fun AddressItem(
     item: MyAddress,
-    deleteAddressState: UiState<Boolean>,
+    deleteAddressState: UiState<DeleteAddressResponse>,
     selectAddressState: UiState<Unit>,
     onClick: (AddressEvent) -> Unit
 ) {

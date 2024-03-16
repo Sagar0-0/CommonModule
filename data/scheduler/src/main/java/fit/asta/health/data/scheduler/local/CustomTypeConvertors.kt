@@ -2,7 +2,6 @@ package fit.asta.health.data.scheduler.local
 
 import androidx.room.TypeConverter
 import com.google.gson.Gson
-import fit.asta.health.data.scheduler.util.Weekdays
 import fit.asta.health.data.scheduler.remote.net.scheduler.Info
 import fit.asta.health.data.scheduler.remote.net.scheduler.Ivl
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
@@ -10,8 +9,10 @@ import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.data.scheduler.remote.net.scheduler.Tone
 import fit.asta.health.data.scheduler.remote.net.scheduler.Vib
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
+import fit.asta.health.data.scheduler.util.Weekdays
 
 class CustomTypeConvertors {
+    //TODO: Rename functions to increase readability
     @TypeConverter
     fun ringtoneToString(ringtone: Tone): String = Gson().toJson(ringtone)
 

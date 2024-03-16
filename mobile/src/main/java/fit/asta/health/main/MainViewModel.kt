@@ -5,7 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
 import fit.asta.health.R
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
@@ -31,7 +31,7 @@ class MainViewModel
     private val prefManager: PrefManager,
     private val authRepo: AuthRepo,
     private val addressRepo: AddressRepo,
-    @UID private val uid: String,
+    @UserID private val userID: String,
     private val referralRepo: ReferralRepo
 ) : ViewModel() {
 
@@ -45,7 +45,7 @@ class MainViewModel
     fun getReferralData() {
         _referralDataState.value = UiState.Loading
         viewModelScope.launch {
-            _referralDataState.value = referralRepo.getData(uid).toUiState()
+            _referralDataState.value = referralRepo.getData(userID).toUiState()
         }
     }
 

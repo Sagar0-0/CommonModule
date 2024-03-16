@@ -6,7 +6,7 @@ import androidx.compose.runtime.setValue
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.feedback.remote.modal.Answer
@@ -26,7 +26,7 @@ import javax.inject.Inject
 class FeedbackViewModel
 @Inject constructor(
     private val feedbackRepo: FeedbackRepo,
-    @UID private val uId: String
+    @UserID private val uId: String
 ) : ViewModel() {
 
     private var _fid by mutableStateOf("")

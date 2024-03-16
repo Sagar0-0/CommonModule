@@ -6,7 +6,7 @@ import androidx.compose.runtime.mutableStateListOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.auth.repo.AuthRepo
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.UiState
@@ -16,12 +16,12 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.scheduler.local.AlarmInstanceDao
 import fit.asta.health.data.scheduler.local.model.AlarmEntity
-import fit.asta.health.data.scheduler.util.Weekdays
-import fit.asta.health.data.scheduler.util.getTodayData
 import fit.asta.health.data.scheduler.remote.model.TodayData
 import fit.asta.health.data.scheduler.remote.net.scheduler.Meta
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.data.scheduler.util.Weekdays
+import fit.asta.health.data.scheduler.util.getTodayData
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.util.StateManager
 import fit.asta.health.navigation.today.ui.view.CalendarDataSource
@@ -45,7 +45,7 @@ class TodayPlanViewModel @Inject constructor(
     private val alarmInstanceDao: AlarmInstanceDao,
     private val prefManager: PrefManager,
     private val stateManager: StateManager,
-    @UID private val uId: String,
+    @UserID private val uId: String,
     private val authRepo: AuthRepo
 ) : ViewModel() {
     private val _alarmListMorning = mutableStateListOf<AlarmEntity>()

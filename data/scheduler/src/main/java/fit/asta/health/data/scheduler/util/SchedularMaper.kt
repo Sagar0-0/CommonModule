@@ -8,7 +8,7 @@ import fit.asta.health.data.scheduler.remote.model.WeatherData
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
 
 
-fun TodaySchedules.getTodayData(): TodayData {
+fun TodaySchedules.getTodayData(): TodayData {//TODO: Check and Remove mapper
     return TodayData(
         temperature = this.weather.temp.toString(),
         location = this.weather.loc,
