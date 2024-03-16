@@ -7,6 +7,7 @@ import androidx.room.Query
 
 @Dao
 interface BreathingDao {
+    //TODO: Use flows for all Query requests
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insert(data: BreathingData)
 

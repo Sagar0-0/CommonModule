@@ -5,7 +5,7 @@ import fit.asta.health.data.scheduler.local.model.AlarmInstance
 import fit.asta.health.data.scheduler.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 
-interface AlarmLocalRepo {
+interface AlarmLocalRepo {//TODO: Use flows for all Query requests
 
     fun getAllAlarm(): Flow<List<AlarmEntity>>
     suspend fun getAlarm(alarmId: Long): AlarmEntity?

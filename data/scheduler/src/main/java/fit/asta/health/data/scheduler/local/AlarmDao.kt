@@ -12,7 +12,7 @@ import fit.asta.health.data.scheduler.local.model.TagEntity
 import kotlinx.coroutines.flow.Flow
 
 @Dao
-interface AlarmDao {
+interface AlarmDao {//TODO: Use flows for all Query requests
 
     @Query("SELECT * FROM alarm_table ORDER BY alarmId ASC")
     fun getAll(): Flow<List<AlarmEntity>>

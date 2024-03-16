@@ -3,7 +3,7 @@ package fit.asta.health.wallet.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.offers.remote.model.OffersData
@@ -21,7 +21,7 @@ class WalletViewModel
 @Inject constructor(
     private val walletRepo: WalletRepo,
     private val offersRepo: OffersRepo,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     private val _state = MutableStateFlow<UiState<WalletResponse>>(UiState.Loading)
@@ -36,7 +36,7 @@ class WalletViewModel
         }
         viewModelScope.launch {
             _state.update {
-                walletRepo.getData(uid).toUiState()
+                walletRepo.getData(userID).toUiState()
             }
         }
     }

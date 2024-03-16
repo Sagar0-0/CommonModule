@@ -1,5 +1,6 @@
 package fit.asta.health.data.breathing.model
 
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.breathing.model.api.BreathingApi
@@ -10,10 +11,12 @@ import fit.asta.health.data.breathing.model.network.request.NetPut
 import kotlinx.coroutines.CoroutineDispatcher
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
+import javax.inject.Inject
 
-class BreathingRepoImp(
-    val api: BreathingApi,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
+class BreathingRepoImpl
+@Inject constructor(
+    private val api: BreathingApi,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : BreathingRepo {
     override suspend fun getBreathingTool(userId: String, date: Long) =
         withContext(coroutineDispatcher) {

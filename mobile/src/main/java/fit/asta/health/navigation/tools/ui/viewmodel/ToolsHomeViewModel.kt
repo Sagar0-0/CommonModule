@@ -3,7 +3,7 @@ package fit.asta.health.navigation.tools.ui.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.common.utils.getCurrentTime
@@ -25,7 +25,7 @@ import javax.inject.Inject
 class ToolsHomeViewModel @Inject constructor(
     private val toolsHomeRepo: ToolsHomeRepo,
     private val prefManager: PrefManager,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     private val _toolsHomeDataState = MutableStateFlow<UiState<ToolsHome>>(UiState.Loading)
@@ -39,7 +39,7 @@ class ToolsHomeViewModel @Inject constructor(
             prefManager.address.collectLatest { address ->
                 _toolsHomeDataState.update {
                     toolsHomeRepo.getHomeData(
-                        userId = uid,
+                        userId = userID,
                         latitude = address.lat.toString(),
                         longitude = address.long.toString(),
                         location = address.currentAddress,

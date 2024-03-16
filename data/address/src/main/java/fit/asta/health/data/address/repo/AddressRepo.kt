@@ -4,6 +4,7 @@ import android.location.Address
 import androidx.activity.result.IntentSenderRequest
 import com.google.android.gms.maps.model.LatLng
 import fit.asta.health.common.utils.ResponseState
+import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
@@ -31,7 +32,7 @@ interface AddressRepo {
 
     suspend fun putAddress(myAddress: MyAddress): ResponseState<PutAddressResponse>
 
-    suspend fun deleteAddress(uid: String, id: String): ResponseState<Boolean>
+    suspend fun deleteAddress(uid: String, id: String): ResponseState<DeleteAddressResponse>
 
     suspend fun selectAddress(cid: String, pid: String?): ResponseState<Unit>
 

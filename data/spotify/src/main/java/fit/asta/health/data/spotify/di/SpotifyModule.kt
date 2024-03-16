@@ -2,6 +2,7 @@ package fit.asta.health.data.spotify.di
 
 import android.content.Context
 import androidx.room.Room
+import dagger.Binds
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -45,15 +46,19 @@ object SpotifyModule {
     @Provides
     fun provideMusicDao(db: MusicDatabase): MusicDao = db.musicDao()
 
-    @Singleton
-    @Provides
-    fun provideSpotifyRepo(api: SpotifyApi): SpotifyRepo {
-        return SpotifyRepoImpl(spotifyApi = api)
-    }
 
     @Singleton
     @Provides
     fun provideMusicRepo(dao: MusicDao): MusicRepo {
         return MusicRepoImpl(musicDao = dao)
     }
+}
+
+@Module
+@InstallIn(SingletonComponent::class)
+abstract class SpotifyBindsModule {
+
+    @Binds
+    abstract fun provideSpotifyRepo(spotifyRepoImpl: SpotifyRepoImpl): SpotifyRepo
+
 }

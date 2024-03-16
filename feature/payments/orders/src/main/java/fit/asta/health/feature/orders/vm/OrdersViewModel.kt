@@ -3,7 +3,7 @@ package fit.asta.health.feature.orders.vm
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toUiState
 import fit.asta.health.data.orders.remote.OrderId
@@ -20,7 +20,7 @@ import javax.inject.Inject
 class OrdersViewModel
 @Inject constructor(
     private val ordersRepo: OrdersRepo,
-    @UID private val uid: UserId
+    @UserID private val userID: UserId
 ) : ViewModel() {
 
     private val _ordersState = MutableStateFlow<UiState<List<OrderData>>>(UiState.Idle)
@@ -32,7 +32,7 @@ class OrdersViewModel
     fun getOrders() {
         _ordersState.value = UiState.Loading
         viewModelScope.launch {
-            _ordersState.value = ordersRepo.getOrders(uid).toUiState()
+            _ordersState.value = ordersRepo.getOrders(userID).toUiState()
         }
     }
 

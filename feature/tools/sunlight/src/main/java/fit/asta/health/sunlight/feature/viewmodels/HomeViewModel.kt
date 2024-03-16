@@ -10,7 +10,7 @@ import androidx.compose.runtime.mutableStateOf
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.Value
@@ -41,7 +41,7 @@ import kotlin.math.ceil
 class HomeViewModel @Inject constructor(
     private val repository: SunlightHomeRepoImpl,
     private val prefManager: PrefManager,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) :
     ViewModel() {
     val isStarted = mutableStateOf(false)
@@ -201,7 +201,7 @@ class HomeViewModel @Inject constructor(
             prefManager.address.collectLatest { pref ->
                 withContext(Dispatchers.IO) {
                     val data = repository.getSunlightHomeData(
-                        uid,
+                        userID,
                         pref.lat.toString(),
                         pref.long.toString(),
                         getCurrentDateTime(),
@@ -315,7 +315,7 @@ class HomeViewModel @Inject constructor(
         viewModelScope.launch {
             when (val data = repository.getSunlightSessionData(
                 SessionDetailBody(
-                    uid = uid,
+                    uid = userID,
                     dur = sessionState.value.getDuration(),
                     temp = (sunlightDataState.value.sunlightHomeResponse?.sunSlotData?.currTemp
                         ?: 0.0),

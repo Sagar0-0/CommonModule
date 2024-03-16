@@ -10,7 +10,7 @@ import androidx.core.net.toUri
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.HourMinAmPm
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentTime
@@ -19,9 +19,9 @@ import fit.asta.health.data.scheduler.local.model.TagEntity
 import fit.asta.health.data.scheduler.remote.net.scheduler.Time
 import fit.asta.health.data.scheduler.remote.net.tag.NetCustomTag
 import fit.asta.health.data.scheduler.remote.net.tag.TagData
-import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.data.scheduler.repo.AlarmBackendRepo
 import fit.asta.health.data.scheduler.repo.AlarmLocalRepo
+import fit.asta.health.data.scheduler.util.toTagEntity
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.feature.scheduler.doman.usecase.getAlarm
 import fit.asta.health.feature.scheduler.doman.usecase.getAlarmScreenUi
@@ -53,7 +53,7 @@ class SchedulerViewModel
     private val backendRepo: AlarmBackendRepo,
     private val prefManager: PrefManager,
     private val stateManager: StateManager,
-    @UID private val uId: String
+    @UserID private val uId: String
 ) : ViewModel() {
     private var alarmEntity: AlarmEntity? = null
 

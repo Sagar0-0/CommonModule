@@ -18,7 +18,7 @@ import androidx.media3.common.Timeline
 import androidx.media3.common.util.UnstableApi
 import androidx.media3.exoplayer.ExoPlayer
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.NetSheetData
 import fit.asta.health.common.utils.Prc
 import fit.asta.health.common.utils.ResponseState
@@ -62,7 +62,7 @@ class BreathingViewModel @Inject constructor(
     private val musicServiceConnection: MusicServiceConnection,
     private val player: Player,
     private val prefManager: PrefManager,
-    @UID private val uId: String,
+    @UserID private val uId: String,
     private val notificationManager: NotificationManager
 ) : ViewModel() {
     fun getPlayer() = player

@@ -1,14 +1,14 @@
-package fit.asta.health.auth.fcm.di
+package fit.asta.health.auth.di
 
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
 import dagger.hilt.components.SingletonComponent
-import fit.asta.health.auth.fcm.remote.TokenApi
+import fit.asta.health.auth.remote.TokenApi
+import fit.asta.health.auth.repo.TokenRepo
+import fit.asta.health.auth.repo.TokenRepoImpl
 import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.datastore.PrefManager
-import fit.asta.health.auth.fcm.repo.TokenRepo
-import fit.asta.health.auth.fcm.repo.TokenRepoImpl
 import fit.asta.health.network.utils.NetworkUtil
 import kotlinx.coroutines.CoroutineDispatcher
 import okhttp3.OkHttpClient

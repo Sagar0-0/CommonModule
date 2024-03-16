@@ -36,7 +36,8 @@ sealed interface UserProfileEvent {
         val timeSchedule: TimeSchedule
     ) : UserProfileEvent
 
-    data class SaveBodyType(val value: Int) : UserProfileEvent
+    data class SaveInt(val screenName: String, val fieldName: String, val value: Int) :
+        UserProfileEvent
 
     data object NavigateToReferral : UserProfileEvent
 }

@@ -50,13 +50,13 @@ object AuthModule {
     @Provides
     fun provideGoogleSignInOptions(@ApplicationContext context: Context): GoogleSignInOptions {
         return GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(context.getString(R.string.default_web_client_id))
+            .requestIdToken(context.getString(R.string.default_web_client_id))//TODO: Move to BuildConfig
             .requestEmail()
             .build()
     }
 
     @Provides
-    @UID
+    @UserID
     fun provideUId(authRepo: AuthRepo): String = authRepo.getUserId() ?: ""
 
 }
@@ -71,4 +71,4 @@ abstract class AuthBindModule{
 
 @Qualifier
 @Retention(AnnotationRetention.BINARY)
-annotation class UID
+annotation class UserID

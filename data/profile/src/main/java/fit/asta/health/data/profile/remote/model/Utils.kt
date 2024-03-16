@@ -1,7 +1,5 @@
 package fit.asta.health.data.profile.remote.model
 
-import fit.asta.health.data.profile.local.entity.ProfileEntity
-
 const val BasicDetail_Screen_Name = "bscDtl"
 const val Physique_Screen_Name = "phq"
 const val Health_Screen_Name = "hlt"
@@ -70,14 +68,6 @@ const val StartTime_Field_Name = "str"
 const val EndTime_Field_Name = "end"
 const val Hour_Field_Name = "hr"
 const val Minute_Field_Name = "min"
-
-fun UserProfileResponse.mergeWithLocalData(
-    profileEntity: ProfileEntity?
-): UserProfileResponse {
-    if (profileEntity == null) return this
-    this.basicDetail.name = profileEntity.name
-    return this
-}
 
 
 typealias Gender = Int
@@ -169,6 +159,60 @@ enum class BodyTypes(val value: Int) {
                 if (it.value == value) return it
             }
             return Weak
+        }
+
+        fun indexOf(newValue: Int?): Int? {
+            BodyTypes.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
+        }
+    }
+}
+
+enum class WorkStyles(val value: Int) {
+
+    Sitting(1),
+    Standing(2),
+    Running(3);
+
+    companion object {
+        fun getType(value: Int?): WorkStyles? {
+            if (value == null) return null
+            WorkStyles.entries.forEach {
+                if (it.value == value) return it
+            }
+            return Sitting
+        }
+
+        fun indexOf(newValue: Int?): Int? {
+            WorkStyles.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
+        }
+    }
+}
+
+enum class WorkEnvironments(val value: Int) {
+
+    First(1),
+    Second(2);
+
+    companion object {
+        fun getType(value: Int?): WorkEnvironments? {
+            if (value == null) return null
+            WorkEnvironments.entries.forEach {
+                if (it.value == value) return it
+            }
+            return First
+        }
+
+        fun indexOf(newValue: Int?): Int? {
+            WorkEnvironments.entries.forEachIndexed { index, unit ->
+                if (unit.value == newValue) return index
+            }
+            return null
         }
     }
 }

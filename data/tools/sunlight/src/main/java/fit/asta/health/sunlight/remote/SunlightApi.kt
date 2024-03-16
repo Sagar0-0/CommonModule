@@ -16,7 +16,7 @@ import retrofit2.http.Query
 
 interface SunlightApi {
     @GET("/tools/health/list/get/")
-    suspend fun getScreenContentList(@Query("screenName") name: String): Response<ArrayList<SkinConditionResponseData>>
+    suspend fun getScreenContentList(@Query("screenName") name: String): Response<ArrayList<SkinConditionResponseData>>//TODO: Use List instead of ArrayList
 
     @PUT("/tools/sunlight/put/")
     suspend fun updateSkinConditionData(@Body name: SkinConditionBody): Response<PutResponse>

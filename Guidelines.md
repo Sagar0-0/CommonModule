@@ -809,7 +809,7 @@ data class Response<T>(
 In Repo,
 1. Expose ResponseState wrapper for suspend functions.
 ```kotlin
-suspend fun uploadFcmToken(tokenDTO: TokenDTO): ResponseState<TokenResponse>
+suspend fun uploadFcmToken(tokenRequest: TokenDTO): ResponseState<TokenResponse>
 ```
 2. Use getApiResponseState{} function for wrapping any data calls
 ```kotlin

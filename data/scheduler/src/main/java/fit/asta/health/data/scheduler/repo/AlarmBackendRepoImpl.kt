@@ -1,6 +1,7 @@
 package fit.asta.health.data.scheduler.repo
 
-import android.content.Context
+import android.content.ContentResolver
+import fit.asta.health.common.utils.IODispatcher
 import fit.asta.health.common.utils.getApiResponseState
 import fit.asta.health.data.scheduler.local.model.AlarmEntity
 import fit.asta.health.data.scheduler.remote.SchedulerApi
@@ -12,11 +13,11 @@ import kotlinx.coroutines.withContext
 import okhttp3.MultipartBody
 import javax.inject.Inject
 
-class AlarmBackendRepoImp
+class AlarmBackendRepoImpl//TODO: Rename models
 @Inject constructor(
-    private val context: Context,
     private val remoteApi: SchedulerApi,
-    private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.Default
+    private val contentResolver: ContentResolver,
+    @IODispatcher private val coroutineDispatcher: CoroutineDispatcher = Dispatchers.IO
 ) : AlarmBackendRepo {
     override suspend fun getTodayDataFromBackend(
         userID: String,
@@ -80,7 +81,7 @@ class AlarmBackendRepoImp
                 val file = MultipartBody.Part.createFormData(
                     name = "file",
                     filename = schedule.name,
-                    body = InputStreamRequestBody(context.contentResolver, schedule.localUrl!!)
+                    body = InputStreamRequestBody(contentResolver, schedule.localUrl!!)
                 )
                 remoteApi.updateScheduleTag(schedule, file)
             }

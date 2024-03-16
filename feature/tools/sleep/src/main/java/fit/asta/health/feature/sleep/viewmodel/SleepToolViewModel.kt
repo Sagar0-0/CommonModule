@@ -3,7 +3,7 @@ package fit.asta.health.feature.sleep.viewmodel
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import dagger.hilt.android.lifecycle.HiltViewModel
-import fit.asta.health.auth.di.UID
+import fit.asta.health.auth.di.UserID
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.common.utils.getCurrentDateTime
 import fit.asta.health.data.sleep.model.SleepLocalRepo
@@ -29,7 +29,7 @@ import javax.inject.Inject
 class SleepToolViewModel @Inject constructor(
     private val remoteRepository: SleepRepository,
     private val localRepository: SleepLocalRepo,
-    @UID private val uid: String
+    @UserID private val userID: String
 ) : ViewModel() {
 
     private var toolDataID = ""
@@ -69,7 +69,7 @@ class SleepToolViewModel @Inject constructor(
         viewModelScope.launch {
             // Fetching the data from the server
             val response = remoteRepository.getUserDefaultSettings(
-                userId = uid,
+                userId = userID,
                 date = getCurrentDateTime()
             )
 
@@ -131,7 +131,7 @@ class SleepToolViewModel @Inject constructor(
                     id = toolDataID,
                     prc = _userUIDefaults.value.data?.sleepData?.toolData?.prc!!,
                     type = 1,
-                    uid = uid
+                    uid = userID
                 )
             )
 
@@ -177,7 +177,7 @@ class SleepToolViewModel @Inject constructor(
         viewModelScope.launch {
             // Fetching the Data from the server
             val response = remoteRepository.getPropertyData(
-                userId = uid,
+                userId = userID,
                 property = "sd"
             )
             _sleepDisturbancesData.value = when (response) {
@@ -222,7 +222,7 @@ class SleepToolViewModel @Inject constructor(
 
             // Fetching the Data from the server
             val response = remoteRepository.getPropertyData(
-                userId = uid,
+                userId = userID,
                 property = "sf"
             )
             _sleepFactorsData.value = when (response) {
@@ -370,10 +370,10 @@ class SleepToolViewModel @Inject constructor(
 
                 // Posting the Reading to the Server
                 val response = remoteRepository.postUserReading(
-                    userId = uid,
+                    userId = userID,
                     sleepPostRequestBody = SleepPostRequestBody(
                         id = "",
-                        uid = uid,
+                        uid = userID,
                         dur = hours.toDouble(),
                         reg = 1.0,
                         slp = Slp(

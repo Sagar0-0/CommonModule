@@ -1,11 +1,11 @@
 package fit.asta.health.auth.repo
 
 import com.google.firebase.auth.FirebaseAuth
-import fit.asta.health.auth.fcm.remote.TokenApi
-import fit.asta.health.auth.fcm.remote.TokenResponse
 import fit.asta.health.auth.model.AuthDataMapper
 import fit.asta.health.auth.model.domain.User
 import fit.asta.health.auth.remote.AuthApi
+import fit.asta.health.auth.remote.TokenApi
+import fit.asta.health.auth.remote.TokenResponse
 import fit.asta.health.common.utils.Response
 import fit.asta.health.datastore.PrefManager
 import fit.asta.health.datastore.ScreenCode

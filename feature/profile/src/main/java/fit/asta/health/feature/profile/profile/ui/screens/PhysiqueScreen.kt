@@ -22,8 +22,8 @@ import fit.asta.health.data.profile.remote.model.HeightUnit
 import fit.asta.health.data.profile.remote.model.WeightUnit
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
-import fit.asta.health.feature.profile.profile.ui.components.BottomSheetBodyType
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetPhysique
+import fit.asta.health.feature.profile.profile.ui.components.BottomSheetRadioList
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
 import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButtons
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
@@ -174,13 +174,14 @@ fun PhysiqueScreen(
             }
         )
 
-        BottomSheetBodyType(
+        BottomSheetRadioList(
             isVisible = userProfileState.physiqueScreenState.bodyTypeBottomSheetVisible.value,
             sheetState = bodyTypeBottomSheetState,
             isValid = {
                 it != null
             },
-            selectedValue = userProfileState.physiqueScreenState.bodyType,
+            selectedIndex = BodyTypes.indexOf(userProfileState.physiqueScreenState.bodyType),
+            list = BodyTypes.entries.map { it.name },
             onDismissRequest = {
                 userProfileState.closeSheet(
                     bodyTypeBottomSheetState,

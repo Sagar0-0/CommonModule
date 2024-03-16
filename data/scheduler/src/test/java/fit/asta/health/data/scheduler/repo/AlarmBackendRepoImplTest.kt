@@ -19,8 +19,8 @@ import org.junit.jupiter.api.AfterEach
 import org.junit.jupiter.api.BeforeEach
 import org.junit.jupiter.api.Test
 
-class AlarmBackendRepoImpTest {
-    private lateinit var repo: AlarmBackendRepoImp
+class AlarmBackendRepoImplTest {
+    private lateinit var repo: AlarmBackendRepoImpl
 
     @MockK(relaxed = true)
     lateinit var remoteApi: SchedulerApi
@@ -32,7 +32,7 @@ class AlarmBackendRepoImpTest {
     fun beforeEach() {
         MockKAnnotations.init(this, relaxed = true)
         repo = spyk(
-            AlarmBackendRepoImp(
+            AlarmBackendRepoImpl(
                 context = context, remoteApi
             )
         )
