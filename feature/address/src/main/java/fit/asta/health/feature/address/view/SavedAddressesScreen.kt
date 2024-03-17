@@ -49,7 +49,7 @@ import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.PutAddressResponse
 import fit.asta.health.data.address.remote.modal.SearchResponse
-import fit.asta.health.data.address.remote.modal.mapToMyAddress
+import fit.asta.health.data.address.remote.modal.toMyAddress
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.AppErrorScreen
 import fit.asta.health.designsystem.molecular.animations.AppCircularProgressIndicator
@@ -186,7 +186,7 @@ internal fun SavedAddressesScreen(
                         if (currentAddressState is UiState.Success) {
                             openFillAddressSheet(
                                 FillAddressSheetType.SaveCurrentAddress(
-                                    currentAddressState.data.mapToMyAddress()
+                                    currentAddressState.data.toMyAddress()
                                 )
                             )
                         } else if (currentAddressState is UiState.ErrorMessage) {

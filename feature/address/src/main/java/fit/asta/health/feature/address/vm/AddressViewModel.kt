@@ -133,11 +133,12 @@ class AddressViewModel
         }
     }
 
-
     fun enableLocationRequest(
         showPopup: (intentSenderRequest: IntentSenderRequest) -> Unit
     ) {
-        addressRepo.enableLocationRequest(showPopup)
+        viewModelScope.launch {
+            addressRepo.enableLocationRequest(showPopup)
+        }
     }
 
     fun setSelectedAdId(id: String) {

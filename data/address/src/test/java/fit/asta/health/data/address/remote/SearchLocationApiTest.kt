@@ -15,7 +15,7 @@ import retrofit2.converter.gson.GsonConverterFactory
 
 class SearchLocationApiTest {
     private lateinit var server: MockWebServer
-    private lateinit var api: SearchLocationApi
+    private lateinit var api: LocationApi
 
     private val gson: Gson = GsonBuilder().create()
 
@@ -25,7 +25,7 @@ class SearchLocationApiTest {
         api = Retrofit.Builder()
             .baseUrl(server.url("/"))
             .addConverterFactory(GsonConverterFactory.create())
-            .build().create(SearchLocationApi::class.java)
+            .build().create(LocationApi::class.java)
     }
 
     @AfterEach

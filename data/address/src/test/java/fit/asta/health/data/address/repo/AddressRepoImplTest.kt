@@ -4,15 +4,16 @@ import android.location.Address
 import android.location.Geocoder
 import app.cash.turbine.test
 import com.google.android.gms.maps.model.LatLng
-import fit.asta.health.common.utils.ResourcesProvider
 import fit.asta.health.common.utils.Response
 import fit.asta.health.common.utils.ResponseState
 import fit.asta.health.data.address.remote.AddressApi
-import fit.asta.health.data.address.remote.SearchLocationApi
+import fit.asta.health.data.address.remote.LocationApi
 import fit.asta.health.data.address.remote.modal.DeleteAddressResponse
 import fit.asta.health.data.address.remote.modal.LocationResponse
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
+import fit.asta.health.data.address.utils.AddressManager
+import fit.asta.health.data.address.utils.LocationHelper
 import fit.asta.health.data.address.utils.LocationResourceProvider
 import fit.asta.health.datastore.PrefManager
 import io.mockk.MockKAnnotations
@@ -33,20 +34,19 @@ import org.junit.jupiter.api.Test
 import java.util.Locale
 
 class AddressRepoImplTest {
+
     private lateinit var repo: AddressRepoImpl
 
     @MockK(relaxed = true)
     lateinit var addressApi: AddressApi
 
     @MockK(relaxed = true)
-    lateinit var searchLocationApi: SearchLocationApi
+    lateinit var locationApi: LocationApi
 
     private val prefManager: PrefManager = mockk(relaxed = true)
-
-    private val resourcesProvider: ResourcesProvider = mockk(relaxed = true)
-
+    private val addressManager: AddressManager = mockk(relaxed = true)
     private val locationResourcesProvider: LocationResourceProvider = mockk(relaxed = true)
-
+    private val locationHelper: LocationHelper = mockk(relaxed = true)
 
     @BeforeEach
     fun beforeEach() {
@@ -54,10 +54,11 @@ class AddressRepoImplTest {
         repo = spyk(
             AddressRepoImpl(
                 addressApi,
-                searchLocationApi,
+                locationApi,
                 prefManager,
-                resourcesProvider,
-                locationResourcesProvider
+                addressManager,
+                locationResourcesProvider,
+                locationHelper
             )
         )
     }
@@ -104,7 +105,6 @@ class AddressRepoImplTest {
     fun `getAddressDetails, returns Success`() = runTest {
         val geocoder: Geocoder = mockk()
         every { geocoder.getFromLocation(any(), any(), any()) } returns listOf(Address(Locale("")))
-        every { locationResourcesProvider.getGeocoder() } returns geocoder
         val res = repo.getAddressDetails(LatLng(0.0, 0.0))
         res.test {
             val item = awaitItem()
@@ -116,7 +116,6 @@ class AddressRepoImplTest {
     fun `getAddressDetails, returns Error`() = runTest {
         val geocoder: Geocoder = mockk()
         every { geocoder.getFromLocation(any(), any(), any()) } returns emptyList()
-        every { locationResourcesProvider.getGeocoder() } returns geocoder
         val res = repo.getAddressDetails(LatLng(0.0, 0.0))
         res.test {
             val item = awaitItem()
@@ -150,15 +149,15 @@ class AddressRepoImplTest {
 
     @Test
     fun `search ,return success`() = runTest {
-        coEvery { searchLocationApi.search("", "") } returns SearchResponse()
+        coEvery { locationApi.search("", "") } returns SearchResponse()
         repo.search("", 0.0, 0.0)
-        coVerify { searchLocationApi.search("", "") }
+        coVerify { locationApi.search("", "") }
     }
 
     @Test
     fun `search with LatLng,return success`() = runTest {
         coEvery {
-            searchLocationApi.searchBiased(
+            locationApi.searchBiased(
                 any(),
                 any(),
                 any(),
@@ -166,7 +165,7 @@ class AddressRepoImplTest {
             )
         } returns SearchResponse()
         repo.search("", 1.0, 1.0)
-        coVerify { searchLocationApi.searchBiased(any(), any(), any(), any()) }
+        coVerify { locationApi.searchBiased(any(), any(), any(), any()) }
     }
 
     @Test
@@ -205,7 +204,9 @@ class AddressRepoImplTest {
 
     @Test
     fun `deleteAddress, returns Success`() = runTest {
-        coEvery { addressApi.deleteAddress(any(), any()) } returns DeleteAddressResponse()
+        val response =
+            Response(status = Response.Status(200), data = DeleteAddressResponse(flag = false))
+        coEvery { addressApi.deleteAddress(any(), any()) } returns response
         val res = repo.deleteAddress("", "")
         coVerify { addressApi.deleteAddress("", "") }
         assert(res is ResponseState.Success)

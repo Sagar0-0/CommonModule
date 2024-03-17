@@ -18,7 +18,10 @@ interface AddressRepo {
 
     fun isLocationEnabled(): Boolean
     fun isPermissionGranted(): Boolean
-    fun checkPermissionAndGetLatLng(): Flow<LocationResponse>
+
+    suspend fun enableLocationRequest(showPopup: (IntentSenderRequest) -> Unit)
+
+    suspend fun checkPermissionAndGetLatLng(): Flow<LocationResponse>
 
     suspend fun getAddressDetails(latLng: LatLng): Flow<ResponseState<Address>>
 
@@ -39,5 +42,4 @@ interface AddressRepo {
     suspend fun updateLocationPermissionRejectedCount(newValue: Int)
 
     suspend fun setCurrentLocation(location: String)
-    fun enableLocationRequest(showPopup: (IntentSenderRequest) -> Unit)
 }

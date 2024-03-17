@@ -32,6 +32,7 @@ import androidx.compose.ui.text.style.TextAlign
 import com.google.android.libraries.places.api.Places
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.toStringFromResId
+import fit.asta.health.core.common.BuildConfig
 import fit.asta.health.data.address.remote.modal.MyAddress
 import fit.asta.health.data.address.remote.modal.SearchResponse
 import fit.asta.health.designsystem.AppTheme
@@ -75,7 +76,7 @@ internal fun SearchBottomSheet(
         }
     }
     LaunchedEffect(Unit) {
-        Places.initialize(context.applicationContext, context.getString(R.string.MAPS_API_KEY))
+        Places.initialize(context.applicationContext, BuildConfig.MAPS_API_KEY)
     }
 
     AppModalBottomSheet(

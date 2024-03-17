@@ -58,7 +58,7 @@ data class MyAddress(
     }
 }
 
-fun Address.mapToMyAddress(): MyAddress {
+fun Address.toMyAddress(): MyAddress {
     val items = this.getAddressLine(0).split(", ")
     return MyAddress(
         selected = true,

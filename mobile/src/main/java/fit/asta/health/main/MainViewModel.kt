@@ -175,7 +175,9 @@ class MainViewModel
     }
 
     fun enableLocationRequest(showPopup: (IntentSenderRequest) -> Unit) {
-        addressRepo.enableLocationRequest(showPopup)
+        viewModelScope.launch {
+            addressRepo.enableLocationRequest(showPopup)
+        }
     }
 
     fun setNotificationStatus(newValue: Boolean) = viewModelScope.launch {

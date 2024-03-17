@@ -4,7 +4,7 @@ import fit.asta.health.data.address.remote.modal.SearchResponse
 import retrofit2.http.GET
 import retrofit2.http.Query
 
-interface SearchLocationApi {
+interface LocationApi {
 
     @GET("place/textsearch/json")
     suspend fun search(
@@ -19,6 +19,4 @@ interface SearchLocationApi {
         @Query("query") query: String,
         @Query("key") key: String
     ): SearchResponse
-
-
 }
