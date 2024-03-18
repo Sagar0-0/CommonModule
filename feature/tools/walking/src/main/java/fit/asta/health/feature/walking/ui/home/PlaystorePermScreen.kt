@@ -14,6 +14,7 @@ import androidx.compose.runtime.saveable.rememberSaveable
 import androidx.compose.runtime.setValue
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.window.DialogProperties
 import androidx.hilt.navigation.compose.hiltViewModel
@@ -23,6 +24,7 @@ import fit.asta.health.designsystem.molecular.dialog.AppAlertDialog
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.TitleTexts
 import fit.asta.health.feature.walking.vm.WalkingViewModel
+import fit.asta.health.resources.strings.R
 
 @Composable
 fun PlayStorePermsUI(walkingViewModel: WalkingViewModel = hiltViewModel()) {
@@ -42,12 +44,12 @@ fun PlayStorePermsUI(walkingViewModel: WalkingViewModel = hiltViewModel()) {
         },
             text = {
                 Column {
-                    BodyTexts.Level2(text = "Your device doesn't have inbuilt support for HealthConnect, You can download from here!")
+                    BodyTexts.Level2(text = stringResource(id = R.string.healthConnect_card_title))
                     BodyTexts.Level1(text = "Note :", modifier = Modifier.clickable{
                         showDetails = !showDetails
                     })
                     AnimatedVisibility(visible = showDetails) {
-                        BodyTexts.Level2(text = "you can also install it later at any point of time . However,It is recommended to install, in order to track your health effectively", modifier = Modifier.padding(10.dp))
+                        BodyTexts.Level2(text = stringResource(id = R.string.healthConnect_notInstall_Info), modifier = Modifier.padding(10.dp))
                     }
                 }
                 

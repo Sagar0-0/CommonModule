@@ -40,6 +40,7 @@ import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
+import androidx.health.connect.client.HealthConnectClient
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
@@ -185,7 +186,7 @@ fun StepsScreen(
                 ) {
                     Log.d("rishi", "HealthConnect : $healthConnectAvailability")
                     when (healthConnectAvailability) {
-                        3 -> if (!permissionsGranted) {
+                        /*3*/ HealthConnectClient.SDK_AVAILABLE  -> if (!permissionsGranted) {
                             item {
                                 InstalledMessage(onPermissionsLaunch = {
                                     onPermissionsLaunch(permissions)
@@ -193,31 +194,16 @@ fun StepsScreen(
                             }
                         }
 
-                        2 -> item {
+                        /*2*/ HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> item {
                             if (firstTime) PlayStorePermsUI()
                             NotInstalledMessage()
                         }
 
-                        1 -> item {
+                        /*1*/  HealthConnectClient.SDK_UNAVAILABLE -> item {
 //                            BodyTexts.Level2(text = "Not Supported ")
                             NotSupportedMessage()
                         }
-//                        HealthConnectClient.SDK_AVAILABLE -> if (!permissionsGranted) {
-//                            item {
-//                                InstalledMessage(onPermissionsLaunch = {
-//                                    onPermissionsLaunch(permissions)
-//                                })
-//                            }
-//                        }
-//                        HealthConnectClient.SDK_UNAVAILABLE_PROVIDER_UPDATE_REQUIRED -> item {
-//                            Log.d("rishi","HealthConnect : $healthConnectAvailability")
-//                            //PlayStorePermsUI()
-//                            NotInstalledMessage()
-//                        }
-//
-//                        HealthConnectClient.SDK_UNAVAILABLE -> item{
-//                            //PlayStorePermsUI()
-//                        }
+//                      
                     }
                     item {
                         AppSurface(
