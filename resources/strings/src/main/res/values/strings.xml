@@ -699,7 +699,9 @@
     <string name="not_installed_link_text">
         Please install Health Connect
     </string>
-
+    <!-- Downloading Card popup for health connect -->
+    <string name="healthConnect_card_title">Your device doesn\'t have inbuilt support for HealthConnect, You can download from here!</string>
+    <string name="healthConnect_notInstall_Info">you can also install it later at any point of time . However,It is recommended to install, in order to track your health effectively</string>
     <!-- Not supported on device -->
     <string name="not_supported_tag">not_supported_tag</string>
     <string name="not_supported_url">https://developer.android.com/health-connect</string>

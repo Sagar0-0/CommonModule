@@ -11,7 +11,6 @@ import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Close
 import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -23,14 +22,12 @@ import androidx.compose.ui.platform.LocalSoftwareKeyboardController
 import androidx.compose.ui.text.input.ImeAction
 import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.icon.AppIcon
 import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
-import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 
 sealed class BottomSheetScreen() {
     class Screen1(var sliderValue: Float, val bevName: String) : BottomSheetScreen()
@@ -63,7 +60,7 @@ fun AppBottomSheetWithCloseDialog(
 
 // Adding Quantity BottomSheet
 @Composable
-fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit, color: Color) {
+fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit) {
     var sliderPosition by remember { mutableStateOf(sliderValue) }
     Column {
         val title = "Set Beverage Quantity"
@@ -76,9 +73,7 @@ fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit, color: Co
                 sliderPosition = newValue
                 onSliderValueChanged(newValue)
             },
-            color = color,
-        ) {
-        }
+        )
     }
 }
 
@@ -86,7 +81,6 @@ fun Screen1(sliderValue: Float, onSliderValueChanged: (Float) -> Unit, color: Co
 @Composable
 fun Screen2(
     sliderValue: Float,
-    color: Color,
     onSliderValueChanged: (Float) -> Unit,
     onNameChange: (String) -> Unit
 ) {
@@ -106,10 +100,7 @@ fun Screen2(
                 sliderPosition = newValue
                 onSliderValueChanged(newValue)
             },
-            color = color,
-        ) {
-            // fnc invoked when we change the slider value
-        }
+        )
     }
 
 }
@@ -124,7 +115,6 @@ fun Screen3(
     var text by remember {
         mutableStateOf("")
     }
-    //val goal by viewModel.goal.collectAsState()
     Column {
         val title = "Set Daily Goal"
         val description =

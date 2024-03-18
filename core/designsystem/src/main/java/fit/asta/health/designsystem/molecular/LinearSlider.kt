@@ -10,7 +10,7 @@ import androidx.compose.ui.Modifier
 import fit.asta.health.designsystem.AppTheme
 
 @Composable
-fun LinearSlider(
+fun AppLinearSlider(
     value :Float,
     modifier: Modifier = Modifier,
     colors: SliderColors = SliderDefaults.colors(
@@ -28,6 +28,7 @@ fun LinearSlider(
     steps : Int,
     enabled : Boolean = true,
     onValueChange: (Float) -> Unit,
+    onValueChangeFinished: (() -> Unit)? = null,
     interactionSource: MutableInteractionSource = remember { MutableInteractionSource() },
     minimumValue : Float,
     maximumValue : Float
@@ -38,6 +39,7 @@ fun LinearSlider(
         onValueChange = {
             onValueChange(it)
         },
+        onValueChangeFinished = onValueChangeFinished,
         enabled = enabled,
         modifier = modifier,
         colors = colors,

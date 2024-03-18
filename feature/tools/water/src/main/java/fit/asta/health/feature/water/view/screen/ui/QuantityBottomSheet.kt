@@ -5,7 +5,6 @@ import android.util.Log
 import android.widget.Toast
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -14,14 +13,11 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.text.KeyboardOptions
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Info
-import androidx.compose.material.icons.filled.Star
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.DisposableEffect
-import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -34,36 +30,30 @@ import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalLifecycleOwner
 import androidx.compose.ui.platform.LocalSoftwareKeyboardController
-import androidx.compose.ui.text.input.ImeAction
-import androidx.compose.ui.text.input.KeyboardType
 import androidx.compose.ui.unit.dp
-import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleEventObserver
 import androidx.lifecycle.LifecycleOwner
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.atomic.token.AppSheetValue
+import fit.asta.health.designsystem.molecular.AppLinearSlider
 import fit.asta.health.designsystem.molecular.ButtonWithColor
-import fit.asta.health.designsystem.molecular.LinearSlider
 import fit.asta.health.designsystem.molecular.background.AppBottomSheetScaffold
 import fit.asta.health.designsystem.molecular.background.AppScreen
 import fit.asta.health.designsystem.molecular.background.AppSheetState
 import fit.asta.health.designsystem.molecular.background.AppTopBarWithHelp
 import fit.asta.health.designsystem.molecular.background.appRememberBottomSheetScaffoldState
 import fit.asta.health.designsystem.molecular.icon.AppIcon
-import fit.asta.health.designsystem.molecular.textfield.AppOutlinedTextField
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
 import fit.asta.health.designsystem.molecular.texts.CaptionTexts
 import fit.asta.health.designsystem.molecular.texts.HeadingTexts
 import fit.asta.health.feature.water.view.screen.WTEvent
 import fit.asta.health.feature.water.view.screen.WaterToolUiState
-import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
 import kotlinx.coroutines.launch
 
 
 @Composable
 fun CustomBevBottomSheet(
-    viewModel: WaterToolViewModel = hiltViewModel(),
     onBack: () -> Unit,
     lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     event: (WTEvent) -> Unit,
@@ -78,15 +68,13 @@ fun CustomBevBottomSheet(
     ))
 
     val scrollState = rememberScrollState()
-    val sliderValueWater by viewModel.waterQuantity.collectAsState()
-    val sliderValueCoconut by viewModel.coconutQuantity.collectAsState()
-    val sliderValueFirstPreference by viewModel.firstPrefQuantity.collectAsState()
-    val sliderValueSecondPreference by viewModel.secondPrefQuantity.collectAsState()
-    val sliderValueRecentAdded by viewModel.recentAddedQuantity.collectAsState()
+    val sliderValueWater = uiState.sliderValueWater
+    val sliderValueCoconut = uiState.sliderValueCoconut
+    val sliderValueFirstPreference = uiState.sliderValueFirstPreference
+    val sliderValueSecondPreference = uiState.sliderValueSecondPreference
+    val sliderValueRecentAdded = uiState.sliderValueRecentAdded
 
-    val color by viewModel.sliderColor.collectAsState()
     val goal = uiState.goal
-    //val totalConsumed by viewModel.totalConsumed.collectAsState()
     val context: Context = LocalContext.current
     val scope = rememberCoroutineScope()
     var addedName by rememberSaveable {
@@ -110,12 +98,12 @@ fun CustomBevBottomSheet(
             lifecycleOwner.lifecycle.removeObserver(observer)
         }
     }
+
     val closeSheet: () -> Unit = {
         scope.launch {
             bottomSheetState.bottomSheetState.hide()
         }
     }
-
 
     val openSheet: (BottomSheetScreen) -> Unit = {
         currentBottomSheet = it
@@ -141,11 +129,9 @@ fun CustomBevBottomSheet(
         sheetContent = {
             currentBottomSheet?.let { currentSheet ->
                 SheetLayout(
-                    viewModel,
-                    color,
-                    goal,
-                    currentSheet,
-                    closeSheet,
+                    goal = goal,
+                    currentScreen = currentSheet,
+                    closeSheet = closeSheet,
                     onSliderValueChanged = {
                         val currValue = it.first
                         val currString = it.second
@@ -168,11 +154,6 @@ fun CustomBevBottomSheet(
                     .fillMaxSize()
             ) {
                 AppHomeScreen(
-                    waterQuantity = sliderValueWater.toInt(),
-                    coconutQuantity = sliderValueCoconut.toInt(),
-                    firstPrefQuantity = sliderValueFirstPreference.toInt(),
-                    secondPrefQuantity = sliderValueSecondPreference.toInt(),
-                    recentAddedQuantity = sliderValueRecentAdded.toInt(),
                     onClickWater = {
                         openSheet(
                             BottomSheetScreen.Screen1(
@@ -239,8 +220,6 @@ fun CustomBevBottomSheet(
 
 @Composable
 fun SheetLayout(
-    viewModel: WaterToolViewModel = hiltViewModel(),
-    color: Color,
     goal : Int,
     currentScreen: BottomSheetScreen,
     closeSheet: () -> Unit,
@@ -261,20 +240,17 @@ fun SheetLayout(
                     Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue}")
                     onSliderValueChanged(Pair(it, currentScreen.bevName))
                 },
-                color = color
             )
 
             is BottomSheetScreen.Screen2 -> Screen2(
                 sliderValue = currentScreen.sliderValue,
                 onSliderValueChanged = {
-                    Log.d("ValueChanges", "Ye hai : ${currentScreen.sliderValue.toString()}")
                     currentScreen.sliderValue = it
                     onSliderValueChanged(Pair(it, currentScreen.bevName))
                 },
                 onNameChange = {
                     onNameChange(it)
                 },
-                color = color
             )
 
             is BottomSheetScreen.Screen3 -> Screen3(
@@ -294,17 +270,14 @@ fun SheetLayout(
 fun DaysSlider(
     sliderValue: Float,
     onSliderValueChanged: (Float) -> Unit,
-    color: Color,
-    OnClick: () -> Unit,
 ) {
-
     Box(
         contentAlignment = Alignment.Center,
         modifier = Modifier
             .padding(AppTheme.spacing.level1)
             .fillMaxWidth(),
     ) {
-        var sliderPosition by remember { mutableStateOf(sliderValue) }
+        var sliderPosition by remember { mutableStateOf(0f) }
 
         Column {
             Row {
@@ -315,11 +288,13 @@ fun DaysSlider(
                 )
             }
             Row {
-                LinearSlider(
+                AppLinearSlider(
                     value = sliderPosition,
                     onValueChange = {
                         sliderPosition = it
-                        onSliderValueChanged(it) // Update the slider value
+                    },
+                    onValueChangeFinished = {
+                        onSliderValueChanged(sliderPosition) // Update the slider value
                     },
                     modifier = Modifier
                         .fillMaxWidth(1f)
