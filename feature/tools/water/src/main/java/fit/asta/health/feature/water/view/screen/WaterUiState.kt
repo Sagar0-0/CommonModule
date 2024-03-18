@@ -1,7 +1,6 @@
 package fit.asta.health.feature.water.view.screen
 
-import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
+import androidx.compose.runtime.Stable
 import fit.asta.health.data.water.remote.model.ButterMilk
 import fit.asta.health.data.water.remote.model.Coconut
 import fit.asta.health.data.water.remote.model.FruitJuice
@@ -24,6 +23,7 @@ data class WaterUiState(
     val meta: Meta = Meta(),
 )
 
+@Stable
 data class WaterToolUiState(
     val totalConsumed : Int = 0,
     val remainingToConsume : Int = 0,

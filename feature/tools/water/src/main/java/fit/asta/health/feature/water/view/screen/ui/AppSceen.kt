@@ -3,13 +3,11 @@ package fit.asta.health.feature.water.view.screen.ui
 import android.util.Log
 import androidx.compose.foundation.background
 import androidx.compose.foundation.clickable
-import androidx.compose.foundation.isSystemInDarkTheme
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
-import androidx.compose.foundation.layout.fillMaxHeight
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.padding
@@ -54,11 +52,6 @@ import fit.asta.health.ui.common.components.AppBalloon
 @Composable
 fun AppHomeScreen(
     viewModel: WaterToolViewModel = hiltViewModel(),
-    waterQuantity: Int,
-    coconutQuantity: Int,
-    firstPrefQuantity: Int,
-    secondPrefQuantity: Int,
-    recentAddedQuantity: Int,
     event: (WTEvent) -> Unit,
     onClickWater: () -> Unit,
     onClickCoconut: () -> Unit,
@@ -95,11 +88,6 @@ fun AppHomeScreen(
             SetOfDefaultChips(
                 event = event,
                 addedName = addedName,
-                waterQuantity = waterQuantity,
-                coconutQuantity = coconutQuantity,
-                firstPrefQuantity = firstPrefQuantity,
-                secondPrefQuantity = secondPrefQuantity,
-                recentAddedQuantity = recentAddedQuantity,
                 onClickWater = onClickWater,
                 onClickCoconut = onClickCoconut,
                 onClickFirstPref = onClickFirstPref,
@@ -451,24 +439,4 @@ fun CustomBevCard(
     }
 }
 
-@Composable
-fun backGroundContentColor(darkColor: Color, lightColor: Color): Color {
-
-    val backgroundContentColor = if (isSystemInDarkTheme()) {
-        lightColor
-    } else {
-        darkColor
-    }
-    return backgroundContentColor
-}
-
-@Composable
-fun backGroundContainerColor(darkColor: Color, lightColor: Color): Color {
-    val backgroundContainerColor = if (isSystemInDarkTheme()) {
-        darkColor
-    } else {
-        lightColor
-    }
-    return backgroundContainerColor
-}
 

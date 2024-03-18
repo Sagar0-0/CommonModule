@@ -1,7 +1,6 @@
 package fit.asta.health.feature.water.nav
 
 
-import android.util.Log
 import android.widget.Toast
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.fillMaxSize
@@ -22,8 +21,6 @@ import fit.asta.health.common.utils.Constants.WATER_GRAPH_ROUTE
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.common.utils.sharedViewModel
 import fit.asta.health.designsystem.molecular.animations.AppDotTypingAnimation
-import fit.asta.health.feature.water.WaterState
-//import fit.asta.health.feature.water.view.screen.ui.BeverageCard
 import fit.asta.health.feature.water.view.screen.ui.CustomBevBottomSheet
 import fit.asta.health.feature.water.view.screen.ui.ErrorUi
 import fit.asta.health.feature.water.viewmodel.WaterToolViewModel
@@ -74,18 +71,6 @@ fun NavGraphBuilder.waterToolNavigation(
                         AppDotTypingAnimation()
                     }
                 }
-//                is UiState.ErrorMessage -> {
-//                    Box(modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center){
-//                        AppDotTypingAnimation()
-//                    }
-//                }
-//                is UiState.ErrorRetry -> {
-//                    Box(modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center){
-//                        AppDotTypingAnimation()
-//                    }
-//                }
                 is UiState.Success -> {
                     CustomBevBottomSheet(
                         onBack = onBack,
@@ -94,11 +79,6 @@ fun NavGraphBuilder.waterToolNavigation(
                         onClickSchedule = { navController.navigateToAllAlarmsFromWater() }
                     )
                 }
-
-//                    Box(modifier = Modifier.fillMaxSize(),
-//                        contentAlignment = Alignment.Center){
-//                        BeverageCard()
-//                    }
 
                 is UiState.NoInternet -> {
                     ErrorUi(viewModel = viewModel, event = viewModel::event)
