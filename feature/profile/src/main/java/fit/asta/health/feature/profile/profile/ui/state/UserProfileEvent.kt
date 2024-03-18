@@ -1,6 +1,7 @@
 package fit.asta.health.feature.profile.profile.ui.state
 
 import android.net.Uri
+import com.google.firebase.auth.AuthCredential
 import fit.asta.health.data.profile.remote.model.BooleanInt
 import fit.asta.health.data.profile.remote.model.Gender
 import fit.asta.health.data.profile.remote.model.TimeSchedule
@@ -37,6 +38,9 @@ sealed interface UserProfileEvent {
     ) : UserProfileEvent
 
     data class SaveInt(val screenName: String, val fieldName: String, val value: Int) :
+        UserProfileEvent
+
+    data class LinkWithGoogle(val authCredential: AuthCredential) :
         UserProfileEvent
 
     data object NavigateToReferral : UserProfileEvent

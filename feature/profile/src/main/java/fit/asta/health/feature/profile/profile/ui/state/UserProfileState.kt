@@ -19,10 +19,11 @@ import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.google.firebase.auth.AuthCredential
 import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.data.profile.remote.model.UserProperties
-import fit.asta.health.feature.auth.navigateToPhoneAuth
+import fit.asta.health.feature.profile.basic.navigateToPhoneLinkingScreen
 import fit.asta.health.feature.profile.profile.utils.ProfileNavigationScreen
 import kotlinx.coroutines.CoroutineScope
 import kotlinx.coroutines.launch
@@ -195,38 +196,11 @@ class UserProfileState(
     }
 
     fun navigateToPhoneLinking() {
-        navController.navigateToPhoneAuth()
+        navController.navigateToPhoneLinkingScreen()
     }
 
-    companion object {
-//        fun Saver(
-//            basicDetailScreenState: BasicDetailScreenState,
-//            healthScreenState: HealthScreenState,
-//            lifestyleScreenState: LifestyleScreenState,
-//            physiqueScreenState: PhysiqueScreenState,
-//            dietScreenState: DietScreenState,
-//            pagerState: PagerState,
-//            coroutineScope: CoroutineScope,
-//            navController: NavController,
-//            onEvent: (UserProfileEvent) -> Unit
-//        ): Saver<UserProfileState, *> = listSaver(
-//            save = {
-//                listOf()
-//            },
-//            restore = {
-//                UserProfileState(
-//                    basicDetailScreenState = basicDetailScreenState,
-//                    healthScreenState = healthScreenState,
-//                    lifestyleScreenState = lifestyleScreenState,
-//                    physiqueScreenState = physiqueScreenState,
-//                    dietScreenState = dietScreenState,
-//                    pagerState = pagerState,
-//                    coroutineScope = coroutineScope,
-//                    navController = navController,
-//                    onEvent = onEvent
-//                )
-//            }
-//        )
+    fun linkWithGoogle(authCredential: AuthCredential) {
+        onEvent(UserProfileEvent.LinkWithGoogle(authCredential))
     }
 
     data class ProfileBottomSheetPicker(

@@ -45,6 +45,7 @@ import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.background.appRememberModalBottomSheetState
 import fit.asta.health.designsystem.molecular.button.AppIconButton
 import fit.asta.health.designsystem.molecular.texts.BodyTexts
+import fit.asta.health.feature.auth.util.GoogleSignIn
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetGenderSelector
 import fit.asta.health.feature.profile.profile.ui.components.BottomSheetTextField
 import fit.asta.health.feature.profile.profile.ui.components.ClickableTextBox
@@ -103,21 +104,34 @@ fun BasicDetailsPage(
             )
         }
 
-        ClickableTextBox(
-            label = "E-mail",
-            value = userProfileState.basicDetailScreenState.email,
-            leadingIcon = Icons.Default.Mail,
-            trailingIcon = null
-        )
+        if (userProfileState.basicDetailScreenState.email.isNotEmpty()) {
+            ClickableTextBox(
+                label = "E-mail",
+                value = userProfileState.basicDetailScreenState.email,
+                leadingIcon = Icons.Default.Mail,
+                trailingIcon = null
+            )
+        } else {
+            GoogleSignIn(textId = fit.asta.health.resources.strings.R.string.link_with_google_account) {
+                userProfileState.linkWithGoogle(it)
+            }
+        }
 
         ClickableTextBox(
             label = "Phone",
             value = userProfileState.basicDetailScreenState.phoneNumber.ifEmpty { "Click to link" },
             leadingIcon = Icons.Default.Phone,
-            trailingIcon = Icons.Default.Link
-        ) {
-            userProfileState.navigateToPhoneLinking()
-        }
+            trailingIcon = if (userProfileState.basicDetailScreenState.phoneNumber.isEmpty()) {
+                null
+            } else {
+                Icons.Default.Link
+            },
+            onClick = if (userProfileState.basicDetailScreenState.phoneNumber.isEmpty()) {
+                null
+            } else {
+                { userProfileState.navigateToPhoneLinking() }
+            }
+        )
 
         ClickableTextBox(
             label = "Gender",

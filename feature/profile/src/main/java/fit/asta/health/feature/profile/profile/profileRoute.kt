@@ -14,6 +14,7 @@ import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
+import fit.asta.health.feature.profile.basic.vm.BasicProfileViewModel
 import fit.asta.health.feature.profile.profile.ui.screens.ProfileScreen
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
@@ -40,6 +41,7 @@ fun NavGraphBuilder.profileRoute(
     ) {
         composable(route = PROFILE_EDIT_DESTINATION) {
             val profileViewModel: ProfileViewModel = hiltViewModel()
+            val basicProfileViewModel: BasicProfileViewModel = hiltViewModel()
             val userProfileResponseState by profileViewModel.userProfileState.collectAsStateWithLifecycle()
             val submitProfileState by profileViewModel.submitProfileState.collectAsStateWithLifecycle()
             val healthPropertiesState by profileViewModel.healthPropertiesState.collectAsStateWithLifecycle()
@@ -144,6 +146,10 @@ fun NavGraphBuilder.profileRoute(
                                 event.fieldName,
                                 event.value
                             )
+                        }
+
+                        is UserProfileEvent.LinkWithGoogle -> {
+                            basicProfileViewModel.linkWithCredentials(event.authCredential)
                         }
                     }
                 }

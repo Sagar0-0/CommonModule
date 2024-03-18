@@ -29,7 +29,7 @@ fun NavController.navigateToAuth(navOptions: NavOptions? = null) {
     }
 }
 
-fun NavController.navigateToPhoneAuth() {
+private fun NavController.navigateToPhoneAuth() {
     this.navigate(AUTH_OTP_VERIFICATION_ROUTE)
 }
 
