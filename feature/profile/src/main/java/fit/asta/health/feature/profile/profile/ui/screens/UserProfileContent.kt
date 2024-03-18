@@ -15,7 +15,6 @@ import fit.asta.health.common.utils.toStringFromResId
 import fit.asta.health.data.profile.remote.model.UserProperties
 import fit.asta.health.designsystem.AppTheme
 import fit.asta.health.designsystem.molecular.ImageCropperScreen
-import fit.asta.health.designsystem.molecular.background.AppNavigationBar
 import fit.asta.health.designsystem.molecular.background.AppScaffold
 import fit.asta.health.designsystem.molecular.background.AppTopBar
 import fit.asta.health.designsystem.molecular.icon.AppIcon
@@ -55,23 +54,19 @@ fun UserProfileContent(
                 .padding(padding)
         ) {
 
-            AppNavigationBar(
-                tonalElevation = AppTheme.elevation.level0,
+            AppTabRow(
+                selectedTabIndex = userProfileState.currentPageIndex,
             ) {
                 userProfileState.profileDataPages.forEachIndexed { index, item ->
-                    AppTabRow(
-                        selectedTabIndex = userProfileState.currentPageIndex,
+                    AppTab(
+                        selected = userProfileState.currentPageIndex == index,
+                        onClick = {
+                            userProfileState.currentPageIndex = index
+                        },
+                        selectedContentColor = AppTheme.colors.primary
                     ) {
-                        AppTab(
-                            selected = userProfileState.currentPageIndex == index,
-                            onClick = {
-                                userProfileState.currentPageIndex = index
-                            },
-                            selectedContentColor = AppTheme.colors.primary
-                        ) {
-                            AppIcon(imageVector = item.icon)
-                            CaptionTexts.Level2(text = item.labelId.toStringFromResId())
-                        }
+                        AppIcon(imageVector = item.icon)
+                        CaptionTexts.Level2(text = item.labelId.toStringFromResId())
                     }
                 }
             }
