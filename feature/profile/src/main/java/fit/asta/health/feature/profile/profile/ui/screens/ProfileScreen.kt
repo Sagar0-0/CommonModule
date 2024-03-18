@@ -29,7 +29,7 @@ import fit.asta.health.resources.strings.R
 
 @OptIn(ExperimentalFoundationApi::class)
 @Composable
-fun UserProfileContent(
+fun ProfileScreen(
     userProfileState: UserProfileState,
     submitProfileState: UiState<SubmitProfileResponse>,
     userPropertiesState: UiState<List<UserProperties>>
@@ -77,25 +77,25 @@ fun UserProfileContent(
             ) {
                 when (userProfileState.profileDataPages[it]) {
                     ProfileNavigationScreen.BASIC -> {
-                        BasicDetailsScreen(
+                        BasicDetailsPage(
                             userProfileState = userProfileState,
                         )
                     }
 
                     ProfileNavigationScreen.Physique -> {
-                        PhysiqueScreen(userProfileState)
+                        PhysiquePage(userProfileState)
                     }
 
                     ProfileNavigationScreen.Health -> {
-                        HealthScreen(userProfileState, userPropertiesState)
+                        HealthPage(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Lifestyle -> {
-                        LifestyleScreen(userProfileState, userPropertiesState)
+                        LifestylePage(userProfileState, userPropertiesState)
                     }
 
                     ProfileNavigationScreen.Diet -> {
-                        DietScreen(userProfileState, userPropertiesState)
+                        DietPage(userProfileState, userPropertiesState)
                     }
                 }
             }

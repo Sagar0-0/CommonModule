@@ -22,7 +22,7 @@ import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButto
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @Composable
-fun HealthScreen(
+fun HealthPage(
     userProfileState: UserProfileState,
     userPropertiesState: UiState<List<UserProperties>>
 ) {

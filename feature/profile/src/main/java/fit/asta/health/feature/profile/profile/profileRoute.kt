@@ -14,7 +14,7 @@ import fit.asta.health.common.utils.SubmitProfileResponse
 import fit.asta.health.common.utils.UiState
 import fit.asta.health.data.profile.remote.model.UserProfileResponse
 import fit.asta.health.designsystem.molecular.AppUiStateHandler
-import fit.asta.health.feature.profile.profile.ui.screens.UserProfileContent
+import fit.asta.health.feature.profile.profile.ui.screens.ProfileScreen
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileEvent
 import fit.asta.health.feature.profile.profile.ui.state.rememberUserProfileState
 import fit.asta.health.feature.profile.profile.vm.ProfileViewModel
@@ -158,7 +158,7 @@ fun NavGraphBuilder.profileRoute(
                     userProfileState.onBackPressed()
                 }
             ) {
-                UserProfileContent(
+                ProfileScreen(
                     userProfileState = userProfileState,
                     submitProfileState = submitProfileState,
                     userPropertiesState = healthPropertiesState

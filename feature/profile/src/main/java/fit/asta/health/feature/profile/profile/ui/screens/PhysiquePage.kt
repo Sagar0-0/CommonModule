@@ -29,7 +29,7 @@ import fit.asta.health.feature.profile.profile.ui.components.PageNavigationButto
 import fit.asta.health.feature.profile.profile.ui.state.UserProfileState
 
 @Composable
-fun PhysiqueScreen(
+fun PhysiquePage(
     userProfileState: UserProfileState
 ) {
     val heightBottomSheetState = appRememberModalBottomSheetState()

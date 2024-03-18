@@ -56,7 +56,7 @@ import java.time.format.DateTimeFormatter
 import java.util.Calendar
 
 @Composable
-fun BasicDetailsScreen(
+fun BasicDetailsPage(
     userProfileState: UserProfileState,
 ) {
     val nameBottomSheetState = appRememberModalBottomSheetState()
